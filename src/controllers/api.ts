@@ -1,9 +1,9 @@
-import {Response, Request} from "express"
+import { Response, Request } from 'express';
 
 /**
  * GET /api
  * List of API examples.
  */
 export let getApi = (req: Request, res: Response) => {
-    res.send('api is here!')
-  };
+  res.send('api is here!');
+};

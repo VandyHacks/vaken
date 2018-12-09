@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
+    "format": "prettier --parser typescript --single-quote --trailing-comma=es5 --write \"./**/*.ts\"",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "lint-fix": "tslint -c tslint.json -p tsconfig.json --fix",
     "start": "ts-node src/server.ts",
@@ -12,8 +13,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint",
-      "pre-push": "npm run lint"
+      "pre-commit": "npm run lint && npm run format",
+      "pre-push": "npm run lint && npm run format"
     }
   },
   "repository": {
