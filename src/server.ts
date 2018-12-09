@@ -1,8 +1,8 @@
 import express from 'express';
-import router from './routes/router'
+import router from './routes/router';
 // create server
 const app = express();
-app.use(router)
+app.use(router);
 
 // todo put in config
 const PORT = process.env.PORT || 8000;
