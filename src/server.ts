@@ -1,15 +1,11 @@
 import express from 'express';
-import * as apiController from './controllers/api';
-
+import router from './routes/router'
+// create server
 const app = express();
+app.use(router)
 
 // todo put in config
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
-app.get('/', (_, res) => {
-  res.send('hello world');
-});
-
-app.get('/api', apiController.getApi);
-
+// start server
 app.listen(PORT, () => console.log(`Server running on ${PORT}!`));

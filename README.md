@@ -4,19 +4,29 @@ Next-gen hacker registration system
 
 Dev
 ---
-Made with TypeScript :)
+Made with [TypeScript](https://www.typescriptlang.org/) :)
 
 TypeScript config inspired by [TypeScript-Node-Starter](https://github.com/Microsoft/TypeScript-Node-Starter)
 (don't need Webpack or Babel b/c `tsc` and `node` can handle es6 and stuff), except stricter (`"strict": true`)
 
-```
+```bash
 npm i -g tsc # install TypeScript globally
-npm i # install deps
+npm i # install all dependencies
+
 npm start # start server no autoreload
 npm run dev # start server w/ autoreload
-npm run lint # lint
+
+npm run lint # check linting errors
 npm run lint-fix # lints, and autofixes for some rules
 ```
+
+Code structure
+---
+* `/dist` - output of `tsc` build
+* `/src` - main server code
+    * `/controllers` api
+    * `/models` db ORM models
+* `/test` - tests
 
 
 Tooling
