@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
+    "build": "tsc",
     "format": "prettier --parser typescript --single-quote --trailing-comma=es5 --write \"./**/*.ts\"",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "lint-fix": "tslint -c tslint.json -p tsconfig.json --fix",
@@ -13,8 +14,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint && npm run format",
-      "pre-push": "npm run lint && npm run format"
+      "pre-commit": "tsc && npm run lint && npm run format",
+      "pre-push": "tsc && npm run lint && npm run format"
     }
   },
   "repository": {
