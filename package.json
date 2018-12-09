@@ -1,0 +1,36 @@
+{
+  "name": "vaken",
+  "version": "1.0.0",
+  "description": "Next-gen hacker registration system",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node src/server.ts",
+    "start": "ts-node src/server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VandyHacks/vaken.git"
+  },
+  "keywords": [
+    "hackathon",
+    "registration"
+  ],
+  "author": "VandyHacks",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/VandyHacks/vaken/issues"
+  },
+  "homepage": "https://github.com/VandyHacks/vaken#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "@types/express": "^4.16.0",
+    "eslint": "^5.10.0",
+    "eslint-plugin-typescript": "^0.14.0",
+    "nodemon": "^1.18.7",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.2.2"
+  }
+}
