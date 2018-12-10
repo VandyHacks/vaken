@@ -6,6 +6,8 @@ Dev
 ---
 Made with [TypeScript](https://www.typescriptlang.org/) :)
 
+Uses [Typegoose](https://github.com/szokodiakos/typegoose) + [Mongoose](https://mongoosejs.com/) ORM + [MongoDB](https://www.npmjs.com/package/mongodb).
+
 TypeScript config inspired by [TypeScript-Node-Starter](https://github.com/Microsoft/TypeScript-Node-Starter)
 (don't need Webpack or Babel b/c `tsc` and `node` can handle es6 and stuff), except stricter (`"strict": true`)
 

@@ -3,14 +3,20 @@
         "module": "commonjs",
         "esModuleInterop": true,
         "target": "es6",
+
         "forceConsistentCasingInFileNames": true,
         "strict": true,
         "moduleResolution": "node",
         "noImplicitReturns": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
+
         "sourceMap": true,
         "outDir": "dist",
+
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+
         "baseUrl": ".",
         "paths": {
             "*": [
