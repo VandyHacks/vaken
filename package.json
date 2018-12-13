@@ -49,6 +49,7 @@
     "typegoose": "^5.4.1"
   },
   "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
     "@types/cors": "^2.8.4",
     "@types/express": "^4.16.0",
     "@types/express-validator": "^3.0.0",
