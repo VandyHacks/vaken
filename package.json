@@ -19,8 +19,8 @@
   },
   "lint-staged": {
     "src/**/*": [
-        "npm run format",
-        "git add ."
+      "npm run format",
+      "git add ."
     ]
   },
   "repository": {
@@ -38,13 +38,18 @@
   },
   "homepage": "https://github.com/VandyHacks/vaken#readme",
   "dependencies": {
+    "bcrypt": "^3.0.2",
+    "cors": "^2.8.5",
     "express": "^4.16.4",
+    "helmet": "^3.15.0",
     "mongoose": "^5.3.15",
     "reflect-metadata": "^0.1.12",
     "typegoose": "^5.4.1"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.4",
     "@types/express": "^4.16.0",
+    "@types/helmet": "0.0.42",
     "@types/mongoose": "^5.3.4",
     "husky": "^1.2.0",
     "lint-staged": "^8.1.0",
