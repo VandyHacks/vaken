@@ -1,6 +1,6 @@
 import { Response, Request, Router } from 'express';
-import * as apiController from './api';
-import { createUser, deleteUser, updateUser, listUser } from './user';
+import * as apiController from './Api';
+import { createUser, deleteUser, updateUser, listUser } from './UserRoutes';
 
 const router: Router = Router();
 
