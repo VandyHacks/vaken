@@ -5,8 +5,6 @@ import cors from 'cors';
 import router from './routes/router';
 import bodyParser from 'body-parser';
 
-// import { check, body, query, param, validationResult} from 'express-validator/check';
-
 // todo: put in config file
 const whitelist = ['vandyhacks.org'];
 const corsOptions = {

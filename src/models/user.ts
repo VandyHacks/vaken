@@ -40,5 +40,6 @@ class User extends Typegoose {
   majors: [string] = [STR_DEFAULT];
 }
 
-// const UserModel = new User().getModelForClass(User);
-export default User;
+const userModel = new User().getModelForClass(User);
+// export default User;
+export default userModel;
