@@ -1,7 +1,5 @@
-import { Typegoose, prop } from 'typegoose';
+import { Typegoose, prop, Ref } from 'typegoose';
 /* import bcrypt from 'bcrypt'; */
-
-const STR_DEFAULT = String();
 
 /**
  * Typegoose's equivalent to Mongoose pre-hook: On user save password, hash password
@@ -17,27 +15,80 @@ const STR_DEFAULT = String();
   })
 })*/
 
+enum UserRole {
+  ADMIN = 'admin',
+  APPLICANT = 'applicant',
+  GUEST = 'guest',
+  SPONSOR = 'sponsor',
+  MENTOR = 'mentor',
+  VOLUNTEER = 'volunteer',
+}
+
+class Demographic extends Typegoose {
+  @prop()
+  name?: string;
+  @prop()
+  school?: string;
+  @prop()
+  graduationYear?: string;
+  @prop()
+  gender?: string;
+  @prop()
+  majors?: string[];
+  @prop()
+  over21?: boolean;
+}
+
+class AppStatus extends Typegoose {
+  @prop()
+  submittedDate?: Date;
+  @prop()
+  confirmationDate?: Date;
+
+  verified: boolean = false;
+  @prop()
+  submitted: boolean = false;
+  @prop()
+  accepted: boolean = false;
+  @prop()
+  confirmed: boolean = false;
+  @prop()
+  rejected: boolean = false;
+  @prop()
+  declined: boolean = false;
+}
+
+class Application extends Typegoose {
+  @prop()
+  essays?: string[];
+}
+
+class Confirmation extends Typegoose {
+  @prop()
+  essays?: string[];
+}
+
 class User extends Typegoose {
   @prop()
-  name: string = STR_DEFAULT;
+  password?: string;
 
-  @prop()
-  password: string = STR_DEFAULT;
+  @prop({ required: true })
+  email: string = '';
 
-  @prop()
-  email: string = STR_DEFAULT;
+  @prop({ enum: Object.values(UserRole), required: true })
+  roles: Ref<UserRole>[] = [];
 
-  @prop()
-  school: string = STR_DEFAULT;
+  @prop({ ref: Demographic })
+  demographic?: Ref<Demographic>;
 
-  @prop()
-  graduationYear: string = STR_DEFAULT;
+  @prop({ ref: AppStatus })
+  appStatus?: Ref<AppStatus>;
 
-  @prop()
-  gender: string = STR_DEFAULT;
+  @prop({ ref: Application })
+  application?: Ref<Application>;
 
-  @prop()
-  majors: [string] = [STR_DEFAULT];
+  @prop({ ref: Confirmation })
+  confirmation?: Ref<Confirmation>;
 }
 
 const userModel = new User().getModelForClass(User);
