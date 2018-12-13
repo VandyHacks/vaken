@@ -3,6 +3,9 @@ import express from 'express';
 import helmet from 'helmet'; // good default security config
 import cors from 'cors';
 import router from './routes/router';
+import bodyParser from 'body-parser';
+
+// import { check, body, query, param, validationResult} from 'express-validator/check';
 
 // todo: put in config file
 const whitelist = ['vandyhacks.org'];
@@ -18,10 +21,16 @@ const corsOptions = {
 
 // create server
 const app = express();
-app.use(helmet);
+app.use(helmet());
 
 // can also put over individual routes, with cors-preflight
 app.use(cors(corsOptions));
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
+app.use(bodyParser.json());
+
 app.use(router);
 
 // todo put in config
