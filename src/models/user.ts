@@ -5,7 +5,7 @@ import { Typegoose, prop, Ref } from 'typegoose';
  * Typegoose's equivalent to Mongoose pre-hook: On user save password, hash password
  */
 /*
-@pre<User>('save', next : Function => {
+@pre<User>('save', _: Promise<any> : Function => {
   bcrypt.hash(this.password, 10, function (err: Error, hash: string){
     if (err) {
       return next(err);
@@ -68,7 +68,7 @@ class Confirmation extends Typegoose {
   essays?: string[];
 }
 
-class User extends Typegoose {
+class UserModel extends Typegoose {
   @prop()
   password?: string;
 
@@ -90,7 +90,7 @@ class User extends Typegoose {
   @prop({ ref: Confirmation })
   confirmation?: Ref<Confirmation>;
 }
+const USER = new UserModel().getModelForClass(UserModel);
 
-const userModel = new User().getModelForClass(User);
 // export default User;
-export default userModel;
+export default USER;

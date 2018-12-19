@@ -1,51 +1,23 @@
 import User from '../models/User';
-import { Request, Response } from 'express';
-import { check, ValidationChain } from 'express-validator/check';
+import { Context } from 'koa';
+
 // import { check, body, query, param, validationResult} from 'express-validator/check';
 
 export default class UserController {
-  private sanitizeUserInput(input: string): ValidationChain {
-    // TODO: fix
-    return check(input)
-      .isString()
-      .isAfter();
-  }
-
   // Display list of all Users.
-  async user_list(req: Request, res: Response) {
-    this.sanitizeUserInput(req.params.id); // TODO: entirely wrong lol
-
-    await res.send('NOT IMPLEMENTED: User list');
+  async user_list(id: string) {
+    console.log(id);
   }
 
   // Display detail page for a specific User.
-  async user_detail(req: Request, res: Response) {
-    const { id } = req.params.id;
-
+  async user_detail(id: string) {
     // TODO: validate id
     console.log(id);
-
-    res.send('NOT IMPLEMENTED: User detail: ');
   }
 
   // Handle User create on POST.
-  async user_create(req: Request, _: Response) {
-    console.log(req.body.newuser);
-    const { newuser } = req.body;
-
-    // TODO: sanitize input also
-
-    // TODO: validate newuser
-    check(newuser.name)
-      .isString()
-      .isAlpha()
-      .isLength({ min: 1, max: 60 });
-    check(newuser.password)
-      .isString()
-      .isAlphanumeric()
-      .isLength({ min: 1, max: 60 });
-
-    await User.create(newuser, async (err: Error, docs: Document[]) => {
+  async user_create(newUser: Object) {
+    await User.create(newUser, async (err: Error, docs: Document[]) => {
       if (err) {
         throw err;
       }
@@ -54,27 +26,17 @@ export default class UserController {
   }
 
   // Handle User delete on POST.
-  async user_delete(req: Request, res: Response) {
-    console.log(req.body.id);
-    const { id } = req.body;
-
-    // validate req.body.id
-
-    // validate req.body.profile
-
+  async user_delete(id: string) {
     User.update({ id }, async (err: Error, docs: Document[]) => {
       if (err) {
         throw err;
       }
       return docs;
     });
-
-    res.send('NOT IMPLEMENTED: User delete POST');
   }
 
   // Handle User update on POST.
-  async user_update(req: Request, res: Response) {
-    console.log(req.body.id);
-    res.send('NOT IMPLEMENTED: User update POST');
+  async user_update(ctx: Context, _: Promise<any>) {
+    console.log(ctx.body.id);
   }
 }
