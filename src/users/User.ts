@@ -1,4 +1,4 @@
-import { Typegoose, prop, Ref } from 'typegoose';
+import { Typegoose, prop, Ref, arrayProp } from 'typegoose';
 /* import bcrypt from 'bcrypt'; */
 
 /**
@@ -24,17 +24,28 @@ enum UserRole {
   VOLUNTEER = 'volunteer',
 }
 
+enum Gender {
+  MALE = 'M',
+  FEMALE = 'F',
+  OTHER = 'O',
+}
+
 class Demographic extends Typegoose {
   @prop()
   name?: string;
+
   @prop()
   school?: string;
+
   @prop()
-  graduationYear?: string;
-  @prop()
-  gender?: string;
-  @prop()
+  graduationYear?: number;
+
+  @prop({ enum: Gender })
+  gender?: Gender;
+
+  @arrayProp({ items: String })
   majors?: string[];
+
   @prop()
   over21?: boolean;
 }
@@ -42,29 +53,36 @@ class Demographic extends Typegoose {
 class AppStatus extends Typegoose {
   @prop()
   submittedDate?: Date;
+
   @prop()
   confirmationDate?: Date;
 
+  @prop()
   verified: boolean = false;
+
   @prop()
   submitted: boolean = false;
+
   @prop()
   accepted: boolean = false;
+
   @prop()
   confirmed: boolean = false;
+
   @prop()
   rejected: boolean = false;
+
   @prop()
   declined: boolean = false;
 }
 
 class Application extends Typegoose {
-  @prop()
+  @arrayProp({ items: String })
   essays?: string[];
 }
 
 class Confirmation extends Typegoose {
-  @prop()
+  @arrayProp({ items: String })
   essays?: string[];
 }
 
@@ -75,8 +93,8 @@ class UserModel extends Typegoose {
   @prop({ required: true })
   email: string = '';
 
-  @prop({ enum: Object.values(UserRole), required: true })
-  roles: Ref<UserRole>[] = [];
+  @arrayProp({ items: Object, enum: UserRole, required: true })
+  roles: UserRole[] = [];
 
   @prop({ ref: Demographic })
   demographic?: Ref<Demographic>;
@@ -93,4 +111,4 @@ class UserModel extends Typegoose {
 const USER = new UserModel().getModelForClass(UserModel);
 
 // export default User;
-export default USER;
+export { UserModel, USER };

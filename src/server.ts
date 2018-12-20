@@ -1,8 +1,8 @@
 import koa from 'koa';
-
+import koaBodyparser from 'koa-bodyparser';
 import koaHelmet from 'koa-helmet'; // good default security config
 import cors from '@koa/cors';
-import router from './routes/router';
+import api from './api';
 import koaJwt from 'koa-jwt';
 
 // todo: put in config file
@@ -37,8 +37,7 @@ app.use(koaHelmet());
 // app.use(cors(corsOptions));
 app.use(cors());
 
-// NOTE: koa body parser included in koa-joi-router, don't include separate to prevent type decl. conflict
-// app.use(koaBodyparser()); // https://github.com/koajs/bodyparser
+app.use(koaBodyparser()); // https://github.com/koajs/bodyparser
 
 app.use(async ctx => {
   // the parsed body will store in ctx.ctx: Context, _: Promise<any>.body
@@ -52,11 +51,37 @@ const jwtConfig: koaJwt.Options = {
 };
 app.use(koaJwt(jwtConfig));
 
-app.use(router.middleware());
-// TODO: makes sure a 405 Method Not Allowed is sent
+// add api
+app.use(api.routes()).use(api.allowedMethods()); // makes sure a 405 Method Not Allowed is sent
+
+// TODO: handle default route
+/*
+app.get('/', async (ctx: koa.Context) => {
+  // TODO: redirect to frontend...
+  console.log(ctx.state);
+});*/
 
 // todo put in config
 const PORT: Number = parseInt(process.env.PORT || '8000', 10);
 
 // start server
+// NOTE: doesn't do HTTPS default??
 app.listen(PORT, () => console.log(`Server running on ${PORT}!`));
+
+/**
+ *
+ * Handle unhandled rejections and uncaught exceptions
+ *
+ * Should never happen if good error handling is in place, is just a fallback
+ *
+ */
+// catch unhandled rejections
+process.on('unhandledRejection', (reason: Error, _: Promise<any>) => {
+  // just convert to error, let uncaughtException handle it
+  throw reason;
+});
+process.on('uncaughtException', error => {
+  // TODO: should handle error here...
+  console.log('UNCAUGHT EXCEPTION: ', error);
+  // process.exit(1);
+});
