@@ -1,4 +1,4 @@
-import User from './User';
+import { USER } from './User';
 import { Context } from 'koa';
 
 // import { check, body, query, param, validationResult} from 'express-validator/check';
@@ -17,7 +17,7 @@ export default class UserController {
 
   // Handle User create on POST.
   async user_create(newUser: Object) {
-    await User.create(newUser, async (err: Error, docs: Document[]) => {
+    await USER.create(newUser, async (err: Error, docs: Document[]) => {
       if (err) {
         throw err;
       }
@@ -27,7 +27,7 @@ export default class UserController {
 
   // Handle User delete on POST.
   async user_delete(id: string) {
-    User.update({ id }, async (err: Error, docs: Document[]) => {
+    USER.update({ id }, async (err: Error, docs: Document[]) => {
       if (err) {
         throw err;
       }

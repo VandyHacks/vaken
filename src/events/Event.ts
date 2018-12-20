@@ -1,5 +1,5 @@
 // events
-import { Typegoose, prop, Ref } from 'typegoose';
+import { Typegoose, prop, arrayProp } from 'typegoose';
 
 enum EventType {
   BUS = 'Bus',
@@ -18,10 +18,10 @@ class Event extends Typegoose {
   @prop({ required: true })
   isOpen: boolean = true;
 
-  @prop({ enum: Object.values(EventType), required: true })
-  type: Ref<EventType> = EventType.MISC;
+  @prop({ enum: EventType, required: true })
+  type: EventType = EventType.MISC;
 
-  @prop()
+  @arrayProp({ items: Object })
   attendees?: { attendee: string; timeStamp: Date }[];
 }
 

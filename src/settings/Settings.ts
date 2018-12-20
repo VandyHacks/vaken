@@ -1,5 +1,5 @@
 // settings model
-import { Typegoose, prop } from 'typegoose';
+import { Typegoose, prop, arrayProp } from 'typegoose';
 
 class Settings extends Typegoose {
   @prop({ required: true })
@@ -14,7 +14,7 @@ class Settings extends Typegoose {
   @prop()
   timeConfirm?: number;
 
-  @prop()
+  @arrayProp({ items: String })
   whitelistEmails?: string[];
 
   @prop()
@@ -25,6 +25,9 @@ class Settings extends Typegoose {
 
   @prop()
   confirmationText?: string;
+
+  // TODO: can and SHOULD use Mongoose virtual properties
+  // typegoose supports this too
 }
 
 const SETTINGS = new Settings().getModelForClass(Settings);
