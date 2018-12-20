@@ -59,4 +59,5 @@ app.use(router.middleware());
 const PORT: Number = parseInt(process.env.PORT || '8000', 10);
 
 // start server
+// NOTE: doesn't do HTTPS default??
 app.listen(PORT, () => console.log(`Server running on ${PORT}!`));

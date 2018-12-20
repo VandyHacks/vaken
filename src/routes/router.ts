@@ -1,4 +1,5 @@
 import koaJoiRouter from 'koa-joi-router';
+import { Context } from 'koa';
 import UserController from '../controllers/UserController';
 
 const USER = new UserController();
@@ -8,7 +9,7 @@ const USER = new UserController();
 const router = koaJoiRouter(); // comes with body parser + Joi validation
 
 router.prefix('/user');
-router.post('create', async (ctx, _) => {
+router.post('create', async (ctx: Context) => {
   const newUser = ctx.params;
   /*
   check(newUser.name)
@@ -24,16 +25,16 @@ check(newUser.password)
 
   ctx.body = '';
 });
-router.post('delete', async (ctx, _) => {
+router.post('delete', async (ctx: Context) => {
   ctx.body = '';
 });
-router.post('update', async (ctx, _) => {
+router.post('update', async (ctx: Context) => {
   ctx.body = '';
 });
-router.get('list', async (ctx, _) => {
+router.get('list', async (ctx: Context) => {
   ctx.body = '';
 });
-router.get(':id', async (ctx, _) => {
+router.get(':id', async (ctx: Context) => {
   ctx.body = '';
 });
 
@@ -44,7 +45,7 @@ router.get(':id', async (ctx, _) => {
 // admin routes?
 
 // temp route
-router.get('/', async (ctx, _) => {
+router.get('/', async (ctx: Context) => {
   ctx.body = 'hello world';
 });
 
