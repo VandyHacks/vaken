@@ -2,7 +2,7 @@ import koa from 'koa';
 
 import koaHelmet from 'koa-helmet'; // good default security config
 import cors from '@koa/cors';
-import router from './routes/router';
+import router from './router';
 import koaJwt from 'koa-jwt';
 
 // todo: put in config file
@@ -61,3 +61,21 @@ const PORT: Number = parseInt(process.env.PORT || '8000', 10);
 // start server
 // NOTE: doesn't do HTTPS default??
 app.listen(PORT, () => console.log(`Server running on ${PORT}!`));
+
+/**
+ *
+ * Handle unhandled rejections and uncaught exceptions
+ *
+ * Should never happen if good error handling is in place, is just a fallback
+ *
+ */
+// catch unhandled rejections
+process.on('unhandledRejection', (reason: Error, _: Promise<any>) => {
+  // just convert to error, let uncaughtException handle it
+  throw reason;
+});
+process.on('uncaughtException', error => {
+  // TODO: should handle error here...
+  console.log('UNCAUGHT EXCEPTION: ', error);
+  // process.exit(1);
+});

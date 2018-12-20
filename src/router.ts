@@ -1,6 +1,6 @@
 import koaJoiRouter from 'koa-joi-router';
 import { Context } from 'koa';
-import UserController from '../controllers/UserController';
+import UserController from './users/UserController';
 
 const USER = new UserController();
 

@@ -1,4 +1,4 @@
-import User from '../models/User';
+import User from './User';
 import { Context } from 'koa';
 
 // import { check, body, query, param, validationResult} from 'express-validator/check';
