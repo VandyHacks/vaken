@@ -6,7 +6,6 @@ import UserController from './UserController';
 const USER = new UserController();
 
 const USER_ROUTER = new koaRouter();
-console.log('Im a router');
 
 USER_ROUTER.post('create', async ctx => {
   const newUser = ctx.params;

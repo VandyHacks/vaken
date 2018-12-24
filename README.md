@@ -65,5 +65,13 @@ Tech decisions
 
 [koa-helmet](https://www.npmjs.com/package/koa-helmet) - Koa's version of [helmet](https://www.npmjs.com/package/helmet), which provides some good server-side security default configurations for web apps.
 
+[bunyan-logger](https://github.com/koajs/bunyan-logger) - Koa-specific thin wrapper around [bunyan](https://github.com/trentm/node-bunyan). Logs URL route info on each server request in machine-parseable JSON format.
+
+
+### Testing
+
+[supertest](https://github.com/visionmedia/supertest) - for testing API by simulating HTTP requests, works in conjunction with Jest.
+
+[jest](https://jestjs.io/) - nice widely used testing framework. Config is in [./jest.config.js](./jest.config.js). NOTE: The TypeScript tests are also recompiled for commit hooks, but not for server reload.
 
 NOTE: (don't need Webpack or Babel b/c `tsc` can handle es6 and stuff)
