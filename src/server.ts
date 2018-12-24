@@ -3,6 +3,7 @@ import koaBodyparser from 'koa-bodyparser';
 import koaHelmet from 'koa-helmet'; // good default security config
 import cors from '@koa/cors';
 import api from './api';
+import koaBunyanLogger from 'koa-bunyan-logger';
 // import koaJwt from 'koa-jwt';
 
 // todo: put in config file
@@ -37,14 +38,20 @@ app.use(koaHelmet());
 // app.use(cors(corsOptions));
 app.use(cors());
 
+// logging
+app.use(koaBunyanLogger());
+// @ts-ignore
+app.use(koaBunyanLogger.requestIdContext());
+// @ts-ignore
+app.use(koaBunyanLogger.requestLogger());
+
+// body parser middleware
 app.use(koaBodyparser()); // https://github.com/koajs/bodyparser
 
 app.use(async (ctx, next) => {
   // the parsed body will store in ctx.ctx: Context, _: Promise<any>.body
   // if nothing was parsed, body will be an empty object {}
   ctx.body = ctx.request.body;
-
-  console.log(ctx.url);
   await next();
 });
 

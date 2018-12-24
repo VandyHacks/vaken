@@ -61,7 +61,7 @@ Tech decisions
 
 [simple-oauth2](https://www.npmjs.com/package/simple-oauth2) - may change, for OAuth2 (eg. Github or Google SSO login). Should result in more readable + maintainable code than implementing an ad-hoc OAuth2 client from scratch.
 
-[koa-joi-router](https://www.npmjs.com/package/koa-joi-router) - based from `koi-router`, but with [Joi](https://www.npmjs.com/package/joi) for JSON validation. Just gets the job done, nothing fancy.
+[koa-router](https://www.npmjs.com/package/koa-joi-router) - Just gets the job done, nothing fancy. It is possible to use regex for defining routes (see https://github.com/pillarjs/path-to-regexp).
 
 [koa-helmet](https://www.npmjs.com/package/koa-helmet) - Koa's version of [helmet](https://www.npmjs.com/package/helmet), which provides some good server-side security default configurations for web apps.
 
