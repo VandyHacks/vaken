@@ -1,5 +1,6 @@
 import koaRouter from 'koa-router';
 import UserRouter from './users/UserRouter';
+// import {Context} from 'koa';
 // add event router
 // add admin router
 // add stats router
