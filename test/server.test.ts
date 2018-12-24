@@ -26,27 +26,21 @@ afterAll(() => {
  */
 const testGET = async (
   url: string,
-  text: string,
+  text: string | Object,
   status?: number,
   type?: string
 ) => {
-  const response = await supertest(server).get(url);
-  expect(response.status).toEqual(status || 200);
-  expect(response.type).toEqual(type || 'application/json');
-  expect(response.text).toEqual(text);
-  // expect(response.text).toContain("Hello World!");
+  test(`GET ${url}`, async () => {
+    const response = await supertest(server).get(url);
+    expect(response.status).toEqual(status || 200);
+    expect(response.type).toEqual(type || 'application/json');
+    // convert JSON to string if necessary
+    expect(response.text).toEqual((text instanceof Object) ? JSON.stringify(text) : text);
+    // expect(response.text).toContain("Hello World!");
+  });
 };
 
 describe('user route tests', () => {
-  test('get user id route (valid id) GET /api/users/:id', async () => {
-    // const response = await request(server).get("/api/users/1");
-    // expect(response.status).toEqual(200);
-    // expect(response.type).toEqual("application/json");
-    // expect(response.text).not.toEqual("{}")
-    // // expect(response.text).toContain("Hello World!");
-    await testGET('/api/users/1', '{"name":"none"}');
-  });
-  test('get user id route (invalid id) GET /api/users/:id', async () => {
-    await testGET('/api/users/rr', '{}');
-  });
+  testGET('/api/users/1', {name: 'none'});
+  testGET('/api/users/rr', {});
 });
