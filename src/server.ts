@@ -3,7 +3,7 @@ import koaBodyparser from 'koa-bodyparser';
 import koaHelmet from 'koa-helmet'; // good default security config
 import cors from '@koa/cors';
 import api from './api';
-import koaJwt from 'koa-jwt';
+// import koaJwt from 'koa-jwt';
 
 // todo: put in config file
 /*
@@ -39,27 +39,30 @@ app.use(cors());
 
 app.use(koaBodyparser()); // https://github.com/koajs/bodyparser
 
-app.use(async ctx => {
+app.use(async (ctx, next) => {
   // the parsed body will store in ctx.ctx: Context, _: Promise<any>.body
   // if nothing was parsed, body will be an empty object {}
   ctx.body = ctx.request.body;
+
+  console.log(ctx.url);
+  await next();
 });
 
 // JWT middleware -> below this line routes are only reached if JWT token is valid, secret as env variable
+/*
 const jwtConfig: koaJwt.Options = {
   secret: process.env.jwtSecret || '',
 };
-app.use(koaJwt(jwtConfig));
+app.use(koaJwt(jwtConfig));*/
 
 // add api
 app.use(api.routes()).use(api.allowedMethods()); // makes sure a 405 Method Not Allowed is sent
 
 // TODO: handle default route
-/*
-app.get('/', async (ctx: koa.Context) => {
-  // TODO: redirect to frontend...
-  console.log(ctx.state);
-});*/
+// app.get('/', async (ctx: koa.Context) => {
+//   // TODO: redirect to frontend...
+//   console.log(ctx.state);
+// });
 
 // todo put in config
 const PORT: Number = parseInt(process.env.PORT || '8000', 10);
