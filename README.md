@@ -61,9 +61,17 @@ Tech decisions
 
 [simple-oauth2](https://www.npmjs.com/package/simple-oauth2) - may change, for OAuth2 (eg. Github or Google SSO login). Should result in more readable + maintainable code than implementing an ad-hoc OAuth2 client from scratch.
 
-[koa-joi-router](https://www.npmjs.com/package/koa-joi-router) - based from `koi-router`, but with [Joi](https://www.npmjs.com/package/joi) for JSON validation. Just gets the job done, nothing fancy.
+[koa-router](https://www.npmjs.com/package/koa-joi-router) - Just gets the job done, nothing fancy. It is possible to use regex for defining routes (see https://github.com/pillarjs/path-to-regexp).
 
 [koa-helmet](https://www.npmjs.com/package/koa-helmet) - Koa's version of [helmet](https://www.npmjs.com/package/helmet), which provides some good server-side security default configurations for web apps.
 
+[bunyan-logger](https://github.com/koajs/bunyan-logger) - Koa-specific thin wrapper around [bunyan](https://github.com/trentm/node-bunyan). Logs URL route info on each server request in machine-parseable JSON format.
+
+
+### Testing
+
+[supertest](https://github.com/visionmedia/supertest) - for testing API by simulating HTTP requests, works in conjunction with Jest.
+
+[jest](https://jestjs.io/) - nice widely used testing framework. Config is in [./jest.config.js](./jest.config.js). NOTE: The TypeScript tests are also recompiled for commit hooks, but not for server reload.
 
 NOTE: (don't need Webpack or Babel b/c `tsc` can handle es6 and stuff)

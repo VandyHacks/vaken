@@ -6,9 +6,8 @@ import UserController from './UserController';
 const USER = new UserController();
 
 const USER_ROUTER = new koaRouter();
-console.log('Im a router');
 
-USER_ROUTER.post('create', async (ctx, next) => {
+USER_ROUTER.post('create', async ctx => {
   const newUser = ctx.params;
   /*
   check(newUser.name)
@@ -23,24 +22,31 @@ check(newUser.password)
   await USER.user_create(newUser);
 
   ctx.body = '';
-  await next();
 })
-  .post('/delete', async (ctx, next) => {
+  .post('/delete', async ctx => {
     ctx.body = 'c';
-    await next();
   })
-  .post('/update', async (ctx, next) => {
+  .post('/update', async ctx => {
     ctx.body = 'b';
-    await next();
   })
-  .get('/list', async (ctx, next) => {
-    ctx.body = 'a';
-    await next();
+  .get('/list', async ctx => {
+    ctx.body = {
+      users: [
+        {
+          name: 'a',
+        },
+        {
+          name: 'b',
+        },
+      ],
+    };
   })
-  .get('/:id', async (ctx, next) => {
-    ctx.body = 'foo';
-    console.log('I wanna die');
-    await next();
+  .get('/:id(\\d+)', async ctx => {
+    // only matches numerical IDs
+
+    ctx.body = {
+      name: 'none',
+    };
   });
 
 export default USER_ROUTER;

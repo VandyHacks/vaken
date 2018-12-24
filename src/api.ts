@@ -9,6 +9,13 @@ import UserRouter from './users/UserRouter';
 const apiRouter = new koaRouter({
   prefix: '/api',
 });
+
+// poor man's route logging
+apiRouter.use('/*', async (ctx, next) => {
+  console.log(`${ctx.method} ${ctx.status} ${ctx.originalUrl} `);
+  await next();
+});
+
 // handy shortcut
 // const get = apiRouter.get.bind(apiRouter);
 
