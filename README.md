@@ -75,3 +75,8 @@ Tech decisions
 [jest](https://jestjs.io/) - nice widely used testing framework. Config is in [./jest.config.js](./jest.config.js). NOTE: The TypeScript tests are also recompiled for commit hooks, but not for server reload.
 
 NOTE: (don't need Webpack or Babel b/c `tsc` can handle es6 and stuff)
+
+
+
+---
+Run `fiddly` to deploy this README to the [docs site](https://vandyhacks.github.io/vaken/). Created via [SaraVieira/fiddly](https://github.com/SaraVieira/fiddly) (`npm i -g fiddly` if you haven't already).
