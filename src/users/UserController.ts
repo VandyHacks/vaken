@@ -26,6 +26,11 @@ export default class UserController {
   async user_detail(id: string) {
     // TODO: validate id
     console.log(id);
+    const user: User | null = await userModel.findById(id);
+    if (!user) {
+      throw new Error('User not found.');
+    }
+    return user;
   }
 
   // Handle User create on POST.
@@ -39,7 +44,7 @@ export default class UserController {
 
   // Handle User delete on POST.
   async user_delete(id: string) {
-    const user: User = await userModel.deleteOne({ id }).exec();
+    const user: User | null = await userModel.findByIdAndDelete(id).exec();
     if (!user) {
       throw new Error('User not found.');
     }
@@ -49,7 +54,12 @@ export default class UserController {
   // Handle User update on POST.
   async user_update(id: string) {
     console.log(id);
-    // const user: User = await userModel.updateOne({ id }).exec();
-    // return user;
+    /*
+    const user: User = await userModel.findByIdAndUpdate(id).exec();
+    if (!user) {
+      throw new Error('User not found.');
+    }
+    return user;
+    */
   }
 }
