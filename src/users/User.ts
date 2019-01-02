@@ -86,7 +86,7 @@ class Confirmation extends Typegoose {
   essays?: string[];
 }
 
-class UserModel extends Typegoose {
+class User extends Typegoose {
   @prop()
   password?: string;
 
@@ -108,7 +108,7 @@ class UserModel extends Typegoose {
   @prop({ ref: Confirmation })
   confirmation?: Ref<Confirmation>;
 }
-const USER = new UserModel().getModelForClass(UserModel);
+const userModel = new User().getModelForClass(User);
 
 // export default User;
-export { UserModel, USER };
+export { userModel, User };

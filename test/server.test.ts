@@ -35,12 +35,14 @@ const testGET = async (
     expect(response.status).toEqual(status || 200);
     expect(response.type).toEqual(type || 'application/json');
     // convert JSON to string if necessary
-    expect(response.text).toEqual((text instanceof Object) ? JSON.stringify(text) : text);
+    expect(response.text).toEqual(
+      text instanceof Object ? JSON.stringify(text) : text
+    );
     // expect(response.text).toContain("Hello World!");
   });
 };
 
 describe('user route tests', () => {
-  testGET('/api/users/1', {name: 'none'});
+  testGET('/api/users/1', { name: 'none' });
   testGET('/api/users/rr', {});
 });

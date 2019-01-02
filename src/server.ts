@@ -96,7 +96,7 @@ process.on('unhandledRejection', (reason: Error, _: Promise<any>) => {
 });
 process.on('uncaughtException', error => {
   // TODO: should handle error here...
-  console.log('UNCAUGHT EXCEPTION: ', error);
+  console.error('UNCAUGHT EXCEPTION: ', error);
   // process.exit(1);
 });
 

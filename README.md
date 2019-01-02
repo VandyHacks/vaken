@@ -51,7 +51,7 @@ Tech decisions
 
 [TypeScript](https://www.typescriptlang.org/) - like JavaScript, but with types + classes/OOP, so it's more maintainable and creates easier to understand code.
 
-[Koa](https://koajs.com/) - made by the guys that made Express.js, but with async/await and ES7, as well as more modular plugin structure. See [Koa vs Express](https://github.com/koajs/koa/blob/master/docs/koa-vs-express.md).
+[Koa](https://koajs.com/) - made by the guys that made Express.js, but with async/await and ES7, as well as more modular plugin structure. See [Koa vs Express](https://github.com/koajs/koa/blob/master/docs/koa-vs-express.md). Also, it is similar usage-wise to Express, which is why we chose it instead of other frameworks like Hapi, LoopBack, etc.
 
 [MongoDB](https://www.npmjs.com/package/mongodb) - A NoSQL database that is easy to use with JavaScript, due to its ability to basically store JSON (JavaScript objects) directly.
 
@@ -64,6 +64,8 @@ Tech decisions
 [koa-router](https://www.npmjs.com/package/koa-joi-router) - Just gets the job done, nothing fancy. It is possible to use regex for defining routes (see https://github.com/pillarjs/path-to-regexp).
 
 [koa-helmet](https://www.npmjs.com/package/koa-helmet) - Koa's version of [helmet](https://www.npmjs.com/package/helmet), which provides some good server-side security default configurations for web apps.
+
+[koa-jwt](https://www.npmjs.com/package/koa-jwt) - for JWT (username/password) user auth, uses [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) under the hood.
 
 [bunyan-logger](https://github.com/koajs/bunyan-logger) - Koa-specific thin wrapper around [bunyan](https://github.com/trentm/node-bunyan). Logs URL route info on each server request in machine-parseable JSON format.
 
