@@ -93,7 +93,7 @@ class User extends Typegoose {
   @prop({ required: true })
   email: string = '';
 
-  @arrayProp({ items: Object, enum: UserRole, required: true })
+  @arrayProp({ items: String, enum: UserRole, required: true })
   roles: UserRole[] = [];
 
   @prop({ ref: Demographic })
@@ -105,10 +105,13 @@ class User extends Typegoose {
   @prop({ ref: Application })
   application?: Ref<Application>;
 
-  @prop({ ref: Confirmation })
-  confirmation?: Ref<Confirmation>;
+  @prop()
+  confirmation?: Confirmation;
 }
 const userModel = new User().getModelForClass(User);
+const demographicModel = new Demographic().getModelForClass(Demographic);
+const appStatusModel = new AppStatus().getModelForClass(AppStatus);
+const confirmationModel = new Confirmation().getModelForClass(Confirmation);
 
 // export default User;
-export { userModel, User };
+export { userModel, User, demographicModel, appStatusModel, confirmationModel };

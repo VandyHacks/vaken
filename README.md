@@ -5,26 +5,46 @@ Next-gen hacker registration system
 Dev
 ---
 
+#### Setting up a database for testing locally
+First, create a free account at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) and read the [getting-started guide](https://docs.atlas.mongodb.com/getting-started/). This will allow you to set up a database without downloading and installing MongoDB locally.
+
+```bash
+npm run setup # runs setup script
+```
+
+#### Installing dependencies
 ```bash
 npm i -g tsc # install TypeScript globally
 npm i # install all dependencies
+```
 
+#### Running
+```bash
 npm start # start server no autoreload
-npm run dev # start server w/ autoreload
+npm run dev # start server w/ autoreload (recommended for dev)
+```
 
+#### Other commands
+```bash
+npm test # runs tests
 npm run lint # check linting errors
 npm run lint-fix # lints, and autofixes for some rules
+npm run typecheck # runs type checks
+npm run format # autoformats code according to style guide
 ```
 
 Code structure
 ---
+* `/config` - for hackathon-specific config files
 * `/dist` - output of `tsc` build
+* `/docs` - folder to host public website version of documentation
 * `/src` - main server code
     * `/auth` auth helpers
     * `/email` email sending
     * `/events` manage events at hackathon
     * `/settings` admin settings
     * `/stats` admin statistics about users
+    * `/types` - Type declarations stubs for libs that don't officially have them.
     * `/users` code for users
 * `/test` - tests
 

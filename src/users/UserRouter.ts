@@ -3,6 +3,8 @@ import koaRouter from 'koa-router';
 import UserController from './UserController';
 // import { join } from 'path';
 
+// import { check, body, query, param, validationResult} from 'express-validator/check';
+
 const USER = new UserController();
 
 const USER_ROUTER = new koaRouter();

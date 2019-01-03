@@ -1,7 +1,5 @@
 import { User, userModel } from './User';
 
-// import { check, body, query, param, validationResult} from 'express-validator/check';
-
 /**
  * NOTE: Error handling should be done by default error handling in server middleware
  * Do not handle separately in each controller unless you need specific handling behavior
