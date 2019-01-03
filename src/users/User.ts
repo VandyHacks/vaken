@@ -1,11 +1,11 @@
-import { Typegoose, prop, Ref, arrayProp } from 'typegoose';
-/* import bcrypt from 'bcrypt'; */
+import { Typegoose, prop, arrayProp } from 'typegoose';
+// import bcrypt from 'bcrypt';
 
 /**
  * Typegoose's equivalent to Mongoose pre-hook: On user save password, hash password
  */
 /*
-@pre<User>('save', _: Promise<any> : Function => {
+@pre<User>('save', function(next) {
   bcrypt.hash(this.password, 10, function (err: Error, hash: string){
     if (err) {
       return next(err);
@@ -64,7 +64,7 @@ class AppStatus extends Typegoose {
   submitted: boolean = false;
 
   @prop()
-  accepted: boolean = false;
+  admitted: boolean = false;
 
   @prop()
   confirmed: boolean = false;
@@ -96,22 +96,31 @@ class User extends Typegoose {
   @arrayProp({ items: String, enum: UserRole, required: true })
   roles: UserRole[] = [];
 
-  @prop({ ref: Demographic })
-  demographic?: Ref<Demographic>;
+  @prop()
+  demographic?: Demographic;
 
-  @prop({ ref: AppStatus })
-  appStatus?: Ref<AppStatus>;
+  @prop()
+  appStatus?: AppStatus;
 
-  @prop({ ref: Application })
-  application?: Ref<Application>;
+  @prop()
+  application?: Application;
 
   @prop()
   confirmation?: Confirmation;
 }
+
 const userModel = new User().getModelForClass(User);
 const demographicModel = new Demographic().getModelForClass(Demographic);
 const appStatusModel = new AppStatus().getModelForClass(AppStatus);
+const applicationModel = new Application().getModelForClass(Application);
 const confirmationModel = new Confirmation().getModelForClass(Confirmation);
 
 // export default User;
-export { userModel, User, demographicModel, appStatusModel, confirmationModel };
+export {
+  userModel,
+  User,
+  demographicModel,
+  appStatusModel,
+  applicationModel,
+  confirmationModel,
+};
