@@ -1,0 +1,88 @@
+{
+	"contributors": [
+        "Matt Leon <matthew.leon@vanderbilt.edu> (https://mattleon.com)",
+        "Irfaan Khalid <irfaan.khalid@vanderbilt.edu> (https://irfaan.me)",
+        "Felix Tiet <felix.tiet@vanderbilt.edu> (http://ftiet.com)",
+        "Alan Wilms <alan.wilms@vanderbilt.edu>"
+    ],
+	"browserslist": [
+		"> 1% in US",
+		"firefox ESR",
+		"last 2 versions",
+		"not IE > 10",
+		"not dead"
+	],
+	"bugs": {
+		"url": "https://github.com/vu-cs3892-s19/vaken/issues"
+	},
+	"dependencies": {
+		"immer": "^1.9.3",
+		"react": "^16.7.0",
+		"react-dom": "^16.7.0",
+		"react-helmet": "^5.2.0"
+	},
+	"description": "Next-gen hacker registration system",
+	"devDependencies": {
+		"@babel/cli": "^7.2.3",
+		"@babel/core": "^7.2.2",
+		"@babel/plugin-proposal-class-properties": "^7.2.3",
+		"@babel/plugin-proposal-export-namespace-from": "^7.2.0",
+		"@babel/plugin-proposal-object-rest-spread": "^7.2.0",
+		"@babel/plugin-proposal-throw-expressions": "^7.2.0",
+		"@babel/plugin-syntax-dynamic-import": "^7.2.0",
+		"@babel/preset-env": "^7.2.3",
+		"@babel/preset-react": "^7.0.0",
+		"@babel/preset-typescript": "^7.1.0",
+		"@types/react": "^16.7.18",
+		"@types/react-dom": "^16.0.11",
+		"@types/react-helmet": "^5.0.8",
+		"babel-loader": "^8.0.4",
+		"error-overlay-webpack-plugin": "^0.1.5",
+		"eslint": "^5.11.1",
+		"eslint-config-airbnb": "^17.1.0",
+		"eslint-config-prettier": "^3.3.0",
+		"eslint-config-typescript": "^1.1.0",
+		"eslint-import-resolver-webpack": "^0.10.1",
+		"eslint-plugin-import": "^2.14.0",
+		"eslint-plugin-jsx-a11y": "^6.1.2",
+		"eslint-plugin-prettier": "^3.0.1",
+		"eslint-plugin-react": "^7.12.1",
+		"eslint-plugin-typescript": "^0.14.0",
+		"fork-ts-checker-webpack-plugin": "^0.5.2",
+		"friendly-errors-webpack-plugin": "^1.7.0",
+		"html-webpack-plugin": "^3.2.0",
+		"prettier": "^1.15.3",
+		"thread-loader": "^2.1.1",
+		"typescript": "^3.2.2",
+		"typescript-eslint-parser": "^21.0.2",
+		"webpack": "^4.28.3",
+		"webpack-cli": "^3.1.2",
+		"webpack-dev-server": "^3.1.14",
+		"webpack-merge": "^4.1.5"
+	},
+	"homepage": "https://vaken.vandyhacks.org",
+	"keywords": [
+		"hackathon",
+		"immer",
+		"react",
+		"registration",
+		"ts"
+	],
+	"license": "MIT",
+	"main": "index.js",
+	"name": "vaken",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/vu-cs3892-s19/vaken.git"
+	},
+	"scripts": {
+		"build": "webpack --config webpack.prod.js --progress --colors",
+		"format": "prettier --config .prettierrc.json --write \"./**/*.ts(,x)\"",
+		"lint": "eslint -c .eslintrc.json --ext .js,.jsx,.ts,.tsx src/",
+		"lint-fix": "eslint -c .eslintrc.json --fix --ext .js,.jsx,.ts,.tsx src/",
+		"start": "webpack-dev-server --config webpack.dev.js --progress --color",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"typecheck": "tsc -p tsconfig.json --noEmit"
+	},
+	"version": "0.0.1"
+}

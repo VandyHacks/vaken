@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "isolatedModules": true,
+        "jsx": "react",
+        "moduleResolution": "node",
+        "noEmit": true,
+        "resolveJsonModule": true,
+        "strict": true,
+        "target": "esnext"
+    },
+    "include": [
+        "src"
+    ]
+}
