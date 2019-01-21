@@ -1,25 +1,20 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "allowJs": true,
-        "allowSyntheticDefaultImports": true,
-        "esModuleInterop": true,
-        "isolatedModules": true,
-        "jsx": "react",
-        "moduleResolution": "node",
-        "noEmit": true,
-        "resolveJsonModule": true,
-        "strict": true,
-        "target": "esnext",
-        "outDir": "dist",
-        "baseUrl": ".",
-        "paths": {
-            "*": [
-                "node_modules/*"
-            ]
-        }
-    },
-    "include": [
-        "src/**/*"
-    ]
+	"compilerOptions": {
+		"module": "commonjs",
+		"allowJs": true,
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"isolatedModules": true,
+		"jsx": "react",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"strict": true,
+		"target": "es6",
+		"outDir": "dist",
+		"baseUrl": ".",
+		"paths": {
+			"*": ["node_modules/*"]
+		}
+	},
+	"include": ["src/**/*"]
 }
