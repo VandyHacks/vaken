@@ -1,10 +1,10 @@
 {
 	"contributors": [
-        "Matt Leon <matthew.leon@vanderbilt.edu> (https://mattleon.com)",
-        "Irfaan Khalid <irfaan.khalid@vanderbilt.edu> (https://irfaan.me)",
-        "Felix Tiet <felix.tiet@vanderbilt.edu> (http://ftiet.com)",
-        "Alan Wilms <alan.wilms@vanderbilt.edu>"
-    ],
+		"Matt Leon <matthew.leon@vanderbilt.edu> (https://mattleon.com)",
+		"Irfaan Khalid <irfaan.khalid@vanderbilt.edu> (https://irfaan.me)",
+		"Felix Tiet <felix.tiet@vanderbilt.edu> (http://ftiet.com)",
+		"Alan Wilms <alan.wilms@vanderbilt.edu>"
+	],
 	"browserslist": [
 		"> 1% in US",
 		"firefox ESR",
@@ -16,6 +16,7 @@
 		"url": "https://github.com/vu-cs3892-s19/vaken/issues"
 	},
 	"dependencies": {
+		"express": "^4.16.4",
 		"immer": "^1.9.3",
 		"react": "^16.7.0",
 		"react-dom": "^16.7.0",
@@ -33,6 +34,8 @@
 		"@babel/preset-env": "^7.2.3",
 		"@babel/preset-react": "^7.0.0",
 		"@babel/preset-typescript": "^7.1.0",
+		"@types/express": "^4.16.0",
+		"@types/node": "^10.12.18",
 		"@types/react": "^16.7.18",
 		"@types/react-dom": "^16.0.11",
 		"@types/react-helmet": "^5.0.8",
@@ -69,7 +72,7 @@
 		"ts"
 	],
 	"license": "MIT",
-	"main": "index.js",
+	"main": "dist/index.js",
 	"name": "vaken",
 	"repository": {
 		"type": "git",
@@ -77,6 +80,7 @@
 	},
 	"scripts": {
 		"build": "webpack --config webpack.prod.js --progress --colors",
+		"build-ts": "tsc",
 		"format": "prettier --config .prettierrc.json --write \"./**/*.ts(,x)\"",
 		"lint": "eslint -c .eslintrc.json --ext .js,.jsx,.ts,.tsx src/",
 		"lint-fix": "eslint -c .eslintrc.json --fix --ext .js,.jsx,.ts,.tsx src/",
