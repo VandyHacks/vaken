@@ -1,15 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-interface HelloWorldPropsIface {}
-interface HelloWorldStateIface {
+interface Props {}
+interface State {
 	boom: string;
 }
 
-class HelloWorld extends React.Component<
-	HelloWorldPropsIface,
-	HelloWorldStateIface
-> {
+class HelloWorld extends React.Component<Props, State> {
 	public constructor(props: {}) {
 		super(props);
 
