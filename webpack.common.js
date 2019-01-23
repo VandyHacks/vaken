@@ -4,7 +4,7 @@ const path = require('path');
 
 module.exports = {
 	context: __dirname, // to automagically find tsconfig.json
-	entry: './src/index',
+	entry: './src/client/index',
 	output: {
 		path: path.resolve(__dirname, 'dist'),
 		filename: 'app.bundle.js',
@@ -17,7 +17,7 @@ module.exports = {
 			{
 				// Include ts, tsx, js, and jsx files.
 				test: /\.(ts|js)x?$/,
-				exclude: /node_modules/,
+				exclude: [/server/, /node_modules/],
 				use: [
 					{
 						loader: 'thread-loader',
@@ -36,7 +36,7 @@ module.exports = {
 	plugins: [
 		new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }), // Check types asynchronously
 		new HtmlWebpackPlugin({
-			template: './src/index.html',
+			template: './src/client/index.html',
 		}), // For index.html entry point
 	],
 };
