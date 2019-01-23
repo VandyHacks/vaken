@@ -1,14 +1,18 @@
-import express from 'express';
+import koa from "koa";
+import koaRouter from "koa-router";
 
-const app = express();
+const app = new koa();
+const router = new koaRouter();
+
 const port = 8080; // default port to listen
 
 // define a route handler for the default home page
-app.get('/', (req, res) => {
-	res.send('Hello world!');
-});
+router.get( "/", (ctx, next) => {
+    ctx.body = "Hello World!";
+} );
 
-// start the Express server
-app.listen(port, () => {
-	console.log(`server started at http://localhost:${port}`);
-});
+app.use(router.routes());
+
+const server = app.listen(port, () => {
+    console.log( `server started at http://localhost:${ port }` );
+} );
