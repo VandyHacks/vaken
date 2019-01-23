@@ -84,7 +84,7 @@
 	"scripts": {
 		"build": "webpack --config webpack.prod.js --progress --colors",
 		"build-ts": "tsc",
-		"format": "prettier --config .prettierrc.json --write \"./**/*.ts(,x)\"",
+		"format": "prettier --config .prettierrc.json --write \"./**/*.ts*(x)\"",
 		"lint": "eslint -c .eslintrc.json --ext .js,.jsx,.ts,.tsx src/",
 		"lint-fix": "eslint -c .eslintrc.json --fix --ext .js,.jsx,.ts,.tsx src/",
 		"start": "webpack-dev-server --config webpack.dev.js --progress --color",
