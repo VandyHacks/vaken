@@ -31,6 +31,12 @@ module.exports = {
 					},
 				],
 			},
+			{
+				test: /\.(gif|png|jpe?g|svg)$/i,
+				use: [
+					'file-loader'
+				],
+			},
 		],
 	},
 	plugins: [
