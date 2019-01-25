@@ -242,10 +242,10 @@ class PasswordLogin extends Component<PWLoginProps, PWLoginState> {
 		if (emailValid && passValid) {
 			// TODO: Actually log in instead of console.log
 			const res = fetch('/api/login', {
-				body: JSON.stringify({
-					pass: pass,
-					user: email,
-				}),
+				headers: {
+					password: pass,
+					username: email,
+				},
 				method: 'POST',
 			}).then(() => alert('Successfully logged in!'));
 		}
