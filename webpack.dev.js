@@ -11,6 +11,12 @@ module.exports = merge.smart(common, {
 		hot: true, // Enable hot module replacement
 		open: true, // Open browser on 'npm start'
 		quiet: true, // Pretty console output
+		proxy: {
+			'/api': {
+				target: 'http://localhost:8080',
+				pathRewrite: { '^/api': '' },
+			},
+		},
 	},
 	module: {
 		rules: [
