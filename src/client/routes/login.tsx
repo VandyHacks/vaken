@@ -16,10 +16,6 @@ interface ButtonTextProps {
 	color?: string;
 }
 
-interface LoginPageState {
-	passwordLogin: boolean;
-}
-
 const displayFlex = `
 	display: flex;
 	flex-flow: column nowrap;
