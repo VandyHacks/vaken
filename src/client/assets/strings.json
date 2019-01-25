@@ -1,4 +1,6 @@
 {
     "FULL_NAME": "VandyHacks",
-    "DARK_TEXT_COLOR": "#3f3356"
+    "DARK_TEXT_COLOR": "#3f3356",
+    "ACCENT_COLOR": "#6979f8",
+    "LIGHT_TEXT_COLOR": "#D0C9D6"
 }
