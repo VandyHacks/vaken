@@ -1,11 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Route, Link, Switch } from 'react-router-dom';
 import STRINGS from '../assets/strings.json';
 import bg from '../assets/img/login_bg.jpg';
 import googleLogo from '../assets/img/google_logo.svg';
 import githubLogo from '../assets/img/github_logo.svg';
-import '../components/Textbox';
+import TextInput from '../components/TextInput';
 
 interface ButtonTextProps {
 	fontSize?: string;
@@ -97,8 +96,6 @@ const ButtonOutline = styled(Button.withComponent('div'))`
 	justify-content: flex-start;
 	cursor: text;
 `;
-
-
 
 interface OAuthLoginProps {
 	loginBtnFn: () => void;
