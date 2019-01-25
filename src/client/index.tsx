@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import styled, { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import reset from 'styled-reset';
 import LoginPage from './login/login';
 import STRINGS from './assets/strings.json';
 
@@ -12,10 +13,13 @@ const GlobalStyle = createGlobalStyle`
 	body {
 		@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed|Roboto:400,500,700');
 		font-family: 'Roboto', sans-serif;
+
+		${reset}
 		margin: 0;
 		padding: 0;
 		width: 100vw;
 		height: 100vh;
+		font-size: 12px;
 	}
 `;
 
