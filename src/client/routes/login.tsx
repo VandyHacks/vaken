@@ -244,8 +244,14 @@ class PasswordLogin extends Component<PWLoginProps, PWLoginState> {
 		);
 
 		if (emailValid && passValid) {
-			// TODO: API call to log in
-			alert('Successfully logged in!');
+			// TODO: Actually log in instead of console.log
+			const res = fetch('/login', {
+				method: 'POST',
+				body: JSON.stringify({
+					user: email,
+					pass: pass,
+				}),
+			}).then(() => alert('Successfully logged in!'));
 		}
 	};
 
