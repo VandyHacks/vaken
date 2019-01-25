@@ -92,8 +92,8 @@
 		"url": "git+https://github.com/vu-cs3892-s19/vaken.git"
 	},
 	"scripts": {
-		"build": "webpack --config webpack.prod.js --progress --colors",
-		"build-ts": "tsc",
+		"build": "tsc && webpack --config webpack.prod.js --progress --colors",
+		"run-prod": "npm run build && node ./dist/server/index.js",
 		"format": "prettier --config .prettierrc.json --write \"./**/*.ts*(x)\"",
 		"lint": "eslint -c .eslintrc.json --ext .js,.jsx,.ts,.tsx src/",
 		"lint-fix": "eslint -c .eslintrc.json --fix --ext .js,.jsx,.ts,.tsx src/",
