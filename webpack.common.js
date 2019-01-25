@@ -6,7 +6,7 @@ module.exports = {
 	context: __dirname, // to automagically find tsconfig.json
 	entry: './src/client/index',
 	output: {
-		path: path.resolve(__dirname, 'dist'),
+		path: path.resolve(__dirname, 'dist/server/app'),
 		filename: 'app.bundle.js',
 	},
 	resolve: {
