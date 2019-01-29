@@ -80,7 +80,7 @@ const ButtonText = styled.div`
 	${displayFlex}
 	font-family: 'Roboto';
 	font-size: ${(props: ButtonTextProps) => props.fontSize || '1.4rem'};
-	color: ${(props: ButtonTextProps) => props.color || '#3f3356'};
+	color: ${(props: ButtonTextProps) => props.color || STRINGS.DARK_TEXT_COLOR};
 `;
 
 const LoginButton = styled(Button)`
