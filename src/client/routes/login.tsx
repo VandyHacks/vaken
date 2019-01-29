@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent, Component } from 'react';
 import styled from 'styled-components';
 import { Route, Switch, Link } from 'react-router-dom';
 import produce from 'immer';
@@ -133,35 +133,49 @@ const ButtonOutline = styled(Button.withComponent('div'))`
 
 interface OAuthLoginProps {
 	loginBtnFn: () => void;
+	oAuthBtnFn: (provider: string) => void;
 }
 
-const OAuthLogin = (props: OAuthLoginProps): JSX.Element => {
-	const { loginBtnFn } = props;
-	return (
-		<>
-			<Button>
-				<FlexRow /* Edge case of centering icons */>
-					<RightPaddedImg src={'/' + googleLogo} alt="Google logo" />
-				</FlexRow>
-				<ButtonText>Sign in with Google</ButtonText>
-			</Button>
-			<Button>
-				<FlexRow /* Edge case of centering icons */>
-					<RightPaddedImg src={'/' + githubLogo} alt="GitHub logo" />
-				</FlexRow>
-				<ButtonText>Sign in with GitHub</ButtonText>
-			</Button>
-			<Link style={{ textDecoration: 'none' }} to="/login/password">
-				{/* Link tag enables use of back button in browser */}
-				<LoginButton>
-					<ButtonText color="white" fontSize="1.6em">
-						Sign in with email
-					</ButtonText>
-				</LoginButton>
-			</Link>
-		</>
-	);
-};
+class OAuthLogin extends PureComponent<OAuthLoginProps> {
+	public oAuthBtnFn = (provider: string): void => {
+		console.log(provider);
+
+		const res = fetch(`/api/auth/${provider}`, {
+			method: 'GET',
+			mode: 'no-cors',
+		})
+			.then(() => alert(`Successfully used ${provider} oauth to log in!`))
+			.catch(error => console.error(error));
+	};
+
+	// const { loginBtnFn, oAuthBtnFn } = props;
+	public render() {
+		return (
+			<>
+				<Button onClick={() => (window.location.href = '/api/auth/google')}>
+					<FlexRow /* Edge case of centering icons */>
+						<RightPaddedImg src={googleLogo} alt="Google logo" />
+					</FlexRow>
+					<ButtonText>Sign in with Google</ButtonText>
+				</Button>
+				<Button onClick={() => this.oAuthBtnFn('github')}>
+					<FlexRow /* Edge case of centering icons */>
+						<RightPaddedImg src={githubLogo} alt="GitHub logo" />
+					</FlexRow>
+					<ButtonText>Sign in with GitHub</ButtonText>
+				</Button>
+				<Link style={{ textDecoration: 'none' }} to="/login/password">
+					{/* Link tag enables use of back button in browser */}
+					<LoginButton>
+						<ButtonText color="white" fontSize="1.6em">
+							Sign in with email
+						</ButtonText>
+					</LoginButton>
+				</Link>
+			</>
+		);
+	}
+}
 
 interface PWLoginProps {}
 interface PWLoginState {
@@ -224,6 +238,16 @@ class PasswordLogin extends Component<PWLoginProps, PWLoginState> {
 		this.setState({ passValid: valid });
 	};
 
+	// public checkStatus = (response: object) => {
+	//   if (response.status >= 200 && response.status < 300) {
+	//     return response
+	//   } else {
+	//     var error = new Error(response.statusText)
+	//     error.response = response
+	//     throw error
+	//   }
+	// };
+
 	public validateAndSubmit = () => {
 		const { email, pass } = this.state;
 		const emailValid = this.emailValidation(email);
@@ -247,7 +271,9 @@ class PasswordLogin extends Component<PWLoginProps, PWLoginState> {
 					username: email,
 				},
 				method: 'POST',
-			}).then(() => alert('Successfully logged in!'));
+			})
+				.then(() => alert('Successfully logged in!'))
+				.catch(error => console.error(error));
 		}
 	};
 
