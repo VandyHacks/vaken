@@ -1,6 +1,7 @@
 import koa from 'koa';
 import koaRouter from 'koa-router';
 import userRouter from './api/UserRouter';
+import mongoose from 'mongoose';
 
 const app = new koa();
 const router = new koaRouter();
@@ -16,6 +17,15 @@ router.get('/', (ctx, next) => {
 // Add the defined routes to the application
 app.use(router.routes());
 app.use(userRouter.routes());
+
+mongoose.connect('mongodb://localhost:27017/test').then(
+	() => {
+		console.log('>>> MongoDB Connected');
+	},
+	err => {
+		console.log(err);
+	}
+);
 
 // Begin listening on the defined port
 const server = app.listen(port, () => {
