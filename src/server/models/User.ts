@@ -1,7 +1,10 @@
-import { prop, Typegoose, ModelType, InstanceType } from 'typegoose';
+import { prop, arrayProp, Typegoose, ModelType, InstanceType } from 'typegoose';
+
+// Figure out how we want to handle user roles/auth
+// enum UserRole {}
 
 class User extends Typegoose {
-	@prop({ unique: true })
+	@arrayProp({ items: String, unique: true })
 	nfcCodes?: string[];
 
 	@prop()

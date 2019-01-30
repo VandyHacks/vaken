@@ -24,6 +24,7 @@
 		"react": "^16.7.0",
 		"react-dom": "^16.7.0",
 		"react-helmet": "^5.2.0",
+		"reflect-metadata": "^0.1.13",
 		"typegoose": "^5.4.1"
 	},
 	"description": "Next-gen hacker registration system",
