@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import STRINGS from '../assets/strings.json';
+import STRINGS from '../../assets/strings.json';
 
 interface Props {
 	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -25,6 +25,7 @@ const TextInputStyles = styled.input`
 
 	&:focus {
 		outline: none;
+		border: 4px solid red;
 	}
 `;
 

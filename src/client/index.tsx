@@ -3,11 +3,7 @@ import ReactDOM from 'react-dom';
 import { createGlobalStyle } from 'styled-components';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import reset from 'styled-reset';
-import LoginPage from './routes/login';
-import STRINGS from './assets/strings.json';
-
-interface Props {}
-interface State {}
+import LoginPage from './routes/login/login';
 
 const GlobalStyle = createGlobalStyle`
 	body {
