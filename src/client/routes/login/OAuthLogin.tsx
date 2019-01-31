@@ -31,6 +31,7 @@ const OAuthLogin = (): JSX.Element => {
 					fontSize="1.4em"
 					background={STRINGS.ACCENT_COLOR}
 					text="Sign in with email"
+					glowColor="rgba(0, 0, 255, 0.67)"
 				/>
 			</Link>
 		</>

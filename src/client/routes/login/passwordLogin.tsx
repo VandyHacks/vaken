@@ -138,6 +138,7 @@ export default class PasswordLogin extends Component<Props, State> {
 						fontSize="1.4em"
 						background={STRINGS.ACCENT_COLOR}
 						text="Login"
+						glowColor="rgba(0, 0, 255, 0.67)"
 					/>
 					<TextLink to="/login">Forgot Username / Password?</TextLink>
 					<FlexRow>
