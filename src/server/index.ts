@@ -1,19 +1,18 @@
 import koa from 'koa';
 import koaRouter from 'koa-router';
 import serve from 'koa-static';
-import userRouter from './api/UserRouter';
 import mongoose from 'mongoose';
-import { userModel } from './models/User';
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { fetch } from 'cross-fetch';
 import gql from 'graphql-tag';
 import { Profile } from 'passport-google-oauth';
-
-const passport = require('koa-passport');
-const session = require('koa-session');
-const bodyParser = require('koa-bodyparser');
+import passport from 'koa-passport';
+import session from 'koa-session';
+import bodyParser from 'koa-bodyparser';
+import { userModel } from './models/User';
+import userRouter from './api/UserRouter';
 // const cors = require('@koa/cors');
 
 const app = new koa();
@@ -22,16 +21,14 @@ const router = new koaRouter();
 // Default port to listen
 const port = 8080;
 
-const app = new koa();
-const router = new koaRouter();
 const client = new ApolloClient({
-	ssrMode: true,
+	cache: new InMemoryCache(),
 	link: new HttpLink({
 		// https://www.apollographql.com/docs/react/essentials/get-started.html
-		uri: 'https://48p1r2roz4.sse.codesandbox.io',
 		fetch,
+		uri: 'https://48p1r2roz4.sse.codesandbox.io',
 	}),
-	cache: new InMemoryCache(),
+	ssrMode: true,
 });
 
 // Define a route handler for the default home page
@@ -115,9 +112,9 @@ const passportFunc = (
 passport.use(
 	new GoogleStrategy(
 		{
+			callbackURL: 'http://localhost:' + (process.env.PORT || 8080) + '/api/auth/google/callback',
 			clientID: '618083589547-ml4cn37revrqicla2v54unetvs4fmamb.apps.googleusercontent.com',
 			clientSecret: 'MZA4cxy9COavEP6iPhW_SesL',
-			callbackURL: 'http://localhost:' + (process.env.PORT || 8081) + '/api/auth/google/callback',
 			passReqToCallback: true,
 		},
 		passportFunc
