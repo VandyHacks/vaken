@@ -9,19 +9,20 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { fetch } from 'cross-fetch';
 import gql from 'graphql-tag';
 
+// Default port to listen
+const port = 8080;
+
 const app = new koa();
 const router = new koaRouter();
 const client = new ApolloClient({
 	ssrMode: true,
 	link: new HttpLink({
-		uri: '/graphql',
+		// https://www.apollographql.com/docs/react/essentials/get-started.html
+		uri: 'https://48p1r2roz4.sse.codesandbox.io',
 		fetch,
 	}),
 	cache: new InMemoryCache(),
 });
-
-// Default port to listen
-const port = 8080;
 
 // Define a route handler for the default home page
 router.get('/', (ctx, next) => {
@@ -47,7 +48,15 @@ client
 			}
 		`,
 	})
-	.then(result => console.log(result));
+	.then(
+		result => {
+			// console.log(result);
+			console.log('GraphQL test: successful');
+		},
+		err => {
+			console.log(err);
+		}
+	);
 
 // Add the defined routes to the application
 app.use(router.routes());
