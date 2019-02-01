@@ -3,11 +3,22 @@ import koaRouter from 'koa-router';
 import userRouter from './api/UserRouter';
 import mongoose from 'mongoose';
 import { userModel } from './models/User';
-import ApolloClient from 'apollo-boost';
+import { ApolloClient } from 'apollo-client';
+import { HttpLink } from 'apollo-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { fetch } from 'cross-fetch';
+import gql from 'graphql-tag';
 
 const app = new koa();
 const router = new koaRouter();
-const client = new ApolloClient({}); // defaults to /graphql endpoint
+const client = new ApolloClient({
+	ssrMode: true,
+	link: new HttpLink({
+		uri: '/graphql',
+		fetch,
+	}),
+	cache: new InMemoryCache(),
+});
 
 // Default port to listen
 const port = 8080;
@@ -24,6 +35,19 @@ router.post('/mongo', async (ctx, next) => {
 	const user = await userModel.findOne({ firstName: 'vandy' });
 	console.log(user);
 });
+
+// GraphQL test
+client
+	.query({
+		query: gql`
+			{
+				rates(currency: "USD") {
+					currency
+				}
+			}
+		`,
+	})
+	.then(result => console.log(result));
 
 // Add the defined routes to the application
 app.use(router.routes());

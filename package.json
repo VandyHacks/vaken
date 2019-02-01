@@ -16,9 +16,8 @@
 		"url": "https://github.com/vu-cs3892-s19/vaken/issues"
 	},
 	"dependencies": {
-		"@types/graphql": "^14.0.5",
-		"@types/node-fetch": "^2.1.4",
 		"apollo-boost": "^0.1.27",
+		"cross-fetch": "^3.0.0",
 		"graphql": "^14.1.1",
 		"graphql-tag": "^2.10.1",
 		"immer": "^1.9.3",
@@ -26,7 +25,6 @@
 		"koa-router": "^7.4.0",
 		"mongoose": "^5.4.8",
 		"net": "^1.0.2",
-		"node-fetch": "^2.3.0",
 		"react": "^16.7.0",
 		"react-apollo": "^2.4.1",
 		"react-dom": "^16.7.0",
@@ -53,6 +51,7 @@
 		"@types/react": "^16.7.18",
 		"@types/react-dom": "^16.0.11",
 		"@types/react-helmet": "^5.0.8",
+		"@types/graphql": "^14.0.5",
 		"babel-loader": "^8.0.4",
 		"error-overlay-webpack-plugin": "^0.1.5",
 		"eslint": "^5.11.1",
