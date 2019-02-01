@@ -3,9 +3,11 @@ import koaRouter from 'koa-router';
 import userRouter from './api/UserRouter';
 import mongoose from 'mongoose';
 import { userModel } from './models/User';
+import ApolloClient from 'apollo-boost';
 
 const app = new koa();
 const router = new koaRouter();
+const client = new ApolloClient({}); // defaults to /graphql endpoint
 
 // Default port to listen
 const port = 8080;
