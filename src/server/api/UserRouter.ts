@@ -1,7 +1,9 @@
+import koa from 'koa';
 import koaRouter from 'koa-router';
 import { Context } from 'koa';
 
 const passport = require('koa-passport');
+
 const userRouter = new koaRouter();
 const Koa = require('koa');
 
@@ -22,16 +24,12 @@ userRouter.get(
 	}
 );
 
-userRouter.get(
-	'/api/auth/google/callback',
-	passport.authenticate(
-		'google',
-		{ successRedirect: '/dashboard', failureRedirect: '/login' },
-		(err: any, user: any, info: any, status: any) => {
-			console.log('name: ' + user.name);
-		}
-	)
-);
+userRouter.get('/api/auth/google/callback', async ctx => {
+	return passport.authenticate('google', (err: any, user: any, info: any, status: any) => {
+		ctx.redirect('/');
+		console.log(ctx, err, user, info, status);
+	})(ctx);
+});
 
 // (ctx: Context, next: any)
 

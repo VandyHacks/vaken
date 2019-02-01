@@ -78,7 +78,7 @@ mongoose.connect('mongodb://localhost:27017/test').then(
 		console.log('>>> MongoDB Connected');
 	},
 	err => {
-		console.log(err);
+		console.log('err:', err);
 	}
 );
 
@@ -112,7 +112,7 @@ const passportFunc = (
 passport.use(
 	new GoogleStrategy(
 		{
-			callbackURL: 'http://localhost:' + (process.env.PORT || 8080) + '/api/auth/google/callback',
+			callbackURL: '/api/auth/google/callback',
 			clientID: '618083589547-ml4cn37revrqicla2v54unetvs4fmamb.apps.googleusercontent.com',
 			clientSecret: 'MZA4cxy9COavEP6iPhW_SesL',
 			passReqToCallback: true,
