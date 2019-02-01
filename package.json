@@ -90,10 +90,12 @@
 		"friendly-errors-webpack-plugin": "^1.7.0",
 		"html-webpack-plugin": "^3.2.0",
 		"image-webpack-loader": "^4.6.0",
+		"nodemon": "^1.18.9",
 		"passport-google-oauth2": "^0.1.6",
 		"prettier": "^1.15.3",
 		"svg-inline-loader": "^0.8.0",
 		"thread-loader": "^2.1.1",
+		"ts-node": "^8.0.2",
 		"typescript": "^3.2.2",
 		"typescript-eslint-parser": "^21.0.2",
 		"webpack": "^4.28.3",
@@ -117,6 +119,8 @@
 		"url": "git+https://github.com/vu-cs3892-s19/vaken.git"
 	},
 	"scripts": {
+		"start-server": "ts-node src/server/index.ts",
+		"dev-server": "./node_modules/nodemon/bin/nodemon.js",
 		"build": "tsc && webpack --config webpack.prod.js --progress --colors",
 		"prod": "npm run build && node ./dist/server/index.js",
 		"format": "prettier --config .prettierrc.json --write \"./**/*.ts*(x)\"",

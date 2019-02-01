@@ -11,6 +11,7 @@ module.exports = merge.smart(common, {
 		hot: true, // Enable hot module replacement
 		open: true, // Open browser on 'npm start'
 		quiet: true, // Pretty console output
+		port: 8081,
 		proxy: {
 			'/api': {
 				target: 'http://localhost:8080',
