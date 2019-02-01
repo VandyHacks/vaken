@@ -6,7 +6,7 @@ module.exports = {
 	context: __dirname, // to automagically find tsconfig.json
 	entry: './src/client/index',
 	output: {
-		path: path.resolve(__dirname, 'dist'),
+		path: path.resolve(__dirname, 'dist/server/app'),
 		filename: 'app.bundle.js',
 	},
 	resolve: {
@@ -22,7 +22,7 @@ module.exports = {
 					{
 						loader: 'thread-loader',
 						options: {
-							poolTimeout: Infinity, // set this to Infinity in watch mode - see https://github.com/webpack-contrib/thread-loader
+							// poolTimeout: Infinity, // set this to Infinity in watch mode - see https://github.com/webpack-contrib/thread-loader
 							workers: require('os').cpus().length - 1, // Leave 1 worker for fork-ts-checker
 						},
 					},
@@ -30,6 +30,10 @@ module.exports = {
 						loader: 'babel-loader',
 					},
 				],
+			},
+			{
+				test: /\.(gif|png|jpe?g|svg)$/i,
+				use: ['file-loader'],
 			},
 		],
 	},

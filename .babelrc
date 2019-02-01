@@ -9,6 +9,7 @@
         "@babel/proposal-object-rest-spread",
         "@babel/proposal-export-namespace-from",
         "@babel/proposal-throw-expressions",
-        "@babel/syntax-dynamic-import"
+        "@babel/syntax-dynamic-import",
+        "babel-plugin-styled-components"
     ]
 }

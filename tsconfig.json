@@ -33,5 +33,5 @@
 			"*": ["node_modules/*"]
 		}
 	},
-	"include": ["src/server/**/*"]
+	"include": ["src/**/*"],
 }
