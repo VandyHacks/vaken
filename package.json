@@ -16,12 +16,15 @@
 		"url": "https://github.com/vu-cs3892-s19/vaken/issues"
 	},
 	"dependencies": {
+		"apollo-boost": "^0.1.27",
+		"graphql": "^14.1.1",
 		"immer": "^1.9.3",
 		"koa": "^2.6.2",
 		"koa-router": "^7.4.0",
 		"mongoose": "^5.4.8",
 		"net": "^1.0.2",
 		"react": "^16.7.0",
+		"react-apollo": "^2.4.1",
 		"react-dom": "^16.7.0",
 		"react-helmet": "^5.2.0",
 		"reflect-metadata": "^0.1.13",
