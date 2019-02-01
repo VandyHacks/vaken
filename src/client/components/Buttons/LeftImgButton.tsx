@@ -1,8 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Button, RightPaddedImg, ButtonText } from './Buttons';
 import { FlexRow } from '../Containers/FlexContainers';
-import STRINGS from '../../assets/strings.json';
 
 interface Props {
 	img: string;
