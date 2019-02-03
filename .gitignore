@@ -244,6 +244,10 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Node output
+dist/
+
 # End of https://www.gitignore.io/api/node,linux,macos,windows,jetbrains+all,visualstudiocode
 
 package-lock.json
+dist
