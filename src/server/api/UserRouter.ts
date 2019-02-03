@@ -1,14 +1,20 @@
-import koa from 'koa';
 import koaRouter from 'koa-router';
+import { userModel } from '../models/User';
 import { Context } from 'koa';
 
 const passport = require('koa-passport');
-
 const userRouter = new koaRouter();
-const Koa = require('koa');
 
 // const app = new Koa();
 // app.use(passport.initialize());
+
+// Mongo test
+userRouter.post('/mongo', async (ctx, next) => {
+	const newUser = new userModel(ctx.request.query);
+	await newUser.save();
+	const user = await userModel.findOne({ firstName: 'vandy' });
+	console.log(user);
+});
 
 userRouter.post('/api/login', async ctx => {
 	// Dummy logging for now; TODO - flesh out this functionality
