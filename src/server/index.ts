@@ -44,6 +44,7 @@ app.use(bodyParser());
 app.keys = ['secretsauce'];
 
 // Authentication using Passport
+require('dotenv').config();
 require('./auth');
 app.use(passport.initialize());
 app.use(passport.session());
