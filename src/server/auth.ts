@@ -1,5 +1,6 @@
 import passport from 'koa-passport';
-import { Profile } from 'passport-google-oauth';
+import { Profile as GoogleProfile } from 'passport-google-oauth';
+import { Profile as GithubProfile } from 'passport-github';
 
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 passport.use(
@@ -13,7 +14,7 @@ passport.use(
 		async (
 			accessToken: string,
 			refreshToken: string,
-			profile: Profile,
+			profile: GoogleProfile,
 			done: (error: any, user?: any) => void
 		) => {
 			console.log('> Google verify function');
@@ -48,7 +49,7 @@ passport.use(
 		async (
 			accessToken: string,
 			refreshToken: string,
-			profile: Profile,
+			profile: GithubProfile,
 			done: (error: any, user?: any) => void
 		) => {
 			console.log('> Github verify function');
