@@ -26,7 +26,7 @@ userRouter.get(
 	'/api/auth/google',
 	passport.authenticate('google', { scope: ['profile'], display: 'popup' }),
 	ctx => {
-		console.log('inside /api/auth/google ');
+		console.log('inside /api/auth/google');
 	}
 );
 
@@ -51,6 +51,17 @@ userRouter.get('/api/auth/google/callback', async ctx => {
 //   .get('/', (ctx, next) => {
 //     ctx.body = 'Hello World!';
 //   })
+
+userRouter.get('/api/auth/github', passport.authenticate('github'), ctx => {
+	console.log('inside /api/auth/github');
+});
+
+userRouter.get('/api/auth/github/callback', async ctx => {
+	return passport.authenticate('github', (err: any, user: any, info: any, status: any) => {
+		ctx.redirect('/');
+		console.log(ctx, err, user, info, status);
+	})(ctx);
+});
 
 // app.use(userRouter.routes()).use(userRouter.allowedMethods());
 export default userRouter;

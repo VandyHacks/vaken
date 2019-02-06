@@ -34,6 +34,7 @@
 		"koa-static": "^5.0.0",
 		"mongoose": "^5.4.8",
 		"net": "^1.0.2",
+		"passport-github": "^1.1.0",
 		"passport-google-oauth": "^1.0.0",
 		"passport-google-oauth20": "^1.0.0",
 		"react": "^16.7.0",

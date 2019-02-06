@@ -2,32 +2,6 @@ import passport from 'koa-passport';
 import { Profile } from 'passport-google-oauth';
 
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-
-const passportFunc = (
-	req: Request,
-	accessToken: string,
-	refreshToken: string,
-	profile: Profile,
-	done: (error: any, user?: any) => void
-) => {
-	console.log('reaching verify function');
-	console.log(
-		'accessToken: ',
-		accessToken,
-		'\n\nrefreshToken:',
-		refreshToken,
-		'\n\nProfile:',
-		profile,
-		'\n\ndone:',
-		done
-	);
-	// const user = { id: 1, username: 'test', password: 'test' };
-	// return async function() {
-	// 	return user;
-	// };
-	return done(null, profile);
-};
-
 passport.use(
 	new GoogleStrategy(
 		{
@@ -36,7 +10,60 @@ passport.use(
 			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
 			passReqToCallback: true,
 		},
-		passportFunc
+		async (
+			accessToken: string,
+			refreshToken: string,
+			profile: Profile,
+			done: (error: any, user?: any) => void
+		) => {
+			console.log('> Google verify function');
+			console.log(
+				'accessToken: ',
+				accessToken,
+				'\n\nrefreshToken:',
+				refreshToken,
+				'\n\nProfile:',
+				profile,
+				'\n\ndone:',
+				done
+			);
+			// const user = { id: 1, username: 'test', password: 'test' };
+			// return async function() {
+			// 	return user;
+			// };
+			return done(null, profile);
+		}
+	)
+);
+
+const GitHubStrategy = require('passport-github').Strategy;
+passport.use(
+	new GitHubStrategy(
+		{
+			callbackURL: 'http://localhost:8080/api/auth/github/callback',
+			clientID: process.env.GITHUB_CLIENT_ID,
+			clientSecret: process.env.GITHUB_CLIENT_SECRET,
+			passReqToCallback: true,
+		},
+		async (
+			accessToken: string,
+			refreshToken: string,
+			profile: Profile,
+			done: (error: any, user?: any) => void
+		) => {
+			console.log('> Github verify function');
+			console.log(
+				'accessToken: ',
+				accessToken,
+				'\n\nrefreshToken:',
+				refreshToken,
+				'\n\nProfile:',
+				profile,
+				'\n\ndone:',
+				done
+			);
+			return done(null, profile);
+		}
 	)
 );
 
