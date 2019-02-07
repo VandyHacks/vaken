@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React from 'react';
-import { Button, ButtonText } from './Buttons';
+import { Button, CenterButtonText } from './Buttons';
 
 interface Props {
 	background?: string;
@@ -34,7 +34,7 @@ const TextButton = (props: Props): JSX.Element => {
 
 	return (
 		<StyledLoginBtn {...props}>
-			<ButtonText {...props}>{text}</ButtonText>
+			<CenterButtonText {...props}>{text}</CenterButtonText>
 		</StyledLoginBtn>
 	);
 };
