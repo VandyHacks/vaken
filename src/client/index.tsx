@@ -26,8 +26,8 @@ const Vaken = (): JSX.Element => {
 			<GlobalStyle />
 			<BrowserRouter>
 				<Switch>
-					<Route path="/" component={LoginPage} />
 					<Route path="/dashboard" component={Dashboard} />
+					<Route path="/" component={LoginPage} />
 				</Switch>
 			</BrowserRouter>
 		</>

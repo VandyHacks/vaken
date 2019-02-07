@@ -21,6 +21,9 @@ export const StyledLoginBtn = styled(Button)`
 	margin-top: 1.6rem;
 	margin-bottom: 0.5rem;
 	color: ${(props: StyleProps) => props.background || 'black'};
+	flex-shrink: 0;
+	font-family: 'Roboto';
+	font-size: 1rem;
 
 	&:hover,
 	&:focus {

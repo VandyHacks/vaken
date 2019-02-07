@@ -36,6 +36,12 @@ const HorizontalLine = styled.hr`
 	color: white;
 `;
 
+const HorizontalLineWithoutPad = styled.hr`
+	margin: 0 2rem;
+	width: calc(100% - 4rem);
+	color: rgba(2);
+`;
+
 const NavButtonWhiteText = styled(NavButton)`
 	color: white;
 	font-weight: 100;
@@ -65,9 +71,10 @@ const Sidebar = withRouter(
 					<Logo src={'/' + sqLogo} alt={STRINGS.SQUARE_LOGO_ALT_TEXT} />
 					<HorizontalLine />
 					<FlexStartColumn>
-						<NavLink to="/dashboard">
+						<NavLink to="/dashboard" activeStyle={{}}>
 							<NavButtonWhiteText text="Dashboard" />
 						</NavLink>
+						<HorizontalLineWithoutPad />
 						<NavLink to="/profile">
 							<NavButtonWhiteText text="Profile" />
 						</NavLink>
@@ -81,7 +88,7 @@ const Sidebar = withRouter(
 							<NavButtonWhiteText text="Help" />
 						</NavLink>
 					</FlexStartColumn>
-					<FlexEndColumn>
+					<FlexEndColumn paddingBottom="1rem">
 						<NavLink to="/logout">
 							<NavButtonWhiteText text="Logout" />
 						</NavLink>
