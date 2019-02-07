@@ -5,7 +5,7 @@ import lockIcon from '../../assets/img/lock_icon.svg';
 import arrowIcon from '../../assets/img/right_arrow.svg';
 import TextButton from '../../components/Buttons/TextButton';
 import { LeftPaddedImg } from '../../components/Buttons/Buttons';
-import { FlexStartContainer, FlexRow } from '../../components/Containers/FlexContainers';
+import { FlexRow, SpaceBetweenColumn } from '../../components/Containers/FlexContainers';
 import TextLink from '../../components/Text/TextLink';
 import STRINGS from '../../assets/strings.json';
 import LeftImgTextInput from '../../components/Input/LeftImgTextInput';
@@ -132,7 +132,7 @@ export default class PasswordLogin extends Component<Props, State> {
 					value={pass}
 					placeholder="Password"
 				/>
-				<FlexStartContainer>
+				<SpaceBetweenColumn height="10rem">
 					<TextButton
 						color="white"
 						fontSize="1.4em"
@@ -147,7 +147,7 @@ export default class PasswordLogin extends Component<Props, State> {
 						</TextLink>
 						<LeftPaddedImg src={'/' + arrowIcon} alt="Right Arrow" />
 					</FlexRow>
-				</FlexStartContainer>
+				</SpaceBetweenColumn>
 			</>
 		);
 	}
