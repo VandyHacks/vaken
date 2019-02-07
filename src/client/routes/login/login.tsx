@@ -12,7 +12,7 @@ const LoginPage = (): JSX.Element => {
 	return (
 		<>
 			<Background img={bg}>
-				<FloatingPopup>
+				<FloatingPopup height="28rem" width="30rem" opacity={0.9}>
 					<Title color={STRINGS.DARK_TEXT_COLOR}>{STRINGS.FULL_NAME}</Title>
 					<Switch>
 						<Route path="/login/password" component={PasswordLogin} />

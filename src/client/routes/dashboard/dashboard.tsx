@@ -1,4 +1,7 @@
 import React from 'react';
+import { Route, Switch } from 'react-router-dom';
+import { Bar } from 'react-chartjs-2';
+import FloatingPopup from '../../components/Containers/FloatingPopup';
 import styled from 'styled-components';
 import Sidebar from '../../components/Sidebar/Sidebar';
 
@@ -6,6 +9,7 @@ const Layout = styled.div`
 	height: 100vh;
 	width: 100vw;
 	display: grid;
+	grid-gap: 2rem;
 	grid:
 		'sidebar header' 10vh
 		'sidebar content' 1fr
@@ -13,10 +17,59 @@ const Layout = styled.div`
 `;
 
 const Dashboard = (): JSX.Element => {
+	let statusData = {
+		labels: ['Verified', 'Started', 'Submitted', 'Accepted', 'Confirmed', 'Rejected'],
+		datasets: [
+			{
+				data: [22, 43, 230, 176, 89, 3],
+				backgroundColor: [
+					'rgba(219, 165, 245, 1)',
+					'rgba(255, 199, 166, 1)',
+					'rgba(255, 226, 157, 1)',
+					'rgba(125, 223, 195, 1)',
+					'rgba(165, 175, 251, 1)',
+					'rgba(253, 175, 187, 1)',
+				],
+			},
+		],
+	};
+
 	return (
 		<>
 			<Layout>
 				<Sidebar />
+				<FloatingPopup height="60rem" width="56rem" opacity={1} gridArea="content">
+					<Bar
+						data={statusData}
+						options={{
+							title: {
+								display: true,
+								text: 'Number of Applicants',
+								fontSize: 24,
+							},
+							legend: {
+								display: false,
+							},
+							maintainAspectRatio: true,
+							showLines: true,
+							tooltips: {
+								enabled: true,
+							},
+							scales: {
+								xAxes: [
+									{
+										ticks: {
+											fontSize: 20,
+										},
+									},
+								],
+							},
+							hover: {
+								mode: undefined,
+							},
+						}}
+					/>
+				</FloatingPopup>
 			</Layout>
 		</>
 	);
