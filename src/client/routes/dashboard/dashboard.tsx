@@ -42,19 +42,13 @@ const Dashboard = (): JSX.Element => {
 					<Bar
 						data={statusData}
 						options={{
-							title: {
-								display: true,
-								text: 'Number of Applicants',
-								fontSize: 24,
+							hover: {
+								mode: undefined,
 							},
 							legend: {
 								display: false,
 							},
 							maintainAspectRatio: true,
-							showLines: true,
-							tooltips: {
-								enabled: true,
-							},
 							scales: {
 								xAxes: [
 									{
@@ -64,8 +58,14 @@ const Dashboard = (): JSX.Element => {
 									},
 								],
 							},
-							hover: {
-								mode: undefined,
+							showLines: true,
+							title: {
+								display: true,
+								fontSize: 24,
+								text: 'Number of Applicants',
+							},
+							tooltips: {
+								enabled: true,
 							},
 						}}
 					/>
