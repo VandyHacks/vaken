@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { createGlobalStyle } from 'styled-components';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import reset from 'styled-reset';
-import LoginPage from './routes/login/login';
+import LoginPage from './routes/login/Login';
 import Dashboard from './routes/dashboard/Dashboard';
 
 const GlobalStyle = createGlobalStyle`
