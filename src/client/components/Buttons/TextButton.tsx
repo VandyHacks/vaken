@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React from 'react';
-import { Button, ButtonText } from './Buttons';
+import { Button, CenterButtonText } from './Buttons';
 
 interface Props {
 	background?: string;
@@ -21,6 +21,9 @@ export const StyledLoginBtn = styled(Button)`
 	margin-top: 1.6rem;
 	margin-bottom: 0.5rem;
 	color: ${(props: StyleProps) => props.background || 'black'};
+	flex-shrink: 0;
+	font-family: 'Roboto';
+	font-size: 1rem;
 
 	&:hover,
 	&:focus {
@@ -34,7 +37,7 @@ const TextButton = (props: Props): JSX.Element => {
 
 	return (
 		<StyledLoginBtn {...props}>
-			<ButtonText {...props}>{text}</ButtonText>
+			<CenterButtonText {...props}>{text}</CenterButtonText>
 		</StyledLoginBtn>
 	);
 };

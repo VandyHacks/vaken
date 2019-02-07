@@ -73,7 +73,7 @@ client
 app.use(router.routes());
 app.use(userRouter.routes());
 
-mongoose.connect('mongodb://localhost:27017/test').then(
+mongoose.connect('mongodb://localhost:32769/test').then(
 	() => {
 		console.log('>>> MongoDB Connected');
 	},
