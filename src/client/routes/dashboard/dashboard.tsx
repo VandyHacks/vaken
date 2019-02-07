@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Bar } from 'react-chartjs-2';
-import FloatingPopup from '../../components/Containers/FloatingPopup';
 import styled from 'styled-components';
+import FloatingPopup from '../../components/Containers/FloatingPopup';
 import Sidebar from '../../components/Sidebar/Sidebar';
 
 const Layout = styled.div`
@@ -18,10 +18,8 @@ const Layout = styled.div`
 
 const Dashboard = (): JSX.Element => {
 	let statusData = {
-		labels: ['Verified', 'Started', 'Submitted', 'Accepted', 'Confirmed', 'Rejected'],
 		datasets: [
 			{
-				data: [22, 43, 230, 176, 89, 3],
 				backgroundColor: [
 					'rgba(219, 165, 245, 1)',
 					'rgba(255, 199, 166, 1)',
@@ -30,8 +28,10 @@ const Dashboard = (): JSX.Element => {
 					'rgba(165, 175, 251, 1)',
 					'rgba(253, 175, 187, 1)',
 				],
+				data: [22, 43, 230, 176, 89, 3],
 			},
 		],
+		labels: ['Verified', 'Started', 'Submitted', 'Accepted', 'Confirmed', 'Rejected'],
 	};
 
 	return (
