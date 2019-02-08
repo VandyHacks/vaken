@@ -62,40 +62,40 @@ passport.use(
 			passReqToCallback: true,
 		},
 		async (
+			req: any,
 			accessToken: string,
 			refreshToken: string,
 			profile: GithubProfile,
-			done: (error: any, user?: any) => void
+			done: any
 		) => {
-			console.log(done);
 			console.log('> Github verify function');
-			console.log(profile);
-			// const user = await userModel.findOne({ github: profile.id });
+			// console.log(profile);
+			const user = await userModel.findOne({ github: profile.id });
 
-			// // found user
-			// if (user) {
-			// 	console.log('> Logging in.....');
-			// 	done(null, user);
-			// } else {
-			// 	//no user found, create new user
-			// 	if (profile.emails) {
-			// 		console.log('> Creating user.....');
-			// 		const newUser = {
-			// 			github: profile.id,
-			// 			email: profile.emails[0].value,
-			// 		};
-			// 		const createdUser = await userModel.create(newUser);
-			// 		if (createdUser) {
-			// 			console.log(createdUser);
-			// 			done(null, createdUser);
-			// 		} else {
-			// 			done(null, false);
-			// 		}
-			// 	} else {
-			// 		console.log('Missing email');
-			// 		done(null, false);
-			// 	}
-			// }
+			// found user
+			if (user) {
+				console.log('> Logging in.....');
+				done(null, user);
+			} else {
+				//no user found, create new user
+				if (profile.emails) {
+					console.log('> Creating user.....');
+					const newUser = {
+						github: profile.id,
+						email: profile.emails[0].value,
+					};
+					const createdUser = await userModel.create(newUser);
+					if (createdUser) {
+						console.log(createdUser);
+						done(null, createdUser);
+					} else {
+						done(null, false);
+					}
+				} else {
+					console.log('Missing email');
+					done(null, false);
+				}
+			}
 		}
 	)
 );
