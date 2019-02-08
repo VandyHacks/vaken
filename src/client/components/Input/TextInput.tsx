@@ -25,7 +25,7 @@ const TextInputStyles = styled.input`
 
 	&:focus {
 		outline: none;
-		border: 4px solid red;
+		border: none;
 	}
 `;
 
