@@ -1,12 +1,8 @@
 import koaRouter from 'koa-router';
 import { userModel } from '../models/User';
-import { Context } from 'koa';
 
 const passport = require('koa-passport');
 const userRouter = new koaRouter();
-
-// const app = new Koa();
-// app.use(passport.initialize());
 
 // Mongo test
 userRouter.post('/mongo', async (ctx, next) => {
@@ -24,7 +20,7 @@ userRouter.post('/api/login', async ctx => {
 
 userRouter.get(
 	'/api/auth/google',
-	passport.authenticate('google', { scope: ['profile'], display: 'popup' }),
+	passport.authenticate('google', { scope: ['openid', 'profile', 'email'], display: 'popup' }),
 	ctx => {
 		console.log('inside /api/auth/google');
 	}
@@ -33,28 +29,19 @@ userRouter.get(
 userRouter.get('/api/auth/google/callback', async ctx => {
 	return passport.authenticate('google', (err: any, user: any, info: any, status: any) => {
 		ctx.redirect('/');
-		console.log(ctx, err, user, info, status);
+		// console.log(ctx);
+		console.log('> User:');
+		console.log(user);
 	})(ctx);
 });
 
-// (ctx: Context, next: any)
-
-// (ctx: any) => {
-// 	console.log('inside /api/auth/google/callback');
-// 	const user = {
-// 		name: ctx.params.user.displayName,
-// 	};
-// 	console.log('name: ' + user.name);
-// })
-
-// userRouter
-//   .get('/', (ctx, next) => {
-//     ctx.body = 'Hello World!';
-//   })
-
-userRouter.get('/api/auth/github', passport.authenticate('github'), ctx => {
-	console.log('inside /api/auth/github');
-});
+userRouter.get(
+	'/api/auth/github',
+	passport.authenticate('github', { scope: ['read:user', 'user:email'] }),
+	ctx => {
+		console.log('inside /api/auth/github');
+	}
+);
 
 userRouter.get('/api/auth/github/callback', async ctx => {
 	return passport.authenticate('github', (err: any, user: any, info: any, status: any) => {
