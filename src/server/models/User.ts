@@ -16,6 +16,12 @@ class User extends Typegoose {
 	@prop({ required: true })
 	email: string = '';
 
+	@prop({ unique: true })
+	google?: string;
+
+	@prop({ unique: true })
+	github?: string;
+
 	@prop()
 	phoneNumber?: string;
 

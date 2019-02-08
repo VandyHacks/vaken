@@ -1,6 +1,7 @@
 import passport from 'koa-passport';
 import { Profile as GoogleProfile } from 'passport-google-oauth';
-import { Profile as GithubProfile } from 'passport-github';
+import { Profile as GithubProfile } from 'passport-github2';
+import { userModel } from './models/User';
 
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
@@ -13,33 +14,45 @@ passport.use(
 			passReqToCallback: true,
 		},
 		async (
+			req: any,
 			accessToken: string,
 			refreshToken: string,
 			profile: GoogleProfile,
-			done: (error: any, user?: any) => void
+			done: any
 		) => {
 			console.log('> Google verify function');
-			console.log(
-				'accessToken: ',
-				accessToken,
-				'\n\nrefreshToken:',
-				refreshToken,
-				'\n\nProfile:',
-				profile,
-				'\n\ndone:',
-				done
-			);
-			// const user = { id: 1, username: 'test', password: 'test' };
-			// return async function() {
-			// 	return user;
-			// };
-			return done(null, profile);
+			// console.log(profile);
+			const user = await userModel.findOne({ google: profile.id });
+
+			// found user
+			if (user) {
+				console.log('> Logging in.....');
+				done(null, user);
+			} else {
+				//no user found, create new user
+				if (profile.emails) {
+					console.log('> Creating user.....');
+					const newUser = {
+						google: profile.id,
+						email: profile.emails[0].value,
+					};
+					const createdUser = await userModel.create(newUser);
+					if (createdUser) {
+						console.log(createdUser);
+						done(null, createdUser);
+					} else {
+						done(null, false);
+					}
+				} else {
+					console.log('Missing email');
+					done(null, false);
+				}
+			}
 		}
 	)
 );
 
-const GitHubStrategy = require('passport-github').Strategy;
-
+const GitHubStrategy = require('passport-github2').Strategy;
 passport.use(
 	new GitHubStrategy(
 		{
@@ -54,18 +67,35 @@ passport.use(
 			profile: GithubProfile,
 			done: (error: any, user?: any) => void
 		) => {
+			console.log(done);
 			console.log('> Github verify function');
-			console.log(
-				'accessToken: ',
-				accessToken,
-				'\n\nrefreshToken:',
-				refreshToken,
-				'\n\nProfile:',
-				profile,
-				'\n\ndone:',
-				done
-			);
-			return done(null, profile);
+			console.log(profile);
+			// const user = await userModel.findOne({ github: profile.id });
+
+			// // found user
+			// if (user) {
+			// 	console.log('> Logging in.....');
+			// 	done(null, user);
+			// } else {
+			// 	//no user found, create new user
+			// 	if (profile.emails) {
+			// 		console.log('> Creating user.....');
+			// 		const newUser = {
+			// 			github: profile.id,
+			// 			email: profile.emails[0].value,
+			// 		};
+			// 		const createdUser = await userModel.create(newUser);
+			// 		if (createdUser) {
+			// 			console.log(createdUser);
+			// 			done(null, createdUser);
+			// 		} else {
+			// 			done(null, false);
+			// 		}
+			// 	} else {
+			// 		console.log('Missing email');
+			// 		done(null, false);
+			// 	}
+			// }
 		}
 	)
 );
@@ -73,13 +103,15 @@ passport.use(
 // passport.serializeUser((user: object, cb: (err: any, user: object) => void) => cb(null, user));
 // passport.deserializeUser((obj: object, cb: (err: any, user: object) => void) => cb(null, obj));
 
-passport.serializeUser(function(user: { id: any }, done: (arg0: null, arg1: any) => void) {
+passport.serializeUser((user: any, done: any) => {
 	done(null, user.id);
 });
 
-passport.deserializeUser(function(
-	id: any,
-	done: (arg0: null, arg1: { username: string; password: string }) => void
-) {
-	done(null, { password: 'password', username: 'Alice' });
+passport.deserializeUser(async (id: any, done: any) => {
+	try {
+		const user = await userModel.findById(id);
+		done(user);
+	} catch (err) {
+		done(err);
+	}
 });
