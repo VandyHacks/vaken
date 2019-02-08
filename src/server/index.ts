@@ -15,27 +15,6 @@ const router = new koaRouter();
 // Default port to listen
 const port = 8080;
 
-// GraphQL test
-graphqlClient
-	.query({
-		query: gql`
-			{
-				rates(currency: "USD") {
-					currency
-				}
-			}
-		`,
-	})
-	.then(
-		result => {
-			// console.log(result);
-			console.log('GraphQL test: successful');
-		},
-		err => {
-			console.log(err);
-		}
-	);
-
 // Define a route handler for the default home page
 app.use(serve(__dirname + '/app'));
 
