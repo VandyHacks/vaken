@@ -25,13 +25,6 @@ const typeDefs = `
   }
 `;
 
-// example data
-const authors = [
-	{ firstName: 'Tom', id: 1, lastName: 'Coleman' },
-	{ firstName: 'Sashko', id: 2, lastName: 'Stubailo' },
-	{ firstName: 'Mikhail', id: 3, lastName: 'Novikov' },
-];
-
 const posts = [
 	{ authorId: 1, id: 1, title: 'Introduction to GraphQL', votes: 2 },
 	{ authorId: 2, id: 2, title: 'Welcome to Meteor', votes: 3 },
