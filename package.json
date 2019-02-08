@@ -17,7 +17,7 @@
 	},
 	"dependencies": {
 		"@koa/cors": "^2.2.3",
-		"apollo-server-koa": "^2.3.1",
+		"apollo-server-koa": "^2.4.0",
 		"chart.js": "^2.7.3",
 		"cross-fetch": "^3.0.1",
 		"dotenv": "^6.2.0",
@@ -32,6 +32,7 @@
 		"koa-static": "^5.0.0",
 		"mongoose": "^5.4.10",
 		"net": "^1.0.2",
+		"nodejs": "0.0.0",
 		"opencollective-postinstall": "^2.0.2",
 		"passport-github": "^1.1.0",
 		"palx": "^1.0.3",

@@ -59,5 +59,5 @@ apollo.applyMiddleware({ app });
 
 // Begin listening on the defined port
 const server = app.listen(port, () => {
-	console.log(`>>> Server started at http://localhost:${port}`);
+	console.log(`>>> Server started at http://localhost:${port}${apollo.graphqlPath}`);
 });
