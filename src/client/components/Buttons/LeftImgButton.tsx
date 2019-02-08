@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, RightPaddedImg, ButtonText } from './Buttons';
+import { Button, RightPaddedImg, CenterButtonText } from './Buttons';
 import { FlexRow } from '../Containers/FlexContainers';
 
 interface Props {
@@ -15,10 +15,10 @@ const LeftImgButton = (props: Props): JSX.Element => {
 	const { img, text, imgAlt, color, background, glowColor } = props;
 	return (
 		<Button background={background} glowColor={glowColor}>
-			<FlexRow /* Edge case of centering icons */>
+			<FlexRow height="min-content" width="min-content" /* Edge case of centering icons */>
 				<RightPaddedImg src={'/' + img} alt={imgAlt} />
 			</FlexRow>
-			<ButtonText color={color}>{text}</ButtonText>
+			<CenterButtonText color={color}>{text}</CenterButtonText>
 		</Button>
 	);
 };

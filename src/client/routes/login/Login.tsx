@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import STRINGS from '../../assets/strings.json';
 import bg from '../../assets/img/login_bg.jpg';
-import PasswordLogin from './passwordLogin';
+import PasswordLogin from './PasswordLogin';
 import OAuthLogin from './OAuthLogin';
 import Background from '../../components/Containers/Background';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
@@ -12,7 +12,7 @@ const LoginPage = (): JSX.Element => {
 	return (
 		<>
 			<Background img={bg}>
-				<FloatingPopup>
+				<FloatingPopup height="28rem" width="30rem" opacity={0.9}>
 					<Title color={STRINGS.DARK_TEXT_COLOR}>{STRINGS.FULL_NAME}</Title>
 					<Switch>
 						<Route path="/login/password" component={PasswordLogin} />

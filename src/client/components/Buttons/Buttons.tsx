@@ -11,9 +11,16 @@ interface ButtonProps {
 	background?: string;
 }
 
-export const ButtonText = styled.div`
+export const CenterButtonText = styled.div`
 	${displayFlex}
 	font-family: 'Roboto';
+	font-size: ${(props: ButtonTextProps) => props.fontSize || '1.4rem'};
+	color: ${(props: ButtonTextProps) => props.color || 'black'};
+`;
+
+export const LeftButtonText = styled(CenterButtonText)`
+	${displayFlex}
+	font-family: 'Roboto Condensed';
 	font-size: ${(props: ButtonTextProps) => props.fontSize || '1.4rem'};
 	color: ${(props: ButtonTextProps) => props.color || 'black'};
 `;

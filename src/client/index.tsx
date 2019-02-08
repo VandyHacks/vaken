@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom';
 import { createGlobalStyle } from 'styled-components';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import reset from 'styled-reset';
-import LoginPage from './routes/login/login';
+import LoginPage from './routes/login/Login';
+import Dashboard from './routes/dashboard/Dashboard';
 
 const GlobalStyle = createGlobalStyle`
 	body {
-		@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,500|Roboto:400,500,700');
+		@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,500|Roboto:300,400,500,700');
 		font-family: 'Roboto', sans-serif;
 
 		${reset}
@@ -25,6 +26,7 @@ const Vaken = (): JSX.Element => {
 			<GlobalStyle />
 			<BrowserRouter>
 				<Switch>
+					<Route path="/dashboard" component={Dashboard} />
 					<Route path="/" component={LoginPage} />
 				</Switch>
 			</BrowserRouter>
