@@ -5,8 +5,8 @@ import bodyParser from 'koa-bodyparser';
 import mongoose from 'mongoose';
 import passport from 'koa-passport';
 import session from 'koa-session';
-import userRouter from './api/UserRouter';
 import { ApolloServer, gql } from 'apollo-server-koa';
+import userRouter from './api/UserRouter';
 import { schema } from './data/schema';
 
 const app = new koa();
@@ -25,6 +25,7 @@ app.keys = ['secretsauce'];
 // Authentication using Passport
 require('dotenv').config();
 require('./auth');
+
 app.use(passport.initialize());
 app.use(passport.session());
 

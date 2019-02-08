@@ -3,6 +3,7 @@ import { Profile as GoogleProfile } from 'passport-google-oauth';
 import { Profile as GithubProfile } from 'passport-github';
 
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+
 passport.use(
 	new GoogleStrategy(
 		{
@@ -38,6 +39,7 @@ passport.use(
 );
 
 const GitHubStrategy = require('passport-github').Strategy;
+
 passport.use(
 	new GitHubStrategy(
 		{
@@ -79,5 +81,5 @@ passport.deserializeUser(function(
 	id: any,
 	done: (arg0: null, arg1: { username: string; password: string }) => void
 ) {
-	done(null, { username: 'Alice', password: 'password' });
+	done(null, { password: 'password', username: 'Alice' });
 });

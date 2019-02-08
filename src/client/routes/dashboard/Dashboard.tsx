@@ -57,8 +57,21 @@ const Dashboard = (): JSX.Element => {
 		legend: {
 			display: false,
 		},
-		responsive: true,
 		maintainAspectRatio: true,
+		plugins: {
+			datalabels: {
+				align: 'start',
+				anchor: 'end',
+				clip: true,
+				color: 'black',
+				display: 'auto',
+				font: {
+					size: 20,
+					weight: 'bold',
+				},
+			},
+		},
+		responsive: true,
 		scales: {
 			xAxes: [
 				{
@@ -77,66 +90,53 @@ const Dashboard = (): JSX.Element => {
 		tooltips: {
 			enabled: false,
 		},
-		plugins: {
-			datalabels: {
-				font: {
-					size: 20,
-					weight: 'bold',
-				},
-				display: 'auto',
-				align: 'start',
-				anchor: 'end',
-				color: 'black',
-				clip: true,
-			},
-		},
 	};
 
 	const pieShirtData = {
-		labels: shirtLabels,
 		datasets: [
 			{
-				data: shirtData,
 				backgroundColor: generateColor(shirtData.length),
+				data: shirtData,
 			},
 		],
+		labels: shirtLabels,
 	};
 
 	const pieShirtOptions = {
+		legend: {
+			position: 'right' as 'right',
+		},
+		maintainAspectRatio: true,
+		responsive: true,
 		title: {
 			display: true,
 			fontSize: 24,
-			text: 'T-Shirt Sizes',
 			position: 'bottom' as 'bottom',
-		},
-		responsive: true,
-		maintainAspectRatio: true,
-		legend: {
-			position: 'right' as 'right',
+			text: 'T-Shirt Sizes',
 		},
 	};
 
 	const pieGenderData = {
-		labels: genderLabels,
 		datasets: [
 			{
-				data: genderData,
 				backgroundColor: generateColor(shirtData.length),
+				data: genderData,
 			},
 		],
+		labels: genderLabels,
 	};
 
 	const pieGenderOptions = {
+		legend: {
+			position: 'right' as 'right',
+		},
+		maintainAspectRatio: true,
+		responsive: true,
 		title: {
 			display: true,
 			fontSize: 24,
-			text: 'Gender',
 			position: 'bottom' as 'bottom',
-		},
-		responsive: true,
-		maintainAspectRatio: true,
-		legend: {
-			position: 'right' as 'right',
+			text: 'Gender',
 		},
 	};
 

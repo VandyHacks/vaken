@@ -1,8 +1,9 @@
 import koaRouter from 'koa-router';
-import { userModel } from '../models/User';
 import { Context } from 'koa';
+import { userModel } from '../models/User';
 
 const passport = require('koa-passport');
+
 const userRouter = new koaRouter();
 
 // const app = new Koa();
@@ -24,7 +25,7 @@ userRouter.post('/api/login', async ctx => {
 
 userRouter.get(
 	'/api/auth/google',
-	passport.authenticate('google', { scope: ['profile'], display: 'popup' }),
+	passport.authenticate('google', { display: 'popup', scope: ['profile'] }),
 	ctx => {
 		console.log('inside /api/auth/google');
 	}
