@@ -5,7 +5,6 @@ import bodyParser from 'koa-bodyparser';
 import mongoose from 'mongoose';
 import passport from 'koa-passport';
 import session from 'koa-session';
-
 import userRouter from './api/UserRouter';
 import { ApolloServer, gql } from 'apollo-server-koa';
 
