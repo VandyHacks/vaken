@@ -7,6 +7,7 @@ import passport from 'koa-passport';
 import session from 'koa-session';
 import userRouter from './api/UserRouter';
 import { ApolloServer, gql } from 'apollo-server-koa';
+import { schema } from './data/schema';
 
 const app = new koa();
 const router = new koaRouter();
@@ -42,19 +43,7 @@ mongoose.connect('mongodb://localhost:27017/test').then(
 );
 
 // GraphQL
-const typeDefs = gql`
-	type Query {
-		hello: String
-	}
-`;
-
-const resolvers = {
-	Query: {
-		hello: () => 'Hello world!',
-	},
-};
-
-const apollo = new ApolloServer({ typeDefs, resolvers });
+const apollo = new ApolloServer({ schema });
 apollo.applyMiddleware({ app });
 
 // Begin listening on the defined port
