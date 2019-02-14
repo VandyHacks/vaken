@@ -19,7 +19,7 @@ const LeftImgTextInput = (props: Props): JSX.Element => {
 
 	return (
 		<ButtonOutline>
-			<RightPaddedImg src={'/' + img} alt={imgAlt} />
+			<RightPaddedImg src={img} alt={imgAlt} />
 			<TextInput {...props} type={type} />
 		</ButtonOutline>
 	);

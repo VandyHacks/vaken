@@ -2,22 +2,17 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
+const ASSET_PATH = process.env.ASSET_PATH || '/';
+
 module.exports = {
 	context: __dirname, // to automagically find tsconfig.json
 	entry: './src/client/index',
-	output: {
-		path: path.resolve(__dirname, 'dist/server/app'),
-		filename: 'app.bundle.js',
-	},
-	resolve: {
-		extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
-	},
 	module: {
 		rules: [
 			{
 				// Include ts, tsx, js, and jsx files.
-				test: /\.(ts|js)x?$/,
 				exclude: [/server/, /node_modules/],
+				test: /\.(ts|js)x?$/,
 				use: [
 					{
 						loader: 'thread-loader',
@@ -37,10 +32,29 @@ module.exports = {
 			},
 		],
 	},
+	// optimization: {
+	// 	splitChunks: {
+	// 		cacheGroups: {
+	// 			commons: {
+	// 				chunks: 'all',
+	// 				name: 'vendors',
+	// 				test: /[\\/]node_modules[\\/]styled-components/,
+	// 			},
+	// 		},
+	// 	},
+	// },
+	output: {
+		filename: 'app.bundle.js',
+		path: path.resolve(__dirname, 'dist/server/app'),
+		publicPath: ASSET_PATH,
+	},
 	plugins: [
 		new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }), // Check types asynchronously
 		new HtmlWebpackPlugin({
 			template: './src/client/index.html',
 		}), // For index.html entry point
 	],
+	resolve: {
+		extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+	},
 };

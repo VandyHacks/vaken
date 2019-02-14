@@ -5,7 +5,7 @@ import produce from 'immer';
 import sqLogo from '../../assets/img/square_hackathon_logo.svg';
 import STRINGS from '../../assets/strings.json';
 import NavButton from '../Buttons/NavButton';
-import { FlexStartColumn, FlexEndColumn } from '../Containers/FlexContainers';
+import { FlexStartColumn, SpaceBetweenColumn, FlexEndColumn } from '../Containers/FlexContainers';
 import SmallCenteredText from '../Text/SmallCenteredText';
 
 interface Props {}
@@ -17,7 +17,7 @@ const Layout = styled.div`
 const Background = styled.div`
 	background: linear-gradient(254.59deg, #bd7ae3 0%, #8461c9 100%);
 	width: 100%;
-	height: 100%;
+	height: 100vh;
 
 	display: flex;
 	flex-flow: column nowrap;
@@ -43,6 +43,11 @@ const HorizontalLineWithoutPad = styled.hr`
 	width: calc(100% - 4rem);
 	color: white;
 	opacity: 0.1;
+`;
+
+const HorizontalLineLogout = styled(HorizontalLine)`
+	margin-top: 0;
+	margin-bottom: 1rem;
 `;
 
 const NavButtonWhiteText = styled(NavButton)`
@@ -80,6 +85,20 @@ interface Route {
 	component: string;
 }
 
+const ColumnWithSeparators = styled.ul`
+	width: 100%;
+
+	li:not(:first-child):before {
+		content: '';
+		opacity: 0.2;
+		background-color: white;
+		height: 1px;
+		width: calc(100% - 4rem);
+		margin: 0 2rem;
+		display: block;
+	}
+`;
+
 // TODO: Make routes part of config file
 const routes = [
 	{
@@ -115,28 +134,31 @@ const Sidebar = withRouter(
 		return (
 			<Layout>
 				<Background>
-					<Logo src={'/' + sqLogo} alt={STRINGS.SQUARE_LOGO_ALT_TEXT} />
+					<Logo src={sqLogo} alt={STRINGS.SQUARE_LOGO_ALT_TEXT} />
 					<HorizontalLine />
-					<FlexStartColumn>
-						{routes.map((route: Route) => {
-							return userLevel in route.authLevel ? (
-								<NavLink
-									key={route.path}
-									to={route.path}
-									activeStyle={{ background: 'rgba(247, 245, 249, 0.1)' }}>
-									<NavButtonWhiteText text={route.displayText} />
-									<HorizontalLineWithoutPad />
-								</NavLink>
-							) : null;
-						})}
-					</FlexStartColumn>
-					<FlexEndColumn paddingBottom="1rem">
-						<NavLink to="/logout">
-							<NavButtonWhiteText text="Logout" />
-						</NavLink>
-						<HorizontalLine />
-						<SmallCenteredText>{STRINGS.HACKATHON_TITLE}</SmallCenteredText>
-					</FlexEndColumn>
+					<SpaceBetweenColumn>
+						<ColumnWithSeparators>
+							{routes.map((route: Route) => {
+								return userLevel in route.authLevel ? (
+									<li>
+										<NavLink
+											key={route.path}
+											to={route.path}
+											activeStyle={{ background: 'rgba(247, 245, 249, 0.1)' }}>
+											<NavButtonWhiteText text={route.displayText} />
+										</NavLink>
+									</li>
+								) : null;
+							})}
+						</ColumnWithSeparators>
+						<FlexEndColumn paddingBottom="1rem">
+							<NavLink to="/logout">
+								<NavButtonWhiteText text="Logout" />
+							</NavLink>
+							<HorizontalLineLogout />
+							<SmallCenteredText>{STRINGS.HACKATHON_TITLE}</SmallCenteredText>
+						</FlexEndColumn>
+					</SpaceBetweenColumn>
 				</Background>
 			</Layout>
 		);
