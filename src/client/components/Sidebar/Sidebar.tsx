@@ -140,9 +140,8 @@ const Sidebar = withRouter(
 						<ColumnWithSeparators>
 							{routes.map((route: Route) => {
 								return userLevel in route.authLevel ? (
-									<li>
+									<li key={route.path}>
 										<NavLink
-											key={route.path}
 											to={route.path}
 											activeStyle={{ background: 'rgba(247, 245, 249, 0.1)' }}>
 											<NavButtonWhiteText text={route.displayText} />
