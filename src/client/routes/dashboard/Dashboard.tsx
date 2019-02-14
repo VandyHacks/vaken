@@ -13,13 +13,19 @@ const Layout = styled.div`
 	height: 100vh;
 	width: 100vw;
 	display: grid;
-	grid-gap: 2rem;
+	/* grid-gap: 2rem; */
 	grid:
-		'sidebar header' 10vh
-		'sidebar content-top' 1fr
-		'sidebar content-bottom' 1fr
-		/ 18rem 1fr;
-	align-items: 'stretch';
+		'sidebar . header' 10vh
+		'sidebar . .' 1rem
+		'sidebar . content' 1fr
+		/ 18rem 2rem 1fr;
+	/* align-items: stretch; */
+	overflow: hidden;
+
+	.content {
+		overflow-y: scroll;
+		border-radius: 2rem;
+	}
 `;
 
 const Rectangle = styled.div`
@@ -150,26 +156,28 @@ const Dashboard = (): JSX.Element => {
 					<Rectangle />
 				</div>
 				<Sidebar />
-				<FloatingPopup width="60rem" opacity={1} gridArea="content-top" padding="1.5rem">
-					<Bar data={barStatusData} options={barStatusOptions} />
-					<TextButton
-						color="white"
-						fontSize="1.4em"
-						background={STRINGS.ACCENT_COLOR}
-						text="Manage hackers"
-						glowColor="rgba(0, 0, 255, 0.67)"
-					/>
-				</FloatingPopup>
-				<FloatingPopup width="60rem" opacity={1} gridArea="content-bottom" padding="1.5rem">
-					<FlexRow>
-						<FlexColumn>
-							<Pie data={pieShirtData} options={pieShirtOptions} />
-						</FlexColumn>
-						<FlexColumn>
-							<Pie data={pieGenderData} options={pieGenderOptions} />
-						</FlexColumn>
-					</FlexRow>
-				</FloatingPopup>
+				<div className="content" style={{ gridArea: 'content' }}>
+					<FloatingPopup width="60rem" marginBottom="1rem" backgroundOpacity="1" padding="1.5rem">
+						<Bar data={barStatusData} options={barStatusOptions} />
+						<TextButton
+							color="white"
+							fontSize="1.4em"
+							background={STRINGS.ACCENT_COLOR}
+							text="Manage hackers"
+							glowColor="rgba(0, 0, 255, 0.67)"
+						/>
+					</FloatingPopup>
+					<FloatingPopup width="60rem" backgroundOpacity="1" padding="1.5rem">
+						<FlexRow>
+							<FlexColumn>
+								<Pie data={pieShirtData} options={pieShirtOptions} />
+							</FlexColumn>
+							<FlexColumn>
+								<Pie data={pieGenderData} options={pieGenderOptions} />
+							</FlexColumn>
+						</FlexRow>
+					</FloatingPopup>
+				</div>
 			</Layout>
 		</>
 	);

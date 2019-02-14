@@ -1,15 +1,21 @@
 import styled from 'styled-components';
 
-interface ContainerProps {
+export interface ContainerProps {
 	height?: string;
 	width?: string;
 	flex?: string;
 	padding?: string;
 	margin?: string;
+	marginBottom?: string;
+	marginTop?: string;
+	marginRight?: string;
+	marginLeft?: string;
 	paddingBottom?: string;
 	paddingTop?: string;
 	paddingRight?: string;
 	paddingLeft?: string;
+	background?: string;
+	backgroundOpacity?: string;
 }
 
 export const displayFlex = `

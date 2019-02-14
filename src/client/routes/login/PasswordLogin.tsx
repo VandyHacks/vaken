@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useState } from 'react';
+import produce from 'immer';
 import emailIcon from '../../assets/img/email_icon.svg';
 import lockIcon from '../../assets/img/lock_icon.svg';
 import arrowIcon from '../../assets/img/right_arrow.svg';
@@ -103,7 +104,7 @@ export const PasswordLogin: FunctionComponent<State> = (props: Props): JSX.Eleme
 					<TextLink fontSize="1.4rem" color={STRINGS.ACCENT_COLOR} to="/login/create">
 						New User? Create Account
 					</TextLink>
-					<LeftPaddedImg src={'/' + arrowIcon} alt="Right Arrow" />
+					<LeftPaddedImg src={arrowIcon} alt="Right Arrow" />
 				</FlexRow>
 			</SpaceBetweenColumn>
 		</>
