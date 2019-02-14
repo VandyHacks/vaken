@@ -90,6 +90,7 @@ export const PasswordLogin: FunctionComponent<State> = (props: Props): JSX.Eleme
 				valid={passValid}
 				value={pass}
 				placeholder="Password"
+				type="password"
 			/>
 			<SpaceBetweenColumn height="10rem">
 				<TextButton
