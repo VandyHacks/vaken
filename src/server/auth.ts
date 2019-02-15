@@ -100,19 +100,17 @@ passport.use(
 	)
 );
 
-// passport.serializeUser((user: object, cb: (err: any, user: object) => void) => cb(null, user));
-// passport.deserializeUser((obj: object, cb: (err: any, user: object) => void) => cb(null, obj));
-
 passport.serializeUser((user: any, done: any) => {
 	done(null, user.id);
 });
 
 passport.deserializeUser(async (id: any, done: any) => {
+	// console.log('deserialize user');
 	try {
 		const user = await userModel.findById(id);
-		done(user);
+		done(null, user);
 	} catch (err) {
-		done(err);
+		done(err, null, { message: 'Failed to deserialize' });
 	}
 });
 

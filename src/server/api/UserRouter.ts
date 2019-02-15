@@ -29,9 +29,8 @@ userRouter.get(
 
 userRouter.get('/api/auth/google/callback', async ctx => {
 	return passport.authenticate('google', (err: any, user: any, info: any, status: any) => {
-		// console.log(ctx);
 		console.log('> User:');
-		console.log(user);
+		console.log(ctx.state.user);
 		ctx.redirect('/');
 	})(ctx);
 });
@@ -48,7 +47,7 @@ userRouter.get('/api/auth/github/callback', async ctx => {
 	return passport.authenticate('github', (err: any, user: any, info: any, status: any) => {
 		// console.log(ctx, err, user, info, status);
 		console.log('> User:');
-		console.log(user);
+		console.log(ctx.state.user);
 		ctx.redirect('/');
 	})(ctx);
 });
