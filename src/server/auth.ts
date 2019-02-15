@@ -33,8 +33,8 @@ passport.use(
 				if (profile.emails) {
 					console.log('> Creating user.....');
 					const newUser = {
-						google: profile.id,
 						email: profile.emails[0].value,
+						google: profile.id,
 					};
 					const createdUser = await userModel.create(newUser);
 					if (createdUser) {
@@ -53,6 +53,7 @@ passport.use(
 );
 
 const GitHubStrategy = require('passport-github2').Strategy;
+
 passport.use(
 	new GitHubStrategy(
 		{
@@ -81,8 +82,8 @@ passport.use(
 				if (profile.emails) {
 					console.log('> Creating user.....');
 					const newUser = {
-						github: profile.id,
 						email: profile.emails[0].value,
+						github: profile.id,
 					};
 					const createdUser = await userModel.create(newUser);
 					if (createdUser) {

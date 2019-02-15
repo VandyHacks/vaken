@@ -21,7 +21,7 @@ userRouter.post('/api/login', async ctx => {
 
 userRouter.get(
 	'/api/auth/google',
-	passport.authenticate('google', { scope: ['openid', 'profile', 'email'], display: 'popup' }),
+	passport.authenticate('google', { display: 'popup', scope: ['openid', 'profile', 'email'] }),
 	ctx => {
 		console.log('inside /api/auth/google');
 	}

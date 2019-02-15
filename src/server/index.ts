@@ -34,7 +34,7 @@ app.use(router.routes());
 app.use(userRouter.routes());
 
 // Connect to mongo database
-mongoose.connect('mongodb://localhost:27017/test').then(
+mongoose.connect('mongodb://localhost:32772/test').then(
 	() => {
 		console.log('>>> MongoDB Connected');
 	},
