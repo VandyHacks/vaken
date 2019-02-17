@@ -1,8 +1,11 @@
 import React from 'react';
 import mockData from './mockData.json';
-import { Form, Input, Checkbox, Button, Icon, Slider, Switch, Row, Col } from 'antd';
+import institutions from './us_institutions.json';
+import { Form, Input, Checkbox, Button, Icon, Slider, Switch, Row, Col, Select } from 'antd';
 import { FlexRow, FlexColumn } from '../../components/Containers/FlexContainers';
 import { FormComponentProps } from 'antd/lib/form/Form';
+
+const Option = Select.Option;
 
 interface Values {
 	firstName: string;
@@ -13,6 +16,10 @@ interface Values {
 type Options = {
 	title: string;
 	value: string | boolean | number;
+};
+
+type Institution = {
+	institution: string;
 };
 
 type FieldData = {
@@ -41,6 +48,10 @@ const isFieldTypeValid = (input: string): boolean => {
 };
 
 class Application extends React.Component<FormComponentProps> {
+	constructor(props: FormComponentProps) {
+		super(props);
+		// TODO: move render here
+	}
 
 	handleSubmit = (e: React.FormEvent<any>) => {
 		e.preventDefault();
@@ -50,6 +61,23 @@ class Application extends React.Component<FormComponentProps> {
 			}
 		});
 	};
+
+	generateInstitutions = (): JSX.Element[] =>
+		institutions
+			.sort(
+				(option1: Institution, option2: Institution): number => {
+					if (option1.institution > option2.institution) {
+						return 1;
+					} else if (option1.institution < option2.institution) {
+						return -1;
+					}
+					return 0;
+				}
+			)
+			.filter((option: Institution, i, a) => !i || option.institution != a[i - 1].institution)
+			.map((option: Institution, index: number) => (
+				<Option key={option.institution}>{option.institution}</Option>
+			));
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
@@ -64,7 +92,6 @@ class Application extends React.Component<FormComponentProps> {
 			count++;
 			components.push(<div key={count}>Section {index + 1}:</div>);
 			section.fields.forEach((field: FieldData) => {
-
 				let label = [
 					field.title != undefined ? <div>{field.title}</div> : undefined,
 					field.prompt != undefined ? <div>{field.prompt}</div> : undefined,
@@ -72,6 +99,7 @@ class Application extends React.Component<FormComponentProps> {
 				];
 
 				let item;
+				let options;
 				count++;
 
 				// TODO: add validation pattern support (and types like "email" and "url")
@@ -80,9 +108,9 @@ class Application extends React.Component<FormComponentProps> {
 					case 'input':
 						item = (
 							<Form.Item key={count} {...formItemLayout}>
-									{label}
-									{getFieldDecorator(field.name, {
-									initialValue: field.defaultValue !== undefined ? field.defaultValue : undefined,
+								{label}
+								{getFieldDecorator(field.name, {
+									initialValue: field.defaultValue,
 									rules: [{ required: field.required, message: 'Required!' }],
 								})(
 									<Input
@@ -91,14 +119,14 @@ class Application extends React.Component<FormComponentProps> {
 												? field.type
 												: undefined
 										}
-										placeholder={field.placeholder !== undefined ? field.placeholder : undefined}
+										placeholder={field.placeholder}
 									/>
 								)}
 							</Form.Item>
 						);
 						break;
 					case 'checkbox':
-						const options =
+						options =
 							field.options !== undefined
 								? field.options.map((option: { title: string; value: any }, index: number) => (
 										<Row>
@@ -114,8 +142,32 @@ class Application extends React.Component<FormComponentProps> {
 							<Form.Item key={count} {...formItemLayout}>
 								{label}
 								{getFieldDecorator(field.name, {
-									initialValue: field.defaultValue !== undefined ? field.defaultValue : undefined,
+									initialValue: field.defaultValue,
 								})(<Checkbox.Group>{options}</Checkbox.Group>)}
+							</Form.Item>
+						);
+						break;
+					case 'select':
+						if (field.type === 'autocomplete') {
+							options = this.generateInstitutions();
+						} else {
+							options =
+								field.options !== undefined
+									? field.options.map((option: { title: string; value: any }, index: number) => (
+											<Option key={option.value}>{option.title}</Option>
+									  ))
+									: undefined;
+						}
+						item = (
+							<Form.Item key={count} {...formItemLayout}>
+								{label}
+								{getFieldDecorator(field.name, {
+									initialValue: field.defaultValue !== undefined ? field.defaultValue : undefined,
+								})(
+									<Select showArrow={true} placeholder={field.placeholder}>
+										{options}
+									</Select>
+								)}
 							</Form.Item>
 						);
 						break;
