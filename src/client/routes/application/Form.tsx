@@ -1,9 +1,9 @@
 import React from 'react';
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
-import {FormComponentProps} from 'antd/lib/form/Form';
+import { FormComponentProps } from 'antd/lib/form/Form';
 
 class LoginForm extends React.Component<FormComponentProps> {
-    handleSubmit = (e: React.FormEvent<any>) => {
+	handleSubmit = (e: React.FormEvent<any>) => {
 		e.preventDefault();
 		this.props.form.validateFields((err, values) => {
 			if (!err) {

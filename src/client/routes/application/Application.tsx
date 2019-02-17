@@ -1,20 +1,8 @@
 import React from 'react';
 import mockData from './mockData.json';
-import { Formik, Form, Field, FieldArray, ErrorMessage, FormikActions, FormikProps } from 'formik';
-import * as Yup from 'yup';
-import { Input, Slider, Switch } from 'antd';
+import { Form, Input, Checkbox, Button, Icon, Slider, Switch, Row, Col } from 'antd';
 import { FlexRow, FlexColumn } from '../../components/Containers/FlexContainers';
-import LoginForm from './Form';
-
-// const SignupSchema = Yup.object().shape({
-// 	name: Yup.string()
-// 		.min(2, 'Too Short!')
-// 		.max(70, 'Too Long!')
-// 		.required('Required'),
-// 	email: Yup.string()
-// 		.email('Invalid email')
-// 		.required('Required'),
-// });
+import { FormComponentProps } from 'antd/lib/form/Form';
 
 interface Values {
 	firstName: string;
@@ -23,108 +11,125 @@ interface Values {
 }
 
 type Options = {
-	title: string,
-	value: string | boolean | number,
-}
+	title: string;
+	value: string | boolean | number;
+};
 
 type FieldData = {
-	name: string,
-	component: string,
-	type?: string,
-	title: string,
-	prompt?: string,
-	instruction?: string,
-	placeholder?: string,
-	required?: boolean,
-	validation?: string,
-	options?: Options[],
-	value?: string | boolean | number;
-}
+	name: string;
+	component: string;
+	type?: string;
+	title: string;
+	prompt?: string;
+	instruction?: string;
+	placeholder?: string;
+	required?: boolean;
+	validation?: string;
+	options?: Options[];
+	defaultValue?: any;
+};
 
 type SectionData = {
 	name: string;
 	title: string;
 	fields: FieldData[];
-}
-
-const Application = (): JSX.Element => {
-	// const customInput = ({
-	// 	field, // { name, value, onChange, onBlur }
-	// 	form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
-	// 	...props
-	// }) => <Input {...field} {...props} />;
-
-	// console.log(mockData.data);
-	let data: SectionData[] = mockData.data;
-	// let data: { { name: string, , } } = mockData.data;
-	let components: JSX.Element[] = [];
-	let count: number = 0;
-	data.forEach((section: SectionData, index: number) => {
-		count++;
-		components.push(<div key={count}>Section {index + 1}:</div>);
-		section.fields.forEach((field: FieldData) => {
-			// let custom: JSX.Element | null = null;
-			let component: string = '';
-			let props: object = {};
-			let options: JSX.Element[] | null = null;
-			Object.entries(field).forEach(([key, value]) => {
-				if (key === 'component' && value === 'slider') {
-					value = 'textarea';
-				} else if (key === 'component' && value === 'input') {
-					// value = <Input/>;
-					// value = customInput;
-					// component = "Input"
-					return;
-				} else if (key === 'validation') {
-					key = 'validate';
-					value = (input: any) => !new RegExp(value, 'i').test(input);
-				} else if (key === 'options' && typeof value === "object") {
-					options = value.map((option: { title: string; value: any }, index: number) => (
-						<option key={index} value={option.value}>
-							{option.title}
-						</option>
-					));
-					console.log(options);
-				}
-				props[key] = value;
-				// console.log(key, value);
-			});
-			count++;
-
-			components.push(
-				<Field key={count} {...props}>
-					{options}
-				</Field>
-			);
-		});
-	});
-
-	const form = (
-		<FlexRow>
-			<FlexColumn>
-				<Formik
-					initialValues={{ firstName: '', lastName: '', email: '', color: 'red' }}
-					onSubmit={(values, actions) => {
-						setTimeout(() => {
-							alert(JSON.stringify(values, null, 2));
-							actions.setSubmitting(false);
-						}, 1000);
-					}}
-					render={(props: FormikProps<Values>) => (
-						<form onSubmit={props.handleSubmit}>
-							{components}
-							<button type="submit">Submit</button>
-						</form>
-					)}
-				/>
-			</FlexColumn>
-		</FlexRow>
-	);
-
-	return (
-	<>
-		<LoginForm />
-	</>);
 };
 
-export default Application;
+const isFieldTypeValid = (input: string): boolean => {
+	const valid: string[] = ['date', 'password', 'number', 'text'];
+	return valid.includes(input.toLowerCase());
+};
+
+class Application extends React.Component<FormComponentProps> {
+
+	handleSubmit = (e: React.FormEvent<any>) => {
+		e.preventDefault();
+		this.props.form.validateFields((err, values) => {
+			if (!err) {
+				console.log('Received values of form: ', values);
+			}
+		});
+	};
+
+	render() {
+		const { getFieldDecorator } = this.props.form;
+		const formItemLayout = {
+			wrapperCol: { span: 14 },
+		};
+
+		const data: SectionData[] = mockData.data;
+		let components: JSX.Element[] = [];
+		let count: number = 0;
+		data.forEach((section: SectionData, index: number) => {
+			count++;
+			components.push(<div key={count}>Section {index + 1}:</div>);
+			section.fields.forEach((field: FieldData) => {
+
+				let label = [
+					field.title != undefined ? <div>{field.title}</div> : undefined,
+					field.prompt != undefined ? <div>{field.prompt}</div> : undefined,
+					field.instruction != undefined ? <div>{field.instruction}</div> : undefined,
+				];
+
+				let item;
+				count++;
+
+				// TODO: add validation pattern support (and types like "email" and "url")
+
+				switch (field.component.toLowerCase()) {
+					case 'input':
+						item = (
+							<Form.Item key={count} {...formItemLayout}>
+									{label}
+									{getFieldDecorator(field.name, {
+									initialValue: field.defaultValue !== undefined ? field.defaultValue : undefined,
+									rules: [{ required: field.required, message: 'Required!' }],
+								})(
+									<Input
+										type={
+											field.type !== undefined && isFieldTypeValid(field.type)
+												? field.type
+												: undefined
+										}
+										placeholder={field.placeholder !== undefined ? field.placeholder : undefined}
+									/>
+								)}
+							</Form.Item>
+						);
+						break;
+					case 'checkbox':
+						const options =
+							field.options !== undefined
+								? field.options.map((option: { title: string; value: any }, index: number) => (
+										<Row>
+											<Col span={36}>
+												<Checkbox key={index} value={option.value}>
+													{option.title}
+												</Checkbox>
+											</Col>
+										</Row>
+								  ))
+								: undefined;
+						item = (
+							<Form.Item key={count} {...formItemLayout}>
+								{label}
+								{getFieldDecorator(field.name, {
+									initialValue: field.defaultValue !== undefined ? field.defaultValue : undefined,
+								})(<Checkbox.Group>{options}</Checkbox.Group>)}
+							</Form.Item>
+						);
+						break;
+					default:
+						console.log('invalid form element!');
+						item = <div>undefined</div>;
+				}
+				components.push(item);
+			});
+		});
+
+		return <Form onSubmit={this.handleSubmit}>{components}</Form>;
+	}
+}
+
+// export default Application;
+export default Form.create<{}>()(Application);
