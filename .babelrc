@@ -11,6 +11,7 @@
         "@babel/proposal-throw-expressions",
         "@babel/syntax-dynamic-import",
         "babel-plugin-styled-components",
+        "@babel/plugin-proposal-optional-chaining",
         ["import", {
             "libraryName": "antd",
             "style": true,   // or 'css'
