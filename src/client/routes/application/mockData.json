@@ -46,11 +46,12 @@
 					"title": "Ethnicity",
 					"prompt": "Are you Spanish, Hispantic, or Latino?",
 					"options": [{ "title": "YES", "value": true }, { "title": "NO", "value": false }],
-					"value": "TRUE"
+					"value": true
 				},
 				{
 					"name": "race",
 					"component": "select",
+					"title": "Race",
 					"instruction": "Choose all that apply.",
 					"options": [
 						{ "title": "American Indian or Alaskan Native", "value": 0 },
