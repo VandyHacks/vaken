@@ -38,7 +38,7 @@
 						{ "title": "2021", "value": 2021 },
 						{ "title": "2022", "value": 2022 }
 					],
-					"value": "2019"
+					"defaultValue": 2019
 				},
 				{
 					"name": "ethnicity",
@@ -46,11 +46,11 @@
 					"title": "Ethnicity",
 					"prompt": "Are you Spanish, Hispantic, or Latino?",
 					"options": [{ "title": "YES", "value": true }, { "title": "NO", "value": false }],
-					"value": true
+					"defaultValue": true
 				},
 				{
 					"name": "race",
-					"component": "select",
+					"component": "checkbox",
 					"title": "Race",
 					"instruction": "Choose all that apply.",
 					"options": [
