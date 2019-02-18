@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { JSXElementConstructor } from 'react';
 import mockData from './mockData.json';
-import institutions from './us_institutions.json';
+// import institutions from './us_institutions.json';
+import institutions from './institutions2.json';
 import { Form, Input, Checkbox, Button, Icon, Slider, Switch, Row, Col, Select } from 'antd';
 import { FlexRow, FlexColumn } from '../../components/Containers/FlexContainers';
 import { FormComponentProps } from 'antd/lib/form/Form';
 
 const Option = Select.Option;
 
-interface Values {
-	firstName: string;
-	lastName: string;
-	email: string;
+// interface Values {
+// 	firstName: string;
+// 	lastName: string;
+// 	email: string;
+// }
+
+interface State {
+	institutions: string[];
 }
 
 type Options = {
@@ -18,9 +23,9 @@ type Options = {
 	value: string | boolean | number;
 };
 
-type Institution = {
-	institution: string;
-};
+// type Institution = {
+// 	institution: string;
+// };
 
 type FieldData = {
 	name: string;
@@ -47,11 +52,19 @@ const isFieldTypeValid = (input: string): boolean => {
 	return valid.includes(input.toLowerCase());
 };
 
-class Application extends React.Component<FormComponentProps> {
-	constructor(props: FormComponentProps) {
-		super(props);
-		// TODO: move render here
+class Application extends React.Component<FormComponentProps, State> {
+	state = { institutions: [] };
+	// loadedInstitutions = institutions;
+
+	componentDidMount() {
+		// const data: SectionData[] = mockData.data;
+		// fetch would go here
+		this.setState({ institutions: institutions });
 	}
+
+	// public shouldComponentUpdate(nextProps:, nextState) {
+
+	// }
 
 	handleSubmit = (e: React.FormEvent<any>) => {
 		e.preventDefault();
@@ -63,29 +76,19 @@ class Application extends React.Component<FormComponentProps> {
 	};
 
 	generateInstitutions = (): JSX.Element[] =>
-		institutions
-			.sort(
-				(option1: Institution, option2: Institution): number => {
-					if (option1.institution > option2.institution) {
-						return 1;
-					} else if (option1.institution < option2.institution) {
-						return -1;
-					}
-					return 0;
-				}
-			)
-			.filter((option: Institution, i, a) => !i || option.institution != a[i - 1].institution)
-			.map((option: Institution, index: number) => (
-				<Option key={option.institution}>{option.institution}</Option>
-			));
+		this.state.institutions.map((option: string, index: number) => (
+			<Option key={option}>{option}</Option>
+		));
+
+	// school = this.generateInstitutions();
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
 		const formItemLayout = {
 			wrapperCol: { span: 14 },
 		};
-
 		const data: SectionData[] = mockData.data;
+
 		let components: JSX.Element[] = [];
 		let count: number = 0;
 		data.forEach((section: SectionData, index: number) => {
@@ -149,7 +152,20 @@ class Application extends React.Component<FormComponentProps> {
 						break;
 					case 'select':
 						if (field.type === 'autocomplete') {
+							console.log('rendered auto complete!');
 							options = this.generateInstitutions();
+							item = (
+								<Form.Item key={count} {...formItemLayout}>
+									{label}
+									{getFieldDecorator(field.name, {
+										initialValue: field.defaultValue !== undefined ? field.defaultValue : undefined,
+									})(
+										<Select showArrow={true} placeholder={field.placeholder} showSearch={true}>
+											{options}
+										</Select>
+									)}
+								</Form.Item>
+							);
 						} else {
 							options =
 								field.options !== undefined
@@ -157,19 +173,19 @@ class Application extends React.Component<FormComponentProps> {
 											<Option key={option.value}>{option.title}</Option>
 									  ))
 									: undefined;
+							item = (
+								<Form.Item key={count} {...formItemLayout}>
+									{label}
+									{getFieldDecorator(field.name, {
+										initialValue: field.defaultValue !== undefined ? field.defaultValue : undefined,
+									})(
+										<Select showArrow={true} placeholder={field.placeholder} showSearch={true}>
+											{options}
+										</Select>
+									)}
+								</Form.Item>
+							);
 						}
-						item = (
-							<Form.Item key={count} {...formItemLayout}>
-								{label}
-								{getFieldDecorator(field.name, {
-									initialValue: field.defaultValue !== undefined ? field.defaultValue : undefined,
-								})(
-									<Select showArrow={true} placeholder={field.placeholder}>
-										{options}
-									</Select>
-								)}
-							</Form.Item>
-						);
 						break;
 					default:
 						console.log('invalid form element!');
@@ -179,7 +195,20 @@ class Application extends React.Component<FormComponentProps> {
 			});
 		});
 
-		return <Form onSubmit={this.handleSubmit}>{components}</Form>;
+		return (
+			<Form onSubmit={this.handleSubmit}>
+				{/* {this.state.form}
+				{this.state.test} */}
+				{components}
+				<Form.Item key={count} {...formItemLayout}>
+					{getFieldDecorator('test')(
+						<Select showArrow={true} placeholder={'test'} showSearch={true}>
+							{this.generateInstitutions()}
+						</Select>
+					)}
+				</Form.Item>
+			</Form>
+		);
 	}
 }
 

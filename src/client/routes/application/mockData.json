@@ -72,7 +72,8 @@
 					"name": "school",
 					"component": "select",
 					"type": "autocomplete",
-					"title": "School"
+					"title": "School",
+					"placeholder": "If not found, please type the name."
 				}
 			]
 		}
