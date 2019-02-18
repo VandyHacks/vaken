@@ -184,3 +184,5 @@ const Dashboard = (): JSX.Element => {
 };
 
 export default Dashboard;
+
+// Copyright (c) 2019 Vanderbilt University

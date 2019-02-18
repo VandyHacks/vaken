@@ -55,3 +55,5 @@ userRouter.get('/api/auth/github/callback', async ctx => {
 
 // app.use(userRouter.routes()).use(userRouter.allowedMethods());
 export default userRouter;
+
+// Copyright (c) 2019 Vanderbilt University

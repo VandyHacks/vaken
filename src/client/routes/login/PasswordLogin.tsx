@@ -113,3 +113,5 @@ export const PasswordLogin: FunctionComponent<State> = (props: Props): JSX.Eleme
 };
 
 export default PasswordLogin;
+
+// Copyright (c) 2019 Vanderbilt University

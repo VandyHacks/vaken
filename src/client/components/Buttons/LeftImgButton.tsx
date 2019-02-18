@@ -24,3 +24,5 @@ const LeftImgButton = (props: Props): JSX.Element => {
 };
 
 export default LeftImgButton;
+
+// Copyright (c) 2019 Vanderbilt University

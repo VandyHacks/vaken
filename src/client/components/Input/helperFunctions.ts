@@ -26,3 +26,5 @@ export function checkValid<T>(
 ): () => void {
 	return () => updateFn(validFn(input));
 }
+
+// Copyright (c) 2019 Vanderbilt University

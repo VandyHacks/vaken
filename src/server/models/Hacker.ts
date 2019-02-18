@@ -72,3 +72,5 @@ class Hacker extends User {
 const hackerModel = new Hacker().getModelForClass(Hacker);
 
 export { Hacker, hackerModel };
+
+// Copyright (c) 2019 Vanderbilt University

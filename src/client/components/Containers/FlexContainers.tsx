@@ -53,3 +53,5 @@ export const FlexEndColumn = styled(FlexColumn)`
 export const SpaceBetweenColumn = styled(FlexColumn)`
 	justify-content: space-between;
 `;
+
+// Copyright (c) 2019 Vanderbilt University

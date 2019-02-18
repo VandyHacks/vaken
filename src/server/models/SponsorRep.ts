@@ -16,3 +16,5 @@ class SponsorRep extends User {
 const sponsorRepModel = new SponsorRep().getModelForClass(SponsorRep);
 
 export { SponsorRep, sponsorRepModel };
+
+// Copyright (c) 2019 Vanderbilt University

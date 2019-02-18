@@ -17,3 +17,5 @@ export const Title = styled.h1`
 `;
 
 export default Title;
+
+// Copyright (c) 2019 Vanderbilt University

@@ -25,3 +25,5 @@ const LoginPage = (): JSX.Element => {
 };
 
 export default LoginPage;
+
+// Copyright (c) 2019 Vanderbilt University

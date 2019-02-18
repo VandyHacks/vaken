@@ -36,3 +36,5 @@ const Vaken = (): JSX.Element => {
 
 const app = document.getElementById('App');
 ReactDOM.render(<Vaken />, app);
+
+// Copyright (c) 2019 Vanderbilt University

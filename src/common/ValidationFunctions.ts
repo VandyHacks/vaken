@@ -18,3 +18,5 @@ export function passwordValidation(p: string): boolean {
 	// Validate password of length > 8, number, letter, and symbol using regex
 	return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(p);
 }
+
+// Copyright (c) 2019 Vanderbilt University

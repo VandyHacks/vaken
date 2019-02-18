@@ -14,3 +14,5 @@ const Background = styled.div`
 `;
 
 export default Background;
+
+// Copyright (c) 2019 Vanderbilt University

@@ -63,3 +63,5 @@ export const ButtonOutline = styled(Button.withComponent('div'))`
 		padding-left: 2rem;
 	}
 `;
+
+// Copyright (c) 2019 Vanderbilt University

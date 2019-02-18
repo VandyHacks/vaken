@@ -17,3 +17,5 @@ export const SmallCenteredText = styled.h1`
 `;
 
 export default SmallCenteredText;
+
+// Copyright (c) 2019 Vanderbilt University

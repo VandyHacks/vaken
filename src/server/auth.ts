@@ -115,3 +115,5 @@ passport.deserializeUser(async (id: any, done: any) => {
 		done(err);
 	}
 });
+
+// Copyright (c) 2019 Vanderbilt University

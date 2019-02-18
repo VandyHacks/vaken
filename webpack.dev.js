@@ -42,3 +42,5 @@ module.exports = merge.smart(common, {
 		new FriendlyErrorsPlugin(), // Pretty console output
 	],
 });
+
+// Copyright (c) 2019 Vanderbilt University

@@ -249,3 +249,5 @@ dist/
 package-lock.json
 dist
 .env
+
+# Copyright (c) 2019 Vanderbilt University

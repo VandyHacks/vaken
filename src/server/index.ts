@@ -51,3 +51,5 @@ apollo.applyMiddleware({ app });
 const server = app.listen(port, () => {
 	console.log(`>>> Server started at http://localhost:${port}${apollo.graphqlPath}`);
 });
+
+// Copyright (c) 2019 Vanderbilt University

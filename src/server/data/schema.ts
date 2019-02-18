@@ -42,3 +42,5 @@ export const schema = makeExecutableSchema({
 	resolvers,
 	typeDefs,
 });
+
+// Copyright (c) 2019 Vanderbilt University
