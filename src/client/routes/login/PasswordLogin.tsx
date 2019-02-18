@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useState } from 'react';
 import produce from 'immer';
+import { Link } from 'react-router-dom';
 import emailIcon from '../../assets/img/email_icon.svg';
 import lockIcon from '../../assets/img/lock_icon.svg';
 import arrowIcon from '../../assets/img/right_arrow.svg';
@@ -71,6 +72,15 @@ export const PasswordLogin: FunctionComponent<State> = (props: Props): JSX.Eleme
 	const [emailValid, setEmailValid] = useState(true);
 	const [passValid, setPassValid] = useState(true);
 
+	const onLogin = (): void => {
+		validateAndSubmitLogin(
+			email,
+			pass,
+			checkValid<string>(email, emailValidation, setEmailValid),
+			checkValid<string>(pass, passwordValidation, setPassValid)
+		);
+	};
+
 	return (
 		<>
 			<LeftImgTextInput
@@ -93,13 +103,16 @@ export const PasswordLogin: FunctionComponent<State> = (props: Props): JSX.Eleme
 				type="password"
 			/>
 			<SpaceBetweenColumn height="10rem">
-				<TextButton
-					color="white"
-					fontSize="1.4em"
-					background={STRINGS.ACCENT_COLOR}
-					text="Login"
-					glowColor="rgba(0, 0, 255, 0.67)"
-				/>
+				<Link style={{ textDecoration: 'none' }} to="/dashboard">
+					<TextButton
+						onClick={onLogin}
+						color="white"
+						fontSize="1.4em"
+						background={STRINGS.ACCENT_COLOR}
+						text="Login"
+						glowColor="rgba(0, 0, 255, 0.67)"
+					/>
+				</Link>
 				<TextLink to="/login">Forgot Username / Password?</TextLink>
 				<FlexRow>
 					<TextLink fontSize="1.4rem" color={STRINGS.ACCENT_COLOR} to="/login/create">

@@ -16,6 +16,7 @@ export interface ContainerProps {
 	paddingLeft?: string;
 	background?: string;
 	backgroundOpacity?: string;
+	borderRadius?: string;
 }
 
 export const displayFlex = `

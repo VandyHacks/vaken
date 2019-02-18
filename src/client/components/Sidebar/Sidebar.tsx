@@ -7,6 +7,7 @@ import STRINGS from '../../assets/strings.json';
 import NavButton from '../Buttons/NavButton';
 import { FlexStartColumn, SpaceBetweenColumn, FlexEndColumn } from '../Containers/FlexContainers';
 import SmallCenteredText from '../Text/SmallCenteredText';
+import { AuthLevel, routes } from '../../assets/routes';
 
 interface Props {}
 
@@ -72,17 +73,10 @@ const NavLink = styled(UglyNavLink)`
 	}
 `;
 
-enum AuthLevel {
-	Hacker,
-	Sponsor,
-	Organizer,
-}
-
 interface Route {
-	authLevel: AuthLevel[];
+	authLevel: string[];
 	path: string;
 	displayText: string;
-	component: string;
 }
 
 const ColumnWithSeparators = styled.ul`
@@ -97,40 +91,17 @@ const ColumnWithSeparators = styled.ul`
 		margin: 0 2rem;
 		display: block;
 	}
-`;
 
-// TODO: Make routes part of config file
-const routes = [
-	{
-		authLevel: [AuthLevel.Hacker, AuthLevel.Sponsor, AuthLevel.Organizer],
-		displayText: 'Dashboard',
-		path: '/dashboard',
-	} as Route,
-	{
-		authLevel: [AuthLevel.Hacker, AuthLevel.Sponsor, AuthLevel.Organizer],
-		displayText: 'Profile',
-		path: '/profile',
-	} as Route,
-	{
-		authLevel: [AuthLevel.Hacker],
-		displayText: 'Application',
-		path: '/application',
-	} as Route,
-	{
-		authLevel: [AuthLevel.Hacker],
-		displayText: 'Team',
-		path: '/team',
-	} as Route,
-	{
-		authLevel: [AuthLevel.Hacker, AuthLevel.Sponsor, AuthLevel.Organizer],
-		displayText: 'Help',
-		path: '/help',
-	} as Route,
-];
+	.active {
+		button {
+			background: rgba(247, 245, 249, 0.1);
+		}
+	}
+`;
 
 const Sidebar = withRouter(
 	(props: Props): JSX.Element => {
-		const userLevel = AuthLevel.Hacker;
+		const userLevel = AuthLevel.HACKER; // TODO: FIXME not actual user
 		return (
 			<Layout>
 				<Background>
@@ -139,11 +110,9 @@ const Sidebar = withRouter(
 					<SpaceBetweenColumn>
 						<ColumnWithSeparators>
 							{routes.map((route: Route) => {
-								return userLevel in route.authLevel ? (
+								return route.authLevel.includes(userLevel) ? (
 									<li key={route.path}>
-										<NavLink
-											to={route.path}
-											activeStyle={{ background: 'rgba(247, 245, 249, 0.1)' }}>
+										<NavLink to={route.path} activeClassName="active">
 											<NavButtonWhiteText text={route.displayText} />
 										</NavLink>
 									</li>

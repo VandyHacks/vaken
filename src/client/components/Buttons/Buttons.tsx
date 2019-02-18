@@ -4,6 +4,7 @@ import { displayFlex } from '../Containers/FlexContainers';
 interface ButtonTextProps {
 	fontSize?: string;
 	color?: string;
+	fontWeight?: string;
 }
 
 interface ButtonProps {
@@ -13,13 +14,17 @@ interface ButtonProps {
 
 export const CenterButtonText = styled.div`
 	${displayFlex}
+	width: 100%;
+	height: 100%;
 	font-family: 'Roboto';
 	font-size: ${(props: ButtonTextProps) => props.fontSize || '1.4rem'};
+	font-weight: ${(props: ButtonTextProps) => props.fontWeight || 'normal'};
 	color: ${(props: ButtonTextProps) => props.color || 'black'};
 `;
 
 export const LeftButtonText = styled(CenterButtonText)`
 	${displayFlex}
+	align-items: flex-start;
 	font-family: 'Roboto Condensed';
 	font-size: ${(props: ButtonTextProps) => props.fontSize || '1.4rem'};
 	color: ${(props: ButtonTextProps) => props.color || 'black'};
@@ -40,7 +45,7 @@ export const Button = styled.button`
 	width: 23.33rem;
 	height: 3.2rem;
 	margin-bottom: 1.6rem;
-	background: ${(props: ButtonProps) => props.glowColor || 'rgba(255, 255, 255, 1)'};
+	background: ${(props: ButtonProps) => props.background || 'rgba(255, 255, 255, 1)'};
 	border-radius: 1rem;
 	cursor: pointer;
 	border: none;
