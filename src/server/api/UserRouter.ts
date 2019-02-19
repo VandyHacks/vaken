@@ -25,6 +25,40 @@ userRouter.get('/api/logout', async ctx => {
 	ctx.redirect('/');
 });
 
+// Create a new local account
+userRouter.post('/api/register', async ctx => {
+	console.log(ctx.request.body);
+	const existingUser = await userModel.findOne({ email: ctx.request.body.username });
+
+	// found user
+	if (existingUser) {
+		console.log('Error: Account with that email already exists');
+		ctx.redirect('/');
+	} else {
+		//no user found, create new user
+		console.log('> Creating new local user.....');
+		const newUser = {
+			email: ctx.request.body.username,
+			password: ctx.request.body.password,
+			authType: 'local',
+		};
+		const createdUser = await userModel.create(newUser);
+		if (createdUser) {
+			ctx.body = { success: true };
+			ctx.login(createdUser);
+			console.log('> User:');
+			console.log(createdUser);
+			ctx.redirect('/dashboard');
+		} else {
+			console.log('Error creating new local user');
+			ctx.body = { success: false };
+			ctx.throw(401);
+			ctx.redirect('/');
+		}
+	}
+});
+
+// Login to local account
 userRouter.post('/api/login', async ctx => {
 	return passport.authenticate('local', (err: any, user: any, info: any, status: any) => {
 		console.log('> Local auth');
@@ -42,11 +76,13 @@ userRouter.post('/api/login', async ctx => {
 	})(ctx);
 });
 
+// Google SSO
 userRouter.get(
 	'/api/auth/google',
 	passport.authenticate('google', { scope: ['openid', 'profile', 'email'], display: 'popup' })
 );
 
+// Google SSO callback
 userRouter.get('/api/auth/google/callback', async ctx => {
 	return passport.authenticate('google', (err: any, user: any, info: any, status: any) => {
 		if (user) {
@@ -63,8 +99,10 @@ userRouter.get('/api/auth/google/callback', async ctx => {
 	})(ctx);
 });
 
+// Github SSO
 userRouter.get('/api/auth/github', passport.authenticate('github', { scope: ['user:email'] }));
 
+// Github SSO callback
 userRouter.get('/api/auth/github/callback', async ctx => {
 	return passport.authenticate('github', (err: any, user: any, info: any, status: any) => {
 		if (user) {
