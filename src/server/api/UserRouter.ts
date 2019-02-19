@@ -19,6 +19,12 @@ userRouter.post('/api', async ctx => {
 	ctx.response.status = 200;
 });
 
+userRouter.get('/api/logout', async ctx => {
+	console.log('> Logging out...');
+	ctx.logout();
+	ctx.redirect('/');
+});
+
 userRouter.post('/api/login', async ctx => {
 	return passport.authenticate('local', (err: any, user: any, info: any, status: any) => {
 		console.log('> Local auth');
