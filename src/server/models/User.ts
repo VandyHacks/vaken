@@ -40,10 +40,10 @@ class User extends Typegoose {
 	@prop()
 	lastName?: string;
 
-	@prop({ unique: true })
+	@prop({ unique: true, sparse: true })
 	google?: string;
 
-	@prop({ unique: true })
+	@prop({ unique: true, sparse: true })
 	github?: string;
 
 	@prop({ required: true })
