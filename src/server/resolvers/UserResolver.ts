@@ -14,10 +14,10 @@ export class UserResolver {
 	/**
 	 * Returns a User corresponding a an array of nfcCodes (unique)
 	 */
-	@Query(returns => User, { nullable: true })
-	async getUserByNfcCodes(@Arg('nfcCodes') nfcCodes: String[]): Promise<User | undefined> {
-		return await this.users.find(user => user.nfcCodes === nfcCodes);
-	}
+	// @Query(returns => User, { nullable: true })
+	// async getUserByNfcCodes(@Arg('nfcCodes') nfcCodes: String[]): Promise<User | undefined> {
+	// 	return await this.users.find(user => user.nfcCodes === nfcCodes);
+	// }
 
 	/**
 	 * Returns a User corresponding a an email address (unique)
@@ -31,7 +31,7 @@ export class UserResolver {
 	 * Get all Users
 	 */
 	@Query(returns => [User], { description: 'Get all the Users in the database' })
-	async recipes(): Promise<User[]> {
+	async getAllUsers(): Promise<User[]> {
 		return await this.users;
 	}
 }
