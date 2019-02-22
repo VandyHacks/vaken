@@ -8,6 +8,7 @@ interface Props {
 	text: string;
 	glowColor?: string;
 	fontSize?: string;
+	onClick?: () => void;
 }
 
 interface StyleProps {

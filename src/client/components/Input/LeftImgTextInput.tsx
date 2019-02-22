@@ -1,26 +1,20 @@
 import React from 'react';
 import produce from 'immer';
 import { RightPaddedImg, ButtonOutline } from '../Buttons/Buttons';
-import TextInput from './TextInput';
+import TextInput, { Props as InputProps } from './TextInput';
 
-interface Props {
+interface Props extends InputProps {
 	img: string;
 	imgAlt: string;
-	onBlur: () => void;
-	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-	valid: boolean;
-	value: string;
-	placeholder: string;
-	type?: string;
 }
 
 const LeftImgTextInput = (props: Props): JSX.Element => {
-	const { img, imgAlt, type = 'text' } = props;
+	const { img, imgAlt } = props;
 
 	return (
 		<ButtonOutline>
 			<RightPaddedImg src={img} alt={imgAlt} />
-			<TextInput {...props} type={type} />
+			<TextInput {...props} />
 		</ButtonOutline>
 	);
 };

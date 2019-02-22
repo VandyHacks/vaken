@@ -1,6 +1,11 @@
+import produce from 'immer';
+import { Update } from 'use-immer';
+import { fieldValue } from '../../routes/application/Application';
+
 /**
  * onChangeWrapper wraps a setState function to take a react Input event function
  * @param {function} updateFn - function that will update the state
+ * @param {React.Ref} ref - element to validate
  * @returns {function} function suitable for a react input onChange={} prop
  */
 export function onChangeWrapper(
@@ -13,6 +18,26 @@ export function onChangeWrapper(
 }
 
 /**
+ * onChangeWrapper wraps a setState function to take a react Input event function
+ * @param {function} updateFn - function that will update the state
+ * @param {string} fieldName - name of field to update
+ * @returns {function} function suitable for a react input onChange={} prop
+ */
+export function formChangeWrapper(
+	updateFn: Update<Map<string, fieldValue>>,
+	fieldName: string
+): (e: React.ChangeEvent<HTMLInputElement>) => void {
+	return e => {
+		const { value, type, checked } = e.target;
+		updateFn(
+			produce((draft: Map<string, fieldValue>) =>
+				draft.set(fieldName, type === 'checkbox' ? checked : value)
+			)
+		);
+	};
+}
+
+/**
  * checkValid is a factory method for a validation function
  * @param {T} input - the input on which to run the validation fn
  * @param {function} validFn - function to validate input
@@ -21,10 +46,11 @@ export function onChangeWrapper(
  */
 export function checkValid<T>(
 	input: T,
-	validFn: (p: T) => boolean,
-	updateFn: (p: boolean) => void
+	validFn: (p: T) => boolean
+	// updateFn: (p: boolean) => void
 ): () => void {
-	return () => updateFn(validFn(input));
+	return () => {};
+	/* return () => updateFn(validFn(input)); */
 }
 
 // Copyright (c) 2019 Vanderbilt University

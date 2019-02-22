@@ -69,10 +69,8 @@ passport.use(
 					//no user found, create new user
 					console.log('> Creating user.....');
 					const newUser = {
-						google: profile.id,
 						email: profile.emails[0].value,
-						password: 'Google!123',
-						authType: 'google',
+						google: profile.id,
 					};
 					const createdUser = await userModel.create(newUser);
 					if (createdUser) {
@@ -92,6 +90,7 @@ passport.use(
 
 // Github OAuth2 authentication
 const GitHubStrategy = require('passport-github2').Strategy;
+
 passport.use(
 	new GitHubStrategy(
 		{
@@ -124,10 +123,8 @@ passport.use(
 					//no user found, create new user
 					console.log('> Creating user.....');
 					const newUser = {
-						github: profile.id,
 						email: profile.emails[0].value,
-						password: 'Github!123',
-						authType: 'github',
+						github: profile.id,
 					};
 					const createdUser = await userModel.create(newUser);
 					if (createdUser) {
