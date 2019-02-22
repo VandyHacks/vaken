@@ -6,6 +6,7 @@ import reset from 'styled-reset';
 import LoginPage from './routes/login/Login';
 import Dashboard from './routes/dashboard/Dashboard';
 import Application from './routes/application/Application';
+import ManageHackers from './routes/manage/ManageHackers';
 
 const GlobalStyle = createGlobalStyle`
 	body {
@@ -29,6 +30,7 @@ const Vaken = (): JSX.Element => {
 				<Switch>
 					<Route path="/application" component={Application} />
 					<Route path="/dashboard" component={Dashboard} />
+					<Route path="/managehackers" component={ManageHackers} />
 					<Route path="/" component={LoginPage} />
 				</Switch>
 			</BrowserRouter>
