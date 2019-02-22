@@ -1,11 +1,38 @@
-import { prop, arrayProp, Typegoose, ModelType, InstanceType } from 'typegoose';
+import { pre, prop, arrayProp, Typegoose, ModelType, InstanceType } from 'typegoose';
+import bcrypt from 'bcrypt';
 
 // Figure out how we want to handle user roles/auth
 // enum UserRole {}
 
+const saltRounds = 10;
+@pre<User>('save', function(next) {
+	const user = this;
+	if (!user.isModified('password')) {
+		return next();
+	}
+	bcrypt.genSalt(saltRounds, (err, salt) => {
+		if (err) {
+			return next();
+		}
+		bcrypt.hash(user.password, salt, (err, hash) => {
+			if (err) {
+				return next();
+			}
+			user.password = hash;
+			next();
+		});
+	});
+})
 class User extends Typegoose {
-	@arrayProp({ items: String, unique: true })
+	@prop({ required: true })
+	email: string = '';
+
+	// not unique for now to make testing easier
+	@arrayProp({ items: String })
 	nfcCodes?: string[];
+
+	@prop({ required: true })
+	password: string = '';
 
 	@prop()
 	firstName?: string;
@@ -13,14 +40,14 @@ class User extends Typegoose {
 	@prop()
 	lastName?: string;
 
-	@prop({ required: true })
-	email: string = '';
-
-	@prop({ unique: true })
+	@prop({ unique: true, sparse: true })
 	google?: string;
 
-	@prop({ unique: true })
+	@prop({ unique: true, sparse: true })
 	github?: string;
+
+	@prop({ required: true })
+	authType: string = 'None';
 
 	@prop()
 	phoneNumber?: string;

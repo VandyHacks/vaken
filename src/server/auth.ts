@@ -1,10 +1,42 @@
 import passport from 'koa-passport';
+import bcrypt from 'bcrypt';
 import { Profile as GoogleProfile } from 'passport-google-oauth';
 import { Profile as GithubProfile } from 'passport-github2';
 import { userModel } from './models/User';
 
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+// Local authentication for non-SSO users
+const LocalStrategy = require('passport-local').Strategy;
+passport.use(
+	new LocalStrategy(
+		{ passReqToCallback: true },
+		async (req: any, username: string, password: string, done: any) => {
+			console.log('> Local verify function');
+			const user = await userModel.findOne({ email: username });
 
+			// no user
+			if (!user) {
+				console.log('> User does not exist');
+				done(null, false);
+			} else if (!bcrypt.compare(password, user.password)) {
+				// wrong password
+				console.log('> Incorrect password');
+				done(null, false);
+			} else {
+				//found user
+				if (user.authType != 'local') {
+					console.log('Wrong auth provider. Please use the standard local login.');
+					done(null, false);
+				} else {
+					console.log('> Logging in.....');
+					done(null, user);
+				}
+			}
+		}
+	)
+);
+
+// Google OAuth2 authentication
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 passport.use(
 	new GoogleStrategy(
 		{
@@ -21,20 +53,26 @@ passport.use(
 			done: any
 		) => {
 			console.log('> Google verify function');
-			// console.log(profile);
-			const user = await userModel.findOne({ google: profile.id });
+			if (profile.emails) {
+				const user = await userModel.findOne({ email: profile.emails[0].value });
 
-			// found user
-			if (user) {
-				console.log('> Logging in.....');
-				done(null, user);
-			} else {
-				//no user found, create new user
-				if (profile.emails) {
+				// found user
+				if (user) {
+					if (user.authType != 'google') {
+						console.log('Wrong auth provider. Please use Google.');
+						done(null, false);
+					} else {
+						console.log('> Logging in.....');
+						done(null, user);
+					}
+				} else {
+					//no user found, create new user
 					console.log('> Creating user.....');
 					const newUser = {
 						google: profile.id,
 						email: profile.emails[0].value,
+						password: 'Google!123',
+						authType: 'google',
 					};
 					const createdUser = await userModel.create(newUser);
 					if (createdUser) {
@@ -43,15 +81,16 @@ passport.use(
 					} else {
 						done(null, false);
 					}
-				} else {
-					console.log('Missing email');
-					done(null, false);
 				}
+			} else {
+				console.log('Missing email in auth profile');
+				done(null, false);
 			}
 		}
 	)
 );
 
+// Github OAuth2 authentication
 const GitHubStrategy = require('passport-github2').Strategy;
 passport.use(
 	new GitHubStrategy(
@@ -69,20 +108,26 @@ passport.use(
 			done: any
 		) => {
 			console.log('> Github verify function');
-			// console.log(profile);
-			const user = await userModel.findOne({ github: profile.id });
+			if (profile.emails) {
+				const user = await userModel.findOne({ email: profile.emails[0].value });
 
-			// found user
-			if (user) {
-				console.log('> Logging in.....');
-				done(null, user);
-			} else {
-				//no user found, create new user
-				if (profile.emails) {
+				// found user
+				if (user) {
+					if (user.authType != 'github') {
+						console.log('Wrong auth provider. Please use Github.');
+						done(null, false);
+					} else {
+						console.log('> Logging in.....');
+						done(null, user);
+					}
+				} else {
+					//no user found, create new user
 					console.log('> Creating user.....');
 					const newUser = {
 						github: profile.id,
 						email: profile.emails[0].value,
+						password: 'Github!123',
+						authType: 'github',
 					};
 					const createdUser = await userModel.create(newUser);
 					if (createdUser) {
@@ -91,28 +136,27 @@ passport.use(
 					} else {
 						done(null, false);
 					}
-				} else {
-					console.log('Missing email');
-					done(null, false);
 				}
+			} else {
+				console.log('Missing email in auth profile');
+				done(null, false);
 			}
 		}
 	)
 );
 
-// passport.serializeUser((user: object, cb: (err: any, user: object) => void) => cb(null, user));
-// passport.deserializeUser((obj: object, cb: (err: any, user: object) => void) => cb(null, obj));
-
 passport.serializeUser((user: any, done: any) => {
+	console.log('serialize user');
 	done(null, user.id);
 });
 
 passport.deserializeUser(async (id: any, done: any) => {
+	console.log('deserialize user');
 	try {
 		const user = await userModel.findById(id);
-		done(user);
+		done(null, user);
 	} catch (err) {
-		done(err);
+		done(err, null, { message: 'Failed to deserialize' });
 	}
 });
 
