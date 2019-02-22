@@ -18,7 +18,7 @@ const Layout = styled.div`
 		'sidebar . header' 10vh
 		'sidebar . .' 1rem
 		'sidebar . content' 1fr
-		/ 18rem 2rem 1fr;
+		/ 22rem 2rem 1fr;
 	/* align-items: stretch; */
 	overflow: hidden;
 

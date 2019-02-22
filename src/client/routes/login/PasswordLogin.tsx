@@ -13,12 +13,6 @@ import { emailValidation, passwordValidation } from '../../../common/ValidationF
 import { onChangeWrapper, checkValid } from '../../components/Input/helperFunctions';
 
 interface Props {}
-interface State {
-	email: string;
-	emailValid: boolean; // Validation state for email field. Used for red underline and sending
-	pass: string;
-	passValid: boolean; // Validation state for password field. Used for red underline and sending
-}
 
 /**
  * @brief Validates and submits login information to server
@@ -65,7 +59,7 @@ export const validateAndSubmitLogin = (
  * @param {Props} props - currently not used
  * @returns {JSX.Element} a React.Fragment containing inputs and a login button
  */
-export const PasswordLogin: FunctionComponent<State> = (props: Props): JSX.Element => {
+export const PasswordLogin: FunctionComponent<Props> = (props: Props): JSX.Element => {
 	const [email, setEmail] = useState('');
 	const [pass, setPass] = useState('');
 	const [emailValid, setEmailValid] = useState(true);
