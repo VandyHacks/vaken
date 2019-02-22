@@ -1,21 +1,15 @@
 import React, { FunctionComponent, useState } from 'react';
 import {
-	defaultTableRowRenderer,
 	Table,
-	TableRowProps,
 	Column,
 	AutoSizer,
 	SortDirection,
 	SortIndicator,
-	TableHeaderRenderer,
 	TableHeaderProps,
 	SortDirectionType,
 } from 'react-virtualized';
-import { string } from 'prop-types';
 import 'react-virtualized/styles.css';
 import styled from 'styled-components';
-import { generateKeyPair } from 'crypto';
-import { SortDirectionStatic } from 'react-virtualized/dist/es/Table';
 
 const StyledTable = styled(Table)`
 	.ReactVirtualized__Table__Grid {
@@ -80,6 +74,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		// sort alphanumerically
 		const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
 
+		// TODO: replace any
 		let sortedData = (data as any)
 			.sort((a: any, b: any) => collator.compare(a[sortBy], b[sortBy]));
 		if (sortDirection === SortDirection.DESC) {
