@@ -9,7 +9,7 @@ import { ApolloServer, gql } from 'apollo-server-koa';
 import { buildSchema } from 'type-graphql';
 
 import userRouter from './api/UserRouter';
-import { RecipeResolver } from './resolvers/RecipeResolver';
+import { UserResolver } from './resolvers/UserResolver';
 
 const app = new koa();
 const router = new koaRouter();
@@ -55,7 +55,7 @@ mongoose.connect('mongodb://localhost:27017/test').then(
 async function launchServer() {
 	// build TypeGraphQL executable schema
 	const schema = await buildSchema({
-		resolvers: [RecipeResolver],
+		resolvers: [UserResolver],
 		// automatically create `schema.gql` file with schema definition in current folder
 		// emitSchemaFile: path.resolve(__dirname, 'schema.gql'),
 	});
