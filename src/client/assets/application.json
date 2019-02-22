@@ -1,0 +1,71 @@
+[
+	{
+		"name": "Demographic",
+		"title": "Demographic",
+		"fields": [
+			{
+				"name": "firstName",
+				"input": "input",
+				"title": "First Name",
+				"placeholder": "John",
+				"required": true,
+				"validation": "^(?!\\s*$).+"
+			},
+			{
+				"name": "lastName",
+				"input": "input",
+				"title": "Last Name",
+				"placholder": "Smith",
+				"required": true,
+				"validation": "^.{6,}$"
+			},
+			{
+				"name": "dateOfBirth",
+				"input": "input",
+				"type": "date",
+				"title": "Date of Birth",
+				"placeholder": "01/01/2000"
+			},
+			{
+				"name": "graduationYear",
+				"input": "slider",
+				"title": "Graduation Year",
+				"options": ["2019", "2020", "2021", "2022"],
+				"defaultValue": 2019
+			},
+			{
+				"name": "ethnicity",
+				"input": "toggle",
+				"title": "Ethnicity",
+				"note": "Are you Spanish, Hispantic, or Latino?",
+				"defaultValue": true
+			},
+			{
+				"name": "race",
+				"input": "multi-checkbox",
+				"title": "Race",
+				"note": "Choose all that apply.",
+				"options": [
+					"American Indian or Alaskan Native",
+					"Asian",
+					"Black or African American",
+					"White or Caucasian",
+					"Native Hawaiian or Other Pacific Islander",
+					"Some other race or origin"
+				]
+			}
+		]
+	},
+	{
+		"name": "education",
+		"title": "Education",
+		"fields": [
+			{
+				"name": "school",
+				"input": "autocomplete/school",
+				"title": "School",
+				"placeholder": "If not found, please type the name."
+			}
+		]
+	}
+]

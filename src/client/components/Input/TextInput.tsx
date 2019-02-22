@@ -1,26 +1,32 @@
-import React from 'react';
+import React, { forwardRef, RefForwardingComponent } from 'react';
 import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
+import { fieldValue } from '../../routes/application/Application';
 
-interface Props {
-	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-	onBlur?: () => void;
+export interface Props {
 	color?: string;
+	value: fieldValue;
+	required?: boolean;
 	placeholder?: string;
 	type?: string;
-	value: string;
-	valid?: boolean;
+	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	onBlur?: () => void;
+	id?: string;
+	className?: string;
+	list?: string;
 }
-interface State {}
 
-const TextInputStyles = styled.input`
+export const Input = styled.input`
 	width: 17rem;
 	border: none;
-	border-bottom: ${(props: Props) => (props.valid ? 'none' : '2px solid red')};
 	font-size: 1.4rem;
 	color: ${STRINGS.DARK_TEXT_COLOR};
 	::placeholder {
 		color: ${STRINGS.LIGHT_TEXT_COLOR};
+	}
+
+	:invalid {
+		border-bottom: 2px solid red;
 	}
 
 	&:focus {
@@ -30,10 +36,16 @@ const TextInputStyles = styled.input`
 `;
 
 const TextInput = (props: Props): JSX.Element => {
-	return <TextInputStyles {...props} />;
+	const { type = 'text', value } = props;
+	let strValue = '';
+
+	if (typeof value === 'string') {
+		strValue = value;
+	}
+
+	return <Input type={type} value={strValue} {...props} />;
 };
 
 export default TextInput;
-export { TextInputStyles };
 
 // Copyright (c) 2019 Vanderbilt University
