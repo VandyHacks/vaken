@@ -21,11 +21,19 @@ export class UserResolver implements ResolverInterface<User> {
 	private readonly users: User[] = createUserSamples();
 
 	/**
-	 * Returns a User corresponding a an array of nfcCodes
+	 * Returns a User corresponding a an array of nfcCodes (unique)
 	 */
 	@Query(returns => User, { nullable: true })
-	async user(@Arg('nfcCodes') nfcCodes: String[]): Promise<User | undefined> {
+	async getUserByNfcCodes(@Arg('nfcCodes') nfcCodes: String[]): Promise<User | undefined> {
 		return await this.users.find(user => user.nfcCodes === nfcCodes);
+	}
+
+	/**
+	 * Returns a User corresponding a an email address (unique)
+	 */
+	@Query(returns => User, { nullable: true })
+	async getUserByEmail(@Arg('email') email: string): Promise<User | undefined> {
+		return await this.users.find(user => user.email === email);
 	}
 }
 
