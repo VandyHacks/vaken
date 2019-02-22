@@ -20,8 +20,11 @@ import { User } from '../data/User';
 export class UserResolver implements ResolverInterface<User> {
 	private readonly users: User[] = createUserSamples();
 
+	/**
+	 * Returns a User corresponding a an array of nfcCodes
+	 */
 	@Query(returns => User, { nullable: true })
-	async recipe(@Arg('nfcCodes') nfcCodes: String[]): Promise<User | undefined> {
+	async user(@Arg('nfcCodes') nfcCodes: String[]): Promise<User | undefined> {
 		return await this.users.find(user => user.nfcCodes === nfcCodes);
 	}
 }
