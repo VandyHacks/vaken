@@ -35,6 +35,9 @@ export class UserResolver implements ResolverInterface<User> {
 	}
 }
 
+/**
+ * Function to create dummy data
+ */
 let createUserSamples = () => {
 	return plainToClass(User, [
 		{
