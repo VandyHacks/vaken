@@ -5,6 +5,7 @@ import { Field, ObjectType, Int, Float } from 'type-graphql';
  * TODO - build explicit constructor (can I just set default values?)
  * TODO - enforce uniqueness as necessary
  * TODO - enforce required vs optional status as necessary
+ * TODO - sanitize data (maybe move to db layer?)
  */
 @ObjectType({ description: 'DTO for a generic Vaken user' })
 export class User {
@@ -27,13 +28,13 @@ export class User {
 	github?: string;
 
 	@Field()
-	phoneNumber!: string;
+	phoneNumber!: string; // TODO - make this typed
 
 	@Field()
-	gender!: string;
+	gender!: string; // TODO - make this an enum
 
 	@Field()
-	shirtSize!: string;
+	shirtSize!: string; // TODO - make this an enum
 
 	@Field()
 	dietaryRestrictions?: string;
