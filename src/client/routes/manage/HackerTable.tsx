@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
 import {
 	Table,
 	Column,
@@ -63,7 +63,7 @@ interface Props {
 export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element => {
 	const [sortBy, setSortBy] = useState('name');
 	const [sortDirection, setSortDirection] = useState<SortDirectionType>(SortDirection.ASC);
-	const [filteredData, setFilteredData] = useState<Hacker[]>(props.data);
+	const [sortedData, setSortedData] = useState<Hacker[]>(props.data);
 	const sortData = ({
 		sortBy,
 		sortDirection,
@@ -71,13 +71,11 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		sortBy: string;
 		sortDirection: SortDirectionType;
 	}) => {
-		// const { data } = props;
-
 		// sort alphanumerically
 		const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
 
 		// TODO: replace any
-		let newSortedData = (filteredData as any).sort((a: any, b: any) =>
+		let newSortedData = (sortedData as any).sort((a: any, b: any) =>
 			collator.compare(a[sortBy], b[sortBy])
 		);
 		if (sortDirection === SortDirection.DESC) {
@@ -86,13 +84,27 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 
 		return newSortedData;
 	};
-	const [sortedData, setSortedData] = useState<Hacker[]>(sortData({ sortBy, sortDirection }));
+
+	// only gets called once per prop.data
+	useEffect(() => {
+		setSortedData(sortData({ sortBy, sortDirection }));
+	}, [props.data]);
+
+	useEffect(() => {
+		// console.log("re-sort");
+		sort({ sortBy, sortDirection });
+	}, [sortedData]);
+
 	const [searchValue, setSearchValue] = useState('');
 	const opts = {
 		caseSensitive: true,
-		shouldSort: true,
+		shouldSort: false,
 		tokenize: true,
-		keys: ['name', 'email', 'school'] as (keyof Hacker)[],
+		threshold: 0.5,
+		distance: 100,
+		location: 0,
+		findAllMatches: true,
+		keys: ['name', 'school', 'gradYear'] as (keyof Hacker)[],
 	};
 
 	const generateRowClassName = ({ index }: { index: number }): string =>
@@ -125,13 +137,17 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		setSortDirection(sortDirection);
 		setSortedData(sortedData);
 	};
+
 	const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const value = event.target.value;
 		if (value !== '') {
 			// fuzzy filtering
 			const fuse = new Fuse(props.data, opts);
-			setFilteredData(fuse.search(value));
-			sort({ sortBy, sortDirection });
+			setSortedData(fuse.search(value));
+			console.log(fuse.search(value));
+		} else {
+			// reset
+			setSortedData(props.data);
 		}
 		setSearchValue(event.target.value);
 	};
