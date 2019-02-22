@@ -63,15 +63,13 @@ export const validateAndSubmitLogin = (
 export const PasswordLogin: FunctionComponent<Props> = (props: Props): JSX.Element => {
 	const [email, setEmail] = useState('');
 	const [pass, setPass] = useState('');
-	const [emailValid, setEmailValid] = useState(true);
-	const [passValid, setPassValid] = useState(true);
 
 	const onLogin = (): void => {
 		validateAndSubmitLogin(
 			email,
 			pass,
-			checkValid<string>(email, emailValidation, setEmailValid),
-			checkValid<string>(pass, passwordValidation, setPassValid)
+			checkValid<string>(email, emailValidation),
+			checkValid<string>(pass, passwordValidation)
 		);
 	};
 
@@ -80,18 +78,14 @@ export const PasswordLogin: FunctionComponent<Props> = (props: Props): JSX.Eleme
 			<LeftImgTextInput
 				img={emailIcon}
 				imgAlt="Email icon"
-				onBlur={checkValid<string>(email, emailValidation, setEmailValid)}
 				onChange={onChangeWrapper(setEmail)}
-				valid={emailValid}
 				value={email}
 				placeholder="Email"
 			/>
 			<LeftImgTextInput
 				img={lockIcon}
 				imgAlt="Lock icon"
-				onBlur={checkValid<string>(pass, passwordValidation, setPassValid)}
 				onChange={onChangeWrapper(setPass)}
-				valid={passValid}
 				value={pass}
 				placeholder="Password"
 				type="password"

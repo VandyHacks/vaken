@@ -1,5 +1,10 @@
 import styled from 'styled-components';
-import { FlexStartColumn, ContainerProps as Props } from './FlexContainers';
+import { FlexStartColumn, ContainerProps } from './FlexContainers';
+
+export interface Props extends ContainerProps {
+	backgroundOpacity?: string;
+	borderRadius?: string;
+}
 
 const FloatingPopup = styled(FlexStartColumn)`
 	transition: ease-in-out all 1s;

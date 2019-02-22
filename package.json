@@ -60,6 +60,7 @@
 		"styled-reset": "^1.6.6",
 		"type-graphql": "^0.16.0",
 		"typegoose": "^5.5.0",
+		"use-immer": "^0.1.0",
 		"yup": "^0.26.10"
 	},
 	"description": "Next-gen hacker registration system",

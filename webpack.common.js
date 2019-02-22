@@ -35,23 +35,23 @@ module.exports = {
 				test: /\.(gif|png|jpe?g|svg)$/i,
 				use: ['file-loader'],
 			},
-			{
-				test: /\.less$/,
-				use: [{
-					loader: "style-loader"
-				}, {
-					loader: "css-loader"
-				}, {
-					loader: "less-loader",
-					options: {
-						javascriptEnabled: true
-					}
-				}]
-			},	
-			{
-				test: /\.css$/,
-				use: ['style-loader','css-loader']
-			},
+			// {
+			// 	test: /\.less$/,
+			// 	use: [{
+			// 		loader: "style-loader"
+			// 	}, {
+			// 		loader: "css-loader"
+			// 	}, {
+			// 		loader: "less-loader",
+			// 		options: {
+			// 			javascriptEnabled: true
+			// 		}
+			// 	}]
+			// },	
+			// {
+			// 	test: /\.css$/,
+			// 	use: ['style-loader','css-loader']
+			// },
 		],
 	},
 	// optimization: {

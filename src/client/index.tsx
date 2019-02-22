@@ -7,6 +7,7 @@ import LoginPage from './routes/login/Login';
 import Dashboard from './routes/dashboard/Dashboard';
 import Application from './routes/application/Application';
 import ManageHackers from './routes/manage/ManageHackers';
+import Frame from './routes/dashboard/Frame';
 
 const GlobalStyle = createGlobalStyle`
 	body {
@@ -28,10 +29,8 @@ const Vaken = (): JSX.Element => {
 			<GlobalStyle />
 			<BrowserRouter>
 				<Switch>
-					<Route path="/application" component={Application} />
-					<Route path="/dashboard" component={Dashboard} />
-					<Route path="/managehackers" component={ManageHackers} />
-					<Route path="/" component={LoginPage} />
+					<Route path="/login" component={LoginPage} />
+					<Route path="/" component={Frame} />
 				</Switch>
 			</BrowserRouter>
 		</>

@@ -14,7 +14,6 @@ interface ButtonProps {
 
 export const CenterButtonText = styled.div`
 	${displayFlex}
-	width: 100%;
 	height: 100%;
 	font-family: 'Roboto';
 	font-size: ${(props: ButtonTextProps) => props.fontSize || '1.4rem'};

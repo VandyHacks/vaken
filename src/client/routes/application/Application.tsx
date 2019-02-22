@@ -1,216 +1,131 @@
-import React, { JSXElementConstructor } from 'react';
-import mockData from './mockData.json';
-// import institutions from './us_institutions.json';
-import institutions from './institutions2.json';
-import { Form, Input, Checkbox, Button, Icon, Slider, Switch, Row, Col, Select } from 'antd';
-import { FlexRow, FlexColumn } from '../../components/Containers/FlexContainers';
-import { FormComponentProps } from 'antd/lib/form/Form';
+import React, { FunctionComponent, useState, useEffect, useRef } from 'react';
+import styled from 'styled-components';
+import { useImmer } from 'use-immer';
+import AutoComplete from '../../components/Input/AutoCompleteTextInput';
+import { onChangeWrapper, formChangeWrapper } from '../../components/Input/helperFunctions';
+import TextInput from '../../components/Input/TextInput';
+import { AppField, AppSection } from './ApplicationConfig'; // TODO Delete this
+import Checkbox from '../../components/Input/Checkbox';
+import config from '../../assets/application.json';
+import institutions from '../../assets/data/institutions.json';
 
-const Option = Select.Option;
-
-// interface Values {
-// 	firstName: string;
-// 	lastName: string;
-// 	email: string;
-// }
-
-interface State {
-	institutions: string[];
-}
-
-type Options = {
-	title: string;
-	value: string | boolean | number;
-};
-
-// type Institution = {
-// 	institution: string;
-// };
-
-type FieldData = {
-	name: string;
-	component: string;
-	type?: string;
-	title: string;
-	prompt?: string;
-	instruction?: string;
+interface Props {
+	input: string;
+	options?: string[];
+	id: string; //Req'd for form label
 	placeholder?: string;
-	required?: boolean;
-	validation?: string;
-	options?: Options[];
-	defaultValue?: any;
-};
-
-type SectionData = {
+	pattern?: string;
+	completions?: string[];
 	name: string;
-	title: string;
-	fields: FieldData[];
-};
-
-const isFieldTypeValid = (input: string): boolean => {
-	const valid: string[] = ['date', 'password', 'number', 'text'];
-	return valid.includes(input.toLowerCase());
-};
-
-class Application extends React.Component<FormComponentProps, State> {
-	state = { institutions: [] };
-	// loadedInstitutions = institutions;
-
-	componentDidMount() {
-		// const data: SectionData[] = mockData.data;
-		// fetch would go here
-		this.setState({ institutions: institutions });
-	}
-
-	// public shouldComponentUpdate(nextProps:, nextState) {
-
-	// }
-
-	handleSubmit = (e: React.FormEvent<any>) => {
-		e.preventDefault();
-		this.props.form.validateFields((err, values) => {
-			if (!err) {
-				console.log('Received values of form: ', values);
-			}
-		});
-	};
-
-	generateInstitutions = (): JSX.Element[] =>
-		this.state.institutions.map((option: string, index: number) => (
-			<Option key={option}>{option}</Option>
-		));
-
-	// school = this.generateInstitutions();
-
-	render() {
-		const { getFieldDecorator } = this.props.form;
-		const formItemLayout = {
-			wrapperCol: { span: 14 },
-		};
-		const data: SectionData[] = mockData.data;
-
-		let components: JSX.Element[] = [];
-		let count: number = 0;
-		data.forEach((section: SectionData, index: number) => {
-			count++;
-			components.push(<div key={count}>Section {index + 1}:</div>);
-			section.fields.forEach((field: FieldData) => {
-				let label = [
-					field.title != undefined ? <div>{field.title}</div> : undefined,
-					field.prompt != undefined ? <div>{field.prompt}</div> : undefined,
-					field.instruction != undefined ? <div>{field.instruction}</div> : undefined,
-				];
-
-				let item;
-				let options;
-				count++;
-
-				// TODO: add validation pattern support (and types like "email" and "url")
-
-				switch (field.component.toLowerCase()) {
-					case 'input':
-						item = (
-							<Form.Item key={count} {...formItemLayout}>
-								{label}
-								{getFieldDecorator(field.name, {
-									initialValue: field.defaultValue,
-									rules: [{ required: field.required, message: 'Required!' }],
-								})(
-									<Input
-										type={
-											field.type !== undefined && isFieldTypeValid(field.type)
-												? field.type
-												: undefined
-										}
-										placeholder={field.placeholder}
-									/>
-								)}
-							</Form.Item>
-						);
-						break;
-					case 'checkbox':
-						options =
-							field.options !== undefined
-								? field.options.map((option: { title: string; value: any }, index: number) => (
-										<Row>
-											<Col span={36}>
-												<Checkbox key={index} value={option.value}>
-													{option.title}
-												</Checkbox>
-											</Col>
-										</Row>
-								  ))
-								: undefined;
-						item = (
-							<Form.Item key={count} {...formItemLayout}>
-								{label}
-								{getFieldDecorator(field.name, {
-									initialValue: field.defaultValue,
-								})(<Checkbox.Group>{options}</Checkbox.Group>)}
-							</Form.Item>
-						);
-						break;
-					case 'select':
-						if (field.type === 'autocomplete') {
-							console.log('rendered auto complete!');
-							options = this.generateInstitutions();
-							item = (
-								<Form.Item key={count} {...formItemLayout}>
-									{label}
-									{getFieldDecorator(field.name, {
-										initialValue: field.defaultValue !== undefined ? field.defaultValue : undefined,
-									})(
-										<Select showArrow={true} placeholder={field.placeholder} showSearch={true}>
-											{options}
-										</Select>
-									)}
-								</Form.Item>
-							);
-						} else {
-							options =
-								field.options !== undefined
-									? field.options.map((option: { title: string; value: any }, index: number) => (
-											<Option key={option.value}>{option.title}</Option>
-									  ))
-									: undefined;
-							item = (
-								<Form.Item key={count} {...formItemLayout}>
-									{label}
-									{getFieldDecorator(field.name, {
-										initialValue: field.defaultValue !== undefined ? field.defaultValue : undefined,
-									})(
-										<Select showArrow={true} placeholder={field.placeholder} showSearch={true}>
-											{options}
-										</Select>
-									)}
-								</Form.Item>
-							);
-						}
-						break;
-					default:
-						console.log('invalid form element!');
-						item = <div>undefined</div>;
-				}
-				components.push(item);
-			});
-		});
-
-		return (
-			<Form onSubmit={this.handleSubmit}>
-				{/* {this.state.form}
-				{this.state.test} */}
-				{components}
-				<Form.Item key={count} {...formItemLayout}>
-					{getFieldDecorator('test')(
-						<Select showArrow={true} placeholder={'test'} showSearch={true}>
-							{this.generateInstitutions()}
-						</Select>
-					)}
-				</Form.Item>
-			</Form>
-		);
-	}
 }
+
+export type fieldValue = string | boolean | string[] | undefined;
+export type field = {
+	name: string;
+	value: fieldValue;
+};
+
+const InputFactory: FunctionComponent<Props> = (props: Props): JSX.Element => {
+	const [value, setValue] = useImmer(new Map<string, fieldValue>());
+	const { input, ...rest } = props;
+	const { name } = props;
+
+	switch (input) {
+		case 'input':
+			return (
+				<TextInput {...rest} value={value.get(name)} onChange={formChangeWrapper(setValue, name)} />
+			);
+		case 'slider':
+			return (
+				<TextInput
+					{...rest}
+					value={value.get(name)}
+					onChange={formChangeWrapper(setValue, name)}
+				/> /* TODO: Create Slider */
+			);
+		case 'multi-checkbox':
+			return (
+				<Checkbox
+					{...rest}
+					onChange={formChangeWrapper(setValue, name)}
+					value={value.get(name)}
+				/> /* TODO: Create checkbox */
+			);
+		// case 'toggle':
+		// 	return (
+		// 		<RadioButton
+		// 			{...rest}
+		// 			onChange={formChangeWrapper(setValue, name)}
+		// 			value={value.get(name)}
+		// 		/> /* TODO: Create checkbox */
+		// 	);
+		case 'autocomplete/school':
+			return (
+				<AutoComplete
+					{...rest}
+					options={institutions}
+					value={value.get(name)}
+					onChange={formChangeWrapper(setValue, name)}
+				/>
+			);
+	}
+
+	return (
+		<p>
+			<b>No component found :(</b>
+		</p>
+	);
+};
+
+export const Prompt = styled.h2``;
+
+export const Application: FunctionComponent<{}> = (props): JSX.Element => {
+	const formRef = useRef<HTMLFormElement>(null);
+	const [formData, setFormData] = useState(new Map<string, fieldValue>());
+
+	return (
+		<form ref={formRef}>
+			{config.map((section: AppSection) => {
+				return (
+					<fieldset key={section.title}>
+						<legend>{section.title}</legend>
+						{section.fields.map(
+							(field: AppField): JSX.Element => {
+								const { title, validation = '', note, ...rest } = field;
+								return (
+									<label key={title} htmlFor={title}>
+										{title}
+										{prompt ? <Prompt>{prompt}</Prompt> : null}
+										<InputFactory id={title} pattern={validation} {...rest} />
+									</label>
+								);
+							}
+						)}
+					</fieldset>
+				);
+			})}
+
+			{/* <label htmlFor="school">
+				School
+				<AutoComplete
+					id="school"
+					required
+					value={school}
+					onChange={onChangeWrapper(setSchool)}
+					completions={institutions}
+				/>
+			</label>
+			<label htmlFor="email">
+				email
+				<TextInput id="email" value={email} type="email" onChange={onChangeWrapper(setEmail)} />
+			</label>
+			<label htmlFor="name">
+				Name
+				<TextInput id="name" value={name} onChange={onChangeWrapper(setName)} />
+			</label> */}
+		</form>
+	);
+};
 
 // export default Application;
-export default Form.create<{}>()(Application);
+export default Application;
