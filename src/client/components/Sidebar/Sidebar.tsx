@@ -122,6 +122,16 @@ const routes = [
 		path: '/team',
 	} as Route,
 	{
+		authLevel: [AuthLevel.Organizer],
+		displayText: 'Manage Hackers',
+		path: '/managehackers',
+	} as Route,
+	{
+		authLevel: [AuthLevel.Organizer],
+		displayText: 'Manage Sponsors',
+		path: '/managesponsors',
+	} as Route,
+	{
 		authLevel: [AuthLevel.Hacker, AuthLevel.Sponsor, AuthLevel.Organizer],
 		displayText: 'Help',
 		path: '/help',
@@ -130,7 +140,8 @@ const routes = [
 
 const Sidebar = withRouter(
 	(props: Props): JSX.Element => {
-		const userLevel = AuthLevel.Hacker;
+		const userLevel = AuthLevel.Organizer;
+
 		return (
 			<Layout>
 				<Background>
@@ -139,7 +150,7 @@ const Sidebar = withRouter(
 					<SpaceBetweenColumn>
 						<ColumnWithSeparators>
 							{routes.map((route: Route) => {
-								return userLevel in route.authLevel ? (
+								return route.authLevel.includes(userLevel) ? (
 									<li key={route.path}>
 										<NavLink
 											to={route.path}
