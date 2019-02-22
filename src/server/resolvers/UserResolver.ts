@@ -12,14 +12,6 @@ export class UserResolver {
 	private readonly users: User[] = createUserSamples();
 
 	/**
-	 * Returns a User corresponding a an array of nfcCodes (unique)
-	 */
-	// @Query(returns => User, { nullable: true })
-	// async getUserByNfcCodes(@Arg('nfcCodes') nfcCodes: String[]): Promise<User | undefined> {
-	// 	return await this.users.find(user => user.nfcCodes === nfcCodes);
-	// }
-
-	/**
 	 * Returns a User corresponding a an email address (unique)
 	 */
 	@Query(returns => User, { nullable: true })

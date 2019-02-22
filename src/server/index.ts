@@ -75,7 +75,7 @@ async function launchServer() {
 	});
 }
 
-// Launch GQL server
+// Launch server with GraphQL endpoint
 launchServer();
 
 // Copyright (c) 2019 Vanderbilt University
