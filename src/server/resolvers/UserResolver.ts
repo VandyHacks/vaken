@@ -17,7 +17,14 @@ import { User } from '../data/User';
  * TODO - add mutations
  */
 @Resolver(of => User)
-export class UserResolver implements ResolverInterface<User> {}
+export class UserResolver implements ResolverInterface<User> {
+	private readonly users: User[] = createUserSamples();
+
+	@Query(returns => User, { nullable: true })
+	async recipe(@Arg('nfcCodes') nfcCodes: String[]): Promise<User | undefined> {
+		return await this.users.find(user => user.nfcCodes === nfcCodes);
+	}
+}
 
 let createUserSamples = () => {
 	return plainToClass(User, [
