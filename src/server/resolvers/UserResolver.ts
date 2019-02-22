@@ -1,14 +1,4 @@
-import {
-	Resolver,
-	Query,
-	FieldResolver,
-	Arg,
-	Root,
-	Mutation,
-	Float,
-	Int,
-	ResolverInterface,
-} from 'type-graphql';
+import { Resolver, Query, Arg, ResolverInterface } from 'type-graphql';
 import { plainToClass } from 'class-transformer';
 
 import { User } from '../data/User';
