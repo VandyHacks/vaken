@@ -1,13 +1,14 @@
-import { Resolver, Query, Arg, ResolverInterface } from 'type-graphql';
+import { Resolver, Query, Arg, FieldResolver, ResolverInterface } from 'type-graphql';
 import { plainToClass } from 'class-transformer';
 
 import { User } from '../data/User';
 
 /*
- * TODO - add mutations
+ * TODO - consider implementing ResolverInterface
+ * TODO - implement mutations
  */
 @Resolver(of => User)
-export class UserResolver implements ResolverInterface<User> {
+export class UserResolver {
 	private readonly users: User[] = createUserSamples();
 
 	/**
