@@ -6,8 +6,10 @@ import mongoose from 'mongoose';
 import passport from 'koa-passport';
 import session from 'koa-session';
 import { ApolloServer, gql } from 'apollo-server-koa';
+import { buildSchema } from 'type-graphql';
+
 import userRouter from './api/UserRouter';
-import { schema } from './data/schema';
+import { UserResolver } from './resolvers/UserResolver';
 
 const app = new koa();
 const router = new koaRouter();
@@ -43,13 +45,37 @@ mongoose.connect('mongodb://localhost:27017/test').then(
 	}
 );
 
-// GraphQL
-const apollo = new ApolloServer({ schema });
-apollo.applyMiddleware({ app });
+/*
+ * Graph QL
+ */
 
-// Begin listening on the defined port
-const server = app.listen(port, () => {
-	console.log(`>>> Server started at http://localhost:${port}${apollo.graphqlPath}`);
-});
+/**
+ * Build a schema, configure an Apollo server, and connect Koa
+ */
+async function launchServer() {
+	// build TypeGraphQL executable schema
+	const schema = await buildSchema({
+		resolvers: [UserResolver],
+		// automatically create `schema.gql` file with schema definition in current folder
+		// emitSchemaFile: path.resolve(__dirname, 'schema.gql'),
+	});
+
+	// Create GraphQL server
+	const apollo = new ApolloServer({
+		schema,
+		// enable GraphQL Playground
+		playground: true,
+	});
+
+	apollo.applyMiddleware({ app });
+
+	// Begin listening on the defined port
+	const server = app.listen(port, () => {
+		console.log(`>>> Server started at http://localhost:${port}${apollo.graphqlPath}`);
+	});
+}
+
+// Launch server with GraphQL endpoint
+launchServer();
 
 // Copyright (c) 2019 Vanderbilt University
