@@ -35,6 +35,14 @@ export class UserResolver implements ResolverInterface<User> {
 	async getUserByEmail(@Arg('email') email: string): Promise<User | undefined> {
 		return await this.users.find(user => user.email === email);
 	}
+
+	/**
+	 * Get all Users
+	 */
+	@Query(returns => [User], { description: 'Get all the Users in the database' })
+	async recipes(): Promise<User[]> {
+		return await this.users;
+	}
 }
 
 let createUserSamples = () => {
