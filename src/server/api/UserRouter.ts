@@ -38,9 +38,9 @@ userRouter.post('/api/register', async ctx => {
 		//no user found, create new user
 		console.log('> Creating new local user.....');
 		const newUser = {
+			authType: 'local',
 			email: ctx.request.body.username,
 			password: ctx.request.body.password,
-			authType: 'local',
 		};
 		const createdUser = await userModel.create(newUser);
 		if (createdUser) {
@@ -79,7 +79,7 @@ userRouter.post('/api/login', async ctx => {
 // Google SSO
 userRouter.get(
 	'/api/auth/google',
-	passport.authenticate('google', { scope: ['openid', 'profile', 'email'], display: 'popup' })
+	passport.authenticate('google', { display: 'popup', scope: ['openid', 'profile', 'email'] })
 );
 
 // Google SSO callback

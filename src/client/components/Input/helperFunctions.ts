@@ -30,9 +30,14 @@ export function formChangeWrapper(
 	return e => {
 		const { value, type, checked } = e.target;
 		updateFn(
-			produce((draft: Map<string, fieldValue>) =>
-				draft.set(fieldName, type === 'checkbox' ? checked : value)
-			)
+			produce((draft: Map<string, fieldValue>) => {
+				if (type === 'checkbox') {
+					const set =
+						draft.get(fieldName) instanceof Set ? draft.get(fieldName) : new Set<string>();
+					draft.set(fieldName, fieldName);
+				}
+				draft.set(fieldName, value);
+			})
 		);
 	};
 }

@@ -6,6 +6,7 @@ import { userModel } from './models/User';
 
 // Local authentication for non-SSO users
 const LocalStrategy = require('passport-local').Strategy;
+
 passport.use(
 	new LocalStrategy(
 		{ passReqToCallback: true },
@@ -37,6 +38,7 @@ passport.use(
 
 // Google OAuth2 authentication
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+
 passport.use(
 	new GoogleStrategy(
 		{

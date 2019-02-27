@@ -62,9 +62,9 @@ async function launchServer() {
 
 	// Create GraphQL server
 	const apollo = new ApolloServer({
-		schema,
-		// enable GraphQL Playground
 		playground: true,
+		// enable GraphQL Playground
+		schema,
 	});
 
 	apollo.applyMiddleware({ app });

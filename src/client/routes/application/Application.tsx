@@ -19,7 +19,7 @@ interface Props {
 	name: string;
 }
 
-export type fieldValue = string | boolean | string[] | undefined;
+export type fieldValue = string | string[] | undefined;
 export type field = {
 	name: string;
 	value: fieldValue;
@@ -45,11 +45,12 @@ const InputFactory: FunctionComponent<Props> = (props: Props): JSX.Element => {
 			);
 		case 'multi-checkbox':
 			return (
-				<Checkbox
-					{...rest}
-					onChange={formChangeWrapper(setValue, name)}
-					value={value.get(name)}
-				/> /* TODO: Create checkbox */
+				<div />
+				// <Checkbox
+				// 	{...rest}
+				// 	onChange={formChangeWrapper(setValue, name)}
+				// 	value={value.get(name)}
+				// /> /* TODO: Create checkbox */
 			);
 		// case 'toggle':
 		// 	return (
