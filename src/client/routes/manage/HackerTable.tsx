@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
 import {
 	Table,
 	Column,
@@ -10,6 +10,7 @@ import {
 } from 'react-virtualized';
 import 'react-virtualized/styles.css';
 import styled from 'styled-components';
+import Fuse from 'fuse.js';
 
 const StyledTable = styled(Table)`
 	.ReactVirtualized__Table__Grid {
@@ -62,6 +63,7 @@ interface Props {
 export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element => {
 	const [sortBy, setSortBy] = useState('name');
 	const [sortDirection, setSortDirection] = useState<SortDirectionType>(SortDirection.ASC);
+	const [sortedData, setSortedData] = useState<Hacker[]>(props.data);
 	const sortData = ({
 		sortBy,
 		sortDirection,
@@ -69,21 +71,41 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		sortBy: string;
 		sortDirection: SortDirectionType;
 	}) => {
-		const { data } = props;
-
 		// sort alphanumerically
 		const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
 
 		// TODO: replace any
-		let sortedData = (data as any)
-			.sort((a: any, b: any) => collator.compare(a[sortBy], b[sortBy]));
+		let newSortedData = (sortedData as any).sort((a: any, b: any) =>
+			collator.compare(a[sortBy], b[sortBy])
+		);
 		if (sortDirection === SortDirection.DESC) {
-			sortedData = sortedData.reverse();
+			newSortedData = newSortedData.reverse();
 		}
 
-		return sortedData;
+		return newSortedData;
 	};
-	const [sortedData, setSortedData] = useState<Hacker[]>(sortData({ sortBy, sortDirection }));
+
+	// only gets called once per prop.data
+	useEffect(() => {
+		setSortedData(sortData({ sortBy, sortDirection }));
+	}, [props.data]);
+
+	useEffect(() => {
+		// console.log("re-sort");
+		sort({ sortBy, sortDirection });
+	}, [sortedData]);
+
+	const [searchValue, setSearchValue] = useState('');
+	const opts = {
+		caseSensitive: true,
+		shouldSort: false,
+		tokenize: true,
+		threshold: 0.5,
+		distance: 100,
+		location: 0,
+		findAllMatches: true,
+		keys: ['name', 'school', 'gradYear'] as (keyof Hacker)[],
+	};
 
 	const generateRowClassName = ({ index }: { index: number }): string =>
 		index < 0 ? 'headerRow' : index % 2 === 0 ? 'evenRow' : 'oddRow';
@@ -116,8 +138,23 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		setSortedData(sortedData);
 	};
 
+	const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const value = event.target.value;
+		if (value !== '') {
+			// fuzzy filtering
+			const fuse = new Fuse(props.data, opts);
+			setSortedData(fuse.search(value));
+			console.log(fuse.search(value));
+		} else {
+			// reset
+			setSortedData(props.data);
+		}
+		setSearchValue(event.target.value);
+	};
+
 	return (
 		<TableLayout>
+			<input value={searchValue} onChange={onSearch} />
 			<AutoSizer>
 				{({ height, width }) => {
 					console.log('height: ', height);

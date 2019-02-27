@@ -1,7 +1,7 @@
 [
     {
         "name": "John Smith",
-        "email": "jsmith@vanderbilt.edu",
+        "email": "j.p.smith@vanderbilt.edu",
         "gradYear": 2019,
         "school": "Vanderbilt University",
         "status": 4,
@@ -9,7 +9,7 @@
     },
     {
         "name": "Courtney Johnson",
-        "email": "courtney.johnson@vanderbilt.edu",
+        "email": "c.johnson@vanderbilt.edu",
         "gradYear": 2022,
         "school": "Vanderbilt University",
         "status": 2,
@@ -17,10 +17,34 @@
     },
     {
         "name": "Jeremy Xu",
-        "email": "jsmith@vanderbilt.edu",
+        "email": "j.xu@vanderbilt.edu",
         "gradYear": 2020,
         "school": "Vanderbilt University",
         "status": 3,
         "requiresTravelReimbursement": false
+    },
+    {
+        "name": "Abigail Teer",
+        "email": "teera@utk.edu",
+        "gradYear": 2019,
+        "school": "University of Tennessee",
+        "status": 1,
+        "requiresTravelReimbursement": true
+    },
+    {
+        "name": "Howard Young",
+        "email": "howardyoung@crimson.ua.edu.edu",
+        "gradYear": 2021,
+        "school": "University of Alabama",
+        "status": 3,
+        "requiresTravelReimbursement": true
+    },
+    {
+        "name": "Shelby Zhang",
+        "email": "s.zhang@vanderbilt.edu",
+        "gradYear": 2022,
+        "school": "Vanderbilt University",
+        "status": 2,
+        "requiresTravelReimbursement": true
     }
 ]
