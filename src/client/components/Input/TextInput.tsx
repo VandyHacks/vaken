@@ -43,7 +43,7 @@ const TextInput = (props: Props): JSX.Element => {
 		strValue = value;
 	}
 
-	return <Input type={type} value={strValue} {...props} />;
+	return <Input type={type} value={strValue as string} {...props} />;
 };
 
 export default TextInput;

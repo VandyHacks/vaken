@@ -172,42 +172,42 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 							sortDirection={sortDirection}
 							sort={sort}>
 							<Column
-								className={'column'}
+								className="column"
 								label="Name"
 								dataKey="name"
 								width={150}
 								headerRenderer={renderHeader}
 							/>
 							<Column
-								className={'column'}
+								className="column"
 								label="Email"
 								dataKey="email"
 								width={200}
 								headerRenderer={renderHeader}
 							/>
 							<Column
-								className={'column'}
+								className="column"
 								label="Grad Year"
 								dataKey="gradYear"
 								width={100}
 								headerRenderer={renderHeader}
 							/>
 							<Column
-								className={'column'}
+								className="column"
 								label="School"
 								dataKey="school"
 								width={200}
 								headerRenderer={renderHeader}
 							/>
 							<Column
-								className={'column'}
+								className="column"
 								label="Status"
 								dataKey="status"
 								width={100}
 								headerRenderer={renderHeader}
 							/>
 							<Column
-								className={'column'}
+								className="column"
 								label="Requires Travel Reimbursement?"
 								dataKey="requiresTravelReimbursement"
 								width={275}

@@ -17,7 +17,8 @@ const AutoComplete: FunctionComponent<Props> = (props: Props): JSX.Element => {
 				{options.map(item => {
 					return <option key={item} value={item} />;
 				})}
-				{options.includes(value) ? null : <option value={value} />}
+				{options.includes(value as string) ? null : <option value={value as string} />}
+				{/* // FIXME */}
 			</datalist>
 		</>
 	);

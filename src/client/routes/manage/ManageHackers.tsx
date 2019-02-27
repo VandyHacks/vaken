@@ -8,7 +8,7 @@ import STRINGS from '../../assets/strings.json';
 import Title from '../../components/Text/Title';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import HackerTable from './HackerTable';
-import hackerData from './hackerData.json'
+import hackerData from './hackerData.json';
 
 const Layout = styled.div`
 	height: 100vh;
@@ -52,7 +52,7 @@ const ManageHackers = (): JSX.Element => {
 				<Sidebar />
 				<div className="content" style={{ gridArea: 'content' }}>
 					<FloatingPopup width="60rem" backgroundOpacity="1" padding="1.5rem">
-						<HackerTable data={tableData}/>
+						<HackerTable data={tableData} />
 						{/* <HackerTable2/> */}
 					</FloatingPopup>
 				</div>
