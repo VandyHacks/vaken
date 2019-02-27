@@ -1,0 +1,26 @@
+[
+    {
+        "name": "John Smith",
+        "email": "jsmith@vanderbilt.edu",
+        "gradYear": 2019,
+        "school": "Vanderbilt University",
+        "status": 4,
+        "requiresTravelReimbursement": true
+    },
+    {
+        "name": "Courtney Johnson",
+        "email": "courtney.johnson@vanderbilt.edu",
+        "gradYear": 2022,
+        "school": "Vanderbilt University",
+        "status": 2,
+        "requiresTravelReimbursement": true
+    },
+    {
+        "name": "Jeremy Xu",
+        "email": "jsmith@vanderbilt.edu",
+        "gradYear": 2020,
+        "school": "Vanderbilt University",
+        "status": 3,
+        "requiresTravelReimbursement": false
+    }
+]

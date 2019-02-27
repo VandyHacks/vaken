@@ -8,6 +8,11 @@ interface Props {
 	fontWeight?: string;
 }
 
+/**
+ * Title is a set of defaults used for titles.
+ * @param {Props} props - color, margin, fontSize, fontFamily, fontWeight
+ * @return {JSX.Element} HOC styling child text
+ */
 export const Title = styled.h1`
 	font-family: ${(props: Props) => props.fontFamily || "'Roboto', sans-serif"};
 	font-weight: ${(props: Props) => props.fontWeight || 500};
