@@ -26,6 +26,16 @@ export const routes = [
 		path: '/team',
 	},
 	{
+		authLevel: [AuthLevel.ORGANIZER],
+		displayText: 'Manage Hackers',
+		path: '/manageHackers',
+	},
+	{
+		authLevel: [AuthLevel.ORGANIZER],
+		displayText: 'Manage Sponsor',
+		path: '/manageSponsor',
+	},
+	{
 		authLevel: [AuthLevel.HACKER, AuthLevel.SPONSOR, AuthLevel.ORGANIZER],
 		displayText: 'Help',
 		path: '/help',
