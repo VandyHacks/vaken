@@ -4,9 +4,6 @@ import { createGlobalStyle } from 'styled-components';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import reset from 'styled-reset';
 import LoginPage from './routes/login/Login';
-import Dashboard from './routes/dashboard/Dashboard';
-import Application from './routes/application/Application';
-import ManageHackers from './routes/manage/ManageHackers';
 import Frame from './routes/dashboard/Frame';
 
 const GlobalStyle = createGlobalStyle`
