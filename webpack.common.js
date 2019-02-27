@@ -23,11 +23,6 @@ module.exports = {
 					},
 					{
 						loader: 'babel-loader',
-						// query: {
-						// 	plugins: [
-						// 	  ['import', { libraryName: "antd", style: true }]
-						// 	]
-						//   }					
 					},
 				],
 			},
@@ -35,23 +30,11 @@ module.exports = {
 				test: /\.(gif|png|jpe?g|svg)$/i,
 				use: ['file-loader'],
 			},
-			// {
-			// 	test: /\.less$/,
-			// 	use: [{
-			// 		loader: "style-loader"
-			// 	}, {
-			// 		loader: "css-loader"
-			// 	}, {
-			// 		loader: "less-loader",
-			// 		options: {
-			// 			javascriptEnabled: true
-			// 		}
-			// 	}]
-			// },	
-			// {
-			// 	test: /\.css$/,
-			// 	use: ['style-loader','css-loader']
-			// },
+			{
+				test: /\.css$/,
+				include: /node_modules/,
+				use: ['style-loader', 'css-loader'],
+			},		
 		],
 	},
 	// optimization: {
