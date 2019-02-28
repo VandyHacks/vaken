@@ -1,6 +1,7 @@
 import React from 'react';
 import HackerTable from './HackerTable';
 import hackerData from '../../assets/hackerData.json';
+import FloatingPopup from '../../components/Containers/FloatingPopup';
 
 const ManageHackers = (): JSX.Element => {
 	// GraphQL query would go here
@@ -8,7 +9,14 @@ const ManageHackers = (): JSX.Element => {
 
 	return (
 		<>
-			<HackerTable data={tableData} />
+			<FloatingPopup
+				borderRadius="1rem"
+				height="100%"
+				backgroundOpacity="1"
+				padding="1.5rem"
+				>
+				<HackerTable data={tableData} />
+			</FloatingPopup>
 		</>
 	);
 };
