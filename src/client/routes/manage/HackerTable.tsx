@@ -11,6 +11,8 @@ import {
 import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import Fuse from 'fuse.js';
+import ToggleSwitch from '../../components/Buttons/ToggleSwitch';
+import {displayFlex} from '../../components/Containers/FlexContainers';
 
 const StyledTable = styled(Table)`
 	.ReactVirtualized__Table__Grid {
@@ -31,12 +33,30 @@ const StyledTable = styled(Table)`
 	.oddRow {
 		background-color: #fafafa;
 	}
+	font-size: 0.8rem;
 `;
 
 const TableLayout = styled('div')`
 	height: 100%;
 	width: 100%;
 `;
+
+const SearchBox = styled('input')`
+	width: 30rem;
+	margin: 0.25rem 1rem 0.25rem 0.25rem;
+	padding: 0.75rem;
+	background: #FFFFFF;
+	border: 1px solid #ECEBED;
+	box-sizing: border-box;
+	box-shadow: 0px 7px 64px rgba(0, 0, 0, 0.07);
+	border-radius: 6px;
+	font-size: 1rem;
+`;
+
+const TableOptions = styled('div')`
+	margin-bottom: 1rem;
+`;
+
 
 enum HackerStatus {
 	verified,
@@ -64,6 +84,9 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 	const [sortBy, setSortBy] = useState('name');
 	const [sortDirection, setSortDirection] = useState<SortDirectionType>(SortDirection.ASC);
 	const [sortedData, setSortedData] = useState<Hacker[]>(props.data);
+	const [searchValue, setSearchValue] = useState('');
+	const [useRegex, setUseRegex] = useState(false);
+
 	const sortData = ({
 		sortBy,
 		sortDirection,
@@ -95,7 +118,6 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		sort({ sortBy, sortDirection });
 	}, [sortedData]);
 
-	const [searchValue, setSearchValue] = useState('');
 	const opts = {
 		caseSensitive: true,
 		shouldSort: false,
@@ -154,7 +176,24 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 
 	return (
 		<TableLayout>
-			<input value={searchValue} onChange={onSearch} />
+			<TableOptions>
+				<SearchBox
+					value={searchValue}
+					placeholder={useRegex ? 'Search by regex string, e.g. "^example"' : 'Search by text'}
+					onChange={onSearch}
+				/>
+				{/* <label>
+					Use Regex?
+					<input
+						type="checkbox"
+						checked={useRegex}
+						onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+							setUseRegex(event.target.checked)
+						}
+					/>
+				</label> */}
+				<ToggleSwitch label="Use Regex?" checked={useRegex} onChange={value => setUseRegex(value)} />
+			</TableOptions>
 			<AutoSizer>
 				{({ height, width }) => {
 					console.log('height: ', height);
