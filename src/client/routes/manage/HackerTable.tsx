@@ -12,7 +12,7 @@ import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import Fuse from 'fuse.js';
 import ToggleSwitch from '../../components/Buttons/ToggleSwitch';
-import {displayFlex} from '../../components/Containers/FlexContainers';
+import { displayFlex } from '../../components/Containers/FlexContainers';
 
 const StyledTable = styled(Table)`
 	.ReactVirtualized__Table__Grid {
@@ -34,29 +34,36 @@ const StyledTable = styled(Table)`
 		background-color: #fafafa;
 	}
 	font-size: 0.8rem;
+	margin-bottom: 5rem;
 `;
 
 const TableLayout = styled('div')`
-	height: 100%;
 	width: 100%;
+	box-sizing: border-box;
+	flex: 1 0 auto;
+	display: flex;
+	flex-direction: column;
 `;
 
 const SearchBox = styled('input')`
 	width: 30rem;
 	margin: 0.25rem 1rem 0.25rem 0.25rem;
 	padding: 0.75rem;
-	background: #FFFFFF;
-	border: 1px solid #ECEBED;
-	box-sizing: border-box;
+	background: #ffffff;
+	border: 1px solid #ecebed;
 	box-shadow: 0px 7px 64px rgba(0, 0, 0, 0.07);
 	border-radius: 6px;
 	font-size: 1rem;
+	box-sizing: border-box;
 `;
 
 const TableOptions = styled('div')`
 	margin-bottom: 1rem;
 `;
 
+const TableData = styled('div')`
+	flex: 1 1 auto;
+`;
 
 enum HackerStatus {
 	verified,
@@ -114,7 +121,6 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 	}, [props.data]);
 
 	useEffect(() => {
-		// console.log("re-sort");
 		sort({ sortBy, sortDirection });
 	}, [sortedData]);
 
@@ -182,79 +188,75 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 					placeholder={useRegex ? 'Search by regex string, e.g. "^example"' : 'Search by text'}
 					onChange={onSearch}
 				/>
-				{/* <label>
-					Use Regex?
-					<input
-						type="checkbox"
-						checked={useRegex}
-						onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-							setUseRegex(event.target.checked)
-						}
-					/>
-				</label> */}
-				<ToggleSwitch label="Use Regex?" checked={useRegex} onChange={value => setUseRegex(value)} />
+				<ToggleSwitch
+					label="Use Regex?"
+					checked={useRegex}
+					onChange={value => setUseRegex(value)}
+				/>
 			</TableOptions>
-			<AutoSizer>
-				{({ height, width }) => {
-					console.log('height: ', height);
-					console.log('width: ', width);
-					return (
-						<StyledTable
-							width={width}
-							height={height}
-							headerHeight={20}
-							rowHeight={30}
-							rowCount={sortedData.length}
-							rowClassName={generateRowClassName}
-							rowGetter={({ index }: { index: number }) => sortedData[index]}
-							sortBy={sortBy}
-							sortDirection={sortDirection}
-							sort={sort}>
-							<Column
-								className="column"
-								label="Name"
-								dataKey="name"
-								width={150}
-								headerRenderer={renderHeader}
-							/>
-							<Column
-								className="column"
-								label="Email"
-								dataKey="email"
-								width={200}
-								headerRenderer={renderHeader}
-							/>
-							<Column
-								className="column"
-								label="Grad Year"
-								dataKey="gradYear"
-								width={100}
-								headerRenderer={renderHeader}
-							/>
-							<Column
-								className="column"
-								label="School"
-								dataKey="school"
-								width={200}
-								headerRenderer={renderHeader}
-							/>
-							<Column
-								className="column"
-								label="Status"
-								dataKey="status"
-								width={100}
-								headerRenderer={renderHeader}
-							/>
-							<Column
-								className="column"
-								label="Requires Travel Reimbursement?"
-								dataKey="requiresTravelReimbursement"
-								width={275}
-							/>
-						</StyledTable>
-					);
-				}}
-			</AutoSizer>
+			<TableData>
+				<AutoSizer>
+					{({ height, width }) => {
+						console.log('height: ', height);
+						console.log('width: ', width);
+						return (
+							<StyledTable
+								width={width}
+								height={height}
+								headerHeight={20}
+								rowHeight={30}
+								rowCount={sortedData.length}
+								rowClassName={generateRowClassName}
+								rowGetter={({ index }: { index: number }) => sortedData[index]}
+								sortBy={sortBy}
+								sortDirection={sortDirection}
+								sort={sort}>
+								<Column
+									className="column"
+									label="Name"
+									dataKey="name"
+									width={150}
+									headerRenderer={renderHeader}
+								/>
+								<Column
+									className="column"
+									label="Email"
+									dataKey="email"
+									width={200}
+									headerRenderer={renderHeader}
+								/>
+								<Column
+									className="column"
+									label="Grad Year"
+									dataKey="gradYear"
+									width={100}
+									headerRenderer={renderHeader}
+								/>
+								<Column
+									className="column"
+									label="School"
+									dataKey="school"
+									width={200}
+									headerRenderer={renderHeader}
+								/>
+								<Column
+									className="column"
+									label="Status"
+									dataKey="status"
+									width={100}
+									headerRenderer={renderHeader}
+								/>
+								<Column
+									className="column"
+									label="Requires Travel Reimbursement?"
+									dataKey="requiresTravelReimbursement"
+									width={275}
+								/>
+							</StyledTable>
+						);
+					}}
+				</AutoSizer>
+			</TableData>
 		</TableLayout>
 	);
 };
