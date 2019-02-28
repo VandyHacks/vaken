@@ -71,8 +71,10 @@ passport.use(
 					//no user found, create new user
 					console.log('> Creating user.....');
 					const newUser = {
+						authType: 'google',
 						email: profile.emails[0].value,
 						google: profile.id,
+						password: 'Google!123',
 					};
 					const createdUser = await userModel.create(newUser);
 					if (createdUser) {
@@ -125,8 +127,10 @@ passport.use(
 					//no user found, create new user
 					console.log('> Creating user.....');
 					const newUser = {
+						authType: 'github',
 						email: profile.emails[0].value,
 						github: profile.id,
+						password: 'Github!123',
 					};
 					const createdUser = await userModel.create(newUser);
 					if (createdUser) {
