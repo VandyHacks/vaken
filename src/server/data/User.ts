@@ -2,11 +2,11 @@ import 'reflect-metadata';
 import { Field, ObjectType, Int, Float } from 'type-graphql';
 
 import { ShirtSize } from '../enums/ShirtSize';
+import { Gender } from '../enums/Gender';
 
 /**
  * TODO - build explicit constructor (can I just set default values?)
  * TODO - enforce uniqueness as necessary
- * TODO - enforce required vs optional status as necessary
  */
 @ObjectType({ description: 'DTO for a generic Vaken user' })
 export class User {
@@ -31,8 +31,8 @@ export class User {
 	@Field(type => String)
 	phoneNumber!: String;
 
-	@Field(type => String)
-	gender!: String; // TODO - make this an enum
+	@Field(type => Gender)
+	gender!: Gender;
 
 	@Field(type => ShirtSize)
 	shirtSize!: ShirtSize;
