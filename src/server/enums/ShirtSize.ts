@@ -1,4 +1,4 @@
-export enum ShirtSizes {
+export enum ShirtSize {
 	UXS,
 	US,
 	UM,

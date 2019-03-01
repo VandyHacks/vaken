@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { Field, ObjectType, Int, Float } from 'type-graphql';
 
-import { ShirtSizes } from '../enums/ShirtSizes';
+import { ShirtSize } from '.../enums/ShirtSize
 
 /**
  * TODO - build explicit constructor (can I just set default values?)
@@ -29,13 +29,13 @@ export class User {
 	github?: String;
 
 	@Field(type => String)
-	phoneNumber!: String; // TODO - make this typed
+	phoneNumber!: String;
 
 	@Field(type => String)
 	gender!: String; // TODO - make this an enum
 
-	@Field(type => ShirtSizes)
-	shirtSize!: ShirtSizes; 
+	@Field(type => ShirtSize)
+	shirtSize!: ShirtSize;
 
 	@Field(type => String)
 	dietaryRestrictions?: String;
