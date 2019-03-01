@@ -6,7 +6,7 @@ import { User } from './User';
 @ObjectType({ description: 'DTO for a Vaken hacker' })
 export class Hacker extends User {
 	@Field(type => Boolean)
-	verified: Boolean = false; // Default init
+	verified: Boolean = false;
 
 	@Field(type => Boolean)
 	started: Boolean = false;
@@ -24,10 +24,13 @@ export class Hacker extends User {
 	school!: String;
 
 	@Field(type => String)
-	gradYear!: String; // TODO - Enum this
+	gradYear!: String;
+
+	@Field(type => String)
+	ethnicity!: String;
 
 	@Field(type => [String])
-	ethnicity!: [String]; // TODO - Enum this
+	race!: [String];
 
 	@Field(type => [String])
 	majors!: [String];
