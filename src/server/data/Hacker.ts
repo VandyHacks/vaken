@@ -27,47 +27,47 @@ export class Hacker extends User {
 	gradYear!: String; // TODO - Enum this
 
 	@Field(type => [String])
-  ethnicity!: [String]; // TODO - Enum this
+	ethnicity!: [String]; // TODO - Enum this
 
-  @Field(type => [String])
+	@Field(type => [String])
 	majors!: [String];
 
-  @Field(type => Boolean)
-	adult?: boolean;
+	@Field(type => Boolean)
+	adult!: Boolean;
 
-	@prop()
-	firstHackathon?: boolean;
+	@Field(type => Boolean)
+	firstHackathon!: Boolean;
 
-	@prop()
-	volunteer?: boolean;
+	@Field(type => Boolean)
+	volunteer?: Boolean;
 
-	@prop()
-	github?: string;
+	@Field(type => String)
+	github?: String;
 
-	@prop()
-	linkedin?: string;
+	@Field(type => String)
+	linkedin?: String;
 
-	@prop()
-	devpost?: string;
+	@Field(type => String)
+	devpost?: String;
 
-	@prop()
-	website?: string;
+	@Field(type => String)
+	website?: String;
 
-	@arrayProp({ items: String })
-	essays?: string[];
+	@Field(type => [String])
+	essays?: [String];
 
-	@prop()
-	codeOfConduct?: boolean;
+	@Field(type => Boolean)
+	codeOfConduct?: Boolean;
 
-	@prop()
-	needReimbursement?: boolean;
+	@Field(type => Boolean)
+	needReimbursement?: Boolean;
 
-	@prop()
-	lightningTalk?: boolean;
+	@Field(type => Boolean)
+	lightningTalk?: Boolean;
 
-	@prop()
-	teamCode?: string;
+	@Field(type => String)
+	teamCode?: String;
 
-	@prop()
-	walkin?: boolean;
+	@Field(type => Boolean)
+	walkin?: Boolean;
 }
