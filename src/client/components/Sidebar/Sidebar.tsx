@@ -7,7 +7,7 @@ import STRINGS from '../../assets/strings.json';
 import NavButton from '../Buttons/NavButton';
 import { FlexStartColumn, SpaceBetweenColumn, FlexEndColumn } from '../Containers/FlexContainers';
 import SmallCenteredText from '../Text/SmallCenteredText';
-import { AuthLevel, routes } from '../../assets/routes';
+import { currentAuth, AuthLevel, routes } from '../../assets/routes';
 
 interface Props {}
 
@@ -101,7 +101,7 @@ const ColumnWithSeparators = styled.ul`
 
 const Sidebar = withRouter(
 	(props: Props): JSX.Element => {
-		const userLevel = AuthLevel.HACKER; // TODO: FIXME not actual user
+		const userLevel = AuthLevel.ORGANIZER; // TODO: FIXME not actual user
 		return (
 			<Layout>
 				<Background>
@@ -110,7 +110,7 @@ const Sidebar = withRouter(
 					<SpaceBetweenColumn>
 						<ColumnWithSeparators>
 							{routes.map((route: Route) => {
-								return route.authLevel.includes(userLevel) ? (
+								return route.authLevel.includes(currentAuth) ? (
 									<li key={route.path}>
 										<NavLink to={route.path} activeClassName="active">
 											<NavButtonWhiteText text={route.displayText} />

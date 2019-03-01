@@ -18,27 +18,40 @@ export function onChangeWrapper(
 }
 
 /**
- * onChangeWrapper wraps a setState function to take a react Input event function
- * @param {function} updateFn - function that will update the state
+ * formChangeWrapper wraps a setState function to take a react Input event function
+ * @param {function} useImmer - function that will update the state
  * @param {string} fieldName - name of field to update
  * @returns {function} function suitable for a react input onChange={} prop
  */
 export function formChangeWrapper(
-	updateFn: Update<Map<string, fieldValue>>,
+	useImmer: Update<Map<string, fieldValue>>,
 	fieldName: string
 ): (e: React.ChangeEvent<HTMLInputElement>) => void {
 	return e => {
 		const { value, type, checked } = e.target;
-		updateFn(
-			produce((draft: Map<string, fieldValue>) => {
-				if (type === 'checkbox') {
-					const set =
-						draft.get(fieldName) instanceof Set ? draft.get(fieldName) : new Set<string>();
-					draft.set(fieldName, fieldName);
+		useImmer((draft: Map<string, fieldValue>) => {
+			if (type === 'checkbox') {
+				console.log('inside checkbox: ', draft);
+				// Type-safely create/get the set
+				const set: Set<string> =
+					draft.get(fieldName) instanceof Set
+						? (draft.get(fieldName) as Set<string>)
+						: new Set<string>();
+
+				// Add or remove from the set
+				if (checked) {
+					set.add(value);
+				} else {
+					set.delete(value);
 				}
+
+				// Finally, update the set in the field
+				draft.set(fieldName, set);
+			} else {
+				// Else field will be string, update directly
 				draft.set(fieldName, value);
-			})
-		);
+			}
+		});
 	};
 }
 

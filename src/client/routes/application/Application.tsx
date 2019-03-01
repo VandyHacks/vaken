@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { useImmer } from 'use-immer';
+import { useImmer, Update } from 'use-immer';
 import AutoComplete from '../../components/Input/AutoCompleteTextInput';
 import { onChangeWrapper, formChangeWrapper } from '../../components/Input/helperFunctions';
 import TextInput from '../../components/Input/TextInput';
@@ -17,30 +17,34 @@ interface Props {
 	pattern?: string;
 	completions?: string[];
 	name: string;
+	setState: Update<Map<string, fieldValue>>;
+	state: Map<string, fieldValue>;
 }
 
-export type fieldValue = string | string[] | undefined;
+export type fieldValue = string | Set<string>;
 export type field = {
 	name: string;
 	value: fieldValue;
 };
 
 const InputFactory: FunctionComponent<Props> = (props: Props): JSX.Element => {
-	const [value, setValue] = useImmer(new Map<string, fieldValue>());
-	const { input, ...rest } = props;
+	const { setState, state, input, ...rest } = props;
 	const { name } = props;
+
+	const strVal = typeof state.get(name) === 'string' ? (state.get(name) as string) : '';
 
 	switch (input) {
 		case 'input':
-			return (
-				<TextInput {...rest} value={value.get(name)} onChange={formChangeWrapper(setValue, name)} />
-			);
+			if (!state.has(name)) {
+				setState(state => state.set(name, ''));
+			}
+			return <TextInput {...rest} value={strVal} onChange={formChangeWrapper(setState, name)} />;
 		case 'slider':
 			return (
 				<TextInput
 					{...rest}
-					value={value.get(name)}
-					onChange={formChangeWrapper(setValue, name)}
+					value={strVal}
+					onChange={formChangeWrapper(setState, name)}
 				/> /* TODO: Create Slider */
 			);
 		case 'multi-checkbox':
@@ -48,16 +52,16 @@ const InputFactory: FunctionComponent<Props> = (props: Props): JSX.Element => {
 				<div />
 				// <Checkbox
 				// 	{...rest}
-				// 	onChange={formChangeWrapper(setValue, name)}
-				// 	value={value.get(name)}
+				// 	onChange={formChangeWrapper(setstate, name)}
+				// 	state={value.get(name)}
 				// /> /* TODO: Create checkbox */
 			);
 		// case 'toggle':
 		// 	return (
 		// 		<RadioButton
 		// 			{...rest}
-		// 			onChange={formChangeWrapper(setValue, name)}
-		// 			value={value.get(name)}
+		// 			onChange={formChangeWrapper(setstate, name)}
+		// 			state={value.get(name)}
 		// 		/> /* TODO: Create checkbox */
 		// 	);
 		case 'autocomplete/school':
@@ -65,8 +69,8 @@ const InputFactory: FunctionComponent<Props> = (props: Props): JSX.Element => {
 				<AutoComplete
 					{...rest}
 					options={institutions}
-					value={value.get(name)}
-					onChange={formChangeWrapper(setValue, name)}
+					value={strVal}
+					onChange={formChangeWrapper(setState, name)}
 				/>
 			);
 	}
@@ -78,11 +82,14 @@ const InputFactory: FunctionComponent<Props> = (props: Props): JSX.Element => {
 	);
 };
 
-export const Prompt = styled.h2``;
+export const Prompt = styled.h2`
+	font-style: bold;
+`;
 
 export const Application: FunctionComponent<{}> = (props): JSX.Element => {
 	const formRef = useRef<HTMLFormElement>(null);
-	const [formData, setFormData] = useState(new Map<string, fieldValue>());
+	const [formData, setFormData] = useImmer(new Map<string, fieldValue>());
+	console.log('yeeting', formData);
 
 	return (
 		<form ref={formRef}>
@@ -97,7 +104,13 @@ export const Application: FunctionComponent<{}> = (props): JSX.Element => {
 									<label key={title} htmlFor={title}>
 										{title}
 										{prompt ? <Prompt>{prompt}</Prompt> : null}
-										<InputFactory id={title} pattern={validation} {...rest} />
+										<InputFactory
+											setState={setFormData}
+											state={formData}
+											id={title}
+											pattern={validation}
+											{...rest}
+										/>
 									</label>
 								);
 							}
@@ -105,25 +118,6 @@ export const Application: FunctionComponent<{}> = (props): JSX.Element => {
 					</fieldset>
 				);
 			})}
-
-			{/* <label htmlFor="school">
-				School
-				<AutoComplete
-					id="school"
-					required
-					value={school}
-					onChange={onChangeWrapper(setSchool)}
-					completions={institutions}
-				/>
-			</label>
-			<label htmlFor="email">
-				email
-				<TextInput id="email" value={email} type="email" onChange={onChangeWrapper(setEmail)} />
-			</label>
-			<label htmlFor="name">
-				Name
-				<TextInput id="name" value={name} onChange={onChangeWrapper(setName)} />
-			</label> */}
 		</form>
 	);
 };

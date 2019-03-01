@@ -5,7 +5,7 @@ import { fieldValue } from '../../routes/application/Application';
 
 export interface Props {
 	color?: string;
-	value: fieldValue;
+	value: string;
 	required?: boolean;
 	placeholder?: string;
 	type?: string;
@@ -35,17 +35,6 @@ export const Input = styled.input`
 	}
 `;
 
-const TextInput = (props: Props): JSX.Element => {
-	const { type = 'text', value } = props;
-	let strValue = '';
-
-	if (typeof value === 'string') {
-		strValue = value;
-	}
-
-	return <Input type={type} value={strValue as string} {...props} />;
-};
-
-export default TextInput;
+export default Input;
 
 // Copyright (c) 2019 Vanderbilt University
