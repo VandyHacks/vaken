@@ -13,7 +13,6 @@ import styled from 'styled-components';
 import Fuse from 'fuse.js';
 import ToggleSwitch from '../../components/Buttons/ToggleSwitch';
 import searchIcon from '../../assets/img/search_icon.svg';
-import { RightPaddedImg, ButtonOutline } from '../../components/Buttons/Buttons';
 import STRINGS from '../../assets/strings.json';
 import Select from 'react-select';
 
@@ -57,7 +56,7 @@ const TableLayout = styled('div')`
 `;
 
 const SearchBox = styled('input')`
-	width: 25rem;
+	min-width: 25rem;
 	margin: 0.25rem 1rem 0.25rem 0rem;
 	padding: 0.75rem;
 	border: 0.0625rem solid #ecebed;
@@ -120,6 +119,15 @@ const ColumnSelect = styled(Select)`
 	}
 `;
 
+const columnOptions = [
+	{ value: 'name', label: 'Name'},
+	{ value: 'email', label: 'Email Address'},
+	{ value: 'school', label: 'School'},
+	{ value: 'gradYear', label: 'Graduation Year'},
+	{ value: 'status', label: 'Status'},
+	{ value: 'requiresTravelReimbursement', label: 'Reimbursement'},
+]
+
 enum HackerStatus {
 	verified,
 	started,
@@ -138,6 +146,11 @@ interface Hacker {
 	requiresTravelReimbursement?: boolean;
 }
 
+interface Option {
+	label: string,
+	value: string,
+}
+
 interface Props {
 	data: Hacker[];
 }
@@ -148,6 +161,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 	const [sortedData, setSortedData] = useState<Hacker[]>(props.data);
 	const [searchValue, setSearchValue] = useState('');
 	const [useRegex, setUseRegex] = useState(false);
+	const [selectedColumns, setSelectedColumns] = useState<Option[]>([columnOptions[0]]);
 
 	const sortData = ({
 		sortBy,
@@ -179,6 +193,10 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		sort({ sortBy, sortDirection });
 	}, [sortedData]);
 
+	useEffect(() => {
+		onSearch(searchValue);
+	}, [selectedColumns]);
+
 	const opts = {
 		caseSensitive: true,
 		shouldSort: false,
@@ -187,7 +205,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		distance: 100,
 		location: 0,
 		findAllMatches: true,
-		keys: ['name', 'school', 'gradYear'] as (keyof Hacker)[],
+		keys: selectedColumns.map((col: Option) => col.value) as (keyof Hacker)[],
 	};
 
 	const generateRowClassName = ({ index }: { index: number }): string =>
@@ -221,14 +239,13 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		setSortedData(sortedData);
 	};
 
-	const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const value = event.target.value;
+	const onSearch = (value: string) => {
 		if (value !== '') {
 			if (!useRegex) {
 				// fuzzy filtering
 				const fuse = new Fuse(props.data, opts);
 				setSortedData(fuse.search(value));
-				console.log(fuse.search(value));
+				// console.log(fuse.search(value));
 			} else {
 				console.log("regex searching!");
 			}
@@ -236,17 +253,10 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 			// reset
 			setSortedData(props.data);
 		}
-		setSearchValue(event.target.value);
+		setSearchValue(value);
 	};
 
-	const columnOptions = [
-		{ value: 'name', label: 'Name'},
-		{ value: 'email', label: 'Email Address'},
-		{ value: 'school', label: 'School'},
-		{ value: 'gradYear', label: 'Graduation Year'},
-		{ value: 'status', label: 'Status'},
-	]
-
+	// TODO(alan): remove any type.
 	return (
 		<TableLayout>
 			<TableOptions>
@@ -257,11 +267,14 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 					options={columnOptions}
 					className="basic-multi-select"
 					classNamePrefix="select"
+					onChange={(selected: any) => {
+						setSelectedColumns(selected);
+					}}
 				/>
 				<SearchBox
 					value={searchValue}
 					placeholder={useRegex ? 'Search by regex string, e.g. "^example"' : 'Search by text'}
-					onChange={onSearch}/>
+					onChange={(event: React.ChangeEvent<HTMLInputElement>) => onSearch(event.target.value)}/>
 				<ToggleSwitch
 					label="Use Regex?"
 					checked={useRegex}
