@@ -5,37 +5,36 @@ import { Field, ObjectType, Int, Float } from 'type-graphql';
  * TODO - build explicit constructor (can I just set default values?)
  * TODO - enforce uniqueness as necessary
  * TODO - enforce required vs optional status as necessary
- * TODO - sanitize data (maybe move to db layer?)
  */
 @ObjectType({ description: 'DTO for a generic Vaken user' })
 export class User {
 	@Field(type => [String])
-	nfcCodes!: string[];
+	nfcCodes!: String[];
+
+	@Field(type => String)
+	firstName!: String;
 
 	@Field()
-	firstName!: string;
+	lastName!: String;
 
 	@Field()
-	lastName!: string;
+	email!: String;
 
 	@Field()
-	email!: string;
+	google?: String;
 
 	@Field()
-	google?: string;
+	github?: String;
 
 	@Field()
-	github?: string;
+	phoneNumber!: String; // TODO - make this typed
 
 	@Field()
-	phoneNumber!: string; // TODO - make this typed
+	gender!: String; // TODO - make this an enum
 
 	@Field()
-	gender!: string; // TODO - make this an enum
+	shirtSize!: String; // TODO - make this an enum
 
 	@Field()
-	shirtSize!: string; // TODO - make this an enum
-
-	@Field()
-	dietaryRestrictions?: string;
+	dietaryRestrictions?: String;
 }
