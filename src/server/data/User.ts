@@ -7,7 +7,7 @@ import { Gender } from '../enums/Gender';
 @ObjectType({ description: 'DTO for a generic Vaken user' })
 export class User {
 	@Field(type => [String])
-	nfcCodes!: String[];
+	nfcCodes!: [String];
 
 	@Field(type => String)
 	firstName!: String;
