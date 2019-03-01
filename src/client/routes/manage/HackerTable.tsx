@@ -12,7 +12,10 @@ import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import Fuse from 'fuse.js';
 import ToggleSwitch from '../../components/Buttons/ToggleSwitch';
-import { displayFlex } from '../../components/Containers/FlexContainers';
+import searchIcon from '../../assets/img/search_icon.svg';
+import { RightPaddedImg, ButtonOutline } from '../../components/Buttons/Buttons';
+import STRINGS from '../../assets/strings.json';
+import Select from 'react-select';
 
 const StyledTable = styled(Table)`
 	.ReactVirtualized__Table__Grid {
@@ -24,17 +27,25 @@ const StyledTable = styled(Table)`
 		overflow: hidden;
 	}
 
+	.headerRow {
+		font-size: 1rem;
+		text-transform: capitalize;
+		color: ${STRINGS.DARK_TEXT_COLOR};
+	}
+
 	.headerRow,
 	.evenRow,
 	.oddRow {
 		box-sizing: border-box;
-		border-bottom: 1px solid #e0e0e0;
+		border-bottom: 0.0625rem solid #e0e0e0;
 	}
 	.oddRow {
 		background-color: #fafafa;
 	}
+
 	font-size: 0.8rem;
 	margin-bottom: 5rem;
+	color: ${STRINGS.DARKEST_TEXT_COLOR};
 `;
 
 const TableLayout = styled('div')`
@@ -46,15 +57,20 @@ const TableLayout = styled('div')`
 `;
 
 const SearchBox = styled('input')`
-	width: 30rem;
-	margin: 0.25rem 1rem 0.25rem 0.25rem;
+	width: 25rem;
+	margin: 0.25rem 1rem 0.25rem 0rem;
 	padding: 0.75rem;
-	background: #ffffff;
-	border: 1px solid #ecebed;
-	box-shadow: 0px 7px 64px rgba(0, 0, 0, 0.07);
-	border-radius: 6px;
+	border: 0.0625rem solid #ecebed;
+	box-shadow: 0rem 0.5rem 4rem rgba(0, 0, 0, 0.07);
+	border-radius: 0.375rem;
 	font-size: 1rem;
 	box-sizing: border-box;
+	background: #ffffff url(${searchIcon}) 0.25rem 50% no-repeat;
+	padding-left: 2rem;
+	:focus, :active {
+		outline: none;
+		border: 0.0625rem solid ${STRINGS.ACCENT_COLOR};
+	}
 `;
 
 const TableOptions = styled('div')`
@@ -63,6 +79,45 @@ const TableOptions = styled('div')`
 
 const TableData = styled('div')`
 	flex: 1 1 auto;
+`;
+
+const ColumnSelect = styled(Select)`
+	min-width: 10rem;
+	display: inline-block;
+	font-size: 1rem;
+	margin-right: 1rem;
+	box-shadow: none;
+	.select__control, .basic-multi-select, select__control--menu-is-open {	
+		background-color: #ffffff;
+		padding: 0.20rem;
+		border: 0.0625rem solid #ecebed;
+		border-radius: 0.375rem;
+		box-shadow: none;
+		outline: none;
+		:focus, :active {
+			border: 0.0625rem solid ${STRINGS.ACCENT_COLOR};
+		}
+		:hover:not(.select__control--is-focused) {
+			border: 0.0625rem solid #ecebed;
+		}
+		:hover.select__control--is-focused {
+			border: 0.0625rem solid ${STRINGS.ACCENT_COLOR};
+		}
+	}
+	.select__control--is-focused {
+		border: 0.0625rem solid ${STRINGS.ACCENT_COLOR};
+	}
+	.select__multi-value__label {
+		font-size: 1rem;
+	}
+	.select__option {
+		:active, :hover, :focus {
+			background-color: #E5E7FA;
+		}
+	}
+	.select__option--is-focused {
+		background-color: #E5E7FA;
+	}
 `;
 
 enum HackerStatus {
@@ -169,10 +224,14 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 	const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const value = event.target.value;
 		if (value !== '') {
-			// fuzzy filtering
-			const fuse = new Fuse(props.data, opts);
-			setSortedData(fuse.search(value));
-			console.log(fuse.search(value));
+			if (!useRegex) {
+				// fuzzy filtering
+				const fuse = new Fuse(props.data, opts);
+				setSortedData(fuse.search(value));
+				console.log(fuse.search(value));
+			} else {
+				console.log("regex searching!");
+			}
 		} else {
 			// reset
 			setSortedData(props.data);
@@ -180,14 +239,29 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		setSearchValue(event.target.value);
 	};
 
+	const columnOptions = [
+		{ value: 'name', label: 'Name'},
+		{ value: 'email', label: 'Email Address'},
+		{ value: 'school', label: 'School'},
+		{ value: 'gradYear', label: 'Graduation Year'},
+		{ value: 'status', label: 'Status'},
+	]
+
 	return (
 		<TableLayout>
 			<TableOptions>
+				<ColumnSelect
+					isMulti
+					name="colors"
+					defaultValue={[columnOptions[0]]}
+					options={columnOptions}
+					className="basic-multi-select"
+					classNamePrefix="select"
+				/>
 				<SearchBox
 					value={searchValue}
 					placeholder={useRegex ? 'Search by regex string, e.g. "^example"' : 'Search by text'}
-					onChange={onSearch}
-				/>
+					onChange={onSearch}/>
 				<ToggleSwitch
 					label="Use Regex?"
 					checked={useRegex}
