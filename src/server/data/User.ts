@@ -14,27 +14,27 @@ export class User {
 	@Field(type => String)
 	firstName!: String;
 
-	@Field()
+	@Field(type => String)
 	lastName!: String;
 
-	@Field()
+	@Field(type => String)
 	email!: String;
 
-	@Field()
+	@Field(type => String)
 	google?: String;
 
-	@Field()
+	@Field(type => String)
 	github?: String;
 
-	@Field()
+	@Field(type => String)
 	phoneNumber!: String; // TODO - make this typed
 
-	@Field()
+	@Field(type => String)
 	gender!: String; // TODO - make this an enum
 
-	@Field()
+	@Field(type => String)
 	shirtSize!: String; // TODO - make this an enum
 
-	@Field()
+	@Field(type => String)
 	dietaryRestrictions?: String;
 }
