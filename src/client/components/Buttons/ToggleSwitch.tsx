@@ -1,7 +1,6 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
-import { FlexRow, FlexColumn } from '../Containers/FlexContainers';
 
 
 const Label = styled('label')`
