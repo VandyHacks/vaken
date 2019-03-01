@@ -2,6 +2,8 @@ import 'reflect-metadata';
 import { Field, ObjectType } from 'type-graphql';
 
 import { User } from './User';
+import { Ethnicity } from '../enums/Ethnicity';
+import { Race } from '../enums/Race';
 
 @ObjectType({ description: 'DTO for a Vaken hacker' })
 export class Hacker extends User {
@@ -26,11 +28,11 @@ export class Hacker extends User {
 	@Field(type => String)
 	gradYear!: String;
 
-	@Field(type => String)
-	ethnicity!: String;
+	@Field(type => Ethnicity)
+	ethnicity!: Ethnicity;
 
-	@Field(type => [String])
-	race!: [String];
+	@Field(type => [Race])
+	race!: [Race];
 
 	@Field(type => [String])
 	majors!: [String];
