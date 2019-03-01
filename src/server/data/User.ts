@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Field, ObjectType, Int, Float } from 'type-graphql';
+import { Field, ObjectType } from 'type-graphql';
 
 import { ShirtSize } from '../enums/ShirtSize';
 import { Gender } from '../enums/Gender';
