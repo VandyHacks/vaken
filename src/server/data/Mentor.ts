@@ -11,3 +11,5 @@ export class Mentor extends User {
 	@Field(type => [String])
 	skills!: [String];
 }
+
+// Copyright (c) 2019 Vanderbilt University

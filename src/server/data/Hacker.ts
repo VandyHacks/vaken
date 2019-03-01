@@ -76,3 +76,5 @@ export class Hacker extends User {
 	@Field(type => Boolean)
 	walkin?: Boolean;
 }
+
+// Copyright (c) 2019 Vanderbilt University
