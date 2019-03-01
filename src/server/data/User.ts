@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { Field, ObjectType, Int, Float } from 'type-graphql';
 
-import { ShirtSize } from '.../enums/ShirtSize
+import { ShirtSize } from '../enums/ShirtSize';
 
 /**
  * TODO - build explicit constructor (can I just set default values?)
