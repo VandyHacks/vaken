@@ -15,6 +15,7 @@ import ToggleSwitch from '../../components/Buttons/ToggleSwitch';
 import searchIcon from '../../assets/img/search_icon.svg';
 import STRINGS from '../../assets/strings.json';
 import Select from 'react-select';
+// import { Hacker } from 'src/server/models/Hacker';
 
 const StyledTable = styled(Table)`
 	.ReactVirtualized__Table__Grid {
@@ -56,7 +57,7 @@ const TableLayout = styled('div')`
 `;
 
 const SearchBox = styled('input')`
-	min-width: 25rem;
+	min-width: 30rem;
 	margin: 0.25rem 1rem 0.25rem 0rem;
 	padding: 0.75rem;
 	border: 0.0625rem solid #ecebed;
@@ -66,7 +67,8 @@ const SearchBox = styled('input')`
 	box-sizing: border-box;
 	background: #ffffff url(${searchIcon}) 0.25rem 50% no-repeat;
 	padding-left: 2rem;
-	:focus, :active {
+	:focus,
+	:active {
 		outline: none;
 		border: 0.0625rem solid ${STRINGS.ACCENT_COLOR};
 	}
@@ -81,19 +83,22 @@ const TableData = styled('div')`
 `;
 
 const ColumnSelect = styled(Select)`
-	min-width: 10rem;
+	min-width: 15rem;
 	display: inline-block;
 	font-size: 1rem;
 	margin-right: 1rem;
 	box-shadow: none;
-	.select__control, .basic-multi-select, select__control--menu-is-open {	
+	.select__control,
+	.basic-multi-select,
+	select__control--menu-is-open {
 		background-color: #ffffff;
-		padding: 0.20rem;
+		padding: 0.2rem;
 		border: 0.0625rem solid #ecebed;
 		border-radius: 0.375rem;
 		box-shadow: none;
 		outline: none;
-		:focus, :active {
+		:focus,
+		:active {
 			border: 0.0625rem solid ${STRINGS.ACCENT_COLOR};
 		}
 		:hover:not(.select__control--is-focused) {
@@ -103,30 +108,35 @@ const ColumnSelect = styled(Select)`
 			border: 0.0625rem solid ${STRINGS.ACCENT_COLOR};
 		}
 	}
-	.select__control--is-focused {
+	.select__control--is-focused,
+	.select__control--is-selected {
 		border: 0.0625rem solid ${STRINGS.ACCENT_COLOR};
 	}
 	.select__multi-value__label {
 		font-size: 1rem;
 	}
 	.select__option {
-		:active, :hover, :focus {
-			background-color: #E5E7FA;
+		:active,
+		:hover,
+		:focus {
+			background-color: #e5e7fa;
 		}
 	}
-	.select__option--is-focused {
-		background-color: #E5E7FA;
+	.select__option--is-focused,
+	.select__option--is-selected {
+		background-color: #e5e7fa;
+		color: #000000;
 	}
 `;
 
 const columnOptions = [
-	{ value: 'name', label: 'Name'},
-	{ value: 'email', label: 'Email Address'},
-	{ value: 'school', label: 'School'},
-	{ value: 'gradYear', label: 'Graduation Year'},
-	{ value: 'status', label: 'Status'},
-	{ value: 'requiresTravelReimbursement', label: 'Reimbursement'},
-]
+	{ value: 'name', label: 'Name' },
+	{ value: 'email', label: 'Email Address' },
+	{ value: 'school', label: 'School' },
+	{ value: 'gradYear', label: 'Graduation Year' },
+	{ value: 'status', label: 'Status' },
+	{ value: 'requiresTravelReimbursement', label: 'Reimbursement' },
+];
 
 enum HackerStatus {
 	verified,
@@ -147,8 +157,8 @@ interface Hacker {
 }
 
 interface Option {
-	label: string,
-	value: string,
+	label: string;
+	value: string;
 }
 
 interface Props {
@@ -194,8 +204,16 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 	}, [sortedData]);
 
 	useEffect(() => {
+		// add case for Regex?
 		onSearch(searchValue);
 	}, [selectedColumns]);
+
+	// remove multi-options when switching to single select
+	useEffect(() => {
+		if (selectedColumns.length > 0) {
+			setSelectedColumns([selectedColumns[0]]);
+		}
+	}, [useRegex]);
 
 	const opts = {
 		caseSensitive: true,
@@ -247,7 +265,27 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 				setSortedData(fuse.search(value));
 				// console.log(fuse.search(value));
 			} else {
-				console.log("regex searching!");
+				let regex: RegExp;
+				let isValid = true;
+				try {
+					regex = new RegExp(value, 'i');
+				} catch (e) {
+					isValid = false;
+				}
+				if (isValid) {
+					console.log(value);
+					console.log('Regex searching!');
+					
+					// TODO(alan): replace any with Hacker
+					const newSortedData = props.data.filter((user: any) => {
+							console.log(user[selectedColumns[0].value]);
+							return regex.test(user[selectedColumns[0].value]);
+					});
+					// console.log(newSortedData);
+					setSortedData(newSortedData);
+				} else {
+					console.log('Invalid regular expression');
+				}
 			}
 		} else {
 			// reset
@@ -261,20 +299,23 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		<TableLayout>
 			<TableOptions>
 				<ColumnSelect
-					isMulti
+					isMulti={!useRegex}
 					name="colors"
 					defaultValue={[columnOptions[0]]}
+					value={selectedColumns}
 					options={columnOptions}
 					className="basic-multi-select"
 					classNamePrefix="select"
 					onChange={(selected: any) => {
-						setSelectedColumns(selected);
+						if (Array.isArray(selected)) setSelectedColumns(selected);
+						else setSelectedColumns([selected]);
 					}}
 				/>
 				<SearchBox
 					value={searchValue}
-					placeholder={useRegex ? 'Search by regex string, e.g. "^example"' : 'Search by text'}
-					onChange={(event: React.ChangeEvent<HTMLInputElement>) => onSearch(event.target.value)}/>
+					placeholder={useRegex ? 'Search by regex string, e.g. \'^[a-b].*\'' : 'Search by text'}
+					onChange={(event: React.ChangeEvent<HTMLInputElement>) => onSearch(event.target.value)}
+				/>
 				<ToggleSwitch
 					label="Use Regex?"
 					checked={useRegex}
