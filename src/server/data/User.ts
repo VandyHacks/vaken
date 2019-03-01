@@ -4,10 +4,6 @@ import { Field, ObjectType } from 'type-graphql';
 import { ShirtSize } from '../enums/ShirtSize';
 import { Gender } from '../enums/Gender';
 
-/**
- * TODO - build explicit constructor (can I just set default values?)
- * TODO - enforce uniqueness as necessary
- */
 @ObjectType({ description: 'DTO for a generic Vaken user' })
 export class User {
 	@Field(type => [String])
