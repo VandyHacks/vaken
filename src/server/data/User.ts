@@ -1,6 +1,8 @@
 import 'reflect-metadata';
 import { Field, ObjectType, Int, Float } from 'type-graphql';
 
+import { ShirtSizes } from '../enums/ShirtSizes';
+
 /**
  * TODO - build explicit constructor (can I just set default values?)
  * TODO - enforce uniqueness as necessary
@@ -32,8 +34,8 @@ export class User {
 	@Field(type => String)
 	gender!: String; // TODO - make this an enum
 
-	@Field(type => String)
-	shirtSize!: String; // TODO - make this an enum
+	@Field(type => ShirtSizes)
+	shirtSize!: ShirtSizes; 
 
 	@Field(type => String)
 	dietaryRestrictions?: String;
