@@ -95,7 +95,7 @@ export const PasswordLogin: FunctionComponent<Props> = (props: Props): JSX.Eleme
 					<TextButton
 						onClick={onLogin}
 						color="white"
-						fontSize="1.4em"
+						fontSize="1.4rem"
 						background={STRINGS.ACCENT_COLOR}
 						text="Login"
 						glowColor="rgba(0, 0, 255, 0.67)"
