@@ -6,12 +6,14 @@ import {
 	SortDirection,
 	SortIndicator,
 	TableHeaderProps,
+	TableCellProps,
 	SortDirectionType,
 } from 'react-virtualized';
 import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import Fuse from 'fuse.js';
 import ToggleSwitch from '../../components/Buttons/ToggleSwitch';
+import Status from '../../components/Text/Status';
 import searchIcon from '../../assets/img/search_icon.svg';
 import STRINGS from '../../assets/strings.json';
 import Select from 'react-select';
@@ -139,20 +141,21 @@ const columnOptions = [
 ];
 
 enum HackerStatus {
-	verified,
-	started,
-	submitted,
-	accepted,
-	confirmed,
-	rejected,
+	verified = "verified",
+	started = "started",
+	submitted = "submitted",
+	accepted = "accepted",
+	confirmed = "confirmed",
+	rejected = "rejected",
 }
 
+// TODO(alan): convert status from hackerData JSON from types string to HackerStatus and remove union type
 interface Hacker {
 	name: string;
 	email: string;
 	gradYear?: number;
 	school?: string;
-	status: HackerStatus;
+	status: HackerStatus | string;
 	requiresTravelReimbursement?: boolean;
 }
 
@@ -243,6 +246,29 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		);
 	};
 
+	const statusRenderer = ({ cellData }: TableCellProps) => {
+		const generateColor = (value: HackerStatus) => {
+			switch(value) {
+				case HackerStatus.verified:
+					return STRINGS.COLOR_PALETTE[0];
+				case HackerStatus.started:
+					return STRINGS.COLOR_PALETTE[1];
+				case HackerStatus.submitted:
+					return STRINGS.COLOR_PALETTE[2];
+				case HackerStatus.accepted:
+					return STRINGS.COLOR_PALETTE[3];
+				case HackerStatus.confirmed:
+					return STRINGS.COLOR_PALETTE[4];
+				case HackerStatus.rejected:
+					return STRINGS.COLOR_PALETTE[5];
+				default:
+					return STRINGS.ACCENT_COLOR;
+			}		
+		}
+
+		return <Status value={cellData} generateColor={generateColor}/>;
+	};
+
 	const sort = ({
 		sortBy,
 		sortDirection,
@@ -275,11 +301,11 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 				if (isValid) {
 					console.log(value);
 					console.log('Regex searching!');
-					
+
 					// TODO(alan): replace any with Hacker
 					const newSortedData = props.data.filter((user: any) => {
-							console.log(user[selectedColumns[0].value]);
-							return regex.test(user[selectedColumns[0].value]);
+						console.log(user[selectedColumns[0].value]);
+						return regex.test(user[selectedColumns[0].value]);
 					});
 					// console.log(newSortedData);
 					setSortedData(newSortedData);
@@ -313,7 +339,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 				/>
 				<SearchBox
 					value={searchValue}
-					placeholder={useRegex ? 'Search by regex string, e.g. \'^[a-b].*\'' : 'Search by text'}
+					placeholder={useRegex ? "Search by regex string, e.g. '^[a-b].*'" : 'Search by text'}
 					onChange={(event: React.ChangeEvent<HTMLInputElement>) => onSearch(event.target.value)}
 				/>
 				<ToggleSwitch
@@ -371,8 +397,9 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									className="column"
 									label="Status"
 									dataKey="status"
-									width={100}
+									width={125}
 									headerRenderer={renderHeader}
+									cellRenderer={statusRenderer}
 								/>
 								<Column
 									className="column"
@@ -390,3 +417,5 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 };
 
 export default HackerTable;
+
+// Copyright (c) 2019 Vanderbilt University

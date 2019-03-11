@@ -6,6 +6,9 @@ import FloatingPopup from '../../components/Containers/FloatingPopup';
 const ManageHackers = (): JSX.Element => {
 	// GraphQL query would go here
 	const tableData = hackerData;
+	// const tableData = JSON.parse(hackerData.toString(), (key, value) => {
+	// 	return value;
+	// });
 
 	return (
 		<>

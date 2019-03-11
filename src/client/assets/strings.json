@@ -6,5 +6,6 @@
     "ACCENT_COLOR": "#6979f8",
     "LIGHT_TEXT_COLOR": "#D0C9D6",
     "SQUARE_LOGO_ALT_TEXT": "VH Logo",
-    "HACKER_DASHBOARD_HEADER_TEXT": "Your application status is:"
+    "HACKER_DASHBOARD_HEADER_TEXT": "Your application status is:",
+    "COLOR_PALETTE": ["#DBA5F5", "#FFC7A6", "#FFE29D", "#7DDFC3", "#A5AFFB", "#FDAFBB"]
 }
