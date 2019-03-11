@@ -14,6 +14,7 @@ import styled from 'styled-components';
 import Fuse from 'fuse.js';
 import ToggleSwitch from '../../components/Buttons/ToggleSwitch';
 import Status from '../../components/Text/Status';
+import Checkmark from '../../components/Symbol/Checkmark';
 import searchIcon from '../../assets/img/search_icon.svg';
 import STRINGS from '../../assets/strings.json';
 import Select from 'react-select';
