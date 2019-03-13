@@ -33,8 +33,7 @@ const Slider = styled('div')`
 	right: 0;
 	bottom: 0;
 	transition: 0.4s;
-	border-radius: 34px;
-
+	border-radius: 2.125rem;
 	:before {
 		border-radius: 50%;
 		position: absolute;
@@ -66,3 +65,5 @@ export const ToggleSwitch: FunctionComponent<Props> = (props: Props): JSX.Elemen
 };
 
 export default ToggleSwitch;
+
+// Copyright (c) 2019 Vanderbilt University
