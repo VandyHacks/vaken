@@ -1,41 +1,38 @@
 import 'reflect-metadata';
-import { Field, ObjectType, Int, Float } from 'type-graphql';
+import { Field, ObjectType } from 'type-graphql';
 
-/**
- * TODO - build explicit constructor (can I just set default values?)
- * TODO - enforce uniqueness as necessary
- * TODO - enforce required vs optional status as necessary
- * TODO - sanitize data (maybe move to db layer?)
- */
+import { ShirtSize } from '../enums/ShirtSize';
+import { Gender } from '../enums/Gender';
+
 @ObjectType({ description: 'DTO for a generic Vaken user' })
 export class User {
 	@Field(type => [String])
-	nfcCodes!: string[];
+	nfcCodes!: [String];
 
-	@Field()
-	firstName!: string;
+	@Field(type => String)
+	firstName!: String;
 
-	@Field()
-	lastName!: string;
+	@Field(type => String)
+	lastName!: String;
 
-	@Field()
-	email!: string;
+	@Field(type => String)
+	email!: String;
 
-	@Field()
-	google?: string;
+	@Field(type => String)
+	google?: String;
 
-	@Field()
-	github?: string;
+	@Field(type => String)
+	github?: String;
 
-	@Field()
-	phoneNumber!: string; // TODO - make this typed
+	@Field(type => String)
+	phoneNumber!: String;
 
-	@Field()
-	gender!: string; // TODO - make this an enum
+	@Field(type => Gender)
+	gender!: Gender;
 
-	@Field()
-	shirtSize!: string; // TODO - make this an enum
+	@Field(type => ShirtSize)
+	shirtSize!: ShirtSize;
 
-	@Field()
-	dietaryRestrictions?: string;
+	@Field(type => String)
+	dietaryRestrictions?: String;
 }

@@ -16,7 +16,7 @@ const Checkmark = styled('div')`
     border-radius: 50%;
     display: inline-block;
 `;
-
+ 
 export default Checkmark;
 
 // Copyright (c) 2019 Vanderbilt University

@@ -1,4 +1,4 @@
-import { Resolver, Query, Arg, FieldResolver, ResolverInterface } from 'type-graphql';
+import { Resolver, Query, Arg } from 'type-graphql';
 import { plainToClass } from 'class-transformer';
 
 import { User } from '../data/User';

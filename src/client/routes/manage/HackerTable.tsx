@@ -57,6 +57,7 @@ const TableLayout = styled('div')`
 	flex: 1 0 auto;
 	display: flex;
 	flex-direction: column;
+<<<<<<< HEAD
 `;
 
 const SearchBox = styled('input')`
@@ -302,7 +303,6 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 				if (isValid) {
 					console.log(value);
 					console.log('Regex searching!');
-
 					// TODO(alan): replace any with Hacker
 					const newSortedData = props.data.filter((user: any) => {
 						console.log(user[selectedColumns[0].value]);
@@ -340,7 +340,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 				/>
 				<SearchBox
 					value={searchValue}
-					placeholder={useRegex ? "Search by regex string, e.g. '^[a-b].*'" : 'Search by text'}
+					placeholder={useRegex ? 'Search by regex string, e.g. \'^[a-b].*\'' : 'Search by text'}
 					onChange={(event: React.ChangeEvent<HTMLInputElement>) => onSearch(event.target.value)}
 				/>
 				<ToggleSwitch
