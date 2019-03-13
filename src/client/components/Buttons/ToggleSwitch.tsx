@@ -33,12 +33,7 @@ const Slider = styled('div')`
 	right: 0;
 	bottom: 0;
 	transition: 0.4s;
-<<<<<<< HEAD
 	border-radius: 2.125rem;
-=======
-	border-radius: 34px;
->>>>>>> 9a44ce2d85b3785084f73e3f8ae10bc367df8993
-
 	:before {
 		border-radius: 50%;
 		position: absolute;
