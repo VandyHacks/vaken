@@ -16,6 +16,8 @@ import ToggleSwitch from '../../components/Buttons/ToggleSwitch';
 import Status from '../../components/Text/Status';
 import Checkmark from '../../components/Symbol/Checkmark';
 import searchIcon from '../../assets/img/search_icon.svg';
+// import activeCheckmark from '../../assets/img/active_checkmark.svg';
+// import inactiveCheckmark from '../../assets/img/inactive_checkmark.svg';
 import STRINGS from '../../assets/strings.json';
 import Select from 'react-select';
 // import { Hacker } from 'src/server/models/Hacker';
@@ -57,7 +59,6 @@ const TableLayout = styled('div')`
 	flex: 1 0 auto;
 	display: flex;
 	flex-direction: column;
-<<<<<<< HEAD
 `;
 
 const SearchBox = styled('input')`
@@ -248,6 +249,11 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		);
 	};
 
+	const checkmarkRenderer = ({ cellData }: TableCellProps) => {
+		// return <Checkmark src={cellData ? activeCheckmark : inactiveCheckmark}/>;
+		// return 	
+	}
+
 	const statusRenderer = ({ cellData }: TableCellProps) => {
 		const generateColor = (value: HackerStatus) => {
 			switch(value) {
@@ -407,6 +413,8 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									label="Requires Travel Reimbursement?"
 									dataKey="requiresTravelReimbursement"
 									width={275}
+									headerRenderer={renderHeader}
+									cellRenderer={checkmarkRenderer}
 								/>
 							</StyledTable>
 						);
