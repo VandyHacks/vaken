@@ -1,3 +1,5 @@
+import { registerEnumType } from 'type-graphql';
+
 export enum Race {
 	White,
 	BlackOrAfricanAmerican,
@@ -5,3 +7,7 @@ export enum Race {
 	Asian,
 	NativeHawaiianOrPacificIslander,
 }
+
+registerEnumType(Race, {
+	name: 'Race',
+});

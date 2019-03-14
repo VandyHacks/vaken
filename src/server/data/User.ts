@@ -1,10 +1,11 @@
 import 'reflect-metadata';
-import { Field, ObjectType } from 'type-graphql';
+import { Field, ObjectType, InputType } from 'type-graphql';
 
 import { ShirtSize } from '../enums/ShirtSize';
 import { Gender } from '../enums/Gender';
 
 @ObjectType({ description: 'DTO for a generic Vaken user' })
+@InputType()
 export class User {
 	@Field(type => [String])
 	nfcCodes!: [String];

@@ -1,11 +1,12 @@
 import 'reflect-metadata';
-import { Field, ObjectType } from 'type-graphql';
+import { Field, ObjectType, InputType } from 'type-graphql';
 
 import { User } from './User';
 import { Ethnicity } from '../enums/Ethnicity';
 import { Race } from '../enums/Race';
 
 @ObjectType({ description: 'DTO for a Vaken hacker' })
+@InputType()
 export class Hacker extends User {
 	@Field(type => Boolean)
 	verified: Boolean = false;
