@@ -1,24 +1,21 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
-import activeCheckmark from '../../assets/img/active_checkmark.svg';
-import inactiveCheckmark from '../../assets/img/inactive_checkmark.svg';
-
-const StyledDiv = styled('div')`
-	vertical-align: middle;
-`;
 
 interface Props {
+    value: boolean;
 	color?: string;
-	value: boolean;
 	width?: string;
 	height?: string;
 }
 
+const StyledSVG = styled('svg')`
+    vertical-align: middle;
+`;
+
 export const Checkmark: FunctionComponent<Props> = (props: Props): JSX.Element => {
 	return (
-		<StyledDiv>
-			<svg
+			<StyledSVG
 				width={props.width || '1rem'}
 				height={props.height || '1rem'}
 				viewBox="0 0 16 16"
@@ -42,22 +39,9 @@ export const Checkmark: FunctionComponent<Props> = (props: Props): JSX.Element =
 						stroke={props.color || STRINGS.ACCENT_COLOR}
 					/>
 				)}
-			</svg>
-		</StyledDiv>
+			</StyledSVG>
 	);
 };
-
-// const Checkmark = styled('div')`
-//     ${({ value }: Props) =>
-//     value
-//         ? `background-color: ${STRINGS.DARK_TEXT_COLOR}`
-//         : `background-color: ${STRINGS.ACCENT_COLOR}`}
-//     height: 1.5rem;
-//     width: 1.5rem;
-//     background-color: ${STRINGS.ACCENT_COLOR};
-//     border-radius: 50%;
-//     display: inline-block;
-// `;
 
 export default Checkmark;
 

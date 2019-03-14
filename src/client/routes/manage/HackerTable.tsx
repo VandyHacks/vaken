@@ -16,8 +16,6 @@ import ToggleSwitch from '../../components/Buttons/ToggleSwitch';
 import Status from '../../components/Text/Status';
 import Checkmark from '../../components/Symbol/Checkmark';
 import searchIcon from '../../assets/img/search_icon.svg';
-// import activeCheckmark from '../../assets/img/active_checkmark.svg';
-// import inactiveCheckmark from '../../assets/img/inactive_checkmark.svg';
 import STRINGS from '../../assets/strings.json';
 import Select from 'react-select';
 // import { Hacker } from 'src/server/models/Hacker';
@@ -250,8 +248,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 	};
 
 	const checkmarkRenderer = ({ cellData }: TableCellProps) => {
-		// return <Checkmark src={cellData ? activeCheckmark : inactiveCheckmark}/>;
-		// return 	
+		return <Checkmark value={cellData}/>;
 	}
 
 	const statusRenderer = ({ cellData }: TableCellProps) => {
