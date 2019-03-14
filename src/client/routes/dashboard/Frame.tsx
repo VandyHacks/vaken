@@ -16,17 +16,18 @@ const Layout = styled.div`
 	width: 100vw;
 	display: grid;
 	grid:
-		'sidebar . header' auto
-		'sidebar . .' 1rem
-		'sidebar . content' 1fr
-		/ 22rem 2rem 1fr;
+		'sidebar . header .' auto
+		'sidebar . . .' 1.5rem
+		'sidebar . content .' 1fr
+		'sidebar . . .' 1.5rem
+		/ 22rem 2rem 1fr 2rem;
 	/* align-items: stretch; */
 	overflow: hidden;
 
 	.content {
 		grid-area: content;
 		overflow-y: auto;
-		border-radius: 2rem;
+		/* border-radius: 2rem; */
 	}
 
 	.header {

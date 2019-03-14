@@ -1,7 +1,6 @@
-import React, { forwardRef, RefForwardingComponent } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
-import { fieldValue } from '../../routes/application/Application';
 
 export interface Props {
 	color?: string;

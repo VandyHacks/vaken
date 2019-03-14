@@ -1,13 +1,12 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import { AppField } from '../../routes/application/ApplicationConfig';
-import { fieldValue } from '../../routes/application/Application';
 
 interface Props extends AppField {
 	options?: string[];
 	children?: React.ReactNode;
 	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-	value: fieldValue;
+	value: any;
 	name: string;
 }
 
