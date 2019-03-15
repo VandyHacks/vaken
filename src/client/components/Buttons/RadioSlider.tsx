@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState, useRef, useEffect } from 'react';
-import styled, { StyledFunction } from 'styled-components';
+import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
 
 interface Props {
@@ -34,10 +34,6 @@ const Switch = styled('div')`
 	padding: 0 0.75rem;
 `;
 
-// const selector: StyledFunction<SelectorProps & React.HTMLProps<HTMLDivElement>> = styled('div');
-
-// left: ${(props: SelectorProps) => `${props.left} px;`}
-// ${({ width }: SelectorProps) => `left: ${width};`}
 const Selector = styled('div')`
     left: ${(props: SelectorProps) => `${props.left};`}
 	text-align: center;
@@ -45,9 +41,9 @@ const Selector = styled('div')`
 	width: ${(props: SelectorProps) => `${props.width};`}
 	box-sizing: border-box;
 	transition: 300ms ease-out;
-	border-radius: 0.3em;
+	border-radius: 0.225rem;
 	color: white;
-    box-shadow: 0px 2px 13px 0px #9b9b9b;
+    box-shadow: 0px 0.125rem 0.625rem 0px #9b9b9b;
     background-color: ${(props: SelectorProps) => `${props.color};`};
 `;
 
@@ -61,28 +57,19 @@ export const RadioSlider: FunctionComponent<Props> = (props: Props): JSX.Element
     const [color, setColor] = useState(STRINGS.ACCENT_COLOR);
     const [isLoaded, setIsLoaded] = useState(false);
 
-	//  setSelectedWidth(option2Ref && option2Ref.current && option2Ref.current.clientWidth || 0); // }, []);
-	// const [selected, setSelected] = useState(props.option2);
-
 	useEffect(() => {
-        // console.log(props.option1, option1Ref.current.clientWidth);
-        // console.log(props.option2, option2Ref.current.clientWidth);
-        // console.log(props.option3, option3Ref.current.clientWidth);
         if (option2Ref.current != null) {
             setWidth(option2Ref.current.clientWidth);
         }
-        // console.log(option2Ref.current.clientWidth);
         if (option1Ref.current != null) {
             setLeft(option1Ref.current.clientWidth);
         }
-        // console.log(option1Ref.current.clientWidth);
         setIsLoaded(true);
     }, []);
 
 	const onClick = (event: any) => {
         switch(event.target.id) {
             case(props.option1):
-                // console.log("1: ", props.option1);
                 if (option1Ref.current != null) {
                     setWidth(option1Ref.current.clientWidth);
                     setLeft(0);
@@ -90,7 +77,6 @@ export const RadioSlider: FunctionComponent<Props> = (props: Props): JSX.Element
                 }
                 break;
             case(props.option2):
-                // console.log("2: ", props.option2);
                 if (option2Ref.current != null && option1Ref.current != null) {
                     setWidth(option2Ref.current.clientWidth);
                     setLeft(option1Ref.current.clientWidth);
@@ -98,7 +84,6 @@ export const RadioSlider: FunctionComponent<Props> = (props: Props): JSX.Element
                 }
                 break;
             case(props.option3):
-                // console.log("3: ", props.option3);
                 if (option1Ref.current != null && option2Ref.current != null && option3Ref.current != null) {
                     setWidth(option3Ref.current.clientWidth);
                     setLeft(option1Ref.current.clientWidth + option2Ref.current.clientWidth);
@@ -106,14 +91,6 @@ export const RadioSlider: FunctionComponent<Props> = (props: Props): JSX.Element
                 }
                 break;
         }
-        console.log("width: ", width);
-        console.log("left: ", left);
-
-		// setLeft(option1Ref && option1Ref.current && option1Ref.current.clientWidth || 0);
-		// console.log(event.target.clientWidth);
-		// console.log(selectedWidth);
-		// console.log(option1Ref && option1Ref.current && option1Ref.current.clientWidth);
-		// console.log(event.target.id);
 		setSelected(event.target.id);
 	};
 
