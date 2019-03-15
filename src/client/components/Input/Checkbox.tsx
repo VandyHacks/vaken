@@ -28,6 +28,13 @@ const CheckboxContainer = styled.div`
 	}
 
 	label {
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: flex-start;
+		align-items: center;
+		line-height: 140%;
+		text-align: left;
+		font-size: 1.1rem;
 		cursor: pointer;
 	}
 
@@ -36,14 +43,6 @@ const CheckboxContainer = styled.div`
 	}
 
 	div {
-		display: flex;
-		flex-flow: row nowrap;
-		justify-content: flex-start;
-		align-items: center;
-		line-height: 140%;
-		text-align: left;
-		font-size: 1.1rem;
-		transition: color 0.2s ease-out, background-color 0.15s ease-out, box-shadow 0.15s ease-out;
 		margin-bottom: 0.24rem;
 	}
 `;
@@ -103,18 +102,20 @@ export class Checkbox extends React.PureComponent<Props, {}> {
 					{options.map((option: string) => {
 						return (
 							<div key={option}>
-								{value.has(option) ? (
-									<CheckedSvg width={24} height={24} />
-								) : (
-									<UncheckedSvg width={24} height={24} />
-								)}
 								<input
 									checked={value.has(option)}
 									type="checkbox"
 									id={option}
 									onChange={onChange}
 								/>
-								<label htmlFor={option}>{option}</label>
+								<label htmlFor={option}>
+									{value.has(option) ? (
+										<CheckedSvg width={24} height={24} />
+									) : (
+										<UncheckedSvg width={24} height={24} />
+									)}
+									{option}
+								</label>
 							</div>
 						);
 					})}
