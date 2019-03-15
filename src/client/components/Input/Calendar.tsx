@@ -15,18 +15,19 @@ export interface Props {
 	list?: string;
 }
 
-export const Input = styled.input`
+export const StyledCalInput = styled.input`
 	padding: 0.75rem;
 	width: 17rem;
 	border: none;
 	font-size: 1em;
+	border-bottom: 2px solid transparent;
 	color: ${STRINGS.DARK_TEXT_COLOR};
 	::placeholder {
 		color: ${STRINGS.LIGHT_TEXT_COLOR};
 	}
 
 	:invalid {
-		box-shadow: 0 0 5px red;
+		border-bottom: 2px solid red;
 	}
 
 	&:focus {
@@ -34,6 +35,10 @@ export const Input = styled.input`
 	}
 `;
 
-export default Input;
+export const CalendarInput = (props: Props): JSX.Element => {
+	return <StyledCalInput type="date" {...props} />;
+};
+
+export default CalendarInput;
 
 // Copyright (c) 2019 Vanderbilt University

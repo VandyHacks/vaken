@@ -1,6 +1,5 @@
 import produce from 'immer';
 import { Update } from 'use-immer';
-import { fieldValue } from '../../routes/application/Application';
 
 /**
  * onChangeWrapper wraps a setState function to take a react Input event function
@@ -18,27 +17,27 @@ export function onChangeWrapper(
 }
 
 /**
- * onChangeWrapper wraps a setState function to take a react Input event function
- * @param {function} updateFn - function that will update the state
+ * formChangeWrapper wraps a setState function to take a react Input event function
+ * this method is designed to be a fallback for string data types only
+ * @param {function} setState - function that will update the state
+ * @param {string} category - the category to update
  * @param {string} fieldName - name of field to update
  * @returns {function} function suitable for a react input onChange={} prop
  */
 export function formChangeWrapper(
-	updateFn: Update<Map<string, fieldValue>>,
+	setState: Update<any>,
+	category: string,
 	fieldName: string
 ): (e: React.ChangeEvent<HTMLInputElement>) => void {
 	return e => {
-		const { value, type, checked } = e.target;
-		updateFn(
-			produce((draft: Map<string, fieldValue>) => {
-				if (type === 'checkbox') {
-					const set =
-						draft.get(fieldName) instanceof Set ? draft.get(fieldName) : new Set<string>();
-					draft.set(fieldName, fieldName);
-				}
-				draft.set(fieldName, value);
-			})
-		);
+		const { value, type, checked, id } = e.target;
+
+		setState(draft => {
+			if (!draft[category]) {
+				draft[category] = {};
+			}
+			draft[category][fieldName] = value;
+		});
 	};
 }
 
