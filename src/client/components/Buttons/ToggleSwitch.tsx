@@ -46,6 +46,7 @@ const Slider = styled('div')`
 		transition: 0.4s;
 	}
 `;
+// TODO(alan): insert box shadow? box-shadow: 0px 2px 13px 0px #9b9b9b;
 
 interface Props {
 	label: string;

@@ -13,6 +13,7 @@ import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import Fuse from 'fuse.js';
 import ToggleSwitch from '../../components/Buttons/ToggleSwitch';
+import RadioSlider from '../../components/Buttons/RadioSlider';
 import Status from '../../components/Text/Status';
 import Checkmark from '../../components/Symbol/Checkmark';
 import searchIcon from '../../assets/img/search_icon.svg';
@@ -137,6 +138,24 @@ const ColumnSelect = styled(Select)`
 		background-color: #e5e7fa;
 		color: #000000;
 	}
+`;
+
+const Action = styled('div')`
+	display: flex;
+`;
+
+const ActionButton = styled.button`
+	color: ${STRINGS.DARK_TEXT_COLOR};
+	background-color: white;
+	border-color: ${STRINGS.ACCENT_COLOR};
+	text-align: center;
+	border-radius: 1rem;
+	width: 3rem;
+	border-style: solid;
+	border-width: 0.0625rem;
+	margin-left: 1rem;
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
 `;
 
 const columnOptions = [
@@ -270,6 +289,15 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		return <Checkmark value={cellData} />;
 	};
 
+	const actionRenderer = ({ cellData }: TableCellProps) => {
+		return (
+			<Action>
+				<RadioSlider option1="Accept" option2="Undecided" option3="Reject" />
+				<ActionButton>View</ActionButton>
+			</Action>
+		);
+	};
+
 	const statusRenderer = ({ cellData }: TableCellProps) => {
 		const generateColor = (value: HackerStatus) => {
 			switch (value) {
@@ -374,8 +402,6 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 			<TableData>
 				<AutoSizer>
 					{({ height, width }) => {
-						console.log('height: ', height);
-						console.log('width: ', width);
 						return (
 							<StyledTable
 								width={width}
@@ -413,14 +439,14 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									className="column"
 									label="School"
 									dataKey="school"
-									width={200}
+									width={175}
 									headerRenderer={renderHeaderAsLabel}
 								/>
 								<Column
 									className="column"
 									label="Status"
 									dataKey="status"
-									width={125}
+									width={100}
 									headerRenderer={renderHeaderAsLabel}
 									cellRenderer={statusRenderer}
 								/>
@@ -428,7 +454,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									className="column"
 									label="Requires Travel Reimbursement?"
 									dataKey="requiresTravelReimbursement"
-									width={275}
+									width={30}
 									headerRenderer={({ dataKey, sortBy, sortDirection, label }: TableHeaderProps) =>
 										renderHeaderAsSVG(
 											{
@@ -441,6 +467,14 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 										)
 									}
 									cellRenderer={checkmarkRenderer}
+								/>
+								<Column
+									className="column"
+									label="Actions"
+									dataKey="actions"
+									width={275}
+									headerRenderer={renderHeaderAsLabel}
+									cellRenderer={actionRenderer}
 								/>
 							</StyledTable>
 						);
