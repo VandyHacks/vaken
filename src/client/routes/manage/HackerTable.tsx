@@ -47,6 +47,12 @@ const StyledTable = styled(Table)`
 		background-color: #fafafa;
 	}
 
+	.ReactVirtualized__Table__headerColumn {
+		:focus {
+			outline: none;
+		}
+	}
+
 	font-size: 0.8rem;
 	margin-bottom: 5rem;
 	color: ${STRINGS.DARKEST_TEXT_COLOR};
@@ -248,16 +254,13 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		);
 	};
 
-	const renderHeaderAsSVG = ({
-		dataKey,
-		sortBy,
-		sortDirection,
-		label,
-		svg,
-	}: TableHeaderProps & { svg: string }): JSX.Element => {
+	const renderHeaderAsSVG = (
+		{ dataKey, sortBy, sortDirection, label }: TableHeaderProps,
+		svg: string
+	): JSX.Element => {
 		return (
 			<>
-				<img src={svg} />
+				<img alt={String(label)} src={svg} />
 				{sortBy === dataKey && <SortIndicator sortDirection={sortDirection} />}
 			</>
 		);
@@ -427,13 +430,15 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									dataKey="requiresTravelReimbursement"
 									width={275}
 									headerRenderer={({ dataKey, sortBy, sortDirection, label }: TableHeaderProps) =>
-										renderHeaderAsSVG({
-											dataKey: dataKey,
-											sortBy: sortBy,
-											sortDirection: sortDirection,
-											label: label,
-											svg: plane,
-										})
+										renderHeaderAsSVG(
+											{
+												dataKey: dataKey,
+												sortBy: sortBy,
+												sortDirection: sortDirection,
+												label: label,
+											},
+											plane
+										)
 									}
 									cellRenderer={checkmarkRenderer}
 								/>
