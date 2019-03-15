@@ -1,3 +1,5 @@
+import { registerEnumType } from 'type-graphql';
+
 export enum ShirtSize {
 	UXS,
 	US,
@@ -11,3 +13,7 @@ export enum ShirtSize {
 	WXL,
 	WXXL,
 }
+
+registerEnumType(ShirtSize, {
+	name: 'ShirtSize',
+});
