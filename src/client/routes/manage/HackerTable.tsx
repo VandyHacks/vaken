@@ -13,9 +13,11 @@ import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import Fuse from 'fuse.js';
 import ToggleSwitch from '../../components/Buttons/ToggleSwitch';
+import RadioSlider from '../../components/Buttons/RadioSlider';
 import Status from '../../components/Text/Status';
 import Checkmark from '../../components/Symbol/Checkmark';
 import searchIcon from '../../assets/img/search_icon.svg';
+import plane from '../../assets/img/plane.svg';
 import STRINGS from '../../assets/strings.json';
 import Select from 'react-select';
 // import { Hacker } from 'src/server/models/Hacker';
@@ -46,6 +48,12 @@ const StyledTable = styled(Table)`
 		background-color: #fafafa;
 	}
 
+	.ReactVirtualized__Table__headerColumn {
+		:focus {
+			outline: none;
+		}
+	}
+
 	font-size: 0.8rem;
 	margin-bottom: 5rem;
 	color: ${STRINGS.DARKEST_TEXT_COLOR};
@@ -57,7 +65,6 @@ const TableLayout = styled('div')`
 	flex: 1 0 auto;
 	display: flex;
 	flex-direction: column;
-<<<<<<< HEAD
 `;
 
 const SearchBox = styled('input')`
@@ -133,6 +140,24 @@ const ColumnSelect = styled(Select)`
 	}
 `;
 
+const Action = styled('div')`
+	display: flex;
+`;
+
+const ActionButton = styled.button`
+	color: ${STRINGS.DARK_TEXT_COLOR};
+	background-color: white;
+	border-color: ${STRINGS.ACCENT_COLOR};
+	text-align: center;
+	border-radius: 1rem;
+	width: 3rem;
+	border-style: solid;
+	border-width: 0.0625rem;
+	margin-left: 1rem;
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+`;
+
 const columnOptions = [
 	{ value: 'name', label: 'Name' },
 	{ value: 'email', label: 'Email Address' },
@@ -143,12 +168,12 @@ const columnOptions = [
 ];
 
 enum HackerStatus {
-	verified = "verified",
-	started = "started",
-	submitted = "submitted",
-	accepted = "accepted",
-	confirmed = "confirmed",
-	rejected = "rejected",
+	verified = 'verified',
+	started = 'started',
+	submitted = 'submitted',
+	accepted = 'accepted',
+	confirmed = 'confirmed',
+	rejected = 'rejected',
 }
 
 // TODO(alan): convert status from hackerData JSON from types string to HackerStatus and remove union type
@@ -234,7 +259,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 	const generateRowClassName = ({ index }: { index: number }): string =>
 		index < 0 ? 'headerRow' : index % 2 === 0 ? 'evenRow' : 'oddRow';
 
-	const renderHeader = ({
+	const renderHeaderAsLabel = ({
 		dataKey,
 		sortBy,
 		sortDirection,
@@ -248,9 +273,34 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		);
 	};
 
+	const renderHeaderAsSVG = (
+		{ dataKey, sortBy, sortDirection, label }: TableHeaderProps,
+		svg: string
+	): JSX.Element => {
+		return (
+			<>
+				<img alt={String(label)} src={svg} />
+				{sortBy === dataKey && <SortIndicator sortDirection={sortDirection} />}
+			</>
+		);
+	};
+
+	const checkmarkRenderer = ({ cellData }: TableCellProps) => {
+		return <Checkmark value={cellData} />;
+	};
+
+	const actionRenderer = ({ cellData }: TableCellProps) => {
+		return (
+			<Action>
+				<RadioSlider option1="Accept" option2="Undecided" option3="Reject" />
+				<ActionButton>View</ActionButton>
+			</Action>
+		);
+	};
+
 	const statusRenderer = ({ cellData }: TableCellProps) => {
 		const generateColor = (value: HackerStatus) => {
-			switch(value) {
+			switch (value) {
 				case HackerStatus.verified:
 					return STRINGS.COLOR_PALETTE[0];
 				case HackerStatus.started:
@@ -265,10 +315,10 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 					return STRINGS.COLOR_PALETTE[5];
 				default:
 					return STRINGS.ACCENT_COLOR;
-			}		
-		}
+			}
+		};
 
-		return <Status value={cellData} generateColor={generateColor}/>;
+		return <Status value={cellData} generateColor={generateColor} />;
 	};
 
 	const sort = ({
@@ -340,7 +390,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 				/>
 				<SearchBox
 					value={searchValue}
-					placeholder={useRegex ? 'Search by regex string, e.g. \'^[a-b].*\'' : 'Search by text'}
+					placeholder={useRegex ? "Search by regex string, e.g. '^[a-b].*'" : 'Search by text'}
 					onChange={(event: React.ChangeEvent<HTMLInputElement>) => onSearch(event.target.value)}
 				/>
 				<ToggleSwitch
@@ -352,8 +402,6 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 			<TableData>
 				<AutoSizer>
 					{({ height, width }) => {
-						console.log('height: ', height);
-						console.log('width: ', width);
 						return (
 							<StyledTable
 								width={width}
@@ -371,42 +419,62 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									label="Name"
 									dataKey="name"
 									width={150}
-									headerRenderer={renderHeader}
+									headerRenderer={renderHeaderAsLabel}
 								/>
 								<Column
 									className="column"
 									label="Email"
 									dataKey="email"
 									width={200}
-									headerRenderer={renderHeader}
+									headerRenderer={renderHeaderAsLabel}
 								/>
 								<Column
 									className="column"
 									label="Grad Year"
 									dataKey="gradYear"
 									width={100}
-									headerRenderer={renderHeader}
+									headerRenderer={renderHeaderAsLabel}
 								/>
 								<Column
 									className="column"
 									label="School"
 									dataKey="school"
-									width={200}
-									headerRenderer={renderHeader}
+									width={175}
+									headerRenderer={renderHeaderAsLabel}
 								/>
 								<Column
 									className="column"
 									label="Status"
 									dataKey="status"
-									width={125}
-									headerRenderer={renderHeader}
+									width={100}
+									headerRenderer={renderHeaderAsLabel}
 									cellRenderer={statusRenderer}
 								/>
 								<Column
 									className="column"
 									label="Requires Travel Reimbursement?"
 									dataKey="requiresTravelReimbursement"
+									width={30}
+									headerRenderer={({ dataKey, sortBy, sortDirection, label }: TableHeaderProps) =>
+										renderHeaderAsSVG(
+											{
+												dataKey: dataKey,
+												sortBy: sortBy,
+												sortDirection: sortDirection,
+												label: label,
+											},
+											plane
+										)
+									}
+									cellRenderer={checkmarkRenderer}
+								/>
+								<Column
+									className="column"
+									label="Actions"
+									dataKey="actions"
 									width={275}
+									headerRenderer={renderHeaderAsLabel}
+									cellRenderer={actionRenderer}
 								/>
 							</StyledTable>
 						);
