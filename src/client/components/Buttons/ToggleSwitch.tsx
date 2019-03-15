@@ -44,6 +44,10 @@ const Slider = styled('div')`
 		bottom: 0.25rem;
 		background-color: white;
 		transition: 0.4s;
+		${({ checked }: SliderProps) =>
+		checked
+			? 'box-shadow: 0rem 0.1875rem 0.1875rem 0rem #5E6DDF'
+			: 'box-shadow: 0rem 0.1875rem 0.1875rem 0rem #9b9b9b'}
 	}
 `;
 // TODO(alan): insert box shadow? box-shadow: 0px 2px 13px 0px #9b9b9b;

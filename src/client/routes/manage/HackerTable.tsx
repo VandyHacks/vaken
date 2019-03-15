@@ -12,6 +12,7 @@ import {
 import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import Fuse from 'fuse.js';
+import TableButton from '../../components/Buttons/TableButton';
 import ToggleSwitch from '../../components/Buttons/ToggleSwitch';
 import RadioSlider from '../../components/Buttons/RadioSlider';
 import Status from '../../components/Text/Status';
@@ -140,22 +141,8 @@ const ColumnSelect = styled(Select)`
 	}
 `;
 
-const Action = styled('div')`
+const Actions = styled('div')`
 	display: flex;
-`;
-
-const ActionButton = styled.button`
-	color: ${STRINGS.DARK_TEXT_COLOR};
-	background-color: white;
-	border-color: ${STRINGS.ACCENT_COLOR};
-	text-align: center;
-	border-radius: 1rem;
-	width: 3rem;
-	border-style: solid;
-	border-width: 0.0625rem;
-	margin-left: 1rem;
-	margin-top: 0.5rem;
-	margin-bottom: 0.5rem;
 `;
 
 const columnOptions = [
@@ -291,10 +278,10 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 
 	const actionRenderer = ({ cellData }: TableCellProps) => {
 		return (
-			<Action>
+			<Actions>
 				<RadioSlider option1="Accept" option2="Undecided" option3="Reject" />
-				<ActionButton>View</ActionButton>
-			</Action>
+				<TableButton>View</TableButton>
+			</Actions>
 		);
 	};
 
