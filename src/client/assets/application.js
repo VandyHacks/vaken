@@ -2,6 +2,9 @@ import institutions from './data/institutions.json';
 import AutoComplete from '../components/Input/AutoCompleteTextInput';
 import TextInput from '../components/Input/TextInput';
 import Checkbox from '../components/Input/Checkbox';
+import Slider from '../components/Input/Slider';
+import Boolean from '../components/Input/Boolean';
+import Calendar from '../components/Input/Calendar';
 
 export const questions = [
 	{
@@ -18,35 +21,38 @@ export const questions = [
 			{
 				Component: TextInput,
 				fieldName: 'lastName',
-				placholder: 'Smith',
+				placeholder: 'Smith',
 				required: true,
 				title: 'Last Name',
 				validation: '^.{4,}$',
 			},
 			{
-				Component: TextInput,
+				Component: Calendar,
 				fieldName: 'dateOfBirth',
 				placeholder: '01/01/2000',
 				required: false,
 				title: 'Date of Birth',
 			},
 			{
-				Component: TextInput,
+				Component: Slider,
 				default: 2019,
 				fieldName: 'graduationYear',
-				options: ['2019', '2020', '2021', '2022'],
+				optional: true,
+				options: [2019, 2020, 2021, 2022],
+				other: true,
 				title: 'Graduation Year',
 				type: 'number',
 			},
 			{
-				Component: TextInput,
-				default: true,
+				Component: Boolean,
+				default: false,
 				fieldName: 'ethnicity',
 				prompt: 'Are you Spanish, Hispantic, or Latino?',
 				title: 'Ethnicity',
 			},
 			{
 				Component: Checkbox,
+				default: new Set(),
 				fieldName: 'race',
 				note: 'Choose all that apply.',
 				options: [

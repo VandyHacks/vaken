@@ -1,11 +1,9 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
-import styled from 'styled-components';
 import { Update } from 'use-immer';
+import styled from 'styled-components';
 import { AppField } from '../../routes/application/ApplicationConfig';
-import UncheckedSvg from '../../assets/img/unchecked_box.svg';
-import CheckedSvg from '../../assets/img/checked_box.svg';
 
-interface Props extends AppField {
+export interface Props extends AppField {
 	options?: string[];
 	children?: React.ReactNode;
 	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -13,12 +11,15 @@ interface Props extends AppField {
 	name: string;
 }
 
-const CheckboxContainer = styled.div`
+const SliderContainer = styled.div`
 	font-size: 0;
 	display: flex;
-	flex-flow: column nowrap;
+	flex-flow: row nowrap;
 	justify-content: flex-start;
+	background: #ffffff;
 	border-radius: 6px;
+	width: min-content;
+	height: min-content;
 
 	input {
 		width: 0;
@@ -29,29 +30,30 @@ const CheckboxContainer = styled.div`
 
 	label {
 		cursor: pointer;
-	}
-
-	svg {
-		margin-right: 0.6rem;
-	}
-
-	div {
-		display: flex;
-		flex-flow: row nowrap;
-		justify-content: flex-start;
-		align-items: center;
+		padding: 0.75rem 2rem;
+		margin-top: 0;
+		box-sizing: border-box;
+		display: inline-block;
+		border-radius: 6px;
+		background-color: #fff;
 		line-height: 140%;
-		text-align: left;
-		font-size: 1.1rem;
+		text-align: center;
+		font-size: 1rem;
 		transition: color 0.2s ease-out, background-color 0.15s ease-out, box-shadow 0.15s ease-out;
-		margin-bottom: 0.24rem;
+	}
+
+	input:checked + label {
+		background-color: #6979f8;
+		color: #ffffff;
+		/* border-color: #6979f8; */
+		z-index: 1;
 	}
 `;
 
-export class Checkbox extends React.PureComponent<Props, {}> {
+export class Slider extends React.PureComponent<Props, {}> {
 	/**
 	 * updateFn wraps a setState function to take a react Input event function
-	 * and modify the Set at `category/fieldName` to represent the updated input
+	 * and modify the string at `category/fieldName` to represent the updated input
 	 * @param {function} setState - function that will update the state
 	 * @param {string} category - the category to update
 	 * @param {string} fieldName - name of field to update
@@ -64,25 +66,13 @@ export class Checkbox extends React.PureComponent<Props, {}> {
 	): ((e: React.ChangeEvent<HTMLInputElement>) => void) => {
 		return e => {
 			const { type, checked, id } = e.target;
-			if (type === 'checkbox') {
+			if (type === 'radio') {
 				setState(draft => {
 					if (!draft[category]) {
 						draft[category] = {};
 					}
-					if (!(draft[category][fieldName] instanceof Set)) {
-						draft[category][fieldName] = new Set<string>();
-					}
 
-					/* Get around Immer's lack of native support for Set/Map by duplicating the 
-				 set and changing the necessary fields, then changing the pointer to the new set.*/
-					const newSet = new Set(draft[category][fieldName]);
-					if (checked) {
-						newSet.add(id);
-					} else {
-						newSet.delete(id);
-					}
-
-					draft[category][fieldName] = newSet;
+					draft[category][fieldName] = id;
 				});
 			} else {
 				throw new Error('Wrong type passed to formChangeWrapper');
@@ -93,35 +83,21 @@ export class Checkbox extends React.PureComponent<Props, {}> {
 	public render() {
 		let { options = ['default'], value, onChange } = this.props;
 
-		if (!(value instanceof Set)) {
-			value = new Set();
-		}
-
 		return (
 			<fieldset>
-				<CheckboxContainer>
+				<SliderContainer>
 					{options.map((option: string) => {
 						return (
-							<div key={option}>
-								{value.has(option) ? (
-									<CheckedSvg width={24} height={24} />
-								) : (
-									<UncheckedSvg width={24} height={24} />
-								)}
-								<input
-									checked={value.has(option)}
-									type="checkbox"
-									id={option}
-									onChange={onChange}
-								/>
+							<React.Fragment key={option}>
+								<input checked={value == option} type="radio" id={option} onChange={onChange} />
 								<label htmlFor={option}>{option}</label>
-							</div>
+							</React.Fragment>
 						);
 					})}
-				</CheckboxContainer>
+				</SliderContainer>
 			</fieldset>
 		);
 	}
 }
 
-export default Checkbox;
+export default Slider;

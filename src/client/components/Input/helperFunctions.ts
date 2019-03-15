@@ -18,40 +18,26 @@ export function onChangeWrapper(
 
 /**
  * formChangeWrapper wraps a setState function to take a react Input event function
- * @param {Map<string, fieldValue>} state - map containing form values in {K,V} pairs
+ * this method is designed to be a fallback for string data types only
  * @param {function} setState - function that will update the state
+ * @param {string} category - the category to update
  * @param {string} fieldName - name of field to update
  * @returns {function} function suitable for a react input onChange={} prop
  */
 export function formChangeWrapper(
-	state: Map<string, any>,
-	setState: React.Dispatch<React.SetStateAction<Map<string, any>>>,
+	setState: Update<any>,
+	category: string,
 	fieldName: string
 ): (e: React.ChangeEvent<HTMLInputElement>) => void {
 	return e => {
-		const { value, type, checked } = e.target;
-		if (type === 'checkbox') {
-			console.log('inside checkbox: ', state);
-			// Type-safely create/get the set
-			const set: Set<string> =
-				state.get(fieldName) instanceof Set
-					? (state.get(fieldName) as Set<string>)
-					: new Set<string>();
+		const { value, type, checked, id } = e.target;
 
-			// Add or remove from the set
-			if (checked) {
-				set.add(value);
-			} else {
-				set.delete(value);
+		setState(draft => {
+			if (!draft[category]) {
+				draft[category] = {};
 			}
-
-			// Finally, update the set in the field
-			setState(state.set(fieldName, set));
-		} else {
-			console.log('value', value);
-			// Else field will be string, update directly
-			setState(state.set(fieldName, state.get(fieldName) + value));
-		}
+			draft[category][fieldName] = value;
+		});
 	};
 }
 
