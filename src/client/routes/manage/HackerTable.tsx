@@ -16,6 +16,7 @@ import ToggleSwitch from '../../components/Buttons/ToggleSwitch';
 import Status from '../../components/Text/Status';
 import Checkmark from '../../components/Symbol/Checkmark';
 import searchIcon from '../../assets/img/search_icon.svg';
+import plane from '../../assets/img/plane.svg';
 import STRINGS from '../../assets/strings.json';
 import Select from 'react-select';
 // import { Hacker } from 'src/server/models/Hacker';
@@ -142,12 +143,12 @@ const columnOptions = [
 ];
 
 enum HackerStatus {
-	verified = "verified",
-	started = "started",
-	submitted = "submitted",
-	accepted = "accepted",
-	confirmed = "confirmed",
-	rejected = "rejected",
+	verified = 'verified',
+	started = 'started',
+	submitted = 'submitted',
+	accepted = 'accepted',
+	confirmed = 'confirmed',
+	rejected = 'rejected',
 }
 
 // TODO(alan): convert status from hackerData JSON from types string to HackerStatus and remove union type
@@ -233,7 +234,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 	const generateRowClassName = ({ index }: { index: number }): string =>
 		index < 0 ? 'headerRow' : index % 2 === 0 ? 'evenRow' : 'oddRow';
 
-	const renderHeader = ({
+	const renderHeaderAsLabel = ({
 		dataKey,
 		sortBy,
 		sortDirection,
@@ -247,13 +248,28 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		);
 	};
 
+	const renderHeaderAsSVG = ({
+		dataKey,
+		sortBy,
+		sortDirection,
+		label,
+		svg,
+	}: TableHeaderProps & { svg: string }): JSX.Element => {
+		return (
+			<>
+				<img src={svg} />
+				{sortBy === dataKey && <SortIndicator sortDirection={sortDirection} />}
+			</>
+		);
+	};
+
 	const checkmarkRenderer = ({ cellData }: TableCellProps) => {
-		return <Checkmark value={cellData}/>;
-	}
+		return <Checkmark value={cellData} />;
+	};
 
 	const statusRenderer = ({ cellData }: TableCellProps) => {
 		const generateColor = (value: HackerStatus) => {
-			switch(value) {
+			switch (value) {
 				case HackerStatus.verified:
 					return STRINGS.COLOR_PALETTE[0];
 				case HackerStatus.started:
@@ -268,10 +284,10 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 					return STRINGS.COLOR_PALETTE[5];
 				default:
 					return STRINGS.ACCENT_COLOR;
-			}		
-		}
+			}
+		};
 
-		return <Status value={cellData} generateColor={generateColor}/>;
+		return <Status value={cellData} generateColor={generateColor} />;
 	};
 
 	const sort = ({
@@ -343,7 +359,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 				/>
 				<SearchBox
 					value={searchValue}
-					placeholder={useRegex ? 'Search by regex string, e.g. \'^[a-b].*\'' : 'Search by text'}
+					placeholder={useRegex ? "Search by regex string, e.g. '^[a-b].*'" : 'Search by text'}
 					onChange={(event: React.ChangeEvent<HTMLInputElement>) => onSearch(event.target.value)}
 				/>
 				<ToggleSwitch
@@ -374,35 +390,35 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									label="Name"
 									dataKey="name"
 									width={150}
-									headerRenderer={renderHeader}
+									headerRenderer={renderHeaderAsLabel}
 								/>
 								<Column
 									className="column"
 									label="Email"
 									dataKey="email"
 									width={200}
-									headerRenderer={renderHeader}
+									headerRenderer={renderHeaderAsLabel}
 								/>
 								<Column
 									className="column"
 									label="Grad Year"
 									dataKey="gradYear"
 									width={100}
-									headerRenderer={renderHeader}
+									headerRenderer={renderHeaderAsLabel}
 								/>
 								<Column
 									className="column"
 									label="School"
 									dataKey="school"
 									width={200}
-									headerRenderer={renderHeader}
+									headerRenderer={renderHeaderAsLabel}
 								/>
 								<Column
 									className="column"
 									label="Status"
 									dataKey="status"
 									width={125}
-									headerRenderer={renderHeader}
+									headerRenderer={renderHeaderAsLabel}
 									cellRenderer={statusRenderer}
 								/>
 								<Column
@@ -410,7 +426,15 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									label="Requires Travel Reimbursement?"
 									dataKey="requiresTravelReimbursement"
 									width={275}
-									headerRenderer={renderHeader}
+									headerRenderer={({ dataKey, sortBy, sortDirection, label }: TableHeaderProps) =>
+										renderHeaderAsSVG({
+											dataKey: dataKey,
+											sortBy: sortBy,
+											sortDirection: sortDirection,
+											label: label,
+											svg: plane,
+										})
+									}
 									cellRenderer={checkmarkRenderer}
 								/>
 							</StyledTable>
