@@ -1,132 +1,144 @@
 import React, { FunctionComponent, useState, useEffect, useRef } from 'react';
+import { useImmer, Update } from 'use-immer';
 import styled from 'styled-components';
-import { useImmer } from 'use-immer';
-import AutoComplete from '../../components/Input/AutoCompleteTextInput';
-import { onChangeWrapper, formChangeWrapper } from '../../components/Input/helperFunctions';
-import TextInput from '../../components/Input/TextInput';
-import { AppField, AppSection } from './ApplicationConfig'; // TODO Delete this
-import Checkbox from '../../components/Input/Checkbox';
-import config from '../../assets/application.json';
-import institutions from '../../assets/data/institutions.json';
+import { formChangeWrapper } from '../../components/Input/helperFunctions';
+import config from '../../assets/application';
+import Collapsible from '../../components/Containers/Collapsible';
 
-interface Props {
-	input: string;
-	options?: string[];
-	id: string; //Req'd for form label
-	placeholder?: string;
-	pattern?: string;
-	completions?: string[];
-	name: string;
+interface ConfigSection {
+	category: string;
+	fields: ConfigField[];
+	title: string;
 }
 
-export type fieldValue = string | string[] | undefined;
-export type field = {
+interface ConfigField {
+	Component: any;
+	fieldName: string;
+	placeholder?: string;
+	required?: boolean;
+	title: string;
+	validation?: string;
+	options?: any;
+	default?: any;
+	other?: boolean;
+	optional?: boolean;
+	prompt?: string;
+	note?: string;
+	updateFn?: (setState: Update<any>, category: string, fieldName: string) => void;
+}
+
+interface Question {
+	input: any;
+	fieldName: string;
+}
+
+interface Section {
 	name: string;
-	value: fieldValue;
-};
+	questions: Question[];
+}
 
-const InputFactory: FunctionComponent<Props> = (props: Props): JSX.Element => {
-	const [value, setValue] = useImmer(new Map<string, fieldValue>());
-	const { input, ...rest } = props;
-	const { name } = props;
+export const StyledForm = styled.form`
+	display: flex;
+	flex-flow: column nowrap;
 
-	switch (input) {
-		case 'input':
-			return (
-				<TextInput {...rest} value={value.get(name)} onChange={formChangeWrapper(setValue, name)} />
-			);
-		case 'slider':
-			return (
-				<TextInput
-					{...rest}
-					value={value.get(name)}
-					onChange={formChangeWrapper(setValue, name)}
-				/> /* TODO: Create Slider */
-			);
-		case 'multi-checkbox':
-			return (
-				<div />
-				// <Checkbox
-				// 	{...rest}
-				// 	onChange={formChangeWrapper(setValue, name)}
-				// 	value={value.get(name)}
-				// /> /* TODO: Create checkbox */
-			);
-		// case 'toggle':
-		// 	return (
-		// 		<RadioButton
-		// 			{...rest}
-		// 			onChange={formChangeWrapper(setValue, name)}
-		// 			value={value.get(name)}
-		// 		/> /* TODO: Create checkbox */
-		// 	);
-		case 'autocomplete/school':
-			return (
-				<AutoComplete
-					{...rest}
-					options={institutions}
-					value={value.get(name)}
-					onChange={formChangeWrapper(setValue, name)}
-				/>
-			);
+	fieldset {
+		margin-top: 0.4rem;
+	}
+`;
+
+export const StyledQuestion = styled.label`
+	display: flex;
+	flex-flow: column nowrap;
+	margin-top: 1.4rem;
+	font-size: 1rem;
+
+	& > input {
+		margin-top: 0.4rem;
+		border-radius: 6px;
 	}
 
-	return (
-		<p>
-			<b>No component found :(</b>
-		</p>
-	);
-};
+	&:last-child {
+		margin-bottom: 1.4rem;
+	}
+`;
 
-export const Prompt = styled.h2``;
+export const FieldPrompt = styled.h3`
+	font-weight: lighter;
+	font-size: 1em;
+`;
 
-export const Application: FunctionComponent<{}> = (props): JSX.Element => {
+export const FieldNote = styled.span`
+	font-style: italic;
+	font-weight: lighter;
+	font-size: 1em;
+`;
+
+export const FieldTitle = styled.span`
+	display: inline-block;
+	font-style: normal;
+	font-size: 1em;
+	line-height: 140%;
+`;
+
+export const Application: FunctionComponent<{}> = (): JSX.Element => {
 	const formRef = useRef<HTMLFormElement>(null);
-	const [formData, setFormData] = useState(new Map<string, fieldValue>());
+
+	const initialFormState: any = {};
+	let initialSection = '';
+	useEffect(() => {
+		config.forEach((section: ConfigSection, i) => {
+			initialFormState[section.category] = {};
+
+			section.fields.forEach((field: ConfigField) => {
+				initialFormState[section.category][field.fieldName] = field.default || undefined;
+			});
+		});
+	}, [config]);
+
+	const [formData, setFormData] = useImmer(initialFormState);
+	const [curSection, setCurSection] = useState(config[0].title);
 
 	return (
-		<form ref={formRef}>
-			{config.map((section: AppSection) => {
+		<StyledForm ref={formRef}>
+			{config.map((section: ConfigSection) => {
+				const { fields, category } = section;
 				return (
-					<fieldset key={section.title}>
-						<legend>{section.title}</legend>
-						{section.fields.map(
-							(field: AppField): JSX.Element => {
-								const { title, validation = '', note, ...rest } = field;
-								return (
-									<label key={title} htmlFor={title}>
-										{title}
-										{prompt ? <Prompt>{prompt}</Prompt> : null}
-										<InputFactory id={title} pattern={validation} {...rest} />
-									</label>
-								);
-							}
-						)}
-					</fieldset>
+					<Collapsible
+						onClick={Collapsible.onClick(curSection, setCurSection)}
+						active={curSection}
+						title={section.title}
+						key={section.title}>
+						{fields.map(field => {
+							const { title, fieldName, ...rest } = field;
+							const formCategory = formData[category] || {};
+							const fieldValue =
+								formCategory[fieldName] == undefined ? '' : formCategory[fieldName];
+
+							// Use either the class-based static method onChangeWrapper, or a defined
+							// updateFn in the config file, and finally, a fallback for string data types.
+							const onChange = field.Component.updateFn
+								? field.Component.updateFn(setFormData, category, fieldName)
+								: field.updateFn
+								? field.updateFn(setFormData, category, fieldName)
+								: formChangeWrapper(setFormData, category, fieldName);
+
+							return (
+								<StyledQuestion key={title} htmlFor={title}>
+									<div>
+										{title} {field.note ? <FieldNote> – {field.note}</FieldNote> : null}
+									</div>
+									{field.prompt ? <FieldPrompt>{field.prompt}</FieldPrompt> : null}
+									<field.Component value={fieldValue} onChange={onChange} {...rest} id={title} />
+								</StyledQuestion>
+							);
+						})}
+					</Collapsible>
 				);
 			})}
-
-			{/* <label htmlFor="school">
-				School
-				<AutoComplete
-					id="school"
-					required
-					value={school}
-					onChange={onChangeWrapper(setSchool)}
-					completions={institutions}
-				/>
-			</label>
-			<label htmlFor="email">
-				email
-				<TextInput id="email" value={email} type="email" onChange={onChangeWrapper(setEmail)} />
-			</label>
-			<label htmlFor="name">
-				Name
-				<TextInput id="name" value={name} onChange={onChangeWrapper(setName)} />
-			</label> */}
-		</form>
+		</StyledForm>
 	);
 };
 
-// export default Application;
 export default Application;
+
+// Copyright (c) 2019 Vanderbilt University

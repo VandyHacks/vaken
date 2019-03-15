@@ -16,10 +16,6 @@ module.exports = {
 				use: [
 					{
 						loader: 'thread-loader',
-						options: {
-							// poolTimeout: Infinity, // set this to Infinity in watch mode - see https://github.com/webpack-contrib/thread-loader
-							workers: require('os').cpus().length - 1, // Leave 1 worker for fork-ts-checker
-						},
 					},
 					{
 						loader: 'babel-loader',
@@ -27,14 +23,28 @@ module.exports = {
 				],
 			},
 			{
-				test: /\.(gif|png|jpe?g|svg)$/i,
+				test: /\.(gif|png|jpe?g)$/i,
 				use: ['file-loader'],
 			},
 			{
-				test: /\.css$/,
+				test: /\.svg$/,
+				use: [
+					{
+						loader: 'babel-loader',
+					},
+					{
+						loader: 'react-svg-loader',
+						options: {
+							jsx: true, // true outputs JSX tags
+						},
+					},
+				],
+			},
+			{
 				include: /node_modules/,
+				test: /\.css$/,
 				use: ['style-loader', 'css-loader'],
-			},		
+			},
 		],
 	},
 	// optimization: {

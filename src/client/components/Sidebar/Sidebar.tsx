@@ -2,12 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import { NavLink as UglyNavLink, withRouter } from 'react-router-dom';
 import produce from 'immer';
-import sqLogo from '../../assets/img/square_hackathon_logo.svg';
+import SqLogo from '../../assets/img/square_hackathon_logo.svg';
 import STRINGS from '../../assets/strings.json';
 import NavButton from '../Buttons/NavButton';
 import { FlexStartColumn, SpaceBetweenColumn, FlexEndColumn } from '../Containers/FlexContainers';
 import SmallCenteredText from '../Text/SmallCenteredText';
-import { AuthLevel, routes } from '../../assets/routes';
+import { currentAuth, AuthLevel, routes } from '../../assets/routes';
 
 interface Props {}
 
@@ -26,14 +26,14 @@ const Background = styled.div`
 	align-items: flex-start;
 `;
 
-const Logo = styled.img`
+const Logo = styled.div`
 	margin: 3rem 2rem;
 	width: min-content;
 	align-self: center;
 `;
 
 const HorizontalLine = styled.hr`
-	margin: 1rem 2rem;
+	margin: 0 2rem;
 	width: calc(100% - 4rem);
 	color: white;
 	margin-bottom: 2rem;
@@ -101,16 +101,18 @@ const ColumnWithSeparators = styled.ul`
 
 const Sidebar = withRouter(
 	(props: Props): JSX.Element => {
-		const userLevel = AuthLevel.HACKER; // TODO: FIXME not actual user
+		const userLevel = AuthLevel.ORGANIZER; // TODO: FIXME not actual user
 		return (
 			<Layout>
 				<Background>
-					<Logo src={sqLogo} alt={STRINGS.SQUARE_LOGO_ALT_TEXT} />
+					<Logo>
+						<SqLogo />
+					</Logo>
 					<HorizontalLine />
-					<SpaceBetweenColumn>
+					<SpaceBetweenColumn height="calc(100% - calc(8rem + 160px))">
 						<ColumnWithSeparators>
 							{routes.map((route: Route) => {
-								return route.authLevel.includes(userLevel) ? (
+								return route.authLevel.includes(currentAuth) ? (
 									<li key={route.path}>
 										<NavLink to={route.path} activeClassName="active">
 											<NavButtonWhiteText text={route.displayText} />
@@ -119,7 +121,7 @@ const Sidebar = withRouter(
 								) : null;
 							})}
 						</ColumnWithSeparators>
-						<FlexEndColumn paddingBottom="1rem">
+						<FlexEndColumn height="min-content" paddingBottom="1rem">
 							<NavLink to="/logout">
 								<NavButtonWhiteText text="Logout" />
 							</NavLink>

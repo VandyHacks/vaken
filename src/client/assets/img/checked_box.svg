@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24" height="24" fill="none" version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+ <metadata>
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <g filter="url(#filter0_d)">
+  <rect x="0" y="0" width="24" height="24" rx="6" fill="white"/>
+<rect x="0.5" y="0.5" width="23" height="23" rx="5.5" stroke="#ECEBED"/>
+ </g>
+ <path d="m15.494 8.729c0.3446-0.3445 0.9033-0.3445 1.2479 0 0.3445 0.3446 0.3445 0.9033 0 1.2479l-5.2942 5.2941c-0.3445 0.3446-0.9032 0.3446-1.2478 0l-2.9412-2.9412c-0.3445-0.3446-0.3445-0.9032 0-1.2478 0.3446-0.3446 0.9033-0.3446 1.2479 0l2.3172 2.3172z" fill="#6979f8"/>
+ <defs>
+  <filter id="filter0_d" x="0" y="0" width="24" height="24" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+   <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+   <feColorMatrix in="SourceAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+   <feOffset dy="7"/>
+   <feGaussianBlur stdDeviation="10"/>
+   <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.07 0"/>
+   <feBlend in2="BackgroundImageFix" result="effect1_dropShadow"/>
+   <feBlend in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+  </filter>
+ </defs>
+</svg>

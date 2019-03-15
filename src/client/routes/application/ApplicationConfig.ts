@@ -2,12 +2,12 @@ import React from 'react';
 
 export interface AppSection {
 	fields: AppField[];
-	name: string;
+	category: string;
 	title: string;
 }
 
 export interface AppField {
-	name: string;
+	fieldName: string;
 	placeholder?: string;
 	required?: boolean;
 	title: string;

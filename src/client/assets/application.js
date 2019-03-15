@@ -1,51 +1,60 @@
 import institutions from './data/institutions.json';
-import AutoCompletingText from '../components/Input/AutoCompleteTextInput';
+import AutoComplete from '../components/Input/AutoCompleteTextInput';
+import TextInput from '../components/Input/TextInput';
+import Checkbox from '../components/Input/Checkbox';
+import Slider from '../components/Input/Slider';
+import Boolean from '../components/Input/Boolean';
+import Calendar from '../components/Input/Calendar';
 
-module.exports = [
+export const questions = [
 	{
+		category: 'demographicInfo',
 		fields: [
 			{
-				component: 'input',
-				name: 'firstName',
+				Component: TextInput,
+				fieldName: 'firstName',
 				placeholder: 'John',
 				required: true,
 				title: 'First Name',
 				validation: '^(?!\\s*$).+',
 			},
 			{
-				component: 'input',
-				name: 'lastName',
-				placholder: 'Smith',
+				Component: TextInput,
+				fieldName: 'lastName',
+				placeholder: 'Smith',
 				required: true,
 				title: 'Last Name',
 				validation: '^.{4,}$',
 			},
 			{
-				component: 'input',
-				name: 'dateOfBirth',
+				Component: Calendar,
+				fieldName: 'dateOfBirth',
 				placeholder: '01/01/2000',
+				required: false,
 				title: 'Date of Birth',
-				type: 'date',
 			},
 			{
-				component: 'slider',
-				defaultValue: 2019,
-				name: 'graduationYear',
-				options: ['2019', '2020', '2021', '2022'],
+				Component: Slider,
+				default: 2019,
+				fieldName: 'graduationYear',
+				optional: true,
+				options: [2019, 2020, 2021, 2022],
+				other: true,
 				title: 'Graduation Year',
 				type: 'number',
 			},
 			{
-				component: 'toggle',
-				defaultValue: true,
-				name: 'ethnicity',
+				Component: Boolean,
+				default: false,
+				fieldName: 'ethnicity',
 				prompt: 'Are you Spanish, Hispantic, or Latino?',
 				title: 'Ethnicity',
 			},
 			{
-				component: 'checkbox',
-				instruction: 'Choose all that apply.',
-				name: 'race',
+				Component: Checkbox,
+				default: new Set(),
+				fieldName: 'race',
+				note: 'Choose all that apply.',
 				options: [
 					'American Indian or Alaskan Native',
 					'Asian',
@@ -57,20 +66,21 @@ module.exports = [
 				title: 'Race',
 			},
 		],
-		name: 'Demographic',
 		title: 'Demographic',
 	},
 	{
+		category: 'education',
 		fields: [
 			{
-				input: AutoCompletingText,
-				name: 'school',
+				Component: AutoComplete,
+				fieldName: 'school',
 				options: institutions,
-				// placeholder: 'If not found, please type the name.',
+				placeholder: 'If not found, please type the name.',
 				title: 'School',
 			},
 		],
-		name: 'education',
 		title: 'Education',
 	},
 ];
+
+export default questions;
