@@ -26,20 +26,46 @@ module.exports = {
 				test: /\.(gif|png|jpe?g)$/i,
 				use: ['file-loader'],
 			},
+			// {
+			// 	test: /\.(gif|png|jpe?g|svg)$/i,
+			// 	use: ['file-loader'],
+			// },
+			// {
+			// 	test: /\.(gif|png|jpe?g)$/i,
+			// 	use: ['file-loader'],
+			// },
 			{
 				test: /\.svg$/,
-				use: [
+				oneOf: [
 					{
-						loader: 'babel-loader',
+						resourceQuery: /inline/,
+						use: ['@svgr/webpack'],
 					},
 					{
-						loader: 'react-svg-loader',
-						options: {
-							jsx: true, // true outputs JSX tags
-						},
-					},
-				],
+						use: ['@svgr/webpack', 'file-loader'],
+					}
+				]
 			},
+			{
+				test: /\.svg$/,
+				resourceQuery: /inline/,
+				use: ['@svgr/webpack'],
+			},
+			// {
+			// 	test: /\.svg$/,
+			// 	resourceQuery: /inline/,
+			// 	use: [
+			// 		{
+			// 			loader: 'babel-loader',
+			// 		},
+			// 		{
+			// 			loader: 'react-svg-loader',
+			// 			options: {
+			// 				jsx: true, // true outputs JSX tags
+			// 			},
+			// 		},
+			// 	],
+			// },
 			{
 				include: /node_modules/,
 				test: /\.css$/,
