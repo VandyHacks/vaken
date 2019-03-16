@@ -1,13 +1,10 @@
 import React, { Suspense, FunctionComponent } from 'react';
 import styled from 'styled-components';
 import { Switch, Route } from 'react-router-dom';
-import Dashboard from './Dashboard';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import STRINGS from '../../assets/strings.json';
 import Title from '../../components/Text/Title';
 import { routes, currentAuth } from '../../assets/routes';
-import Application from '../application/Application';
-import ManageHackers from '../manage/ManageHackers';
 
 const OrganizerDash = React.lazy(() => import('./OrganizerDash'));
 

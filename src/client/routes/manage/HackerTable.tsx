@@ -77,8 +77,8 @@ const SearchBox = styled('input')`
 	border-radius: 0.375rem;
 	font-size: 1rem;
 	box-sizing: border-box;
-	background: #ffffff url(${searchIcon}) 0.25rem 50% no-repeat;
 	padding-left: 2rem;
+	background: #ffffff url(${searchIcon}) 0.25rem 50% no-repeat;
 	:focus,
 	:active {
 		outline: none;
@@ -262,11 +262,12 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 
 	const renderHeaderAsSVG = (
 		{ dataKey, sortBy, sortDirection, label }: TableHeaderProps,
-		svg: string
+		svg: JSX.Element
 	): JSX.Element => {
 		return (
 			<>
-				<img alt={String(label)} src={svg} />
+				{/* <svg/> */}
+				{/* <img alt={String(label)} src={svg} /> */}
 				{sortBy === dataKey && <SortIndicator sortDirection={sortDirection} />}
 			</>
 		);
