@@ -5,6 +5,7 @@ import bodyParser from 'koa-bodyparser';
 import mongoose from 'mongoose';
 import passport from 'koa-passport';
 import session from 'koa-session';
+import { MongoClient, ObjectID } from 'mongodb';
 import { ApolloServer, gql } from 'apollo-server-koa';
 import { buildSchema } from 'type-graphql';
 
@@ -36,14 +37,14 @@ app.use(router.routes());
 app.use(userRouter.routes());
 
 // Connect to mongo database
-mongoose.connect('mongodb://localhost:32772/test').then(
-	() => {
-		console.log('>>> MongoDB Connected');
-	},
-	err => {
-		console.log('err:', err);
-	}
-);
+// mongoose.connect('mongodb://localhost:27017/test').then(
+// 	() => {
+// 		console.log('>>> MongoDB Connected');
+// 	},
+// 	err => {
+// 		console.log('err:', err);
+// 	}
+// );
 
 /*
  * Graph QL
@@ -74,6 +75,17 @@ async function launchServer() {
 		console.log(`>>> Server started at http://localhost:${port}${apollo.graphqlPath}`);
 	});
 }
+
+// Connect to mongodb
+MongoClient.connect('mongodb://localhost:27017/test', (err: any, client: any) => {
+	console.log('>>> MongoDB Connected');
+	const db = client.db('test');
+
+	const users = db.collection('users');
+	users.find({}).toArray((err: any, docs: any) => {
+		console.log(docs);
+	});
+});
 
 // Launch server with GraphQL endpoint
 launchServer();
