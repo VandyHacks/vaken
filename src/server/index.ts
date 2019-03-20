@@ -11,6 +11,11 @@ import { buildSchema } from 'type-graphql';
 
 import userRouter from './api/UserRouter';
 import { UserResolver } from './resolvers/UserResolver';
+import { HackerResolver } from './resolvers/HackerResolver';
+import { MentorResolver } from './resolvers/MentorResolver';
+import { OrganizerResolver } from './resolvers/OrganizerResolver';
+import { SponsorRepResolver } from './resolvers/SponsorRepResolver';
+import { SponsorResolver } from './resolvers/SponsorResolver';
 
 const app = new koa();
 const router = new koaRouter();
@@ -56,7 +61,14 @@ app.use(userRouter.routes());
 async function launchServer() {
 	// build TypeGraphQL executable schema
 	const schema = await buildSchema({
-		resolvers: [UserResolver],
+		resolvers: [
+			HackerResolver,
+			MentorResolver,
+			OrganizerResolver,
+			SponsorRepResolver,
+			SponsorResolver,
+			UserResolver,
+		],
 		// automatically create `schema.gql` file with schema definition in current folder
 		// emitSchemaFile: path.resolve(__dirname, 'schema.gql'),
 	});
