@@ -4,24 +4,13 @@ import { Field, ObjectType, InputType } from 'type-graphql';
 import { User } from './User';
 import { Ethnicity } from '../enums/Ethnicity';
 import { Race } from '../enums/Race';
+import { Status } from '../enums/Status';
 
 @ObjectType({ description: 'DTO for a Vaken hacker' })
 @InputType()
 export class Hacker extends User {
-	@Field(type => Boolean)
-	verified: Boolean = false;
-
-	@Field(type => Boolean)
-	started: Boolean = false;
-
-	@Field(type => Boolean)
-	submitted: Boolean = false;
-
-	@Field(type => Boolean)
-	accepted: Boolean = false;
-
-	@Field(type => Boolean)
-	confirmed: Boolean = false;
+	@Field(type => Status)
+	status: Status = Status.Created; // Indicates a user was created but that's it
 
 	@Field(type => String)
 	school!: String;
@@ -66,7 +55,7 @@ export class Hacker extends User {
 	codeOfConduct?: Boolean;
 
 	@Field(type => Boolean)
-	needReimbursement?: Boolean;
+	needsReimbursement?: Boolean;
 
 	@Field(type => Boolean)
 	lightningTalk?: Boolean;

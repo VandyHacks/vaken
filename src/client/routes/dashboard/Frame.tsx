@@ -60,7 +60,7 @@ const Frame: FunctionComponent<{}> = (): JSX.Element => {
 						<Switch>
 							{routes.map(route => {
 								return route.authLevel.includes(currentAuth) ? (
-									<Route key={route.path} path={route.path} component={route.component} />
+									<Route key={route.path} path={route.path} component={() => <route.component/>} />
 								) : null;
 							})}
 						</Switch>

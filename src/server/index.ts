@@ -5,11 +5,17 @@ import bodyParser from 'koa-bodyparser';
 import mongoose from 'mongoose';
 import passport from 'koa-passport';
 import session from 'koa-session';
+import { MongoClient, ObjectID } from 'mongodb';
 import { ApolloServer, gql } from 'apollo-server-koa';
 import { buildSchema } from 'type-graphql';
 
 import userRouter from './api/UserRouter';
 import { UserResolver } from './resolvers/UserResolver';
+import { HackerResolver } from './resolvers/HackerResolver';
+import { MentorResolver } from './resolvers/MentorResolver';
+import { OrganizerResolver } from './resolvers/OrganizerResolver';
+import { SponsorRepResolver } from './resolvers/SponsorRepResolver';
+import { SponsorResolver } from './resolvers/SponsorResolver';
 
 const app = new koa();
 const router = new koaRouter();
@@ -35,16 +41,6 @@ app.use(passport.session());
 app.use(router.routes());
 app.use(userRouter.routes());
 
-// Connect to mongo database
-mongoose.connect('mongodb://localhost:32772/test').then(
-	() => {
-		console.log('>>> MongoDB Connected');
-	},
-	err => {
-		console.log('err:', err);
-	}
-);
-
 /*
  * Graph QL
  */
@@ -55,7 +51,14 @@ mongoose.connect('mongodb://localhost:32772/test').then(
 async function launchServer() {
 	// build TypeGraphQL executable schema
 	const schema = await buildSchema({
-		resolvers: [UserResolver],
+		resolvers: [
+			HackerResolver,
+			MentorResolver,
+			OrganizerResolver,
+			SponsorRepResolver,
+			SponsorResolver,
+			UserResolver,
+		],
 		// automatically create `schema.gql` file with schema definition in current folder
 		// emitSchemaFile: path.resolve(__dirname, 'schema.gql'),
 	});
@@ -74,6 +77,17 @@ async function launchServer() {
 		console.log(`>>> Server started at http://localhost:${port}${apollo.graphqlPath}`);
 	});
 }
+
+// Connect to mongodb
+// MongoClient.connect('mongodb://localhost:27017/test', (err: any, client: any) => {
+// 	console.log('>>> MongoDB Connected');
+// 	const db = client.db('test');
+
+// 	const users = db.collection('users');
+// 	users.find({}).toArray((err: any, docs: any) => {
+// 		console.log(docs);
+// 	});
+// });
 
 // Launch server with GraphQL endpoint
 launchServer();
