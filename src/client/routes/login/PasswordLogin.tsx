@@ -78,6 +78,7 @@ export const PasswordLogin: FunctionComponent<Props> = (props: Props): JSX.Eleme
 			<LeftImgTextInput
 				img={emailIcon}
 				imgAlt="Email icon"
+				fontSize="1.4rem"
 				onChange={onChangeWrapper(setEmail)}
 				value={email}
 				placeholder="Email"
@@ -85,6 +86,7 @@ export const PasswordLogin: FunctionComponent<Props> = (props: Props): JSX.Eleme
 			<LeftImgTextInput
 				img={lockIcon}
 				imgAlt="Lock icon"
+				fontSize="1.4rem"
 				onChange={onChangeWrapper(setPass)}
 				value={pass}
 				placeholder="Password"
