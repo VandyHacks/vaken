@@ -52,7 +52,7 @@ export class Collapsible extends React.PureComponent<Props, {}> {
 		setState: React.Dispatch<React.SetStateAction<string>>
 	): ((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void) => {
 		return e => {
-			const { id } = e.target;
+			const { id } = e.target as any;
 
 			if (id === state) {
 				setState('');
