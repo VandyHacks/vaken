@@ -10,12 +10,6 @@ import STRINGS from '../../assets/strings.json';
 import { Link } from 'react-router-dom';
 
 const ManageHackers = (): JSX.Element => {
-	// GraphQL query would go here
-	const tableData = hackerData;
-	// const tableData = JSON.parse(hackerData.toString(), (key, value) => {
-	// 	return value;
-	// });
-
 	const GET_HACKERS = gql`
 		query {
 			getAllHackers {
