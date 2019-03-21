@@ -146,12 +146,13 @@ const Actions = styled('div')`
 `;
 
 const columnOptions = [
-	{ value: 'name', label: 'Name' },
+	{ value: 'firstName', label: 'First Name' },
+	{ value: 'lastName', label: 'Last Name' },
 	{ value: 'email', label: 'Email Address' },
 	{ value: 'school', label: 'School' },
 	{ value: 'gradYear', label: 'Graduation Year' },
 	{ value: 'status', label: 'Status' },
-	{ value: 'requiresTravelReimbursement', label: 'Reimbursement' },
+	{ value: 'needsReimbursment', label: 'Reimbursement' },
 ];
 
 enum HackerStatus {
@@ -165,12 +166,13 @@ enum HackerStatus {
 
 // TODO(alan): convert status from hackerData JSON from types string to HackerStatus and remove union type
 interface Hacker {
-	name: string;
+	firstName: string;
+	lastName: string;
 	email: string;
 	gradYear?: number;
 	school?: string;
 	status: HackerStatus | string;
-	requiresTravelReimbursement?: boolean;
+	needsReimbursement?: boolean;
 }
 
 interface Option {
@@ -183,7 +185,7 @@ interface Props {
 }
 
 export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element => {
-	const [sortBy, setSortBy] = useState('name');
+	const [sortBy, setSortBy] = useState('firstName');
 	const [sortDirection, setSortDirection] = useState<SortDirectionType>(SortDirection.ASC);
 	const [sortedData, setSortedData] = useState<Hacker[]>(props.data);
 	const [searchValue, setSearchValue] = useState('');
@@ -288,7 +290,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 
 	const statusRenderer = ({ cellData }: TableCellProps) => {
 		const generateColor = (value: HackerStatus) => {
-			switch (value) {
+			switch (value.toLowerCase()) {
 				case HackerStatus.verified:
 					return STRINGS.COLOR_PALETTE[0];
 				case HackerStatus.started:
@@ -346,7 +348,6 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 						console.log(user[selectedColumns[0].value]);
 						return regex.test(user[selectedColumns[0].value]);
 					});
-					// console.log(newSortedData);
 					setSortedData(newSortedData);
 				} else {
 					console.log('Invalid regular expression');
@@ -404,9 +405,16 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 								sort={sort}>
 								<Column
 									className="column"
-									label="Name"
-									dataKey="name"
-									width={150}
+									label="First Name"
+									dataKey="firstName"
+									width={100}
+									headerRenderer={renderHeaderAsLabel}
+								/>
+								<Column
+									className="column"
+									label="Last Name"
+									dataKey="lastName"
+									width={100}
 									headerRenderer={renderHeaderAsLabel}
 								/>
 								<Column
@@ -441,7 +449,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 								<Column
 									className="column"
 									label="Requires Travel Reimbursement?"
-									dataKey="requiresTravelReimbursement"
+									dataKey="needsReimbursement"
 									width={30}
 									headerRenderer={({ dataKey, sortBy, sortDirection, label }: TableHeaderProps) =>
 										renderHeaderAsSVG(
