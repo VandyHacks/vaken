@@ -1,6 +1,5 @@
 import React from 'react';
 import HackerTable from './HackerTable';
-import hackerData from '../../assets/hackerData.json';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
