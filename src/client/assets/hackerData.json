@@ -1,186 +1,209 @@
 [
     {
-        "name": "John Smith",
+        "firstName": "John",
+        "lastName": "Smith",
         "email": "j.p.smith@vanderbilt.edu",
         "gradYear": 2019,
         "school": "Vanderbilt University",
         "status": "verified",
-        "requiresTravelReimbursement": true
+        "needsReimbursement": true
     },
     {
-        "name": "Courtney Johnson",
+        "firstName": "Courtney",
+        "lastName": "Johnson",
         "email": "c.johnson@vanderbilt.edu",
         "gradYear": 2022,
         "school": "Vanderbilt University",
         "status": "started",
-        "requiresTravelReimbursement": true
+        "needsReimbursement": true
     },
     {
-        "name": "Jeremy Xu",
+        "firstName": "Jeremy",
+        "lastName": "Xu",
         "email": "j.xu@vanderbilt.edu",
         "gradYear": 2020,
         "school": "Vanderbilt University",
         "status": "rejected",
-        "requiresTravelReimbursement": false
+        "needsReimbursement": false
     },
     {
-        "name": "Abigail Teer",
+        "firstName": "Abigail",
+        "lastName": "Teer",
         "email": "teera@utk.edu",
         "gradYear": 2019,
         "school": "University of Tennessee",
         "status": "submitted",
-        "requiresTravelReimbursement": true
+        "needsReimbursement": true
     },
     {
-        "name": "Howard Young",
+        "fistName": "Howard",
+        "lastName": "Young",
         "email": "howardyoung@crimson.ua.edu.edu",
         "gradYear": 2021,
         "school": "University of Alabama",
         "status": "accepted",
-        "requiresTravelReimbursement": true
+        "needsReimbursement": true
     },
     {
-        "name": "Shelby Zhang",
+        "firstName": "Shelby",
+        "lastName": "Zhang",
         "email": "s.zhang@vanderbilt.edu",
         "gradYear": 2022,
         "school": "Vanderbilt University",
         "status": "confirmed",
-        "requiresTravelReimbursement": true
+        "needsReimbursement": true
     },
     {
-        "name": "Shelby Zhang",
+        "firstName": "Shelby",
+        "lastName": "Zhang",
         "email": "s.zhang@vanderbilt.edu",
         "gradYear": 2022,
         "school": "Vanderbilt University",
         "status": "verified",
-        "requiresTravelReimbursement": true
+        "needsReimbursement": true
     },
     {
-        "name": "Shelby Zhang",
+        "firstName": "Shelby",
+        "lastName": "Zhang",
         "email": "s.zhang@vanderbilt.edu",
         "gradYear": 2022,
         "school": "Vanderbilt University",
         "status": "verified",
-        "requiresTravelReimbursement": true
+        "needsReimbursement": true
     },
     {
-        "name": "Shelby Zhang",
+        "firstName": "Shelby",
+        "lastName": "Zhang",
         "email": "s.zhang@vanderbilt.edu",
         "gradYear": 2022,
         "school": "Vanderbilt University",
         "status": "verified",
-        "requiresTravelReimbursement": true
+        "needsReimbursement": true
     },
     {
-        "name": "Shelby Zhang",
+        "firstName": "Shelby",
+        "lastName": "Zhang",
         "email": "s.zhang@vanderbilt.edu",
         "gradYear": 2022,
         "school": "Vanderbilt University",
         "status": "verified",
-        "requiresTravelReimbursement": true
+        "needsReimbursement": true
     },
     {
-        "name": "Shelby Zhang",
+        "firstName": "Shelby",
+        "lastName": "Zhang",
         "email": "s.zhang@vanderbilt.edu",
         "gradYear": 2022,
         "school": "Vanderbilt University",
         "status": "verified",
-        "requiresTravelReimbursement": true
+        "needsReimbursement": true
     },
     {
-        "name": "Shelby Zhang",
+        "firstName": "Shelby",
+        "lastName": "Zhang",
         "email": "s.zhang@vanderbilt.edu",
         "gradYear": 2022,
         "school": "Vanderbilt University",
         "status": "verified",
-        "requiresTravelReimbursement": true
+        "needsReimbursement": true
     },
     {
-        "name": "Shelby Zhang",
+        "firstName": "Shelby",
+        "lastName": "Zhang",
         "email": "s.zhang@vanderbilt.edu",
         "gradYear": 2022,
         "school": "Vanderbilt University",
         "status": "verified",
-        "requiresTravelReimbursement": true
+        "needsReimbursement": true
     },
     {
-        "name": "Shelby Zhang",
+        "firstName": "Shelby",
+        "lastName": "Zhang",
         "email": "s.zhang@vanderbilt.edu",
         "gradYear": 2022,
         "school": "Vanderbilt University",
         "status": "verified",
-        "requiresTravelReimbursement": true
+        "needsReimbursement": true
     },
     {
-        "name": "Shelby Zhang",
+        "firstName": "Shelby",
+        "lastName": "Zhang",
         "email": "s.zhang@vanderbilt.edu",
         "gradYear": 2022,
         "school": "Vanderbilt University",
         "status": "verified",
-        "requiresTravelReimbursement": true
+        "needsReimbursement": true
     },
     {
-        "name": "Shelby Zhang",
+        "firstName": "Shelby",
+        "lastName": "Zhang",
         "email": "s.zhang@vanderbilt.edu",
         "gradYear": 2022,
         "school": "Vanderbilt University",
         "status": "verified",
-        "requiresTravelReimbursement": true
+        "needsReimbursement": true
     },
     {
-        "name": "Shelby Zhang",
+        "firstName": "Shelby",
+        "lastName": "Zhang",
         "email": "s.zhang@vanderbilt.edu",
         "gradYear": 2022,
         "school": "Vanderbilt University",
         "status": "verified",
-        "requiresTravelReimbursement": true
+        "needsReimbursement": true
     },
     {
-        "name": "Shelby Zhang",
+        "firstName": "Shelby",
+        "lastName": "Zhang",
         "email": "s.zhang@vanderbilt.edu",
         "gradYear": 2022,
         "school": "Vanderbilt University",
         "status": "verified",
-        "requiresTravelReimbursement": true
+        "needsReimbursement": true
     },
     {
-        "name": "Shelby Zhang",
+        "firstName": "Shelby",
+        "lastName": "Zhang",
         "email": "s.zhang@vanderbilt.edu",
         "gradYear": 2022,
         "school": "Vanderbilt University",
         "status": "verified",
-        "requiresTravelReimbursement": true
+        "needsReimbursement": true
     },
     {
-        "name": "Shelby Zhang",
+        "firstName": "Shelby",
+        "lastName": "Zhang",
         "email": "s.zhang@vanderbilt.edu",
         "gradYear": 2022,
         "school": "Vanderbilt University",
         "status": "verified",
-        "requiresTravelReimbursement": true
+        "needsReimbursement": true
     },
     {
-        "name": "Shelby Zhang",
+        "firstName": "Shelby",
+        "lastName": "Zhang",
         "email": "s.zhang@vanderbilt.edu",
         "gradYear": 2022,
         "school": "Vanderbilt University",
         "status": "verified",
-        "requiresTravelReimbursement": true
+        "needsReimbursement": true
     },
     {
-        "name": "Shelby Zhang",
+        "firstName": "Shelby",
+        "lastName": "Zhang",
         "email": "s.zhang@vanderbilt.edu",
         "gradYear": 2022,
         "school": "Vanderbilt University",
         "status": "verified",
-        "requiresTravelReimbursement": true
+        "needsReimbursement": true
     },
     {
-        "name": "Shelby Zhang",
+        "firstName": "Shelby",
+        "lastName": "Zhang",
         "email": "s.zhang@vanderbilt.edu",
         "gradYear": 2022,
         "school": "Vanderbilt University",
         "status": "unknown",
-        "requiresTravelReimbursement": true
+        "needsReimbursement": true
     }
 ]
