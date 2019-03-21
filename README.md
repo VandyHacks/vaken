@@ -1,3 +1,6 @@
+# DEPRECATED
+This version is a POC not meant for deployment. We're currently writing a new version in a private repo. It will be released publicly with an OSS license sometime during summer 2019. Get hyped!
+
 # vaken
 Next-gen hacker registration system
 
