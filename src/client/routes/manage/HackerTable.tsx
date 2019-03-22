@@ -310,17 +310,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 
 	const rowRenderer = (props: TableRowProps) => {
 		return <Row {...props} />;
-		// return (
-		// 	<div key={props.index} className={props.className} style={props.style}>
-		// 		{props.columns}
-		// 	</div>
-		// );
 	};
-
-	// const SomeComponent = ({ selectableRef, selected, selecting }: any): JSX.Element => (
-	// 	<div ref={selectableRef}>Test</div>
-	// );
-	// const SelectableComponent: JSX.Element = createSelectable(<SomeComponent/>);
 
 	const statusRenderer = ({ cellData }: TableCellProps) => {
 		const generateColor = (value: HackerStatus) => {
