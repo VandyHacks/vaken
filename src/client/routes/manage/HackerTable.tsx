@@ -16,17 +16,25 @@ import Fuse from 'fuse.js';
 import TableButton from '../../components/Buttons/TableButton';
 import ToggleSwitch from '../../components/Buttons/ToggleSwitch';
 import RadioSlider from '../../components/Buttons/RadioSlider';
+import FloatingButton from '../../components/Buttons/FloatingButton';
 import Status from '../../components/Text/Status';
 import Checkmark from '../../components/Symbol/Checkmark';
 import searchIcon from '../../assets/img/search_icon.svg';
 import plane from '../../assets/img/plane.svg';
 import STRINGS from '../../assets/strings.json';
 import Select from 'react-select';
-// TODO(alan): add d.ts file
+// TODO(alan): add d.ts file, most already defined here: https://github.com/valerybugakov/react-selectable-fast/blob/master/src/SelectableGroup.js
 // @ts-ignore
-import { SelectableGroup, createSelectable } from 'react-selectable-fast';
+import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
 import Row from './Row';
 // import { Hacker } from 'src/server/models/Hacker';
+
+const Float = styled.div`
+	position: fixed;
+	bottom: 3.5rem;
+	right: 11.75rem;
+	margin-right: 1rem;
+`;
 
 const StyledTable = styled(Table)`
 	.ReactVirtualized__Table__Grid {
@@ -65,7 +73,7 @@ const StyledTable = styled(Table)`
 	color: ${STRINGS.DARKEST_TEXT_COLOR};
 
 	.selected {
-		background-color: #E5E7FA;
+		background-color: #e5e7fa;
 	}
 `;
 
@@ -201,6 +209,8 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 	const [searchValue, setSearchValue] = useState('');
 	const [useRegex, setUseRegex] = useState(false);
 	const [selectedColumns, setSelectedColumns] = useState<Option[]>([columnOptions[0]]);
+	const [selectAll, setSelectAll] = useState(false);
+	const [hasSelection, setHasSelection] = useState(false);
 
 	const sortData = ({
 		sortBy,
@@ -290,7 +300,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 
 	const actionRenderer = ({ cellData }: TableCellProps) => {
 		return (
-			<Actions>
+			<Actions className="ignore-select">
 				<RadioSlider option1="Accept" option2="Undecided" option3="Reject" />
 				<TableButton>View</TableButton>
 			</Actions>
@@ -385,6 +395,8 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		setSearchValue(value);
 	};
 
+	const SelectAllButton = <FloatingButton onClick={() => setSelectAll(!selectAll)}>{selectAll || hasSelection ? 'Deselect All' : 'Select All'}</FloatingButton>;
+
 	// TODO(alan): remove any type.
 	return (
 		<TableLayout>
@@ -419,14 +431,20 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 						return (
 							<SelectableGroup
 								clickClassName="selected"
-								enableDeselect
+								enableDeselect={true}
+								deselectOnEsc={true}
 								tolerance={0}
 								allowClickWithoutSelected={false}
 								duringSelection={() => console.log('duringSelection')}
-								onSelectionClear={() => console.log('onSelectionClear')}
-								onSelectionFinish={() => console.log('onSelectionFinish')}
-								ignoreList={[]}>
-								{/* <Row /> */}
+								onSelectionClear={() => setHasSelection(false)}
+								onSelectionFinish={(keys: string[]) => {
+									if (keys.length > 0) {
+										setHasSelection(true);
+									}
+									// console.log(keys);
+								}}
+								ignoreList={['.ignore-select']}
+								resetOnStart={true}>
 								<StyledTable
 									width={width}
 									height={height}
@@ -511,6 +529,8 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 										cellRenderer={actionRenderer}
 									/>
 								</StyledTable>
+								{selectAll || hasSelection ? <DeselectAll>{SelectAllButton}</DeselectAll> : <SelectAll>{SelectAllButton}</SelectAll>}
+								{hasSelection ? <Float className="ignore-select"><RadioSlider option1="Accept" option2="Undecided" option3="Reject" large={true}/></Float> : undefined}
 							</SelectableGroup>
 						);
 					}}
