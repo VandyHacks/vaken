@@ -27,7 +27,6 @@ userRouter.get('/api/logout', async ctx => {
 
 // Create a new local account
 userRouter.post('/api/register', async ctx => {
-	console.log(ctx.request.body);
 	const existingUser = await userModel.findOne({ email: ctx.request.body.username });
 
 	// found user
@@ -39,6 +38,7 @@ userRouter.post('/api/register', async ctx => {
 		console.log('> Creating new local user.....');
 		const newUser = {
 			authType: 'local',
+			authLevel: 'Hacker',
 			email: ctx.request.body.username,
 			password: ctx.request.body.password,
 		};

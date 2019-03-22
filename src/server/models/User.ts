@@ -46,6 +46,9 @@ class User extends Typegoose {
 	@prop({ required: true })
 	authType: string = 'None';
 
+	@prop({ required: true })
+	authLevel: string = 'Hacker';
+
 	@prop()
 	phoneNumber?: string;
 

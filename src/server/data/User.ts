@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { Field, ObjectType, InputType } from 'type-graphql';
 
+import { AuthLevel } from '../enums/AuthLevel';
 import { ShirtSize } from '../enums/ShirtSize';
 import { Gender } from '../enums/Gender';
 
@@ -24,6 +25,12 @@ export class User {
 
 	@Field(type => String)
 	github?: String;
+
+	@Field(type => String)
+	authType!: String;
+
+	@Field(type => AuthLevel)
+	authLevel!: AuthLevel;
 
 	@Field(type => String)
 	phoneNumber!: String;

@@ -72,6 +72,7 @@ passport.use(
 					console.log('> Creating user.....');
 					const newUser = {
 						authType: 'google',
+						authLevel: 'Hacker',
 						email: profile.emails[0].value,
 						google: profile.id,
 						password: 'Google!123',
@@ -128,6 +129,7 @@ passport.use(
 					console.log('> Creating user.....');
 					const newUser = {
 						authType: 'github',
+						authLevel: 'Hacker',
 						email: profile.emails[0].value,
 						github: profile.id,
 						password: 'Github!123',

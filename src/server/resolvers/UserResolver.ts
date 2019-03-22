@@ -42,6 +42,7 @@ export class UserResolver {
 				nfcCodes: user.nfcCodes,
 				email: user.email,
 				authType: user.authType,
+				authLevel: user.authLevel,
 				gender: user.gender,
 				shirtSize: user.shirtSize,
 			};
@@ -66,6 +67,7 @@ export class UserResolver {
 					nfcCodes: user.nfcCodes,
 					email: user.email,
 					authType: user.authType,
+					authLevel: user.authLevel,
 					gender: user.gender,
 					shirtSize: user.shirtSize,
 				};
