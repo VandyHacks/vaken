@@ -6,18 +6,23 @@ interface Props {
 	option1: string;
 	option2: string;
 	option3: string;
+	large?: boolean;
 }
 
 interface SelectorProps {
     width: string;
     left: string;
-    color: string;
+	color: string;
+}
+
+interface WrapperProps {
+	large: boolean;
 }
 
 const Wrapper = styled('div')`
 	margin: auto;
-	height: 1.5rem;
-	line-height: 1.5rem;
+	height: ${(props: WrapperProps) => props.large ? '3.0rem' : '1.5rem'};
+	line-height: ${(props: WrapperProps) => props.large ? '3.0rem' : '1.5rem'};
 	border-radius: 0.25rem;
 	background: #ccc;
 	position: relative;
@@ -95,7 +100,7 @@ export const RadioSlider: FunctionComponent<Props> = (props: Props): JSX.Element
 	};
 
 	return (
-		<Wrapper>
+		<Wrapper large={props.large || false}>
 			<Switch id={props.option1} onClick={onClick} ref={option1Ref}>
 				{props.option1}
 			</Switch>
