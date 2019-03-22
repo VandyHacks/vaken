@@ -9,7 +9,7 @@ import { Status } from '../enums/Status';
 @ObjectType({ description: 'DTO for a Vaken hacker' })
 @InputType()
 export class Hacker extends User {
-	@Field(type => Status)
+	@Field()
 	status: Status = Status.Created;
 
 	@Field()
@@ -18,10 +18,10 @@ export class Hacker extends User {
 	@Field()
 	gradYear!: string;
 
-	@Field(type => Ethnicity)
+	@Field()
 	ethnicity!: Ethnicity;
 
-	@Field(type => Race)
+	@Field(type => [Race])
 	race!: [Race];
 
 	@Field(type => [String])
