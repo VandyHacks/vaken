@@ -18,7 +18,7 @@ passport.use(
 			if (!user) {
 				console.log('> User does not exist');
 				done(null, false);
-			} else if (!bcrypt.compare(password, user.password)) {
+			} else if (!(await bcrypt.compare(password, user.password))) {
 				// wrong password
 				console.log('> Incorrect password');
 				done(null, false);
