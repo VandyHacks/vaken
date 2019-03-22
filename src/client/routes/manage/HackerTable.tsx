@@ -27,7 +27,6 @@ import Select from 'react-select';
 // @ts-ignore
 import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
 import Row from './Row';
-// import { Hacker } from 'src/server/models/Hacker';
 
 const Float = styled.div`
 	position: fixed;

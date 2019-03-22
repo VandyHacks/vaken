@@ -88,17 +88,6 @@ async function launchServer() {
 	});
 }
 
-// Connect to mongodb
-// MongoClient.connect('mongodb://localhost:27017/test', (err: any, client: any) => {
-// 	console.log('>>> MongoDB Connected');
-// 	const db = client.db('test');
-
-// 	const users = db.collection('users');
-// 	users.find({}).toArray((err: any, docs: any) => {
-// 		console.log(docs);
-// 	});
-// });
-
 // Launch server with GraphQL endpoint
 launchServer();
 

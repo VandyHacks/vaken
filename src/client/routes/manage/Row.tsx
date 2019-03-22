@@ -10,10 +10,6 @@ interface Props extends TableRowProps {
 	selecting: boolean;
 }
 
-// const SomeComponent = ({ selectableRef, selected, selecting }) => (
-//     <div ref={selectableRef}>...</div>
-// )
-
 export const Row: FunctionComponent<Props> = (props: Props): JSX.Element => {
 	return (
 		<div key={props.index} className={props.className + ` ${props.selected && 'selected'}`} style={props.style} ref={props.selectableRef}>
