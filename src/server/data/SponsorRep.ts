@@ -9,11 +9,11 @@ export class SponsorRep extends User {
 	@Field(type => [Sponsor])
 	sponsors!: [Sponsor];
 
-	@Field(type => String)
-	title!: String;
+	@Field()
+	title!: string;
 
-	@Field(type => Boolean)
-	leadRep!: Boolean;
+	@Field()
+	leadRep!: boolean;
 }
 
 // Copyright (c) 2019 Vanderbilt University
