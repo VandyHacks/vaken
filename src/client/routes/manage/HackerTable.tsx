@@ -156,6 +156,7 @@ const columnOptions = [
 ];
 
 enum HackerStatus {
+	created = 'created',
 	verified = 'verified',
 	started = 'started',
 	submitted = 'submitted',
@@ -264,12 +265,11 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 
 	const renderHeaderAsSVG = (
 		{ dataKey, sortBy, sortDirection, label }: TableHeaderProps,
-		svg: JSX.Element
+		svg: string
 	): JSX.Element => {
 		return (
 			<>
-				{/* <svg/> */}
-				{/* <img alt={String(label)} src={svg} /> */}
+				<img alt={String(label)} src={svg} />
 				{sortBy === dataKey && <SortIndicator sortDirection={sortDirection} />}
 			</>
 		);
@@ -291,18 +291,20 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 	const statusRenderer = ({ cellData }: TableCellProps) => {
 		const generateColor = (value: HackerStatus) => {
 			switch (value.toLowerCase()) {
-				case HackerStatus.verified:
+				case HackerStatus.created:
 					return STRINGS.COLOR_PALETTE[0];
-				case HackerStatus.started:
+				case HackerStatus.verified:
 					return STRINGS.COLOR_PALETTE[1];
-				case HackerStatus.submitted:
+				case HackerStatus.started:
 					return STRINGS.COLOR_PALETTE[2];
-				case HackerStatus.accepted:
+				case HackerStatus.submitted:
 					return STRINGS.COLOR_PALETTE[3];
-				case HackerStatus.confirmed:
+				case HackerStatus.accepted:
 					return STRINGS.COLOR_PALETTE[4];
-				case HackerStatus.rejected:
+				case HackerStatus.confirmed:
 					return STRINGS.COLOR_PALETTE[5];
+				case HackerStatus.rejected:
+					return STRINGS.COLOR_PALETTE[6];
 				default:
 					return STRINGS.ACCENT_COLOR;
 			}
@@ -443,6 +445,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									label="Status"
 									dataKey="status"
 									width={100}
+									minWidth={90}
 									headerRenderer={renderHeaderAsLabel}
 									cellRenderer={statusRenderer}
 								/>
@@ -469,6 +472,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									label="Actions"
 									dataKey="actions"
 									width={275}
+									minWidth={275}
 									headerRenderer={renderHeaderAsLabel}
 									cellRenderer={actionRenderer}
 								/>
