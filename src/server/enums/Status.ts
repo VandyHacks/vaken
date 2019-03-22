@@ -1,13 +1,13 @@
 import { registerEnumType } from 'type-graphql';
 
 export enum Status {
-	Created,
-	Verified,
-	Started,
-	Submitted,
-	Accepted,
-	Confirmed,
-	Rejected,
+	Created = 'Created',
+	Verified = 'Verified',
+	Started = 'Started',
+	Submitted = 'Submitted',
+	Accepted = 'Accepted',
+	Confirmed = 'Confirmed',
+	Rejected = 'Rejected',
 }
 
 registerEnumType(Status, {
