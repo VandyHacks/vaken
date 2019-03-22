@@ -85,7 +85,7 @@ let createHackerSamples = () => {
 		{
 			firstName: 'Howard',
 			lastName: 'Young',
-			email: 'howardyoung@crimson.ua.edu.edu',
+			email: 'howardyoung@crimson.ua.edu',
 			gradYear: 2021,
 			school: 'University of Alabama',
 			status: Status.Accepted,

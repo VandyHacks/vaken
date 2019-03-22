@@ -8,7 +8,7 @@ import STRINGS from '../../assets/strings.json';
 
 interface Props {}
 
-const colorPalette = ['#DBA5F5', '#FFC7A6', '#FFE29D', '#7DDFC3', '#A5AFFB', '#FDAFBB'];
+const colorPalette = STRINGS.COLOR_PALETTE.slice(1);
 
 const generateColor = (n: number): Array<string> =>
 	[...Array(n).keys()].map((i: number) => colorPalette[i % colorPalette.length]);
