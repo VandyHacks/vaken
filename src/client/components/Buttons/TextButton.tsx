@@ -25,9 +25,11 @@ export const StyledLoginBtn = styled(Button)`
 	flex-shrink: 0;
 	font-family: 'Roboto';
 	font-size: 1rem;
+	outline: 0 !important;
 
 	&:hover,
-	&:focus {
+	&:focus,
+	&:active {
 		box-shadow: 0px 0px 20px 0px
 			${(props: StyleProps) => props.glowColor || 'RGBA(0, 0, 0, 255, 0.67)'};
 	}

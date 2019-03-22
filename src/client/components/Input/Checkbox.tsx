@@ -75,7 +75,7 @@ export class Checkbox extends React.PureComponent<Props, {}> {
 					}
 
 					/* Get around Immer's lack of native support for Set/Map by duplicating the 
-				 set and changing the necessary fields, then changing the pointer to the new set.*/
+				 set and changing the necessary fields, then changing the pointer to the new set. */
 					const newSet = new Set(draft[category][fieldName]);
 					if (checked) {
 						newSet.add(id);

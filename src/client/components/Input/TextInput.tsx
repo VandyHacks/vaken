@@ -14,13 +14,15 @@ export interface Props {
 	className?: string;
 	list?: string;
 	fontSize?: string;
+	pattern?: string;
 }
 
 export const Input = styled.input`
+	background: transparent;
 	padding: 0.75rem;
 	width: 17rem;
 	border: none;
-	font-size: ${({ fontSize }: Props) => (fontSize ? fontSize : '1em')};
+	font-size: ${({ fontSize }: Props) => fontSize || '1em'};
 	color: ${STRINGS.DARK_TEXT_COLOR};
 	::placeholder {
 		color: ${STRINGS.LIGHT_TEXT_COLOR};

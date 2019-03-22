@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
 import emailIcon from '../../assets/img/email_icon.svg';
 import lockIcon from '../../assets/img/lock_icon.svg';
 import arrowIcon from '../../assets/img/right_arrow.svg';
@@ -26,7 +25,7 @@ interface Props {}
  * @param {function} setInvalidFn - func to update the html response code on error
  * @returns {void}
  */
-export const validateAndSubmitLogin = (
+export const validateAndCreateUser = (
 	username: string,
 	password: string,
 	setInvalidFn: React.Dispatch<React.SetStateAction<boolean>>
@@ -35,6 +34,29 @@ export const validateAndSubmitLogin = (
 	const passValid = passwordValidation(password);
 	// Do one more check for valid fields (to handle edge case where
 	// constructor sets valids to true)
+
+	if (emailValid && passValid) {
+		// TODO: Actually log in instead of console.log
+		fetch('/api/register', {
+			body: JSON.stringify({
+				password,
+				username,
+			}),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			method: 'POST',
+		}).then(res => {
+			switch (res.status) {
+				case 401:
+					setInvalidFn(true);
+					break;
+				default:
+					console.log('logged in?');
+					break;
+			}
+		});
+	}
 };
 
 /**
@@ -45,33 +67,11 @@ export const validateAndSubmitLogin = (
 export const PasswordLogin: React.FunctionComponent<Props> = (): JSX.Element => {
 	const [email, setEmail] = useState('');
 	const [pass, setPass] = useState('');
+	const [passAgain, setPassAgain] = useState('');
 	const [invalid, setInvalid] = useState(false);
-	const [toDashboard, setToDashboard] = useState(false);
-
-	if (toDashboard) {
-		return <Redirect to="/dashboard" />;
-	}
 
 	const onLogin = (): void => {
-		if (emailValidation(email) && passwordValidation(pass)) {
-			fetch('/api/login', {
-				body: JSON.stringify({
-					password: pass,
-					username: email,
-				}),
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				method: 'POST',
-			}).then(res => {
-				if (res.status === 200 && res.redirected) {
-					console.log(res);
-					setToDashboard(true);
-				} else {
-					setInvalid(true);
-				}
-			});
-		}
+		validateAndCreateUser(email, pass, setInvalid);
 	};
 
 	return (
@@ -96,22 +96,25 @@ export const PasswordLogin: React.FunctionComponent<Props> = (): JSX.Element => 
 				pattern={PASSWORD_REGEX.source}
 				invalid={invalid}
 			/>
-			<SpaceBetweenColumn height="10rem">
-				<TextButton
-					onClick={onLogin}
-					color="white"
-					fontSize="1.4rem"
-					background={STRINGS.ACCENT_COLOR}
-					text="Login"
-					glowColor="rgba(0, 0, 255, 0.67)"
-				/>
-				<TextLink to="/login">Forgot Username / Password?</TextLink>
-				<FlexRow>
-					<TextLink fontSize="1.4rem" color={STRINGS.ACCENT_COLOR} to="/login/create">
-						New User? Create Account <LeftPaddedImg src={arrowIcon} alt="Right Arrow" />
-					</TextLink>
-				</FlexRow>
-			</SpaceBetweenColumn>
+			<LeftImgTextInput
+				img={lockIcon}
+				imgAlt="Lock icon"
+				fontSize="1.2rem"
+				onChange={onChangeWrapper(setPassAgain)}
+				value={passAgain}
+				placeholder="Password (Again)"
+				type="password"
+				pattern={PASSWORD_REGEX.source}
+				invalid={invalid}
+			/>
+			<TextButton
+				onClick={onLogin}
+				color="white"
+				fontSize="1.4rem"
+				background={STRINGS.ACCENT_COLOR}
+				text="Create Account"
+				glowColor="rgba(0, 0, 255, 0.67)"
+			/>
 		</>
 	);
 };
