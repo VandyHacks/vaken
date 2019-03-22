@@ -41,6 +41,15 @@ app.use(passport.session());
 app.use(router.routes());
 app.use(userRouter.routes());
 
+// Connect to mongo database
+mongoose.connect('mongodb://localhost:27017/test').then(
+	() => {
+		console.log('>>> MongoDB Connected');
+	},
+	err => {
+		console.log('err:', err);
+	}
+);
 /*
  * Graph QL
  */

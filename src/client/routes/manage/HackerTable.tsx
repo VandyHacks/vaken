@@ -283,12 +283,11 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 
 	const renderHeaderAsSVG = (
 		{ dataKey, sortBy, sortDirection, label }: TableHeaderProps,
-		svg: JSX.Element
+		svg: string
 	): JSX.Element => {
 		return (
 			<>
-				{/* <svg/> */}
-				{/* <img alt={String(label)} src={svg} /> */}
+				<img alt={String(label)} src={svg} />
 				{sortBy === dataKey && <SortIndicator sortDirection={sortDirection} />}
 			</>
 		);

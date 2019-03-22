@@ -3,6 +3,7 @@ import { plainToClass } from 'class-transformer';
 
 import { Hacker } from '../data/Hacker';
 import { Status } from '../enums/Status';
+import { hackerModel } from '../models/Hacker';
 
 @Resolver(of => Hacker)
 export class HackerResolver {
@@ -13,7 +14,29 @@ export class HackerResolver {
 	 */
 	@Query(returns => Hacker, { nullable: true })
 	async getHackerByEmail(@Arg('email') email: string): Promise<Hacker | undefined> {
-		return await this.hackers.find(hackers => hackers.email === email);
+		const hacker = await hackerModel.findOne({ email: email });
+		if (!hacker) {
+			console.log('No hacker found');
+			return undefined;
+		} else {
+			const temp = {
+				firstName: hacker.firstName,
+				lastName: hacker.lastName,
+				email: hacker.email,
+				gender: hacker.gender,
+				nfcCodes: hacker.nfcCodes,
+				phoneNumber: hacker.phoneNumber,
+				shirtSize: hacker.shirtSize,
+				needsReimbursement: hacker.needReimbursement,
+				school: hacker.school,
+				gradYear: hacker.gradYear,
+				// status: hacker.status,
+				authType: hacker.authType,
+				authLevel: hacker.authLevel,
+			};
+			return plainToClass(Hacker, temp);
+		}
+		// return await this.hackers.find(hackers => hackers.email === email);
 	}
 
 	/**
@@ -23,7 +46,33 @@ export class HackerResolver {
 		description: 'Get all the Hackers and associated data in the database',
 	})
 	async getAllHackers(): Promise<Hacker[]> {
-		return await this.hackers;
+		const hackers = await hackerModel.find({});
+		if (!hackers) {
+			console.log('No hackers found');
+			return [];
+		} else {
+			let hackerList: Object[] = [];
+			hackers.forEach(hacker => {
+				let temp = {
+					firstName: hacker.firstName,
+					lastName: hacker.lastName,
+					email: hacker.email,
+					gender: hacker.gender,
+					nfcCodes: hacker.nfcCodes,
+					phoneNumber: hacker.phoneNumber,
+					shirtSize: hacker.shirtSize,
+					needsReimbursement: hacker.needReimbursement,
+					school: hacker.school,
+					gradYear: hacker.gradYear,
+					// status: hacker.status,
+					authType: hacker.authType,
+					authLevel: hacker.authLevel,
+				};
+				hackerList.push(temp);
+			});
+			return plainToClass(Hacker, createHackerSamples());
+		}
+		// return await this.hackers;
 	}
 }
 

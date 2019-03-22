@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { Field, ObjectType, InputType } from 'type-graphql';
 
+import { AuthLevel } from '../enums/AuthLevel';
 import { ShirtSize } from '../enums/ShirtSize';
 import { Gender } from '../enums/Gender';
 
@@ -8,32 +9,38 @@ import { Gender } from '../enums/Gender';
 @InputType()
 export class User {
 	@Field(type => [String])
-	nfcCodes!: [String];
+	nfcCodes!: [string];
 
-	@Field(type => String)
-	firstName!: String;
+	@Field()
+	firstName!: string;
 
-	@Field(type => String)
-	lastName!: String;
+	@Field()
+	lastName!: string;
 
-	@Field(type => String)
-	email!: String;
+	@Field()
+	email!: string;
 
-	@Field(type => String)
-	google?: String;
+	@Field()
+	google?: string;
 
-	@Field(type => String)
-	github?: String;
+	@Field()
+	github?: string;
 
-	@Field(type => String)
-	phoneNumber!: String;
+	@Field()
+	authType!: string;
 
-	@Field(type => Gender)
+	@Field()
+	authLevel!: AuthLevel;
+
+	@Field()
+	phoneNumber!: string;
+
+	@Field()
 	gender!: Gender;
 
-	@Field(type => ShirtSize)
+	@Field()
 	shirtSize!: ShirtSize;
 
-	@Field(type => String)
-	dietaryRestrictions?: String;
+	@Field()
+	dietaryRestrictions?: string;
 }
