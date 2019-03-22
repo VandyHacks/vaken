@@ -3,6 +3,12 @@ import { plainToClass } from 'class-transformer';
 
 import { User } from '../data/User';
 
+import { userModel } from '../models/User';
+
+// !!!!!!!!!!!!!!!!!!!!!
+// main issue: https://github.com/typestack/class-transformer/issues/53
+// !!!!!!!!!!!!!!!!!!!!!
+
 /*
  * TODO - consider implementing ResolverInterface
  * TODO - implement mutations
@@ -16,7 +22,32 @@ export class UserResolver {
 	 */
 	@Query(returns => User, { nullable: true })
 	async getUserByEmail(@Arg('email') email: string): Promise<User | undefined> {
-		return await this.users.find(user => user.email === email);
+		const user = await userModel.findOne({ email: email });
+		if (!user) {
+			console.log('No user found');
+			return undefined;
+		} else {
+			// doesn't work
+			// user.toObject();
+			// delete user._id;
+			// user.set('_id', undefined);
+
+			// also doesn't work
+			// let userCopy = user.toObject();
+			// delete userCopy._id;
+			// delete userCopy.__v;
+			// userCopy.password = '';
+
+			const temp = {
+				nfcCodes: user.nfcCodes,
+				email: user.email,
+				authType: user.authType,
+				gender: user.gender,
+				shirtSize: user.shirtSize,
+			};
+			return plainToClass(User, temp);
+		}
+		// return await this.users.find(user => user.email === email);
 	}
 
 	/**
@@ -24,7 +55,25 @@ export class UserResolver {
 	 */
 	@Query(returns => [User], { description: 'Get all the Users in the database' })
 	async getAllUsers(): Promise<User[]> {
-		return await this.users;
+		const users = await userModel.find({});
+		if (!users) {
+			console.log('No users found');
+			return [];
+		} else {
+			let userList: Object[] = [];
+			users.forEach(user => {
+				let temp = {
+					nfcCodes: user.nfcCodes,
+					email: user.email,
+					authType: user.authType,
+					gender: user.gender,
+					shirtSize: user.shirtSize,
+				};
+				userList.push(temp);
+			});
+			return plainToClass(User, userList);
+		}
+		// return await this.users;
 	}
 }
 
