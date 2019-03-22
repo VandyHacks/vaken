@@ -36,26 +36,25 @@ export const PasswordLogin: React.FunctionComponent<Props> = (): JSX.Element => 
 	}
 
 	const onLogin = (): void => {
-		const onLogin = (): void => {
-			if (emailValidation(email) && passwordValidation(pass)) {
-				fetch('/api/login', {
-					body: JSON.stringify({
-						password: pass,
-						username: email,
-					}),
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					method: 'POST',
-				}).then(res => {
-					if (res.status === 200 && res.redirected) {
-						setToDashboard(true);
-					} else {
-						setInvalid(true);
-					}
-				});
-			}
-		};
+		if (emailValidation(email) && passwordValidation(pass)) {
+			fetch('/api/register', {
+				body: JSON.stringify({
+					password: pass,
+					username: email,
+				}),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				method: 'POST',
+			}).then(res => {
+				console.log(res);
+				if (res.status === 200 && res.redirected) {
+					setToDashboard(true);
+				} else {
+					setInvalid(true);
+				}
+			});
+		}
 	};
 
 	return (
