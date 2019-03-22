@@ -94,6 +94,10 @@ const ColumnWithSeparators = styled.ul`
 	}
 
 	.active {
+		${NavButtonWhiteText} {
+			font-weight: 400;
+		}
+
 		button {
 			background: rgba(247, 245, 249, 0.1);
 		}

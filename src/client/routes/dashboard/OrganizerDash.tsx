@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { Bar, Pie } from 'react-chartjs-2';
+import { Link } from 'react-router-dom';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import TextButton from '../../components/Buttons/TextButton';
 import { FlexRow, FlexColumn } from '../../components/Containers/FlexContainers';
@@ -124,13 +125,15 @@ export const OrganizerDash: FunctionComponent = (props: Props): JSX.Element => {
 		<>
 			<FloatingPopup width="60rem" marginBottom="1rem" backgroundOpacity="1" padding="1.5rem">
 				<Bar data={barStatusData} options={barStatusOptions} />
-				<TextButton
-					color="white"
-					fontSize="1.4em"
-					background={STRINGS.ACCENT_COLOR}
-					text="Manage hackers"
-					glowColor="rgba(0, 0, 255, 0.67)"
-				/>
+				<Link style={{ textDecoration: 'none' }} to="/managehackers">
+					<TextButton
+						color="white"
+						fontSize="1.4em"
+						background={STRINGS.ACCENT_COLOR}
+						text="Manage hackers"
+						glowColor="rgba(0, 0, 255, 0.67)"
+					/>
+				</Link>
 			</FloatingPopup>
 			<FloatingPopup width="60rem" backgroundOpacity="1" padding="1.5rem">
 				<FlexRow>

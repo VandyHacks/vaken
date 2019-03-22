@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from 'react';
+import { Link } from 'react-router-dom';
 import TextButton from '../../components/Buttons/TextButton';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { FlexColumn, FlexStartColumn } from '../../components/Containers/FlexContainers';
@@ -33,13 +34,15 @@ export const HackerDash: FunctionComponent = (): JSX.Element => {
 							<br />
 							The deadline is January 1, 2020 at 11:59 pm (EST).
 						</SmallCenteredText>
-						<TextButton
-							color="white"
-							fontSize="1.4em"
-							background={STRINGS.ACCENT_COLOR}
-							text="Complete your application"
-							glowColor="rgba(0, 0, 255, 0.67)"
-						/>
+						<Link style={{ textDecoration: 'none' }} to="/application">
+							<TextButton
+								color="white"
+								fontSize="1.4em"
+								background={STRINGS.ACCENT_COLOR}
+								text="Complete your application"
+								glowColor="rgba(0, 0, 255, 0.67)"
+							/>
+						</Link>
 					</FlexColumn>
 				</FloatingPopup>
 			</FlexStartColumn>
