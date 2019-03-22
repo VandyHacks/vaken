@@ -7,6 +7,7 @@ import {
 	SortIndicator,
 	TableHeaderProps,
 	TableCellProps,
+	TableRowProps,
 	SortDirectionType,
 } from 'react-virtualized';
 import 'react-virtualized/styles.css';
@@ -15,13 +16,24 @@ import Fuse from 'fuse.js';
 import TableButton from '../../components/Buttons/TableButton';
 import ToggleSwitch from '../../components/Buttons/ToggleSwitch';
 import RadioSlider from '../../components/Buttons/RadioSlider';
+import FloatingButton from '../../components/Buttons/FloatingButton';
 import Status from '../../components/Text/Status';
 import Checkmark from '../../components/Symbol/Checkmark';
 import searchIcon from '../../assets/img/search_icon.svg';
 import plane from '../../assets/img/plane.svg';
 import STRINGS from '../../assets/strings.json';
 import Select from 'react-select';
-// import { Hacker } from 'src/server/models/Hacker';
+// TODO(alan): add d.ts file, most already defined here: https://github.com/valerybugakov/react-selectable-fast/blob/master/src/SelectableGroup.js
+// @ts-ignore
+import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
+import Row from './Row';
+
+const Float = styled.div`
+	position: fixed;
+	bottom: 3.5rem;
+	right: 11.75rem;
+	margin-right: 1rem;
+`;
 
 const StyledTable = styled(Table)`
 	.ReactVirtualized__Table__Grid {
@@ -58,6 +70,10 @@ const StyledTable = styled(Table)`
 	font-size: 0.8rem;
 	margin-bottom: 5rem;
 	color: ${STRINGS.DARKEST_TEXT_COLOR};
+
+	.selected {
+		background-color: #e5e7fa;
+	}
 `;
 
 const TableLayout = styled('div')`
@@ -146,15 +162,17 @@ const Actions = styled('div')`
 `;
 
 const columnOptions = [
-	{ value: 'name', label: 'Name' },
+	{ value: 'firstName', label: 'First Name' },
+	{ value: 'lastName', label: 'Last Name' },
 	{ value: 'email', label: 'Email Address' },
 	{ value: 'school', label: 'School' },
 	{ value: 'gradYear', label: 'Graduation Year' },
 	{ value: 'status', label: 'Status' },
-	{ value: 'requiresTravelReimbursement', label: 'Reimbursement' },
+	{ value: 'needsReimbursment', label: 'Reimbursement' },
 ];
 
 enum HackerStatus {
+	created = 'created',
 	verified = 'verified',
 	started = 'started',
 	submitted = 'submitted',
@@ -165,12 +183,13 @@ enum HackerStatus {
 
 // TODO(alan): convert status from hackerData JSON from types string to HackerStatus and remove union type
 interface Hacker {
-	name: string;
+	firstName: string;
+	lastName: string;
 	email: string;
 	gradYear?: number;
 	school?: string;
 	status: HackerStatus | string;
-	requiresTravelReimbursement?: boolean;
+	needsReimbursement?: boolean;
 }
 
 interface Option {
@@ -183,12 +202,14 @@ interface Props {
 }
 
 export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element => {
-	const [sortBy, setSortBy] = useState('name');
+	const [sortBy, setSortBy] = useState('firstName');
 	const [sortDirection, setSortDirection] = useState<SortDirectionType>(SortDirection.ASC);
 	const [sortedData, setSortedData] = useState<Hacker[]>(props.data);
 	const [searchValue, setSearchValue] = useState('');
 	const [useRegex, setUseRegex] = useState(false);
 	const [selectedColumns, setSelectedColumns] = useState<Option[]>([columnOptions[0]]);
+	const [selectAll, setSelectAll] = useState(false);
+	const [hasSelection, setHasSelection] = useState(false);
 
 	const sortData = ({
 		sortBy,
@@ -262,12 +283,11 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 
 	const renderHeaderAsSVG = (
 		{ dataKey, sortBy, sortDirection, label }: TableHeaderProps,
-		svg: JSX.Element
+		svg: string
 	): JSX.Element => {
 		return (
 			<>
-				{/* <svg/> */}
-				{/* <img alt={String(label)} src={svg} /> */}
+				<img alt={String(label)} src={svg} />
 				{sortBy === dataKey && <SortIndicator sortDirection={sortDirection} />}
 			</>
 		);
@@ -279,28 +299,34 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 
 	const actionRenderer = ({ cellData }: TableCellProps) => {
 		return (
-			<Actions>
+			<Actions className="ignore-select">
 				<RadioSlider option1="Accept" option2="Undecided" option3="Reject" />
 				<TableButton>View</TableButton>
 			</Actions>
 		);
 	};
 
+	const rowRenderer = (props: TableRowProps) => {
+		return <Row {...props} />;
+	};
+
 	const statusRenderer = ({ cellData }: TableCellProps) => {
 		const generateColor = (value: HackerStatus) => {
-			switch (value) {
-				case HackerStatus.verified:
+			switch (value.toLowerCase()) {
+				case HackerStatus.created:
 					return STRINGS.COLOR_PALETTE[0];
-				case HackerStatus.started:
+				case HackerStatus.verified:
 					return STRINGS.COLOR_PALETTE[1];
-				case HackerStatus.submitted:
+				case HackerStatus.started:
 					return STRINGS.COLOR_PALETTE[2];
-				case HackerStatus.accepted:
+				case HackerStatus.submitted:
 					return STRINGS.COLOR_PALETTE[3];
-				case HackerStatus.confirmed:
+				case HackerStatus.accepted:
 					return STRINGS.COLOR_PALETTE[4];
-				case HackerStatus.rejected:
+				case HackerStatus.confirmed:
 					return STRINGS.COLOR_PALETTE[5];
+				case HackerStatus.rejected:
+					return STRINGS.COLOR_PALETTE[6];
 				default:
 					return STRINGS.ACCENT_COLOR;
 			}
@@ -346,7 +372,6 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 						console.log(user[selectedColumns[0].value]);
 						return regex.test(user[selectedColumns[0].value]);
 					});
-					// console.log(newSortedData);
 					setSortedData(newSortedData);
 				} else {
 					console.log('Invalid regular expression');
@@ -358,6 +383,8 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		}
 		setSearchValue(value);
 	};
+
+	const SelectAllButton = <FloatingButton onClick={() => setSelectAll(!selectAll)}>{selectAll || hasSelection ? 'Deselect All' : 'Select All'}</FloatingButton>;
 
 	// TODO(alan): remove any type.
 	return (
@@ -391,80 +418,109 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 				<AutoSizer>
 					{({ height, width }) => {
 						return (
-							<StyledTable
-								width={width}
-								height={height}
-								headerHeight={20}
-								rowHeight={30}
-								rowCount={sortedData.length}
-								rowClassName={generateRowClassName}
-								rowGetter={({ index }: { index: number }) => sortedData[index]}
-								sortBy={sortBy}
-								sortDirection={sortDirection}
-								sort={sort}>
-								<Column
-									className="column"
-									label="Name"
-									dataKey="name"
-									width={150}
-									headerRenderer={renderHeaderAsLabel}
-								/>
-								<Column
-									className="column"
-									label="Email"
-									dataKey="email"
-									width={200}
-									headerRenderer={renderHeaderAsLabel}
-								/>
-								<Column
-									className="column"
-									label="Grad Year"
-									dataKey="gradYear"
-									width={100}
-									headerRenderer={renderHeaderAsLabel}
-								/>
-								<Column
-									className="column"
-									label="School"
-									dataKey="school"
-									width={175}
-									headerRenderer={renderHeaderAsLabel}
-								/>
-								<Column
-									className="column"
-									label="Status"
-									dataKey="status"
-									width={100}
-									headerRenderer={renderHeaderAsLabel}
-									cellRenderer={statusRenderer}
-								/>
-								<Column
-									className="column"
-									label="Requires Travel Reimbursement?"
-									dataKey="requiresTravelReimbursement"
-									width={30}
-									headerRenderer={({ dataKey, sortBy, sortDirection, label }: TableHeaderProps) =>
-										renderHeaderAsSVG(
-											{
-												dataKey: dataKey,
-												sortBy: sortBy,
-												sortDirection: sortDirection,
-												label: label,
-											},
-											plane
-										)
+							<SelectableGroup
+								clickClassName="selected"
+								enableDeselect={true}
+								deselectOnEsc={true}
+								tolerance={0}
+								allowClickWithoutSelected={false}
+								duringSelection={() => console.log('duringSelection')}
+								onSelectionClear={() => setHasSelection(false)}
+								onSelectionFinish={(keys: string[]) => {
+									if (keys.length > 0) {
+										setHasSelection(true);
 									}
-									cellRenderer={checkmarkRenderer}
-								/>
-								<Column
-									className="column"
-									label="Actions"
-									dataKey="actions"
-									width={275}
-									headerRenderer={renderHeaderAsLabel}
-									cellRenderer={actionRenderer}
-								/>
-							</StyledTable>
+									// console.log(keys);
+								}}
+								ignoreList={['.ignore-select']}
+								resetOnStart={true}>
+								<StyledTable
+									width={width}
+									height={height}
+									headerHeight={20}
+									rowHeight={30}
+									rowCount={sortedData.length}
+									rowClassName={generateRowClassName}
+									rowGetter={({ index }: { index: number }) => sortedData[index]}
+									rowRenderer={rowRenderer}
+									sortBy={sortBy}
+									sortDirection={sortDirection}
+									sort={sort}>
+									<Column
+										className="column"
+										label="First Name"
+										dataKey="firstName"
+										width={100}
+										headerRenderer={renderHeaderAsLabel}
+									/>
+									<Column
+										className="column"
+										label="Last Name"
+										dataKey="lastName"
+										width={100}
+										headerRenderer={renderHeaderAsLabel}
+									/>
+									<Column
+										className="column"
+										label="Email"
+										dataKey="email"
+										width={200}
+										headerRenderer={renderHeaderAsLabel}
+									/>
+									<Column
+										className="column"
+										label="Grad Year"
+										dataKey="gradYear"
+										width={100}
+										headerRenderer={renderHeaderAsLabel}
+									/>
+									<Column
+										className="column"
+										label="School"
+										dataKey="school"
+										width={175}
+										headerRenderer={renderHeaderAsLabel}
+									/>
+									<Column
+										className="column"
+										label="Status"
+										dataKey="status"
+										width={100}
+										minWidth={90}
+										headerRenderer={renderHeaderAsLabel}
+										cellRenderer={statusRenderer}
+									/>
+									<Column
+										className="column"
+										label="Requires Travel Reimbursement?"
+										dataKey="needsReimbursement"
+										width={30}
+										headerRenderer={({ dataKey, sortBy, sortDirection, label }: TableHeaderProps) =>
+											renderHeaderAsSVG(
+												{
+													dataKey: dataKey,
+													sortBy: sortBy,
+													sortDirection: sortDirection,
+													label: label,
+												},
+												plane
+											)
+										}
+										cellRenderer={checkmarkRenderer}
+									/>
+									<Column
+										className="column"
+										label="Actions"
+										dataKey="actions"
+										width={275}
+										minWidth={275}
+										headerRenderer={renderHeaderAsLabel}
+										cellRenderer={actionRenderer}
+									/>
+								</StyledTable>
+								{selectAll || hasSelection ? <DeselectAll>{SelectAllButton}</DeselectAll> : <SelectAll>{SelectAllButton}</SelectAll>}
+								{hasSelection ? <Float className="ignore-select"><RadioSlider option1="Accept" option2="Undecided" option3="Reject" large={true}/></Float> : undefined}
+							</SelectableGroup>
 						);
 					}}
 				</AutoSizer>
