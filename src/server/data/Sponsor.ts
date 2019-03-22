@@ -7,8 +7,8 @@ import { Tier } from '../enums/Tier';
 @ObjectType({ description: 'DTO for a Vaken sponsor' })
 @InputType()
 export class Sponsor {
-	@Field(type => String)
-	name: String = '';
+	@Field()
+	name: string = '';
 
 	@Field(type => [SponsorRep])
 	sponsorReps?: [SponsorRep];
@@ -16,20 +16,20 @@ export class Sponsor {
 	@Field(type => [SponsorRep])
 	leadRep?: [SponsorRep];
 
-	@Field(type => Tier)
+	@Field()
 	tier!: Tier;
 
-	@Field(type => Boolean)
-	givingWorkshop?: Boolean;
+	@Field()
+	givingWorkshop?: boolean;
 
-	@Field(type => Boolean)
-	givingLightningTalk?: Boolean;
+	@Field()
+	givingLightningTalk?: boolean;
 
-	@Field(type => String)
-	workshopInfo?: String;
+	@Field()
+	workshopInfo?: string;
 
-	@Field(type => String)
-	lightningTalkInfo?: String;
+	@Field()
+	lightningTalkInfo?: string;
 }
 
 // Copyright (c) 2019 Vanderbilt University

@@ -2,6 +2,9 @@ import { Resolver, Query, Arg } from 'type-graphql';
 import { plainToClass } from 'class-transformer';
 
 import { Hacker } from '../data/Hacker';
+import { Status } from '../enums/Status';
+
+import { hackerModel } from '../models/Hacker';
 
 @Resolver(of => Hacker)
 export class HackerResolver {
@@ -12,7 +15,29 @@ export class HackerResolver {
 	 */
 	@Query(returns => Hacker, { nullable: true })
 	async getHackerByEmail(@Arg('email') email: string): Promise<Hacker | undefined> {
-		return await this.hackers.find(hackers => hackers.email === email);
+		const hacker = await hackerModel.findOne({ email: email });
+		if (!hacker) {
+			console.log('No hacker found');
+			return undefined;
+		} else {
+			const temp = {
+				firstName: hacker.firstName,
+				lastName: hacker.lastName,
+				email: hacker.email,
+				gender: hacker.gender,
+				nfcCodes: hacker.nfcCodes,
+				phoneNumber: hacker.phoneNumber,
+				shirtSize: hacker.shirtSize,
+				needsReimbursement: hacker.needReimbursement,
+				school: hacker.school,
+				gradYear: hacker.gradYear,
+				// status: hacker.status,
+				authType: hacker.authType,
+				authLevel: hacker.authLevel,
+			};
+			return plainToClass(Hacker, temp);
+		}
+		// return await this.hackers.find(hackers => hackers.email === email);
 	}
 
 	/**
@@ -21,8 +46,34 @@ export class HackerResolver {
 	@Query(returns => [Hacker], {
 		description: 'Get all the Hackers and associated data in the database',
 	})
-	async getAllUsers(): Promise<Hacker[]> {
-		return await this.hackers;
+	async getAllHackers(): Promise<Hacker[]> {
+		const hackers = await hackerModel.find({});
+		if (!hackers) {
+			console.log('No hackers found');
+			return [];
+		} else {
+			let hackerList: Object[] = [];
+			hackers.forEach(hacker => {
+				let temp = {
+					firstName: hacker.firstName,
+					lastName: hacker.lastName,
+					email: hacker.email,
+					gender: hacker.gender,
+					nfcCodes: hacker.nfcCodes,
+					phoneNumber: hacker.phoneNumber,
+					shirtSize: hacker.shirtSize,
+					needsReimbursement: hacker.needReimbursement,
+					school: hacker.school,
+					gradYear: hacker.gradYear,
+					// status: hacker.status,
+					authType: hacker.authType,
+					authLevel: hacker.authLevel,
+				};
+				hackerList.push(temp);
+			});
+			return plainToClass(Hacker, hackerList);
+		}
+		// return await this.hackers;
 	}
 }
 
@@ -32,52 +83,32 @@ export class HackerResolver {
 let createHackerSamples = () => {
 	return plainToClass(Hacker, [
 		{
-			name: 'John Smith',
-			email: 'j.p.smith@vanderbilt.edu',
-			gradYear: 2019,
-			school: 'Vanderbilt University',
-			status: 4,
-			requiresTravelReimbursement: true,
+			email: 'ml@mattleon.com',
+			firstName: 'Matthew',
+			lastName: 'Leon',
+			status: Status.Created,
+			needsReimbursement: true,
 		},
 		{
-			name: 'Courtney Johnson',
-			email: 'c.johnson@vanderbilt.edu',
-			gradYear: 2022,
-			school: 'Vanderbilt University',
-			status: 2,
-			requiresTravelReimbursement: true,
+			email: 'irfaan.khalid@vanderbilt.edu',
+			firstName: 'Irfaan',
+			lastName: 'Khalid',
+			status: Status.Accepted,
+			needsReimbursement: false,
 		},
 		{
-			name: 'Jeremy Xu',
-			email: 'j.xu@vanderbilt.edu',
-			gradYear: 2020,
-			school: 'Vanderbilt University',
-			status: 3,
-			requiresTravelReimbursement: false,
+			email: 'alan.wilms@vanderbilt.edu',
+			firstName: 'Alan',
+			lastName: 'Wilms',
+			status: Status.Verified,
+			needsReimbursement: true,
 		},
 		{
-			name: 'Abigail Teer',
-			email: 'teera@utk.edu',
-			gradYear: 2019,
-			school: 'University of Tennessee',
-			status: 1,
-			requiresTravelReimbursement: true,
-		},
-		{
-			name: 'Howard Young',
-			email: 'howardyoung@crimson.ua.edu.edu',
-			gradYear: 2021,
-			school: 'University of Alabama',
-			status: 3,
-			requiresTravelReimbursement: true,
-		},
-		{
-			name: 'Shelby Zhang',
-			email: 's.zhang@vanderbilt.edu',
-			gradYear: 2022,
-			school: 'Vanderbilt University',
-			status: 2,
-			requiresTravelReimbursement: true,
+			email: 'felix.tiet@vanderbilt.edu',
+			firstName: 'Felix',
+			lastName: 'Tiet',
+			status: Status.Rejected,
+			needsReimbursement: false,
 		},
 	]);
 };

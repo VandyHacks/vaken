@@ -10,6 +10,11 @@ import { buildSchema } from 'type-graphql';
 
 import userRouter from './api/UserRouter';
 import { UserResolver } from './resolvers/UserResolver';
+import { HackerResolver } from './resolvers/HackerResolver';
+import { MentorResolver } from './resolvers/MentorResolver';
+import { OrganizerResolver } from './resolvers/OrganizerResolver';
+import { SponsorRepResolver } from './resolvers/SponsorRepResolver';
+import { SponsorResolver } from './resolvers/SponsorResolver';
 
 const app = new koa();
 const router = new koaRouter();
@@ -36,7 +41,7 @@ app.use(router.routes());
 app.use(userRouter.routes());
 
 // Connect to mongo database
-mongoose.connect('mongodb://localhost:32772/test').then(
+mongoose.connect('mongodb://localhost:27017/test').then(
 	() => {
 		console.log('>>> MongoDB Connected');
 	},
@@ -55,7 +60,14 @@ mongoose.connect('mongodb://localhost:32772/test').then(
 async function launchServer() {
 	// build TypeGraphQL executable schema
 	const schema = await buildSchema({
-		resolvers: [UserResolver],
+		resolvers: [
+			HackerResolver,
+			MentorResolver,
+			OrganizerResolver,
+			SponsorRepResolver,
+			SponsorResolver,
+			UserResolver,
+		],
 		// automatically create `schema.gql` file with schema definition in current folder
 		// emitSchemaFile: path.resolve(__dirname, 'schema.gql'),
 	});

@@ -4,78 +4,67 @@ import { Field, ObjectType, InputType } from 'type-graphql';
 import { User } from './User';
 import { Ethnicity } from '../enums/Ethnicity';
 import { Race } from '../enums/Race';
+import { Status } from '../enums/Status';
 
 @ObjectType({ description: 'DTO for a Vaken hacker' })
 @InputType()
 export class Hacker extends User {
-	@Field(type => Boolean)
-	verified: Boolean = false;
+	@Field()
+	status: Status = Status.Created;
 
-	@Field(type => Boolean)
-	started: Boolean = false;
+	@Field()
+	school!: string;
 
-	@Field(type => Boolean)
-	submitted: Boolean = false;
+	@Field()
+	gradYear!: string;
 
-	@Field(type => Boolean)
-	accepted: Boolean = false;
-
-	@Field(type => Boolean)
-	confirmed: Boolean = false;
-
-	@Field(type => String)
-	school!: String;
-
-	@Field(type => String)
-	gradYear!: String;
-
-	@Field(type => Ethnicity)
+	@Field()
 	ethnicity!: Ethnicity;
 
 	@Field(type => [Race])
 	race!: [Race];
 
 	@Field(type => [String])
-	majors!: [String];
+	majors!: [string];
 
-	@Field(type => Boolean)
-	adult!: Boolean;
+	@Field()
+	adult!: boolean;
 
-	@Field(type => Boolean)
-	firstHackathon!: Boolean;
+	@Field()
+	firstHackathon!: boolean;
 
-	@Field(type => Boolean)
-	volunteer?: Boolean;
+	@Field()
+	volunteer?: boolean;
 
-	@Field(type => String)
-	github?: String;
+	@Field()
+	github?: string;
 
-	@Field(type => String)
-	linkedin?: String;
+	@Field()
+	linkedin?: string;
 
-	@Field(type => String)
-	devpost?: String;
+	@Field()
+	devpost?: string;
 
-	@Field(type => String)
-	website?: String;
+	@Field()
+	website?: string;
 
 	@Field(type => [String])
-	essays?: [String];
+	essays?: [string];
 
-	@Field(type => Boolean)
-	codeOfConduct?: Boolean;
+	@Field()
+	codeOfConduct?: boolean;
 
-	@Field(type => Boolean)
-	needReimbursement?: Boolean;
+	@Field()
+	needsReimbursement?: boolean;
 
-	@Field(type => Boolean)
-	lightningTalk?: Boolean;
+	@Field()
+	lightningTalk?: boolean;
 
-	@Field(type => String)
-	teamCode?: String;
+	@Field()
+	teamCode?: string;
 
-	@Field(type => Boolean)
-	walkin?: Boolean;
+	@Field()
+	walkin?: boolean;
 }
 
 // Copyright (c) 2019 Vanderbilt University

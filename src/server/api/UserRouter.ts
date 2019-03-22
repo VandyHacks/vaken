@@ -27,7 +27,6 @@ userRouter.get('/api/logout', async ctx => {
 
 // Create a new local account
 userRouter.post('/api/register', async ctx => {
-	console.log(ctx.request.body);
 	const existingUser = await userModel.findOne({ email: ctx.request.body.username });
 
 	// found user
@@ -39,6 +38,7 @@ userRouter.post('/api/register', async ctx => {
 		console.log('> Creating new local user.....');
 		const newUser = {
 			authType: 'local',
+			authLevel: 'Hacker',
 			email: ctx.request.body.username,
 			password: ctx.request.body.password,
 		};
@@ -48,28 +48,26 @@ userRouter.post('/api/register', async ctx => {
 			ctx.login(createdUser);
 			console.log('> User:');
 			console.log(createdUser);
-			ctx.redirect('/dashboard');
+			// ctx.redirect('/dashboard');
 		} else {
 			console.log('Error creating new local user');
-			ctx.body = { success: false };
 			ctx.throw(401);
-			ctx.redirect('/');
+			// ctx.redirect('/');
 		}
 	}
 });
 
 // Login to local account
-userRouter.post('/api/login', async ctx => {
+userRouter.post('/api/login', ctx => {
 	return passport.authenticate('local', (err: any, user: any, info: any, status: any) => {
 		console.log('> Local auth');
 		if (user) {
-			ctx.body = { success: true };
+			ctx.body = { success: true, username: user.email, authLevel: user.authLevel };
 			ctx.login(user);
 			console.log('> User:');
 			console.log(ctx.state.user);
-			ctx.redirect('/dashboard');
+			// ctx.redirect('/dashboard');
 		} else {
-			ctx.body = { success: false };
 			ctx.throw(401);
 			ctx.redirect('/');
 		}
@@ -86,15 +84,14 @@ userRouter.get(
 userRouter.get('/api/auth/google/callback', async ctx => {
 	return passport.authenticate('google', (err: any, user: any, info: any, status: any) => {
 		if (user) {
-			ctx.body = { success: true };
+			ctx.body = { success: true, username: user.email, authLevel: user.authLevel };
 			ctx.login(user);
 			console.log('> User:');
 			console.log(ctx.state.user);
-			ctx.redirect('/dashboard');
+			// ctx.redirect('/dashboard');
 		} else {
-			ctx.body = { success: false };
 			ctx.throw(401);
-			ctx.redirect('/');
+			// ctx.redirect('/');
 		}
 	})(ctx);
 });
@@ -106,15 +103,14 @@ userRouter.get('/api/auth/github', passport.authenticate('github', { scope: ['us
 userRouter.get('/api/auth/github/callback', async ctx => {
 	return passport.authenticate('github', (err: any, user: any, info: any, status: any) => {
 		if (user) {
-			ctx.body = { success: true };
+			ctx.body = { success: true, username: user.email, authLevel: user.authLevel };
 			ctx.login(user);
 			console.log('> User:');
 			console.log(ctx.state.user);
-			ctx.redirect('localhost:8081/dashboard');
+			// ctx.redirect('localhost:8081/dashboard');
 		} else {
-			ctx.body = { success: false };
 			ctx.throw(401);
-			ctx.redirect('/');
+			// ctx.redirect('/');
 		}
 	})(ctx);
 });

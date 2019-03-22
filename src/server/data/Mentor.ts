@@ -6,10 +6,10 @@ import { User } from './User';
 @ObjectType({ description: 'DTO for a Vaken mentor' })
 export class Mentor extends User {
 	@Field(type => [String])
-	shifts!: [String];
+	shifts!: [string];
 
 	@Field(type => [String])
-	skills!: [String];
+	skills!: [string];
 }
 
 // Copyright (c) 2019 Vanderbilt University
