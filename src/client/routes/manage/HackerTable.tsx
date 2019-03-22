@@ -7,6 +7,7 @@ import {
 	SortIndicator,
 	TableHeaderProps,
 	TableCellProps,
+	TableRowProps,
 	SortDirectionType,
 } from 'react-virtualized';
 import 'react-virtualized/styles.css';
@@ -21,6 +22,10 @@ import searchIcon from '../../assets/img/search_icon.svg';
 import plane from '../../assets/img/plane.svg';
 import STRINGS from '../../assets/strings.json';
 import Select from 'react-select';
+// TODO(alan): add d.ts file
+// @ts-ignore
+import { SelectableGroup, createSelectable } from 'react-selectable-fast';
+import Row from './Row';
 // import { Hacker } from 'src/server/models/Hacker';
 
 const StyledTable = styled(Table)`
@@ -58,6 +63,10 @@ const StyledTable = styled(Table)`
 	font-size: 0.8rem;
 	margin-bottom: 5rem;
 	color: ${STRINGS.DARKEST_TEXT_COLOR};
+
+	.selected {
+		background-color: #E5E7FA;
+	}
 `;
 
 const TableLayout = styled('div')`
@@ -288,6 +297,20 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		);
 	};
 
+	const rowRenderer = (props: TableRowProps) => {
+		return <Row {...props} />;
+		// return (
+		// 	<div key={props.index} className={props.className} style={props.style}>
+		// 		{props.columns}
+		// 	</div>
+		// );
+	};
+
+	// const SomeComponent = ({ selectableRef, selected, selecting }: any): JSX.Element => (
+	// 	<div ref={selectableRef}>Test</div>
+	// );
+	// const SelectableComponent: JSX.Element = createSelectable(<SomeComponent/>);
+
 	const statusRenderer = ({ cellData }: TableCellProps) => {
 		const generateColor = (value: HackerStatus) => {
 			switch (value.toLowerCase()) {
@@ -394,89 +417,101 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 				<AutoSizer>
 					{({ height, width }) => {
 						return (
-							<StyledTable
-								width={width}
-								height={height}
-								headerHeight={20}
-								rowHeight={30}
-								rowCount={sortedData.length}
-								rowClassName={generateRowClassName}
-								rowGetter={({ index }: { index: number }) => sortedData[index]}
-								sortBy={sortBy}
-								sortDirection={sortDirection}
-								sort={sort}>
-								<Column
-									className="column"
-									label="First Name"
-									dataKey="firstName"
-									width={100}
-									headerRenderer={renderHeaderAsLabel}
-								/>
-								<Column
-									className="column"
-									label="Last Name"
-									dataKey="lastName"
-									width={100}
-									headerRenderer={renderHeaderAsLabel}
-								/>
-								<Column
-									className="column"
-									label="Email"
-									dataKey="email"
-									width={200}
-									headerRenderer={renderHeaderAsLabel}
-								/>
-								<Column
-									className="column"
-									label="Grad Year"
-									dataKey="gradYear"
-									width={100}
-									headerRenderer={renderHeaderAsLabel}
-								/>
-								<Column
-									className="column"
-									label="School"
-									dataKey="school"
-									width={175}
-									headerRenderer={renderHeaderAsLabel}
-								/>
-								<Column
-									className="column"
-									label="Status"
-									dataKey="status"
-									width={100}
-									minWidth={90}
-									headerRenderer={renderHeaderAsLabel}
-									cellRenderer={statusRenderer}
-								/>
-								<Column
-									className="column"
-									label="Requires Travel Reimbursement?"
-									dataKey="needsReimbursement"
-									width={30}
-									headerRenderer={({ dataKey, sortBy, sortDirection, label }: TableHeaderProps) =>
-										renderHeaderAsSVG(
-											{
-												dataKey: dataKey,
-												sortBy: sortBy,
-												sortDirection: sortDirection,
-												label: label,
-											},
-											plane
-										)
-									}
-									cellRenderer={checkmarkRenderer}
-								/>
-								<Column
-									className="column"
-									label="Actions"
-									dataKey="actions"
-									width={275}
-									minWidth={275}
-									headerRenderer={renderHeaderAsLabel}
-									cellRenderer={actionRenderer}
-								/>
-							</StyledTable>
+							<SelectableGroup
+								clickClassName="selected"
+								enableDeselect
+								tolerance={0}
+								allowClickWithoutSelected={false}
+								duringSelection={() => console.log('duringSelection')}
+								onSelectionClear={() => console.log('onSelectionClear')}
+								onSelectionFinish={() => console.log('onSelectionFinish')}
+								ignoreList={[]}>
+								{/* <Row /> */}
+								<StyledTable
+									width={width}
+									height={height}
+									headerHeight={20}
+									rowHeight={30}
+									rowCount={sortedData.length}
+									rowClassName={generateRowClassName}
+									rowGetter={({ index }: { index: number }) => sortedData[index]}
+									rowRenderer={rowRenderer}
+									sortBy={sortBy}
+									sortDirection={sortDirection}
+									sort={sort}>
+									<Column
+										className="column"
+										label="First Name"
+										dataKey="firstName"
+										width={100}
+										headerRenderer={renderHeaderAsLabel}
+									/>
+									<Column
+										className="column"
+										label="Last Name"
+										dataKey="lastName"
+										width={100}
+										headerRenderer={renderHeaderAsLabel}
+									/>
+									<Column
+										className="column"
+										label="Email"
+										dataKey="email"
+										width={200}
+										headerRenderer={renderHeaderAsLabel}
+									/>
+									<Column
+										className="column"
+										label="Grad Year"
+										dataKey="gradYear"
+										width={100}
+										headerRenderer={renderHeaderAsLabel}
+									/>
+									<Column
+										className="column"
+										label="School"
+										dataKey="school"
+										width={175}
+										headerRenderer={renderHeaderAsLabel}
+									/>
+									<Column
+										className="column"
+										label="Status"
+										dataKey="status"
+										width={100}
+										minWidth={90}
+										headerRenderer={renderHeaderAsLabel}
+										cellRenderer={statusRenderer}
+									/>
+									<Column
+										className="column"
+										label="Requires Travel Reimbursement?"
+										dataKey="needsReimbursement"
+										width={30}
+										headerRenderer={({ dataKey, sortBy, sortDirection, label }: TableHeaderProps) =>
+											renderHeaderAsSVG(
+												{
+													dataKey: dataKey,
+													sortBy: sortBy,
+													sortDirection: sortDirection,
+													label: label,
+												},
+												plane
+											)
+										}
+										cellRenderer={checkmarkRenderer}
+									/>
+									<Column
+										className="column"
+										label="Actions"
+										dataKey="actions"
+										width={275}
+										minWidth={275}
+										headerRenderer={renderHeaderAsLabel}
+										cellRenderer={actionRenderer}
+									/>
+								</StyledTable>
+							</SelectableGroup>
 						);
 					}}
 				</AutoSizer>
