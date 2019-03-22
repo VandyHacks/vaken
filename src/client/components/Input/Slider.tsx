@@ -81,7 +81,7 @@ export class Slider extends React.PureComponent<Props, {}> {
 	};
 
 	public render() {
-		let { options = ['default'], value, onChange } = this.props;
+		const { options = ['default'], value, onChange } = this.props;
 
 		return (
 			<fieldset>

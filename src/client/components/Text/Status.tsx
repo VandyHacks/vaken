@@ -6,14 +6,14 @@ interface Props {
 	fontColor?: string;
 	fontFamily?: string;
 	fontSize?: string;
-    fontWeight?: number;
-    textAlign?: string;
-    borderRadius?: string;
-    width?: string;
+	fontWeight?: number;
+	textAlign?: string;
+	borderRadius?: string;
+	width?: string;
 }
 
 interface ComponentProps extends Props {
-    value: any;
+	value: any;
 	generateColor?: (value: any) => string;
 }
 
@@ -27,9 +27,9 @@ const StyledDiv = styled('div')`
 	font-weight: ${(props: StyledProps) => props.fontWeight || 500};
 	color: ${(props: StyledProps) => props.fontColor || 'white'};
 	background-color: ${(props: StyledProps) => props.backgroundColor || STRINGS.ACCENT_COLOR};
-	text-align: ${(props: StyledProps) => props.textAlign || "center"};
-	border-radius: ${(props: StyledProps) => props.borderRadius || "1rem"};
-	width: ${(props: StyledProps) => props.width || "5rem"};
+	text-align: ${(props: StyledProps) => props.textAlign || 'center'};
+	border-radius: ${(props: StyledProps) => props.borderRadius || '1rem'};
+	width: ${(props: StyledProps) => props.width || '5rem'};
 `;
 
 export const Status: FunctionComponent<ComponentProps> = (props: ComponentProps): JSX.Element => {

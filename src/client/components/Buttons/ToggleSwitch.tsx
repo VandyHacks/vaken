@@ -2,19 +2,18 @@ import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
 
-
 const Label = styled('label')`
-    display: inline-flex;
-    align-items: center;
-    font-size: 1rem;
-`
+	display: inline-flex;
+	align-items: center;
+	font-size: 1rem;
+`;
 
 const Switch = styled('div')`
 	position: relative;
 	display: inline-block;
 	width: 3.5rem;
-    height: 2rem;
-    margin-left: 0.25rem;
+	height: 2rem;
+	margin-left: 0.25rem;
 `;
 
 interface SliderProps {
@@ -45,9 +44,9 @@ const Slider = styled('div')`
 		background-color: white;
 		transition: 0.4s;
 		${({ checked }: SliderProps) =>
-		checked
-			? 'box-shadow: 0rem 0.1875rem 0.1875rem 0rem #5E6DDF'
-			: 'box-shadow: 0rem 0.1875rem 0.1875rem 0rem #9b9b9b'}
+			checked
+				? 'box-shadow: 0rem 0.1875rem 0.1875rem 0rem #5E6DDF'
+				: 'box-shadow: 0rem 0.1875rem 0.1875rem 0rem #9b9b9b'}
 	}
 `;
 // TODO(alan): insert box shadow? box-shadow: 0px 2px 13px 0px #9b9b9b;
@@ -61,10 +60,10 @@ interface Props {
 export const ToggleSwitch: FunctionComponent<Props> = (props: Props): JSX.Element => {
 	return (
 		<Label>
-            {props.label}
-                <Switch onClick={() => props.onChange && props.onChange(!props.checked)}>
-                    <Slider checked={props.checked} />
-                </Switch>
+			{props.label}
+			<Switch onClick={() => props.onChange && props.onChange(!props.checked)}>
+				<Slider checked={props.checked} />
+			</Switch>
 		</Label>
 	);
 };
