@@ -19,6 +19,7 @@ export const Title = styled.h1`
 	font-size: ${(props: Props) => props.fontSize || '2.5rem'};
 	color: ${(props: Props) => props.color || 'black'};
 	margin: ${(props: Props) => props.margin || '1.5rem'};
+	margin-top: 0;
 `;
 
 export default Title;

@@ -1,3 +1,4 @@
+export const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 /**
  * emailValidation validates that the input e is a valid email address
  * @param {string} e - input to validate as email address
@@ -5,9 +6,10 @@
  */
 export function emailValidation(e: string): boolean {
 	// Validate email using regex
-	return /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(e);
+	return EMAIL_REGEX.test(e);
 }
 
+export const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
 /**
  * passwordValidation validates that the input p contains at least 1 symbol (@$!%*#?&),
  * 1 number, 1 letter, and is at least 8 characters long
@@ -16,7 +18,7 @@ export function emailValidation(e: string): boolean {
  */
 export function passwordValidation(p: string): boolean {
 	// Validate password of length > 8, number, letter, and symbol using regex
-	return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(p);
+	return PASSWORD_REGEX.test(p);
 }
 
 /**

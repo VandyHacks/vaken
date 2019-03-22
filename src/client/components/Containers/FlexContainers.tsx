@@ -34,7 +34,7 @@ export const FlexColumn = styled.div`
 	padding-left: ${(props: ContainerProps) => props.paddingLeft || '0'};
 	padding-right: ${(props: ContainerProps) => props.paddingRight || '0'};
   margin: ${(props: ContainerProps) => props.margin || '0'};
-  ${(props: ContainerProps) => (props.background ? 'background: ' + props.background + ';' : null)}
+  ${(props: ContainerProps) => (props.background ? `background: ${props.background};` : null)}
 `;
 
 export const FlexRow = styled(FlexColumn)`

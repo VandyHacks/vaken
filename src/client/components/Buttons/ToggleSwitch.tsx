@@ -3,17 +3,17 @@ import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
 
 const Label = styled('label')`
-    display: inline-flex;
-    align-items: center;
-    font-size: 1rem;
-`
+	display: inline-flex;
+	align-items: center;
+	font-size: 1rem;
+`;
 
 const Switch = styled('div')`
 	position: relative;
 	display: inline-block;
 	width: 3.5rem;
-    height: 2rem;
-    margin-left: 0.25rem;
+	height: 2rem;
+	margin-left: 0.25rem;
 `;
 
 interface SliderProps {
@@ -60,10 +60,10 @@ interface Props {
 export const ToggleSwitch: FunctionComponent<Props> = (props: Props): JSX.Element => {
 	return (
 		<Label>
-            {props.label}
-                <Switch onClick={() => props.onChange && props.onChange(!props.checked)}>
-                    <Slider checked={props.checked} />
-                </Switch>
+			{props.label}
+			<Switch onClick={() => props.onChange && props.onChange(!props.checked)}>
+				<Slider checked={props.checked} />
+			</Switch>
 		</Label>
 	);
 };

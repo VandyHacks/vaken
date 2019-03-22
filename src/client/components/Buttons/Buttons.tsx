@@ -10,11 +10,13 @@ interface ButtonTextProps {
 interface ButtonProps {
 	glowColor?: string;
 	background?: string;
+	invalid?: boolean;
 }
 
 export const CenterButtonText = styled.div`
 	${displayFlex}
 	height: 100%;
+	text-align: center;
 	font-family: 'Roboto';
 	font-size: ${(props: ButtonTextProps) => props.fontSize || '1.4rem'};
 	font-weight: ${(props: ButtonTextProps) => props.fontWeight || 'normal'};
@@ -50,8 +52,10 @@ export const Button = styled.button`
 	border: none;
 
 	&:hover {
-		box-shadow: 0px 0px 30px 0px
-			${(props: ButtonProps) => props.glowColor || 'rgba(255, 255, 255, 1)'};
+		${({ invalid, glowColor }: ButtonProps) =>
+			invalid
+				? 'box-shadow: 0 0 20px red;'
+				: `box-shadow: 0px 0px 30px 0px ${glowColor || 'rgba(255, 255, 255, 1);'}`}
 	}
 
 	&:focus {
@@ -60,8 +64,10 @@ export const Button = styled.button`
 `;
 
 export const ButtonOutline = styled(Button.withComponent('div'))`
-	justify-content: flex-start;
+	justify-content: center;
 	cursor: initial;
+
+	${({ invalid }: ButtonProps) => (invalid ? 'box-shadow: 0 0 15px red;' : null)}
 
 	img {
 		padding-left: 2rem;
