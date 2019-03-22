@@ -128,6 +128,7 @@
 		"passport-google-oauth2": "^0.1.6",
 		"prettier": "^1.16.4",
 		"react-apollo": "^2.5.2",
+		"react-selectable-fast": "^2.2.2",
 		"style-loader": "^0.23.1",
 		"svg-inline-loader": "^0.8.0",
 		"thread-loader": "^2.1.2",
