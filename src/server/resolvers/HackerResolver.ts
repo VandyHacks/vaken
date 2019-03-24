@@ -1,4 +1,4 @@
-import { Resolver, Query, Arg } from 'type-graphql';
+import { Resolver, Query, Arg, Mutation, Args } from 'type-graphql';
 import { plainToClass } from 'class-transformer';
 
 import { Hacker } from '../data/Hacker';
@@ -74,6 +74,26 @@ export class HackerResolver {
 		}
 		// return await this.hackers;
 	}
+
+	/**
+	 * Update a hacker's status
+	 */
+	@Mutation((returns: any) => Status, {
+		description: "Update a Hacker's status and return updated status",
+	})
+	async updateHackerStatus(
+		@Arg('email', { nullable: false }) email: string,
+		@Arg('newStatus') newStatus: Status
+	) {
+		const hacker = await hackerModel.findOne({ email: email });
+		if (!hacker) {
+			console.log('Hacker not found!');
+			return null;
+		} else {
+			hacker.status = newStatus;
+			return hacker.status;
+		}
+	}
 }
 
 /**
@@ -101,8 +121,7 @@ let createHackerSamples = () => {
 			gradYear: 2019,
 			school: 'Vanderbilt University',
 			status: Status.Verified,
-			needsReimbursement: true
-
+			needsReimbursement: true,
 		},
 		{
 			firstName: 'Courtney',
@@ -111,7 +130,7 @@ let createHackerSamples = () => {
 			gradYear: 2022,
 			school: 'Vanderbilt University',
 			status: Status.Started,
-			needsReimbursement: true
+			needsReimbursement: true,
 		},
 		{
 			firstName: 'Jeremy',
