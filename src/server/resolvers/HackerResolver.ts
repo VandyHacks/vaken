@@ -30,7 +30,7 @@ export class HackerResolver {
 				needsReimbursement: hacker.needReimbursement,
 				school: hacker.school,
 				gradYear: hacker.gradYear,
-				// status: hacker.status,
+				status: hacker.status,
 				authType: hacker.authType,
 				authLevel: hacker.authLevel,
 			};
@@ -64,13 +64,13 @@ export class HackerResolver {
 					needsReimbursement: hacker.needReimbursement,
 					school: hacker.school,
 					gradYear: hacker.gradYear,
-					// status: hacker.status,
+					status: hacker.status,
 					authType: hacker.authType,
 					authLevel: hacker.authLevel,
 				};
 				hackerList.push(temp);
 			});
-			return plainToClass(Hacker, createHackerSamples());
+			return plainToClass(Hacker, hackerList);
 		}
 		// return await this.hackers;
 	}
@@ -90,8 +90,17 @@ export class HackerResolver {
 			console.log('Hacker not found!');
 			return null;
 		} else {
-			hacker.status = newStatus;
-			return hacker.status;
+			const newHacker = await hackerModel.findOneAndUpdate(
+				{ email: email },
+				{ $set: { status: newStatus } },
+				{ new: true }
+			);
+			if (!newHacker) {
+				console.log('Error updating status');
+				return null;
+			} else {
+				return newHacker.status;
+			}
 		}
 	}
 }
