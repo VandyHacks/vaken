@@ -1,5 +1,6 @@
 import koaRouter from 'koa-router';
 import { userModel } from '../models/User';
+import { hackerModel } from '../models/Hacker';
 
 const passport = require('koa-passport');
 
@@ -26,7 +27,7 @@ userRouter.get('/api/logout', async ctx => {
 });
 
 // Create a new local account
-userRouter.post('/api/register', async ctx => {
+userRouter.post('/api/register/user', async ctx => {
 	const existingUser = await userModel.findOne({ email: ctx.request.body.username });
 
 	// found user
@@ -51,6 +52,37 @@ userRouter.post('/api/register', async ctx => {
 			// ctx.redirect('/dashboard');
 		} else {
 			console.log('Error creating new local user');
+			ctx.throw(401);
+			// ctx.redirect('/');
+		}
+	}
+});
+
+// Create a new local hacker account
+userRouter.post('/api/register/hacker', async ctx => {
+	const existingUser = await hackerModel.findOne({ email: ctx.request.body.username });
+
+	// found user
+	if (existingUser) {
+		console.log('Error: Account with that email already exists');
+	} else {
+		//no user found, create new user
+		console.log('> Creating new local hacker.....');
+		const newHacker = ctx.request.body;
+		newHacker.authType = 'local';
+		newHacker.authLevel = 'Hacker';
+		newHacker.status = 'Created';
+		console.log(newHacker);
+		console.log('Attempting to create a new hacker');
+		const createdHacker = await hackerModel.create(newHacker);
+		if (createdHacker) {
+			ctx.body = { success: true };
+			ctx.login(createdHacker);
+			console.log('> Hacker:');
+			console.log(createdHacker);
+			// ctx.redirect('/dashboard');
+		} else {
+			console.log('Error creating new local hacker');
 			ctx.throw(401);
 			// ctx.redirect('/');
 		}
