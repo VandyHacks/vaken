@@ -85,22 +85,16 @@ export class HackerResolver {
 		@Arg('email', { nullable: false }) email: string,
 		@Arg('newStatus') newStatus: Status
 	) {
-		const hacker = await hackerModel.findOne({ email: email });
-		if (!hacker) {
-			console.log('Hacker not found!');
+		const newHacker = await hackerModel.findOneAndUpdate(
+			{ email: email },
+			{ $set: { status: newStatus } },
+			{ new: true }
+		);
+		if (!newHacker) {
+			console.log('Error updating status');
 			return null;
 		} else {
-			const newHacker = await hackerModel.findOneAndUpdate(
-				{ email: email },
-				{ $set: { status: newStatus } },
-				{ new: true }
-			);
-			if (!newHacker) {
-				console.log('Error updating status');
-				return null;
-			} else {
-				return newHacker.status;
-			}
+			return newHacker.status;
 		}
 	}
 }
