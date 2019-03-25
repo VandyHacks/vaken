@@ -19,7 +19,7 @@ import RadioSlider from '../../components/Buttons/RadioSlider';
 import FloatingButton from '../../components/Buttons/FloatingButton';
 import Status from '../../components/Text/Status';
 import Checkmark from '../../components/Symbol/Checkmark';
-import searchIcon from '../../assets/img/search_icon.svg';
+import SearchBox from '../../components/Input/SearchBox';
 import plane from '../../assets/img/plane.svg';
 import STRINGS from '../../assets/strings.json';
 import Select from 'react-select';
@@ -99,24 +99,6 @@ const TableLayout = styled('div')`
 	flex: 1 0 auto;
 	display: flex;
 	flex-direction: column;
-`;
-
-const SearchBox = styled('input')`
-	min-width: 30rem;
-	margin: 0.25rem 1rem 0.25rem 0rem;
-	padding: 0.75rem;
-	border: 0.0625rem solid #ecebed;
-	box-shadow: 0rem 0.5rem 4rem rgba(0, 0, 0, 0.07);
-	border-radius: 0.375rem;
-	font-size: 1rem;
-	box-sizing: border-box;
-	padding-left: 2rem;
-	background: #ffffff url(${searchIcon}) 0.25rem 50% no-repeat;
-	:focus,
-	:active {
-		outline: none;
-		border: 0.0625rem solid ${STRINGS.ACCENT_COLOR};
-	}
 `;
 
 const TableOptions = styled('div')`

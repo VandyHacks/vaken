@@ -1,16 +1,12 @@
 import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
 
-export const FloatingButton = styled.button`
+export const ActionButton = styled.button`
     background-color: ${STRINGS.ACCENT_COLOR};
     color: #ffffff;
     font-size: 1rem;
-	position: fixed;
-	width: 8rem;
-	height: 3.75rem;
-	bottom: 3.25rem;
-	right: 3.75rem;
-	border-radius: 3.125rem;
+    padding: 0.75rem 1.5rem;
+	border-radius: 1.5rem;
 	text-align:center;
     &:focus {
         outline: none;
@@ -23,4 +19,4 @@ export const FloatingButton = styled.button`
     }
 `;
 
-export default FloatingButton;
+export default ActionButton;

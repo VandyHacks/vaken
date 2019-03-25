@@ -3,6 +3,7 @@ import Application from '../routes/application/Application';
 import HackerDash from '../routes/dashboard/HackerDash';
 import ManageHackers from '../routes/manage/ManageHackers';
 import OrganizerDash from '../routes/dashboard/LazyOrganizerDash';
+import Team from '../routes/team/Team';
 
 export const AuthLevel = {
 	HACKER: 'hacker',
@@ -10,7 +11,7 @@ export const AuthLevel = {
 	SPONSOR: 'sponsor',
 };
 
-export const currentAuth = AuthLevel.ORGANIZER;
+export const currentAuth = AuthLevel.HACKER;
 
 export const routes = [
 	{
@@ -39,7 +40,7 @@ export const routes = [
 	},
 	{
 		authLevel: [AuthLevel.HACKER],
-		component: NotReady,
+		component: Team,
 		displayText: 'Team',
 		path: '/team',
 	},
