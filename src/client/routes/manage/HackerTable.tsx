@@ -219,7 +219,7 @@ interface Props {
 }
 
 export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element => {
-	const [sortBy, setSortBy] = useState('firstName');
+	const [sortBy, setSortBy] = useState('');
 	const [sortDirection, setSortDirection] = useState<SortDirectionType>(SortDirection.ASC);
 	const [sortedData, setSortedData] = useState<Hacker[]>(props.data);
 	const [searchValue, setSearchValue] = useState('');
@@ -237,6 +237,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		sortDirection: SortDirectionType;
 		update: boolean;
 	}) => {
+		console.log('sorting');
 		// sort alphanumerically
 		const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
 
@@ -261,6 +262,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		console.log('data from GraphQL is changing');
 		setSortedData(sortData({ sortBy, sortDirection, update: true }));
 		onSearch(searchValue);
+		// setSortedData(props.data);
 	}, [props.data]);
 
 	// OLD
@@ -348,11 +350,11 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 							option1="Accept"
 							option2="Undecided"
 							option3="Reject"
-							initialState={
+							value={
 								status === 'accepted' ? 'Accept' : status === 'rejected' ? 'Reject' : 'Undecided'
 							}
 							onChange={(input: string) => {
-								let newStatus;
+								let newStatus: string;
 								switch (input.toLowerCase()) {
 									case 'accept':
 										newStatus = 'Accepted';
@@ -369,6 +371,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									status: newStatus,
 								}).then((updatedStatus: string) => {
 									console.log(updatedStatus);
+									rowData.status = updatedStatus;
 								});
 							}}
 							disable={status !== 'accepted' && status !== 'rejected' && status !== 'submitted'}
@@ -515,7 +518,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 								<StyledTable
 									width={width}
 									height={height}
-									headerHeight={20}
+									headerHeight={40}
 									rowHeight={30}
 									rowCount={sortedData.length}
 									rowClassName={generateRowClassName}
@@ -610,7 +613,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 											option2="Undecided"
 											option3="Reject"
 											large={true}
-											initialState="Undecided"
+											value="Undecided"
 											disable={true}
 										/>
 									</Float>
