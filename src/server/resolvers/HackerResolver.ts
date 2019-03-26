@@ -1,4 +1,4 @@
-import { Resolver, Query, Arg } from 'type-graphql';
+import { Resolver, Query, Arg, Mutation, Args } from 'type-graphql';
 import { plainToClass } from 'class-transformer';
 
 import { Hacker } from '../data/Hacker';
@@ -30,7 +30,7 @@ export class HackerResolver {
 				needsReimbursement: hacker.needReimbursement,
 				school: hacker.school,
 				gradYear: hacker.gradYear,
-				// status: hacker.status,
+				status: hacker.status,
 				authType: hacker.authType,
 				authLevel: hacker.authLevel,
 			};
@@ -64,15 +64,38 @@ export class HackerResolver {
 					needsReimbursement: hacker.needReimbursement,
 					school: hacker.school,
 					gradYear: hacker.gradYear,
-					// status: hacker.status,
+					status: hacker.status,
 					authType: hacker.authType,
 					authLevel: hacker.authLevel,
 				};
 				hackerList.push(temp);
 			});
-			return plainToClass(Hacker, createHackerSamples());
+			return plainToClass(Hacker, hackerList);
 		}
 		// return await this.hackers;
+	}
+
+	/**
+	 * Update a hacker's status
+	 */
+	@Mutation((returns: any) => Status, {
+		description: "Update a Hacker's status and return updated status",
+	})
+	async updateHackerStatus(
+		@Arg('email', { nullable: false }) email: string,
+		@Arg('newStatus') newStatus: Status
+	) {
+		const newHacker = await hackerModel.findOneAndUpdate(
+			{ email: email },
+			{ $set: { status: newStatus } },
+			{ new: true }
+		);
+		if (!newHacker) {
+			console.log('Error updating status');
+			return null;
+		} else {
+			return newHacker.status;
+		}
 	}
 }
 
@@ -101,8 +124,7 @@ let createHackerSamples = () => {
 			gradYear: 2019,
 			school: 'Vanderbilt University',
 			status: Status.Verified,
-			needsReimbursement: true
-
+			needsReimbursement: true,
 		},
 		{
 			firstName: 'Courtney',
@@ -111,7 +133,7 @@ let createHackerSamples = () => {
 			gradYear: 2022,
 			school: 'Vanderbilt University',
 			status: Status.Started,
-			needsReimbursement: true
+			needsReimbursement: true,
 		},
 		{
 			firstName: 'Jeremy',
