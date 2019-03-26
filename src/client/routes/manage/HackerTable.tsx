@@ -307,14 +307,16 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 
 	const actionRenderer = ({ rowData }: TableCellProps) => {
 		// TODO(alan): extract onChange to own method
+		const status = rowData.status.toLowerCase();
 		return (
 			<Actions className="ignore-select">
 				<Mutation mutation={UPDATE_STATUS}>
-					{(updateHackerStatus) => (
+					{(updateHackerStatus, {data}) => (
 						<RadioSlider
 							option1="Accept"
 							option2="Undecided"
 							option3="Reject"
+							initialState={status === "accepted" ? "Accept" : (status === "rejected" ? "Reject" : "Undecided")}
 							onChange={(input: string) => {
 								let newStatus;
 								switch (input.toLowerCase()) {
@@ -328,11 +330,13 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									default:
 										newStatus = 'Submitted';
 								}
-								updateHackerStatus({
+								const test = updateHackerStatus({
 									variables: { email: rowData.email as string, status: newStatus },
 								});
+								console.log(test);
 								rowData.status = newStatus;
 							}}
+							disable={status !== "accepted" && status !== "rejected" && status !== "submitted"}
 						/>
 					)}
 				</Mutation>
@@ -570,6 +574,8 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 											option2="Undecided"
 											option3="Reject"
 											large={true}
+											initialState="Undecided"
+											disable={true}
 										/>
 									</Float>
 								) : (
