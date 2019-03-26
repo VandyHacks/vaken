@@ -9,21 +9,21 @@ import TextButton from '../../components/Buttons/TextButton';
 import STRINGS from '../../assets/strings.json';
 import { Link } from 'react-router-dom';
 
-const ManageHackers = (): JSX.Element => {
-	const GET_HACKERS = gql`
-		query {
-			getAllHackers {
-				firstName
-				lastName
-				email
-				gradYear
-				school
-				status
-				needsReimbursement
-			}
+const GET_HACKERS = gql`
+	query {
+		getAllHackers {
+			firstName
+			lastName
+			email
+			gradYear
+			school
+			status
+			needsReimbursement
 		}
-	`;
+	}
+`;
 
+const ManageHackers = (): JSX.Element => {
 	const Error = (
 		<ErrorMessage>
 			<>
@@ -40,7 +40,7 @@ const ManageHackers = (): JSX.Element => {
 		<Query query={GET_HACKERS}>
 			{({ loading, error, data }: any) => {
 				if (error) console.log(error);
-				// console.log(data);
+				console.log(data);
 				return (
 					<>
 						<FloatingPopup borderRadius="1rem" height="100%" backgroundOpacity="1" padding="1.5rem">

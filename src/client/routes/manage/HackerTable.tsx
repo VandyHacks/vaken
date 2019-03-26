@@ -29,10 +29,19 @@ import { gql } from 'apollo-boost';
 // @ts-ignore
 import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
 import Row from './Row';
+import 'babel-polyfill';
 
 const UPDATE_STATUS = gql`
 	mutation UpdateHackerStatus($email: String!, $status: String!) {
 		updateHackerStatus(email: $email, newStatus: $status)
+	}
+`;
+
+const GET_HACKERS = gql`
+	query {
+		getAllHackers {
+			status
+		}
 	}
 `;
 
@@ -222,15 +231,17 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 	const sortData = ({
 		sortBy,
 		sortDirection,
+		update,
 	}: {
 		sortBy: string;
 		sortDirection: SortDirectionType;
+		update: boolean;
 	}) => {
 		// sort alphanumerically
 		const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
 
 		// TODO: replace any
-		let newSortedData = (sortedData as any).sort((a: any, b: any) =>
+		let newSortedData = ((update ? props.data : sortedData) as any).sort((a: any, b: any) =>
 			collator.compare(a[sortBy], b[sortBy])
 		);
 		if (sortDirection === SortDirection.DESC) {
@@ -240,14 +251,22 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		return newSortedData;
 	};
 
-	// only gets called once per prop.data
+	// acts as a compoentDidMount to implement an initial sort
 	useEffect(() => {
-		setSortedData(sortData({ sortBy, sortDirection }));
+		setSortedData(sortData({ sortBy, sortDirection, update: false }));
+	}, []);
+
+	// This is for updating the table when the hacker status changes
+	useEffect(() => {
+		console.log('data from GraphQL is changing');
+		setSortedData(sortData({ sortBy, sortDirection, update: true }));
+		onSearch(searchValue);
 	}, [props.data]);
 
-	useEffect(() => {
-		sort({ sortBy, sortDirection });
-	}, [sortedData]);
+	// OLD
+	// useEffect(() => {
+	// 	sort({ sortBy, sortDirection });
+	// }, [sortedData.map(row => row.status)]);
 
 	useEffect(() => {
 		// add case for Regex?
@@ -305,18 +324,33 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		return <Checkmark value={cellData} />;
 	};
 
-	const actionRenderer = ({ rowData }: TableCellProps) => {
+	// TODO(alan): remove any type
+	const updateHackerStatus = async (
+		mutation: any,
+		variables: { email: string; status: string }
+	): Promise<string> => {
+		const result = await mutation({
+			mutation: UPDATE_STATUS,
+			variables: variables,
+			refetchQueries: [{ query: GET_HACKERS }],
+		});
+		return result.data.updateHackerStatus;
+	};
+
+	const actionRenderer = ({ rowData, rowIndex }: TableCellProps) => {
 		// TODO(alan): extract onChange to own method
 		const status = rowData.status.toLowerCase();
 		return (
 			<Actions className="ignore-select">
 				<Mutation mutation={UPDATE_STATUS}>
-					{(updateHackerStatus, {data}) => (
+					{mutation => (
 						<RadioSlider
 							option1="Accept"
 							option2="Undecided"
 							option3="Reject"
-							initialState={status === "accepted" ? "Accept" : (status === "rejected" ? "Reject" : "Undecided")}
+							initialState={
+								status === 'accepted' ? 'Accept' : status === 'rejected' ? 'Reject' : 'Undecided'
+							}
 							onChange={(input: string) => {
 								let newStatus;
 								switch (input.toLowerCase()) {
@@ -330,13 +364,14 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									default:
 										newStatus = 'Submitted';
 								}
-								const test = updateHackerStatus({
-									variables: { email: rowData.email as string, status: newStatus },
+								updateHackerStatus(mutation, {
+									email: rowData.email as string,
+									status: newStatus,
+								}).then((updatedStatus: string) => {
+									console.log(updatedStatus);
 								});
-								console.log(test);
-								rowData.status = newStatus;
 							}}
-							disable={status !== "accepted" && status !== "rejected" && status !== "submitted"}
+							disable={status !== 'accepted' && status !== 'rejected' && status !== 'submitted'}
 						/>
 					)}
 				</Mutation>
@@ -381,7 +416,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		sortBy: string;
 		sortDirection: SortDirectionType;
 	}) => {
-		const sortedData = sortData({ sortBy, sortDirection });
+		const sortedData = sortData({ sortBy, sortDirection, update: false });
 
 		setSortBy(sortBy);
 		setSortDirection(sortDirection);
@@ -486,6 +521,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									rowClassName={generateRowClassName}
 									rowGetter={({ index }: { index: number }) => sortedData[index]}
 									rowRenderer={rowRenderer}
+									headerClassName={'ignore-select'}
 									sortBy={sortBy}
 									sortDirection={sortDirection}
 									sort={sort}>

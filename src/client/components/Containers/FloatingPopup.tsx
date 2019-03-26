@@ -15,6 +15,7 @@ const FloatingPopup = styled(FlexStartColumn)`
 	height: ${(props: Props) => props.height || 'min-content'};
 	/* height: min-content; */
 	padding: 1.5rem;
+	box-sizing: border-box;
 `;
 
 export default FloatingPopup;
