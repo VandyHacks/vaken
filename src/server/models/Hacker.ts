@@ -46,7 +46,7 @@ class Hacker extends User {
 	codeOfConduct?: boolean;
 
 	@prop()
-	needReimbursement?: boolean;
+	needsReimbursement?: boolean;
 
 	@prop()
 	lightningTalk?: boolean;

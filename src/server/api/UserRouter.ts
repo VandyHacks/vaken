@@ -40,7 +40,7 @@ userRouter.post('/api/register/user', async ctx => {
 		const newUser = {
 			authType: 'local',
 			authLevel: 'Hacker',
-			email: ctx.request.body.username,
+			email: ctx.request.body.email,
 			password: ctx.request.body.password,
 		};
 		const createdUser = await userModel.create(newUser);
