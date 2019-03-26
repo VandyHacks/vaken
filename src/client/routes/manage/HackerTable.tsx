@@ -23,10 +23,18 @@ import searchIcon from '../../assets/img/search_icon.svg';
 import plane from '../../assets/img/plane.svg';
 import STRINGS from '../../assets/strings.json';
 import Select from 'react-select';
+import { Mutation } from 'react-apollo';
+import { gql } from 'apollo-boost';
 // TODO(alan): add d.ts file, most already defined here: https://github.com/valerybugakov/react-selectable-fast/blob/master/src/SelectableGroup.js
 // @ts-ignore
 import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
 import Row from './Row';
+
+const UPDATE_STATUS = gql`
+	mutation UpdateHackerStatus($email: String!, $status: String!) {
+		updateHackerStatus(email: $email, newStatus: $status)
+	}
+`;
 
 const Float = styled.div`
 	position: fixed;
@@ -297,10 +305,37 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		return <Checkmark value={cellData} />;
 	};
 
-	const actionRenderer = ({ cellData }: TableCellProps) => {
+	const actionRenderer = ({ rowData }: TableCellProps) => {
+		// TODO(alan): extract onChange to own method
 		return (
 			<Actions className="ignore-select">
-				<RadioSlider option1="Accept" option2="Undecided" option3="Reject" />
+				<Mutation mutation={UPDATE_STATUS}>
+					{(updateHackerStatus) => (
+						<RadioSlider
+							option1="Accept"
+							option2="Undecided"
+							option3="Reject"
+							onChange={(input: string) => {
+								let newStatus;
+								switch (input.toLowerCase()) {
+									case 'accept':
+										newStatus = 'Accepted';
+										break;
+									case 'reject':
+										newStatus = 'Rejected';
+										break;
+									case 'undecided':
+									default:
+										newStatus = 'Submitted';
+								}
+								updateHackerStatus({
+									variables: { email: rowData.email as string, status: newStatus },
+								});
+								rowData.status = newStatus;
+							}}
+						/>
+					)}
+				</Mutation>
 				<TableButton>View</TableButton>
 			</Actions>
 		);
@@ -384,7 +419,11 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		setSearchValue(value);
 	};
 
-	const SelectAllButton = <FloatingButton onClick={() => setSelectAll(!selectAll)}>{selectAll || hasSelection ? 'Deselect All' : 'Select All'}</FloatingButton>;
+	const SelectAllButton = (
+		<FloatingButton onClick={() => setSelectAll(!selectAll)}>
+			{selectAll || hasSelection ? 'Deselect All' : 'Select All'}
+		</FloatingButton>
+	);
 
 	// TODO(alan): remove any type.
 	return (
@@ -495,6 +534,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 										label="Requires Travel Reimbursement?"
 										dataKey="needsReimbursement"
 										width={30}
+										minWidth={20}
 										headerRenderer={({ dataKey, sortBy, sortDirection, label }: TableHeaderProps) =>
 											renderHeaderAsSVG(
 												{
@@ -518,8 +558,23 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 										cellRenderer={actionRenderer}
 									/>
 								</StyledTable>
-								{selectAll || hasSelection ? <DeselectAll>{SelectAllButton}</DeselectAll> : <SelectAll>{SelectAllButton}</SelectAll>}
-								{hasSelection ? <Float className="ignore-select"><RadioSlider option1="Accept" option2="Undecided" option3="Reject" large={true}/></Float> : undefined}
+								{selectAll || hasSelection ? (
+									<DeselectAll>{SelectAllButton}</DeselectAll>
+								) : (
+									<SelectAll>{SelectAllButton}</SelectAll>
+								)}
+								{hasSelection ? (
+									<Float className="ignore-select">
+										<RadioSlider
+											option1="Accept"
+											option2="Undecided"
+											option3="Reject"
+											large={true}
+										/>
+									</Float>
+								) : (
+									undefined
+								)}
 							</SelectableGroup>
 						);
 					}}

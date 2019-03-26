@@ -47,7 +47,7 @@ export const questions = [
 				Component: Boolean,
 				default: false,
 				fieldName: 'ethnicity',
-				prompt: 'Are you Spanish, Hispantic, or Latino?',
+				prompt: 'Are you Spanish, Hispanic, or Latino?',
 				title: 'Ethnicity',
 			},
 			{

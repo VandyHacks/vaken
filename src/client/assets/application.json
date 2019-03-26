@@ -37,7 +37,7 @@
 				"name": "ethnicity",
 				"input": "toggle",
 				"title": "Ethnicity",
-				"note": "Are you Spanish, Hispantic, or Latino?",
+				"note": "Are you Spanish, Hispanic, or Latino?",
 				"defaultValue": true
 			},
 			{

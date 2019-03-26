@@ -7,6 +7,7 @@ interface Props {
 	option2: string;
 	option3: string;
 	large?: boolean;
+	onChange?: (input: string) => void;
 }
 
 interface SelectorProps {
@@ -97,6 +98,9 @@ export const RadioSlider: FunctionComponent<Props> = (props: Props): JSX.Element
                 break;
         }
 		setSelected(event.target.id);
+		if (typeof props.onChange === 'function') {
+			props.onChange(event.target.id);
+		}
 	};
 
 	return (
