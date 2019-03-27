@@ -1,19 +1,21 @@
 import 'reflect-metadata';
 import { Field, ObjectType } from 'type-graphql';
 
-import { User } from './User';
+import User from './User';
 import { Sponsor } from './Sponsor';
 
 @ObjectType({ description: 'DTO for a Vaken sponsor rep' })
-export class SponsorRep extends User {
+class SponsorRep extends User {
 	@Field(type => [Sponsor])
-	sponsors!: [Sponsor];
+	public sponsors!: [Sponsor];
 
 	@Field()
-	title!: string;
+	public title!: string;
 
 	@Field()
-	leadRep!: boolean;
+	public leadRep!: boolean;
 }
+
+export default SponsorRep;
 
 // Copyright (c) 2019 Vanderbilt University

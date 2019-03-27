@@ -1,35 +1,37 @@
 import 'reflect-metadata';
 import { Field, ObjectType, InputType } from 'type-graphql';
 
-import { SponsorRep } from './SponsorRep';
+import SponsorRep from './SponsorRep';
 import Tier from '../enums/Tier';
 
 @ObjectType({ description: 'DTO for a Vaken sponsor' })
 @InputType()
-export class Sponsor {
+class Sponsor {
 	@Field()
-	name: string = '';
+	public name: string = '';
 
 	@Field(type => [SponsorRep])
-	sponsorReps?: [SponsorRep];
+	public sponsorReps?: [SponsorRep];
 
 	@Field(type => [SponsorRep])
-	leadRep?: [SponsorRep];
+	public leadRep?: [SponsorRep];
 
 	@Field()
-	tier!: Tier;
+	public tier!: Tier;
 
 	@Field()
-	givingWorkshop?: boolean;
+	public givingWorkshop?: boolean;
 
 	@Field()
-	givingLightningTalk?: boolean;
+	public givingLightningTalk?: boolean;
 
 	@Field()
-	workshopInfo?: string;
+	public workshopInfo?: string;
 
 	@Field()
-	lightningTalkInfo?: string;
+	public lightningTalkInfo?: string;
 }
+
+export default Sponsor;
 
 // Copyright (c) 2019 Vanderbilt University

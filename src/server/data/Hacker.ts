@@ -8,63 +8,65 @@ import Status from '../enums/Status';
 
 @ObjectType({ description: 'DTO for a Vaken hacker' })
 @InputType()
-export class Hacker extends User {
+class Hacker extends User {
 	@Field()
-	status: Status = Status.Created;
+	public status: Status = Status.Created;
 
 	@Field()
-	school!: string;
+	public school!: string;
 
 	@Field()
-	gradYear!: string;
+	public gradYear!: string;
 
 	@Field()
-	ethnicity!: Ethnicity;
+	public ethnicity!: Ethnicity;
 
 	@Field(type => [Race])
-	race!: [Race];
+	public race!: [Race];
 
 	@Field(type => [String])
-	majors!: [string];
+	public majors!: [string];
 
 	@Field()
-	adult!: boolean;
+	public adult!: boolean;
 
 	@Field()
-	firstHackathon!: boolean;
+	public firstHackathon!: boolean;
 
 	@Field()
-	volunteer?: boolean;
+	public volunteer?: boolean;
 
 	@Field()
-	github?: string;
+	public github?: string;
 
 	@Field()
-	linkedin?: string;
+	public linkedin?: string;
 
 	@Field()
-	devpost?: string;
+	public devpost?: string;
 
 	@Field()
-	website?: string;
+	public website?: string;
 
 	@Field(type => [String])
-	essays?: [string];
+	public essays?: [string];
 
 	@Field()
-	codeOfConduct?: boolean;
+	public codeOfConduct?: boolean;
 
 	@Field()
-	needsReimbursement?: boolean;
+	public needsReimbursement?: boolean;
 
 	@Field()
-	lightningTalk?: boolean;
+	public lightningTalk?: boolean;
 
 	@Field()
-	teamCode?: string;
+	public teamCode?: string;
 
 	@Field()
-	walkin?: boolean;
+	public walkin?: boolean;
 }
+
+export default Hacker;
 
 // Copyright (c) 2019 Vanderbilt University

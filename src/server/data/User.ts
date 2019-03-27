@@ -7,40 +7,42 @@ import Gender from '../enums/Gender';
 
 @ObjectType({ description: 'DTO for a generic Vaken user' })
 @InputType()
-export class User {
+class User {
 	@Field(type => [String])
-	nfcCodes!: [string];
+	public nfcCodes!: [string];
 
 	@Field()
-	firstName!: string;
+	public firstName!: string;
 
 	@Field()
-	lastName!: string;
+	public lastName!: string;
 
 	@Field()
-	email!: string;
+	public email!: string;
 
 	@Field()
-	google?: string;
+	public google?: string;
 
 	@Field()
-	github?: string;
+	public github?: string;
 
 	@Field()
-	authType!: string;
+	public authType!: string;
 
 	@Field()
-	authLevel!: AuthLevel;
+	public authLevel!: AuthLevel;
 
 	@Field()
-	phoneNumber!: string;
+	public phoneNumber!: string;
 
 	@Field()
-	gender!: Gender;
+	public gender!: Gender;
 
 	@Field()
-	shirtSize!: ShirtSize;
+	public shirtSize!: ShirtSize;
 
 	@Field()
-	dietaryRestrictions?: string;
+	public dietaryRestrictions?: string;
 }
+
+export default User;
