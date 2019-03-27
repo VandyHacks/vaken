@@ -39,11 +39,11 @@ export class UserResolver {
 			// userCopy.password = '';
 
 			const temp = {
-				nfcCodes: user.nfcCodes,
-				email: user.email,
-				authType: user.authType,
 				authLevel: user.authLevel,
+				authType: user.authType,
+				email: user.email,
 				gender: user.gender,
+				nfcCodes: user.nfcCodes,
 				shirtSize: user.shirtSize,
 			};
 			return plainToClass(User, temp);
@@ -64,11 +64,11 @@ export class UserResolver {
 			let userList: Object[] = [];
 			users.forEach(user => {
 				let temp = {
-					nfcCodes: user.nfcCodes,
-					email: user.email,
-					authType: user.authType,
 					authLevel: user.authLevel,
+					authType: user.authType,
+					email: user.email,
 					gender: user.gender,
+					nfcCodes: user.nfcCodes,
 					shirtSize: user.shirtSize,
 				};
 				userList.push(temp);

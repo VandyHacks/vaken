@@ -7,9 +7,9 @@ import SadFace from '../../assets/img/sad_face.svg?inline';
 const Rectangle = styled.div`
 	border: 0.1rem solid ${STRINGS.WARNING_COLOR};
 	border-radius: 1rem;
-    display: inline-block;
-    text-align: center;
-    color: ${STRINGS.WARNING_COLOR};
+	display: inline-block;
+	text-align: center;
+	color: ${STRINGS.WARNING_COLOR};
 	font-family: 'Roboto', sans-serif;
 	font-weight: 500;
 	font-size: 1.5rem;

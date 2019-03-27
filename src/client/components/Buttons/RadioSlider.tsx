@@ -13,8 +13,8 @@ interface Props {
 }
 
 interface SelectorProps {
-    width: string;
-    left: string;
+	width: string;
+	left: string;
 	color: string;
 }
 
@@ -25,10 +25,10 @@ interface WrapperProps {
 
 const Wrapper = styled('div')`
 	margin: auto;
-	height: ${(props: WrapperProps) => props.large ? '3.0rem' : '1.5rem'};
-	line-height: ${(props: WrapperProps) => props.large ? '3.0rem' : '1.5rem'};
+	height: ${(props: WrapperProps) => (props.large ? '3.0rem' : '1.5rem')};
+	line-height: ${(props: WrapperProps) => (props.large ? '3.0rem' : '1.5rem')};
 	border-radius: 0.25rem;
-	background: ${(props: WrapperProps) => !props.disable ? '#ccc;' : '#B0B0B0'};
+	background: ${(props: WrapperProps) => (!props.disable ? '#ccc;' : '#B0B0B0')};
 	position: relative;
 	display: block;
 	float: left;
@@ -59,10 +59,10 @@ const Selector = styled('div')`
 const disabledColor = '#696969';
 
 export const RadioSlider: FunctionComponent<Props> = (props: Props): JSX.Element => {
-    const [selected, setSelected] = useState(props.option2);
-    const [width, setWidth] = useState(0);
-    const [left, setLeft] = useState(0);
-    const [color, setColor] = useState(!props.disable ? STRINGS.ACCENT_COLOR : disabledColor);
+	const [selected, setSelected] = useState(props.option2);
+	const [width, setWidth] = useState(0);
+	const [left, setLeft] = useState(0);
+	const [color, setColor] = useState(!props.disable ? STRINGS.ACCENT_COLOR : disabledColor);
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [option1Width, setOption1Width] = useState(0);
 	const [option2Width, setOption2Width] = useState(0);
@@ -72,43 +72,42 @@ export const RadioSlider: FunctionComponent<Props> = (props: Props): JSX.Element
 		if (node !== null) {
 			setOption1Width(node.getBoundingClientRect().width);
 		}
-		}, []);
+	}, []);
 	const option2Ref = useCallback(node => {
 		if (node !== null) {
 			setOption2Width(node.getBoundingClientRect().width);
 		}
-		}, []);
+	}, []);
 	const option3Ref = useCallback(node => {
 		if (node !== null) {
 			setOption3Width(node.getBoundingClientRect().width);
 		}
-		}, []);
-
+	}, []);
 
 	const toggle = (input: string) => {
-		switch(input) {
-            case props.option1:
+		switch (input) {
+			case props.option1:
 				setWidth(option1Width);
 				setLeft(0);
 				setColor(!props.disable ? '#00C48C' : disabledColor);
-                break;
-            case props.option2:
+				break;
+			case props.option2:
 				setWidth(option2Width);
 				setLeft(option1Width);
 				setColor(!props.disable ? STRINGS.ACCENT_COLOR : disabledColor);
-                break;
-            case props.option3:
+				break;
+			case props.option3:
 				setWidth(option3Width);
 				setLeft(option1Width + option2Width);
 				setColor(!props.disable ? '#FF647C' : disabledColor);
-                break;
+				break;
 		}
 		setSelected(input);
 	};
-	
+
 	useEffect(() => {
 		toggle(props.value);
-        setIsLoaded(true);
+		setIsLoaded(true);
 	}, [props.value, props.disable, option1Width]);
 
 	const onClick = (event: any) => {
@@ -131,7 +130,11 @@ export const RadioSlider: FunctionComponent<Props> = (props: Props): JSX.Element
 			<Switch id={props.option3} onClick={onClick} ref={option3Ref}>
 				{props.option3}
 			</Switch>
-            {isLoaded && <Selector left={`${left}px`} width={`${width}px`} color={color}>{selected}</Selector>}
+			{isLoaded && (
+				<Selector left={`${left}px`} width={`${width}px`} color={color}>
+					{selected}
+				</Selector>
+			)}
 		</Wrapper>
 	);
 };

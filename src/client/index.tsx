@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom';
 import { createGlobalStyle } from 'styled-components';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import reset from 'styled-reset';
-import LoginPage from './routes/login/Login';
-import Frame from './routes/dashboard/Frame';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
+import LoginPage from './routes/login/Login';
+import Frame from './routes/dashboard/Frame';
 
 const GlobalStyle = createGlobalStyle`
 	body {
@@ -23,7 +23,6 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const client = new ApolloClient({ uri: 'http://localhost:8080/graphql' });
-
 
 const Vaken = (): JSX.Element => {
 	return (

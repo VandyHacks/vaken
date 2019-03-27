@@ -1,13 +1,13 @@
 import React from 'react';
-import HackerTable from './HackerTable';
-import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
+import { Link } from 'react-router-dom';
+import HackerTable from './HackerTable';
+import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { Spinner } from '../../components/Loading/Spinner';
 import ErrorMessage from '../../components/Text/ErrorMessage';
 import TextButton from '../../components/Buttons/TextButton';
 import STRINGS from '../../assets/strings.json';
-import { Link } from 'react-router-dom';
 
 const GET_HACKERS = gql`
 	query {

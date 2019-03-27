@@ -13,6 +13,10 @@ import {
 import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import Fuse from 'fuse.js';
+import Select from 'react-select';
+import { Mutation } from 'react-apollo';
+import { gql } from 'apollo-boost';
+import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
 import TableButton from '../../components/Buttons/TableButton';
 import ToggleSwitch from '../../components/Buttons/ToggleSwitch';
 import RadioSlider from '../../components/Buttons/RadioSlider';
@@ -22,12 +26,8 @@ import Checkmark from '../../components/Symbol/Checkmark';
 import SearchBox from '../../components/Input/SearchBox';
 import plane from '../../assets/img/plane.svg';
 import STRINGS from '../../assets/strings.json';
-import Select from 'react-select';
-import { Mutation } from 'react-apollo';
-import { gql } from 'apollo-boost';
 // TODO(alan): add d.ts file, most already defined here: https://github.com/valerybugakov/react-selectable-fast/blob/master/src/SelectableGroup.js
 // @ts-ignore
-import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
 import Row from './Row';
 import 'babel-polyfill';
 
@@ -161,13 +161,13 @@ const Actions = styled('div')`
 `;
 
 const columnOptions = [
-	{ value: 'firstName', label: 'First Name' },
-	{ value: 'lastName', label: 'Last Name' },
-	{ value: 'email', label: 'Email Address' },
-	{ value: 'school', label: 'School' },
-	{ value: 'gradYear', label: 'Graduation Year' },
-	{ value: 'status', label: 'Status' },
-	{ value: 'needsReimbursment', label: 'Reimbursement' },
+	{ label: 'First Name', value: 'firstName' },
+	{ label: 'Last Name', value: 'lastName' },
+	{ label: 'Email Address', value: 'email' },
+	{ label: 'School', value: 'school' },
+	{ label: 'Graduation Year', value: 'gradYear' },
+	{ label: 'Status', value: 'status' },
+	{ label: 'Reimbursement', value: 'needsReimbursment' },
 ];
 
 enum HackerStatus {
@@ -266,13 +266,13 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 
 	const opts = {
 		caseSensitive: true,
-		shouldSort: false,
-		tokenize: true,
-		threshold: 0.5,
 		distance: 100,
-		location: 0,
 		findAllMatches: true,
 		keys: selectedColumns.map((col: Option) => col.value) as (keyof Hacker)[],
+		location: 0,
+		shouldSort: false,
+		threshold: 0.5,
+		tokenize: true,
 	};
 
 	const generateRowClassName = ({ index }: { index: number }): string =>
@@ -315,8 +315,8 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 	): Promise<string> => {
 		const result = await mutation({
 			mutation: UPDATE_STATUS,
-			variables: variables,
 			refetchQueries: [{ query: GET_HACKERS }],
+			variables: variables,
 		});
 		return result.data.updateHackerStatus;
 	};
@@ -483,8 +483,8 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 						return (
 							<SelectableGroup
 								clickClassName="selected"
-								enableDeselect={true}
-								deselectOnEsc={true}
+								enableDeselect
+								deselectOnEsc
 								tolerance={0}
 								allowClickWithoutSelected={false}
 								duringSelection={() => console.log('duringSelection')}
@@ -496,7 +496,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									// console.log(keys);
 								}}
 								ignoreList={['.ignore-select']}
-								resetOnStart={true}>
+								resetOnStart>
 								<StyledTable
 									width={width}
 									height={height}
@@ -506,7 +506,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									rowClassName={generateRowClassName}
 									rowGetter={({ index }: { index: number }) => sortedData[index]}
 									rowRenderer={rowRenderer}
-									headerClassName={'ignore-select'}
+									headerClassName="ignore-select"
 									sortBy={sortBy}
 									sortDirection={sortDirection}
 									sort={sort}>
@@ -564,9 +564,9 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 											renderHeaderAsSVG(
 												{
 													dataKey: dataKey,
+													label: label,
 													sortBy: sortBy,
 													sortDirection: sortDirection,
-													label: label,
 												},
 												plane
 											)
@@ -594,9 +594,9 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 											option1="Accept"
 											option2="Undecided"
 											option3="Reject"
-											large={true}
+											large
 											value="Undecided"
-											disable={true}
+											disable
 										/>
 									</Float>
 								) : (

@@ -38,8 +38,8 @@ userRouter.post('/api/register/user', async ctx => {
 		//no user found, create new user
 		console.log('> Creating new local user.....');
 		const newUser = {
-			authType: 'local',
 			authLevel: 'Hacker',
+			authType: 'local',
 			email: ctx.request.body.email,
 			password: ctx.request.body.password,
 		};
@@ -94,7 +94,7 @@ userRouter.post('/api/login', ctx => {
 	return passport.authenticate('local', (err: any, user: any, info: any, status: any) => {
 		console.log('> Local auth');
 		if (user) {
-			ctx.body = { success: true, username: user.email, authLevel: user.authLevel };
+			ctx.body = { authLevel: user.authLevel, success: true, username: user.email };
 			ctx.login(user);
 			console.log('> User:');
 			console.log(ctx.state.user);
@@ -116,7 +116,7 @@ userRouter.get(
 userRouter.get('/api/auth/google/callback', async ctx => {
 	return passport.authenticate('google', (err: any, user: any, info: any, status: any) => {
 		if (user) {
-			ctx.body = { success: true, username: user.email, authLevel: user.authLevel };
+			ctx.body = { authLevel: user.authLevel, success: true, username: user.email };
 			ctx.login(user);
 			console.log('> User:');
 			console.log(ctx.state.user);
@@ -135,7 +135,7 @@ userRouter.get('/api/auth/github', passport.authenticate('github', { scope: ['us
 userRouter.get('/api/auth/github/callback', async ctx => {
 	return passport.authenticate('github', (err: any, user: any, info: any, status: any) => {
 		if (user) {
-			ctx.body = { success: true, username: user.email, authLevel: user.authLevel };
+			ctx.body = { authLevel: user.authLevel, success: true, username: user.email };
 			ctx.login(user);
 			console.log('> User:');
 			console.log(ctx.state.user);

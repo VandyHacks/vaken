@@ -71,8 +71,8 @@ passport.use(
 					//no user found, create new user
 					console.log('> Creating user.....');
 					const newUser = {
-						authType: 'google',
 						authLevel: 'Hacker',
+						authType: 'google',
 						email: profile.emails[0].value,
 						google: profile.id,
 						password: 'Google!123',
@@ -128,8 +128,8 @@ passport.use(
 					//no user found, create new user
 					console.log('> Creating user.....');
 					const newUser = {
-						authType: 'github',
 						authLevel: 'Hacker',
+						authType: 'github',
 						email: profile.emails[0].value,
 						github: profile.id,
 						password: 'Github!123',
