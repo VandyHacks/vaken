@@ -10,12 +10,12 @@ import { ApolloServer, gql } from 'apollo-server-koa';
 import { buildSchema } from 'type-graphql';
 
 import userRouter from './api/UserRouter';
-import { UserResolver } from './resolvers/UserResolver';
-import { HackerResolver } from './resolvers/HackerResolver';
-import { MentorResolver } from './resolvers/MentorResolver';
-import { OrganizerResolver } from './resolvers/OrganizerResolver';
-import { SponsorRepResolver } from './resolvers/SponsorRepResolver';
-import { SponsorResolver } from './resolvers/SponsorResolver';
+import UserResolver from './resolvers/UserResolver';
+import HackerResolver from './resolvers/HackerResolver';
+import MentorResolver from './resolvers/MentorResolver';
+import OrganizerResolver from './resolvers/OrganizerResolver';
+import SponsorRepResolver from './resolvers/SponsorRepResolver';
+import SponsorResolver from './resolvers/SponsorResolver';
 
 const app = new koa();
 const router = new koaRouter();
@@ -44,9 +44,11 @@ app.use(userRouter.routes());
 // Connect to mongo database
 mongoose.connect('mongodb://localhost:27017/test').then(
 	() => {
+		// eslint-disable-next-line no-console
 		console.log('>>> MongoDB Connected');
 	},
 	err => {
+		// eslint-disable-next-line no-console
 		console.log('err:', err);
 	}
 );
@@ -56,8 +58,9 @@ mongoose.connect('mongodb://localhost:27017/test').then(
 
 /**
  * Build a schema, configure an Apollo server, and connect Koa
+ * @returns {Promise<void>} no return
  */
-async function launchServer() {
+async function launchServer(): Promise<void> {
 	// build TypeGraphQL executable schema
 	const schema = await buildSchema({
 		resolvers: [
@@ -75,7 +78,6 @@ async function launchServer() {
 	// Create GraphQL server
 	const apollo = new ApolloServer({
 		playground: true,
-		// enable GraphQL Playground
 		schema,
 	});
 
@@ -83,6 +85,7 @@ async function launchServer() {
 
 	// Begin listening on the defined port
 	const server = app.listen(port, () => {
+		// eslint-disable-next-line no-console
 		console.log(`>>> Server started at http://localhost:${port}${apollo.graphqlPath}`);
 	});
 }
