@@ -2,9 +2,9 @@ import 'reflect-metadata';
 import { Field, ObjectType, InputType } from 'type-graphql';
 
 import { User } from './User';
-import { Ethnicity } from '../enums/Ethnicity';
-import { Race } from '../enums/Race';
-import { Status } from '../enums/Status';
+import Ethnicity from '../enums/Ethnicity';
+import Race from '../enums/Race';
+import Status from '../enums/Status';
 
 @ObjectType({ description: 'DTO for a Vaken hacker' })
 @InputType()

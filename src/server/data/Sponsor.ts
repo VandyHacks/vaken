@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { Field, ObjectType, InputType } from 'type-graphql';
 
 import { SponsorRep } from './SponsorRep';
-import { Tier } from '../enums/Tier';
+import Tier from '../enums/Tier';
 
 @ObjectType({ description: 'DTO for a Vaken sponsor' })
 @InputType()

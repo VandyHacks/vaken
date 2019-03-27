@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 import { Field, ObjectType, InputType } from 'type-graphql';
 
-import { AuthLevel } from '../enums/AuthLevel';
-import { ShirtSize } from '../enums/ShirtSize';
-import { Gender } from '../enums/Gender';
+import AuthLevel from '../enums/AuthLevel';
+import ShirtSize from '../enums/ShirtSize';
+import Gender from '../enums/Gender';
 
 @ObjectType({ description: 'DTO for a generic Vaken user' })
 @InputType()
