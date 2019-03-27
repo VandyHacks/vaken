@@ -6,7 +6,7 @@ import { Status } from '../enums/Status';
 import { hackerModel } from '../models/Hacker';
 
 @Resolver(of => Hacker)
-export class HackerResolver {
+class HackerResolver {
 	private readonly hackers: Hacker[] = createHackerSamples();
 
 	/**
@@ -173,3 +173,5 @@ let createHackerSamples = () => {
 		},
 	]);
 };
+
+export default HackerResolver;

@@ -4,4 +4,6 @@ import { plainToClass } from 'class-transformer';
 import { Sponsor } from '../data/Sponsor';
 
 @Resolver(of => Sponsor)
-export class SponsorResolver {}
+class SponsorResolver {}
+
+export default SponsorResolver;

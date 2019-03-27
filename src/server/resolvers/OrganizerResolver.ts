@@ -4,4 +4,6 @@ import { plainToClass } from 'class-transformer';
 import { Organizer } from '../data/Organizer';
 
 @Resolver(of => Organizer)
-export class OrganizerResolver {}
+class OrganizerResolver {}
+
+export default OrganizerResolver;

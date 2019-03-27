@@ -4,4 +4,6 @@ import { plainToClass } from 'class-transformer';
 import { Mentor } from '../data/Mentor';
 
 @Resolver(of => Mentor)
-export class MentorResolver {}
+class MentorResolver {}
+
+export default MentorResolver;
