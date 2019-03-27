@@ -1,30 +1,30 @@
-import { prop, arrayProp, Ref, Typegoose, ModelType, InstanceType } from 'typegoose';
+import { prop, arrayProp, Ref, Typegoose } from 'typegoose';
 import { SponsorRep } from './SponsorRep';
 
 class Sponsor extends Typegoose {
 	@prop({ unique: true })
-	name: string = '';
+	private name: string = '';
 
 	@arrayProp({ itemsRef: SponsorRep })
-	sponsorReps?: Ref<SponsorRep>[];
+	private sponsorReps?: Ref<SponsorRep>[];
 
 	@prop({ ref: SponsorRep })
-	leadRep?: Ref<SponsorRep>;
+	private leadRep?: Ref<SponsorRep>;
 
 	@prop()
-	tier?: string;
+	private tier?: string;
 
 	@prop()
-	givingWorkshop?: boolean;
+	private givingWorkshop?: boolean;
 
 	@prop()
-	givingLightningTalk?: boolean;
+	private givingLightningTalk?: boolean;
 
 	@prop()
-	workshopInfo?: string;
+	private workshopInfo?: string;
 
 	@prop()
-	lightningTalkInfo?: string;
+	private lightningTalkInfo?: string;
 }
 
 const sponsorModel = new Sponsor().getModelForClass(Sponsor);

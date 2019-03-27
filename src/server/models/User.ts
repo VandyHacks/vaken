@@ -1,7 +1,8 @@
-import { pre, prop, arrayProp, Typegoose, ModelType, InstanceType } from 'typegoose';
+import { pre, prop, arrayProp, Typegoose } from 'typegoose';
 import bcrypt from 'bcrypt';
 
 const saltRounds = 10;
+
 @pre<User>('save', function(next) {
 	const user = this;
 	if (!user.isModified('password')) {
@@ -22,44 +23,44 @@ const saltRounds = 10;
 })
 class User extends Typegoose {
 	@prop({ required: true })
-	email: string = '';
+	private email: string = '';
 
 	// not unique for now to make testing easier
 	@arrayProp({ items: String })
-	nfcCodes?: string[];
+	private nfcCodes?: string[];
 
 	@prop({ required: true })
-	password: string = '';
+	private password: string = '';
 
 	@prop()
-	firstName?: string;
+	private firstName?: string;
 
 	@prop()
-	lastName?: string;
+	private lastName?: string;
 
 	@prop({ sparse: true, unique: true })
-	google?: string;
+	private google?: string;
 
 	@prop({ sparse: true, unique: true })
-	github?: string;
+	private github?: string;
 
 	@prop({ required: true })
-	authType: string = 'None';
+	private authType: string = 'None';
 
 	@prop({ required: true })
-	authLevel: string = 'Hacker';
+	private authLevel: string = 'Hacker';
 
 	@prop()
-	phoneNumber?: string;
+	private phoneNumber?: string;
 
 	@prop()
-	gender?: string;
+	private gender?: string;
 
 	@prop()
-	shirtSize?: string;
+	private shirtSize?: string;
 
 	@prop()
-	dietaryRestrictions?: string;
+	private dietaryRestrictions?: string;
 }
 
 const userModel = new User().getModelForClass(User);

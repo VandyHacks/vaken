@@ -1,16 +1,16 @@
-import { prop, arrayProp, Ref, Typegoose } from 'typegoose';
+import { prop, arrayProp, Ref } from 'typegoose';
 import { User } from './User';
 import { Sponsor } from './Sponsor';
 
 class SponsorRep extends User {
 	@arrayProp({ itemsRef: Sponsor, required: true })
-	sponsors: Ref<Sponsor>[] = [];
+	private sponsors: Ref<Sponsor>[] = [];
 
 	@prop()
-	title?: string;
+	private title?: string;
 
 	@prop()
-	leadRep?: boolean;
+	private leadRep?: boolean;
 }
 
 const sponsorRepModel = new SponsorRep().getModelForClass(SponsorRep);

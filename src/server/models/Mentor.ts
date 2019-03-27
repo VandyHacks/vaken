@@ -1,12 +1,12 @@
-import { prop, arrayProp, Typegoose } from 'typegoose';
+import { arrayProp } from 'typegoose';
 import { User } from './User';
 
 class Mentor extends User {
 	@arrayProp({ items: String, required: true })
-	shifts?: string[];
+	private shifts?: string[];
 
 	@arrayProp({ items: String, required: true })
-	skills?: string[];
+	private skills?: string[];
 }
 
 const mentorModel = new Mentor().getModelForClass(Mentor);

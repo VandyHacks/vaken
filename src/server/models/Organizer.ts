@@ -1,4 +1,3 @@
-import { prop, Typegoose, ModelType, InstanceType } from 'typegoose';
 import { User } from './User';
 
 class Organizer extends User {}

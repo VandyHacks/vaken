@@ -4,58 +4,55 @@ import { Status } from '../enums/Status';
 
 class Hacker extends User {
 	@prop({ required: true })
-	status!: Status;
+	private status!: Status;
 
 	@prop()
-	school?: string;
+	private school?: string;
 
 	@prop()
-	gradYear?: string;
+	private gradYear?: string;
 
 	@arrayProp({ items: String })
-	ethnicity?: string[];
+	private ethnicity?: string[];
 
 	@arrayProp({ items: String })
-	majors?: string[];
+	private majors?: string[];
 
 	@prop()
-	adult?: boolean;
+	private adult?: boolean;
 
 	@prop()
-	firstHackathon?: boolean;
+	private firstHackathon?: boolean;
 
 	@prop()
-	volunteer?: boolean;
+	private volunteer?: boolean;
 
 	@prop()
-	github?: string;
+	private linkedin?: string;
 
 	@prop()
-	linkedin?: string;
+	private devpost?: string;
 
 	@prop()
-	devpost?: string;
-
-	@prop()
-	website?: string;
+	private website?: string;
 
 	@arrayProp({ items: String })
-	essays?: string[];
+	private essays?: string[];
 
 	@prop()
-	codeOfConduct?: boolean;
+	private codeOfConduct?: boolean;
 
 	@prop()
-	needsReimbursement?: boolean;
+	private needsReimbursement?: boolean;
 
 	@prop()
-	lightningTalk?: boolean;
+	private lightningTalk?: boolean;
 
 	@prop()
-	teamCode?: string;
+	private teamCode?: string;
 
 	@prop()
-	walkin?: boolean;
+	private walkin?: boolean;
 }
 
 const hackerModel = new Hacker().getModelForClass(Hacker);
