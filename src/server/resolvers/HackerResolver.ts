@@ -1,7 +1,7 @@
 import { Resolver, Query, Arg, Mutation } from 'type-graphql';
 import { plainToClass } from 'class-transformer';
 
-import { Hacker } from '../data/Hacker';
+import Hacker from '../data/Hacker';
 import Status from '../enums/Status';
 import { hackerModel } from '../models/Hacker';
 
