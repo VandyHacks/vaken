@@ -3,28 +3,28 @@ import { SponsorRep } from './SponsorRep';
 
 class Sponsor extends Typegoose {
 	@prop({ unique: true })
-	private name: string = '';
+	public name: string = '';
 
 	@arrayProp({ itemsRef: SponsorRep })
-	private sponsorReps?: Ref<SponsorRep>[];
+	public sponsorReps?: Ref<SponsorRep>[];
 
 	@prop({ ref: SponsorRep })
-	private leadRep?: Ref<SponsorRep>;
+	public leadRep?: Ref<SponsorRep>;
 
 	@prop()
-	private tier?: string;
+	public tier?: string;
 
 	@prop()
-	private givingWorkshop?: boolean;
+	public givingWorkshop?: boolean;
 
 	@prop()
-	private givingLightningTalk?: boolean;
+	public givingLightningTalk?: boolean;
 
 	@prop()
-	private workshopInfo?: string;
+	public workshopInfo?: string;
 
 	@prop()
-	private lightningTalkInfo?: string;
+	public lightningTalkInfo?: string;
 }
 
 const sponsorModel = new Sponsor().getModelForClass(Sponsor);

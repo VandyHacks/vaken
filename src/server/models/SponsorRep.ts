@@ -4,13 +4,13 @@ import { Sponsor } from './Sponsor';
 
 class SponsorRep extends User {
 	@arrayProp({ itemsRef: Sponsor, required: true })
-	private sponsors: Ref<Sponsor>[] = [];
+	public sponsors: Ref<Sponsor>[] = [];
 
 	@prop()
-	private title?: string;
+	public title?: string;
 
 	@prop()
-	private leadRep?: boolean;
+	public leadRep?: boolean;
 }
 
 const sponsorRepModel = new SponsorRep().getModelForClass(SponsorRep);

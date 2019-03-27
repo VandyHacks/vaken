@@ -23,44 +23,44 @@ const saltRounds = 10;
 })
 class User extends Typegoose {
 	@prop({ required: true })
-	private email: string = '';
+	public email: string = '';
 
 	// not unique for now to make testing easier
 	@arrayProp({ items: String })
-	private nfcCodes?: string[];
+	public nfcCodes?: string[];
 
 	@prop({ required: true })
-	private password: string = '';
+	public password: string = '';
 
 	@prop()
-	private firstName?: string;
+	public firstName?: string;
 
 	@prop()
-	private lastName?: string;
+	public lastName?: string;
 
 	@prop({ sparse: true, unique: true })
-	private google?: string;
+	public google?: string;
 
 	@prop({ sparse: true, unique: true })
-	private github?: string;
+	public github?: string;
 
 	@prop({ required: true })
-	private authType: string = 'None';
+	public authType: string = 'None';
 
 	@prop({ required: true })
-	private authLevel: string = 'Hacker';
+	public authLevel: string = 'Hacker';
 
 	@prop()
-	private phoneNumber?: string;
+	public phoneNumber?: string;
 
 	@prop()
-	private gender?: string;
+	public gender?: string;
 
 	@prop()
-	private shirtSize?: string;
+	public shirtSize?: string;
 
 	@prop()
-	private dietaryRestrictions?: string;
+	public dietaryRestrictions?: string;
 }
 
 const userModel = new User().getModelForClass(User);

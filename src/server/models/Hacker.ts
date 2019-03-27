@@ -1,58 +1,58 @@
 import { prop, arrayProp, Typegoose } from 'typegoose';
 import { User } from './User';
-import { Status } from '../enums/Status';
+import Status from '../enums/Status';
 
 class Hacker extends User {
 	@prop({ required: true })
-	private status!: Status;
+	public status!: Status;
 
 	@prop()
-	private school?: string;
+	public school?: string;
 
 	@prop()
-	private gradYear?: string;
+	public gradYear?: string;
 
 	@arrayProp({ items: String })
-	private ethnicity?: string[];
+	public ethnicity?: string[];
 
 	@arrayProp({ items: String })
-	private majors?: string[];
+	public majors?: string[];
 
 	@prop()
-	private adult?: boolean;
+	public adult?: boolean;
 
 	@prop()
-	private firstHackathon?: boolean;
+	public firstHackathon?: boolean;
 
 	@prop()
-	private volunteer?: boolean;
+	public volunteer?: boolean;
 
 	@prop()
-	private linkedin?: string;
+	public linkedin?: string;
 
 	@prop()
-	private devpost?: string;
+	public devpost?: string;
 
 	@prop()
-	private website?: string;
+	public website?: string;
 
 	@arrayProp({ items: String })
-	private essays?: string[];
+	public essays?: string[];
 
 	@prop()
-	private codeOfConduct?: boolean;
+	public codeOfConduct?: boolean;
 
 	@prop()
-	private needsReimbursement?: boolean;
+	public needsReimbursement?: boolean;
 
 	@prop()
-	private lightningTalk?: boolean;
+	public lightningTalk?: boolean;
 
 	@prop()
-	private teamCode?: string;
+	public teamCode?: string;
 
 	@prop()
-	private walkin?: boolean;
+	public walkin?: boolean;
 }
 
 const hackerModel = new Hacker().getModelForClass(Hacker);

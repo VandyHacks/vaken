@@ -3,10 +3,10 @@ import { User } from './User';
 
 class Mentor extends User {
 	@arrayProp({ items: String, required: true })
-	private shifts?: string[];
+	public shifts?: string[];
 
 	@arrayProp({ items: String, required: true })
-	private skills?: string[];
+	public skills?: string[];
 }
 
 const mentorModel = new Mentor().getModelForClass(Mentor);
