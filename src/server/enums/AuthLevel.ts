@@ -1,6 +1,6 @@
 import { registerEnumType } from 'type-graphql';
 
-export enum AuthLevel {
+enum AuthLevel {
 	HACKER = 'Hacker',
 	ORGANIZER = 'Organizer',
 	SPONSOR = 'Sponsor',
@@ -9,3 +9,5 @@ export enum AuthLevel {
 registerEnumType(AuthLevel, {
 	name: 'AuthLevel',
 });
+
+export default AuthLevel;

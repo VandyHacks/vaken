@@ -1,6 +1,6 @@
 import { registerEnumType } from 'type-graphql';
 
-export enum Status {
+enum Status {
 	Created = 'Created',
 	Verified = 'Verified',
 	Started = 'Started',
@@ -13,3 +13,5 @@ export enum Status {
 registerEnumType(Status, {
 	name: 'Status',
 });
+
+export default Status;

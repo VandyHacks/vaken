@@ -1,6 +1,6 @@
 import { registerEnumType } from 'type-graphql';
 
-export enum Ethnicity {
+enum Ethnicity {
 	HispanicOrLatino = 'Hispanic or Latino',
 	NotHispanicOrLatino = 'Not Hispanic or Latino',
 }
@@ -8,3 +8,5 @@ export enum Ethnicity {
 registerEnumType(Ethnicity, {
 	name: 'Ethnicity',
 });
+
+export default Ethnicity;

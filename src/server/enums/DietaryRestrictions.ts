@@ -1,6 +1,6 @@
 import { registerEnumType } from 'type-graphql';
 
-export enum DietaryRestrictions {
+enum DietaryRestrictions {
 	VEGETARIAN = 'Vegetarian',
 	VEGAN = 'Vegan',
 	NUTALLERGY = 'Nut Allergy',
@@ -13,3 +13,5 @@ export enum DietaryRestrictions {
 registerEnumType(DietaryRestrictions, {
 	name: 'DietaryRestrictions',
 });
+
+export default DietaryRestrictions;

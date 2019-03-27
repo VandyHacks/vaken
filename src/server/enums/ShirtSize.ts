@@ -1,6 +1,6 @@
 import { registerEnumType } from 'type-graphql';
 
-export enum ShirtSize {
+enum ShirtSize {
 	UXS = 'UXS',
 	US = 'US',
 	UM = 'UM',
@@ -17,3 +17,5 @@ export enum ShirtSize {
 registerEnumType(ShirtSize, {
 	name: 'ShirtSize',
 });
+
+export default ShirtSize;

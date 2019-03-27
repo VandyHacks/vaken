@@ -1,6 +1,6 @@
 import { registerEnumType } from 'type-graphql';
 
-export enum Tier {
+enum Tier {
 	Bronze = 'Bronze',
 	Silver = 'Silver',
 	Ruby = 'Ruby',
@@ -12,3 +12,5 @@ export enum Tier {
 registerEnumType(Tier, {
 	name: 'Tier',
 });
+
+export default Tier;
