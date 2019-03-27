@@ -20,7 +20,7 @@ export class UserResolver {
 	/**
 	 * Returns a User corresponding a an email address (unique)
 	 */
-	@Query(returns => User, { nullable: true })
+	@Query(() => User, { nullable: true })
 	async getUserByEmail(@Arg('email') email: string): Promise<User | undefined> {
 		const user = await userModel.findOne({ email: email });
 		if (!user) {
@@ -81,6 +81,7 @@ export class UserResolver {
 
 /**
  * Function to create dummy data
+ * @returns Array of User objects
  */
 let createUserSamples = () => {
 	return plainToClass(User, [

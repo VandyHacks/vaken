@@ -20,8 +20,8 @@ export class HackerResolver {
 			return undefined;
 		} else {
 			const temp = {
-				authType: hacker.authType,
 				authLevel: hacker.authLevel,
+				authType: hacker.authType,
 				email: hacker.email,
 				firstName: hacker.firstName,
 				gender: hacker.gender,
@@ -54,8 +54,8 @@ export class HackerResolver {
 			let hackerList: Object[] = [];
 			hackers.forEach(hacker => {
 				let temp = {
-					authType: hacker.authType,
 					authLevel: hacker.authLevel,
+					authType: hacker.authType,
 					email: hacker.email,
 					firstName: hacker.firstName,
 					gender: hacker.gender,
