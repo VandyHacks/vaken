@@ -12,58 +12,58 @@ export class Hacker extends User {
 	@Field()
 	public status: Status = Status.Created;
 
-	@Field()
-	public school!: string;
+	@Field({ nullable: true })
+	public school?: string;
 
-	@Field()
-	public gradYear!: string;
+	@Field({ nullable: true })
+	public gradYear?: string;
 
-	@Field()
-	public ethnicity!: Ethnicity;
+	@Field({ nullable: true })
+	public ethnicity?: Ethnicity;
 
-	@Field(type => [Race])
-	public race!: [Race];
+	@Field(type => [Race], { nullable: true })
+	public race?: [Race];
 
-	@Field(type => [String])
-	public majors!: [string];
+	@Field(type => [String], { nullable: true })
+	public majors?: [string];
 
-	@Field()
-	public adult!: boolean;
+	@Field({ nullable: true })
+	public adult?: boolean;
 
-	@Field()
-	public firstHackathon!: boolean;
+	@Field({ nullable: true })
+	public firstHackathon?: boolean;
 
-	@Field()
+	@Field({ nullable: true })
 	public volunteer?: boolean;
 
-	@Field()
+	@Field({ nullable: true })
 	public github?: string;
 
-	@Field()
+	@Field({ nullable: true })
 	public linkedin?: string;
 
-	@Field()
+	@Field({ nullable: true })
 	public devpost?: string;
 
-	@Field()
+	@Field({ nullable: true })
 	public website?: string;
 
-	@Field(type => [String])
+	@Field(type => [String], { nullable: true })
 	public essays?: [string];
 
-	@Field()
+	@Field({ nullable: true })
 	public codeOfConduct?: boolean;
 
-	@Field()
+	@Field({ nullable: true })
 	public needsReimbursement?: boolean;
 
-	@Field()
+	@Field({ nullable: true })
 	public lightningTalk?: boolean;
 
-	@Field()
+	@Field({ nullable: true })
 	public teamCode?: string;
 
-	@Field()
+	@Field({ nullable: true })
 	public walkin?: boolean;
 }
 

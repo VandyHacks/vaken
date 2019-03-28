@@ -42,16 +42,22 @@ app.use(router.routes());
 app.use(userRouter.routes());
 
 // Connect to mongo database
-mongoose.connect('mongodb://localhost:27017/test').then(
-	() => {
-		// eslint-disable-next-line no-console
-		console.log('>>> MongoDB Connected');
-	},
-	err => {
-		// eslint-disable-next-line no-console
-		console.log('err:', err);
-	}
-);
+mongoose
+	.connect('mongodb://localhost:27017/test', {
+		useNewUrlParser: true,
+		useCreateIndex: true,
+		useFindAndModify: false,
+	})
+	.then(
+		() => {
+			// eslint-disable-next-line no-console
+			console.log('>>> MongoDB Connected');
+		},
+		err => {
+			// eslint-disable-next-line no-console
+			console.log('err:', err);
+		}
+	);
 /*
  * Graph QL
  */

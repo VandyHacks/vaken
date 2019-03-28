@@ -43,7 +43,7 @@ userRouter.post('/api/register/user', async (ctx, next) => {
 		console.log('> Creating new local user.....');
 		const newUser = {
 			authLevel: 'Hacker',
-			authType: 'local',
+			authType: 'Local',
 			email: ctx.request.body.email,
 			password: ctx.request.body.password,
 		};
@@ -76,7 +76,7 @@ userRouter.post('/api/register/hacker', async (ctx, next) => {
 		//no user found, create new user
 		console.log('> Creating new local hacker.....');
 		const newHacker = ctx.request.body;
-		newHacker.authType = 'local';
+		newHacker.authType = 'Local';
 		newHacker.authLevel = 'Hacker';
 		newHacker.status = 'Created';
 		console.log(newHacker);
