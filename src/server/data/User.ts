@@ -15,16 +15,16 @@ export class User {
 	@Field(type => [String])
 	public nfcCodes!: [string];
 
-	@Field()
+	@Field({ nullable: true })
 	public firstName?: string;
 
-	@Field()
+	@Field({ nullable: true })
 	public lastName?: string;
 
-	@Field()
+	@Field({ nullable: true })
 	public google?: string;
 
-	@Field()
+	@Field({ nullable: true })
 	public github?: string;
 
 	@Field()
@@ -33,16 +33,16 @@ export class User {
 	@Field()
 	public authLevel!: AuthLevel;
 
-	@Field()
+	@Field({ nullable: true })
 	public phoneNumber?: string;
 
-	@Field()
+	@Field({ nullable: true })
 	public gender?: Gender;
 
-	@Field()
+	@Field({ nullable: true })
 	public shirtSize?: ShirtSize;
 
-	@Field()
+	@Field({ nullable: true })
 	public dietaryRestrictions?: string;
 }
 
