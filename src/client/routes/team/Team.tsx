@@ -1,35 +1,31 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
-import TextInput from '../../components/Input/TextInput';
+import React, { FunctionComponent } from 'react';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
-import SearchBox from '../../components/Input/SearchBox';
-import TextButton from '../../components/Buttons/TextButton';
-import STRINGS from '../../assets/strings.json';
-import ActionButton from '../../components/Buttons/ActionButton';
+import JoinTeam from './JoinTeam';
+import ViewTeam from './ViewTeam';
 import styled from 'styled-components';
+import { displayFlex } from '../../components/Containers/FlexContainers';
+import Announcment from '../../components/Text/Announcment';
 
 const Layout = styled.div`
-	flex-direction: column;
+	${displayFlex}
 `;
 
 interface Props {}
 
 export const Team: FunctionComponent<Props> = (props: Props): JSX.Element => {
-	const [searchValue, setSearchValue] = useState('');
+	const joined = false;
 
 	return (
-		<FloatingPopup borderRadius="1rem" height="100%" backgroundOpacity="1" padding="1.5rem">
-			<Layout>
-				<SearchBox
-					value={searchValue}
-					placeholder={'Find team'}
-					onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-						setSearchValue(event.target.value);
-						console.log(event.target.value);
-					}}
-				/>
-				<ActionButton>Join</ActionButton>
-			</Layout>
-		</FloatingPopup>
+		<Layout>
+			<Announcment
+				value={
+					'Create a new team or join an existing one for the weekend! Due to prize arrangments, the maximum number of hackers per team is 4. \n \nThere will also be opportunities at the event to form teams.'
+				}
+			/>
+			<FloatingPopup borderRadius="1rem" width="35rem" backgroundOpacity="1" padding="1.5rem">
+				{joined ? <ViewTeam /> : <JoinTeam />}
+			</FloatingPopup>
+		</Layout>
 	);
 };
 
