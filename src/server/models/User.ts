@@ -2,6 +2,8 @@ import { pre, prop, arrayProp, Typegoose } from 'typegoose';
 import bcrypt from 'bcrypt';
 import AuthType from '../enums/AuthType';
 import AuthLevel from '../enums/AuthLevel';
+import ShirtSize from '../enums/ShirtSize';
+import Gender from '../enums/Gender';
 
 const saltRounds = 10;
 
@@ -56,10 +58,10 @@ class User extends Typegoose {
 	public phoneNumber?: string;
 
 	@prop()
-	public gender?: string;
+	public gender?: Gender;
 
 	@prop()
-	public shirtSize?: string;
+	public shirtSize?: ShirtSize;
 
 	@prop()
 	public dietaryRestrictions?: string;

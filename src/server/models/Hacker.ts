@@ -1,5 +1,7 @@
 import { prop, arrayProp, Typegoose } from 'typegoose';
 import { User } from './User';
+import Ethnicity from '../enums/Ethnicity';
+import Race from '../enums/Race';
 import Status from '../enums/Status';
 
 class Hacker extends User {
@@ -12,8 +14,11 @@ class Hacker extends User {
 	@prop()
 	public gradYear?: string;
 
-	@arrayProp({ items: String })
-	public ethnicity?: string[];
+	@prop()
+	public ethnicity?: Ethnicity;
+
+	@arrayProp({ items: Race })
+	public race?: Race[];
 
 	@arrayProp({ items: String })
 	public majors?: string[];
