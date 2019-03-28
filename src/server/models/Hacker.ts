@@ -6,7 +6,7 @@ import Status from '../enums/Status';
 
 class Hacker extends User {
 	@prop({ required: true })
-	public status!: Status;
+	public status: Status = Status.Created;
 
 	@prop()
 	public school?: string;
@@ -31,6 +31,9 @@ class Hacker extends User {
 
 	@prop()
 	public volunteer?: boolean;
+
+	@prop()
+	public github?: string;
 
 	@prop()
 	public linkedin?: string;

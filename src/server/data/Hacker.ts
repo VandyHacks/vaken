@@ -13,25 +13,25 @@ export class Hacker extends User {
 	public status: Status = Status.Created;
 
 	@Field()
-	public school!: string;
+	public school?: string;
 
 	@Field()
-	public gradYear!: string;
+	public gradYear?: string;
 
 	@Field()
-	public ethnicity!: Ethnicity;
+	public ethnicity?: Ethnicity;
 
 	@Field(type => [Race])
-	public race!: [Race];
+	public race?: [Race];
 
 	@Field(type => [String])
-	public majors!: [string];
+	public majors?: [string];
 
 	@Field()
-	public adult!: boolean;
+	public adult?: boolean;
 
 	@Field()
-	public firstHackathon!: boolean;
+	public firstHackathon?: boolean;
 
 	@Field()
 	public volunteer?: boolean;

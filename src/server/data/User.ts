@@ -9,17 +9,17 @@ import Gender from '../enums/Gender';
 @ObjectType({ description: 'DTO for a generic Vaken user' })
 @InputType()
 export class User {
+	@Field()
+	public email!: string;
+
 	@Field(type => [String])
 	public nfcCodes!: [string];
 
 	@Field()
-	public firstName!: string;
+	public firstName?: string;
 
 	@Field()
-	public lastName!: string;
-
-	@Field()
-	public email!: string;
+	public lastName?: string;
 
 	@Field()
 	public google?: string;
@@ -34,13 +34,13 @@ export class User {
 	public authLevel!: AuthLevel;
 
 	@Field()
-	public phoneNumber!: string;
+	public phoneNumber?: string;
 
 	@Field()
-	public gender!: Gender;
+	public gender?: Gender;
 
 	@Field()
-	public shirtSize!: ShirtSize;
+	public shirtSize?: ShirtSize;
 
 	@Field()
 	public dietaryRestrictions?: string;
