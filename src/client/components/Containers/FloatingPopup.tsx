@@ -16,7 +16,7 @@ export interface Props extends ContainerProps {
 
 const FloatingPopup = styled(FlexStartColumn)`
 	transition: ease-in-out all 1s;
-	background-color: rgba(${(props: Props) => props.backgroundColor ? hexToRGB(props.backgroundColor) : '247, 245, 249'}, ${(props: Props) => props.backgroundOpacity});
+	background-color: rgba(${(props: Props) => props.backgroundColor ? hexToRGB(props.backgroundColor) : '247, 245, 249'}, ${(props: Props) => props.backgroundOpacity || '1'});
 	border-radius: ${(props: Props) => props.borderRadius || '2rem'};
 	padding: ${(props: Props) => props.padding || '1.5rem'};
 	margin-bottom: ${(props: Props) => props.marginBottom || 0};
