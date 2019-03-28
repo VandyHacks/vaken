@@ -24,7 +24,7 @@ passport.use(
 				done(null, false);
 			} else {
 				//found user
-				if (user.authType != 'local') {
+				if (user.authType != 'Local') {
 					console.log('Wrong auth provider. Please use the standard local login.');
 					done(null, false);
 				} else {
@@ -60,7 +60,7 @@ passport.use(
 
 				// found user
 				if (user) {
-					if (user.authType != 'google') {
+					if (user.authType != 'Google') {
 						console.log('Wrong auth provider. Please use Google.');
 						done(null, false);
 					} else {
@@ -72,7 +72,7 @@ passport.use(
 					console.log('> Creating user.....');
 					const newUser = {
 						authLevel: 'Hacker',
-						authType: 'google',
+						authType: 'Google',
 						email: profile.emails[0].value,
 						google: profile.id,
 						password: 'Google!123',
@@ -117,7 +117,7 @@ passport.use(
 
 				// found user
 				if (user) {
-					if (user.authType != 'github') {
+					if (user.authType != 'Github') {
 						console.log('Wrong auth provider. Please use Github.');
 						done(null, false);
 					} else {
@@ -129,7 +129,7 @@ passport.use(
 					console.log('> Creating user.....');
 					const newUser = {
 						authLevel: 'Hacker',
-						authType: 'github',
+						authType: 'Github',
 						email: profile.emails[0].value,
 						github: profile.id,
 						password: 'Github!123',

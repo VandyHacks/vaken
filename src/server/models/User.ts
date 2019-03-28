@@ -1,5 +1,7 @@
 import { pre, prop, arrayProp, Typegoose } from 'typegoose';
 import bcrypt from 'bcrypt';
+import AuthType from '../enums/AuthType';
+import AuthLevel from '../enums/AuthLevel';
 
 const saltRounds = 10;
 
@@ -45,10 +47,10 @@ class User extends Typegoose {
 	public github?: string;
 
 	@prop({ required: true })
-	public authType: string = 'None';
+	public authType!: AuthType;
 
 	@prop({ required: true })
-	public authLevel: string = 'Hacker';
+	public authLevel!: AuthLevel;
 
 	@prop()
 	public phoneNumber?: string;
