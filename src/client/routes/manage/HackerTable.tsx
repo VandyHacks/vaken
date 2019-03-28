@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, { FunctionComponent, useState, useEffect, useRef } from 'react';
 import {
 	Table,
 	Column,
@@ -28,7 +28,7 @@ import { gql } from 'apollo-boost';
 // TODO(alan): add d.ts file, most already defined here: https://github.com/valerybugakov/react-selectable-fast/blob/master/src/SelectableGroup.js
 // @ts-ignore
 import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
-import { Row } from './Row';
+import Row from './Row';
 import 'babel-polyfill';
 
 const UPDATE_STATUS = gql`
@@ -206,6 +206,14 @@ interface Props {
 	data: Hacker[];
 }
 
+interface DeselectElement extends HTMLDivElement {
+	context: {
+		selectable: {
+			clearSelection: () => void;
+		}
+	};
+}
+
 export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element => {
 	const [sortBy, setSortBy] = useState('');
 	const [sortDirection, setSortDirection] = useState<SortDirectionType>(SortDirection.ASC);
@@ -216,6 +224,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 	const [selectAll, setSelectAll] = useState(false);
 	const [hasSelection, setHasSelection] = useState(false);
 	const [selectedRowsEmails, setSelectedRowsEmails] = useState<string[]>([]);
+	const deselect = useRef<DeselectElement>(null);
 
 	const sortData = ({
 		sortBy,
@@ -226,7 +235,6 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		sortDirection: SortDirectionType;
 		update: boolean;
 	}) => {
-		console.log('sorting');
 		// sort alphanumerically
 		const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
 
@@ -254,11 +262,6 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		// setSortedData(props.data);
 	}, [props.data]);
 
-	// OLD
-	// useEffect(() => {
-	// 	sort({ sortBy, sortDirection });
-	// }, [sortedData.map(row => row.status)]);
-
 	useEffect(() => {
 		// add case for Regex?
 		onSearch(searchValue);
@@ -282,6 +285,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		tokenize: true,
 	};
 
+	// assigns the row names for styling and to prevent selection
 	const generateRowClassName = ({ index }: { index: number }): string => {
 		let className = index < 0 ? 'headerRow' : index % 2 === 0 ? 'evenRow' : 'oddRow';
 		if (className !== 'headerRow') {
@@ -290,10 +294,10 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 				className = className.concat(' ignore-select');
 			}
 		}
-		console.log(className);
 		return className;
 	};
 
+	// renders a text label with a clickable sort indicator
 	const renderHeaderAsLabel = ({
 		dataKey,
 		sortBy,
@@ -308,6 +312,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		);
 	};
 
+	// renders an svg instead of a text label, will with a clickable sort indicator
 	const renderHeaderAsSVG = (
 		{ dataKey, sortBy, sortDirection, label }: TableHeaderProps,
 		svg: string
@@ -324,6 +329,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		return <Checkmark value={cellData} />;
 	};
 
+	// mutation to update a single hacker status
 	// TODO(alan): remove any type
 	const updateHackerStatus = async (
 		mutation: any,
@@ -337,6 +343,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		return result.data.updateHackerStatus;
 	};
 
+	// maps the radio slider labels to the hacker status
 	const processSliderInput = (input: string) => {
 		switch (input.toLowerCase()) {
 			case 'accept':
@@ -349,7 +356,8 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		}
 	};
 
-	const actionRenderer = ({ rowData, rowIndex }: TableCellProps) => {
+	// action column that contains the actionable buttons
+	const actionRenderer = ({ rowData }: TableCellProps) => {
 		// TODO(alan): extract onChange to own method
 		const status = rowData.status.toLowerCase();
 		return (
@@ -388,6 +396,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		return <Row {...props} />;
 	};
 
+	// mapping from status labels to the colored label images
 	const statusRenderer = ({ cellData }: TableCellProps) => {
 		const generateColor = (value: HackerStatus) => {
 			switch (value.toLowerCase()) {
@@ -409,7 +418,6 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 					return STRINGS.ACCENT_COLOR;
 			}
 		};
-
 		return <Status value={cellData} generateColor={generateColor} />;
 	};
 
@@ -427,6 +435,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		setSortedData(sortedData);
 	};
 
+	// handles the text or regex search and sets the sortedData state with the updated row list
 	const onSearch = (value: string) => {
 		if (value !== '') {
 			if (!useRegex) {
@@ -462,8 +471,12 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		setSearchValue(value);
 	};
 
+	// floating button that onClick toggles between selecting all or none of the rows
 	const SelectAllButton = (
-		<FloatingButton onClick={() => setSelectAll(!selectAll)}>
+		<FloatingButton
+			onClick={() => {
+				setSelectAll(!selectAll);
+			}}>
 			{selectAll || hasSelection ? 'Deselect All' : 'Select All'}
 		</FloatingButton>
 	);
@@ -506,7 +519,6 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 								deselectOnEsc
 								tolerance={0}
 								allowClickWithoutSelected={false}
-								duringSelection={() => console.log('duringSelection')}
 								onSelectionClear={() => {
 									setHasSelection(false);
 									setSelectedRowsEmails([]);
@@ -516,7 +528,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 										setHasSelection(true);
 										setSelectedRowsEmails(keys.map((key: JSX.Element) => key.props.rowData.email));
 									}
-									console.log(keys.map((key: JSX.Element) => key.props.rowData.email));
+									// console.log(keys.map((key: JSX.Element) => key.props.rowData.email));
 								}}
 								ignoreList={['.ignore-select']}
 								resetOnStart>
@@ -607,26 +619,36 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									/>
 								</StyledTable>
 								{selectAll || hasSelection ? (
-									<DeselectAll>{SelectAllButton}</DeselectAll>
+									<DeselectAll ref={deselect}>{SelectAllButton}</DeselectAll>
 								) : (
 									<SelectAll>{SelectAllButton}</SelectAll>
 								)}
-								{hasSelection ? (
-									<Float className="ignore-select">
-										<RadioSlider
-											option1="Accept"
-											option2="Undecided"
-											option3="Reject"
-											large
-											value="Undecided"
-											disable={true}
-											onChange={(input: string) => {
-												let newStatus = processSliderInput(input);
-											}}
-										/>
-									</Float>
-								) : (
-									undefined
+								{hasSelection && (
+									<Mutation mutation={UPDATE_STATUS_AS_BATCH}>
+										{mutation => (
+											<Float className="ignore-select">
+												<RadioSlider
+													option1="Accept"
+													option2="Undecided"
+													option3="Reject"
+													large={true}
+													value="Undecided"
+													onChange={(input: string) => {
+														let newStatus = processSliderInput(input);
+														mutation({
+															variables: { emails: selectedRowsEmails, status: newStatus },
+															refetchQueries: [{ query: GET_HACKERS }],
+														});
+														// to deselect afterwards, react-selectable-fast has no clean way to interface with a clearSelection function
+														// so this is a workaround by simulating a click on the SelectAllButton
+														if (sortBy === "status" && deselect && deselect.current && deselect.current.context && deselect.current.context.selectable) {
+															deselect.current.context.selectable.clearSelection();
+														}
+													}}
+												/>
+											</Float>
+										)}
+									</Mutation>
 								)}
 							</SelectableGroup>
 						);

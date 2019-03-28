@@ -11,7 +11,6 @@ interface Props extends TableRowProps {
 }
 
 export const Row: FunctionComponent<Props> = (props: Props): JSX.Element => {
-	// console.log(props.columns)
 	return (
 		<div
 			key={props.columns[2].props.title}

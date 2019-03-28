@@ -11,7 +11,7 @@ export const AuthLevel = {
 	SPONSOR: 'sponsor',
 };
 
-export const currentAuth = AuthLevel.HACKER;
+export const currentAuth = AuthLevel.ORGANIZER;
 
 export const routes = [
 	{

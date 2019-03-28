@@ -24,6 +24,7 @@ interface WrapperProps {
 }
 
 const Wrapper = styled('div')`
+	cursor: pointer;
 	margin: auto;
 	height: ${(props: WrapperProps) => (props.large ? '3.0rem' : '1.5rem')};
 	line-height: ${(props: WrapperProps) => (props.large ? '3.0rem' : '1.5rem')};
@@ -67,8 +68,8 @@ export const RadioSlider: FunctionComponent<Props> = (props: Props): JSX.Element
 	const [option1Width, setOption1Width] = useState(0);
 	const [option2Width, setOption2Width] = useState(0);
 	const [option3Width, setOption3Width] = useState(0);
-	const [useAnimation, setUseAnimation] = useState(false);
 
+	// Defines the width after the node as been loaded in the Node
 	const option1Ref = useCallback(node => {
 		if (node !== null) {
 			setOption1Width(node.getBoundingClientRect().width);
@@ -85,6 +86,8 @@ export const RadioSlider: FunctionComponent<Props> = (props: Props): JSX.Element
 		}
 	}, []);
 
+	// Moves the selector to the correct place, with the correct colors
+	// Takes into account the disable state
 	const toggle = (input: string) => {
 		switch (input) {
 			case props.option1:
@@ -106,6 +109,14 @@ export const RadioSlider: FunctionComponent<Props> = (props: Props): JSX.Element
 		setSelected(input);
 	};
 
+	// Forces a retoggle when the props.value changes (ie for outside changes)
+	useEffect(() => {
+		if (isLoaded) {
+			toggle(props.value);
+		}
+	}, [props.value]);
+
+	// Will set isLoaded = true once the widths are successfully taken (ie non-zero) from the switch elements
 	useEffect(() => {
 		if (isLoaded === false && option1Width && option2Width && option3Width) {
 			toggle(props.value);
@@ -122,6 +133,7 @@ export const RadioSlider: FunctionComponent<Props> = (props: Props): JSX.Element
 		}
 	};
 
+	// Selector's onClick works to allow you to click the middle button if it is already selected by default for the large button
 	return (
 		<Wrapper large={props.large || false} disable={props.disable || false}>
 			<Switch id={props.option1} onClick={onClick} ref={option1Ref}>
@@ -134,7 +146,12 @@ export const RadioSlider: FunctionComponent<Props> = (props: Props): JSX.Element
 				{props.option3}
 			</Switch>
 			{isLoaded && (
-				<Selector left={`${left}px`} width={`${width}px`} color={color}>
+				<Selector
+					left={`${left}px`}
+					width={`${width}px`}
+					color={color}
+					id={selected}
+					onClick={(event: React.MouseEvent<HTMLDivElement, MouseEvent>) => props.large && onClick(event)}>
 					{selected}
 				</Selector>
 			)}
