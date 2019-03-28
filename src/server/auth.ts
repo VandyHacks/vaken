@@ -74,7 +74,7 @@ passport.use(
 						authLevel: 'Hacker',
 						authType: 'Google',
 						email: profile.emails[0].value,
-						google: profile.id,
+						googleId: profile.id,
 						password: 'Google!123',
 					};
 					const createdUser = await userModel.create(newUser);
@@ -131,7 +131,7 @@ passport.use(
 						authLevel: 'Hacker',
 						authType: 'Github',
 						email: profile.emails[0].value,
-						github: profile.id,
+						githubId: profile.id,
 						password: 'Github!123',
 					};
 					const createdUser = await userModel.create(newUser);

@@ -22,10 +22,10 @@ export class User {
 	public lastName?: string;
 
 	@Field({ nullable: true })
-	public google?: string;
+	public googleId?: string;
 
 	@Field({ nullable: true })
-	public github?: string;
+	public githubId?: string;
 
 	@Field()
 	public authType!: AuthType;
