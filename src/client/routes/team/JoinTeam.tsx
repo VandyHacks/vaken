@@ -29,7 +29,6 @@ export const JoinTeam: FunctionComponent<Props> = (props: Props): JSX.Element =>
 					placeholder={'Find team'}
 					onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
 						setSearchValue(event.target.value);
-						// console.log(event.target.value);
 					}}
 					minWidth="26rem"
 					width="26rem"

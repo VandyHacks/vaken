@@ -5,6 +5,7 @@ import ViewTeam from './ViewTeam';
 import styled from 'styled-components';
 import { displayFlex } from '../../components/Containers/FlexContainers';
 import Announcment from '../../components/Text/Announcment';
+import STRINGS from '../../assets/strings.json';
 
 const Layout = styled.div`
 	${displayFlex}
@@ -18,9 +19,7 @@ export const Team: FunctionComponent<Props> = (props: Props): JSX.Element => {
 	return (
 		<Layout>
 			<Announcment
-				value={
-					'Create a new team or join an existing one for the weekend! Due to prize arrangments, the maximum number of hackers per team is 4.\n\n There will also be opportunities at the event to form teams.'
-				}
+				value={STRINGS.HACKER_TEAMS_ANNOUNCMENT_TEXT}
 			/>
 			<FloatingPopup borderRadius="1rem" width="35rem" backgroundOpacity="1" padding="1.5rem">
 				{joined ? <ViewTeam /> : <JoinTeam />}

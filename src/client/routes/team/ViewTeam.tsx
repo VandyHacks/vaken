@@ -7,8 +7,6 @@ import SmallCenteredText from '../../components/Text/SmallCenteredText';
 import TextButton from '../../components/Buttons/TextButton';
 import styled from 'styled-components';
 
-const teamName = "Harsh Gang"
-
 interface ButtonProps {
 	background?: string;
 }
@@ -22,12 +20,14 @@ const Status = styled.div`
 interface Props {}
 
 export const ViewTeam: FunctionComponent<Props> = (props: Props): JSX.Element => {
+    const teamName = "Team Rocket"
+
 	return (
 		<FlexColumn>
 			<Title fontSize="1.3rem" color={STRINGS.DARK_TEXT_COLOR} margin="0.5rem">You have joined:</Title>
-			<Status background="#D0C9D6">
+			<Status background={STRINGS.LIGHT_TEXT_COLOR}>
 				<CenterButtonText color={STRINGS.DARK_TEXT_COLOR} fontWeight="bold" fontSize="1.8rem">
-					Team Rocket
+					{teamName}
 				</CenterButtonText>
 			</Status>
 			<TextButton
@@ -38,7 +38,7 @@ export const ViewTeam: FunctionComponent<Props> = (props: Props): JSX.Element =>
 				glowColor="rgba(0, 0, 255, 0.67)"
 			/>
 			<SmallCenteredText color={STRINGS.DARK_TEXT_COLOR} fontSize="1rem" margin="0rem">
-				You can join and leave a team at any time.
+				{STRINGS.HACKER_TEAMS_FOOTER_TEXT}
 			</SmallCenteredText>
 		</FlexColumn>
 	);
