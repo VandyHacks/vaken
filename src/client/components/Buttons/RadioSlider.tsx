@@ -67,6 +67,7 @@ export const RadioSlider: FunctionComponent<Props> = (props: Props): JSX.Element
 	const [option1Width, setOption1Width] = useState(0);
 	const [option2Width, setOption2Width] = useState(0);
 	const [option3Width, setOption3Width] = useState(0);
+	const [useAnimation, setUseAnimation] = useState(false);
 
 	const option1Ref = useCallback(node => {
 		if (node !== null) {
@@ -106,9 +107,11 @@ export const RadioSlider: FunctionComponent<Props> = (props: Props): JSX.Element
 	};
 
 	useEffect(() => {
-		toggle(props.value);
-		setIsLoaded(true);
-	}, [props.value, props.disable, option1Width]);
+		if (isLoaded === false && option1Width && option2Width && option3Width) {
+			toggle(props.value);
+			setIsLoaded(true);
+		}
+	}, [option1Width]);
 
 	const onClick = (event: any) => {
 		if (!props.disable) {

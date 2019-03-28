@@ -13,10 +13,6 @@ import {
 import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import Fuse from 'fuse.js';
-import Select from 'react-select';
-import { Mutation } from 'react-apollo';
-import { gql } from 'apollo-boost';
-import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
 import TableButton from '../../components/Buttons/TableButton';
 import ToggleSwitch from '../../components/Buttons/ToggleSwitch';
 import RadioSlider from '../../components/Buttons/RadioSlider';
@@ -26,14 +22,24 @@ import Checkmark from '../../components/Symbol/Checkmark';
 import SearchBox from '../../components/Input/SearchBox';
 import plane from '../../assets/img/plane.svg';
 import STRINGS from '../../assets/strings.json';
+import Select from 'react-select';
+import { Mutation } from 'react-apollo';
+import { gql } from 'apollo-boost';
 // TODO(alan): add d.ts file, most already defined here: https://github.com/valerybugakov/react-selectable-fast/blob/master/src/SelectableGroup.js
 // @ts-ignore
-import Row from './Row';
+import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
+import { Row } from './Row';
 import 'babel-polyfill';
 
 const UPDATE_STATUS = gql`
 	mutation UpdateHackerStatus($email: String!, $status: String!) {
 		updateHackerStatus(email: $email, newStatus: $status)
+	}
+`;
+
+const UPDATE_STATUS_AS_BATCH = gql`
+	mutation UpdateHackerStatusAsBatch($emails: [String!]!, $status: String!) {
+		updateHackerStatusAsBatch(emails: $emails, newStatus: $status)
 	}
 `;
 
@@ -209,6 +215,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 	const [selectedColumns, setSelectedColumns] = useState<Option[]>([columnOptions[0]]);
 	const [selectAll, setSelectAll] = useState(false);
 	const [hasSelection, setHasSelection] = useState(false);
+	const [selectedRowsEmails, setSelectedRowsEmails] = useState<string[]>([]);
 
 	const sortData = ({
 		sortBy,
@@ -275,8 +282,17 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		tokenize: true,
 	};
 
-	const generateRowClassName = ({ index }: { index: number }): string =>
-		index < 0 ? 'headerRow' : index % 2 === 0 ? 'evenRow' : 'oddRow';
+	const generateRowClassName = ({ index }: { index: number }): string => {
+		let className = index < 0 ? 'headerRow' : index % 2 === 0 ? 'evenRow' : 'oddRow';
+		if (className !== 'headerRow') {
+			const status = sortedData[index].status;
+			if (status !== 'Submitted' && status !== 'Accepted' && status !== 'Rejected') {
+				className = className.concat(' ignore-select');
+			}
+		}
+		console.log(className);
+		return className;
+	};
 
 	const renderHeaderAsLabel = ({
 		dataKey,
@@ -321,6 +337,18 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		return result.data.updateHackerStatus;
 	};
 
+	const processSliderInput = (input: string) => {
+		switch (input.toLowerCase()) {
+			case 'accept':
+				return 'Accepted';
+			case 'reject':
+				return 'Rejected';
+			case 'undecided':
+			default:
+				return 'Submitted';
+		}
+	};
+
 	const actionRenderer = ({ rowData, rowIndex }: TableCellProps) => {
 		// TODO(alan): extract onChange to own method
 		const status = rowData.status.toLowerCase();
@@ -336,24 +364,13 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 								status === 'accepted' ? 'Accept' : status === 'rejected' ? 'Reject' : 'Undecided'
 							}
 							onChange={(input: string) => {
-								let newStatus: string;
-								switch (input.toLowerCase()) {
-									case 'accept':
-										newStatus = 'Accepted';
-										break;
-									case 'reject':
-										newStatus = 'Rejected';
-										break;
-									case 'undecided':
-									default:
-										newStatus = 'Submitted';
-								}
+								let newStatus = processSliderInput(input);
 								updateHackerStatus(mutation, {
 									email: rowData.email as string,
 									status: newStatus,
 								}).then((updatedStatus: string) => {
 									console.log(updatedStatus);
-									rowData.status = updatedStatus;
+									// rowData.status = updatedStatus;
 								});
 							}}
 							disable={status !== 'accepted' && status !== 'rejected' && status !== 'submitted'}
@@ -365,7 +382,9 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		);
 	};
 
-	const rowRenderer = (props: TableRowProps) => {
+	const rowRenderer = (
+		props: TableRowProps & { selectableRef: any; selecting: boolean; selected: boolean }
+	) => {
 		return <Row {...props} />;
 	};
 
@@ -488,12 +507,16 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 								tolerance={0}
 								allowClickWithoutSelected={false}
 								duringSelection={() => console.log('duringSelection')}
-								onSelectionClear={() => setHasSelection(false)}
-								onSelectionFinish={(keys: string[]) => {
+								onSelectionClear={() => {
+									setHasSelection(false);
+									setSelectedRowsEmails([]);
+								}}
+								onSelectionFinish={(keys: [JSX.Element]) => {
 									if (keys.length > 0) {
 										setHasSelection(true);
+										setSelectedRowsEmails(keys.map((key: JSX.Element) => key.props.rowData.email));
 									}
-									// console.log(keys);
+									console.log(keys.map((key: JSX.Element) => key.props.rowData.email));
 								}}
 								ignoreList={['.ignore-select']}
 								resetOnStart>
@@ -596,7 +619,10 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 											option3="Reject"
 											large
 											value="Undecided"
-											disable
+											disable={true}
+											onChange={(input: string) => {
+												let newStatus = processSliderInput(input);
+											}}
 										/>
 									</Float>
 								) : (
