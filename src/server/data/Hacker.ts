@@ -8,7 +8,7 @@ import Status from '../enums/Status';
 
 @ObjectType({ description: 'DTO for a Vaken hacker' })
 @InputType()
-class Hacker extends User {
+export class Hacker extends User {
 	@Field()
 	public status: Status = Status.Created;
 

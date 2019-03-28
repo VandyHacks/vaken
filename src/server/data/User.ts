@@ -7,7 +7,7 @@ import Gender from '../enums/Gender';
 
 @ObjectType({ description: 'DTO for a generic Vaken user' })
 @InputType()
-class User {
+export class User {
 	@Field(type => [String])
 	public nfcCodes!: [string];
 
