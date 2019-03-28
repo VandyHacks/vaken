@@ -9,7 +9,8 @@ import Background from '../../components/Containers/Background';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import Title from '../../components/Text/Title';
 
-const LoginPage = (): JSX.Element => {
+const LoginPage: React.FunctionComponent = (): JSX.Element => {
+
 	return (
 		<>
 			<Background img={bg}>

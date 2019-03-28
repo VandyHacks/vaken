@@ -1,10 +1,11 @@
-import React, { Suspense, FunctionComponent } from 'react';
+import React, { Suspense, FunctionComponent, useContext } from 'react';
 import styled from 'styled-components';
 import { Switch, Route } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import STRINGS from '../../assets/strings.json';
 import Title from '../../components/Text/Title';
 import { routes, currentAuth } from '../../assets/routes';
+import { AuthContext } from '../../contexts/AuthContext';
 
 const OrganizerDash = React.lazy(() => import('./OrganizerDash'));
 
@@ -39,6 +40,8 @@ const Rectangle = styled.div`
 `;
 
 const Frame: FunctionComponent<{}> = (): JSX.Element => {
+	const currentUser = useContext(AuthContext);
+
 	return (
 		<>
 			<Layout>
@@ -46,7 +49,7 @@ const Frame: FunctionComponent<{}> = (): JSX.Element => {
 					<Title color={STRINGS.ACCENT_COLOR} margin="1.5rem 0rem 0rem">
 						<Switch>
 							{routes.map(route => {
-								return route.authLevel.includes(currentAuth) ? (
+								return route.authLevel.includes(currentUser.authLevel) ? (
 									<Route key={route.path} path={route.path} render={() => route.displayText} />
 								) : null;
 							})}
@@ -59,7 +62,7 @@ const Frame: FunctionComponent<{}> = (): JSX.Element => {
 					<Suspense fallback={<div>Loading...</div>}>
 						<Switch>
 							{routes.map(route => {
-								return route.authLevel.includes(currentAuth) ? (
+								return route.authLevel.includes(currentUser.authLevel) ? (
 									<Route key={route.path} path={route.path} component={() => <route.component />} />
 								) : null;
 							})}

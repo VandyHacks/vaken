@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import styled from 'styled-components';
 import { NavLink as UglyNavLink, withRouter } from 'react-router-dom';
 import produce from 'immer';
@@ -9,6 +9,7 @@ import NavButton from '../Buttons/NavButton';
 import { FlexStartColumn, SpaceBetweenColumn, FlexEndColumn } from '../Containers/FlexContainers';
 import SmallCenteredText from '../Text/SmallCenteredText';
 import { currentAuth, AuthLevel, routes } from '../../assets/routes';
+import AuthContext from '../../contexts/AuthContext';
 
 interface Props {}
 
@@ -106,7 +107,7 @@ const ColumnWithSeparators = styled.ul`
 
 const Sidebar = withRouter(
 	(props: Props): JSX.Element => {
-		const userLevel = AuthLevel.ORGANIZER; // TODO: FIXME not actual user
+		const currentUser = useContext(AuthContext);
 		return (
 			<Layout>
 				<Background>
@@ -117,7 +118,7 @@ const Sidebar = withRouter(
 					<SpaceBetweenColumn height="calc(100% - calc(8rem + 160px))">
 						<ColumnWithSeparators>
 							{routes.map((route: Route) => {
-								return route.authLevel.includes(currentAuth) ? (
+								return route.authLevel.includes(currentUser.authLevel) ? (
 									<li key={route.path}>
 										<NavLink to={route.path} activeClassName="active">
 											<NavButtonWhiteText text={route.displayText} />

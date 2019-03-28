@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { createGlobalStyle } from 'styled-components';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
@@ -7,6 +7,8 @@ import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import LoginPage from './routes/login/Login';
 import Frame from './routes/dashboard/Frame';
+import AuthContext from './contexts/AuthContext';
+import { User } from '../common/models/User';
 
 const GlobalStyle = createGlobalStyle`
 	body {
@@ -24,15 +26,37 @@ const GlobalStyle = createGlobalStyle`
 
 const client = new ApolloClient({ uri: 'http://localhost:8080/graphql' });
 
-const Vaken = (): JSX.Element => {
+const Vaken: React.FunctionComponent = (): JSX.Element => {
+	const [loggedIn, setLoggedIn] = useState();
+	const [ready, setReady] = useState();
+	const [user, setUser] = useState(new User());
+
+	useEffect(() => {
+		fetch('/api/whoami').then(res => {
+			if (res.status === 200) {
+				res.json().then(body => {
+					setUser(body);
+					setLoggedIn(true);
+					console.log(body);
+				});
+			}
+			setReady(true);
+		});
+	}, [loggedIn]);
+
 	return (
 		<ApolloProvider client={client}>
 			<GlobalStyle />
 			<BrowserRouter>
-				<Switch>
-					<Route path="/login" component={LoginPage} />
-					<Route path="/" component={Frame} />
-				</Switch>
+				{ready ? (
+					loggedIn ? (
+						<AuthContext.Provider value={user}>
+							<Frame />
+						</AuthContext.Provider>
+					) : (
+						<LoginPage />
+					)
+				) : null}
 			</BrowserRouter>
 		</ApolloProvider>
 	);
