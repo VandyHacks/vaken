@@ -1,8 +1,5 @@
 import { Resolver, Query, Arg, Mutation } from 'type-graphql';
 
-import { User } from '../data/User';
-import { Team } from '../data/Team';
-
 import { teamModel } from '../models/Team';
 import { hackerModel } from '../models/Hacker';
 
