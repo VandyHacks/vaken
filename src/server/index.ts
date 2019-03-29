@@ -16,6 +16,7 @@ import MentorResolver from './resolvers/MentorResolver';
 import OrganizerResolver from './resolvers/OrganizerResolver';
 import SponsorRepResolver from './resolvers/SponsorRepResolver';
 import SponsorResolver from './resolvers/SponsorResolver';
+import TeamResolver from './resolvers/TeamResolver';
 
 const app = new koa();
 const router = new koaRouter();
@@ -75,6 +76,7 @@ async function launchServer(): Promise<void> {
 			OrganizerResolver,
 			SponsorRepResolver,
 			SponsorResolver,
+			TeamResolver,
 			UserResolver,
 		],
 		// automatically create `schema.gql` file with schema definition in current folder
