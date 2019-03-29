@@ -15,10 +15,11 @@ export interface Props {
 	list?: string;
 	fontSize?: string;
 	pattern?: string;
+	background?: string;
 }
 
 export const Input = styled.input`
-	background: transparent;
+	background: ${({ background }: Props) => background || 'transparent'};
 	padding: 0.75rem;
 	width: 17rem;
 	border: none;

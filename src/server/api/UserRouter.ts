@@ -121,6 +121,14 @@ userRouter.post('/api/register/hacker', async (ctx, next) => {
 	}
 });
 
+userRouter.get('/api/auth/status', async ctx => {
+	if (ctx.isAuthenticated()) {
+		ctx.body = { authLevel: 'hacker', success: true, username: 'ml@ml.co' };
+	} else {
+		ctx.throw(401);
+	}
+});
+
 // Login to local account
 userRouter.post('/api/login', async (ctx, next) => {
 	return passport.authenticate('local', async (err: any, user: any, info: any, status: any) => {

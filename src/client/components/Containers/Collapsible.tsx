@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import React, { FunctionComponent } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import ResizeObserver from 'resize-observer-polyfill';
 import { FlexStartColumn, ContainerProps } from './FlexContainers';
 
 export interface Props extends ContainerProps {
@@ -9,6 +10,14 @@ export interface Props extends ContainerProps {
 	active: string;
 	onClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
+
+export const useMeasure = (): any => {
+	const ref = useRef<any>();
+	const [bounds, set] = useState({ height: 0, left: 0, top: 0, width: 0 });
+	const [ro] = useState(() => new ResizeObserver(([entry]: any) => set(entry.contentRect)));
+	useEffect(() => (ro.observe(ref.current), ro.disconnect), []);
+	return [{ ref }, bounds];
+};
 
 const FloatingPopup = styled(FlexStartColumn)`
 	transition: ease-in-out all 1s;

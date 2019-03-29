@@ -7,10 +7,11 @@ interface ButtonTextProps {
 	fontWeight?: string;
 }
 
-interface ButtonProps {
+export interface ButtonProps {
 	glowColor?: string;
 	background?: string;
 	invalid?: boolean;
+	width?: string;
 }
 
 export const CenterButtonText = styled.div`
@@ -43,7 +44,7 @@ export const Button = styled.button`
 	${displayFlex}
 	flex-flow: row;
 	font-weight: 400;
-	width: 23.33rem;
+	width: ${({ width }: ButtonProps) => width || '23.33rem'};
 	height: 3.2rem;
 	margin-bottom: 1.6rem;
 	background: ${(props: ButtonProps) => props.background || 'rgba(255, 255, 255, 1)'};
