@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import passport from 'koa-passport';
 import bcrypt from 'bcrypt';
 import { Profile as GoogleProfile } from 'passport-google-oauth';
