@@ -1,11 +1,10 @@
 import koaRouter from 'koa-router';
+import passport from 'koa-passport';
 import { userModel } from '../models/User';
 import { hackerModel } from '../models/Hacker';
 import AuthType from '../enums/AuthType';
 import AuthLevel from '../enums/AuthLevel';
 import Status from '../enums/Status';
-
-import passport from 'koa-passport';
 
 const userRouter = new koaRouter();
 
@@ -45,8 +44,8 @@ userRouter.post('/api/register/user', async (ctx, next) => {
 		//no user found, create new user
 		console.log('> Creating new local user.....');
 		const newUser = {
-			authType: AuthType.LOCAL,
 			authLevel: AuthLevel.HACKER,
+			authType: AuthType.LOCAL,
 			email: ctx.request.body.email,
 			password: ctx.request.body.password,
 		};

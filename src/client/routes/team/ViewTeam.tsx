@@ -1,30 +1,31 @@
 import React, { FunctionComponent } from 'react';
+import styled from 'styled-components';
 import { FlexColumn } from '../../components/Containers/FlexContainers';
 import STRINGS from '../../assets/strings.json';
 import Title from '../../components/Text/Title';
 import { CenterButtonText } from '../../components/Buttons/Buttons';
 import SmallCenteredText from '../../components/Text/SmallCenteredText';
 import TextButton from '../../components/Buttons/TextButton';
-import styled from 'styled-components';
 
 interface ButtonProps {
 	background?: string;
 }
 
 const Status = styled.div`
-    background: ${(props: ButtonProps) => props.background || 'rgba(255, 255, 255, 1)'};
-    padding: 1rem 2rem;
-    
+	background: ${(props: ButtonProps) => props.background || 'rgba(255, 255, 255, 1)'};
+	padding: 1rem 2rem;
 `;
 
 interface Props {}
 
 export const ViewTeam: FunctionComponent<Props> = (props: Props): JSX.Element => {
-    const teamName = "Team Rocket"
+	const teamName = 'Team Rocket';
 
 	return (
 		<FlexColumn>
-			<Title fontSize="1.3rem" color={STRINGS.DARK_TEXT_COLOR} margin="0.5rem">You have joined:</Title>
+			<Title fontSize="1.3rem" color={STRINGS.DARK_TEXT_COLOR} margin="0.5rem">
+				You have joined:
+			</Title>
 			<Status background={STRINGS.LIGHT_TEXT_COLOR}>
 				<CenterButtonText color={STRINGS.DARK_TEXT_COLOR} fontWeight="bold" fontSize="1.8rem">
 					{teamName}

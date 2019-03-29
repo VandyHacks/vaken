@@ -1,18 +1,18 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
+import styled from 'styled-components';
 import SearchBox from '../../components/Input/SearchBox';
 import STRINGS from '../../assets/strings.json';
 import ActionButton from '../../components/Buttons/ActionButton';
-import styled from 'styled-components';
 
 const Layout = styled.div`
-    margin-bottom: 0.125rem;
+	margin-bottom: 0.125rem;
 `;
 
 const ErrorMsg = styled.p`
-    text-align: center;
+	text-align: center;
 	font-size: 1rem;
-    color: ${STRINGS.WARNING_COLOR};
-    white-space: pre-line;
+	color: ${STRINGS.WARNING_COLOR};
+	white-space: pre-line;
 `;
 
 interface Props {}
@@ -26,7 +26,7 @@ export const JoinTeam: FunctionComponent<Props> = (props: Props): JSX.Element =>
 			<Layout>
 				<SearchBox
 					value={searchValue}
-					placeholder={'Find team'}
+					placeholder="Find team"
 					onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
 						setSearchValue(event.target.value);
 					}}

@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react';
+import styled from 'styled-components';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import JoinTeam from './JoinTeam';
 import ViewTeam from './ViewTeam';
-import styled from 'styled-components';
 import { displayFlex } from '../../components/Containers/FlexContainers';
 import Announcment from '../../components/Text/Announcment';
 import STRINGS from '../../assets/strings.json';
@@ -18,9 +18,7 @@ export const Team: FunctionComponent<Props> = (props: Props): JSX.Element => {
 
 	return (
 		<Layout>
-			<Announcment
-				value={STRINGS.HACKER_TEAMS_ANNOUNCMENT_TEXT}
-			/>
+			<Announcment value={STRINGS.HACKER_TEAMS_ANNOUNCMENT_TEXT} />
 			<FloatingPopup borderRadius="1rem" width="35rem" backgroundOpacity="1" padding="1.5rem">
 				{joined ? <ViewTeam /> : <JoinTeam />}
 			</FloatingPopup>
