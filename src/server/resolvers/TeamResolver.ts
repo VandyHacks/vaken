@@ -64,6 +64,10 @@ class TeamResolver {
 					{ $push: { teamMembers: hacker } },
 					{ new: true }
 				);
+
+				hacker.update({
+					teamName: teamName,
+				});
 			} catch (err) {
 				throw err;
 			}
