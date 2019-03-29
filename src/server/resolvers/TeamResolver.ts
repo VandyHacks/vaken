@@ -19,7 +19,7 @@ class TeamResolver {
 	public async addHackerToTeam(
 		@Arg('email', { nullable: false }) email: string,
 		@Arg('teamName') teamName: string
-	): Promise<void> {
+	): Promise<boolean> {
 		const team = await teamModel.findOne({ teamName: teamName });
 
 		if (!team) {
@@ -76,6 +76,7 @@ class TeamResolver {
 				throw err;
 			}
 		}
+		return true;
 	}
 
 	/**
