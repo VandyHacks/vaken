@@ -13,7 +13,7 @@ class TeamResolver {
 	 * @param {string} teamName - name of the team to which to add the user
 	 * @returns {Status} new status of user or null if the hacker doesn't exist
 	 */
-	@Mutation(() => Promise, {
+	@Mutation(() => Boolean, {
 		description: 'Add a Hacker to a team',
 	})
 	public async addHackerToTeam(
@@ -31,11 +31,18 @@ class TeamResolver {
 				throw new Error('Hacker does not exist!');
 			}
 
-			// Create the team
-			try {
-				this.createTeam(teamName);
-			} catch (err) {
-				throw err;
+			// See if a team exists
+			const team = await teamModel.findOne({ teamName: teamName });
+
+			// If a team already exists, throw an error
+			if (team) {
+				throw new Error('Team already exists!');
+			} else {
+				try {
+					await teamModel.create({ teamMembers: [], teamName: teamName });
+				} catch (err) {
+					throw err;
+				}
 			}
 
 			// Add the Hacker to the team; this should handle a team size error
@@ -84,13 +91,13 @@ class TeamResolver {
 	 * @param {string} teamName - name of the team to which to add the user
 	 * @returns {Status} new status of user or null if the hacker doesn't exist
 	 */
-	@Mutation(() => Promise, {
+	@Mutation(() => Boolean, {
 		description: 'Remove a Hacker from a team',
 	})
 	public async removeHackerFromTeam(
 		@Arg('email', { nullable: false }) email: string,
 		@Arg('teamName') teamName: string
-	): Promise<void> {
+	): Promise<boolean> {
 		const team = await teamModel.findOne({ teamName: teamName });
 		const hacker = await hackerModel.findOne({ email: email });
 
@@ -118,13 +125,15 @@ class TeamResolver {
 				throw err;
 			}
 		}
+
+		return true;
 	}
 
 	/**
 	 * @param {string} teamName - email address of a particular user
 	 * @returns {number} Size of the team
 	 */
-	@Query(() => Promise, {
+	@Query(() => Number, {
 		description: 'Return the size of a Team',
 		nullable: true,
 	})
@@ -142,24 +151,24 @@ class TeamResolver {
 	 * @param {string} teamName - name of the team to
 	 * @returns {Promise<void>} Promise to Team is created or undefined if team existed
 	 */
-	@Mutation(() => Promise, {
-		description: 'Create a Team',
-	})
-	private async createTeam(@Arg('teamName') teamName: string): Promise<void> {
-		const team = await teamModel.findOne({ teamName: teamName });
+	// 	@Mutation(() => Promise, {
+	// 		description: 'Create a Team',
+	// 	})
+	// 	private async createTeam(@Arg('teamName') teamName: string): Promise<void> {
+	// 		const team = await teamModel.findOne({ teamName: teamName });
 
-		// If a team already exists, throw an error
-		if (team) {
-			throw new Error('Team already exists!');
-		}
+	// 		// If a team already exists, throw an error
+	// 		if (team) {
+	// 			throw new Error('Team already exists!');
+	// 		}
 
-		// Create a team, throwing an exception if that fails
-		try {
-			await teamModel.create({ teamMembers: [], teamName: teamName });
-		} catch (err) {
-			throw err;
-		}
-	}
+	// 		// Create a team, throwing an exception if that fails
+	// 		try {
+	// 			await teamModel.create({ teamMembers: [], teamName: teamName });
+	// 		} catch (err) {
+	// 			throw err;
+	// 		}
+	// 	}
 }
 
 export default TeamResolver;
