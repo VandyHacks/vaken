@@ -65,6 +65,9 @@ export class Hacker extends User {
 
 	@Field({ nullable: true })
 	public walkin?: boolean;
+
+	@Field()
+	public teamName?: string = undefined;
 }
 
 export default Hacker;
