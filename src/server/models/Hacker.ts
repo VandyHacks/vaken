@@ -67,7 +67,7 @@ class Hacker extends User {
 	public walkin?: boolean;
 
 	@prop()
-	public teamName?: string = undefined;
+	public teamName?: string = '';
 }
 
 const hackerModel = new Hacker().getModelForClass(Hacker);
