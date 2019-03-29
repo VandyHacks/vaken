@@ -54,6 +54,7 @@ class TeamResolver {
 			throw new Error('Hacker could not be added to team!');
 		}
 
+		// Upon success, return true
 		return true;
 	}
 
@@ -80,25 +81,30 @@ class TeamResolver {
 			throw new Error('Hacker does not exist!');
 		} else if (!team.teamMembers.includes(hacker)) {
 			throw new Error('Hacker is not on this Team!');
-		} else {
+		}
+
+		// Remove hacker from the team
+		try {
+			teamModel.findOneAndUpdate({ teamName: teamName }, { $pull: { teamMembers: hacker } });
+
+			// Remove teamName from Hacker's profile
+			hacker.update({
+				teamName: undefined,
+			});
+		} catch (err) {
+			throw new Error('Hacker could not be removed from team!');
+		}
+
+		// If the team is now empty, delete it
+		if (teamModel.size === 0) {
 			try {
-				// Remove Hacker from team
-				teamModel.findOneAndUpdate({ teamName: teamName }, { $pull: { teamMembers: hacker } });
-
-				// Remove teamName from Hacker's profile
-				hacker.update({
-					teamName: undefined,
-				});
-
-				// If the team is now empty, delete it
-				if (teamModel.size === 0) {
-					teamModel.findOneAndDelete({ teamName: teamName });
-				}
+				teamModel.findOneAndDelete({ teamName: teamName });
 			} catch (err) {
-				throw err;
+				throw new Error('Now empty team could not be deleted!');
 			}
 		}
 
+		// Upon success, return true
 		return true;
 	}
 
