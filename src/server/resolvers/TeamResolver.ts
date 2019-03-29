@@ -87,6 +87,10 @@ class TeamResolver {
 					{ $push: { teamMembers: hacker } },
 					{ new: true }
 				);
+
+				hacker.update({
+					teamName: teamName,
+				});
 			} catch (err) {
 				throw err;
 			}
@@ -116,7 +120,13 @@ class TeamResolver {
 			throw new Error('Hacker is not on this Team!');
 		} else {
 			try {
+				// Remove Hacker from team
 				teamModel.findOneAndUpdate({ teamName: teamName }, { $pull: { teamMembers: hacker } });
+
+				// Remove teamName from Hacker's profile
+				hacker.update({
+					teamName: undefined,
+				});
 
 				// If the team is now empty, delete it
 				if (teamModel.size === 0) {
