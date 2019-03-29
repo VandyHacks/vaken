@@ -12,6 +12,7 @@ class TeamResolver {
 	 * @param {string} email - email address of the user to add to a team
 	 * @param {string} teamName - name of the team to which to add the user
 	 * @returns {boolean} true if successful
+	 * @throws {Error} if unsuccessful
 	 */
 	@Mutation(() => Boolean, {
 		description: 'Add a Hacker to a team',
@@ -59,7 +60,8 @@ class TeamResolver {
 	/**
 	 * @param {string} email - email address of the user to add to a team
 	 * @param {string} teamName - name of the team to which to add the user
-	 * @returns {Status} new status of user or null if the hacker doesn't exist
+	 * @returns {boolean} true if successful
+	 * @throws {Error} if unsuccessful
 	 */
 	@Mutation(() => Boolean, {
 		description: 'Remove a Hacker from a team',
@@ -68,6 +70,7 @@ class TeamResolver {
 		@Arg('email', { nullable: false }) email: string,
 		@Arg('teamName') teamName: string
 	): Promise<boolean> {
+		// Ensure the team and hacker exist
 		const team = await teamModel.findOne({ teamName: teamName });
 		const hacker = await hackerModel.findOne({ email: email });
 
