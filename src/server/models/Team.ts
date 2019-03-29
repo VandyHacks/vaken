@@ -8,7 +8,7 @@ class Team extends Typegoose {
 	@arrayProp({ itemsRef: Hacker, required: true })
 	public teamMembers: Ref<Hacker>[] = [];
 
-	@prop({ max: 4, min: 0 })
+	@prop({ max: 4 })
 	public size: number = 0;
 }
 
