@@ -4,12 +4,12 @@ import { Field, ObjectType } from 'type-graphql';
 import Hacker from './Hacker';
 
 @ObjectType({ description: 'DTO for a Vaken Team' })
-class Team {
+export class Team {
 	@Field()
-	public name!: string;
+	public teamName!: string;
 
 	@Field()
-	public members!: [Hacker];
+	public teamMembers!: [Hacker];
 }
 
 export default Team;

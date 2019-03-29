@@ -3,10 +3,10 @@ import { Hacker } from './Hacker';
 
 class Team extends Typegoose {
 	@prop()
-	public name!: string;
+	public teamName!: string;
 
 	@arrayProp({ itemsRef: Hacker, required: true })
-	public members: Ref<Hacker>[] = [];
+	public teamMembers: Ref<Hacker>[] = [];
 }
 
 const teamModel = new Team().getModelForClass(Team);
