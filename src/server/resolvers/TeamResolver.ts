@@ -71,7 +71,7 @@ class TeamResolver {
 		@Arg('email', { nullable: false }) email: string,
 		@Arg('teamName') teamName: string
 	): Promise<boolean> {
-		// Ensure the team and hacker exist
+		// Ensure the team and hacker are in a valid state
 		const team = await teamModel.findOne({ teamName: teamName });
 		const hacker = await hackerModel.findOne({ email: email });
 
