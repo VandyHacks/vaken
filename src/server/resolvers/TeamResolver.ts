@@ -6,14 +6,14 @@ import { Team } from '../data/Team';
 import { teamModel } from '../models/Team';
 import { hackerModel } from '../models/Hacker';
 
-@Resolver(() => Team)
+@Resolver()
 class TeamResolver {
 	/**
 	 * @param {string} email - email address of the user to add to a team
 	 * @param {string} teamName - name of the team to which to add the user
 	 * @returns {Status} new status of user or null if the hacker doesn't exist
 	 */
-	@Mutation(() => Team, {
+	@Mutation(() => Promise, {
 		description: 'Add a Hacker to a team',
 	})
 	public async addHackerToTeam(
@@ -83,7 +83,7 @@ class TeamResolver {
 	 * @param {string} teamName - name of the team to which to add the user
 	 * @returns {Status} new status of user or null if the hacker doesn't exist
 	 */
-	@Mutation(() => Team, {
+	@Mutation(() => Promise, {
 		description: 'Remove a Hacker from a team',
 	})
 	public async removeHackerFromTeam(
@@ -123,7 +123,7 @@ class TeamResolver {
 	 * @param {string} teamName - email address of a particular user
 	 * @returns {number} Size of the team
 	 */
-	@Query(() => User, {
+	@Query(() => Promise, {
 		description: 'Return the size of a Team',
 		nullable: true,
 	})
@@ -141,7 +141,7 @@ class TeamResolver {
 	 * @param {string} teamName - name of the team to
 	 * @returns {Promise<void>} Promise to Team is created or undefined if team existed
 	 */
-	@Mutation(() => Team, {
+	@Mutation(() => Promise, {
 		description: 'Create a Team',
 	})
 	private async createTeam(@Arg('teamName') teamName: string): Promise<void> {
