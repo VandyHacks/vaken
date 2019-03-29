@@ -5,14 +5,14 @@ import Hacker from './Hacker';
 
 @ObjectType({ description: 'DTO for a Vaken Team' })
 export class Team {
-	public MIN_SIZE = 4;
-	public MAX_SIZE = 4;
-
 	@Field()
 	public teamName!: string;
 
 	@Field()
 	public teamMembers!: [Hacker];
+
+	@Field()
+	public size: number = 0;
 }
 
 export default Team;

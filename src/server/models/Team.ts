@@ -2,14 +2,14 @@ import { prop, arrayProp, Ref, Typegoose } from 'typegoose';
 import { Hacker } from './Hacker';
 
 class Team extends Typegoose {
-	public MIN_SIZE = 4;
-	public MAX_SIZE = 4;
-
 	@prop()
 	public teamName!: string;
 
 	@arrayProp({ itemsRef: Hacker, required: true })
 	public teamMembers: Ref<Hacker>[] = [];
+
+	@prop({ max: 4, min: 0 })
+	public size: number = 0;
 }
 
 const teamModel = new Team().getModelForClass(Team);
