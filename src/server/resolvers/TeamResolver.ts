@@ -11,7 +11,7 @@ class TeamResolver {
 	/**
 	 * @param {string} email - email address of the user to add to a team
 	 * @param {string} teamName - name of the team to which to add the user
-	 * @returns {Status} new status of user or null if the hacker doesn't exist
+	 * @returns {boolean} true if successful
 	 */
 	@Mutation(() => Boolean, {
 		description: 'Add a Hacker to a team',
@@ -20,69 +20,39 @@ class TeamResolver {
 		@Arg('email', { nullable: false }) email: string,
 		@Arg('teamName') teamName: string
 	): Promise<boolean> {
+		// Make sure the team and hacker exist
 		const team = await teamModel.findOne({ teamName: teamName });
+		const hacker = await hackerModel.findOne({ email: email });
 
+		// If the hacker doesn't exist, throw an error
+		if (!hacker) {
+			throw new Error('Hacker does not exist!');
+		}
+
+		// If the team doesn't exist, create it
 		if (!team) {
-			// Ensure the Hacker exists
-			let hacker = hackerModel.findOne({ email: email });
-
-			// Handle a nonexistent hacker
-			if (!hacker) {
-				throw new Error('Hacker does not exist!');
-			}
-
-			// See if a team exists
-			const team = await teamModel.findOne({ teamName: teamName });
-
-			// If a team already exists, throw an error
-			if (team) {
-				throw new Error('Team already exists!');
-			} else {
-				try {
-					await teamModel.create({ teamMembers: [], teamName: teamName });
-				} catch (err) {
-					throw err;
-				}
-			}
-
-			// Add the Hacker to the team; this should handle a team size error
 			try {
-				teamModel.findOneAndUpdate(
-					{ teamName: teamName },
-					{ $push: { teamMembers: hacker } },
-					{ new: true }
-				);
-
-				hacker.update({
-					teamName: teamName,
-				});
+				await teamModel.create({ teamMembers: [], teamName: teamName });
 			} catch (err) {
-				throw err;
-			}
-		} else {
-			// Find the Hacker associated with the provided email
-			let hacker = hackerModel.findOne({ email: email });
-
-			// Handle a nonexistent hacker
-			if (!hacker) {
-				throw new Error('Hacker does not exist!');
-			}
-
-			// Add the Hacker to the team; this should handle a team size error
-			try {
-				teamModel.findOneAndUpdate(
-					{ teamName: teamName },
-					{ $push: { teamMembers: hacker } },
-					{ new: true }
-				);
-
-				hacker.update({
-					teamName: teamName,
-				});
-			} catch (err) {
-				throw err;
+				throw new Error('Team could not be created!');
 			}
 		}
+
+		// Add the Hacker to the team; this should handle a team size error
+		try {
+			teamModel.findOneAndUpdate(
+				{ teamName: teamName },
+				{ $push: { teamMembers: hacker } },
+				{ new: true }
+			);
+
+			hacker.update({
+				teamName: teamName,
+			});
+		} catch (err) {
+			throw new Error('Hacker could not be added to team!');
+		}
+
 		return true;
 	}
 
