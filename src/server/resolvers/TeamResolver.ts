@@ -6,6 +6,7 @@ import { Team } from '../data/Team';
 
 import { userModel } from '../models/User';
 import { teamModel } from '../models/Team';
+import { hackerModel } from '../models/Hacker';
 
 @Resolver(() => Team)
 class TeamResolver {
@@ -43,15 +44,34 @@ class TeamResolver {
 	public async addHackerToTeam(
 		@Arg('email', { nullable: false }) email: string,
 		@Arg('teamName') teamName: string
-	) {
+	): Promise<void> {
 		const team = await teamModel.findOne({ teamName: teamName });
 
 		if (!team) {
-			// Create team, add hacker to it
+			// Create the team
+			this.createTeam(teamName);
+
+			// Find the Hacker associated with the provided email
+			let hacker = hackerModel.findOne({ email: email });
+
+			// Add the Hacker to the team
+			teamModel.findOneAndUpdate(
+				{ teamName: teamName },
+				{ $push: { teamMembers: hacker } },
+				{ new: true }
+			);
 		} else if (team.teamMembers.length === teamModel.MAX_SIZE) {
-			// Don't add, return error
+			throw new Error('Team limit reached!');
 		} else {
-			// Add to team, return success
+			// Find the Hacker associated with the provided email
+			let hacker = hackerModel.findOne({ email: email });
+
+			// Add the Hacker to the team
+			teamModel.findOneAndUpdate(
+				{ teamName: teamName },
+				{ $push: { teamMembers: hacker } },
+				{ new: true }
+			);
 		}
 	}
 
