@@ -88,13 +88,21 @@ class TeamResolver {
 		@Arg('teamName') teamName: string
 	) {
 		const team = await teamModel.findOne({ teamName: teamName });
+		const hacker = await hackerModel.findOne({ email: email });
 
 		if (!team) {
-			// Create team, add hacker to it
-		} else if (team.teamMembers.length === teamModel.MAX_SIZE) {
-			// Don't add, return error
+			throw new Error('Team does not exist!');
+		} else if (!hacker) {
+			throw new Error('Hacker does not exist!');
+		} else if (!team.teamMembers.includes(hacker)) {
+			throw new Error('Hacker is not on this Team!');
 		} else {
-			// Add to team, return success
+			teamModel.findOneAndUpdate({ teamName: teamName }, { $pull: { teamMembers: hacker } });
+		}
+
+		// If the team is now empty, delete it
+		if (team.teamMembers.length === team.MIN_SIZE) {
+			teamModel.findOneAndDelete({ teamName: teamName });
 		}
 	}
 
