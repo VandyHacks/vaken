@@ -4,11 +4,12 @@ import HackerDash from '../routes/dashboard/HackerDash';
 import ManageHackers from '../routes/manage/ManageHackers';
 import OrganizerDash from '../routes/dashboard/LazyOrganizerDash';
 import Team from '../routes/team/Team';
+import Profile from '../routes/profile/Profile';
 
 export const AuthLevel = {
-	HACKER: 'hacker',
-	ORGANIZER: 'organizer',
-	SPONSOR: 'sponsor',
+	HACKER: 'Hacker',
+	ORGANIZER: 'Organizer',
+	SPONSOR: 'Sponsor',
 };
 
 export const currentAuth = AuthLevel.HACKER;
@@ -28,7 +29,7 @@ export const routes = [
 	},
 	{
 		authLevel: [AuthLevel.HACKER, AuthLevel.SPONSOR, AuthLevel.ORGANIZER],
-		component: NotReady,
+		component: Profile,
 		displayText: 'Profile',
 		path: '/profile',
 	},
