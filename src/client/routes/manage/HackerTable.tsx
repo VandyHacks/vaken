@@ -30,6 +30,7 @@ import { gql } from 'apollo-boost';
 import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
 import Row from './Row';
 import 'babel-polyfill';
+import { ID } from 'type-graphql';
 
 const UPDATE_STATUS = gql`
 	mutation UpdateHackerStatus($email: String!, $status: String!) {
@@ -215,9 +216,11 @@ interface DeselectElement extends HTMLDivElement {
 }
 
 export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element => {
-	const [sortBy, setSortBy] = useState('');
-	const [sortDirection, setSortDirection] = useState<SortDirectionType>(SortDirection.ASC);
-	const [sortedData, setSortedData] = useState<Hacker[]>(props.data);
+	const [sortByState, setSortByState] = useState<string | null>(null);
+	const [sortDirectionState, setSortDirectionState] = useState<SortDirectionType | null>(null);
+	// Used [...props.data] to make a copy since do not want assignment, which would motify props.data after sort
+	// TODO(alan): explore immutables instead
+	const [sortedData, setSortedData] = useState<Hacker[]>([...props.data]);
 	const [searchValue, setSearchValue] = useState('');
 	const [useRegex, setUseRegex] = useState(false);
 	const [selectedColumns, setSelectedColumns] = useState<Option[]>([columnOptions[0]]);
@@ -230,36 +233,36 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		sortBy,
 		sortDirection,
 		update,
+		data,
 	}: {
-		sortBy: string;
-		sortDirection: SortDirectionType;
+		sortBy: string | null;
+		sortDirection: SortDirectionType | null;
 		update: boolean;
+		data?: Hacker[];
 	}) => {
+		// no sort if sortBy is null and sortDirection is null
+		if (!sortBy || !sortDirection) {
+			return [...props.data];
+		}
+
 		// sort alphanumerically
 		const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
 
 		// TODO: replace any
-		let newSortedData = ((update ? props.data : sortedData) as any).sort((a: any, b: any) =>
+		let newSortedData = (((update || !data) ? [...props.data] : data) as any).sort((a: any, b: any) =>
 			collator.compare(a[sortBy], b[sortBy])
 		);
 		if (sortDirection === SortDirection.DESC) {
 			newSortedData = newSortedData.reverse();
 		}
-
 		return newSortedData;
 	};
 
-	// acts as a compoentDidMount to implement an initial sort
-	useEffect(() => {
-		setSortedData(sortData({ sortBy, sortDirection, update: false }));
-	}, []);
-
+	// Also acts as a compoentDidMount to implement an initial sort
 	// This is for updating the table when the hacker status changes
 	useEffect(() => {
 		console.log('data from GraphQL is changing');
-		setSortedData(sortData({ sortBy, sortDirection, update: true }));
 		onSearch(searchValue);
-		// setSortedData(props.data);
 	}, [props.data]);
 
 	useEffect(() => {
@@ -425,14 +428,19 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		sortBy,
 		sortDirection,
 	}: {
-		sortBy: string;
-		sortDirection: SortDirectionType;
+		sortBy: string | null;
+		sortDirection: SortDirectionType | null;
 	}) => {
-		const sortedData = sortData({ sortBy, sortDirection, update: false });
-
-		setSortBy(sortBy);
-		setSortDirection(sortDirection);
-		setSortedData(sortedData);
+		// return to natural order after triple click on same column header
+		// before new assignment sortByState and sortByState are the previous values
+		let update = false;
+		if (sortByState === sortBy && sortDirectionState === SortDirection.DESC) {
+			sortBy = null;
+			sortDirection = null;
+		}
+		setSortedData(sortData({ sortBy, sortDirection, update: false, data: sortedData }));
+		setSortByState(sortBy);
+		setSortDirectionState(sortDirection);
 	};
 
 	// handles the text or regex search and sets the sortedData state with the updated row list
@@ -441,8 +449,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 			if (!useRegex) {
 				// fuzzy filtering
 				const fuse = new Fuse(props.data, opts);
-				setSortedData(fuse.search(value));
-				// console.log(fuse.search(value));
+				setSortedData(sortData({ sortBy: sortByState, sortDirection: sortDirectionState, update: false, data: fuse.search(value)}));
 			} else {
 				let regex: RegExp;
 				let isValid = true;
@@ -452,21 +459,19 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 					isValid = false;
 				}
 				if (isValid) {
-					console.log(value);
-					console.log('Regex searching!');
 					// TODO(alan): replace any with Hacker
-					const newSortedData = props.data.filter((user: any) => {
-						console.log(user[selectedColumns[0].value]);
+					const newSortedData = [...props.data].filter((user: any) => {
 						return regex.test(user[selectedColumns[0].value]);
 					});
-					setSortedData(newSortedData);
+					setSortedData(sortData({ sortBy: sortByState, sortDirection: sortDirectionState, update: false, data: newSortedData }));
 				} else {
 					console.log('Invalid regular expression');
 				}
 			}
 		} else {
 			// reset
-			setSortedData(props.data);
+			// setSortedData([...props.data]);
+			setSortedData(sortData({ sortBy: sortByState, sortDirection: sortDirectionState, update: true }));
 		}
 		setSearchValue(value);
 	};
@@ -528,7 +533,6 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 										setHasSelection(true);
 										setSelectedRowsEmails(keys.map((key: JSX.Element) => key.props.rowData.email));
 									}
-									// console.log(keys.map((key: JSX.Element) => key.props.rowData.email));
 								}}
 								ignoreList={['.ignore-select']}
 								resetOnStart>
@@ -542,8 +546,8 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									rowGetter={({ index }: { index: number }) => sortedData[index]}
 									rowRenderer={rowRenderer}
 									headerClassName="ignore-select"
-									sortBy={sortBy}
-									sortDirection={sortDirection}
+									sortBy={sortByState}
+									sortDirection={sortDirectionState}
 									sort={sort}>
 									<Column
 										className="column"
@@ -641,7 +645,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 														});
 														// to deselect afterwards, react-selectable-fast has no clean way to interface with a clearSelection function
 														// so this is a workaround by simulating a click on the SelectAllButton
-														if (sortBy === "status" && deselect && deselect.current && deselect.current.context && deselect.current.context.selectable) {
+														if (sortByState === "status" && deselect && deselect.current && deselect.current.context && deselect.current.context.selectable) {
 															deselect.current.context.selectable.clearSelection();
 														}
 													}}
