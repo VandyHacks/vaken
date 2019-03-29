@@ -31,6 +31,7 @@ class HackerResolver {
 				school: hacker.school,
 				shirtSize: hacker.shirtSize,
 				status: hacker.status,
+				teamName: hacker.teamName,
 			});
 		}
 	}
@@ -63,6 +64,7 @@ class HackerResolver {
 					school: hacker.school,
 					shirtSize: hacker.shirtSize,
 					status: hacker.status,
+					teamName: hacker.teamName,
 				});
 			});
 
