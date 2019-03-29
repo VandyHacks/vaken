@@ -2,6 +2,7 @@ import { prop, arrayProp, Ref, Typegoose } from 'typegoose';
 import { Hacker } from './Hacker';
 
 class Team extends Typegoose {
+	public MIN_SIZE = 4;
 	public MAX_SIZE = 4;
 
 	@prop()
