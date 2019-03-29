@@ -1,6 +1,9 @@
 import koaRouter from 'koa-router';
 import { userModel } from '../models/User';
 import { hackerModel } from '../models/Hacker';
+import AuthType from '../enums/AuthType';
+import AuthLevel from '../enums/AuthLevel';
+import Status from '../enums/Status';
 
 import passport from 'koa-passport';
 
@@ -42,8 +45,8 @@ userRouter.post('/api/register/user', async (ctx, next) => {
 		//no user found, create new user
 		console.log('> Creating new local user.....');
 		const newUser = {
-			authLevel: 'Hacker',
-			authType: 'Local',
+			authType: AuthType.LOCAL,
+			authLevel: AuthLevel.HACKER,
 			email: ctx.request.body.email,
 			password: ctx.request.body.password,
 		};
@@ -76,9 +79,9 @@ userRouter.post('/api/register/hacker', async (ctx, next) => {
 		//no user found, create new user
 		console.log('> Creating new local hacker.....');
 		const newHacker = ctx.request.body;
-		newHacker.authType = 'Local';
-		newHacker.authLevel = 'Hacker';
-		newHacker.status = 'Created';
+		newHacker.authType = AuthType.LOCAL;
+		newHacker.authLevel = AuthLevel.HACKER;
+		newHacker.status = Status.Created;
 		console.log(newHacker);
 		console.log('Attempting to create a new hacker');
 		const createdHacker = await hackerModel.create(newHacker);
