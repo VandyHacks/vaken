@@ -13,13 +13,13 @@ class TeamResolver {
 	 * @param {string} teamName - name of the team to which to add the user
 	 * @returns {Status} new status of user or null if the hacker doesn't exist
 	 */
-	@Mutation(() => Promise, {
+	@Mutation(() => Boolean, {
 		description: 'Add a Hacker to a team',
 	})
 	public async addHackerToTeam(
 		@Arg('email', { nullable: false }) email: string,
 		@Arg('teamName') teamName: string
-	): Promise<void> {
+	): Promise<boolean> {
 		const team = await teamModel.findOne({ teamName: teamName });
 
 		if (!team) {
@@ -76,6 +76,7 @@ class TeamResolver {
 				throw err;
 			}
 		}
+		return true;
 	}
 
 	/**
