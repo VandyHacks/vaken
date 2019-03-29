@@ -9,29 +9,6 @@ import { hackerModel } from '../models/Hacker';
 @Resolver(() => Team)
 class TeamResolver {
 	/**
-	 * @param {string} teamName - name of the team to
-	 * @returns {Promise<void>} Promise to Team is created or undefined if team existed
-	 */
-	@Mutation(() => Team, {
-		description: 'Create a Team',
-	})
-	public async createTeam(@Arg('teamName') teamName: string): Promise<void> {
-		const team = await teamModel.findOne({ teamName: teamName });
-
-		// If a team already exists, throw an error
-		if (team) {
-			throw new Error('Team already exists!');
-		}
-
-		// Create a team, throwing an exception if that fails
-		try {
-			await teamModel.create({ teamMembers: [], teamName: teamName });
-		} catch (err) {
-			throw err;
-		}
-	}
-
-	/**
 	 * @param {string} email - email address of the user to add to a team
 	 * @param {string} teamName - name of the team to which to add the user
 	 * @returns {Status} new status of user or null if the hacker doesn't exist
@@ -55,7 +32,11 @@ class TeamResolver {
 			}
 
 			// Create the team
-			this.createTeam(teamName);
+			try {
+				this.createTeam(teamName);
+			} catch (err) {
+				throw err;
+			}
 
 			// Add the Hacker to the team; this should handle a team size error
 			try {
@@ -153,6 +134,29 @@ class TeamResolver {
 			throw new Error('Team does not exist!');
 		} else {
 			return team.size;
+		}
+	}
+
+	/**
+	 * @param {string} teamName - name of the team to
+	 * @returns {Promise<void>} Promise to Team is created or undefined if team existed
+	 */
+	@Mutation(() => Team, {
+		description: 'Create a Team',
+	})
+	private async createTeam(@Arg('teamName') teamName: string): Promise<void> {
+		const team = await teamModel.findOne({ teamName: teamName });
+
+		// If a team already exists, throw an error
+		if (team) {
+			throw new Error('Team already exists!');
+		}
+
+		// Create a team, throwing an exception if that fails
+		try {
+			await teamModel.create({ teamMembers: [], teamName: teamName });
+		} catch (err) {
+			throw err;
 		}
 	}
 }
