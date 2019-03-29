@@ -125,29 +125,6 @@ class TeamResolver {
 			return team.size;
 		}
 	}
-
-	/**
-	 * @param {string} teamName - name of the team to
-	 * @returns {Promise<void>} Promise to Team is created or undefined if team existed
-	 */
-	// 	@Mutation(() => Promise, {
-	// 		description: 'Create a Team',
-	// 	})
-	// 	private async createTeam(@Arg('teamName') teamName: string): Promise<void> {
-	// 		const team = await teamModel.findOne({ teamName: teamName });
-
-	// 		// If a team already exists, throw an error
-	// 		if (team) {
-	// 			throw new Error('Team already exists!');
-	// 		}
-
-	// 		// Create a team, throwing an exception if that fails
-	// 		try {
-	// 			await teamModel.create({ teamMembers: [], teamName: teamName });
-	// 		} catch (err) {
-	// 			throw err;
-	// 		}
-	// 	}
 }
 
 export default TeamResolver;
