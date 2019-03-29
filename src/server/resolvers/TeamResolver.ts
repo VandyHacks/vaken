@@ -36,19 +36,24 @@ class TeamResolver {
 			}
 		}
 
-		// Add the Hacker to the team; this should handle a team size error
+		// Add the hacker to the team
 		try {
 			teamModel.findOneAndUpdate(
 				{ teamName: teamName },
 				{ $push: { teamMembers: hacker } },
 				{ new: true }
 			);
+		} catch (err) {
+			throw new Error('Hacker could not be added to team!');
+		}
 
+		// Update the hacker's team
+		try {
 			hacker.update({
 				teamName: teamName,
 			});
 		} catch (err) {
-			throw new Error('Hacker could not be added to team!');
+			throw new Error('Hacker team could not be updated!');
 		}
 
 		// Upon success, return true
