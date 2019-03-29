@@ -36,7 +36,7 @@ class HackerResolver {
 	}
 
 	/**
-	 * @returns {[Hacker]} - All Hackers in the database
+	 * @returns {Promise<[Hacker]>} - All Hackers in the database
 	 */
 	@Query(() => [Hacker], {
 		description: 'Return all the Hackers in the database',
@@ -81,7 +81,7 @@ class HackerResolver {
 	public async updateHackerStatus(
 		@Arg('email', { nullable: false }) email: string,
 		@Arg('newStatus') newStatus: Status
-	) {
+	): Promise<Status | null> {
 		const newHacker = await hackerModel.findOneAndUpdate(
 			{ email: email },
 			{ $set: { status: newStatus } },
