@@ -1,10 +1,8 @@
 import { Resolver, Query, Arg, Mutation } from 'type-graphql';
-import { plainToClass } from 'class-transformer';
 
 import { User } from '../data/User';
 import { Team } from '../data/Team';
 
-import { userModel } from '../models/User';
 import { teamModel } from '../models/Team';
 import { hackerModel } from '../models/Hacker';
 
@@ -54,24 +52,40 @@ class TeamResolver {
 			// Find the Hacker associated with the provided email
 			let hacker = hackerModel.findOne({ email: email });
 
+			// Handle a nonexistent hacker
+			if (!hacker) {
+				throw new Error('Hacker does not exist!');
+			}
+
 			// Add the Hacker to the team
-			teamModel.findOneAndUpdate(
-				{ teamName: teamName },
-				{ $push: { teamMembers: hacker } },
-				{ new: true }
-			);
-		} else if (team.teamMembers.length === teamModel.MAX_SIZE) {
-			throw new Error('Team limit reached!');
+			try {
+				teamModel.findOneAndUpdate(
+					{ teamName: teamName },
+					{ $push: { teamMembers: hacker } },
+					{ new: true }
+				);
+			} catch (err) {
+				throw err;
+			}
 		} else {
 			// Find the Hacker associated with the provided email
 			let hacker = hackerModel.findOne({ email: email });
 
-			// Add the Hacker to the team
-			teamModel.findOneAndUpdate(
-				{ teamName: teamName },
-				{ $push: { teamMembers: hacker } },
-				{ new: true }
-			);
+			// Handle a nonexistent hacker
+			if (!hacker) {
+				throw new Error('Hacker does not exist!');
+			}
+
+			// Add the Hacker to the team; this should handle a size error
+			try {
+				teamModel.findOneAndUpdate(
+					{ teamName: teamName },
+					{ $push: { teamMembers: hacker } },
+					{ new: true }
+				);
+			} catch (err) {
+				throw err;
+			}
 		}
 	}
 
@@ -86,7 +100,7 @@ class TeamResolver {
 	public async removeHackerFromTeam(
 		@Arg('email', { nullable: false }) email: string,
 		@Arg('teamName') teamName: string
-	) {
+	): Promise<void> {
 		const team = await teamModel.findOne({ teamName: teamName });
 		const hacker = await hackerModel.findOne({ email: email });
 
@@ -97,12 +111,16 @@ class TeamResolver {
 		} else if (!team.teamMembers.includes(hacker)) {
 			throw new Error('Hacker is not on this Team!');
 		} else {
-			teamModel.findOneAndUpdate({ teamName: teamName }, { $pull: { teamMembers: hacker } });
-		}
+			try {
+				teamModel.findOneAndUpdate({ teamName: teamName }, { $pull: { teamMembers: hacker } });
 
-		// If the team is now empty, delete it
-		if (team.teamMembers.length === team.MIN_SIZE) {
-			teamModel.findOneAndDelete({ teamName: teamName });
+				// If the team is now empty, delete it
+				if (teamModel.size === 0) {
+					teamModel.findOneAndDelete({ teamName: teamName });
+				}
+			} catch (err) {
+				throw err;
+			}
 		}
 	}
 
@@ -114,12 +132,13 @@ class TeamResolver {
 		description: 'Return the size of a Team',
 		nullable: true,
 	})
-	public async getTeamSize(@Arg('teamName') teamName: string): Promise<number | undefined> {
+	public async getTeamSize(@Arg('teamName') teamName: string): Promise<number> {
 		const team = await teamModel.findOne({ teamName: teamName });
+
 		if (!team) {
-			return undefined;
+			throw new Error('Team does not exist!');
 		} else {
-			return team.teamMembers.length;
+			return team.size;
 		}
 	}
 }
