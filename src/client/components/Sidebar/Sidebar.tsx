@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { NavLink as UglyNavLink, withRouter } from 'react-router-dom';
 import produce from 'immer';
@@ -60,7 +60,7 @@ const NavButtonWhiteText = styled(NavButton)`
 	padding-left: 1.33rem;
 `;
 
-const NavLink = styled(UglyNavLink)`
+const ALink = styled.a`
 	text-decoration: none;
 	text-align: left;
 	height: max-content;
@@ -74,6 +74,8 @@ const NavLink = styled(UglyNavLink)`
 		text-decoration: none;
 	}
 `;
+
+const NavLink = ALink.withComponent(UglyNavLink);
 
 interface Route {
 	authLevel: string[];
@@ -128,9 +130,9 @@ const Sidebar = withRouter(
 							})}
 						</ColumnWithSeparators>
 						<FlexEndColumn height="min-content" paddingBottom="1rem">
-							<NavLink to="/logout">
+							<ALink href="/api/logout">
 								<NavButtonWhiteText text="Logout" />
-							</NavLink>
+							</ALink>
 							<HorizontalLineLogout />
 							<SmallCenteredText>{STRINGS.HACKATHON_TITLE}</SmallCenteredText>
 						</FlexEndColumn>
