@@ -21,11 +21,11 @@ export class Hacker extends User {
 	@Field({ nullable: true })
 	public ethnicity?: Ethnicity;
 
-	@Field(type => [Race], { nullable: true })
-	public race?: [Race];
+	@Field(() => [Race], { nullable: true })
+	public race?: Race[];
 
-	@Field(type => [String], { nullable: true })
-	public majors?: [string];
+	@Field(() => [String], { nullable: true })
+	public majors?: string[];
 
 	@Field({ nullable: true })
 	public adult?: boolean;
@@ -48,8 +48,8 @@ export class Hacker extends User {
 	@Field({ nullable: true })
 	public website?: string;
 
-	@Field(type => [String], { nullable: true })
-	public essays?: [string];
+	@Field(() => [String], { nullable: true })
+	public essays?: string[];
 
 	@Field({ nullable: true })
 	public codeOfConduct?: boolean;

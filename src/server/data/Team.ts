@@ -8,8 +8,8 @@ export class Team {
 	@Field()
 	public teamName!: string;
 
-	@Field()
-	public teamMembers!: [Hacker];
+	@Field(() => [Hacker])
+	public teamMembers!: Hacker[];
 
 	@Field()
 	public size: number = 0;
