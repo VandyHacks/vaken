@@ -57,7 +57,7 @@ class TeamResolver {
 				throw new Error('Hacker does not exist!');
 			}
 
-			// Add the Hacker to the team
+			// Add the Hacker to the team; this should handle a team size error
 			try {
 				teamModel.findOneAndUpdate(
 					{ teamName: teamName },
@@ -76,7 +76,7 @@ class TeamResolver {
 				throw new Error('Hacker does not exist!');
 			}
 
-			// Add the Hacker to the team; this should handle a size error
+			// Add the Hacker to the team; this should handle a team size error
 			try {
 				teamModel.findOneAndUpdate(
 					{ teamName: teamName },
@@ -103,6 +103,8 @@ class TeamResolver {
 	): Promise<void> {
 		const team = await teamModel.findOne({ teamName: teamName });
 		const hacker = await hackerModel.findOne({ email: email });
+
+		// TODO - If a team is already empty, should we just delete it?
 
 		if (!team) {
 			throw new Error('Team does not exist!');
