@@ -14,7 +14,7 @@ const Layout = styled.div`
 interface Props {}
 
 export const Team: FunctionComponent<Props> = (props: Props): JSX.Element => {
-	const joined = true;
+	const joined = false;
 
 	return (
 		<Layout>
