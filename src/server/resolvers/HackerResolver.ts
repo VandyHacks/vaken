@@ -97,3 +97,5 @@ class HackerResolver {
 }
 
 export default HackerResolver;
+
+// Copyright (c) 2019 Vanderbilt University

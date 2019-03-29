@@ -14,3 +14,5 @@ registerEnumType(Tier, {
 });
 
 export default Tier;
+
+// Copyright (c) 2019 Vanderbilt University
