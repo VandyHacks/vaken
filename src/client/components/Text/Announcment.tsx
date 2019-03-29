@@ -2,7 +2,7 @@ import React, { FunctionComponent, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import FloatingPopup from '../Containers/FloatingPopup';
 import STRINGS from '../../assets/strings.json';
-import Notification from '../../assets/img/Notification.svg';
+import Notification from '../../assets/img/notification.svg';
 
 const Msg = styled.p`
 	font-size: 1rem;
