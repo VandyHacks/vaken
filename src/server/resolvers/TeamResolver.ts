@@ -88,9 +88,8 @@ class TeamResolver {
 			teamModel.findOneAndUpdate({ teamName: teamName }, { $pull: { teamMembers: hacker } });
 
 			// Remove teamName from Hacker's profile
-			hacker.update({
-				teamName: undefined,
-			});
+			hacker.teamName = "";
+			hacker.save();
 		} catch (err) {
 			throw new Error('Hacker could not be removed from team!');
 		}

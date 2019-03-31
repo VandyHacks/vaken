@@ -45,7 +45,7 @@ export const Team: FunctionComponent<Props> = (props: Props): JSX.Element => {
 
 						console.log(data);
 						// console.log(data.getHackerByEmail.teamName);
-						return data.getHackerByEmail.teamName === "" ? <JoinTeam /> : <ViewTeam/>;
+						return data.getHackerByEmail.teamName === "" ? <JoinTeam /> : <ViewTeam teamName={data.getHackerByEmail.teamName}/>;
 					}}
 				</Query>
 			</FloatingPopup>
