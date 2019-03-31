@@ -41,7 +41,6 @@ class TeamResolver {
 			teamModel.updateOne(
 				{ teamName: teamName },
 				{ $push: { teamMembers: hacker } },
-
 			).exec();
 		} catch (err) {
 			throw new Error('Hacker could not be added to team!');
@@ -49,9 +48,8 @@ class TeamResolver {
 
 		// Update the hacker's team
 		try {
-			hacker.update({
-				teamName: teamName,
-			});
+			hacker.teamName = teamName;
+			hacker.save();
 		} catch (err) {
 			throw new Error('Hacker team could not be updated!');
 		}
