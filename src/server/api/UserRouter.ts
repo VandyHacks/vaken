@@ -99,7 +99,9 @@ userRouter.post('/api/register/hacker', async (ctx, next) => {
 		const newHacker = ctx.request.body;
 		newHacker.authType = AuthType.LOCAL;
 		newHacker.authLevel = AuthLevel.HACKER;
-		newHacker.status = Status.Created;
+		if (!newHacker.status) {
+			newHacker.status = Status.Created;
+		}
 		console.log(newHacker);
 		console.log('Attempting to create a new hacker');
 		const createdHacker = await hackerModel.create(newHacker);

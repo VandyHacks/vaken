@@ -10,6 +10,8 @@ const hackers = [
 		phoneNumber: '+19876543210',
 		school: 'Vanderbilt University',
 		shirtSize: 'M',
+		teamName: "",
+		status: "Submitted",
 	},
 	{
 		email: 'j.p.smith@vanderbilt.edu',
@@ -18,6 +20,8 @@ const hackers = [
 		lastName: 'Smith',
 		needsReimbursement: true,
 		school: 'Vanderbilt University',
+		teamName: "",
+		status: "Created",
 	},
 	{
 		email: 'c.johnson@vanderbilt.edu',
@@ -26,6 +30,8 @@ const hackers = [
 		lastName: 'Johnson',
 		needsReimbursement: true,
 		school: 'Vanderbilt University',
+		teamName: "",
+		status: "Accepted",
 	},
 	{
 		email: 'j.xu@vanderbilt.edu',
@@ -34,6 +40,8 @@ const hackers = [
 		lastName: 'Xu',
 		needsReimbursement: false,
 		school: 'Vanderbilt University',
+		teamName: "",
+		status: "Rejected",
 	},
 	{
 		email: 'teera@utk.edu',
@@ -42,6 +50,8 @@ const hackers = [
 		lastName: 'Teer',
 		needsReimbursement: true,
 		school: 'University of Tennessee',
+		status: "Confirmed",
+		teamName: "",
 	},
 	{
 		email: 'howardyoung@crimson.ua.edu',
@@ -50,6 +60,8 @@ const hackers = [
 		lastName: 'Young',
 		needsReimbursement: true,
 		school: 'University of Alabama',
+		teamName: "",
+		status: "Submitted",
 	},
 	{
 		email: 's.zhang@vanderbilt.edu',
@@ -58,10 +70,12 @@ const hackers = [
 		lastName: 'Zhang',
 		needsReimbursement: true,
 		school: 'Vanderbilt University',
+		teamName: "",
+		status: "Started",
 	},
 ];
 
-export const addHackers = () =>
+const addHackers = () =>
 	hackers.forEach(hacker => {
 		fetch('/api/register/hacker', {
 			body: JSON.stringify({ ...hacker, password: 'test123' }),
@@ -73,4 +87,5 @@ export const addHackers = () =>
 	});
 
 addHackers();
+
 export default addHackers;
