@@ -5,6 +5,7 @@ import STRINGS from '../../assets/strings.json';
 import ActionButton from '../../components/Buttons/ActionButton';
 import { Mutation } from 'react-apollo';
 import { gql } from 'apollo-boost';
+import { GET_TEAM } from './Team';
 
 const JOIN_TEAM = gql`
 	mutation AddHackerToTeam($email: String!, $teamName: String!) {
@@ -36,23 +37,24 @@ export const JoinTeam: FunctionComponent<Props> = (props: Props): JSX.Element =>
 					<Layout>
 						<SearchBox
 							value={searchValue}
-							placeholder="Find team"
+							placeholder="Type team name here"
 							onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
 								setSearchValue(event.target.value);
 							}}
 							minWidth="26rem"
 							width="26rem"
 							error={errorMsg !== ''}
+							hasIcon={false}
 						/>
 						<ActionButton
 							onClick={() => {
 								mutation({
 									variables: { email: "ml@mattleon.com", teamName: searchValue },
-									// refetchQueries: [{ query: GET_HACKERS }],
+									refetchQueries: [{ query: GET_TEAM }],
 								});
-								if (error) {
+								if (!error) {
 									setErrorMsg('');
-									console.log("success!");
+									console.log("Success!");
 								} else {
 									setErrorMsg(
 										'Team size has already reached the limit.\nPlease join or create another team.'

@@ -471,6 +471,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 					value={searchValue}
 					placeholder={useRegex ? "Search by regex string, e.g. '^[a-b].*'" : 'Search by text'}
 					onChange={(event: React.ChangeEvent<HTMLInputElement>) => onSearch(event.target.value)}
+					hasIcon
 				/>
 				<ToggleSwitch
 					label="Use Regex?"
