@@ -38,11 +38,11 @@ class TeamResolver {
 
 		// Add the hacker to the team
 		try {
-			teamModel.findOneAndUpdate(
+			teamModel.updateOne(
 				{ teamName: teamName },
 				{ $push: { teamMembers: hacker } },
-				{ new: true }
-			);
+
+			).exec();
 		} catch (err) {
 			throw new Error('Hacker could not be added to team!');
 		}
