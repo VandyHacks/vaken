@@ -29,7 +29,8 @@ interface Props {}
 export const JoinTeam: FunctionComponent<Props> = (props: Props): JSX.Element => {
 	const [searchValue, setSearchValue] = useState('');
 	const [errorMsg, setErrorMsg] = useState('');
-
+	const emailAddress = 'ml@mattleon.com';
+	
 	return (
 		<Mutation mutation={JOIN_TEAM}>
 			{(mutation, { error }) => (
@@ -48,13 +49,14 @@ export const JoinTeam: FunctionComponent<Props> = (props: Props): JSX.Element =>
 						/>
 						<ActionButton
 							onClick={() => {
+								console.log(searchValue);
 								mutation({
-									variables: { email: "ml@mattleon.com", teamName: searchValue },
-									refetchQueries: [{ query: GET_TEAM }],
+									variables: { email: emailAddress, teamName: searchValue },
+									refetchQueries: [{ query: GET_TEAM, variables: { email: emailAddress } }],
 								});
 								if (!error) {
 									setErrorMsg('');
-									console.log("Success!");
+									console.log('Success!');
 								} else {
 									setErrorMsg(
 										'Team size has already reached the limit.\nPlease join or create another team.'
