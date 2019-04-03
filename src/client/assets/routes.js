@@ -6,9 +6,9 @@ import OrganizerDash from '../routes/dashboard/LazyOrganizerDash';
 import Team from '../routes/team/Team';
 
 export const AuthLevel = {
-	HACKER: 'hacker',
-	ORGANIZER: 'organizer',
-	SPONSOR: 'sponsor',
+	HACKER: 'Hacker',
+	ORGANIZER: 'Organizer',
+	SPONSOR: 'Sponsor',
 };
 
 export const currentAuth = AuthLevel.ORGANIZER;

@@ -1,11 +1,10 @@
 import koaRouter from 'koa-router';
+import passport from 'koa-passport';
 import { userModel } from '../models/User';
 import { hackerModel } from '../models/Hacker';
 import AuthType from '../enums/AuthType';
 import AuthLevel from '../enums/AuthLevel';
 import Status from '../enums/Status';
-
-import passport from 'koa-passport';
 
 const userRouter = new koaRouter();
 
@@ -15,6 +14,24 @@ userRouter.post('/mongo', async (ctx, next) => {
 	await newUser.save();
 	const user = await userModel.findOne({ firstName: 'vandy' });
 	console.log(user);
+	await next();
+});
+
+userRouter.get('/api/whoami', async (ctx, next) => {
+	if (ctx.isUnauthenticated()) {
+		ctx.throw(403);
+	}
+
+	const { email, firstName, lastName, authLevel, authType } = ctx.state.user;
+
+	ctx.body = JSON.stringify({
+		authLevel,
+		authType,
+		email,
+		firstName,
+		lastName,
+	});
+
 	await next();
 });
 
