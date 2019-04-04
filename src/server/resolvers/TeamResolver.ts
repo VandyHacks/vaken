@@ -1,7 +1,7 @@
 import { Resolver, Query, Arg, Mutation } from 'type-graphql';
 
 import { teamModel } from '../models/Team';
-import { hackerModel } from '../models/Hacker';
+import { HackerModel } from '../models/Hacker';
 
 @Resolver()
 class TeamResolver {
@@ -20,7 +20,7 @@ class TeamResolver {
 	): Promise<boolean> {
 		// Make sure the team and hacker exist
 		const team = await teamModel.findOne({ teamName });
-		const hacker = await hackerModel.findOne({ email });
+		const hacker = await HackerModel.findOne({ email });
 
 		// If the hacker doesn't exist, throw an error
 		if (!hacker) {
@@ -70,7 +70,7 @@ class TeamResolver {
 	): Promise<boolean> {
 		// Ensure the team and hacker are in a valid state
 		const team = await teamModel.findOne({ teamName });
-		const hacker = await hackerModel.findOne({ email });
+		const hacker = await HackerModel.findOne({ email });
 
 		if (!team) {
 			throw new Error('Team does not exist!');

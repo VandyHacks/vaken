@@ -374,7 +374,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 							value={
 								status === 'accepted' ? 'Accept' : status === 'rejected' ? 'Reject' : 'Undecided'
 							}
-							onChange={(input: string) => {
+  onChange={(input: string) => {
 								const newStatus = processSliderInput(input);
 								updateHackerStatus(mutation, {
 									email: rowData.email as string,
@@ -384,7 +384,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									// rowData.status = updatedStatus;
 								});
 							}}
-							disable={status !== 'accepted' && status !== 'rejected' && status !== 'submitted'}
+  disable={status !== 'accepted' && status !== 'rejected' && status !== 'submitted'}
 						/>
 					)}
 				</Mutation>

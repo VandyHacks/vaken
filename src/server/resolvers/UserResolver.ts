@@ -3,7 +3,7 @@ import { plainToClass } from 'class-transformer';
 
 import { User } from '../data/User';
 
-import { userModel } from '../models/User';
+import { UserModel } from '../models/User';
 
 // !!!!!!!!!!!!!!!!!!!!!
 // main issue: https://github.com/typestack/class-transformer/issues/53
@@ -20,7 +20,7 @@ class UserResolver {
 		nullable: true,
 	})
 	public static async getUserByEmail(@Arg('email') email: string): Promise<User | undefined> {
-		const user = await userModel.findOne({ email });
+		const user = await UserModel.findOne({ email });
 		if (!user) {
 			return undefined;
 		}
@@ -39,7 +39,7 @@ class UserResolver {
 	 */
 	@Query(() => [User], { description: 'Return all Users in the database' })
 	public static async getAllUsers(): Promise<User[]> {
-		const users = await userModel.find({});
+		const users = await UserModel.find({});
 		if (!users) {
 			return [];
 		}

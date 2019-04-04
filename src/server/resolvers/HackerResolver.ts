@@ -3,7 +3,7 @@ import { plainToClass } from 'class-transformer';
 
 import Hacker from '../data/Hacker';
 import Status from '../enums/Status';
-import { hackerModel } from '../models/Hacker';
+import { HackerModel } from '../models/Hacker';
 
 @Resolver(() => Hacker)
 class HackerResolver {
@@ -13,7 +13,7 @@ class HackerResolver {
 	 */
 	@Query(() => Hacker, { nullable: true })
 	public static async getHackerByEmail(@Arg('email') email: string): Promise<Hacker | null> {
-		const hacker = await hackerModel.findOne({ email });
+		const hacker = await HackerModel.findOne({ email });
 		if (!hacker) {
 			return null;
 		}
@@ -42,7 +42,7 @@ class HackerResolver {
 		description: 'Return all the Hackers in the database',
 	})
 	public static async getAllHackers(): Promise<Hacker[]> {
-		const hackers = await hackerModel.find({});
+		const hackers = await HackerModel.find({});
 
 		if (!hackers) {
 			return [];
@@ -82,7 +82,7 @@ class HackerResolver {
 		@Arg('email', { nullable: false }) email: string,
 		@Arg('newStatus') newStatus: Status
 	): Promise<Status | null> {
-		const newHacker = await hackerModel.findOneAndUpdate(
+		const newHacker = await HackerModel.findOneAndUpdate(
 			{ email },
 			{ $set: { status: newStatus } },
 			{ new: true }

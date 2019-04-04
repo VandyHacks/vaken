@@ -51,7 +51,7 @@ mongoose
 		useNewUrlParser: true,
 	})
 	.then(
-		() => {
+		(): void => {
 			// eslint-disable-next-line no-console
 			console.log('>>> MongoDB Connected');
 		},
@@ -60,8 +60,9 @@ mongoose
 			console.log('err:', err);
 		}
 	);
+
 /*
- * Graph QL
+ * GraphQL
  */
 
 /**

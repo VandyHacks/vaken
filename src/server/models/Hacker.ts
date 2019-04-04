@@ -1,4 +1,4 @@
-import { prop, arrayProp, Typegoose } from 'typegoose';
+import { prop, arrayProp } from 'typegoose';
 import { User } from './User';
 import Ethnicity from '../enums/Ethnicity';
 // import Race from '../enums/Race';
@@ -70,8 +70,8 @@ class Hacker extends User {
 	public teamName?: string = '';
 }
 
-const hackerModel = new Hacker().getModelForClass(Hacker);
+const HackerModel = new Hacker().getModelForClass(Hacker);
 
-export { Hacker, hackerModel };
+export { Hacker, HackerModel };
 
 // Copyright (c) 2019 Vanderbilt University

@@ -63,7 +63,9 @@ export const Profile: React.FunctionComponent<{}> = (): JSX.Element => {
 				return (
 					<StyledQuestion key={title} htmlFor={title}>
 						<div>
-							{title} {field.note ? <FieldNote> –{field.note}</FieldNote> : null}
+							{title} {field.note ? <FieldNote> –
+{field.note}
+</FieldNote> : null}
 						</div>
 						{field.prompt ? <FieldPrompt>{field.prompt}</FieldPrompt> : null}
 						<field.Component

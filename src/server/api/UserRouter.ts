@@ -1,19 +1,20 @@
 /* eslint-disable no-console */
 import koaRouter from 'koa-router';
 import passport from 'koa-passport';
-import { userModel } from '../models/User';
-import { hackerModel } from '../models/Hacker';
+import { UserModel } from '../models/User';
+import { HackerModel } from '../models/Hacker';
 import AuthType from '../enums/AuthType';
 import AuthLevel from '../enums/AuthLevel';
 import Status from '../enums/Status';
 
+// eslint-disable-next-line new-cap
 const userRouter = new koaRouter();
 
 // Mongo test
 userRouter.post('/mongo', async (ctx, next) => {
-	const newUser = new userModel(ctx.request.query);
+	const newUser = new UserModel(ctx.request.query);
 	await newUser.save();
-	const user = await userModel.findOne({ firstName: 'vandy' });
+	const user = await UserModel.findOne({ firstName: 'vandy' });
 	console.log(user);
 	await next();
 });
@@ -52,7 +53,7 @@ userRouter.get('/api/logout', async (ctx, next) => {
 
 // Create a new local account
 userRouter.post('/api/register/user', async (ctx, next) => {
-	const existingUser = await userModel.findOne({ email: ctx.request.body.username });
+	const existingUser = await UserModel.findOne({ email: ctx.request.body.username });
 
 	// found user
 	if (existingUser) {
@@ -68,7 +69,7 @@ userRouter.post('/api/register/user', async (ctx, next) => {
 			email: ctx.request.body.email,
 			password: ctx.request.body.password,
 		};
-		const createdUser = await userModel.create(newUser);
+		const createdUser = await UserModel.create(newUser);
 		if (createdUser) {
 			ctx.body = { authLevel: createdUser.authLevel, success: true, username: createdUser.email };
 			ctx.login(createdUser);
@@ -86,7 +87,7 @@ userRouter.post('/api/register/user', async (ctx, next) => {
 
 // Create a new local hacker account
 userRouter.post('/api/register/hacker', async (ctx, next) => {
-	const existingUser = await hackerModel.findOne({ email: ctx.request.body.username });
+	const existingUser = await HackerModel.findOne({ email: ctx.request.body.username });
 
 	// found user
 	if (existingUser) {
@@ -104,7 +105,7 @@ userRouter.post('/api/register/hacker', async (ctx, next) => {
 		}
 		console.log(newHacker);
 		console.log('Attempting to create a new hacker');
-		const createdHacker = await hackerModel.create(newHacker);
+		const createdHacker = await HackerModel.create(newHacker);
 		if (createdHacker) {
 			ctx.body = {
 				authLevel: createdHacker.authLevel,
