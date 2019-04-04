@@ -5,9 +5,11 @@ import { Link } from 'react-router-dom';
 import HackerTable from './HackerTable';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { Spinner } from '../../components/Loading/Spinner';
-import ErrorMessage from '../../components/Text/ErrorMessage';
+import { ErrorMessage } from '../../components/Text/ErrorMessage';
 import TextButton from '../../components/Buttons/TextButton';
 import STRINGS from '../../assets/strings.json';
+import { Route, Switch } from 'react-router-dom';
+import HackerView from './HackerView';
 
 const GET_HACKERS = gql`
 	query {
@@ -37,19 +39,33 @@ const ManageHackers = (): JSX.Element => {
 	);
 
 	return (
-		<Query query={GET_HACKERS}>
-			{({ loading, error, data }: any) => {
-				if (error) console.log(error);
-				console.log(data);
-				return (
-					<>
-						<FloatingPopup borderRadius="1rem" height="100%" backgroundOpacity="1" padding="1.5rem">
-							{loading ? <Spinner /> : error ? Error : <HackerTable data={data.getAllHackers} />}
-						</FloatingPopup>
-					</>
-				);
-			}}
-		</Query>
+		<FloatingPopup borderRadius="1rem" height="100%" backgroundOpacity="1" padding="1.5rem">
+			<Switch>
+				<Route path="/manageHackers/hacker" component={HackerView} />
+				<Route
+					path="/manageHackers"
+					render={() => (
+						<Query query={GET_HACKERS}>
+							{({ loading, error, data }: any) => {
+								if (error) console.log(error);
+								console.log(data);
+								return (
+									<>
+										{loading ? (
+											<Spinner />
+										) : error ? (
+											Error
+										) : (
+											<HackerTable data={data.getAllHackers} />
+										)}
+									</>
+								);
+							}}
+						</Query>
+					)}
+				/>
+			</Switch>
+		</FloatingPopup>
 	);
 };
 

@@ -23,6 +23,7 @@ import SearchBox from '../../components/Input/SearchBox';
 import plane from '../../assets/img/plane.svg';
 import STRINGS from '../../assets/strings.json';
 import Select from 'react-select';
+import { Link } from 'react-router-dom';
 import { Mutation } from 'react-apollo';
 import { gql } from 'apollo-boost';
 // TODO(alan): add d.ts file, most already defined here: https://github.com/valerybugakov/react-selectable-fast/blob/master/src/SelectableGroup.js
@@ -211,7 +212,7 @@ interface DeselectElement extends HTMLDivElement {
 	context: {
 		selectable: {
 			clearSelection: () => void;
-		}
+		};
 	};
 }
 
@@ -249,7 +250,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
 
 		// TODO: replace any
-		let newSortedData = (((update || !data) ? [...props.data] : data) as any).sort((a: any, b: any) =>
+		let newSortedData = ((update || !data ? [...props.data] : data) as any).sort((a: any, b: any) =>
 			collator.compare(a[sortBy], b[sortBy])
 		);
 		if (sortDirection === SortDirection.DESC) {
@@ -363,6 +364,8 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 	const actionRenderer = ({ rowData }: TableCellProps) => {
 		// TODO(alan): extract onChange to own method
 		const status = rowData.status.toLowerCase();
+		const email = rowData.email;
+
 		return (
 			<Actions className="ignore-select">
 				<Mutation mutation={UPDATE_STATUS}>
@@ -388,7 +391,11 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 						/>
 					)}
 				</Mutation>
-				<TableButton>View</TableButton>
+				<Link
+					style={{ textDecoration: 'none' }}
+					to={{ pathname: "/manageHackers/hacker", state: { email: email } }}>
+					<TableButton>View</TableButton>
+				</Link>
 			</Actions>
 		);
 	};
@@ -449,7 +456,14 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 			if (!useRegex) {
 				// fuzzy filtering
 				const fuse = new Fuse(props.data, opts);
-				setSortedData(sortData({ sortBy: sortByState, sortDirection: sortDirectionState, update: false, data: fuse.search(value)}));
+				setSortedData(
+					sortData({
+						sortBy: sortByState,
+						sortDirection: sortDirectionState,
+						update: false,
+						data: fuse.search(value),
+					})
+				);
 			} else {
 				let regex: RegExp;
 				let isValid = true;
@@ -463,7 +477,14 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 					const newSortedData = [...props.data].filter((user: any) => {
 						return regex.test(user[selectedColumns[0].value]);
 					});
-					setSortedData(sortData({ sortBy: sortByState, sortDirection: sortDirectionState, update: false, data: newSortedData }));
+					setSortedData(
+						sortData({
+							sortBy: sortByState,
+							sortDirection: sortDirectionState,
+							update: false,
+							data: newSortedData,
+						})
+					);
 				} else {
 					console.log('Invalid regular expression');
 				}
@@ -471,7 +492,9 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		} else {
 			// reset
 			// setSortedData([...props.data]);
-			setSortedData(sortData({ sortBy: sortByState, sortDirection: sortDirectionState, update: true }));
+			setSortedData(
+				sortData({ sortBy: sortByState, sortDirection: sortDirectionState, update: true })
+			);
 		}
 		setSearchValue(value);
 	};
@@ -645,7 +668,13 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 														});
 														// to deselect afterwards, react-selectable-fast has no clean way to interface with a clearSelection function
 														// so this is a workaround by simulating a click on the SelectAllButton
-														if (sortByState === "status" && deselect && deselect.current && deselect.current.context && deselect.current.context.selectable) {
+														if (
+															sortByState === 'status' &&
+															deselect &&
+															deselect.current &&
+															deselect.current.context &&
+															deselect.current.context.selectable
+														) {
 															deselect.current.context.selectable.clearSelection();
 														}
 													}}
