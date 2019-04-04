@@ -5,8 +5,7 @@ import bodyParser from 'koa-bodyparser';
 import mongoose from 'mongoose';
 import passport from 'koa-passport';
 import session from 'koa-session';
-import { MongoClient, ObjectID } from 'mongodb';
-import { ApolloServer, gql } from 'apollo-server-koa';
+import { ApolloServer } from 'apollo-server-koa';
 import { buildSchema } from 'type-graphql';
 
 import userRouter from './api/UserRouter';
@@ -18,7 +17,9 @@ import SponsorRepResolver from './resolvers/SponsorRepResolver';
 import SponsorResolver from './resolvers/SponsorResolver';
 import TeamResolver from './resolvers/TeamResolver';
 
+// eslint-disable-next-line new-cap
 const app = new koa();
+// eslint-disable-next-line new-cap
 const router = new koaRouter();
 
 // Default port to listen
@@ -92,7 +93,7 @@ async function launchServer(): Promise<void> {
 	apollo.applyMiddleware({ app });
 
 	// Begin listening on the defined port
-	const server = app.listen(port, () => {
+	app.listen(port, () => {
 		// eslint-disable-next-line no-console
 		console.log(`>>> Server started at http://localhost:${port}${apollo.graphqlPath}`);
 	});
