@@ -1,9 +1,8 @@
-import { Resolver, Query, Arg } from 'type-graphql';
-import { plainToClass } from 'class-transformer';
+import { Resolver } from 'type-graphql';
 
 import { SponsorRep } from '../data/SponsorRep';
 
-@Resolver(of => SponsorRep)
+@Resolver(() => SponsorRep)
 class SponsorRepResolver {}
 
 export default SponsorRepResolver;

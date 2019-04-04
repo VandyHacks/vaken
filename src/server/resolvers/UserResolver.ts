@@ -9,7 +9,7 @@ import { userModel } from '../models/User';
 // main issue: https://github.com/typestack/class-transformer/issues/53
 // !!!!!!!!!!!!!!!!!!!!!
 
-@Resolver(of => User)
+@Resolver(() => User)
 class UserResolver {
 	/**
 	 * @param {string} email - email address of a particular user
@@ -19,7 +19,7 @@ class UserResolver {
 		description: 'Return a single User corresponding to a known email address',
 		nullable: true,
 	})
-	public async getUserByEmail(@Arg('email') email: string): Promise<User | undefined> {
+	public static async getUserByEmail(@Arg('email') email: string): Promise<User | undefined> {
 		const user = await userModel.findOne({ email });
 		if (!user) {
 			return undefined;
@@ -38,7 +38,7 @@ class UserResolver {
 	 * @returns {[User]} All Users in the Vaken database
 	 */
 	@Query(() => [User], { description: 'Return all Users in the database' })
-	public async getAllUsers(): Promise<User[]> {
+	public static async getAllUsers(): Promise<User[]> {
 		const users = await userModel.find({});
 		if (!users) {
 			return [];

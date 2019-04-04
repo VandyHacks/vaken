@@ -14,7 +14,7 @@ class TeamResolver {
 	@Mutation(() => Boolean, {
 		description: 'Add a Hacker to a team',
 	})
-	public async addHackerToTeam(
+	public static async addHackerToTeam(
 		@Arg('email', { nullable: false }) email: string,
 		@Arg('teamName') teamName: string
 	): Promise<boolean> {
@@ -64,7 +64,7 @@ class TeamResolver {
 	@Mutation(() => Boolean, {
 		description: 'Remove a Hacker from a team',
 	})
-	public async removeHackerFromTeam(
+	public static async removeHackerFromTeam(
 		@Arg('email', { nullable: false }) email: string,
 		@Arg('teamName') teamName: string
 	): Promise<boolean> {
@@ -112,7 +112,7 @@ class TeamResolver {
 		description: 'Return the size of a Team',
 		nullable: true,
 	})
-	public async getTeamSize(@Arg('teamName') teamName: string): Promise<number> {
+	public static async getTeamSize(@Arg('teamName') teamName: string): Promise<number> {
 		const team = await teamModel.findOne({ teamName });
 
 		if (!team) {
