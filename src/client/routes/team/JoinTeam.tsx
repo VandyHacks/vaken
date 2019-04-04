@@ -1,10 +1,10 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { Mutation } from 'react-apollo';
+import { gql } from 'apollo-boost';
 import SearchBox from '../../components/Input/SearchBox';
 import STRINGS from '../../assets/strings.json';
 import ActionButton from '../../components/Buttons/ActionButton';
-import { Mutation } from 'react-apollo';
-import { gql } from 'apollo-boost';
 import { GET_TEAM } from './Team';
 
 const JOIN_TEAM = gql`
@@ -30,7 +30,7 @@ export const JoinTeam: FunctionComponent<Props> = (props: Props): JSX.Element =>
 	const [searchValue, setSearchValue] = useState('');
 	const [errorMsg, setErrorMsg] = useState('');
 	const emailAddress = 'ml@mattleon.com';
-	
+
 	return (
 		<Mutation mutation={JOIN_TEAM}>
 			{(mutation, { error }) => (
@@ -51,8 +51,8 @@ export const JoinTeam: FunctionComponent<Props> = (props: Props): JSX.Element =>
 							onClick={() => {
 								console.log(searchValue);
 								mutation({
-									variables: { email: emailAddress, teamName: searchValue },
 									refetchQueries: [{ query: GET_TEAM, variables: { email: emailAddress } }],
+									variables: { email: emailAddress, teamName: searchValue },
 								});
 								if (!error) {
 									setErrorMsg('');

@@ -1,13 +1,13 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
+import { gql } from 'apollo-boost';
+import { Query } from 'react-apollo';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import JoinTeam from './JoinTeam';
 import ViewTeam from './ViewTeam';
 import { displayFlex } from '../../components/Containers/FlexContainers';
 import Announcment from '../../components/Text/Announcment';
 import STRINGS from '../../assets/strings.json';
-import { gql } from 'apollo-boost';
-import { Query } from 'react-apollo';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import Spinner from '../../components/Loading/Spinner';
 
@@ -32,7 +32,7 @@ export const Team: FunctionComponent<Props> = (props: Props): JSX.Element => {
 		<Layout>
 			<Announcment value={STRINGS.HACKER_TEAMS_ANNOUNCMENT_TEXT} />
 			<FloatingPopup borderRadius="1rem" width="35rem" backgroundOpacity="1" padding="1.5rem">
-				<Query query={GET_TEAM} variables={{ email: "ml@mattleon.com" }}>
+				<Query query={GET_TEAM} variables={{ email: 'ml@mattleon.com' }}>
 					{({ data, loading, error }) => {
 						if (loading) {
 							return <Spinner />;
@@ -45,7 +45,11 @@ export const Team: FunctionComponent<Props> = (props: Props): JSX.Element => {
 
 						console.log(data);
 						// console.log(data.getHackerByEmail.teamName);
-						return data.getHackerByEmail.teamName === "" ? <JoinTeam /> : <ViewTeam teamName={data.getHackerByEmail.teamName}/>;
+						return data.getHackerByEmail.teamName === '' ? (
+							<JoinTeam />
+						) : (
+							<ViewTeam teamName={data.getHackerByEmail.teamName} />
+						);
 					}}
 				</Query>
 			</FloatingPopup>

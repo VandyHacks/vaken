@@ -38,10 +38,7 @@ class TeamResolver {
 
 		// Add the hacker to the team
 		try {
-			teamModel.updateOne(
-				{ teamName: teamName },
-				{ $push: { teamMembers: hacker } },
-			).exec();
+			teamModel.updateOne({ teamName: teamName }, { $push: { teamMembers: hacker } }).exec();
 		} catch (err) {
 			throw new Error('Hacker could not be added to team!');
 		}
@@ -88,7 +85,7 @@ class TeamResolver {
 			teamModel.findOneAndUpdate({ teamName: teamName }, { $pull: { teamMembers: hacker } });
 
 			// Remove teamName from Hacker's profile
-			hacker.teamName = "";
+			hacker.teamName = '';
 			hacker.save();
 		} catch (err) {
 			throw new Error('Hacker could not be removed from team!');

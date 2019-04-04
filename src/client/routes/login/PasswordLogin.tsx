@@ -120,6 +120,4 @@ export default PasswordLogin;
 
 // Copyright (c) 2019 Vanderbilt University
 
-const isUnique = (e, i, arr) => {
-
-}
+const isUnique = (e, i, arr) => {};

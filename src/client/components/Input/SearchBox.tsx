@@ -20,8 +20,9 @@ const SearchBox = styled('input')`
 	border-radius: 0.375rem;
 	font-size: 1rem;
 	box-sizing: border-box;
-	${(props: Props) => (props.hasIcon && 'padding-left: 2rem;')};
-	${(props: Props) => (props.hasIcon && `background: #ffffff url(${searchIcon}) 0.25rem 50% no-repeat;`)};
+	${(props: Props) => props.hasIcon && 'padding-left: 2rem;'};
+	${(props: Props) =>
+		props.hasIcon && `background: #ffffff url(${searchIcon}) 0.25rem 50% no-repeat;`};
 	:focus,
 	:active {
 		outline: none;

@@ -1,13 +1,13 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
+import { Mutation } from 'react-apollo';
+import { gql } from 'apollo-boost';
 import { FlexColumn } from '../../components/Containers/FlexContainers';
 import STRINGS from '../../assets/strings.json';
 import Title from '../../components/Text/Title';
 import { CenterButtonText } from '../../components/Buttons/Buttons';
 import SmallCenteredText from '../../components/Text/SmallCenteredText';
 import TextButton from '../../components/Buttons/TextButton';
-import { Mutation } from 'react-apollo';
-import { gql } from 'apollo-boost';
 import { GET_TEAM } from './Team';
 
 const LEAVE_TEAM = gql`
@@ -52,8 +52,8 @@ export const ViewTeam: FunctionComponent<Props> = (props: Props): JSX.Element =>
 						glowColor="rgba(0, 0, 255, 0.67)"
 						onClick={() => {
 							mutation({
-								variables: { email: emailAddress },
 								refetchQueries: [{ query: GET_TEAM, variables: { email: emailAddress } }],
+								variables: { email: emailAddress },
 							});
 							if (!error) {
 								console.log('Success!');

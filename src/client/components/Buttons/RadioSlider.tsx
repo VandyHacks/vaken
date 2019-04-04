@@ -151,7 +151,9 @@ export const RadioSlider: FunctionComponent<Props> = (props: Props): JSX.Element
 					width={`${width}px`}
 					color={color}
 					id={selected}
-					onClick={(event: React.MouseEvent<HTMLDivElement, MouseEvent>) => props.large && onClick(event)}>
+					onClick={(event: React.MouseEvent<HTMLDivElement, MouseEvent>) =>
+						props.large && onClick(event)
+					}>
 					{selected}
 				</Selector>
 			)}
