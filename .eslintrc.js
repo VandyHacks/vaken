@@ -14,8 +14,7 @@ module.exports = {
 			},
 		},
 	},
-	plugins: ['sort-keys-fix', 'react-hooks'
-	],
+	plugins: ['sort-keys-fix', 'react-hooks'],
 	parserOptions: {
 		ecmaFeatures: {
 			jsx: true,
@@ -28,36 +27,23 @@ module.exports = {
 		'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
 		'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
 		'prettier/prettier': 'error',
-		'react/jsx-indent': [
-			2, 'tab',
-			{ checkAttributes: true
-			}
-		],
+		'react/jsx-indent': [2, 'tab', { checkAttributes: true }],
 		'react/jsx-filename-extension': [
 			2,
 			{
-				extensions: ['.tsx', '.jsx'
-				],
+				extensions: ['.tsx', '.jsx'],
 			},
 		],
-		'sort-keys-fix/sort-keys-fix': ['error', 'asc',
-			{ caseSensitive: true, natural: true
-			}
-		],
+		'sort-keys-fix/sort-keys-fix': ['error', 'asc', { caseSensitive: true, natural: true }],
 		'jsx-a11y/label-has-associated-control': [
 			1,
 			{
-				labelComponents: ['CustomInputLabel'
-				],
-				labelAttributes: ['label'
-				],
-				controlComponents: ['CustomInput'
-				],
+				labelComponents: ['CustomInputLabel'],
+				labelAttributes: ['label'],
+				controlComponents: ['CustomInput'],
 				assert: 'either',
 			},
 		],
-		'jsx-a11y/label-has-for': [
-			0
-		],
+		'jsx-a11y/label-has-for': [0],
 	},
 };
