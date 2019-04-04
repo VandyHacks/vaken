@@ -13,6 +13,13 @@ import {
 import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import Fuse from 'fuse.js';
+import Select from 'react-select';
+import { Mutation } from 'react-apollo';
+import { gql } from 'apollo-boost';
+// TODO(alan): add d.ts file, most already defined here: https://github.com/valerybugakov/react-selectable-fast/blob/master/src/SelectableGroup.js
+// @ts-ignore
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
 import TableButton from '../../components/Buttons/TableButton';
 import ToggleSwitch from '../../components/Buttons/ToggleSwitch';
 import RadioSlider from '../../components/Buttons/RadioSlider';
@@ -22,12 +29,6 @@ import Checkmark from '../../components/Symbol/Checkmark';
 import SearchBox from '../../components/Input/SearchBox';
 import plane from '../../assets/img/plane.svg';
 import STRINGS from '../../assets/strings.json';
-import Select from 'react-select';
-import { Mutation } from 'react-apollo';
-import { gql } from 'apollo-boost';
-// TODO(alan): add d.ts file, most already defined here: https://github.com/valerybugakov/react-selectable-fast/blob/master/src/SelectableGroup.js
-// @ts-ignore
-import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
 import Row from './Row';
 import 'babel-polyfill';
 import { ID } from 'type-graphql';
@@ -507,6 +508,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 					value={searchValue}
 					placeholder={useRegex ? "Search by regex string, e.g. '^[a-b].*'" : 'Search by text'}
 					onChange={(event: React.ChangeEvent<HTMLInputElement>) => onSearch(event.target.value)}
+					hasIcon
 				/>
 				<ToggleSwitch
 					label="Use Regex?"

@@ -6,10 +6,10 @@ import User from './User';
 @ObjectType({ description: 'DTO for a Vaken mentor' })
 export class Mentor extends User {
 	@Field(type => [String])
-	public shifts!: [string];
+	public shifts!: string[];
 
 	@Field(type => [String])
-	public skills!: [string];
+	public skills!: string[];
 }
 
 export default Mentor;

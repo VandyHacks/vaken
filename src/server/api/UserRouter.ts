@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import koaRouter from 'koa-router';
 import passport from 'koa-passport';
 import { userModel } from '../models/User';
@@ -62,8 +63,8 @@ userRouter.post('/api/register/user', async (ctx, next) => {
 		//no user found, create new user
 		console.log('> Creating new local user.....');
 		const newUser = {
-			authType: AuthType.LOCAL,
 			authLevel: AuthLevel.HACKER,
+			authType: AuthType.LOCAL,
 			email: ctx.request.body.email,
 			password: ctx.request.body.password,
 		};
@@ -98,7 +99,9 @@ userRouter.post('/api/register/hacker', async (ctx, next) => {
 		const newHacker = ctx.request.body;
 		newHacker.authType = AuthType.LOCAL;
 		newHacker.authLevel = AuthLevel.HACKER;
-		newHacker.status = Status.Created;
+		if (!newHacker.status) {
+			newHacker.status = Status.Created;
+		}
 		console.log(newHacker);
 		console.log('Attempting to create a new hacker');
 		const createdHacker = await hackerModel.create(newHacker);
@@ -118,6 +121,14 @@ userRouter.post('/api/register/hacker', async (ctx, next) => {
 			ctx.throw(401);
 			await next();
 		}
+	}
+});
+
+userRouter.get('/api/auth/status', async ctx => {
+	if (ctx.isAuthenticated()) {
+		ctx.body = { authLevel: 'hacker', success: true, username: 'ml@ml.co' };
+	} else {
+		ctx.throw(401);
 	}
 });
 

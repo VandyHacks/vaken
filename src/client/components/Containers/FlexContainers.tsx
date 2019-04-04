@@ -15,6 +15,8 @@ export interface ContainerProps {
 	paddingRight?: string;
 	paddingLeft?: string;
 	background?: string;
+	justifyContent?: string;
+	alignItems?: string;
 }
 
 export const displayFlex = `
@@ -24,8 +26,14 @@ export const displayFlex = `
 	justify-content: center;
 `;
 
-export const FlexColumn = styled.div`
-  ${displayFlex} 
+export const FlexDiv = styled.div`
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: ${({ alignItems }: ContainerProps) => alignItems || 'center'};
+	justify-content: ${({ justifyContent }: ContainerProps) => justifyContent || 'center'};
+`;
+
+export const FlexColumn = styled(FlexDiv)`
 	height: ${(props: ContainerProps) => props.height || '100%'};
 	width: ${(props: ContainerProps) => props.width || '100%'};
 	padding: ${(props: ContainerProps) => props.padding || '100%'};
@@ -33,8 +41,8 @@ export const FlexColumn = styled.div`
 	padding-top: ${(props: ContainerProps) => props.paddingTop || '0'};
 	padding-left: ${(props: ContainerProps) => props.paddingLeft || '0'};
 	padding-right: ${(props: ContainerProps) => props.paddingRight || '0'};
-  margin: ${(props: ContainerProps) => props.margin || '0'};
-  ${(props: ContainerProps) => (props.background ? `background: ${props.background};` : null)}
+	margin: ${(props: ContainerProps) => props.margin || '0'};
+	${(props: ContainerProps) => (props.background ? `background: ${props.background};` : null)}
 `;
 
 export const FlexRow = styled(FlexColumn)`

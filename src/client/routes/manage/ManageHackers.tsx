@@ -1,12 +1,10 @@
 import React from 'react';
 import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
-import { Link } from 'react-router-dom';
 import HackerTable from './HackerTable';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { Spinner } from '../../components/Loading/Spinner';
-import ErrorMessage from '../../components/Text/ErrorMessage';
-import TextButton from '../../components/Buttons/TextButton';
+import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import STRINGS from '../../assets/strings.json';
 
 const GET_HACKERS = gql`
@@ -24,32 +22,23 @@ const GET_HACKERS = gql`
 `;
 
 const ManageHackers = (): JSX.Element => {
-	const Error = (
-		<ErrorMessage>
-			<>
-				<p>There was a problem.</p>
-				<p>Please contact your dev team.</p>
-				<Link style={{ textDecoration: 'none' }} to="/dashboard">
-					<TextButton text="Return to Dashboard" background={STRINGS.WARNING_COLOR} color="white" />
-				</Link>
-			</>
-		</ErrorMessage>
-	);
-
 	return (
-		<Query query={GET_HACKERS}>
-			{({ loading, error, data }: any) => {
-				if (error) console.log(error);
-				console.log(data);
-				return (
-					<>
-						<FloatingPopup borderRadius="1rem" height="100%" backgroundOpacity="1" padding="1.5rem">
-							{loading ? <Spinner /> : error ? Error : <HackerTable data={data.getAllHackers} />}
-						</FloatingPopup>
-					</>
-				);
-			}}
-		</Query>
+		<FloatingPopup borderRadius="1rem" height="100%" backgroundOpacity="1" padding="1.5rem">
+			<Query query={GET_HACKERS}>
+				{({ loading, error, data }: any) => {
+					if (loading) {
+						return <Spinner />;
+					}
+
+					if (error) {
+						console.log(error);
+						return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
+					}
+
+					return <HackerTable data={data.getAllHackers} />;
+				}}
+			</Query>
+		</FloatingPopup>
 	);
 };
 

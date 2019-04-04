@@ -9,7 +9,6 @@ import LoginPage from './routes/login/Login';
 import Frame from './routes/dashboard/Frame';
 import AuthContext from './contexts/AuthContext';
 import { User } from '../common/models/User';
-import { defaultProps } from 'react-select/lib/Select';
 
 const GlobalStyle = createGlobalStyle`
 	body {

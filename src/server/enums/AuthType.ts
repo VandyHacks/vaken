@@ -11,3 +11,5 @@ registerEnumType(AuthType, {
 });
 
 export default AuthType;
+
+// Copyright (c) 2019 Vanderbilt University

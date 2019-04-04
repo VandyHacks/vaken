@@ -31,12 +31,13 @@ class HackerResolver {
 				school: hacker.school,
 				shirtSize: hacker.shirtSize,
 				status: hacker.status,
+				teamName: hacker.teamName,
 			});
 		}
 	}
 
 	/**
-	 * @returns {[Hacker]} - All Hackers in the database
+	 * @returns {Promise<[Hacker]>} - All Hackers in the database
 	 */
 	@Query(() => [Hacker], {
 		description: 'Return all the Hackers in the database',
@@ -63,6 +64,7 @@ class HackerResolver {
 					school: hacker.school,
 					shirtSize: hacker.shirtSize,
 					status: hacker.status,
+					teamName: hacker.teamName,
 				});
 			});
 
@@ -81,7 +83,7 @@ class HackerResolver {
 	public async updateHackerStatus(
 		@Arg('email', { nullable: false }) email: string,
 		@Arg('newStatus') newStatus: Status
-	) {
+	): Promise<Status | null> {
 		const newHacker = await hackerModel.findOneAndUpdate(
 			{ email: email },
 			{ $set: { status: newStatus } },
@@ -94,29 +96,8 @@ class HackerResolver {
 			return newHacker.status;
 		}
 	}
-
-		/**
-	 * Update a hacker's status in a batch
-	 */
-	@Mutation((returns: any) => Status, {
-		description: "Update a Hacker's status and return updated status",
-	})
-	async updateHackerStatusAsBatch(
-		@Arg('emails', type => [String], { nullable: false }) emails: [string],
-		@Arg('newStatus') newStatus: Status
-	) {
-		emails.forEach(async email => {
-			const newHacker = await hackerModel.findOneAndUpdate(
-				{ email: email },
-				{ $set: { status: newStatus } },
-				{ new: true }
-			);
-			if (!newHacker) {
-				console.log('Error updating status');
-				return null;
-		}});
-		return newStatus;
-	}
 }
 
 export default HackerResolver;
+
+// Copyright (c) 2019 Vanderbilt University

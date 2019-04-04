@@ -5,13 +5,13 @@ import { formChangeWrapper } from '../../components/Input/helperFunctions';
 import config from '../../assets/application';
 import Collapsible from '../../components/Containers/Collapsible';
 
-interface ConfigSection {
+export interface ConfigSection {
 	category: string;
 	fields: ConfigField[];
 	title: string;
 }
 
-interface ConfigField {
+export interface ConfigField {
 	Component: any;
 	fieldName: string;
 	placeholder?: string;

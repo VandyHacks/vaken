@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
 // @ts-ignore
 import SadFace from '../../assets/img/sad_face.svg?inline';
+import { Link } from 'react-router-dom';
+import TextButton from '../../components/Buttons/TextButton';
 
 const Rectangle = styled.div`
 	border: 0.1rem solid ${STRINGS.WARNING_COLOR};
@@ -17,11 +19,15 @@ const Rectangle = styled.div`
 	padding: 1rem;
 `;
 
-interface Props {
+const StyledP = styled.p`
+	white-space: pre-line;
+`;
+
+interface ErrorMessageProps {
 	children?: JSX.Element;
 }
 
-export const ErrorMessage: FunctionComponent<Props> = (props: Props): JSX.Element => {
+export const ErrorMessage: FunctionComponent<ErrorMessageProps> = (props: ErrorMessageProps): JSX.Element => {
 	return (
 		<Rectangle>
 			<SadFace />
@@ -30,4 +36,22 @@ export const ErrorMessage: FunctionComponent<Props> = (props: Props): JSX.Elemen
 	);
 };
 
-export default ErrorMessage;
+interface GraphQLErrorMessage {
+	text?: string;
+}
+
+export const GraphQLErrorMessage: FunctionComponent<GraphQLErrorMessage> = (props: GraphQLErrorMessage): JSX.Element => {
+	return (
+		<ErrorMessage>
+			<>
+				<StyledP>{props.text}</StyledP>
+				<Link style={{ textDecoration: 'none' }} to="/dashboard">
+					<TextButton text="Return to Dashboard" background={STRINGS.WARNING_COLOR} color="white" />
+				</Link>
+			</>
+		</ErrorMessage>
+	);
+};
+
+{/* export default ErrorMessage; */}
+// Copyright (c) 2019 Vanderbilt University

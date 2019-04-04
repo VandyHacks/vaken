@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import React from 'react';
-import { Button, CenterButtonText } from './Buttons';
+import { Button, CenterButtonText, ButtonProps } from './Buttons';
 
-interface Props {
+interface Props extends ButtonProps {
 	background?: string;
 	color?: string;
 	text: string;
