@@ -27,7 +27,7 @@ passport.use(
 				console.log('> Incorrect password');
 				done(null, false);
 			} else {
-				//found user
+				// found user
 				if (user.authType != AuthType.LOCAL) {
 					console.log('Wrong auth provider. Please use the standard local login.');
 					done(null, false);
@@ -72,7 +72,7 @@ passport.use(
 						done(null, user);
 					}
 				} else {
-					//no user found, create new user
+					// no user found, create new user
 					console.log('> Creating user.....');
 					const newUser = {
 						authLevel: AuthLevel.HACKER,
@@ -130,7 +130,7 @@ passport.use(
 						done(null, user);
 					}
 				} else {
-					//no user found, create new user
+					// no user found, create new user
 					console.log('> Creating user.....');
 					const newUser = {
 						authLevel: AuthLevel.HACKER,

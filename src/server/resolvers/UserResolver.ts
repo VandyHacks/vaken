@@ -20,19 +20,18 @@ class UserResolver {
 		nullable: true,
 	})
 	public async getUserByEmail(@Arg('email') email: string): Promise<User | undefined> {
-		const user = await userModel.findOne({ email: email });
+		const user = await userModel.findOne({ email });
 		if (!user) {
 			return undefined;
-		} else {
-			return plainToClass(User, {
-				authLevel: user.authLevel,
-				authType: user.authType,
-				email: user.email,
-				gender: user.gender,
-				nfcCodes: user.nfcCodes,
-				shirtSize: user.shirtSize,
-			});
 		}
+		return plainToClass(User, {
+			authLevel: user.authLevel,
+			authType: user.authType,
+			email: user.email,
+			gender: user.gender,
+			nfcCodes: user.nfcCodes,
+			shirtSize: user.shirtSize,
+		});
 	}
 
 	/**
@@ -43,20 +42,19 @@ class UserResolver {
 		const users = await userModel.find({});
 		if (!users) {
 			return [];
-		} else {
-			let userList: Object[] = [];
-			users.forEach(user => {
-				userList.push({
-					authLevel: user.authLevel,
-					authType: user.authType,
-					email: user.email,
-					gender: user.gender,
-					nfcCodes: user.nfcCodes,
-					shirtSize: user.shirtSize,
-				});
-			});
-			return plainToClass(User, userList);
 		}
+		const userList: Record<string, any>[] = [];
+		users.forEach(user => {
+			userList.push({
+				authLevel: user.authLevel,
+				authType: user.authType,
+				email: user.email,
+				gender: user.gender,
+				nfcCodes: user.nfcCodes,
+				shirtSize: user.shirtSize,
+			});
+		});
+		return plainToClass(User, userList);
 	}
 }
 

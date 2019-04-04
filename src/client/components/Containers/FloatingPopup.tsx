@@ -39,7 +39,7 @@ const AnimatedFloatingPopup: React.FunctionComponent<{ children: JSX.Element }> 
 ): JSX.Element => {
 	const { children } = props;
 	const [bind, { height }] = useMeasure();
-	const springProps = useSpring({ height: height });
+	const springProps = useSpring({ height });
 	const AFP = animated(FloatingPopup);
 
 	return <AFP {...bind}>{children}</AFP>;

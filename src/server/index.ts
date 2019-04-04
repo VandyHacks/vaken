@@ -25,7 +25,7 @@ const router = new koaRouter();
 const port = 8080;
 
 // Define a route handler for the default home page
-app.use(serve(__dirname + '/app'));
+app.use(serve(`${__dirname}/app`));
 
 app.use(session(app));
 app.use(bodyParser());

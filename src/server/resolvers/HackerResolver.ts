@@ -12,12 +12,44 @@ class HackerResolver {
 	 * @returns {Hacker} a Hacker associated with the provided email address or null if not found
 	 */
 	@Query(() => Hacker, { nullable: true })
-	public async getHackerByEmail(@Arg('email') email: string): Promise<Hacker | null> {
-		const hacker = await hackerModel.findOne({ email: email });
+	public static async getHackerByEmail(@Arg('email') email: string): Promise<Hacker | null> {
+		const hacker = await hackerModel.findOne({ email });
 		if (!hacker) {
 			return null;
-		} else {
-			return plainToClass(Hacker, {
+		}
+		return plainToClass(Hacker, {
+			authLevel: hacker.authLevel,
+			authType: hacker.authType,
+			email: hacker.email,
+			firstName: hacker.firstName,
+			gender: hacker.gender,
+			gradYear: hacker.gradYear,
+			lastName: hacker.lastName,
+			needsReimbursement: hacker.needsReimbursement,
+			nfcCodes: hacker.nfcCodes,
+			phoneNumber: hacker.phoneNumber,
+			school: hacker.school,
+			shirtSize: hacker.shirtSize,
+			status: hacker.status,
+			teamName: hacker.teamName,
+		});
+	}
+
+	/**
+	 * @returns {Promise<[Hacker]>} - All Hackers in the database
+	 */
+	@Query(() => [Hacker], {
+		description: 'Return all the Hackers in the database',
+	})
+	public static async getAllHackers(): Promise<Hacker[]> {
+		const hackers = await hackerModel.find({});
+
+		if (!hackers) {
+			return [];
+		}
+		const hackerList: Record<string, any>[] = [];
+		hackers.forEach(hacker => {
+			hackerList.push({
 				authLevel: hacker.authLevel,
 				authType: hacker.authType,
 				email: hacker.email,
@@ -33,43 +65,9 @@ class HackerResolver {
 				status: hacker.status,
 				teamName: hacker.teamName,
 			});
-		}
-	}
+		});
 
-	/**
-	 * @returns {Promise<[Hacker]>} - All Hackers in the database
-	 */
-	@Query(() => [Hacker], {
-		description: 'Return all the Hackers in the database',
-	})
-	public async getAllHackers(): Promise<Hacker[]> {
-		const hackers = await hackerModel.find({});
-
-		if (!hackers) {
-			return [];
-		} else {
-			let hackerList: Object[] = [];
-			hackers.forEach(hacker => {
-				hackerList.push({
-					authLevel: hacker.authLevel,
-					authType: hacker.authType,
-					email: hacker.email,
-					firstName: hacker.firstName,
-					gender: hacker.gender,
-					gradYear: hacker.gradYear,
-					lastName: hacker.lastName,
-					needsReimbursement: hacker.needsReimbursement,
-					nfcCodes: hacker.nfcCodes,
-					phoneNumber: hacker.phoneNumber,
-					school: hacker.school,
-					shirtSize: hacker.shirtSize,
-					status: hacker.status,
-					teamName: hacker.teamName,
-				});
-			});
-
-			return plainToClass(Hacker, hackerList);
-		}
+		return plainToClass(Hacker, hackerList);
 	}
 
 	/**
@@ -80,21 +78,20 @@ class HackerResolver {
 	@Mutation(() => Status, {
 		description: "Update a Hacker's status and return updated status",
 	})
-	public async updateHackerStatus(
+	public static async updateHackerStatus(
 		@Arg('email', { nullable: false }) email: string,
 		@Arg('newStatus') newStatus: Status
 	): Promise<Status | null> {
 		const newHacker = await hackerModel.findOneAndUpdate(
-			{ email: email },
+			{ email },
 			{ $set: { status: newStatus } },
 			{ new: true }
 		);
 
 		if (!newHacker) {
 			return null;
-		} else {
-			return newHacker.status;
 		}
+		return newHacker.status;
 	}
 }
 

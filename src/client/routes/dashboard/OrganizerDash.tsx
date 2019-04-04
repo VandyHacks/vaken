@@ -11,7 +11,7 @@ interface Props {}
 
 const colorPalette = STRINGS.COLOR_PALETTE.slice(1);
 
-const generateColor = (n: number): Array<string> =>
+const generateColor = (n: number): string[] =>
 	[...Array(n).keys()].map((i: number) => colorPalette[i % colorPalette.length]);
 
 const statusLabels = ['Verified', 'Started', 'Submitted', 'Accepted', 'Confirmed', 'Rejected'];

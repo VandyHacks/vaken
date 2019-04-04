@@ -15,7 +15,7 @@ export const useMeasure = (): any => {
 	const ref = useRef<any>();
 	const [bounds, set] = useState({ height: 0, left: 0, top: 0, width: 0 });
 	const [ro] = useState(() => new ResizeObserver(([entry]: any) => set(entry.contentRect)));
-	useEffect(() => (ro.observe(ref.current), ro.disconnect), []);
+	useEffect(() => (ro.observe(ref.current), ro.disconnect), [ro]);
 	return [{ ref }, bounds];
 };
 

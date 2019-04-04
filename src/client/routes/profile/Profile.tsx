@@ -25,14 +25,14 @@ const submit = (): void => {};
 
 export const Profile: React.FunctionComponent<{}> = (): JSX.Element => {
 	const initialFormState: any = {};
-	let initialSection = '';
+	const initialSection = '';
 	useEffect(() => {
 		initialFormState[PROFILE] = {};
 
 		config.forEach((field: ConfigField) => {
 			initialFormState[PROFILE][field.fieldName] = field.default || undefined;
 		});
-	}, [config]);
+	}, [initialFormState]);
 
 	const [formData, setFormData] = useImmer(initialFormState);
 	const [curSection, setCurSection] = useState(config[0].title);
@@ -63,7 +63,7 @@ export const Profile: React.FunctionComponent<{}> = (): JSX.Element => {
 				return (
 					<StyledQuestion key={title} htmlFor={title}>
 						<div>
-							{title} {field.note ? <FieldNote> – {field.note}</FieldNote> : null}
+							{title} {field.note ? <FieldNote> –{field.note}</FieldNote> : null}
 						</div>
 						{field.prompt ? <FieldPrompt>{field.prompt}</FieldPrompt> : null}
 						<field.Component

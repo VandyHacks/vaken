@@ -84,7 +84,7 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 	const formRef = useRef<HTMLFormElement>(null);
 
 	const initialFormState: any = {};
-	let initialSection = '';
+	const initialSection = '';
 	useEffect(() => {
 		config.forEach((section: ConfigSection, i) => {
 			initialFormState[section.category] = {};
@@ -93,7 +93,7 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 				initialFormState[section.category][field.fieldName] = field.default || undefined;
 			});
 		});
-	}, [config]);
+	}, [initialFormState]);
 
 	const [formData, setFormData] = useImmer(initialFormState);
 	const [curSection, setCurSection] = useState(config[0].title);
@@ -125,7 +125,7 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 							return (
 								<StyledQuestion key={title} htmlFor={title}>
 									<div>
-										{title} {field.note ? <FieldNote> – {field.note}</FieldNote> : null}
+										{title} {field.note ? <FieldNote> –{field.note}</FieldNote> : null}
 									</div>
 									{field.prompt ? <FieldPrompt>{field.prompt}</FieldPrompt> : null}
 									<field.Component value={fieldValue} onChange={onChange} {...rest} id={title} />

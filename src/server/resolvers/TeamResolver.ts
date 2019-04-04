@@ -19,8 +19,8 @@ class TeamResolver {
 		@Arg('teamName') teamName: string
 	): Promise<boolean> {
 		// Make sure the team and hacker exist
-		const team = await teamModel.findOne({ teamName: teamName });
-		const hacker = await hackerModel.findOne({ email: email });
+		const team = await teamModel.findOne({ teamName });
+		const hacker = await hackerModel.findOne({ email });
 
 		// If the hacker doesn't exist, throw an error
 		if (!hacker) {
@@ -30,7 +30,7 @@ class TeamResolver {
 		// If the team doesn't exist, create it
 		if (!team) {
 			try {
-				await teamModel.create({ teamMembers: [], teamName: teamName });
+				await teamModel.create({ teamMembers: [], teamName });
 			} catch (err) {
 				throw new Error('Team could not be created!');
 			}
@@ -38,7 +38,7 @@ class TeamResolver {
 
 		// Add the hacker to the team
 		try {
-			teamModel.updateOne({ teamName: teamName }, { $push: { teamMembers: hacker } }).exec();
+			teamModel.updateOne({ teamName }, { $push: { teamMembers: hacker } }).exec();
 		} catch (err) {
 			throw new Error('Hacker could not be added to team!');
 		}
@@ -69,8 +69,8 @@ class TeamResolver {
 		@Arg('teamName') teamName: string
 	): Promise<boolean> {
 		// Ensure the team and hacker are in a valid state
-		const team = await teamModel.findOne({ teamName: teamName });
-		const hacker = await hackerModel.findOne({ email: email });
+		const team = await teamModel.findOne({ teamName });
+		const hacker = await hackerModel.findOne({ email });
 
 		if (!team) {
 			throw new Error('Team does not exist!');
@@ -82,7 +82,7 @@ class TeamResolver {
 
 		// Remove hacker from the team
 		try {
-			teamModel.findOneAndUpdate({ teamName: teamName }, { $pull: { teamMembers: hacker } });
+			teamModel.findOneAndUpdate({ teamName }, { $pull: { teamMembers: hacker } });
 
 			// Remove teamName from Hacker's profile
 			hacker.teamName = '';
@@ -94,7 +94,7 @@ class TeamResolver {
 		// If the team is now empty, delete it
 		if (teamModel.size === 0) {
 			try {
-				teamModel.findOneAndDelete({ teamName: teamName });
+				teamModel.findOneAndDelete({ teamName });
 			} catch (err) {
 				throw new Error('Now empty team could not be deleted!');
 			}
@@ -113,7 +113,7 @@ class TeamResolver {
 		nullable: true,
 	})
 	public async getTeamSize(@Arg('teamName') teamName: string): Promise<number> {
-		const team = await teamModel.findOne({ teamName: teamName });
+		const team = await teamModel.findOne({ teamName });
 
 		if (!team) {
 			throw new Error('Team does not exist!');

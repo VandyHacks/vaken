@@ -88,7 +88,7 @@ export const RadioSlider: FunctionComponent<Props> = (props: Props): JSX.Element
 
 	// Moves the selector to the correct place, with the correct colors
 	// Takes into account the disable state
-	const toggle = (input: string) => {
+	const toggle = useCallback((input: string) => {
 		switch (input) {
 			case props.option1:
 				setWidth(option1Width);
@@ -107,14 +107,14 @@ export const RadioSlider: FunctionComponent<Props> = (props: Props): JSX.Element
 				break;
 		}
 		setSelected(input);
-	};
+	});
 
 	// Forces a retoggle when the props.value changes (ie for outside changes)
 	useEffect(() => {
 		if (isLoaded) {
 			toggle(props.value);
 		}
-	}, [props.value]);
+	}, [isLoaded, props.value, toggle]);
 
 	// Will set isLoaded = true once the widths are successfully taken (ie non-zero) from the switch elements
 	useEffect(() => {
@@ -122,7 +122,7 @@ export const RadioSlider: FunctionComponent<Props> = (props: Props): JSX.Element
 			toggle(props.value);
 			setIsLoaded(true);
 		}
-	}, [option1Width]);
+	}, [isLoaded, option1Width, option2Width, option3Width, props.value, toggle]);
 
 	const onClick = (event: any) => {
 		if (!props.disable) {

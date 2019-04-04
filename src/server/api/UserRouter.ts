@@ -60,7 +60,7 @@ userRouter.post('/api/register/user', async (ctx, next) => {
 		ctx.throw(409);
 		await next();
 	} else {
-		//no user found, create new user
+		// no user found, create new user
 		console.log('> Creating new local user.....');
 		const newUser = {
 			authLevel: AuthLevel.HACKER,
@@ -94,7 +94,7 @@ userRouter.post('/api/register/hacker', async (ctx, next) => {
 		ctx.throw(409);
 		await next();
 	} else {
-		//no user found, create new user
+		// no user found, create new user
 		console.log('> Creating new local hacker.....');
 		const newHacker = ctx.request.body;
 		newHacker.authType = AuthType.LOCAL;
