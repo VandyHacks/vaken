@@ -37,14 +37,14 @@ const Logo = styled.div`
 const HorizontalLine = styled.hr`
 	margin: 0 2rem;
 	width: calc(100% - 4rem);
-	color: white;
+	border: 0.03125rem solid white;
 	margin-bottom: 2rem;
 `;
 
 const HorizontalLineWithoutPad = styled.hr`
 	margin: 0 2rem;
 	width: calc(100% - 4rem);
-	color: white;
+	border: 0.03125rem solid white;
 	opacity: 0.1;
 `;
 
