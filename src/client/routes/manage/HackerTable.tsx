@@ -383,7 +383,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									console.log(updatedStatus);
 									// rowData.status = updatedStatus;
 								});
-}}
+							}}
 							disable={status !== 'accepted' && status !== 'rejected' && status !== 'submitted'}
 						/>
 					)}
@@ -497,7 +497,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		<FloatingButton
 			onClick={() => {
 				setSelectAll(!selectAll);
-}}>
+			}}>
 			{selectAll || hasSelection ? 'Deselect All' : 'Select All'}
 		</FloatingButton>
 	);
@@ -517,7 +517,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 					onChange={(selected: any) => {
 						if (Array.isArray(selected)) setSelectedColumns(selected);
 						else setSelectedColumns([selected]);
-}}
+					}}
 				/>
 				<SearchBox
 					value={searchValue}
@@ -543,13 +543,13 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 								onSelectionClear={() => {
 									setHasSelection(false);
 									setSelectedRowsEmails([]);
-}}
+								}}
 								onSelectionFinish={(keys: [JSX.Element]) => {
 									if (keys.length > 0) {
 										setHasSelection(true);
 										setSelectedRowsEmails(keys.map((key: JSX.Element) => key.props.rowData.email));
 									}
-}}
+								}}
 								ignoreList={['.ignore-select']}
 								resetOnStart>
 								<StyledTable
@@ -624,7 +624,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 													sortDirection,
 												},
 												plane
-)
+											)
 										}
 										cellRenderer={checkmarkRenderer}
 									/>
@@ -670,7 +670,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 														) {
 															deselect.current.context.selectable.clearSelection();
 														}
-}}
+													}}
 												/>
 											</Float>
 										)}

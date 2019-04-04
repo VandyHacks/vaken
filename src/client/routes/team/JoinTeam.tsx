@@ -41,7 +41,7 @@ export const JoinTeam: FunctionComponent<Props> = (props: Props): JSX.Element =>
 							placeholder="Type team name here"
 							onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
 								setSearchValue(event.target.value);
-}}
+							}}
 							minWidth="26rem"
 							width="26rem"
 							error={errorMsg !== ''}
@@ -64,10 +64,9 @@ export const JoinTeam: FunctionComponent<Props> = (props: Props): JSX.Element =>
 									console.log(error);
 								}
 								// console.log(searchValue);
-}}>
+							}}>
 							Join
-						
-</ActionButton>
+						</ActionButton>
 					</Layout>
 					<ErrorMsg>{errorMsg}</ErrorMsg>
 				</>
