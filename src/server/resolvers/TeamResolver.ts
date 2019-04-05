@@ -30,23 +30,35 @@ class TeamResolver {
 		// If the team doesn't exist, create it
 		if (!team) {
 			try {
-				await teamModel.create({ teamMembers: [], teamName });
+				await teamModel.create({ teamMembers: [{ _id: hacker._id }], teamName, size: 1 });
 			} catch (err) {
 				throw new Error('Team could not be created!');
 			}
-		}
+		} else {
+			// Check if the user is already part of the team
+			if (team.teamMembers.indexOf(hacker._id) != -1) {
+				throw new Error('Hacker is already a part of this team!');
+			}
 
-		// Add the hacker to the team
-		try {
-			teamModel.updateOne({ teamName }, { $push: { teamMembers: hacker } }).exec();
-		} catch (err) {
-			throw new Error('Hacker could not be added to team!');
+			// Check if the team is full
+			if (team.size === 4) {
+				throw new Error('This team is already full!');
+			}
+
+			// Add the hacker to the team
+			try {
+				await teamModel.updateOne(
+					{ teamName },
+					{ $push: { teamMembers: { _id: hacker._id } }, $set: { size: team.size + 1 } }
+				);
+			} catch (err) {
+				throw new Error('Hacker could not be added to team!');
+			}
 		}
 
 		// Update the hacker's team
 		try {
-			hacker.teamName = teamName;
-			hacker.save();
+			await HackerModel.updateOne({ email }, { $set: { teamName } });
 		} catch (err) {
 			throw new Error('Hacker team could not be updated!');
 		}
@@ -65,39 +77,47 @@ class TeamResolver {
 		description: 'Remove a Hacker from a team',
 	})
 	public static async removeHackerFromTeam(
-		@Arg('email', { nullable: false }) email: string,
-		@Arg('teamName') teamName: string
+		@Arg('email', { nullable: false }) email: string
 	): Promise<boolean> {
 		// Ensure the team and hacker are in a valid state
-		const team = await teamModel.findOne({ teamName });
 		const hacker = await HackerModel.findOne({ email });
+
+		// If the hacker doesn't exist, throw an error
+		if (!hacker) {
+			throw new Error('Hacker does not exist!');
+		}
+
+		const team = await teamModel.findOne({ teamName: hacker.teamName });
 
 		if (!team) {
 			throw new Error('Team does not exist!');
-		} else if (!hacker) {
-			throw new Error('Hacker does not exist!');
-		} else if (!team.teamMembers.includes(hacker)) {
+		} else if (team.teamMembers.indexOf(hacker._id) === -1) {
 			throw new Error('Hacker is not on this Team!');
 		}
 
 		// Remove hacker from the team
 		try {
-			teamModel.findOneAndUpdate({ teamName }, { $pull: { teamMembers: hacker } });
+			const updatedTeam = await teamModel.findOneAndUpdate(
+				{ teamName: hacker.teamName },
+				{ $pull: { teamMembers: hacker._id }, $set: { size: team.size - 1 } },
+				{ new: true }
+			);
 
 			// Remove teamName from Hacker's profile
-			hacker.teamName = '';
-			hacker.save();
+			await HackerModel.updateOne({ email }, { $set: { teamName: '' } });
+
+			// If the team is now empty, delete it
+			if (updatedTeam && updatedTeam.size === 0) {
+				try {
+					// Doesn't currently work for some reason
+					// We are able to reach this part of the code
+					await teamModel.deleteOne({ teamname: hacker.teamName });
+				} catch (err) {
+					throw new Error('Now empty team could not be deleted!');
+				}
+			}
 		} catch (err) {
 			throw new Error('Hacker could not be removed from team!');
-		}
-
-		// If the team is now empty, delete it
-		if (teamModel.size === 0) {
-			try {
-				teamModel.findOneAndDelete({ teamName });
-			} catch (err) {
-				throw new Error('Now empty team could not be deleted!');
-			}
 		}
 
 		// Upon success, return true
