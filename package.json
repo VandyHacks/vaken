@@ -52,6 +52,7 @@
 		"passport-local": "^1.0.0",
 		"react": "^16.8.1",
 		"react-apollo": "^2.5.2",
+		"react-apollo-hooks": "^0.4.4",
 		"react-chartjs-2": "^2.7.4",
 		"react-dom": "^16.8.1",
 		"react-helmet": "^5.2.0",

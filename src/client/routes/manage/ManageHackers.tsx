@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
-import { Link } from 'react-router-dom';
-import HackerTable from './HackerTable';
+import { useQuery } from 'react-apollo-hooks';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { Spinner } from '../../components/Loading/Spinner';
 import { ErrorMessage } from '../../components/Text/ErrorMessage';
 import TextButton from '../../components/Buttons/TextButton';
 import STRINGS from '../../assets/strings.json';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Link } from 'react-router-dom';
 import HackerView from './HackerView';
+import HackerTable from './HackerTable';
+import { Table, TableContext } from '../../contexts/TableContext';
 
 const GET_HACKERS = gql`
 	query {
@@ -25,7 +26,11 @@ const GET_HACKERS = gql`
 	}
 `;
 
-const ManageHackers = (): JSX.Element => {
+interface Props { }
+
+export const ManageHackers: FunctionComponent<Props> = (props: Props): JSX.Element => {
+	const [table, setTable] = useState(new Table([]));
+
 	const Error = (
 		<ErrorMessage>
 			<>
@@ -48,6 +53,10 @@ const ManageHackers = (): JSX.Element => {
 						<Query query={GET_HACKERS}>
 							{({ loading, error, data }: any) => {
 								if (error) console.log(error);
+								if (data) {
+									console.log('reloading data');
+									// setTable(table => ({...table, sortedData: data, unsortedData: data}));
+								}
 								console.log(data);
 								return (
 									<>
@@ -56,8 +65,10 @@ const ManageHackers = (): JSX.Element => {
 										) : error ? (
 											Error
 										) : (
-											<HackerTable data={data.getAllHackers} />
-										)}
+													<TableContext.Provider value={table}>
+														<HackerTable data={data.getAllHackers} />
+													</TableContext.Provider>
+												)}
 									</>
 								);
 							}}
