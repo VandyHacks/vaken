@@ -7,7 +7,7 @@ import Gender from '../enums/Gender';
 
 const saltRounds = 10;
 
-@pre<User>('save', next => {
+@pre<User>('save', function(next) {
 	const user = this;
 
 	if (!user.isModified('password')) {

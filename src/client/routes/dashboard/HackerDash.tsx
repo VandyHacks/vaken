@@ -9,8 +9,6 @@ import { ButtonOutline, CenterButtonText } from '../../components/Buttons/Button
 import applicationIncompleteSVG from '../../assets/img/application_incomplete.svg';
 import SmallCenteredText from '../../components/Text/SmallCenteredText';
 
-interface Props {}
-
 export const HackerDash: FunctionComponent = (): JSX.Element => {
 	return (
 		<>

@@ -19,11 +19,11 @@ export interface Props {
 }
 
 export const Input = styled.input`
-	background: ${({ background }: Props) => background || 'transparent'};
+	background: ${({ background = 'transparent' }: Props): string => background};
 	padding: 0.75rem;
 	width: 17rem;
 	border: none;
-	font-size: ${({ fontSize }: Props) => fontSize || '1em'};
+	font-size: ${({ fontSize = '1em' }: Props): string => fontSize};
 	color: ${STRINGS.DARK_TEXT_COLOR};
 	::placeholder {
 		color: ${STRINGS.LIGHT_TEXT_COLOR};

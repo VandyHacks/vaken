@@ -1,4 +1,3 @@
-import produce from 'immer';
 import { Update } from 'use-immer';
 
 /**
@@ -10,7 +9,7 @@ import { Update } from 'use-immer';
 export function onChangeWrapper(
 	updateFn: (p: string) => void
 ): (e: React.ChangeEvent<HTMLInputElement>) => void {
-	return (e: React.ChangeEvent<HTMLInputElement>) => {
+	return (e: React.ChangeEvent<HTMLInputElement>): void => {
 		const { value } = e.target;
 		updateFn(value);
 	};
@@ -29,15 +28,17 @@ export function formChangeWrapper(
 	category: string,
 	fieldName: string
 ): (e: React.ChangeEvent<HTMLInputElement>) => void {
-	return e => {
-		const { value, type, checked, id } = e.target;
+	return (e): void => {
+		const { value } = e.target;
 
-		setState(draft => {
-			if (!draft[category]) {
-				draft[category] = {};
+		setState(
+			(draft): void => {
+				if (!draft[category]) {
+					draft[category] = {};
+				}
+				draft[category][fieldName] = value;
 			}
-			draft[category][fieldName] = value;
-		});
+		);
 	};
 }
 
@@ -48,7 +49,7 @@ export function formChangeWrapper(
  * @return {function} an event handler function to run to update the valid status of the input
  */
 export function checkValid<T>(input: T, validFn: (p: T) => boolean): () => void {
-	return () => ((typeof input === 'string' && input.length) === 0 ? true : validFn(input));
+	return (): boolean => ((typeof input === 'string' && input.length) === 0 ? true : validFn(input));
 }
 
 /**
@@ -59,7 +60,7 @@ export function checkValid<T>(input: T, validFn: (p: T) => boolean): () => void 
  */
 export function regexWrapper(regex: string): (p: string) => boolean {
 	const compiledRegex = new RegExp(regex);
-	return (p: string) => (p.length === 0 ? true : compiledRegex.test(p));
+	return (p: string): boolean => (p.length === 0 ? true : compiledRegex.test(p));
 }
 
 // Copyright (c) 2019 Vanderbilt University

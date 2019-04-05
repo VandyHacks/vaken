@@ -1,17 +1,14 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { NavLink as UglyNavLink, withRouter } from 'react-router-dom';
-import produce from 'immer';
 // @ts-ignore
 import SqLogo from '../../assets/img/square_hackathon_logo.svg?inline';
 import STRINGS from '../../assets/strings.json';
 import NavButton from '../Buttons/NavButton';
-import { FlexStartColumn, SpaceBetweenColumn, FlexEndColumn } from '../Containers/FlexContainers';
+import { SpaceBetweenColumn, FlexEndColumn } from '../Containers/FlexContainers';
 import SmallCenteredText from '../Text/SmallCenteredText';
-import { currentAuth, AuthLevel, routes } from '../../assets/routes';
+import { routes } from '../../assets/routes';
 import AuthContext from '../../contexts/AuthContext';
-
-interface Props {}
 
 const Layout = styled.div`
 	grid-area: sidebar;
@@ -39,13 +36,6 @@ const HorizontalLine = styled.hr`
 	width: calc(100% - 4rem);
 	color: white;
 	margin-bottom: 2rem;
-`;
-
-const HorizontalLineWithoutPad = styled.hr`
-	margin: 0 2rem;
-	width: calc(100% - 4rem);
-	color: white;
-	opacity: 0.1;
 `;
 
 const HorizontalLineLogout = styled(HorizontalLine)`
@@ -108,7 +98,7 @@ const ColumnWithSeparators = styled.ul`
 `;
 
 const Sidebar = withRouter(
-	(props: Props): JSX.Element => {
+	(): JSX.Element => {
 		const currentUser = useContext(AuthContext);
 		return (
 			<Layout>
@@ -119,15 +109,17 @@ const Sidebar = withRouter(
 					<HorizontalLine />
 					<SpaceBetweenColumn height="calc(100% - calc(8rem + 160px))">
 						<ColumnWithSeparators>
-							{routes.map((route: Route) => {
-								return route.authLevel.includes(currentUser.authLevel) ? (
-									<li key={route.path}>
-										<NavLink to={route.path} activeClassName="active">
-											<NavButtonWhiteText text={route.displayText} />
-										</NavLink>
-									</li>
-								) : null;
-							})}
+							{routes.map(
+								(route: Route): JSX.Element | null => {
+									return route.authLevel.includes(currentUser.authLevel) ? (
+										<li key={route.path}>
+											<NavLink to={route.path} activeClassName="active">
+												<NavButtonWhiteText text={route.displayText} />
+											</NavLink>
+										</li>
+									) : null;
+								}
+							)}
 						</ColumnWithSeparators>
 						<FlexEndColumn height="min-content" paddingBottom="1rem">
 							<ALink href="/api/logout">

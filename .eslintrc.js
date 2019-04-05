@@ -14,7 +14,7 @@ module.exports = {
 			},
 		},
 	},
-	plugins: ['sort-keys-fix', 'react-hooks'],
+	plugins: ['sort-keys-fix', 'react', 'react-hooks'],
 	parserOptions: {
 		ecmaFeatures: {
 			jsx: true,
@@ -28,6 +28,9 @@ module.exports = {
 		'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
 		'prettier/prettier': 'error',
 		'react/jsx-indent': [2, 'tab', { checkAttributes: true }],
+		'no-param-reassign': [2, { props: true, ignorePropertyModificationsFor: ['draft'] }],
+		'react/jsx-indent-props': [2, 'tab'],
+		'react/jsx-closing-bracket-location': [0, 'tag-aligned'], // Handled by prettier
 		'react/jsx-filename-extension': [
 			2,
 			{

@@ -1,12 +1,8 @@
-import React, { FunctionComponent } from 'react';
+import React, { PureComponent } from 'react';
 import { Update } from 'use-immer';
 import Slider, { Props as SliderProps } from './Slider';
 
-interface Props extends SliderProps {}
-
-export class Boolean extends React.PureComponent<Props, {}> {
-	private options = ['Yes', 'No'];
-
+export class Boolean extends PureComponent<SliderProps, {}> {
 	/**
 	 * updateFn wraps a setState function to take a react Input event function
 	 * and modify the string at `category/fieldName` to represent the updated input
@@ -16,25 +12,27 @@ export class Boolean extends React.PureComponent<Props, {}> {
 	 * @returns {function} function suitable for a react input onChange={} prop
 	 */
 	public static updateFn = (
-		setState: Update<any>,
+		setState: Update<string>,
 		category: string,
 		fieldName: string
 	): ((e: React.ChangeEvent<HTMLInputElement>) => void) => {
 		return e => {
-			const { type, checked, id } = e.target;
-			setState(draft => {
-				if (!draft[category]) {
-					draft[category] = {};
-				}
+			const { id } = e.target;
+			setState(
+				(draft): void => {
+					if (!draft[category]) {
+						draft[category] = {};
+					}
 
-				draft[category][fieldName] = id === 'Yes';
-			});
+					draft[category][fieldName] = id === 'Yes';
+				}
+			);
 		};
 	};
 
-	public render() {
+	public render(): JSX.Element {
 		const { value, ...rest } = this.props;
-		return <Slider options={this.options} value={value ? 'Yes' : 'No'} {...rest} />;
+		return <Slider options={['Yes', 'No']} value={value ? 'Yes' : 'No'} {...rest} />;
 	}
 }
 

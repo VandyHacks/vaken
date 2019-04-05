@@ -15,9 +15,9 @@ interface StyleProps {
 }
 
 export const StyledNavBtn = styled(Button)`
-	background: ${(props: StyleProps) => (props.active ? 'RGBA(255, 255, 255, 0.2)' : 'none')};
-	color: ${(props: StyleProps) => props.color || 'black'};
-	font-weight: ${(props: StyleProps) => (props.active ? 'bold' : 'regular')};
+	background: ${({ active }: StyleProps): string => (active ? 'RGBA(255, 255, 255, 0.2)' : 'none')};
+	color: ${({ color = 'black' }: StyleProps): string => color};
+	font-weight: ${({ active }: StyleProps): string => (active ? 'bold' : 'regular')};
 	border-radius: 0;
 	justify-content: flex-start;
 	width: 100%;

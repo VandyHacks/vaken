@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { createGlobalStyle } from 'styled-components';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import reset from 'styled-reset';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
@@ -9,6 +9,8 @@ import LoginPage from './routes/login/Login';
 import Frame from './routes/dashboard/Frame';
 import AuthContext from './contexts/AuthContext';
 import { User } from '../common/models/User';
+
+/* globals fetch document */
 
 const GlobalStyle = createGlobalStyle`
 	body {

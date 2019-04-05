@@ -19,13 +19,18 @@ export const useMeasure = (): any => {
 	return [{ ref }, bounds];
 };
 
-const FloatingPopup = styled(FlexStartColumn)`
+export const FloatingPopup = styled(FlexStartColumn)`
 	transition: ease-in-out all 1s;
-	background-color: rgba(247, 245, 249, ${(props: Props) => props.backgroundOpacity});
-	border-radius: ${(props: Props) => props.borderRadius || '2rem'};
-	padding: ${(props: Props) => props.padding || '0rem'};
-	margin-bottom: ${(props: Props) => props.marginBottom || 0};
-	height: ${(props: Props) => props.height || 'min-content'};
+	background-color: rgba(
+		247,
+		245,
+		249,
+		${({ backgroundOpacity = '1' }: Props): string => backgroundOpacity}
+	);
+	border-radius: ${({ borderRadius = '2rem' }: Props): string => borderRadius};
+	padding: ${({ padding = '0' }: Props): string => padding};
+	margin-bottom: ${({ marginBottom = '0' }: Props): string => marginBottom};
+	height: ${({ height = 'min-content' }: Props): string => height};
 	/* height: min-content; */
 	box-sizing: border-box;
 `;
@@ -60,8 +65,8 @@ export class Collapsible extends React.PureComponent<Props, {}> {
 		state: string,
 		setState: React.Dispatch<React.SetStateAction<string>>
 	): ((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void) => {
-		return e => {
-			const { id } = e.target as any;
+		return (e): void => {
+			const { id } = e.target as HTMLButtonElement;
 
 			if (id === state) {
 				setState('');
@@ -71,9 +76,9 @@ export class Collapsible extends React.PureComponent<Props, {}> {
 		};
 	};
 
-	public render() {
+	public render(): JSX.Element {
 		const { title, children, active, ...rest } = this.props;
-		console.log(title, active, title === active);
+
 		return (
 			<div>
 				<CollapsibleHeader id={title} {...rest}>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import STRINGS from '../../assets/strings.json';
 import bg from '../../assets/img/login_bg.jpg';

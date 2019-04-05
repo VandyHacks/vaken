@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 
-export const NotReady: FunctionComponent<{}> = (props): JSX.Element => {
+export const NotReady: FunctionComponent<{}> = (): JSX.Element => {
 	return <div>Not ready yet!</div>;
 };
 

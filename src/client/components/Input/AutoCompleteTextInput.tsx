@@ -1,5 +1,4 @@
 import React, { FunctionComponent } from 'react';
-import styled from 'styled-components';
 import Input, { Props as InputProps } from './TextInput';
 
 interface Props extends InputProps {
@@ -14,9 +13,11 @@ const AutoComplete: FunctionComponent<Props> = (props: Props): JSX.Element => {
 		<>
 			<Input type="text" list={listID} {...props} />
 			<datalist id={listID}>
-				{options.map(item => {
-					return <option key={item} value={item} />;
-				})}
+				{options.map(
+					(item): JSX.Element => {
+						return <option key={item} value={item} />;
+					}
+				)}
 				{options.includes(value as string) ? null : <option value={value as string} />}
 				{/* // FIXME */}
 			</datalist>

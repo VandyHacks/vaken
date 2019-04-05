@@ -29,20 +29,20 @@ export const displayFlex = `
 export const FlexDiv = styled.div`
 	display: flex;
 	flex-flow: column nowrap;
-	align-items: ${({ alignItems }: ContainerProps) => alignItems || 'center'};
-	justify-content: ${({ justifyContent }: ContainerProps) => justifyContent || 'center'};
+	align-items: ${({ alignItems = 'center' }: ContainerProps): string => alignItems};
+	justify-content: ${({ justifyContent = 'center' }: ContainerProps): string => justifyContent};
 `;
 
 export const FlexColumn = styled(FlexDiv)`
-	height: ${(props: ContainerProps) => props.height || '100%'};
-	width: ${(props: ContainerProps) => props.width || '100%'};
-	padding: ${(props: ContainerProps) => props.padding || '100%'};
-	padding-bottom: ${(props: ContainerProps) => props.paddingBottom || '0'};
-	padding-top: ${(props: ContainerProps) => props.paddingTop || '0'};
-	padding-left: ${(props: ContainerProps) => props.paddingLeft || '0'};
-	padding-right: ${(props: ContainerProps) => props.paddingRight || '0'};
-	margin: ${(props: ContainerProps) => props.margin || '0'};
-	${(props: ContainerProps) => (props.background ? `background: ${props.background};` : null)}
+	height: ${({ height = '100%' }: ContainerProps): string => height};
+	width: ${({ width = '100%' }: ContainerProps): string => width};
+	padding: ${({ padding = '100%' }: ContainerProps): string => padding};
+	padding-bottom: ${({ paddingBottom = '0' }: ContainerProps): string => paddingBottom};
+	padding-top: ${({ paddingTop = '0' }: ContainerProps): string => paddingTop};
+	padding-left: ${({ paddingLeft = '0' }: ContainerProps): string => paddingLeft};
+	padding-right: ${({ paddingRight = '0' }: ContainerProps): string => paddingRight};
+	margin: ${({ margin = '0' }: ContainerProps): string => margin};
+	${({ background }: ContainerProps): string => (background ? `background: ${background};` : '')}
 `;
 
 export const FlexRow = styled(FlexColumn)`

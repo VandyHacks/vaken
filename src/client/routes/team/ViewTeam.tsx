@@ -60,7 +60,7 @@ export const ViewTeam: FunctionComponent<Props> = (props: Props): JSX.Element =>
 							} else {
 								console.log(error);
 							}
-}}
+						}}
 					/>
 					<SmallCenteredText color={STRINGS.DARK_TEXT_COLOR} fontSize="1rem" margin="0rem">
 						{STRINGS.HACKER_TEAMS_FOOTER_TEXT}

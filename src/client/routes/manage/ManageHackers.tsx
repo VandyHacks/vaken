@@ -25,13 +25,12 @@ const ManageHackers = (): JSX.Element => {
 	return (
 		<FloatingPopup borderRadius="1rem" height="100%" backgroundOpacity="1" padding="1.5rem">
 			<Query query={GET_HACKERS}>
-				{({ loading, error, data }: any) => {
+				{({ loading, error, data }: any): JSX.Element => {
 					if (loading) {
 						return <Spinner />;
 					}
 
 					if (error) {
-						console.log(error);
 						return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 					}
 

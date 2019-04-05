@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import FloatingPopup from '../Containers/FloatingPopup';
 import STRINGS from '../../assets/strings.json';
@@ -30,6 +30,8 @@ interface Props {
 }
 
 export const Announcement: FunctionComponent<Props> = (props: Props): JSX.Element => {
+	const { value } = props;
+
 	return (
 		<FloatingPopup
 			borderRadius="1rem"
@@ -40,7 +42,7 @@ export const Announcement: FunctionComponent<Props> = (props: Props): JSX.Elemen
 			padding="0rem">
 			<Layout>
 				<AnnouncementImg src={Notification} />
-				<Msg>{props.value}</Msg>
+				<Msg>{value}</Msg>
 			</Layout>
 		</FloatingPopup>
 	);

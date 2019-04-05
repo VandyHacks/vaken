@@ -11,13 +11,15 @@ interface Props extends TableRowProps {
 }
 
 export const Row: FunctionComponent<Props> = (props: Props): JSX.Element => {
+	const { className, columns, style, selectableRef, selected } = props;
+
 	return (
 		<div
-			key={props.columns[2].props.title}
-			className={`${props.className} ${props.selected && 'selected'}`}
-			style={props.style}
-			ref={props.selectableRef}>
-			{props.columns}
+			key={columns[2].props.title}
+			className={`${className} ${selected && 'selected'}`}
+			style={style}
+			ref={selectableRef}>
+			{columns}
 		</div>
 	);
 };

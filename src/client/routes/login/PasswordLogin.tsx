@@ -17,32 +17,15 @@ import {
 	passwordValidation,
 } from '../../../common/ValidationFunctions';
 
-interface Props {}
-
-/**
- * @brief Validates and submits login information to server
- * @param {string} username - username/email of user's account
- * @param {string} password - password of user's account
- * @param {function} setInvalidFn - func to update the html response code on error
- * @returns {void}
- */
-export const validateAndSubmitLogin = (
-	username: string,
-	password: string,
-	setInvalidFn: React.Dispatch<React.SetStateAction<boolean>>
-): void => {
-	const emailValid = emailValidation(username);
-	const passValid = passwordValidation(password);
-	// Do one more check for valid fields (to handle edge case where
-	// constructor sets valids to true)
-};
+// eslint
+/* global fetch */
 
 /**
  * PasswordLogin is React Hooks component that will display a password login prompt
  * @param {Props} props - currently not used
  * @returns {JSX.Element} a React.Fragment containing inputs and a login button
  */
-export const PasswordLogin: React.FunctionComponent<Props> = (): JSX.Element => {
+export const PasswordLogin: React.FunctionComponent<{}> = (): JSX.Element => {
 	const [email, setEmail] = useState('');
 	const [pass, setPass] = useState('');
 	const [invalid, setInvalid] = useState(false);
@@ -63,14 +46,15 @@ export const PasswordLogin: React.FunctionComponent<Props> = (): JSX.Element => 
 					'Content-Type': 'application/json',
 				},
 				method: 'POST',
-			}).then(res => {
-				if (res.status === 200 && res.redirected) {
-					console.log(res);
-					setToDashboard(true);
-				} else {
-					setInvalid(true);
+			}).then(
+				(res): void => {
+					if (res.status === 200 && res.redirected) {
+						setToDashboard(true);
+					} else {
+						setInvalid(true);
+					}
 				}
-			});
+			);
 		}
 	};
 
@@ -108,7 +92,8 @@ export const PasswordLogin: React.FunctionComponent<Props> = (): JSX.Element => 
 				<TextLink to="/login">Forgot Username / Password?</TextLink>
 				<FlexRow>
 					<TextLink fontSize="1.4rem" color={STRINGS.ACCENT_COLOR} to="/login/create">
-						New User? Create Account <LeftPaddedImg src={arrowIcon} alt="Right Arrow" />
+						{`New User? Create Account`}
+						<LeftPaddedImg src={arrowIcon} alt="Right Arrow" />
 					</TextLink>
 				</FlexRow>
 			</SpaceBetweenColumn>
@@ -119,5 +104,3 @@ export const PasswordLogin: React.FunctionComponent<Props> = (): JSX.Element => 
 export default PasswordLogin;
 
 // Copyright (c) 2019 Vanderbilt University
-
-const isUnique = (e, i, arr) => {};

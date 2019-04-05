@@ -7,8 +7,6 @@ import { FlexRow, FlexColumn } from '../../components/Containers/FlexContainers'
 import 'chartjs-plugin-datalabels';
 import STRINGS from '../../assets/strings.json';
 
-interface Props {}
-
 const colorPalette = STRINGS.COLOR_PALETTE.slice(1);
 
 const generateColor = (n: number): string[] =>
@@ -120,7 +118,7 @@ const pieGenderOptions = {
 	},
 };
 
-export const OrganizerDash: FunctionComponent = (props: Props): JSX.Element => {
+export const OrganizerDash: FunctionComponent = (): JSX.Element => {
 	return (
 		<>
 			<FloatingPopup width="60rem" marginBottom="1rem" backgroundOpacity="1" padding="1.5rem">

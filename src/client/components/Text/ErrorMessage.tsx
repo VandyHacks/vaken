@@ -30,10 +30,12 @@ interface ErrorMessageProps {
 export const ErrorMessage: FunctionComponent<ErrorMessageProps> = (
 	props: ErrorMessageProps
 ): JSX.Element => {
+	const { children } = props;
+
 	return (
 		<Rectangle>
 			<SadFace />
-			{props.children}
+			{children}
 		</Rectangle>
 	);
 };
@@ -45,10 +47,11 @@ interface GraphQLErrorMessage {
 export const GraphQLErrorMessage: FunctionComponent<GraphQLErrorMessage> = (
 	props: GraphQLErrorMessage
 ): JSX.Element => {
+	const { text } = props;
 	return (
 		<ErrorMessage>
 			<>
-				<StyledP>{props.text}</StyledP>
+				<StyledP>{text}</StyledP>
 				<Link style={{ textDecoration: 'none' }} to="/dashboard">
 					<TextButton text="Return to Dashboard" background={STRINGS.WARNING_COLOR} color="white" />
 				</Link>
@@ -57,7 +60,4 @@ export const GraphQLErrorMessage: FunctionComponent<GraphQLErrorMessage> = (
 	);
 };
 
-{
-	/* export default ErrorMessage; */
-}
 // Copyright (c) 2019 Vanderbilt University

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import styled from 'styled-components';
 import { Mutation } from 'react-apollo';
 import { gql } from 'apollo-boost';
@@ -24,16 +24,14 @@ const ErrorMsg = styled.p`
 	white-space: pre-line;
 `;
 
-interface Props {}
-
-export const JoinTeam: FunctionComponent<Props> = (props: Props): JSX.Element => {
+export const JoinTeam: FunctionComponent = (): JSX.Element => {
 	const [searchValue, setSearchValue] = useState('');
 	const [errorMsg, setErrorMsg] = useState('');
 	const emailAddress = 'ml@mattleon.com';
 
 	return (
 		<Mutation mutation={JOIN_TEAM}>
-			{(mutation, { error }) => (
+			{(mutation, { error }): JSX.Element => (
 				<>
 					<Layout>
 						<SearchBox
@@ -41,33 +39,28 @@ export const JoinTeam: FunctionComponent<Props> = (props: Props): JSX.Element =>
 							placeholder="Type team name here"
 							onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
 								setSearchValue(event.target.value);
-}}
+							}}
 							minWidth="26rem"
 							width="26rem"
 							error={errorMsg !== ''}
 							hasIcon={false}
 						/>
 						<ActionButton
-							onClick={() => {
-								console.log(searchValue);
+							onClick={(): void => {
 								mutation({
 									refetchQueries: [{ query: GET_TEAM, variables: { email: emailAddress } }],
 									variables: { email: emailAddress, teamName: searchValue },
 								});
 								if (!error) {
 									setErrorMsg('');
-									console.log('Success!');
 								} else {
 									setErrorMsg(
 										'Team size has already reached the limit.\nPlease join or create another team.'
 									);
-									console.log(error);
 								}
-								// console.log(searchValue);
-}}>
-							Join
-						
-</ActionButton>
+							}}>
+							{`Join`}
+						</ActionButton>
 					</Layout>
 					<ErrorMsg>{errorMsg}</ErrorMsg>
 				</>

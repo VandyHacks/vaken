@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect, useRef } from 'react';
+import React, { FunctionComponent, useCallback, useState, useEffect, useRef } from 'react';
 import {
 	Table,
 	Column,
@@ -29,8 +29,6 @@ import STRINGS from '../../assets/strings.json';
 // TODO(alan): add d.ts file, most already defined here: https://github.com/valerybugakov/react-selectable-fast/blob/master/src/SelectableGroup.js
 // @ts-ignore
 import Row from './Row';
-import 'babel-polyfill';
-import { ID } from 'type-graphql';
 
 const UPDATE_STATUS = gql`
 	mutation UpdateHackerStatus($email: String!, $status: String!) {
@@ -218,9 +216,10 @@ interface DeselectElement extends HTMLDivElement {
 export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element => {
 	const [sortByState, setSortByState] = useState<string | null>(null);
 	const [sortDirectionState, setSortDirectionState] = useState<SortDirectionType | null>(null);
-	// Used [...props.data] to make a copy since do not want assignment, which would motify props.data after sort
+	// Used [...data] to make a copy since do not want assignment, which would motify data after sort
 	// TODO(alan): explore immutables instead
-	const [sortedData, setSortedData] = useState<Hacker[]>([...props.data]);
+	const { data } = props;
+	const [sortedData, setSortedData] = useState<Hacker[]>([...data]);
 	const [searchValue, setSearchValue] = useState('');
 	const [useRegex, setUseRegex] = useState(false);
 	const [selectedColumns, setSelectedColumns] = useState<Option[]>([columnOptions[0]]);
@@ -229,41 +228,107 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 	const [selectedRowsEmails, setSelectedRowsEmails] = useState<string[]>([]);
 	const deselect = useRef<DeselectElement>(null);
 
-	const sortData = ({
-		sortBy,
-		sortDirection,
-		update,
-		data,
-	}: {
-		sortBy: string | null;
-		sortDirection: SortDirectionType | null;
-		update: boolean;
-		data?: Hacker[];
-	}) => {
-		// no sort if sortBy is null and sortDirection is null
-		if (!sortBy || !sortDirection) {
-			return [...props.data];
-		}
+	const sortData = useCallback(
+		({
+			sortBy,
+			sortDirection,
+			update,
+			unsortedData,
+		}: {
+			sortBy: string | null;
+			sortDirection: SortDirectionType | null;
+			update: boolean;
+			unsortedData?: Hacker[];
+		}) => {
+			// no sort if sortBy is null and sortDirection is null
+			if (!sortBy || !sortDirection) {
+				return [...(unsortedData || data)];
+			}
 
-		// sort alphanumerically
-		const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
+			// sort alphanumerically
+			const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
 
-		// TODO: replace any
-		let newSortedData = ((update || !data ? [...props.data] : data) as any).sort((a: any, b: any) =>
-			collator.compare(a[sortBy], b[sortBy])
-		);
-		if (sortDirection === SortDirection.DESC) {
-			newSortedData = newSortedData.reverse();
-		}
-		return newSortedData;
+			// TODO: replace any
+			let newSortedData = ((update || !unsortedData ? [...data] : unsortedData) as any).sort(
+				(a: any, b: any) => collator.compare(a[sortBy], b[sortBy])
+			);
+			if (sortDirection === SortDirection.DESC) {
+				newSortedData = newSortedData.reverse();
+			}
+			return newSortedData;
+		},
+		[data]
+	);
+
+	const opts = {
+		caseSensitive: true,
+		distance: 100,
+		findAllMatches: true,
+		keys: selectedColumns.map((col: Option) => col.value) as (keyof Hacker)[],
+		location: 0,
+		shouldSort: false,
+		threshold: 0.5,
+		tokenize: true,
 	};
+
+	// handles the text or regex search and sets the sortedData state with the updated row list
+	const onSearch = useCallback(
+		(value: string) => {
+			if (value !== '') {
+				if (!useRegex) {
+					// fuzzy filtering
+					const fuse = new Fuse(data, opts);
+					setSortedData(
+						sortData({
+							sortBy: sortByState,
+							sortDirection: sortDirectionState,
+							unsortedData: fuse.search(value),
+							update: false,
+						})
+					);
+				} else {
+					let regex: RegExp;
+					let isValid = true;
+					try {
+						regex = new RegExp(value, 'i');
+					} catch (e) {
+						isValid = false;
+					}
+					if (isValid) {
+						// TODO(alan): replace any with Hacker
+						const newSortedData = [...data].filter((user: any) => {
+							return regex.test(user[selectedColumns[0].value]);
+						});
+						setSortedData(
+							sortData({
+								sortBy: sortByState,
+								sortDirection: sortDirectionState,
+								unsortedData: newSortedData,
+								update: false,
+							})
+						);
+					} else {
+						console.log('Invalid regular expression');
+					}
+				}
+			} else {
+				// reset
+				// setSortedData([...data]);
+				setSortedData(
+					sortData({ sortBy: sortByState, sortDirection: sortDirectionState, update: true })
+				);
+			}
+			setSearchValue(value);
+		},
+		[data, opts, selectedColumns, sortByState, sortData, sortDirectionState, useRegex]
+	);
 
 	// Also acts as a compoentDidMount to implement an initial sort
 	// This is for updating the table when the hacker status changes
 	useEffect(() => {
 		console.log('data from GraphQL is changing');
 		onSearch(searchValue);
-	}, [onSearch, props.data, searchValue]);
+	}, [onSearch, data, searchValue]);
 
 	useEffect(() => {
 		// add case for Regex?
@@ -276,17 +341,6 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 			setSelectedColumns([selectedColumns[0]]);
 		}
 	}, [selectedColumns, useRegex]);
-
-	const opts = {
-		caseSensitive: true,
-		distance: 100,
-		findAllMatches: true,
-		keys: selectedColumns.map((col: Option) => col.value) as (keyof Hacker)[],
-		location: 0,
-		shouldSort: false,
-		threshold: 0.5,
-		tokenize: true,
-	};
 
 	// assigns the row names for styling and to prevent selection
 	const generateRowClassName = ({ index }: { index: number }): string => {
@@ -374,7 +428,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 							value={
 								status === 'accepted' ? 'Accept' : status === 'rejected' ? 'Reject' : 'Undecided'
 							}
-  onChange={(input: string) => {
+							onChange={(input: string) => {
 								const newStatus = processSliderInput(input);
 								updateHackerStatus(mutation, {
 									email: rowData.email as string,
@@ -384,7 +438,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									// rowData.status = updatedStatus;
 								});
 							}}
-  disable={status !== 'accepted' && status !== 'rejected' && status !== 'submitted'}
+							disable={status !== 'accepted' && status !== 'rejected' && status !== 'submitted'}
 						/>
 					)}
 				</Mutation>
@@ -394,9 +448,9 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 	};
 
 	const rowRenderer = (
-		props: TableRowProps & { selectableRef: any; selecting: boolean; selected: boolean }
+		tableProps: TableRowProps & { selectableRef: any; selecting: boolean; selected: boolean }
 	) => {
-		return <Row {...props} />;
+		return <Row {...tableProps} />;
 	};
 
 	// mapping from status labels to the colored label images
@@ -431,66 +485,22 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		sortBy: string | null;
 		sortDirection: SortDirectionType | null;
 	}) => {
+		const params = {
+			sortBy,
+			sortDirection,
+			unsortedData: sortedData,
+			update: false,
+		};
 		// return to natural order after triple click on same column header
 		// before new assignment sortByState and sortByState are the previous values
-		const update = false;
 		if (sortByState === sortBy && sortDirectionState === SortDirection.DESC) {
-			sortBy = null;
-			sortDirection = null;
+			params.sortBy = null;
+			params.sortDirection = null;
 		}
-		setSortedData(sortData({ data: sortedData, sortBy, sortDirection, update: false }));
+		setSortedData(sortData(params));
 		setSortByState(sortBy);
 		setSortDirectionState(sortDirection);
 	};
-
-	// handles the text or regex search and sets the sortedData state with the updated row list
-	const onSearch = useCallback((value: string) => {
-		if (value !== '') {
-			if (!useRegex) {
-				// fuzzy filtering
-				const fuse = new Fuse(props.data, opts);
-				setSortedData(
-					sortData({
-						data: fuse.search(value),
-						sortBy: sortByState,
-						sortDirection: sortDirectionState,
-						update: false,
-					})
-				);
-			} else {
-				let regex: RegExp;
-				let isValid = true;
-				try {
-					regex = new RegExp(value, 'i');
-				} catch (e) {
-					isValid = false;
-				}
-				if (isValid) {
-					// TODO(alan): replace any with Hacker
-					const newSortedData = [...props.data].filter((user: any) => {
-						return regex.test(user[selectedColumns[0].value]);
-					});
-					setSortedData(
-						sortData({
-							data: newSortedData,
-							sortBy: sortByState,
-							sortDirection: sortDirectionState,
-							update: false,
-						})
-					);
-				} else {
-					console.log('Invalid regular expression');
-				}
-			}
-		} else {
-			// reset
-			// setSortedData([...props.data]);
-			setSortedData(
-				sortData({ sortBy: sortByState, sortDirection: sortDirectionState, update: true })
-			);
-		}
-		setSearchValue(value);
-	});
 
 	// floating button that onClick toggles between selecting all or none of the rows
 	const SelectAllButton = (
@@ -615,17 +625,15 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 										dataKey="needsReimbursement"
 										width={30}
 										minWidth={20}
-										headerRenderer={({ dataKey, sortBy, sortDirection, label }: TableHeaderProps) =>
-											renderHeaderAsSVG(
-												{
-													dataKey,
-													label,
-													sortBy,
-													sortDirection,
-												},
-												plane
-											)
-										}
+										headerRenderer={({
+											dataKey,
+											sortBy,
+											sortDirection,
+											label,
+										}: TableHeaderProps) => {
+											const params = { dataKey, label, sortBy, sortDirection };
+											return renderHeaderAsSVG(params, plane);
+										}}
 										cellRenderer={checkmarkRenderer}
 									/>
 									<Column

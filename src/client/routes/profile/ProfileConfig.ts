@@ -1,9 +1,9 @@
-import AutoComplete from '../../components/Input/AutoCompleteTextInput';
+// import AutoComplete from '../../components/Input/AutoCompleteTextInput';
 import TextInput from '../../components/Input/TextInput';
 import Checkbox from '../../components/Input/Checkbox';
 import Slider from '../../components/Input/Slider';
 import Boolean from '../../components/Input/Boolean';
-import Calendar from '../../components/Input/Calendar';
+// import Calendar from '../../components/Input/Calendar';
 
 export const profile = [
 	{

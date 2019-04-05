@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Update } from 'use-immer';
 import { AppField } from '../../routes/application/ApplicationConfig';
@@ -63,36 +63,39 @@ export class Checkbox extends React.PureComponent<Props, {}> {
 		category: string,
 		fieldName: string
 	): ((e: React.ChangeEvent<HTMLInputElement>) => void) => {
-		return e => {
+		return (e): void => {
 			const { type, checked, id } = e.target;
 			if (type === 'checkbox') {
-				setState(draft => {
-					if (!draft[category]) {
-						draft[category] = {};
-					}
-					if (!(draft[category][fieldName] instanceof Set)) {
-						draft[category][fieldName] = new Set<string>();
-					}
+				setState(
+					(draft): void => {
+						if (!draft[category]) {
+							draft[category] = {};
+						}
+						if (!(draft[category][fieldName] instanceof Set)) {
+							draft[category][fieldName] = new Set<string>();
+						}
 
-					/* Get around Immer's lack of native support for Set/Map by duplicating the 
+						/* Get around Immer's lack of native support for Set/Map by duplicating the 
 				 set and changing the necessary fields, then changing the pointer to the new set. */
-					const newSet = new Set(draft[category][fieldName]);
-					if (checked) {
-						newSet.add(id);
-					} else {
-						newSet.delete(id);
-					}
+						const newSet = new Set(draft[category][fieldName]);
+						if (checked) {
+							newSet.add(id);
+						} else {
+							newSet.delete(id);
+						}
 
-					draft[category][fieldName] = newSet;
-				});
+						draft[category][fieldName] = newSet;
+					}
+				);
 			} else {
 				throw new Error('Wrong type passed to formChangeWrapper');
 			}
 		};
 	};
 
-	public render() {
-		let { options = ['default'], value, onChange } = this.props;
+	public render(): JSX.Element {
+		const { options = ['default'], onChange } = this.props;
+		let { value } = this.props;
 
 		if (!(value instanceof Set)) {
 			value = new Set();
@@ -101,26 +104,28 @@ export class Checkbox extends React.PureComponent<Props, {}> {
 		return (
 			<fieldset>
 				<CheckboxContainer>
-					{options.map((option: string) => {
-						return (
-							<div key={option}>
-								<input
-									checked={value.has(option)}
-									type="checkbox"
-									id={option}
-									onChange={onChange}
-								/>
-								<label htmlFor={option}>
-									{value.has(option) ? (
-										<CheckedSvg width={24} height={24} />
-									) : (
-										<UncheckedSvg width={24} height={24} />
-									)}
-									{option}
-								</label>
-							</div>
-						);
-					})}
+					{options.map(
+						(option: string): JSX.Element => {
+							return (
+								<div key={option}>
+									<input
+										checked={value.has(option)}
+										type="checkbox"
+										id={option}
+										onChange={onChange}
+									/>
+									<label htmlFor={option}>
+										{value.has(option) ? (
+											<CheckedSvg width={24} height={24} />
+										) : (
+											<UncheckedSvg width={24} height={24} />
+										)}
+										{option}
+									</label>
+								</div>
+							);
+						}
+					)}
 				</CheckboxContainer>
 			</fieldset>
 		);
