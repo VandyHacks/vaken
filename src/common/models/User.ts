@@ -23,3 +23,5 @@ export class User {
 
 	public dietaryRestrictions?: string;
 }
+
+export default User;

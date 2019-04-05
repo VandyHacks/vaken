@@ -37,7 +37,7 @@ export const JoinTeam: FunctionComponent = (): JSX.Element => {
 						<SearchBox
 							value={searchValue}
 							placeholder="Type team name here"
-							onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+							onChange={(event: React.ChangeEvent<HTMLInputElement>): void => {
 								setSearchValue(event.target.value);
 							}}
 							minWidth="26rem"

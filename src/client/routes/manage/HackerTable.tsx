@@ -239,7 +239,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 			sortDirection: SortDirectionType | null;
 			update: boolean;
 			unsortedData?: Hacker[];
-		}) => {
+		}): Hacker[] => {
 			// no sort if sortBy is null and sortDirection is null
 			if (!sortBy || !sortDirection) {
 				return [...(unsortedData || data)];
@@ -264,6 +264,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		caseSensitive: true,
 		distance: 100,
 		findAllMatches: true,
+		// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 		keys: selectedColumns.map((col: Option) => col.value) as (keyof Hacker)[],
 		location: 0,
 		shouldSort: false,
@@ -273,7 +274,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 
 	// handles the text or regex search and sets the sortedData state with the updated row list
 	const onSearch = useCallback(
-		(value: string) => {
+		(value: string): void => {
 			if (value !== '') {
 				if (!useRegex) {
 					// fuzzy filtering
@@ -296,9 +297,11 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 					}
 					if (isValid) {
 						// TODO(alan): replace any with Hacker
-						const newSortedData = [...data].filter((user: any) => {
-							return regex.test(user[selectedColumns[0].value]);
-						});
+						const newSortedData = [...data].filter(
+							(user: any): boolean => {
+								return regex.test(user[selectedColumns[0].value]);
+							}
+						);
 						setSortedData(
 							sortData({
 								sortBy: sortByState,
@@ -308,7 +311,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 							})
 						);
 					} else {
-						console.log('Invalid regular expression');
+						// console.log('Invalid regular expression');
 					}
 				}
 			} else {
@@ -325,18 +328,18 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 
 	// Also acts as a compoentDidMount to implement an initial sort
 	// This is for updating the table when the hacker status changes
-	useEffect(() => {
-		console.log('data from GraphQL is changing');
+	useEffect((): void => {
+		// console.log('data from GraphQL is changing');
 		onSearch(searchValue);
 	}, [onSearch, data, searchValue]);
 
-	useEffect(() => {
+	useEffect((): void => {
 		// add case for Regex?
 		onSearch(searchValue);
 	}, [onSearch, searchValue, selectedColumns]);
 
 	// remove multi-options when switching to single select
-	useEffect(() => {
+	useEffect((): void => {
 		if (selectedColumns.length > 0) {
 			setSelectedColumns([selectedColumns[0]]);
 		}
@@ -344,6 +347,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 
 	// assigns the row names for styling and to prevent selection
 	const generateRowClassName = ({ index }: { index: number }): string => {
+		// eslint-disable-next-line no-nested-ternary
 		let className = index < 0 ? 'headerRow' : index % 2 === 0 ? 'evenRow' : 'oddRow';
 		if (className !== 'headerRow') {
 			const { status } = sortedData[index];

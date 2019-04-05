@@ -1,3 +1,5 @@
+/* globals fetch */
+
 const hackers = [
 	{
 		email: 'ml@mattleon.com',
@@ -75,16 +77,18 @@ const hackers = [
 	},
 ];
 
-const addHackers = () =>
-	hackers.forEach(hacker => {
-		fetch('/api/register/hacker', {
-			body: JSON.stringify({ ...hacker, password: 'test123' }),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			method: 'POST',
-		}).then(res => console.log(res.json));
-	});
+const addHackers = (): void =>
+	hackers.forEach(
+		(hacker): void => {
+			fetch('/api/register/hacker', {
+				body: JSON.stringify({ ...hacker, password: 'test123' }),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				method: 'POST',
+			});
+		}
+	);
 
 addHackers();
 
