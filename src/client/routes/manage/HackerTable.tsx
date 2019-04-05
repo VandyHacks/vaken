@@ -31,7 +31,6 @@ import { gql } from 'apollo-boost';
 import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
 import Row from './Row';
 import 'babel-polyfill';
-import { ID } from 'type-graphql';
 
 const UPDATE_STATUS = gql`
 	mutation UpdateHackerStatus($email: String!, $status: String!) {
@@ -222,6 +221,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 	// Used [...props.data] to make a copy since do not want assignment, which would motify props.data after sort
 	// TODO(alan): explore immutables instead
 	const [sortedData, setSortedData] = useState<Hacker[]>([...props.data]);
+	const [unsortedData, setUnsortedData] = useState<Hacker[]>([...props.data]);
 	const [searchValue, setSearchValue] = useState('');
 	const [useRegex, setUseRegex] = useState(false);
 	const [selectedColumns, setSelectedColumns] = useState<Option[]>([columnOptions[0]]);
@@ -241,9 +241,10 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		update: boolean;
 		data?: Hacker[];
 	}) => {
-		// no sort if sortBy is null and sortDirection is null
+		// only called if sortBy sortDirection are not null
 		if (!sortBy || !sortDirection) {
-			return [...props.data];
+			throw new Error("Trying to sort when undefined sort parameters.");
+			// return [...unsortedData];
 		}
 
 		// sort alphanumerically
@@ -259,17 +260,12 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		return newSortedData;
 	};
 
-	// Also acts as a compoentDidMount to implement an initial sort
+	// Also acts as a componentDidMount to implement an initial sort
 	// This is for updating the table when the hacker status changes
 	useEffect(() => {
 		console.log('data from GraphQL is changing');
 		onSearch(searchValue);
-	}, [props.data]);
-
-	useEffect(() => {
-		// add case for Regex?
-		onSearch(searchValue);
-	}, [selectedColumns]);
+	}, [props.data, selectedColumns]);
 
 	// remove multi-options when switching to single select
 	useEffect(() => {
@@ -394,7 +390,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 				<Link
 					style={{ textDecoration: 'none' }}
 					to={{ pathname: "/manageHackers/hacker", state: { email: email } }}>
-					<TableButton>View</TableButton>
+					<TableButton onClick={() => console.log("test")}>View</TableButton>
 				</Link>
 			</Actions>
 		);
@@ -440,12 +436,13 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 	}) => {
 		// return to natural order after triple click on same column header
 		// before new assignment sortByState and sortByState are the previous values
-		let update = false;
 		if (sortByState === sortBy && sortDirectionState === SortDirection.DESC) {
 			sortBy = null;
 			sortDirection = null;
 		}
-		setSortedData(sortData({ sortBy, sortDirection, update: false, data: sortedData }));
+
+		setSortedData(sortBy === null ? [...unsortedData] : sortData({ sortBy, sortDirection, update: false, data: sortedData }));
+		// setSortedData(sortData({ sortBy, sortDirection, update: false, data: sortBy === null ? unsortedData : sortedData }));
 		setSortByState(sortBy);
 		setSortDirectionState(sortDirection);
 	};
@@ -456,12 +453,16 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 			if (!useRegex) {
 				// fuzzy filtering
 				const fuse = new Fuse(props.data, opts);
-				setSortedData(
+				const searchedData = fuse.search(value);
+				// set for future sort toggling
+				setUnsortedData(searchedData);
+				// skip sorting if nothing is set as sort
+				setSortedData(sortByState === null ? searchedData :
 					sortData({
 						sortBy: sortByState,
 						sortDirection: sortDirectionState,
 						update: false,
-						data: fuse.search(value),
+						data: searchedData,
 					})
 				);
 			} else {
@@ -474,15 +475,18 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 				}
 				if (isValid) {
 					// TODO(alan): replace any with Hacker
-					const newSortedData = [...props.data].filter((user: any) => {
+					const searchedData = [...props.data].filter((user: any) => {
 						return regex.test(user[selectedColumns[0].value]);
 					});
-					setSortedData(
+					// set for future sort toggling
+					setUnsortedData(searchedData);
+					// skip sorting if nothing is set as sort
+					setSortedData(sortByState === null ? searchedData :
 						sortData({
 							sortBy: sortByState,
 							sortDirection: sortDirectionState,
 							update: false,
-							data: newSortedData,
+							data: searchedData,
 						})
 					);
 				} else {
@@ -491,8 +495,10 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 			}
 		} else {
 			// reset
-			// setSortedData([...props.data]);
-			setSortedData(
+			// set for future sort toggling
+			setUnsortedData([...props.data]);
+			// skip sorting if nothing is set as sort
+			setSortedData(sortByState === null ? [...props.data] :
 				sortData({ sortBy: sortByState, sortDirection: sortDirectionState, update: true })
 			);
 		}
