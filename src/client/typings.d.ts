@@ -7,4 +7,6 @@ declare module '*.png';
 declare module '*.jpg';
 declare module '*.svg';
 
+declare module 'react-selectable-fast';
+
 // Copyright (c) 2019 Vanderbilt University
