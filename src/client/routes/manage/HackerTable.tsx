@@ -215,6 +215,149 @@ interface DeselectElement extends HTMLDivElement {
 	};
 }
 
+// assigns the row names for styling and to prevent selection
+const generateRowClassName = (data: Hacker[]): ((p: { index: number }) => string) => {
+	return ({ index }) => {
+		let className = index < 0 ? 'headerRow' : index % 2 === 0 ? 'evenRow' : 'oddRow';
+		if (className !== 'headerRow') {
+			const status = data[index].status;
+			if (status !== 'Submitted' && status !== 'Accepted' && status !== 'Rejected') {
+				className = className.concat(' ignore-select');
+			}
+		}
+		return className;
+	};
+};
+
+// renders a text label with a clickable sort indicator
+const renderHeaderAsLabel = ({
+	dataKey,
+	sortBy,
+	sortDirection,
+	label,
+}: TableHeaderProps): JSX.Element => {
+	return (
+		<>
+			{label}
+			{sortBy === dataKey && <SortIndicator sortDirection={sortDirection} />}
+		</>
+	);
+};
+
+// renders an svg instead of a text label, will with a clickable sort indicator
+const renderHeaderAsSVG = (
+	{ dataKey, sortBy, sortDirection, label }: TableHeaderProps,
+	svg: string
+): JSX.Element => {
+	return (
+		<>
+			<img alt={String(label)} src={svg} />
+			{sortBy === dataKey && <SortIndicator sortDirection={sortDirection} />}
+		</>
+	);
+};
+
+const checkmarkRenderer = ({ cellData }: TableCellProps): JSX.Element => {
+	return <Checkmark value={cellData} />;
+};
+
+// mutation to update a single hacker status
+// TODO(alan): remove any type
+const updateHackerStatus = (
+	mutation: any,
+	variables: { email: string; status: string }
+): Promise<string> => {
+	return mutation({
+		mutation: UPDATE_STATUS,
+		refetchQueries: [{ query: GET_HACKERS }],
+		variables: variables,
+	});
+};
+
+// maps the radio slider labels to the hacker status
+const processSliderInput = (input: string): string => {
+	switch (input.toLowerCase()) {
+		case 'accept':
+			return 'Accepted';
+		case 'reject':
+			return 'Rejected';
+		case 'undecided':
+		default:
+			return 'Submitted';
+	}
+};
+
+// action column that contains the actionable buttons
+const actionRenderer = ({ rowData }: TableCellProps): JSX.Element => {
+	// TODO(alan): extract onChange to own method
+	const status = rowData.status.toLowerCase();
+	const email = rowData.email;
+
+	return (
+		<Actions className="ignore-select">
+			<Mutation mutation={UPDATE_STATUS}>
+				{mutation => (
+					<RadioSlider
+						option1="Accept"
+						option2="Undecided"
+						option3="Reject"
+						value={
+							status === 'accepted' ? 'Accept' : status === 'rejected' ? 'Reject' : 'Undecided'
+						}
+						onChange={(input: string) => {
+							let newStatus = processSliderInput(input);
+							updateHackerStatus(mutation, {
+								email: rowData.email as string,
+								status: newStatus,
+							}).then(res => {
+								// console.log(updatedStatus);
+								// rowData.status = updatedStatus;
+							});
+						}}
+						disable={status !== 'accepted' && status !== 'rejected' && status !== 'submitted'}
+					/>
+				)}
+			</Mutation>
+			<Link
+				style={{ textDecoration: 'none' }}
+				to={{ pathname: '/manageHackers/hacker', state: { email: email } }}>
+				<TableButton>View</TableButton>
+			</Link>
+		</Actions>
+	);
+};
+
+const rowRenderer = (
+	props: TableRowProps & { selectableRef: any; selecting: boolean; selected: boolean }
+): JSX.Element => {
+	return <Row {...props} />;
+};
+
+// mapping from status labels to the colored label images
+const statusRenderer = ({ cellData }: TableCellProps): JSX.Element => {
+	const generateColor = (value: HackerStatus): string => {
+		switch (value.toLowerCase()) {
+			case HackerStatus.created:
+				return STRINGS.COLOR_PALETTE[0];
+			case HackerStatus.verified:
+				return STRINGS.COLOR_PALETTE[1];
+			case HackerStatus.started:
+				return STRINGS.COLOR_PALETTE[2];
+			case HackerStatus.submitted:
+				return STRINGS.COLOR_PALETTE[3];
+			case HackerStatus.accepted:
+				return STRINGS.COLOR_PALETTE[4];
+			case HackerStatus.confirmed:
+				return STRINGS.COLOR_PALETTE[5];
+			case HackerStatus.rejected:
+				return STRINGS.COLOR_PALETTE[6];
+			default:
+				return STRINGS.ACCENT_COLOR;
+		}
+	};
+	return <Status value={cellData} generateColor={generateColor} />;
+};
+
 const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
 
 const fuseOpts = {
@@ -354,148 +497,6 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		setSortedData(newData);
 	}, [data, sortBy, sortDirection, selectedColumns, useRegex, searchValue]);
 
-	// assigns the row names for styling and to prevent selection
-	const generateRowClassName = ({ index }: { index: number }): string => {
-		let className = index < 0 ? 'headerRow' : index % 2 === 0 ? 'evenRow' : 'oddRow';
-		if (className !== 'headerRow') {
-			const status = sortedData[index].status;
-			if (status !== 'Submitted' && status !== 'Accepted' && status !== 'Rejected') {
-				className = className.concat(' ignore-select');
-			}
-		}
-		return className;
-	};
-
-	// renders a text label with a clickable sort indicator
-	const renderHeaderAsLabel = ({
-		dataKey,
-		sortBy,
-		sortDirection,
-		label,
-	}: TableHeaderProps): JSX.Element => {
-		return (
-			<>
-				{label}
-				{sortBy === dataKey && <SortIndicator sortDirection={sortDirection} />}
-			</>
-		);
-	};
-
-	// renders an svg instead of a text label, will with a clickable sort indicator
-	const renderHeaderAsSVG = (
-		{ dataKey, sortBy, sortDirection, label }: TableHeaderProps,
-		svg: string
-	): JSX.Element => {
-		return (
-			<>
-				<img alt={String(label)} src={svg} />
-				{sortBy === dataKey && <SortIndicator sortDirection={sortDirection} />}
-			</>
-		);
-	};
-
-	const checkmarkRenderer = ({ cellData }: TableCellProps): JSX.Element => {
-		return <Checkmark value={cellData} />;
-	};
-
-	// mutation to update a single hacker status
-	// TODO(alan): remove any type
-	const updateHackerStatus = async (
-		mutation: any,
-		variables: { email: string; status: string }
-	): Promise<string> => {
-		const result = await mutation({
-			mutation: UPDATE_STATUS,
-			refetchQueries: [{ query: GET_HACKERS }],
-			variables: variables,
-		});
-		return result.data.updateHackerStatus;
-	};
-
-	// maps the radio slider labels to the hacker status
-	const processSliderInput = (input: string): string => {
-		switch (input.toLowerCase()) {
-			case 'accept':
-				return 'Accepted';
-			case 'reject':
-				return 'Rejected';
-			case 'undecided':
-			default:
-				return 'Submitted';
-		}
-	};
-
-	// action column that contains the actionable buttons
-	const actionRenderer = ({ rowData }: TableCellProps): JSX.Element => {
-		// TODO(alan): extract onChange to own method
-		const status = rowData.status.toLowerCase();
-		const email = rowData.email;
-
-		return (
-			<Actions className="ignore-select">
-				<Mutation mutation={UPDATE_STATUS}>
-					{mutation => (
-						<RadioSlider
-							option1="Accept"
-							option2="Undecided"
-							option3="Reject"
-							value={
-								status === 'accepted' ? 'Accept' : status === 'rejected' ? 'Reject' : 'Undecided'
-							}
-							onChange={(input: string) => {
-								let newStatus = processSliderInput(input);
-								updateHackerStatus(mutation, {
-									email: rowData.email as string,
-									status: newStatus,
-								}).then((updatedStatus: string) => {
-									// console.log(updatedStatus);
-									// rowData.status = updatedStatus;
-								});
-							}}
-							disable={status !== 'accepted' && status !== 'rejected' && status !== 'submitted'}
-						/>
-					)}
-				</Mutation>
-				<Link
-					style={{ textDecoration: 'none' }}
-					to={{ pathname: '/manageHackers/hacker', state: { email: email } }}>
-					<TableButton>View</TableButton>
-				</Link>
-			</Actions>
-		);
-	};
-
-	const rowRenderer = (
-		props: TableRowProps & { selectableRef: any; selecting: boolean; selected: boolean }
-	): JSX.Element => {
-		return <Row {...props} />;
-	};
-
-	// mapping from status labels to the colored label images
-	const statusRenderer = ({ cellData }: TableCellProps): JSX.Element => {
-		const generateColor = (value: HackerStatus): string => {
-			switch (value.toLowerCase()) {
-				case HackerStatus.created:
-					return STRINGS.COLOR_PALETTE[0];
-				case HackerStatus.verified:
-					return STRINGS.COLOR_PALETTE[1];
-				case HackerStatus.started:
-					return STRINGS.COLOR_PALETTE[2];
-				case HackerStatus.submitted:
-					return STRINGS.COLOR_PALETTE[3];
-				case HackerStatus.accepted:
-					return STRINGS.COLOR_PALETTE[4];
-				case HackerStatus.confirmed:
-					return STRINGS.COLOR_PALETTE[5];
-				case HackerStatus.rejected:
-					return STRINGS.COLOR_PALETTE[6];
-				default:
-					return STRINGS.ACCENT_COLOR;
-			}
-		};
-		return <Status value={cellData} generateColor={generateColor} />;
-	};
-
 	// handles the text or regex search and sets the sortedData state with the updated row list
 	// floating button that onClick toggles between selecting all or none of the rows
 	const SelectAllButton = (
@@ -544,7 +545,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									headerHeight={40}
 									rowHeight={30}
 									rowCount={sortedData.length}
-									rowClassName={generateRowClassName}
+									rowClassName={generateRowClassName(sortedData)}
 									rowGetter={({ index }: { index: number }) => sortedData[index]}
 									rowRenderer={rowRenderer}
 									headerClassName="ignore-select"
