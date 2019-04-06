@@ -220,11 +220,11 @@ const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' })
 const fuseOpts = {
 	caseSensitive: true,
 	distance: 100,
+	findAllMatches: true,
 	location: 0,
 	shouldSort: false,
 	threshold: 0.5,
 	tokenize: true,
-	findAllMatches: true,
 };
 
 const onSearchBoxEntry = (ctx: TableCtxI): ((e: React.ChangeEvent<HTMLInputElement>) => void) => {
@@ -318,6 +318,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 	const [sortedData, setSortedData] = useState(data);
 
 	useEffect(() => {
+		// Only search one column in regex mode
 		if (useRegex && selectedColumns.length > 0) {
 			table.update(draft => {
 				draft.selectedColumns = [selectedColumns[0]];
@@ -393,7 +394,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		);
 	};
 
-	const checkmarkRenderer = ({ cellData }: TableCellProps) => {
+	const checkmarkRenderer = ({ cellData }: TableCellProps): JSX.Element => {
 		return <Checkmark value={cellData} />;
 	};
 
@@ -412,7 +413,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 	};
 
 	// maps the radio slider labels to the hacker status
-	const processSliderInput = (input: string) => {
+	const processSliderInput = (input: string): string => {
 		switch (input.toLowerCase()) {
 			case 'accept':
 				return 'Accepted';
@@ -425,7 +426,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 	};
 
 	// action column that contains the actionable buttons
-	const actionRenderer = ({ rowData }: TableCellProps) => {
+	const actionRenderer = ({ rowData }: TableCellProps): JSX.Element => {
 		// TODO(alan): extract onChange to own method
 		const status = rowData.status.toLowerCase();
 		const email = rowData.email;
@@ -447,7 +448,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									email: rowData.email as string,
 									status: newStatus,
 								}).then((updatedStatus: string) => {
-									console.log(updatedStatus);
+									// console.log(updatedStatus);
 									// rowData.status = updatedStatus;
 								});
 							}}
@@ -458,7 +459,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 				<Link
 					style={{ textDecoration: 'none' }}
 					to={{ pathname: '/manageHackers/hacker', state: { email: email } }}>
-					<TableButton onClick={() => console.log('test')}>View</TableButton>
+					<TableButton>View</TableButton>
 				</Link>
 			</Actions>
 		);
@@ -466,13 +467,13 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 
 	const rowRenderer = (
 		props: TableRowProps & { selectableRef: any; selecting: boolean; selected: boolean }
-	) => {
+	): JSX.Element => {
 		return <Row {...props} />;
 	};
 
 	// mapping from status labels to the colored label images
-	const statusRenderer = ({ cellData }: TableCellProps) => {
-		const generateColor = (value: HackerStatus) => {
+	const statusRenderer = ({ cellData }: TableCellProps): JSX.Element => {
+		const generateColor = (value: HackerStatus): string => {
 			switch (value.toLowerCase()) {
 				case HackerStatus.created:
 					return STRINGS.COLOR_PALETTE[0];
