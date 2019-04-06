@@ -31,7 +31,6 @@ import plane from '../../assets/img/plane.svg';
 import STRINGS from '../../assets/strings.json';
 import { TableCtxI, TableContext } from '../../contexts/TableContext';
 import Row from './Row';
-import 'babel-polyfill';
 
 const UPDATE_STATUS = gql`
 	mutation UpdateHackerStatus($email: String!, $status: String!) {
