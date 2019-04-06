@@ -4,6 +4,7 @@ import { createGlobalStyle } from 'styled-components';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import reset from 'styled-reset';
 import ApolloClient from 'apollo-boost';
+import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { ApolloProvider } from 'react-apollo';
 import LoginPage from './routes/login/Login';
 import Frame from './routes/dashboard/Frame';
@@ -48,18 +49,20 @@ const Vaken: React.FunctionComponent = (): JSX.Element => {
 
 	return (
 		<ApolloProvider client={client}>
-			<GlobalStyle />
-			<BrowserRouter>
-				{ready ? (
-					loggedIn ? (
-						<AuthContext.Provider value={user}>
-							<Frame />
-						</AuthContext.Provider>
-					) : (
-						<LoginPage />
-					)
-				) : null}
-			</BrowserRouter>
+			<ApolloHooksProvider client={client}>
+				<GlobalStyle />
+				<BrowserRouter>
+					{ready ? (
+						loggedIn ? (
+							<AuthContext.Provider value={user}>
+								<Frame />
+							</AuthContext.Provider>
+						) : (
+							<LoginPage />
+						)
+					) : null}
+				</BrowserRouter>
+			</ApolloHooksProvider>
 		</ApolloProvider>
 	);
 };

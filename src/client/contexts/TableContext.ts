@@ -1,5 +1,6 @@
 import React, { createContext } from 'react';
 import { SortDirectionType } from 'react-virtualized';
+import { Update } from 'use-immer';
 
 export enum HackerStatus {
 	created = 'created',
@@ -36,31 +37,32 @@ export interface Option {
 	label: string;
 	value: string;
 }
-
-export class Table {
-    constructor(data: Hacker[]) {
-        this.sortedData = data;
-        this.unsortedData = data;
-    }
-
-    public sortByState: string | null = null;
-
-    public sortDirectionState: SortDirectionType | null = null;
-
-    public sortedData: Hacker[];
-
-    public unsortedData: Hacker[];
-
-    public searchValue: string = "";
-
-    public selectedColumns?: Option[] = [columnOptions[0]];
-
-    public selectAll: boolean = false;
-
-    public hasSelection: boolean = false;
-
-    public selectedRowsEmails: string[] = [];
+export interface TableState {
+	sortBy?: string;
+	sortDirection?: SortDirectionType;
+	searchValue: string;
+	selectedColumns: Option[];
+	selectAll: boolean;
+	hasSelection: boolean;
+	selectedRowsEmails: string[];
+	useRegex: boolean;
 }
 
-// export const TableContext = (data: Hacker[]) => createContext<Table>(new Table([data]));
-export const TableContext = createContext<Table>(new Table([]));
+export const defaultTableState = {
+	hasSelection: false,
+	searchValue: '',
+	selectAll: false,
+	selectedColumns: [columnOptions[0]],
+	selectedRowsEmails: [],
+	useRegex: false,
+};
+
+export interface TableCtxI {
+	state: TableState;
+	update: Update<TableState>;
+}
+
+export const TableContext = createContext<TableCtxI>({
+	state: defaultTableState,
+	update: () => {},
+});

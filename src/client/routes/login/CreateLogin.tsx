@@ -37,10 +37,10 @@ export const PasswordLogin: React.FunctionComponent<Props> = (): JSX.Element => 
 
 	const onLogin = (): void => {
 		if (emailValidation(email) && passwordValidation(pass)) {
-			fetch('/api/register', {
+			fetch('/api/register/hacker', {
 				body: JSON.stringify({
 					password: pass,
-					username: email,
+					email: email,
 				}),
 				headers: {
 					'Content-Type': 'application/json',

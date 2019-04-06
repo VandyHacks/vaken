@@ -1,11 +1,13 @@
 import React, { Suspense, FunctionComponent, useContext } from 'react';
 import styled from 'styled-components';
+import { useImmer } from 'use-immer';
 import { Switch, Route } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import STRINGS from '../../assets/strings.json';
 import Title from '../../components/Text/Title';
 import { routes, currentAuth } from '../../assets/routes';
 import { AuthContext } from '../../contexts/AuthContext';
+import { TableState, defaultTableState, TableContext } from '../../contexts/TableContext';
 
 const OrganizerDash = React.lazy(() => import('./OrganizerDash'));
 
@@ -41,35 +43,42 @@ const Rectangle = styled.div`
 
 const Frame: FunctionComponent<{}> = (): JSX.Element => {
 	const currentUser = useContext(AuthContext);
+	const [tableState, updateTableState] = useImmer<TableState>(defaultTableState);
 
 	return (
 		<>
-			<Layout>
-				<div className="header">
-					<Title color={STRINGS.ACCENT_COLOR} margin="1.5rem 0rem 0rem">
-						<Switch>
-							{routes.map(route => {
-								return route.authLevel.includes(currentUser.authLevel) ? (
-									<Route key={route.path} path={route.path} render={() => route.displayText} />
-								) : null;
-							})}
-						</Switch>
-					</Title>
-					<Rectangle />
-				</div>
-				<Sidebar />
-				<div className="content">
-					<Suspense fallback={<div>Loading...</div>}>
-						<Switch>
-							{routes.map(route => {
-								return route.authLevel.includes(currentUser.authLevel) ? (
-									<Route key={route.path} path={route.path} component={() => <route.component />} />
-								) : null;
-							})}
-						</Switch>
-					</Suspense>
-				</div>
-			</Layout>
+			<TableContext.Provider value={{ state: tableState, update: updateTableState }}>
+				<Layout>
+					<div className="header">
+						<Title color={STRINGS.ACCENT_COLOR} margin="1.5rem 0rem 0rem">
+							<Switch>
+								{routes.map(route => {
+									return route.authLevel.includes(currentUser.authLevel) ? (
+										<Route key={route.path} path={route.path} render={() => route.displayText} />
+									) : null;
+								})}
+							</Switch>
+						</Title>
+						<Rectangle />
+					</div>
+					<Sidebar />
+					<div className="content">
+						<Suspense fallback={<div>Loading...</div>}>
+							<Switch>
+								{routes.map(route => {
+									return route.authLevel.includes(currentUser.authLevel) ? (
+										<Route
+											key={route.path}
+											path={route.path}
+											component={() => <route.component />}
+										/>
+									) : null;
+								})}
+							</Switch>
+						</Suspense>
+					</div>
+				</Layout>
+			</TableContext.Provider>
 		</>
 	);
 };
