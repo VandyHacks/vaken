@@ -274,43 +274,55 @@ const processSliderInput = (input: string): string => {
 };
 
 // action column that contains the actionable buttons
-const actionRenderer = ({ rowData }: TableCellProps): JSX.Element => {
+const actionRenderer = (ctx: TableCtxI): FunctionComponent<TableCellProps> => {
 	// TODO(alan): extract onChange to own method
-	const status = rowData.status.toLowerCase();
-	const email = rowData.email;
+	const ret: FunctionComponent<TableCellProps> = ({ rowData }: TableCellProps): JSX.Element => {
+		// TODO(alan): extract onChange to own method)
+		const status = rowData.status.toLowerCase();
+		const email = rowData.email;
 
-	return (
-		<Actions className="ignore-select">
-			<Mutation mutation={UPDATE_STATUS}>
-				{mutation => (
-					<RadioSlider
-						option1="Accept"
-						option2="Undecided"
-						option3="Reject"
-						value={
-							status === 'accepted' ? 'Accept' : status === 'rejected' ? 'Reject' : 'Undecided'
-						}
-						onChange={(input: string) => {
-							let newStatus = processSliderInput(input);
-							updateHackerStatus(mutation, {
-								email: rowData.email as string,
-								status: newStatus,
-							}).then(res => {
-								// console.log(updatedStatus);
-								// rowData.status = updatedStatus;
-							});
-						}}
-						disable={status !== 'accepted' && status !== 'rejected' && status !== 'submitted'}
-					/>
-				)}
-			</Mutation>
-			<Link
-				style={{ textDecoration: 'none' }}
-				to={{ pathname: '/manageHackers/hacker', state: { email: email } }}>
-				<TableButton>View</TableButton>
-			</Link>
-		</Actions>
-	);
+		return (
+			<Actions className="ignore-select">
+				<Mutation mutation={UPDATE_STATUS}>
+					{mutation => (
+						<RadioSlider
+							option1="Accept"
+							option2="Undecided"
+							option3="Reject"
+							value={
+								status === 'accepted' ? 'Accept' : status === 'rejected' ? 'Reject' : 'Undecided'
+							}
+							onChange={(input: string) => {
+								let newStatus = processSliderInput(input);
+								updateHackerStatus(mutation, {
+									email: rowData.email as string,
+									status: newStatus,
+								}).then(res => {
+									// console.log(updatedStatus);
+									// rowData.status = updatedStatus;
+								});
+							}}
+							disable={status !== 'accepted' && status !== 'rejected' && status !== 'submitted'}
+						/>
+					)}
+				</Mutation>
+				<Link
+					style={{ textDecoration: 'none' }}
+					to={{ pathname: '/manageHackers/hacker', state: { email: email } }}>
+					<TableButton
+						onClick={() =>
+							ctx.update(draft => {
+								draft.hasSelection = false;
+								draft.selectedRowsEmails = [];
+							})
+						}>
+						View
+					</TableButton>
+				</Link>
+			</Actions>
+		);
+	};
+	return ret;
 };
 
 const rowRenderer = (
@@ -619,7 +631,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 										width={275}
 										minWidth={275}
 										headerRenderer={renderHeaderAsLabel}
-										cellRenderer={actionRenderer}
+										cellRenderer={actionRenderer(table)}
 									/>
 								</StyledTable>
 								{selectAll || hasSelection ? (
