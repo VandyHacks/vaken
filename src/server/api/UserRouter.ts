@@ -51,7 +51,7 @@ userRouter.get('/api/logout', async (ctx, next) => {
 
 // Create a new local account
 userRouter.post('/api/register/user', async (ctx, next) => {
-	const existingUser = await userModel.findOne({ email: ctx.request.body.username });
+	const existingUser = await userModel.findOne({ email: ctx.request.body.email });
 
 	// found user
 	if (existingUser) {
@@ -85,7 +85,7 @@ userRouter.post('/api/register/user', async (ctx, next) => {
 
 // Create a new local hacker account
 userRouter.post('/api/register/hacker', async (ctx, next) => {
-	const existingUser = await hackerModel.findOne({ email: ctx.request.body.username });
+	const existingUser = await hackerModel.findOne({ email: ctx.request.body.email });
 
 	// found user
 	if (existingUser) {
