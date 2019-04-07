@@ -11,6 +11,17 @@ export interface ButtonProps {
 	glowColor?: string;
 	width?: string;
 	background?: string;
+	height?: string;
+	padding?: string;
+	paddingTop?: string;
+	paddingLeft?: string;
+	paddingRight?: string;
+	paddingBottom?: string;
+	margin?: string;
+	marginTop?: string;
+	marginLeft?: string;
+	marginRight?: string;
+	marginBottom?: string;
 	invalid?: boolean;
 }
 
@@ -44,10 +55,19 @@ export const Button = styled.button`
 	${displayFlex}
 	flex-flow: row;
 	font-weight: 400;
+	height: ${({ height = '3.2rem' }: ButtonProps) => height};
 	width: ${({ width = '23.33rem' }: ButtonProps) => width};
-	height: 3.2rem;
-	margin-bottom: 1.6rem;
-	background: ${(props: ButtonProps) => props.background || 'rgba(255, 255, 255, 1)'};
+	padding: ${({ padding = '0' }: ButtonProps) => padding};
+	padding-bottom: ${({ paddingBottom = '0' }: ButtonProps) => paddingBottom};
+	padding-top: ${({ paddingTop = '0' }: ButtonProps) => paddingTop};
+	padding-left: ${({ paddingLeft = '0' }: ButtonProps) => paddingLeft};
+	padding-right: ${({ paddingRight = '0' }: ButtonProps) => paddingRight};
+	margin: ${({ margin = '0' }: ButtonProps) => margin};
+	margin-bottom: ${({ marginBottom = '1.6rem' }: ButtonProps) => marginBottom};
+	margin-top: ${({ marginTop = '0' }: ButtonProps) => marginTop};
+	margin-left: ${({ marginLeft = '0' }: ButtonProps) => marginLeft};
+	margin-right: ${({ marginRight = '0' }: ButtonProps) => marginRight};
+	background: ${({ background = 'rgba(255, 255, 255, 1)' }: ButtonProps) => background};
 	border-radius: 1rem;
 	cursor: pointer;
 	border: none;
