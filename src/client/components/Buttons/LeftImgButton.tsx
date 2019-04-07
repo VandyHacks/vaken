@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, RightPaddedImg, CenterButtonText } from './Buttons';
+import { Button, ButtonProps, RightPaddedImg, CenterButtonText } from './Buttons';
 import { FlexRow } from '../Containers/FlexContainers';
 
-interface Props {
+interface Props extends ButtonProps {
 	img: string;
 	imgAlt: string;
 	text: string;
