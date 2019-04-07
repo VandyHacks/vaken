@@ -11,6 +11,7 @@ import Frame from './routes/dashboard/Frame';
 import AuthContext from './contexts/AuthContext';
 import { User } from '../common/models/User';
 import { defaultProps } from 'react-select/lib/Select';
+import addHackers from './temp/AddHackers';
 
 const GlobalStyle = createGlobalStyle`
 	body {
@@ -18,6 +19,7 @@ const GlobalStyle = createGlobalStyle`
 		font-family: 'Roboto', sans-serif;
 
 		${reset}
+    user-select: none;
 		margin: 0;
 		padding: 0;
 		width: 100vw;

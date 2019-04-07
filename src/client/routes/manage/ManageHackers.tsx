@@ -48,18 +48,23 @@ const Error = (
 
 export const ManageHackers: FunctionComponent = (): JSX.Element => {
 	const { loading, error, data } = useQuery(GET_HACKERS);
+	const [tableState, updateTableState] = useImmer<TableState>(defaultTableState);
 
 	return (
 		<FloatingPopup borderRadius="1rem" height="100%" backgroundOpacity="1" padding="1.5rem">
-			<Switch>
-				<Route path="/manageHackers/hacker" component={HackerView} />
-				<Route
-					path="/manageHackers"
-					render={() => (
-						<>{loading ? <Spinner /> : error ? Error : <HackerTable data={data.getAllHackers} />}</>
-					)}
-				/>
-			</Switch>
+			<TableContext.Provider value={{ state: tableState, update: updateTableState }}>
+				<Switch>
+					<Route path="/manageHackers/hacker" component={HackerView} />
+					<Route
+						path="/manageHackers"
+						render={() => (
+							<>
+								{loading ? <Spinner /> : error ? Error : <HackerTable data={data.getAllHackers} />}
+							</>
+						)}
+					/>
+				</Switch>
+			</TableContext.Provider>
 		</FloatingPopup>
 	);
 };

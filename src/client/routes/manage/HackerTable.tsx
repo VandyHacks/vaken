@@ -215,20 +215,6 @@ interface DeselectElement extends HTMLDivElement {
 	};
 }
 
-// assigns the row names for styling and to prevent selection
-const generateRowClassName = (data: Hacker[]): ((p: { index: number }) => string) => {
-	return ({ index }) => {
-		let className = index < 0 ? 'headerRow' : index % 2 === 0 ? 'evenRow' : 'oddRow';
-		if (className !== 'headerRow') {
-			const status = data[index].status;
-			if (status !== 'Submitted' && status !== 'Accepted' && status !== 'Rejected') {
-				className = className.concat(' ignore-select');
-			}
-		}
-		return className;
-	};
-};
-
 // renders a text label with a clickable sort indicator
 const renderHeaderAsLabel = ({
 	dataKey,
@@ -505,6 +491,18 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		</FloatingButton>
 	);
 
+	// assigns the row names for styling and to prevent selection
+	const generateRowClassName = ({ index }: { index: number }): string => {
+		let className = index < 0 ? 'headerRow' : index % 2 === 0 ? 'evenRow' : 'oddRow';
+		if (className !== 'headerRow') {
+			const status = sortedData[index].status;
+			if (status !== 'Submitted' && status !== 'Accepted' && status !== 'Rejected') {
+				className = className.concat(' ignore-select');
+			}
+		}
+		return className;
+	};
+
 	return (
 		<TableLayout>
 			<TableOptions>
@@ -545,7 +543,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									headerHeight={40}
 									rowHeight={30}
 									rowCount={sortedData.length}
-									rowClassName={generateRowClassName(sortedData)}
+									rowClassName={generateRowClassName}
 									rowGetter={({ index }: { index: number }) => sortedData[index]}
 									rowRenderer={rowRenderer}
 									headerClassName="ignore-select"
