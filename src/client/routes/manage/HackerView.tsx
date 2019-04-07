@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
 import styled from 'styled-components';
-import { Redirect } from 'react-router-dom';
+import { Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import Spinner from '../../components/Loading/Spinner';
 import STRINGS from '../../assets/strings.json';
@@ -27,7 +27,7 @@ const Application = styled.div`
 const Layout = styled.div`
 	display: grid;
 	grid-template-columns: 30% 2rem auto;
-	grid-template-rows: 3rem auto;
+	grid-template-rows: 4rem auto;
 	grid-template-areas:
 		'header header header'
 		'profile . application';
@@ -89,21 +89,16 @@ const Row: React.FunctionComponent<RowProps> = (props: RowProps): JSX.Element =>
 	);
 };
 
-interface Props {
-	location: {
-		state: {
-			email: string;
-		};
-	};
-}
+interface Props extends RouteComponentProps<{}> {}
 
 export const HackerView: React.FunctionComponent<Props> = (props: Props): JSX.Element => {
-	console.log(props.location.state.email);
-	if (!props || !props.location || !props.location.state || !props.location.state.email) {
+	const { location } = props;
+	// console.log(props.location.state.email);
+	if (!location || !location.state || !location.state.email) {
 		return <Redirect to="/manageHackers" />;
 	} else {
 		return (
-			<Query query={GET_HACKER_DATA} variables={{ email: props.location.state.email }}>
+			<Query query={GET_HACKER_DATA} variables={{ email: location.state.email }}>
 				{({ data, loading, error }) => {
 					if (loading) {
 						return <Spinner />;
@@ -134,6 +129,10 @@ export const HackerView: React.FunctionComponent<Props> = (props: Props): JSX.El
 									img={back}
 									imgAlt="left arrow"
 									text="Back to table"
+									width="auto"
+									onClick={() => window.history.back()}
+									paddingLeft="1.5rem"
+									paddingRight="1.5rem"
 								/>
 							</Header>
 							<Profile>
