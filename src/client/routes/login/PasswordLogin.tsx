@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 import emailIcon from '../../assets/img/email_icon.svg';
 import lockIcon from '../../assets/img/lock_icon.svg';
@@ -9,6 +9,7 @@ import { FlexRow, SpaceBetweenColumn } from '../../components/Containers/FlexCon
 import TextLink from '../../components/Text/TextLink';
 import STRINGS from '../../assets/strings.json';
 import LeftImgTextInput from '../../components/Input/LeftImgTextInput';
+import LoginContext from '../../contexts/LoginContext';
 import { onChangeWrapper } from '../../components/Input/helperFunctions';
 import {
 	PASSWORD_REGEX,
@@ -46,11 +47,7 @@ export const PasswordLogin: React.FunctionComponent<Props> = (): JSX.Element => 
 	const [email, setEmail] = useState('');
 	const [pass, setPass] = useState('');
 	const [invalid, setInvalid] = useState(false);
-	const [toDashboard, setToDashboard] = useState(false);
-
-	if (toDashboard) {
-		return <Redirect to="/dashboard" />;
-	}
+	const loginCtx = useContext(LoginContext);
 
 	const onLogin = (): void => {
 		if (emailValidation(email) && passwordValidation(pass)) {
@@ -65,8 +62,7 @@ export const PasswordLogin: React.FunctionComponent<Props> = (): JSX.Element => 
 				method: 'POST',
 			}).then(res => {
 				if (res.status === 200 && res.redirected) {
-					console.log(res);
-					setToDashboard(true);
+					loginCtx.update(true);
 				} else {
 					setInvalid(true);
 				}

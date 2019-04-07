@@ -3,7 +3,7 @@ import { Bar, Pie } from 'react-chartjs-2';
 import { Link } from 'react-router-dom';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import TextButton from '../../components/Buttons/TextButton';
-import { FlexRow, FlexColumn } from '../../components/Containers/FlexContainers';
+import { OverflowContainer, FlexRow, FlexColumn } from '../../components/Containers/FlexContainers';
 import 'chartjs-plugin-datalabels';
 import STRINGS from '../../assets/strings.json';
 
@@ -122,8 +122,8 @@ const pieGenderOptions = {
 
 export const OrganizerDash: FunctionComponent = (props: Props): JSX.Element => {
 	return (
-		<>
-			<FloatingPopup width="60rem" marginBottom="1rem" backgroundOpacity="1" padding="1.5rem">
+		<OverflowContainer>
+			<FloatingPopup marginBottom="1rem" backgroundOpacity="1" padding="1.5rem">
 				<Bar data={barStatusData} options={barStatusOptions} />
 				<Link style={{ textDecoration: 'none' }} to="/managehackers">
 					<TextButton
@@ -135,7 +135,7 @@ export const OrganizerDash: FunctionComponent = (props: Props): JSX.Element => {
 					/>
 				</Link>
 			</FloatingPopup>
-			<FloatingPopup width="60rem" backgroundOpacity="1" padding="1.5rem">
+			<FloatingPopup backgroundOpacity="1" padding="1.5rem">
 				<FlexRow>
 					<FlexColumn>
 						<Pie data={pieShirtData} options={pieShirtOptions} />
@@ -145,7 +145,7 @@ export const OrganizerDash: FunctionComponent = (props: Props): JSX.Element => {
 					</FlexColumn>
 				</FlexRow>
 			</FloatingPopup>
-		</>
+		</OverflowContainer>
 	);
 };
 

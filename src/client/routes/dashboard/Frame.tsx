@@ -1,7 +1,7 @@
 import React, { Suspense, FunctionComponent, useContext } from 'react';
 import styled from 'styled-components';
 import { useImmer } from 'use-immer';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Redirect, Route } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import STRINGS from '../../assets/strings.json';
 import Title from '../../components/Text/Title';
@@ -25,7 +25,7 @@ const Layout = styled.div`
 
 	.content {
 		grid-area: content;
-		overflow-y: auto;
+		max-height: 100%;
 		/* border-radius: 2rem; */
 	}
 
@@ -40,8 +40,12 @@ const Rectangle = styled.div`
 	background: ${STRINGS.ACCENT_COLOR};
 `;
 
-const Frame: FunctionComponent<{}> = (): JSX.Element => {
+const Frame: FunctionComponent = (props): JSX.Element => {
 	const currentUser = useContext(AuthContext);
+
+	if (window.location.pathname.startsWith('/login')) {
+		return <Redirect to="/dashboard" />;
+	}
 
 	return (
 		<>

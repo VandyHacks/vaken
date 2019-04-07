@@ -50,8 +50,8 @@ userRouter.get('/api/logout', async (ctx, next) => {
 });
 
 // Create a new local account
-userRouter.post('/api/register/user', async (ctx, next) => {
-	const existingUser = await userModel.findOne({ email: ctx.request.body.email });
+userRouter.post('/api/register/UNSAFE', async (ctx, next) => {
+	const existingUser = await hackerModel.findOne({ email: ctx.request.body.email });
 
 	// found user
 	if (existingUser) {
@@ -62,12 +62,11 @@ userRouter.post('/api/register/user', async (ctx, next) => {
 		//no user found, create new user
 		console.log('> Creating new local user.....');
 		const newUser = {
+			...ctx.request.body,
 			authType: AuthType.LOCAL,
-			authLevel: AuthLevel.HACKER,
-			email: ctx.request.body.email,
-			password: ctx.request.body.password,
+			authLevel: ctx.request.body.authLevel ? ctx.request.body.authLevel : AuthLevel.HACKER,
 		};
-		const createdUser = await userModel.create(newUser);
+		const createdUser = await hackerModel.create(newUser);
 		if (createdUser) {
 			ctx.body = { authLevel: createdUser.authLevel, success: true, username: createdUser.email };
 			ctx.login(createdUser);

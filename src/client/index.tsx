@@ -6,11 +6,12 @@ import reset from 'styled-reset';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { ApolloProvider } from 'react-apollo';
+import { defaultProps } from 'react-select/lib/Select';
 import LoginPage from './routes/login/Login';
 import Frame from './routes/dashboard/Frame';
 import AuthContext from './contexts/AuthContext';
+import LoginContext from './contexts/LoginContext';
 import { User } from '../common/models/User';
-import { defaultProps } from 'react-select/lib/Select';
 import addHackers from './temp/AddHackers';
 
 const GlobalStyle = createGlobalStyle`
@@ -49,6 +50,10 @@ const Vaken: React.FunctionComponent = (): JSX.Element => {
 		});
 	}, [loggedIn]);
 
+	useEffect(() => {
+		//addHackers(false);
+	}, []);
+
 	return (
 		<ApolloProvider client={client}>
 			<ApolloHooksProvider client={client}>
@@ -60,7 +65,9 @@ const Vaken: React.FunctionComponent = (): JSX.Element => {
 								<Frame />
 							</AuthContext.Provider>
 						) : (
-							<LoginPage />
+							<LoginContext.Provider value={{ state: loggedIn, update: setLoggedIn }}>
+								<LoginPage />
+							</LoginContext.Provider>
 						)
 					) : null}
 				</BrowserRouter>
