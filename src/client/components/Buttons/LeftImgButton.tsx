@@ -12,9 +12,9 @@ interface Props extends ButtonProps {
 }
 
 const LeftImgButton = (props: Props): JSX.Element => {
-	const { img, text, imgAlt, color, background, glowColor } = props;
+	const { img, imgAlt, color, text, ...ButtonProps } = props;
 	return (
-		<Button background={background} glowColor={glowColor}>
+		<Button {...ButtonProps}>
 			<FlexRow height="min-content" width="min-content" /* Edge case of centering icons */>
 				<RightPaddedImg src={img} alt={imgAlt} />
 			</FlexRow>
