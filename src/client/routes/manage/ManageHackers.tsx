@@ -20,7 +20,7 @@ import {
 	TableContext,
 } from '../../contexts/TableContext';
 
-const GET_HACKERS = gql`
+export const GET_HACKERS = gql`
 	query {
 		getAllHackers {
 			firstName

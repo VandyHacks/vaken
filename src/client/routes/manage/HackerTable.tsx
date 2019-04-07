@@ -29,6 +29,7 @@ import Checkmark from '../../components/Symbol/Checkmark';
 import SearchBox from '../../components/Input/SearchBox';
 import plane from '../../assets/img/plane.svg';
 import STRINGS from '../../assets/strings.json';
+import { GET_HACKERS } from './ManageHackers';
 import { TableCtxI, TableContext } from '../../contexts/TableContext';
 import Row from './Row';
 
@@ -44,7 +45,15 @@ const UPDATE_STATUS_AS_BATCH = gql`
 	}
 `;
 
-const GET_HACKERS = gql`
+const GET_HACKER_BY_EMAIL = gql`
+	query HackerStatus($email: String!) {
+		getHackerByEmail(email: $email) {
+			status
+		}
+	}
+`;
+
+const GET_HACKERS_STATUS = gql`
 	query {
 		getAllHackers {
 			status
@@ -255,8 +264,21 @@ const updateHackerStatus = (
 ): Promise<string> => {
 	return mutation({
 		mutation: UPDATE_STATUS,
-		refetchQueries: [{ query: GET_HACKERS }],
+		refetchQueries: [{ query: GET_HACKERS_STATUS }],
 		variables: variables,
+		update: (proxy, { data: { getAllHackers } }) => {
+			try {
+				let data = proxy.readQuery({ query: GET_HACKERS });
+				data.getAllHackers = data.getAllHackers.map(({ email, status, ...h }: Hacker) => {
+					return email === variables.email
+						? { status: variables.status, email, ...h }
+						: { status, email, ...h };
+				});
+				proxy.writeQuery({ data, query: GET_HACKERS });
+			} catch (e) {
+				console.error(e);
+			}
+		},
 	});
 };
 
@@ -652,8 +674,23 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 													onChange={(input: string) => {
 														let newStatus = processSliderInput(input);
 														mutation({
-															refetchQueries: [{ query: GET_HACKERS }],
+															refetchQueries: [{ query: GET_HACKERS_STATUS }],
 															variables: { emails: selectedRowsEmails, status: newStatus },
+															update: (proxy, { data: { getAllHackers } }) => {
+																try {
+																	let data = proxy.readQuery({ query: GET_HACKERS });
+																	data.getAllHackers = data.getAllHackers.map(
+																		({ email, status, ...h }: Hacker) => {
+																			return selectedRowsEmails.includes(email)
+																				? { status: newStatus, email, ...h }
+																				: { status, email, ...h };
+																		}
+																	);
+																	proxy.writeQuery({ data, query: GET_HACKERS });
+																} catch (e) {
+																	console.error(e);
+																}
+															},
 														});
 														// to deselect afterwards, react-selectable-fast has no clean way to interface with a clearSelection function
 														// so this is a workaround by simulating a click on the SelectAllButton
