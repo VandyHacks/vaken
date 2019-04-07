@@ -1,3 +1,6 @@
+import institutions from '../assets/data/institutions.json';
+import names from '../assets/data/names.json';
+
 const hackers = [
 	{
 		email: 'ml@mattleon.com',
@@ -66,18 +69,65 @@ const hackers = [
 		school: 'Vanderbilt University',
 		status: 'Submitted',
 	},
+	{
+		authLevel: 'Organizer',
+		email: 'org@vh.co',
+		firstName: 'Vandy',
+		gradYear: 2022,
+		lastName: 'Hacks',
+		needsReimbursement: false,
+		school: 'Vanderbilt University',
+		status: 'Confirmed',
+	},
 ];
 
-export const addHackers = () =>
+const getRandom = (max: number) => {
+	return Math.floor(Math.random() * max);
+};
+const statuses = [
+	'Created',
+	'Verified',
+	'Started',
+	'Submitted',
+	'Accepted',
+	'Confirmed',
+	'Rejected',
+];
+
+export const addHackers = (die: boolean) => {
+	if (die) {
+		for (let i = 0; i < 5000; ++i) {
+			const fn = names[getRandom(21000)];
+			const ln = names[getRandom(21000)];
+			const bool = getRandom(2) ? true : false;
+			fetch('/api/register/UNSAFE', {
+				body: JSON.stringify({
+					firstName: fn,
+					lastName: ln,
+					email: `${fn}.${ln}@gmail.com`,
+					gradYear: getRandom(4) + 2019,
+					needsReimbursement: bool,
+					school: institutions[getRandom(1430)],
+					status: statuses[getRandom(7)],
+					password: 'P@ssword1',
+				}),
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
+		}
+	}
+
 	hackers.forEach(hacker => {
-		fetch('/api/register/hacker', {
-			body: JSON.stringify({ ...hacker, password: 'test123' }),
+		fetch('/api/register/UNSAFE', {
+			body: JSON.stringify({ ...hacker, password: 'p@ssword1' }),
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			method: 'POST',
 		}).then(res => console.log(res.json));
 	});
-
+};
 addHackers();
 export default addHackers;
