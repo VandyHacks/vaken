@@ -2,6 +2,7 @@ import { Resolver, Query, Arg, Mutation } from 'type-graphql';
 
 import { teamModel } from '../models/Team';
 import { HackerModel } from '../models/Hacker';
+import CONSTANTS from '../../common/constants.json';
 
 @Resolver()
 class TeamResolver {
@@ -41,7 +42,7 @@ class TeamResolver {
 			}
 
 			// Check if the team is full
-			if (team.size === 4) {
+			if (team.size === CONSTANTS.MAX_TEAM_SIZE) {
 				throw new Error('This team is already full!');
 			}
 
