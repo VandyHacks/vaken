@@ -296,56 +296,43 @@ const processSliderInput = (input: string): string => {
 };
 
 // action column that contains the actionable buttons
-const actionRenderer = (ctx: TableCtxI): FunctionComponent<TableCellProps> => {
+const actionRenderer = ({ rowData }: TableCellProps): JSX.Element => {
 	// TODO(alan): extract onChange to own method
-	const ret: FunctionComponent<TableCellProps> = ({ rowData }: TableCellProps): JSX.Element => {
-		// TODO(alan): extract onChange to own method)
-		const status = rowData.status.toLowerCase();
-		const email = rowData.email;
+	const status = rowData.status.toLowerCase();
+	const email = rowData.email;
 
-		return (
-			<Actions className="ignore-select">
-				<Mutation mutation={UPDATE_STATUS}>
-					{mutation => (
-						<RadioSlider
-							option1="Accept"
-							option2="Undecided"
-							option3="Reject"
-							value={
-								status === 'accepted' ? 'Accept' : status === 'rejected' ? 'Reject' : 'Undecided'
-							}
-							onChange={(input: string) => {
-								let newStatus = processSliderInput(input);
-								updateHackerStatus(mutation, {
-									email: rowData.email as string,
-									status: newStatus,
-								}).then(res => {
-									// console.log(updatedStatus);
-									// rowData.status = updatedStatus;
-								});
-							}}
-							disable={status !== 'accepted' && status !== 'rejected' && status !== 'submitted'}
-						/>
-					)}
-				</Mutation>
-				<Link
-					style={{ textDecoration: 'none' }}
-					to={{ pathname: '/manageHackers/hacker', state: { email: email } }}>
-					<TableButton
-						onClick={() =>
-							// ctx.update(draft => {
-							// 	draft.hasSelection = false;
-							// 	draft.selectedRowsEmails = [];
-							// })
-							console.log('click view')
-						}>
-						View
-					</TableButton>
-				</Link>
-			</Actions>
-		);
-	};
-	return ret;
+	return (
+		<Actions className="ignore-select">
+			<Mutation mutation={UPDATE_STATUS}>
+				{mutation => (
+					<RadioSlider
+						option1="Accept"
+						option2="Undecided"
+						option3="Reject"
+						value={
+							status === 'accepted' ? 'Accept' : status === 'rejected' ? 'Reject' : 'Undecided'
+						}
+						onChange={(input: string) => {
+							let newStatus = processSliderInput(input);
+							updateHackerStatus(mutation, {
+								email: rowData.email as string,
+								status: newStatus,
+							}).then(res => {
+								// console.log(updatedStatus);
+								// rowData.status = updatedStatus;
+							});
+						}}
+						disable={status !== 'accepted' && status !== 'rejected' && status !== 'submitted'}
+					/>
+				)}
+			</Mutation>
+			<Link
+				style={{ textDecoration: 'none' }}
+				to={{ pathname: '/manageHackers/hacker', state: { email: email } }}>
+				<TableButton>View</TableButton>
+			</Link>
+		</Actions>
+	);
 };
 
 const rowRenderer = (
@@ -411,6 +398,7 @@ const onToggleSelectAll = (ctx: TableCtxI): (() => void) => {
 const onSelectionClear = (ctx: TableCtxI): ((p: boolean) => void) => {
 	return (p: boolean) =>
 		ctx.update(draft => {
+			draft.selectAll = false;
 			draft.hasSelection = p;
 			draft.selectedRowsEmails = [];
 		});
@@ -526,16 +514,19 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		</FloatingButton>
 	);
 
-	// TODO(alan): dependency injection
+	const isSelectable = (status: string): boolean => {
+		const s = status.toLowerCase();
+		return s === 'submitted' || s === 'accepted' || s === 'rejected';
+	};
+
 	// assigns the row names for styling and to prevent selection
 	const generateRowClassName = ({ index }: { index: number }): string => {
 		let className = index < 0 ? 'headerRow' : index % 2 === 0 ? 'evenRow' : 'oddRow';
 		if (className !== 'headerRow') {
 			const { status, email } = sortedData[index];
-			if (status !== 'Submitted' && status !== 'Accepted' && status !== 'Rejected') {
+			if (!isSelectable(status)) {
 				className = className.concat(' ignore-select');
-			}
-			if (selectedRowsEmails.includes(email)) {
+			} else if (selectAll || selectedRowsEmails.includes(email)) {
 				className = className.concat(' selected');
 			}
 		}
@@ -658,13 +649,23 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 										width={275}
 										minWidth={275}
 										headerRenderer={renderHeaderAsLabel}
-										cellRenderer={actionRenderer(table)}
+										cellRenderer={actionRenderer}
 									/>
 								</StyledTable>
 								{selectAll || hasSelection ? (
 									<DeselectAll ref={deselect}>{SelectAllButton}</DeselectAll>
 								) : (
-									<SelectAll>{SelectAllButton}</SelectAll>
+									<SelectAll
+										onClick={() =>
+											table.update(draft => {
+												draft.hasSelection = true;
+												draft.selectedRowsEmails = sortedData
+													.filter(row => isSelectable(row.status))
+													.map(row => row.email);
+											})
+										}>
+										{SelectAllButton}
+									</SelectAll>
 								)}
 								{hasSelection && (
 									<Mutation mutation={UPDATE_STATUS_AS_BATCH}>
