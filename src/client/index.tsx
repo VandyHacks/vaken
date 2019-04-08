@@ -36,6 +36,11 @@ const Vaken: React.FunctionComponent = (): JSX.Element => {
 	const [ready, setReady] = useState();
 	const [user, setUser] = useState(new User());
 
+	// Uncomment to add dummy data
+	// useEffect(() => {
+	// 	addHackers(true);
+	// }, []);
+
 	useEffect(() => {
 		fetch('/api/whoami').then(res => {
 			if (res.status === 200) {

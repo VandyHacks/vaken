@@ -265,20 +265,20 @@ const updateHackerStatus = (
 	return mutation({
 		mutation: UPDATE_STATUS,
 		refetchQueries: [{ query: GET_HACKERS_STATUS }],
-		variables: variables,
 		update: (proxy, { data: { getAllHackers } }) => {
 			try {
 				let data = proxy.readQuery({ query: GET_HACKERS });
 				data.getAllHackers = data.getAllHackers.map(({ email, status, ...h }: Hacker) => {
 					return email === variables.email
-						? { status: variables.status, email, ...h }
-						: { status, email, ...h };
+						? { email, status: variables.status, ...h }
+						: { email, status, ...h };
 				});
 				proxy.writeQuery({ data, query: GET_HACKERS });
 			} catch (e) {
 				console.error(e);
 			}
 		},
+		variables: variables,
 	});
 };
 
@@ -333,10 +333,11 @@ const actionRenderer = (ctx: TableCtxI): FunctionComponent<TableCellProps> => {
 					to={{ pathname: '/manageHackers/hacker', state: { email: email } }}>
 					<TableButton
 						onClick={() =>
-							ctx.update(draft => {
-								draft.hasSelection = false;
-								draft.selectedRowsEmails = [];
-							})
+							// ctx.update(draft => {
+							// 	draft.hasSelection = false;
+							// 	draft.selectedRowsEmails = [];
+							// })
+							console.log('click view')
 						}>
 						View
 					</TableButton>
@@ -525,13 +526,17 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		</FloatingButton>
 	);
 
+	// TODO(alan): dependency injection
 	// assigns the row names for styling and to prevent selection
 	const generateRowClassName = ({ index }: { index: number }): string => {
 		let className = index < 0 ? 'headerRow' : index % 2 === 0 ? 'evenRow' : 'oddRow';
 		if (className !== 'headerRow') {
-			const status = sortedData[index].status;
+			const { status, email } = sortedData[index];
 			if (status !== 'Submitted' && status !== 'Accepted' && status !== 'Rejected') {
 				className = className.concat(' ignore-select');
+			}
+			if (selectedRowsEmails.includes(email)) {
+				className = className.concat(' selected');
 			}
 		}
 		return className;
@@ -675,15 +680,14 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 														let newStatus = processSliderInput(input);
 														mutation({
 															refetchQueries: [{ query: GET_HACKERS_STATUS }],
-															variables: { emails: selectedRowsEmails, status: newStatus },
 															update: (proxy, { data: { getAllHackers } }) => {
 																try {
 																	let data = proxy.readQuery({ query: GET_HACKERS });
 																	data.getAllHackers = data.getAllHackers.map(
 																		({ email, status, ...h }: Hacker) => {
 																			return selectedRowsEmails.includes(email)
-																				? { status: newStatus, email, ...h }
-																				: { status, email, ...h };
+																				? { email, status: newStatus, ...h }
+																				: { email, status, ...h };
 																		}
 																	);
 																	proxy.writeQuery({ data, query: GET_HACKERS });
@@ -691,6 +695,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 																	console.error(e);
 																}
 															},
+															variables: { emails: selectedRowsEmails, status: newStatus },
 														});
 														// to deselect afterwards, react-selectable-fast has no clean way to interface with a clearSelection function
 														// so this is a workaround by simulating a click on the SelectAllButton
