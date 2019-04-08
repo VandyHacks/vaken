@@ -9,17 +9,21 @@ const saltRounds = 10;
 
 @pre<User>('save', function(next) {
 	const user = this;
+
 	if (!user.isModified('password')) {
 		return next();
 	}
+
 	bcrypt.genSalt(saltRounds, (err, salt) => {
 		if (err) {
 			return next();
 		}
+		// eslint-disable-next-line no-shadow
 		bcrypt.hash(user.password, salt, (err, hash) => {
 			if (err) {
 				return next();
 			}
+
 			user.password = hash;
 			next();
 		});
@@ -67,8 +71,8 @@ class User extends Typegoose {
 	public dietaryRestrictions?: string;
 }
 
-const userModel = new User().getModelForClass(User);
+const UserModel = new User().getModelForClass(User);
 
-export { User, userModel };
+export { User, UserModel };
 
 // Copyright (c) 2019 Vanderbilt University

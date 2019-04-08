@@ -12,8 +12,8 @@ export class User {
 	@Field()
 	public email!: string;
 
-	@Field(type => [String])
-	public nfcCodes!: [string];
+	@Field(() => [String])
+	public nfcCodes!: string[];
 
 	@Field({ nullable: true })
 	public firstName?: string;
@@ -47,3 +47,5 @@ export class User {
 }
 
 export default User;
+
+// Copyright (c) 2019 Vanderbilt University

@@ -21,7 +21,7 @@ interface SliderProps {
 }
 
 const Slider = styled('div')`
-	${({ checked }: SliderProps) =>
+	${({ checked }: SliderProps): string =>
 		checked
 			? `background-color: ${STRINGS.ACCENT_COLOR}; &:before { transform: translateX(1.5rem); }`
 			: 'background-color: #ccc;'}
@@ -43,7 +43,7 @@ const Slider = styled('div')`
 		bottom: 0.25rem;
 		background-color: white;
 		transition: 0.4s;
-		${({ checked }: SliderProps) =>
+		${({ checked }: SliderProps): string =>
 			checked
 				? 'box-shadow: 0rem 0.1875rem 0.1875rem 0rem #5E6DDF'
 				: 'box-shadow: 0rem 0.1875rem 0.1875rem 0rem #9b9b9b'}
@@ -58,11 +58,12 @@ interface Props {
 }
 
 export const ToggleSwitch: FunctionComponent<Props> = (props: Props): JSX.Element => {
+	const { label, checked, onChange = (): void => {} } = props;
 	return (
 		<Label>
-			{props.label}
-			<Switch onClick={() => props.onChange && props.onChange(!props.checked)}>
-				<Slider checked={props.checked} />
+			{label}
+			<Switch onClick={(): void => onChange(!checked)}>
+				<Slider checked={checked} />
 			</Switch>
 		</Label>
 	);

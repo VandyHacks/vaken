@@ -1,8 +1,9 @@
+/* eslint-disable no-console */
 import passport from 'koa-passport';
 import bcrypt from 'bcrypt';
 import { Profile as GoogleProfile } from 'passport-google-oauth';
 import { Profile as GithubProfile } from 'passport-github2';
-import { hackerModel } from './models/Hacker';
+import { HackerModel } from './models/Hacker';
 import AuthType from './enums/AuthType';
 import AuthLevel from './enums/AuthLevel';
 import Status from './enums/Status';
@@ -15,7 +16,7 @@ passport.use(
 		{ passReqToCallback: true },
 		async (req: any, username: string, password: string, done: any) => {
 			console.log('> Local verify function');
-			const user = await hackerModel.findOne({ email: username });
+			const user = await HackerModel.findOne({ email: username });
 
 			// no user
 			if (!user) {
@@ -26,8 +27,8 @@ passport.use(
 				console.log('> Incorrect password');
 				done(null, false);
 			} else {
-				//found user
-				if (user.authType != AuthType.LOCAL) {
+				// found user
+				if (user.authType !== AuthType.LOCAL) {
 					console.log('Wrong auth provider. Please use the standard local login.');
 					done(null, false);
 				} else {
@@ -59,11 +60,11 @@ passport.use(
 		) => {
 			console.log('> Google verify function');
 			if (profile.emails) {
-				const user = await hackerModel.findOne({ email: profile.emails[0].value });
+				const user = await HackerModel.findOne({ email: profile.emails[0].value });
 
 				// found user
 				if (user) {
-					if (user.authType != AuthType.GOOGLE) {
+					if (user.authType !== AuthType.GOOGLE) {
 						console.log('Wrong auth provider. Please use Google.');
 						done(null, false);
 					} else {
@@ -71,7 +72,7 @@ passport.use(
 						done(null, user);
 					}
 				} else {
-					//no user found, create new user
+					// no user found, create new user
 					console.log('> Creating user.....');
 					const newUser = {
 						authLevel: AuthLevel.HACKER,
@@ -81,7 +82,7 @@ passport.use(
 						password: 'Google!123',
 						status: Status.Created,
 					};
-					const createdUser = await hackerModel.create(newUser);
+					const createdUser = await HackerModel.create(newUser);
 					if (createdUser) {
 						console.log(createdUser);
 						done(null, createdUser);
@@ -117,11 +118,11 @@ passport.use(
 		) => {
 			console.log('> Github verify function');
 			if (profile.emails) {
-				const user = await hackerModel.findOne({ email: profile.emails[0].value });
+				const user = await HackerModel.findOne({ email: profile.emails[0].value });
 
 				// found user
 				if (user) {
-					if (user.authType != AuthType.GITHUB) {
+					if (user.authType !== AuthType.GITHUB) {
 						console.log('Wrong auth provider. Please use Github.');
 						done(null, false);
 					} else {
@@ -129,7 +130,7 @@ passport.use(
 						done(null, user);
 					}
 				} else {
-					//no user found, create new user
+					// no user found, create new user
 					console.log('> Creating user.....');
 					const newUser = {
 						authLevel: AuthLevel.HACKER,
@@ -139,7 +140,7 @@ passport.use(
 						password: 'Github!123',
 						status: Status.Created,
 					};
-					const createdUser = await hackerModel.create(newUser);
+					const createdUser = await HackerModel.create(newUser);
 					if (createdUser) {
 						console.log(createdUser);
 						done(null, createdUser);
@@ -163,7 +164,7 @@ passport.serializeUser((user: any, done: any) => {
 passport.deserializeUser(async (id: any, done: any) => {
 	console.log('deserialize user');
 	try {
-		const user = await hackerModel.findById(id);
+		const user = await HackerModel.findById(id);
 		done(null, user);
 	} catch (err) {
 		done(err, null, { message: 'Failed to deserialize' });

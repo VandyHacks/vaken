@@ -7,11 +7,9 @@ import { OverflowContainer, FlexRow, FlexColumn } from '../../components/Contain
 import 'chartjs-plugin-datalabels';
 import STRINGS from '../../assets/strings.json';
 
-interface Props {}
-
 const colorPalette = STRINGS.COLOR_PALETTE.slice(1);
 
-const generateColor = (n: number): Array<string> =>
+const generateColor = (n: number): string[] =>
 	[...Array(n).keys()].map((i: number) => colorPalette[i % colorPalette.length]);
 
 const statusLabels = ['Verified', 'Started', 'Submitted', 'Accepted', 'Confirmed', 'Rejected'];
@@ -120,7 +118,7 @@ const pieGenderOptions = {
 	},
 };
 
-export const OrganizerDash: FunctionComponent = (props: Props): JSX.Element => {
+export const OrganizerDash: FunctionComponent = (): JSX.Element => {
 	return (
 		<OverflowContainer>
 			<FloatingPopup marginBottom="1rem" backgroundOpacity="1" padding="1.5rem">

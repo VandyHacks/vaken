@@ -10,13 +10,14 @@
 	"plugins": ["sort-keys-fix"],
 	"rules": {
 		"prettier/prettier": "error",
-		"react/jsx-filename-extension": [
-			2,
+		"sort-keys-fix/sort-keys-fix": [
+			"error",
+			"asc",
 			{
-				"extensions": [".tsx", ".jsx"]
+				"caseSensitive": true,
+				"natural": true
 			}
 		],
-		"sort-keys-fix/sort-keys-fix": ["error", "asc", { "caseSensitive": true, "natural": true }],
 		"jsx-a11y/label-has-associated-control": [
 			1,
 			{

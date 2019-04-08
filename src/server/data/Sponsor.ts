@@ -10,11 +10,11 @@ export class Sponsor {
 	@Field()
 	public name: string = '';
 
-	@Field(type => [SponsorRep])
-	public sponsorReps?: [SponsorRep];
+	@Field(() => [SponsorRep])
+	public sponsorReps?: SponsorRep[];
 
-	@Field(type => [SponsorRep])
-	public leadRep?: [SponsorRep];
+	@Field(() => [SponsorRep])
+	public leadRep?: SponsorRep[];
 
 	@Field()
 	public tier!: Tier;

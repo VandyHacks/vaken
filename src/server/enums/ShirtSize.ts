@@ -19,3 +19,5 @@ registerEnumType(ShirtSize, {
 });
 
 export default ShirtSize;
+
+// Copyright (c) 2019 Vanderbilt University

@@ -5,10 +5,10 @@ import { Switch, Redirect, Route } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import STRINGS from '../../assets/strings.json';
 import Title from '../../components/Text/Title';
-import { routes, currentAuth } from '../../assets/routes';
+import { routes } from '../../assets/routes';
 import { AuthContext } from '../../contexts/AuthContext';
 
-const OrganizerDash = React.lazy(() => import('./OrganizerDash'));
+export const OrganizerDash = React.lazy(() => import('./OrganizerDash'));
 
 const Layout = styled.div`
 	height: 100vh;

@@ -9,11 +9,11 @@ interface Props {
 }
 
 export const SmallCenteredText = styled.h1`
-	font-family: ${(props: Props) => props.fontFamily || "'Roboto', sans-serif"};
-	font-weight: ${(props: Props) => props.fontWeight || 300};
-	font-size: ${(props: Props) => props.fontSize || '1.5rem'};
-	color: ${(props: Props) => props.color || 'white'};
-	margin: ${(props: Props) => props.margin || '0'};
+	font-family: ${({ fontFamily = "'Roboto', sans-serif" }: Props): string => fontFamily};
+	font-weight: ${({ fontWeight = '300' }: Props): string => fontWeight};
+	font-size: ${({ fontSize = '1.5rem' }: Props): string => fontSize};
+	color: ${({ color = 'white' }: Props): string => color};
+	margin: ${({ margin = '0' }: Props): string => margin};
 `;
 
 export default SmallCenteredText;

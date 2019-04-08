@@ -1,5 +1,3 @@
-import React from 'react';
-
 export interface AppSection {
 	fields: AppField[];
 	category: string;

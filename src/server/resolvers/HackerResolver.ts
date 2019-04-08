@@ -3,7 +3,7 @@ import { plainToClass } from 'class-transformer';
 
 import Hacker from '../data/Hacker';
 import Status from '../enums/Status';
-import { hackerModel } from '../models/Hacker';
+import { HackerModel } from '../models/Hacker';
 
 @Resolver(() => Hacker)
 class HackerResolver {
@@ -12,12 +12,44 @@ class HackerResolver {
 	 * @returns {Hacker} a Hacker associated with the provided email address or null if not found
 	 */
 	@Query(() => Hacker, { nullable: true })
-	public async getHackerByEmail(@Arg('email') email: string): Promise<Hacker | null> {
-		const hacker = await hackerModel.findOne({ email: email });
+	public static async getHackerByEmail(@Arg('email') email: string): Promise<Hacker | null> {
+		const hacker = await HackerModel.findOne({ email });
 		if (!hacker) {
 			return null;
-		} else {
-			return plainToClass(Hacker, {
+		}
+		return plainToClass(Hacker, {
+			authLevel: hacker.authLevel,
+			authType: hacker.authType,
+			email: hacker.email,
+			firstName: hacker.firstName,
+			gender: hacker.gender,
+			gradYear: hacker.gradYear,
+			lastName: hacker.lastName,
+			needsReimbursement: hacker.needsReimbursement,
+			nfcCodes: hacker.nfcCodes,
+			phoneNumber: hacker.phoneNumber,
+			school: hacker.school,
+			shirtSize: hacker.shirtSize,
+			status: hacker.status,
+			teamName: hacker.teamName,
+		});
+	}
+
+	/**
+	 * @returns {Promise<[Hacker]>} - All Hackers in the database
+	 */
+	@Query(() => [Hacker], {
+		description: 'Return all the Hackers in the database',
+	})
+	public static async getAllHackers(): Promise<Hacker[]> {
+		const hackers = await HackerModel.find({});
+
+		if (!hackers) {
+			return [];
+		}
+		const hackerList: Record<string, any>[] = [];
+		hackers.forEach(hacker => {
+			hackerList.push({
 				authLevel: hacker.authLevel,
 				authType: hacker.authType,
 				email: hacker.email,
@@ -31,43 +63,11 @@ class HackerResolver {
 				school: hacker.school,
 				shirtSize: hacker.shirtSize,
 				status: hacker.status,
+				teamName: hacker.teamName,
 			});
-		}
-	}
+		});
 
-	/**
-	 * @returns {[Hacker]} - All Hackers in the database
-	 */
-	@Query(() => [Hacker], {
-		description: 'Return all the Hackers in the database',
-	})
-	public async getAllHackers(): Promise<Hacker[]> {
-		const hackers = await hackerModel.find({});
-
-		if (!hackers) {
-			return [];
-		} else {
-			let hackerList: Object[] = [];
-			hackers.forEach(hacker => {
-				hackerList.push({
-					authLevel: hacker.authLevel,
-					authType: hacker.authType,
-					email: hacker.email,
-					firstName: hacker.firstName,
-					gender: hacker.gender,
-					gradYear: hacker.gradYear,
-					lastName: hacker.lastName,
-					needsReimbursement: hacker.needsReimbursement,
-					nfcCodes: hacker.nfcCodes,
-					phoneNumber: hacker.phoneNumber,
-					school: hacker.school,
-					shirtSize: hacker.shirtSize,
-					status: hacker.status,
-				});
-			});
-
-			return plainToClass(Hacker, hackerList);
-		}
+		return plainToClass(Hacker, hackerList);
 	}
 
 	/**
@@ -78,45 +78,23 @@ class HackerResolver {
 	@Mutation(() => Status, {
 		description: "Update a Hacker's status and return updated status",
 	})
-	public async updateHackerStatus(
+	public static async updateHackerStatus(
 		@Arg('email', { nullable: false }) email: string,
 		@Arg('newStatus') newStatus: Status
-	) {
-		const newHacker = await hackerModel.findOneAndUpdate(
-			{ email: email },
+	): Promise<Status | null> {
+		const newHacker = await HackerModel.findOneAndUpdate(
+			{ email },
 			{ $set: { status: newStatus } },
 			{ new: true }
 		);
 
 		if (!newHacker) {
 			return null;
-		} else {
-			return newHacker.status;
 		}
-	}
-
-		/**
-	 * Update a hacker's status in a batch
-	 */
-	@Mutation((returns: any) => Status, {
-		description: "Update a Hacker's status and return updated status",
-	})
-	async updateHackerStatusAsBatch(
-		@Arg('emails', type => [String], { nullable: false }) emails: [string],
-		@Arg('newStatus') newStatus: Status
-	) {
-		emails.forEach(async email => {
-			const newHacker = await hackerModel.findOneAndUpdate(
-				{ email: email },
-				{ $set: { status: newStatus } },
-				{ new: true }
-			);
-			if (!newHacker) {
-				console.log('Error updating status');
-				return null;
-		}});
-		return newStatus;
+		return newHacker.status;
 	}
 }
 
 export default HackerResolver;
+
+// Copyright (c) 2019 Vanderbilt University

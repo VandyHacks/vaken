@@ -6,6 +6,7 @@
 declare module '*.png';
 declare module '*.jpg';
 declare module '*.svg';
+declare module 'react-selectable-fast';
 
 declare module 'react-selectable-fast';
 

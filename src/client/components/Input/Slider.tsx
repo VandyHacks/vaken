@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React from 'react';
 import { Update } from 'use-immer';
 import styled from 'styled-components';
 import { AppField } from '../../routes/application/ApplicationConfig';
@@ -64,36 +64,42 @@ export class Slider extends React.PureComponent<Props, {}> {
 		category: string,
 		fieldName: string
 	): ((e: React.ChangeEvent<HTMLInputElement>) => void) => {
-		return e => {
-			const { type, checked, id } = e.target;
+		return (e): void => {
+			const { type, id } = e.target;
 			if (type === 'radio') {
-				setState(draft => {
-					if (!draft[category]) {
-						draft[category] = {};
-					}
+				setState(
+					(draft): void => {
+						if (!draft[category]) {
+							draft[category] = {};
+						}
 
-					draft[category][fieldName] = id;
-				});
+						draft[category][fieldName] = id;
+					}
+				);
 			} else {
 				throw new Error('Wrong type passed to formChangeWrapper');
 			}
 		};
 	};
 
-	public render() {
+	public render(): JSX.Element {
 		const { options = ['default'], value, onChange } = this.props;
+
+		/* eslint-disable eqeqeq */
 
 		return (
 			<fieldset>
 				<SliderContainer>
-					{options.map((option: string) => {
-						return (
-							<React.Fragment key={option}>
-								<input checked={value == option} type="radio" id={option} onChange={onChange} />
-								<label htmlFor={option}>{option}</label>
-							</React.Fragment>
-						);
-					})}
+					{options.map(
+						(option: string): JSX.Element => {
+							return (
+								<React.Fragment key={option}>
+									<input checked={value == option} type="radio" id={option} onChange={onChange} />
+									<label htmlFor={option}>{option}</label>
+								</React.Fragment>
+							);
+						}
+					)}
 				</SliderContainer>
 			</fieldset>
 		);

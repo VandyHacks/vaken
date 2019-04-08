@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import React, { FunctionComponent } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import ResizeObserver from 'resize-observer-polyfill';
 import { FlexStartColumn, ContainerProps } from './FlexContainers';
 
 export interface Props extends ContainerProps {
@@ -10,13 +11,26 @@ export interface Props extends ContainerProps {
 	onClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
-const FloatingPopup = styled(FlexStartColumn)`
+export const useMeasure = (): any => {
+	const ref = useRef<any>();
+	const [bounds, set] = useState({ height: 0, left: 0, top: 0, width: 0 });
+	const [ro] = useState(() => new ResizeObserver(([entry]: any) => set(entry.contentRect)));
+	useEffect(() => (ro.observe(ref.current), ro.disconnect), [ro]);
+	return [{ ref }, bounds];
+};
+
+export const FloatingPopup = styled(FlexStartColumn)`
 	transition: ease-in-out all 1s;
-	background-color: rgba(247, 245, 249, ${(props: Props) => props.backgroundOpacity});
-	border-radius: ${(props: Props) => props.borderRadius || '2rem'};
-	padding: ${(props: Props) => props.padding || '0rem'};
-	margin-bottom: ${(props: Props) => props.marginBottom || 0};
-	height: ${(props: Props) => props.height || 'min-content'};
+	background-color: rgba(
+		247,
+		245,
+		249,
+		${({ backgroundOpacity = '1' }: Props): string => backgroundOpacity}
+	);
+	border-radius: ${({ borderRadius = '2rem' }: Props): string => borderRadius};
+	padding: ${({ padding = '0' }: Props): string => padding};
+	margin-bottom: ${({ marginBottom = '0' }: Props): string => marginBottom};
+	height: ${({ height = 'min-content' }: Props): string => height};
 	/* height: min-content; */
 	box-sizing: border-box;
 `;
@@ -51,8 +65,8 @@ export class Collapsible extends React.PureComponent<Props, {}> {
 		state: string,
 		setState: React.Dispatch<React.SetStateAction<string>>
 	): ((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void) => {
-		return e => {
-			const { id } = e.target as any;
+		return (e): void => {
+			const { id } = e.target as HTMLButtonElement;
 
 			if (id === state) {
 				setState('');
@@ -62,9 +76,9 @@ export class Collapsible extends React.PureComponent<Props, {}> {
 		};
 	};
 
-	public render() {
+	public render(): JSX.Element {
 		const { title, children, active, ...rest } = this.props;
-		console.log(title, active, title === active);
+
 		return (
 			<div>
 				<CollapsibleHeader id={title} {...rest}>

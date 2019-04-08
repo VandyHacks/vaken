@@ -6,7 +6,7 @@ import { Sponsor } from './Sponsor';
 
 @ObjectType({ description: 'DTO for a Vaken sponsor rep' })
 export class SponsorRep extends User {
-	@Field(type => [Sponsor])
+	@Field(() => [Sponsor])
 	public sponsors!: [Sponsor];
 
 	@Field()

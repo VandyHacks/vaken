@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import React from 'react';
-import { Button, CenterButtonText } from './Buttons';
+import { Button, CenterButtonText, ButtonProps } from './Buttons';
 
-interface Props {
+interface Props extends ButtonProps {
 	background?: string;
 	color?: string;
 	text: string;
@@ -18,10 +18,10 @@ interface StyleProps {
 }
 
 export const StyledLoginBtn = styled(Button)`
-	background: ${(props: StyleProps) => props.background || 'white'};
+	background: ${({ background = 'white' }: StyleProps): string => background};
 	margin-top: 1.6rem;
 	margin-bottom: 0.5rem;
-	color: ${(props: StyleProps) => props.background || 'black'};
+	color: ${({ background = 'black' }: StyleProps): string => background};
 	flex-shrink: 0;
 	font-family: 'Roboto';
 	font-size: 1rem;
@@ -31,7 +31,7 @@ export const StyledLoginBtn = styled(Button)`
 	&:focus,
 	&:active {
 		box-shadow: 0px 0px 20px 0px
-			${(props: StyleProps) => props.glowColor || 'RGBA(0, 0, 0, 255, 0.67)'};
+			${({ glowColor = 'RGBA(0, 0, 0, 255, 0.67)' }: StyleProps): string => glowColor};
 	}
 `;
 

@@ -1,25 +1,27 @@
 export class User {
-    public email: string = '';
+	public email: string = '';
 
-    public password: string = '';
+	public password: string = '';
 
-    public firstName?: string;
+	public firstName?: string;
 
-    public lastName?: string;
+	public lastName?: string;
 
-    public google?: string;
+	public google?: string;
 
-    public github?: string;
+	public github?: string;
 
-    public authType: string = 'None';
+	public authType: string = 'None';
 
-    public authLevel: string = 'Hacker';
+	public authLevel: string = 'Hacker';
 
-    public phoneNumber?: string;
+	public phoneNumber?: string;
 
-    public gender?: string;
+	public gender?: string;
 
-    public shirtSize?: string;
+	public shirtSize?: string;
 
-    public dietaryRestrictions?: string;
+	public dietaryRestrictions?: string;
 }
+
+export default User;

@@ -5,13 +5,13 @@ import { formChangeWrapper } from '../../components/Input/helperFunctions';
 import config from '../../assets/application';
 import Collapsible from '../../components/Containers/Collapsible';
 
-interface ConfigSection {
+export interface ConfigSection {
 	category: string;
 	fields: ConfigField[];
 	title: string;
 }
 
-interface ConfigField {
+export interface ConfigField {
 	Component: any;
 	fieldName: string;
 	placeholder?: string;
@@ -84,19 +84,22 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 	const formRef = useRef<HTMLFormElement>(null);
 
 	const initialFormState: any = {};
-	let initialSection = '';
 	useEffect(() => {
-		config.forEach((section: ConfigSection, i) => {
-			initialFormState[section.category] = {};
+		config.forEach(
+			(section: ConfigSection): void => {
+				initialFormState[section.category] = {};
 
-			section.fields.forEach((field: ConfigField) => {
-				initialFormState[section.category][field.fieldName] = field.default || undefined;
-			});
-		});
-	}, [config]);
+				section.fields.forEach((field: ConfigField) => {
+					initialFormState[section.category][field.fieldName] = field.default || undefined;
+				});
+			}
+		);
+	}, [initialFormState]);
 
 	const [formData, setFormData] = useImmer(initialFormState);
 	const [curSection, setCurSection] = useState(config[0].title);
+
+	/* eslint-disable eqeqeq */
 
 	return (
 		<StyledForm ref={formRef}>
@@ -125,7 +128,8 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 							return (
 								<StyledQuestion key={title} htmlFor={title}>
 									<div>
-										{title} {field.note ? <FieldNote> – {field.note}</FieldNote> : null}
+										{title}
+										{field.note ? <FieldNote>{` - ${field.note}`}</FieldNote> : null}
 									</div>
 									{field.prompt ? <FieldPrompt>{field.prompt}</FieldPrompt> : null}
 									<field.Component value={fieldValue} onChange={onChange} {...rest} id={title} />

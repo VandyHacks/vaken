@@ -2,11 +2,7 @@ import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import emailIcon from '../../assets/img/email_icon.svg';
 import lockIcon from '../../assets/img/lock_icon.svg';
-import arrowIcon from '../../assets/img/right_arrow.svg';
 import TextButton from '../../components/Buttons/TextButton';
-import { LeftPaddedImg } from '../../components/Buttons/Buttons';
-import { FlexRow, SpaceBetweenColumn } from '../../components/Containers/FlexContainers';
-import TextLink from '../../components/Text/TextLink';
 import STRINGS from '../../assets/strings.json';
 import LeftImgTextInput from '../../components/Input/LeftImgTextInput';
 import { onChangeWrapper } from '../../components/Input/helperFunctions';
@@ -17,14 +13,14 @@ import {
 	passwordValidation,
 } from '../../../common/ValidationFunctions';
 
-interface Props {}
+/* globals fetch */
 
 /**
  * PasswordLogin is React Hooks component that will display a password login prompt
  * @param {Props} props - currently not used
  * @returns {JSX.Element} a React.Fragment containing inputs and a login button
  */
-export const PasswordLogin: React.FunctionComponent<Props> = (): JSX.Element => {
+export const PasswordLogin: React.FunctionComponent = (): JSX.Element => {
 	const [email, setEmail] = useState('');
 	const [pass, setPass] = useState('');
 	const [passAgain, setPassAgain] = useState('');
@@ -46,14 +42,15 @@ export const PasswordLogin: React.FunctionComponent<Props> = (): JSX.Element => 
 					'Content-Type': 'application/json',
 				},
 				method: 'POST',
-			}).then(res => {
-				console.log(res);
-				if (res.status === 200 && res.redirected) {
-					setToDashboard(true);
-				} else {
-					setInvalid(true);
+			}).then(
+				(res): void => {
+					if (res.status === 200 && res.redirected) {
+						setToDashboard(true);
+					} else {
+						setInvalid(true);
+					}
 				}
-			});
+			);
 		}
 	};
 
