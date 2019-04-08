@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import STRINGS from '../../assets/strings.json';
 // @ts-ignore
 import SadFace from '../../assets/img/sad_face.svg?inline';
-import TextButton from '../Buttons/TextButton';
+import { Link } from 'react-router-dom';
+import TextButton from '../../components/Buttons/TextButton';
 
 const Rectangle = styled.div`
 	border: 0.1rem solid ${STRINGS.WARNING_COLOR};
@@ -27,15 +27,11 @@ interface ErrorMessageProps {
 	children?: JSX.Element;
 }
 
-export const ErrorMessage: FunctionComponent<ErrorMessageProps> = (
-	props: ErrorMessageProps
-): JSX.Element => {
-	const { children } = props;
-
+export const ErrorMessage: FunctionComponent<ErrorMessageProps> = (props: ErrorMessageProps): JSX.Element => {
 	return (
 		<Rectangle>
 			<SadFace />
-			{children}
+			{props.children}
 		</Rectangle>
 	);
 };
@@ -44,14 +40,11 @@ interface GraphQLErrorMessage {
 	text?: string;
 }
 
-export const GraphQLErrorMessage: FunctionComponent<GraphQLErrorMessage> = (
-	props: GraphQLErrorMessage
-): JSX.Element => {
-	const { text } = props;
+export const GraphQLErrorMessage: FunctionComponent<GraphQLErrorMessage> = (props: GraphQLErrorMessage): JSX.Element => {
 	return (
 		<ErrorMessage>
 			<>
-				<StyledP>{text}</StyledP>
+				<StyledP>{props.text}</StyledP>
 				<Link style={{ textDecoration: 'none' }} to="/dashboard">
 					<TextButton text="Return to Dashboard" background={STRINGS.WARNING_COLOR} color="white" />
 				</Link>

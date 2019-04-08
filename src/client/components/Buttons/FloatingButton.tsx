@@ -12,6 +12,8 @@ export const FloatingButton = styled.button`
 	right: 3.75rem;
 	border-radius: 3.125rem;
 	text-align: center;
+	outline: none;
+	border: none;
 	&:focus {
 		outline: none;
 		border: none;

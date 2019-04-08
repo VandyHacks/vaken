@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { createGlobalStyle } from 'styled-components';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import reset from 'styled-reset';
 import ApolloClient from 'apollo-boost';
+import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { ApolloProvider } from 'react-apollo';
+import { defaultProps } from 'react-select/lib/Select';
 import LoginPage from './routes/login/Login';
 import Frame from './routes/dashboard/Frame';
 import AuthContext from './contexts/AuthContext';
+import LoginContext from './contexts/LoginContext';
 import { User } from '../common/models/User';
-
-/* globals fetch document */
+import addHackers from './temp/AddHackers';
 
 const GlobalStyle = createGlobalStyle`
 	body {
@@ -18,6 +20,7 @@ const GlobalStyle = createGlobalStyle`
 		font-family: 'Roboto', sans-serif;
 
 		${reset}
+    user-select: none;
 		margin: 0;
 		padding: 0;
 		width: 100vw;
@@ -33,6 +36,11 @@ const Vaken: React.FunctionComponent = (): JSX.Element => {
 	const [ready, setReady] = useState();
 	const [user, setUser] = useState(new User());
 
+	// Uncomment to add dummy data
+	// useEffect(() => {
+	// 	addHackers(true);
+	// }, []);
+
 	useEffect(() => {
 		fetch('/api/whoami').then(res => {
 			if (res.status === 200) {
@@ -47,20 +55,28 @@ const Vaken: React.FunctionComponent = (): JSX.Element => {
 		});
 	}, [loggedIn]);
 
+	useEffect(() => {
+		//addHackers(false);
+	}, []);
+
 	return (
 		<ApolloProvider client={client}>
-			<GlobalStyle />
-			<BrowserRouter>
-				{ready ? (
-					loggedIn ? (
-						<AuthContext.Provider value={user}>
-							<Frame />
-						</AuthContext.Provider>
-					) : (
-						<LoginPage />
-					)
-				) : null}
-			</BrowserRouter>
+			<ApolloHooksProvider client={client}>
+				<GlobalStyle />
+				<BrowserRouter>
+					{ready ? (
+						loggedIn ? (
+							<AuthContext.Provider value={user}>
+								<Frame />
+							</AuthContext.Provider>
+						) : (
+							<LoginContext.Provider value={{ state: loggedIn, update: setLoggedIn }}>
+								<LoginPage />
+							</LoginContext.Provider>
+						)
+					) : null}
+				</BrowserRouter>
+			</ApolloHooksProvider>
 		</ApolloProvider>
 	);
 };

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback, useState, useEffect, useRef } from 'react';
+import React, { FunctionComponent, useContext, useState, useEffect, useRef } from 'react';
 import {
 	Table,
 	Column,
@@ -14,9 +14,12 @@ import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import Fuse from 'fuse.js';
 import Select from 'react-select';
+import { Link } from 'react-router-dom';
 import { Mutation } from 'react-apollo';
 import { gql } from 'apollo-boost';
 import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
+// TODO(alan): add d.ts file, most already defined here: https://github.com/valerybugakov/react-selectable-fast/blob/master/src/SelectableGroup.js
+// @ts-ignore
 import TableButton from '../../components/Buttons/TableButton';
 import ToggleSwitch from '../../components/Buttons/ToggleSwitch';
 import RadioSlider from '../../components/Buttons/RadioSlider';
@@ -26,8 +29,8 @@ import Checkmark from '../../components/Symbol/Checkmark';
 import SearchBox from '../../components/Input/SearchBox';
 import plane from '../../assets/img/plane.svg';
 import STRINGS from '../../assets/strings.json';
-// TODO(alan): add d.ts file, most already defined here: https://github.com/valerybugakov/react-selectable-fast/blob/master/src/SelectableGroup.js
-// @ts-ignore
+import { GET_HACKERS } from './ManageHackers';
+import { TableCtxI, TableContext } from '../../contexts/TableContext';
 import Row from './Row';
 
 const UPDATE_STATUS = gql`
@@ -42,7 +45,15 @@ const UPDATE_STATUS_AS_BATCH = gql`
 	}
 `;
 
-const GET_HACKERS = gql`
+const GET_HACKER_BY_EMAIL = gql`
+	query HackerStatus($email: String!) {
+		getHackerByEmail(email: $email) {
+			status
+		}
+	}
+`;
+
+const GET_HACKERS_STATUS = gql`
 	query {
 		getAllHackers {
 			status
@@ -213,310 +224,315 @@ interface DeselectElement extends HTMLDivElement {
 	};
 }
 
-export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element => {
-	const [sortByState, setSortByState] = useState<string | null>(null);
-	const [sortDirectionState, setSortDirectionState] = useState<SortDirectionType | null>(null);
-	// Used [...data] to make a copy since do not want assignment, which would motify data after sort
-	// TODO(alan): explore immutables instead
-	const { data } = props;
-	const [sortedData, setSortedData] = useState<Hacker[]>([...data]);
-	const [searchValue, setSearchValue] = useState('');
-	const [useRegex, setUseRegex] = useState(false);
-	const [selectedColumns, setSelectedColumns] = useState<Option[]>([columnOptions[0]]);
-	const [selectAll, setSelectAll] = useState(false);
-	const [hasSelection, setHasSelection] = useState(false);
-	const [selectedRowsEmails, setSelectedRowsEmails] = useState<string[]>([]);
-	const deselect = useRef<DeselectElement>(null);
-
-	const sortData = useCallback(
-		({
-			sortBy,
-			sortDirection,
-			update,
-			unsortedData,
-		}: {
-			sortBy: string | null;
-			sortDirection: SortDirectionType | null;
-			update: boolean;
-			unsortedData?: Hacker[];
-		}): Hacker[] => {
-			// no sort if sortBy is null and sortDirection is null
-			if (!sortBy || !sortDirection) {
-				return [...(unsortedData || data)];
-			}
-
-			// sort alphanumerically
-			const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
-
-			// TODO: replace any
-			let newSortedData = ((update || !unsortedData ? [...data] : unsortedData) as any).sort(
-				(a: any, b: any) => collator.compare(a[sortBy], b[sortBy])
-			);
-			if (sortDirection === SortDirection.DESC) {
-				newSortedData = newSortedData.reverse();
-			}
-			return newSortedData;
-		},
-		[data]
+// renders a text label with a clickable sort indicator
+const renderHeaderAsLabel = ({
+	dataKey,
+	sortBy,
+	sortDirection,
+	label,
+}: TableHeaderProps): JSX.Element => {
+	return (
+		<>
+			{label}
+			{sortBy === dataKey && <SortIndicator sortDirection={sortDirection} />}
+		</>
 	);
+};
 
-	const opts = {
-		caseSensitive: true,
-		distance: 100,
-		findAllMatches: true,
-		// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-		keys: selectedColumns.map((col: Option) => col.value) as (keyof Hacker)[],
-		location: 0,
-		shouldSort: false,
-		threshold: 0.5,
-		tokenize: true,
+// renders an svg instead of a text label, will with a clickable sort indicator
+const renderHeaderAsSVG = (
+	{ dataKey, sortBy, sortDirection, label }: TableHeaderProps,
+	svg: string
+): JSX.Element => {
+	return (
+		<>
+			<img alt={String(label)} src={svg} />
+			{sortBy === dataKey && <SortIndicator sortDirection={sortDirection} />}
+		</>
+	);
+};
+
+const checkmarkRenderer = ({ cellData }: TableCellProps): JSX.Element => {
+	return <Checkmark value={cellData} />;
+};
+
+// mutation to update a single hacker status
+// TODO(alan): remove any type
+const updateHackerStatus = (
+	mutation: any,
+	variables: { email: string; status: string }
+): Promise<string> => {
+	return mutation({
+		mutation: UPDATE_STATUS,
+		refetchQueries: [{ query: GET_HACKERS_STATUS }],
+		update: (proxy, { data: { getAllHackers } }) => {
+			try {
+				let data = proxy.readQuery({ query: GET_HACKERS });
+				data.getAllHackers = data.getAllHackers.map(({ email, status, ...h }: Hacker) => {
+					return email === variables.email
+						? { email, status: variables.status, ...h }
+						: { email, status, ...h };
+				});
+				proxy.writeQuery({ data, query: GET_HACKERS });
+			} catch (e) {
+				console.error(e);
+			}
+		},
+		variables: variables,
+	});
+};
+
+// maps the radio slider labels to the hacker status
+const processSliderInput = (input: string): string => {
+	switch (input.toLowerCase()) {
+		case 'accept':
+			return 'Accepted';
+		case 'reject':
+			return 'Rejected';
+		case 'undecided':
+		default:
+			return 'Submitted';
+	}
+};
+
+// action column that contains the actionable buttons
+const actionRenderer = ({ rowData }: TableCellProps): JSX.Element => {
+	// TODO(alan): extract onChange to own method
+	const status = rowData.status.toLowerCase();
+	const email = rowData.email;
+
+	return (
+		<Actions className="ignore-select">
+			<Mutation mutation={UPDATE_STATUS}>
+				{mutation => (
+					<RadioSlider
+						option1="Accept"
+						option2="Undecided"
+						option3="Reject"
+						value={
+							status === 'accepted' ? 'Accept' : status === 'rejected' ? 'Reject' : 'Undecided'
+						}
+						onChange={(input: string) => {
+							let newStatus = processSliderInput(input);
+							updateHackerStatus(mutation, {
+								email: rowData.email as string,
+								status: newStatus,
+							}).then(res => {
+								// console.log(updatedStatus);
+								// rowData.status = updatedStatus;
+							});
+						}}
+						disable={status !== 'accepted' && status !== 'rejected' && status !== 'submitted'}
+					/>
+				)}
+			</Mutation>
+			<Link
+				style={{ textDecoration: 'none' }}
+				to={{ pathname: '/manageHackers/hacker', state: { email: email } }}>
+				<TableButton>View</TableButton>
+			</Link>
+		</Actions>
+	);
+};
+
+const rowRenderer = (
+	props: TableRowProps & { selectableRef: any; selecting: boolean; selected: boolean }
+): JSX.Element => {
+	return <Row {...props} />;
+};
+
+// mapping from status labels to the colored label images
+const statusRenderer = ({ cellData }: TableCellProps): JSX.Element => {
+	const generateColor = (value: HackerStatus): string => {
+		switch (value.toLowerCase()) {
+			case HackerStatus.created:
+				return STRINGS.COLOR_PALETTE[0];
+			case HackerStatus.verified:
+				return STRINGS.COLOR_PALETTE[1];
+			case HackerStatus.started:
+				return STRINGS.COLOR_PALETTE[2];
+			case HackerStatus.submitted:
+				return STRINGS.COLOR_PALETTE[3];
+			case HackerStatus.accepted:
+				return STRINGS.COLOR_PALETTE[4];
+			case HackerStatus.confirmed:
+				return STRINGS.COLOR_PALETTE[5];
+			case HackerStatus.rejected:
+				return STRINGS.COLOR_PALETTE[6];
+			default:
+				return STRINGS.ACCENT_COLOR;
+		}
 	};
+	return <Status value={cellData} generateColor={generateColor} />;
+};
+
+const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
+
+const fuseOpts = {
+	caseSensitive: true,
+	distance: 100,
+	findAllMatches: true,
+	location: 0,
+	shouldSort: false,
+	threshold: 0.5,
+	tokenize: true,
+};
+
+const onSearchBoxEntry = (ctx: TableCtxI): ((e: React.ChangeEvent<HTMLInputElement>) => void) => {
+	return e => {
+		const { value } = e.target;
+		ctx.update(draft => {
+			draft.searchValue = value;
+		});
+	};
+};
+
+const onToggleSelectAll = (ctx: TableCtxI): (() => void) => {
+	return () => {
+		ctx.update(draft => {
+			draft.selectAll = !draft.selectAll;
+		});
+	};
+};
+
+const onSelectionClear = (ctx: TableCtxI): ((p: boolean) => void) => {
+	return (p: boolean) =>
+		ctx.update(draft => {
+			draft.selectAll = false;
+			draft.hasSelection = p;
+			draft.selectedRowsEmails = [];
+		});
+};
+
+const onSelectionFinish = (ctx: TableCtxI): ((keys: JSX.Element[]) => void) => {
+	return (keys: JSX.Element[]): void => {
+		if (keys.length > 0) {
+			ctx.update(draft => {
+				draft.hasSelection = true;
+				draft.selectedRowsEmails = keys.map((key: JSX.Element) => key.props.rowData.email);
+			});
+		}
+	};
+};
+
+const onRegexToggle = (ctx: TableCtxI): ((p: boolean) => void) => {
+	return (p: boolean) =>
+		ctx.update(draft => {
+			draft.useRegex = p;
+		});
+};
+
+const onTableColumnSelect = (ctx: TableCtxI): ((s: any) => void) => {
+	// Dependency injection
+	return (selected: Option[]) =>
+		ctx.update(draft => {
+			draft.selectedColumns = Array.isArray(selected) ? selected : [selected];
+		});
+};
+
+interface SortFnProps {
+	sortBy?: string;
+	sortDirection?: SortDirectionType;
+}
+const onSortColumnChange = (ctx: TableCtxI): ((p: SortFnProps) => void) => {
+	return ({ sortBy, sortDirection }) => {
+		const { sortBy: prevSortBy, sortDirection: prevSortDirection } = ctx.state;
+
+		if (prevSortBy === sortBy && prevSortDirection === SortDirection.DESC) {
+			sortBy = undefined;
+			sortDirection = undefined;
+		}
+
+		ctx.update(draft => {
+			draft.sortBy = sortBy;
+			draft.sortDirection = sortDirection;
+		});
+	};
+};
+
+export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element => {
+	const table = useContext(TableContext);
+
+	const {
+		selectAll,
+		hasSelection,
+		searchValue,
+		useRegex,
+		selectedColumns,
+		sortBy,
+		sortDirection,
+		selectedRowsEmails,
+	} = table.state;
+
+	const { data } = props;
+
+	const deselect = useRef<DeselectElement>(null);
+	const [sortedData, setSortedData] = useState(data);
+
+	useEffect(() => {
+		// Only search one column in regex mode
+		if (useRegex && selectedColumns.length > 0) {
+			table.update(draft => {
+				draft.selectedColumns = [selectedColumns[0]];
+			});
+		}
+	}, [useRegex]);
+
+	useEffect(() => {
+		// Filter and sort data
+		let newData = [...data];
+
+		if (searchValue.trim() !== '' && !useRegex) {
+			// Fuzzy search selected columns
+			newData = new Fuse(newData, {
+				keys: selectedColumns.map((col: Option) => col.value) as (keyof Hacker)[],
+				...fuseOpts,
+			}).search(searchValue);
+		} else if (searchValue.trim() !== '') {
+			// Filter based on regex
+			const regex = new RegExp(searchValue, 'i');
+			newData = newData.filter((hacker: any) => regex.test(hacker[selectedColumns[0].value]));
+		}
+
+		// Sort data based on props and context
+		if (sortBy && sortDirection) {
+			newData.sort((a: any, b: any) =>
+				sortDirection === SortDirection.DESC
+					? collator.compare(b[sortBy], a[sortBy])
+					: collator.compare(a[sortBy], b[sortBy])
+			);
+		}
+
+		setSortedData(newData);
+	}, [data, sortBy, sortDirection, selectedColumns, useRegex, searchValue]);
 
 	// handles the text or regex search and sets the sortedData state with the updated row list
-	const onSearch = useCallback(
-		(value: string): void => {
-			if (value !== '') {
-				if (!useRegex) {
-					// fuzzy filtering
-					const fuse = new Fuse(data, opts);
-					setSortedData(
-						sortData({
-							sortBy: sortByState,
-							sortDirection: sortDirectionState,
-							unsortedData: fuse.search(value),
-							update: false,
-						})
-					);
-				} else {
-					let regex: RegExp;
-					let isValid = true;
-					try {
-						regex = new RegExp(value, 'i');
-					} catch (e) {
-						isValid = false;
-					}
-					if (isValid) {
-						// TODO(alan): replace any with Hacker
-						const newSortedData = [...data].filter(
-							(user: any): boolean => {
-								return regex.test(user[selectedColumns[0].value]);
-							}
-						);
-						setSortedData(
-							sortData({
-								sortBy: sortByState,
-								sortDirection: sortDirectionState,
-								unsortedData: newSortedData,
-								update: false,
-							})
-						);
-					} else {
-						// console.log('Invalid regular expression');
-					}
-				}
-			} else {
-				// reset
-				// setSortedData([...data]);
-				setSortedData(
-					sortData({ sortBy: sortByState, sortDirection: sortDirectionState, update: true })
-				);
-			}
-			setSearchValue(value);
-		},
-		[data, opts, selectedColumns, sortByState, sortData, sortDirectionState, useRegex]
+	// floating button that onClick toggles between selecting all or none of the rows
+	const SelectAllButton = (
+		<FloatingButton onClick={onToggleSelectAll(table)}>
+			{selectAll || hasSelection ? 'Deselect All' : 'Select All'}
+		</FloatingButton>
 	);
 
-	// Also acts as a compoentDidMount to implement an initial sort
-	// This is for updating the table when the hacker status changes
-	useEffect((): void => {
-		// console.log('data from GraphQL is changing');
-		onSearch(searchValue);
-	}, [onSearch, data, searchValue]);
-
-	useEffect((): void => {
-		// add case for Regex?
-		onSearch(searchValue);
-	}, [onSearch, searchValue, selectedColumns]);
-
-	// remove multi-options when switching to single select
-	useEffect((): void => {
-		if (selectedColumns.length > 0) {
-			setSelectedColumns([selectedColumns[0]]);
-		}
-	}, [selectedColumns, useRegex]);
+	const isSelectable = (status: string): boolean => {
+		const s = status.toLowerCase();
+		return s === 'submitted' || s === 'accepted' || s === 'rejected';
+	};
 
 	// assigns the row names for styling and to prevent selection
 	const generateRowClassName = ({ index }: { index: number }): string => {
-		// eslint-disable-next-line no-nested-ternary
 		let className = index < 0 ? 'headerRow' : index % 2 === 0 ? 'evenRow' : 'oddRow';
 		if (className !== 'headerRow') {
-			const { status } = sortedData[index];
-			if (status !== 'Submitted' && status !== 'Accepted' && status !== 'Rejected') {
+			const { status, email } = sortedData[index];
+			if (!isSelectable(status)) {
 				className = className.concat(' ignore-select');
+			} else if (selectAll || selectedRowsEmails.includes(email)) {
+				className = className.concat(' selected');
 			}
 		}
 		return className;
 	};
 
-	// renders a text label with a clickable sort indicator
-	const renderHeaderAsLabel = ({
-		dataKey,
-		sortBy,
-		sortDirection,
-		label,
-	}: TableHeaderProps): JSX.Element => {
-		return (
-			<>
-				{label}
-				{sortBy === dataKey && <SortIndicator sortDirection={sortDirection} />}
-			</>
-		);
-	};
-
-	// renders an svg instead of a text label, will with a clickable sort indicator
-	const renderHeaderAsSVG = (
-		{ dataKey, sortBy, sortDirection, label }: TableHeaderProps,
-		svg: string
-	): JSX.Element => {
-		return (
-			<>
-				<img alt={String(label)} src={svg} />
-				{sortBy === dataKey && <SortIndicator sortDirection={sortDirection} />}
-			</>
-		);
-	};
-
-	const checkmarkRenderer = ({ cellData }: TableCellProps) => {
-		return <Checkmark value={cellData} />;
-	};
-
-	// mutation to update a single hacker status
-	// TODO(alan): remove any type
-	const updateHackerStatus = async (
-		mutation: any,
-		variables: { email: string; status: string }
-	): Promise<string> => {
-		const result = await mutation({
-			mutation: UPDATE_STATUS,
-			refetchQueries: [{ query: GET_HACKERS }],
-			variables,
-		});
-		return result.data.updateHackerStatus;
-	};
-
-	// maps the radio slider labels to the hacker status
-	const processSliderInput = (input: string) => {
-		switch (input.toLowerCase()) {
-			case 'accept':
-				return 'Accepted';
-			case 'reject':
-				return 'Rejected';
-			case 'undecided':
-			default:
-				return 'Submitted';
-		}
-	};
-
-	// action column that contains the actionable buttons
-	const actionRenderer = ({ rowData }: TableCellProps) => {
-		// TODO(alan): extract onChange to own method
-		const status = rowData.status.toLowerCase();
-		return (
-			<Actions className="ignore-select">
-				<Mutation mutation={UPDATE_STATUS}>
-					{mutation => (
-						<RadioSlider
-							option1="Accept"
-							option2="Undecided"
-							option3="Reject"
-							value={
-								status === 'accepted' ? 'Accept' : status === 'rejected' ? 'Reject' : 'Undecided'
-							}
-							onChange={(input: string) => {
-								const newStatus = processSliderInput(input);
-								updateHackerStatus(mutation, {
-									email: rowData.email as string,
-									status: newStatus,
-								}).then((updatedStatus: string) => {
-									console.log(updatedStatus);
-									// rowData.status = updatedStatus;
-								});
-							}}
-							disable={status !== 'accepted' && status !== 'rejected' && status !== 'submitted'}
-						/>
-					)}
-				</Mutation>
-				<TableButton>View</TableButton>
-			</Actions>
-		);
-	};
-
-	const rowRenderer = (
-		tableProps: TableRowProps & { selectableRef: any; selecting: boolean; selected: boolean }
-	) => {
-		return <Row {...tableProps} />;
-	};
-
-	// mapping from status labels to the colored label images
-	const statusRenderer = ({ cellData }: TableCellProps) => {
-		const generateColor = (value: HackerStatus) => {
-			switch (value.toLowerCase()) {
-				case HackerStatus.created:
-					return STRINGS.COLOR_PALETTE[0];
-				case HackerStatus.verified:
-					return STRINGS.COLOR_PALETTE[1];
-				case HackerStatus.started:
-					return STRINGS.COLOR_PALETTE[2];
-				case HackerStatus.submitted:
-					return STRINGS.COLOR_PALETTE[3];
-				case HackerStatus.accepted:
-					return STRINGS.COLOR_PALETTE[4];
-				case HackerStatus.confirmed:
-					return STRINGS.COLOR_PALETTE[5];
-				case HackerStatus.rejected:
-					return STRINGS.COLOR_PALETTE[6];
-				default:
-					return STRINGS.ACCENT_COLOR;
-			}
-		};
-		return <Status value={cellData} generateColor={generateColor} />;
-	};
-
-	const sort = ({
-		sortBy,
-		sortDirection,
-	}: {
-		sortBy: string | null;
-		sortDirection: SortDirectionType | null;
-	}) => {
-		const params = {
-			sortBy,
-			sortDirection,
-			unsortedData: sortedData,
-			update: false,
-		};
-		// return to natural order after triple click on same column header
-		// before new assignment sortByState and sortByState are the previous values
-		if (sortByState === sortBy && sortDirectionState === SortDirection.DESC) {
-			params.sortBy = null;
-			params.sortDirection = null;
-		}
-		setSortedData(sortData(params));
-		setSortByState(sortBy);
-		setSortDirectionState(sortDirection);
-	};
-
-	// floating button that onClick toggles between selecting all or none of the rows
-	const SelectAllButton = (
-		<FloatingButton
-			onClick={() => {
-				setSelectAll(!selectAll);
-			}}>
-			{selectAll || hasSelection ? 'Deselect All' : 'Select All'}
-		</FloatingButton>
-	);
-
-	// TODO(alan): remove any type.
 	return (
 		<TableLayout>
 			<TableOptions>
@@ -528,21 +544,14 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 					options={columnOptions}
 					className="basic-multi-select"
 					classNamePrefix="select"
-					onChange={(selected: any) => {
-						if (Array.isArray(selected)) setSelectedColumns(selected);
-						else setSelectedColumns([selected]);
-					}}
+					onChange={onTableColumnSelect(table)}
 				/>
 				<SearchBox
 					value={searchValue}
 					placeholder={useRegex ? "Search by regex string, e.g. '^[a-b].*'" : 'Search by text'}
-					onChange={(event: React.ChangeEvent<HTMLInputElement>) => onSearch(event.target.value)}
+					onChange={onSearchBoxEntry(table)}
 				/>
-				<ToggleSwitch
-					label="Use Regex?"
-					checked={useRegex}
-					onChange={value => setUseRegex(value)}
-				/>
+				<ToggleSwitch label="Use Regex?" checked={useRegex} onChange={onRegexToggle(table)} />
 			</TableOptions>
 			<TableData>
 				<AutoSizer>
@@ -554,16 +563,8 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 								deselectOnEsc
 								tolerance={0}
 								allowClickWithoutSelected={false}
-								onSelectionClear={() => {
-									setHasSelection(false);
-									setSelectedRowsEmails([]);
-								}}
-								onSelectionFinish={(keys: [JSX.Element]) => {
-									if (keys.length > 0) {
-										setHasSelection(true);
-										setSelectedRowsEmails(keys.map((key: JSX.Element) => key.props.rowData.email));
-									}
-								}}
+								onSelectionClear={onSelectionClear(table)}
+								onSelectionFinish={onSelectionFinish(table)}
 								ignoreList={['.ignore-select']}
 								resetOnStart>
 								<StyledTable
@@ -576,9 +577,8 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 									rowGetter={({ index }: { index: number }) => sortedData[index]}
 									rowRenderer={rowRenderer}
 									headerClassName="ignore-select"
-									sortBy={sortByState}
-									sortDirection={sortDirectionState}
-									sort={sort}>
+									sort={onSortColumnChange(table)}
+									{...table.state}>
 									<Column
 										className="column"
 										label="First Name"
@@ -629,15 +629,17 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 										dataKey="needsReimbursement"
 										width={30}
 										minWidth={20}
-										headerRenderer={({
-											dataKey,
-											sortBy,
-											sortDirection,
-											label,
-										}: TableHeaderProps) => {
-											const params = { dataKey, label, sortBy, sortDirection };
-											return renderHeaderAsSVG(params, plane);
-										}}
+										headerRenderer={({ dataKey, sortBy, sortDirection, label }: TableHeaderProps) =>
+											renderHeaderAsSVG(
+												{
+													dataKey: dataKey,
+													label: label,
+													sortBy: sortBy,
+													sortDirection: sortDirection,
+												},
+												plane
+											)
+										}
 										cellRenderer={checkmarkRenderer}
 									/>
 									<Column
@@ -653,7 +655,17 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 								{selectAll || hasSelection ? (
 									<DeselectAll ref={deselect}>{SelectAllButton}</DeselectAll>
 								) : (
-									<SelectAll>{SelectAllButton}</SelectAll>
+									<SelectAll
+										onClick={() =>
+											table.update(draft => {
+												draft.hasSelection = true;
+												draft.selectedRowsEmails = sortedData
+													.filter(row => isSelectable(row.status))
+													.map(row => row.email);
+											})
+										}>
+										{SelectAllButton}
+									</SelectAll>
 								)}
 								{hasSelection && (
 									<Mutation mutation={UPDATE_STATUS_AS_BATCH}>
@@ -666,15 +678,30 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 													large
 													value="Undecided"
 													onChange={(input: string) => {
-														const newStatus = processSliderInput(input);
+														let newStatus = processSliderInput(input);
 														mutation({
-															refetchQueries: [{ query: GET_HACKERS }],
+															refetchQueries: [{ query: GET_HACKERS_STATUS }],
+															update: (proxy, { data: { getAllHackers } }) => {
+																try {
+																	let data = proxy.readQuery({ query: GET_HACKERS });
+																	data.getAllHackers = data.getAllHackers.map(
+																		({ email, status, ...h }: Hacker) => {
+																			return selectedRowsEmails.includes(email)
+																				? { email, status: newStatus, ...h }
+																				: { email, status, ...h };
+																		}
+																	);
+																	proxy.writeQuery({ data, query: GET_HACKERS });
+																} catch (e) {
+																	console.error(e);
+																}
+															},
 															variables: { emails: selectedRowsEmails, status: newStatus },
 														});
 														// to deselect afterwards, react-selectable-fast has no clean way to interface with a clearSelection function
 														// so this is a workaround by simulating a click on the SelectAllButton
 														if (
-															sortByState === 'status' &&
+															sortBy === 'status' &&
 															deselect &&
 															deselect.current &&
 															deselect.current.context &&
