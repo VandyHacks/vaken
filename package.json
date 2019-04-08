@@ -168,8 +168,8 @@
 		"build": "tsc && webpack --config webpack.prod.js --progress --colors",
 		"prod": "npm run build && node ./dist/server/index.js",
 		"format": "prettier --config .prettierrc.json --write \"./**/*.ts*(x)\"",
-		"lint": "eslint -c .eslintrc.js --ext .js,.jsx,.ts,.tsx src/",
-		"lint-fix": "eslint -c .eslintrc.js --fix --ext .js,.jsx,.ts,.tsx src/",
+		"lint": "eslint -c .eslintrc-client.js --ext .js,.jsx,.ts,.tsx src/client && eslint -c .eslintrc-server.js --ext .js,.jsx,.ts,.tsx src/server",
+		"lint-fix": "eslint -c .eslintrc-client.js --fix --ext .js,.jsx,.ts,.tsx src/client && eslint -c .eslintrc-server.js --fix --ext .js,.jsx,.ts,.tsx src/server",
 		"start": "webpack-dev-server --config webpack.dev.js --progress --color",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"typecheck": "tsc -p tsconfig.json --noEmit"
