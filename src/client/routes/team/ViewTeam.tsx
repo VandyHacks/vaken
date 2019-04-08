@@ -21,7 +21,7 @@ interface ButtonProps {
 }
 
 const Status = styled.div`
-	background: ${(props: ButtonProps) => props.background || 'rgba(255, 255, 255, 1)'};
+	background: ${({ background = 'rgba(255, 255, 255, 1)' }: ButtonProps): string => background};
 	padding: 1rem 2rem;
 `;
 
@@ -34,10 +34,10 @@ export const ViewTeam: FunctionComponent<Props> = (props: Props): JSX.Element =>
 
 	return (
 		<Mutation mutation={LEAVE_TEAM}>
-			{(mutation, { error }) => (
+			{(mutation, { error }): JSX.Element => (
 				<FlexColumn>
 					<Title fontSize="1.3rem" color={STRINGS.DARK_TEXT_COLOR} margin="0.5rem">
-						You have joined:
+						{`You have joined:`}
 					</Title>
 					<Status background={STRINGS.LIGHT_TEXT_COLOR}>
 						<CenterButtonText color={STRINGS.DARK_TEXT_COLOR} fontWeight="bold" fontSize="1.8rem">
@@ -50,15 +50,15 @@ export const ViewTeam: FunctionComponent<Props> = (props: Props): JSX.Element =>
 						background={STRINGS.ACCENT_COLOR}
 						text="Leave team"
 						glowColor="rgba(0, 0, 255, 0.67)"
-						onClick={() => {
+						onClick={(): void => {
 							mutation({
 								refetchQueries: [{ query: GET_TEAM, variables: { email: emailAddress } }],
 								variables: { email: emailAddress },
 							});
 							if (!error) {
-								console.log('Success!');
+								// console.log('Success!');
 							} else {
-								console.log(error);
+								// console.log(error);
 							}
 						}}
 					/>

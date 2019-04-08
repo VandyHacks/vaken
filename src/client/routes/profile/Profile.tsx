@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import TextButton from '../../components/Buttons/TextButton';
 import STRINGS from '../../assets/strings.json';
