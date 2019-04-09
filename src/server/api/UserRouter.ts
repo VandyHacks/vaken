@@ -8,6 +8,10 @@ import Status from '../enums/Status';
 
 const userRouter = new koaRouter();
 
+/**
+ * Route to get identity of user currently logged in
+ * @throws 403 error is user isn't authenticated
+ */
 userRouter.get('/api/whoami', async (ctx, next) => {
 	if (ctx.isUnauthenticated()) {
 		ctx.throw(403);
@@ -62,8 +66,8 @@ userRouter.post('/api/register/hacker', async (ctx, next) => {
 		if (createdUser) {
 			console.log('Created User');
 			const createdHacker = await HackerModel.create({
-				user: createdUser._id,
 				status: Status.Created,
+				user: createdUser._id,
 			});
 			if (createdHacker) {
 				ctx.body = {
@@ -88,6 +92,10 @@ userRouter.post('/api/register/hacker', async (ctx, next) => {
 	}
 });
 
+/**
+ * Returns status of a user
+ * @throws a 401 error if user isn't authenticated
+ */
 userRouter.get('/api/auth/status', async ctx => {
 	if (ctx.isAuthenticated()) {
 		ctx.body = { authLevel: 'hacker', success: true, username: 'ml@ml.co' };
