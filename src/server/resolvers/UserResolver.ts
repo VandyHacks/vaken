@@ -2,12 +2,7 @@ import { Resolver, Query, Arg } from 'type-graphql';
 import { plainToClass } from 'class-transformer';
 
 import { User } from '../data/User';
-
 import { UserModel } from '../models/User';
-
-// !!!!!!!!!!!!!!!!!!!!!
-// main issue: https://github.com/typestack/class-transformer/issues/53
-// !!!!!!!!!!!!!!!!!!!!!
 
 @Resolver(() => User)
 class UserResolver {
@@ -24,14 +19,11 @@ class UserResolver {
 		if (!user) {
 			return undefined;
 		}
-		return plainToClass(User, {
-			authLevel: user.authLevel,
-			authType: user.authType,
-			email: user.email,
-			gender: user.gender,
-			nfcCodes: user.nfcCodes,
-			shirtSize: user.shirtSize,
-		});
+		const userObject = user.toObject();
+		delete userObject._id;
+		delete userObject.__v;
+		delete userObject.password;
+		return plainToClass(User, userObject as User);
 	}
 
 	/**
@@ -45,14 +37,11 @@ class UserResolver {
 		}
 		const userList: Record<string, any>[] = [];
 		users.forEach(user => {
-			userList.push({
-				authLevel: user.authLevel,
-				authType: user.authType,
-				email: user.email,
-				gender: user.gender,
-				nfcCodes: user.nfcCodes,
-				shirtSize: user.shirtSize,
-			});
+			const userObject = user.toObject();
+			delete userObject._id;
+			delete userObject.__v;
+			delete userObject.password;
+			userList.push(userObject);
 		});
 		return plainToClass(User, userList);
 	}
