@@ -45,14 +45,6 @@ const UPDATE_STATUS_AS_BATCH = gql`
 	}
 `;
 
-const GET_HACKER_BY_EMAIL = gql`
-	query HackerStatus($email: String!) {
-		getHackerByEmail(email: $email) {
-			status
-		}
-	}
-`;
-
 const GET_HACKERS_STATUS = gql`
 	query {
 		getAllHackers {
@@ -278,7 +270,7 @@ const updateHackerStatus = (
 				console.error(e);
 			}
 		},
-		variables: variables,
+		variables,
 	});
 };
 
@@ -298,8 +290,20 @@ const processSliderInput = (input: string): string => {
 // action column that contains the actionable buttons
 const actionRenderer = ({ rowData }: TableCellProps): JSX.Element => {
 	// TODO(alan): extract onChange to own method
-	const status = rowData.status.toLowerCase();
-	const email = rowData.email;
+	const { email } = rowData;
+	let { status } = rowData;
+	status = rowData.status.toLowerCase();
+	let sliderValue;
+	switch (status) {
+		case 'accepted':
+			sliderValue = 'Accept';
+			break;
+		case 'rejected':
+			sliderValue = 'Reject';
+			break;
+		default:
+			sliderValue = 'Undecided';
+	}
 
 	return (
 		<Actions className="ignore-select">
@@ -309,17 +313,12 @@ const actionRenderer = ({ rowData }: TableCellProps): JSX.Element => {
 						option1="Accept"
 						option2="Undecided"
 						option3="Reject"
-						value={
-							status === 'accepted' ? 'Accept' : status === 'rejected' ? 'Reject' : 'Undecided'
-						}
+						value={sliderValue}
 						onChange={(input: string) => {
-							let newStatus = processSliderInput(input);
+							const newStatus = processSliderInput(input);
 							updateHackerStatus(mutation, {
 								email: rowData.email as string,
 								status: newStatus,
-							}).then(res => {
-								// console.log(updatedStatus);
-								// rowData.status = updatedStatus;
 							});
 						}}
 						disable={status !== 'accepted' && status !== 'rejected' && status !== 'submitted'}
@@ -328,7 +327,7 @@ const actionRenderer = ({ rowData }: TableCellProps): JSX.Element => {
 			</Mutation>
 			<Link
 				style={{ textDecoration: 'none' }}
-				to={{ pathname: '/manageHackers/hacker', state: { email: email } }}>
+				to={{ pathname: '/manageHackers/hacker', state: { email } }}>
 				<TableButton>View</TableButton>
 			</Link>
 		</Actions>
@@ -437,15 +436,13 @@ interface SortFnProps {
 const onSortColumnChange = (ctx: TableCtxI): ((p: SortFnProps) => void) => {
 	return ({ sortBy, sortDirection }) => {
 		const { sortBy: prevSortBy, sortDirection: prevSortDirection } = ctx.state;
-
-		if (prevSortBy === sortBy && prevSortDirection === SortDirection.DESC) {
-			sortBy = undefined;
-			sortDirection = undefined;
-		}
-
 		ctx.update(draft => {
-			draft.sortBy = sortBy;
-			draft.sortDirection = sortDirection;
+			draft.sortBy =
+				prevSortBy === sortBy && prevSortDirection === SortDirection.DESC ? undefined : sortBy;
+			draft.sortDirection =
+				prevSortBy === sortBy && prevSortDirection === SortDirection.DESC
+					? undefined
+					: sortDirection;
 		});
 	};
 };
@@ -521,8 +518,10 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 
 	// assigns the row names for styling and to prevent selection
 	const generateRowClassName = ({ index }: { index: number }): string => {
-		let className = index < 0 ? 'headerRow' : index % 2 === 0 ? 'evenRow' : 'oddRow';
-		if (className !== 'headerRow') {
+		let className;
+		if (index < 0) className = 'headerRow';
+		else {
+			className = index % 2 === 0 ? 'evenRow' : 'oddRow';
 			const { status, email } = sortedData[index];
 			if (!isSelectable(status)) {
 				className = className.concat(' ignore-select');
@@ -632,10 +631,10 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 										headerRenderer={({ dataKey, sortBy, sortDirection, label }: TableHeaderProps) =>
 											renderHeaderAsSVG(
 												{
-													dataKey: dataKey,
-													label: label,
-													sortBy: sortBy,
-													sortDirection: sortDirection,
+													dataKey,
+													label,
+													sortBy,
+													sortDirection,
 												},
 												plane
 											)

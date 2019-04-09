@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { number } from 'yup';
 import searchIcon from '../../assets/img/search_icon.svg';
 import STRINGS from '../../assets/strings.json';
 

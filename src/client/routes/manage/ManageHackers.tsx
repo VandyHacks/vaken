@@ -1,9 +1,7 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import { gql } from 'apollo-boost';
-import { Query } from 'react-apollo';
 import { useQuery } from 'react-apollo-hooks';
 import { Route, Switch, Link } from 'react-router-dom';
-import { SortDirectionType } from 'react-virtualized';
 import { useImmer } from 'use-immer';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { Spinner } from '../../components/Loading/Spinner';
@@ -12,13 +10,7 @@ import TextButton from '../../components/Buttons/TextButton';
 import STRINGS from '../../assets/strings.json';
 import HackerView from './HackerView';
 import HackerTable from './HackerTable';
-import {
-	defaultTableState,
-	TableState,
-	columnOptions,
-	Option,
-	TableContext,
-} from '../../contexts/TableContext';
+import { defaultTableState, TableState, TableContext } from '../../contexts/TableContext';
 
 export const GET_HACKERS = gql`
 	query {
@@ -57,11 +49,11 @@ export const ManageHackers: FunctionComponent = (): JSX.Element => {
 					<Route path="/manageHackers/hacker" component={HackerView} />
 					<Route
 						path="/manageHackers"
-						render={() => (
-							<>
-								{loading ? <Spinner /> : error ? Error : <HackerTable data={data.getAllHackers} />}
-							</>
-						)}
+						render={() => {
+							if (loading) return <Spinner />;
+							if (error) return Error;
+							return <HackerTable data={data.getAllHackers} />;
+						}}
 					/>
 				</Switch>
 			</TableContext.Provider>

@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
 // @ts-ignore
 import SadFace from '../../assets/img/sad_face.svg?inline';
-import { Link } from 'react-router-dom';
 import TextButton from '../../components/Buttons/TextButton';
+import { Link } from 'react-router-dom';
 
 const Rectangle = styled.div`
 	border: 0.1rem solid ${STRINGS.WARNING_COLOR};
@@ -27,7 +27,9 @@ interface ErrorMessageProps {
 	children?: JSX.Element;
 }
 
-export const ErrorMessage: FunctionComponent<ErrorMessageProps> = (props: ErrorMessageProps): JSX.Element => {
+export const ErrorMessage: FunctionComponent<ErrorMessageProps> = (
+	props: ErrorMessageProps
+): JSX.Element => {
 	return (
 		<Rectangle>
 			<SadFace />
@@ -40,7 +42,9 @@ interface GraphQLErrorMessage {
 	text?: string;
 }
 
-export const GraphQLErrorMessage: FunctionComponent<GraphQLErrorMessage> = (props: GraphQLErrorMessage): JSX.Element => {
+export const GraphQLErrorMessage: FunctionComponent<GraphQLErrorMessage> = (
+	props: GraphQLErrorMessage
+): JSX.Element => {
 	return (
 		<ErrorMessage>
 			<>
