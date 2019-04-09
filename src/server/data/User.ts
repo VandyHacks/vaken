@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Field, ObjectType, InputType } from 'type-graphql';
+import { Field, ObjectType, InputType, ArgsType } from 'type-graphql';
 
 import AuthType from '../enums/AuthType';
 import AuthLevel from '../enums/AuthLevel';
@@ -8,6 +8,7 @@ import Gender from '../enums/Gender';
 
 @ObjectType({ description: 'DTO for a generic Vaken user' })
 @InputType()
+@ArgsType()
 export class User {
 	@Field()
 	public email!: string;
