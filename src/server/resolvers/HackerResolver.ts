@@ -11,7 +11,8 @@ import Status from '../enums/Status';
 class HackerResolver {
 	/**
 	 * @param {string} email - a Hacker's email address
-	 * @returns {Hacker} a Hacker associated with the provided email address or null if not found
+	 * @returns {Promise<Hacker | null>} a Hacker associated with the provided email address
+	 * 																	 or null if not found
 	 */
 	@Query(() => Hacker, { nullable: true })
 	public static async getHackerByEmail(@Arg('email') email: string): Promise<Hacker | null> {
