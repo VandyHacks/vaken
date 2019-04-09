@@ -1,4 +1,4 @@
-import { Resolver, Query, Arg } from 'type-graphql';
+import { Resolver, Query, Arg, Mutation, Args } from 'type-graphql';
 import { plainToClass } from 'class-transformer';
 
 import { User } from '../data/User';
@@ -44,6 +44,43 @@ class UserResolver {
 			userList.push(userObject);
 		});
 		return plainToClass(User, userList);
+	}
+
+	/**
+	 * @param {string} email - The email address of the user to update
+	 * @param {User} user - Replacement User object with updated fields
+	 * @returns {Promise<User | null>} New and updated User or null
+	 */
+	@Mutation(() => User, {
+		description: "Update a Hacker's status and return updated status",
+	})
+	public static async updateUser(
+		@Arg('email', { nullable: false }) email: string,
+		@Args() user: User
+	): Promise<User | null> {
+		// Identify user by email, update all fields, and save new updatedUser object
+		const updatedUser = await UserModel.findOneAndUpdate(
+			{ email },
+			{
+				$set: {
+					authLevel: user.authLevel,
+					authType: user.authType,
+					dietaryRestrictions: user.dietaryRestrictions,
+					firstName: user.firstName,
+					gender: user.gender,
+					githubId: user.githubId,
+					googleId: user.googleId,
+					lastName: user.lastName,
+					nfcCodes: user.nfcCodes,
+					phoneNumber: user.phoneNumber,
+					shirtSize: user.shirtSize,
+				},
+			},
+			{ new: true }
+		);
+
+		// Return the new User or null if the user wasn't found and updated
+		return updatedUser ? plainToClass(User, updatedUser as User) : null;
 	}
 }
 
