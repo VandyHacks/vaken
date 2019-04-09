@@ -2,8 +2,10 @@ import { Resolver, Query, Arg, Mutation } from 'type-graphql';
 import { plainToClass } from 'class-transformer';
 
 import Hacker from '../data/Hacker';
-import Status from '../enums/Status';
 import { HackerModel } from '../models/Hacker';
+import { UserModel } from '../models/User';
+import AuthLevel from '../enums/AuthLevel';
+import Status from '../enums/Status';
 
 @Resolver(() => Hacker)
 class HackerResolver {
@@ -13,26 +15,23 @@ class HackerResolver {
 	 */
 	@Query(() => Hacker, { nullable: true })
 	public static async getHackerByEmail(@Arg('email') email: string): Promise<Hacker | null> {
-		const hacker = await HackerModel.findOne({ email });
+		const user = await UserModel.findOne({ email, authLevel: AuthLevel.HACKER });
+		if (!user) {
+			return null;
+		}
+
+		const hacker = await HackerModel.findOne({ user: user._id });
 		if (!hacker) {
 			return null;
 		}
-		return plainToClass(Hacker, {
-			authLevel: hacker.authLevel,
-			authType: hacker.authType,
-			email: hacker.email,
-			firstName: hacker.firstName,
-			gender: hacker.gender,
-			gradYear: hacker.gradYear,
-			lastName: hacker.lastName,
-			needsReimbursement: hacker.needsReimbursement,
-			nfcCodes: hacker.nfcCodes,
-			phoneNumber: hacker.phoneNumber,
-			school: hacker.school,
-			shirtSize: hacker.shirtSize,
-			status: hacker.status,
-			teamName: hacker.teamName,
-		});
+
+		const hackerObject = { ...hacker.toObject(), ...user.toObject() };
+		delete hackerObject._id;
+		delete hackerObject.__v;
+		delete hackerObject.user;
+		delete hackerObject.password;
+
+		return plainToClass(Hacker, hackerObject as Hacker);
 	}
 
 	/**
@@ -42,32 +41,33 @@ class HackerResolver {
 		description: 'Return all the Hackers in the database',
 	})
 	public static async getAllHackers(): Promise<Hacker[]> {
-		const hackers = await HackerModel.find({});
-
-		if (!hackers) {
+		const users = await UserModel.find({ authLevel: AuthLevel.HACKER });
+		if (!users) {
 			return [];
 		}
-		const hackerList: Record<string, any>[] = [];
-		hackers.forEach(hacker => {
-			hackerList.push({
-				authLevel: hacker.authLevel,
-				authType: hacker.authType,
-				email: hacker.email,
-				firstName: hacker.firstName,
-				gender: hacker.gender,
-				gradYear: hacker.gradYear,
-				lastName: hacker.lastName,
-				needsReimbursement: hacker.needsReimbursement,
-				nfcCodes: hacker.nfcCodes,
-				phoneNumber: hacker.phoneNumber,
-				school: hacker.school,
-				shirtSize: hacker.shirtSize,
-				status: hacker.status,
-				teamName: hacker.teamName,
-			});
-		});
 
-		return plainToClass(Hacker, hackerList);
+		const hackerList: Promise<Hacker | null>[] = [];
+		users.forEach(user => {
+			hackerList.push(
+				HackerModel.findOne({ user: user._id }).then(hacker => {
+					if (hacker) {
+						const hackerObject = { ...hacker.toObject(), ...user.toObject() };
+						delete hackerObject._id;
+						delete hackerObject.__v;
+						delete hackerObject.user;
+						delete hackerObject.password;
+						return hackerObject;
+					} else {
+						return null;
+					}
+				})
+			);
+		});
+		const hackers = await Promise.all(hackerList);
+		hackers.filter(hacker => hacker);
+
+		console.log(hackers);
+		return plainToClass(Hacker, hackers);
 	}
 
 	/**

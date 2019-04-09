@@ -8,15 +8,6 @@ import Status from '../enums/Status';
 
 const userRouter = new koaRouter();
 
-// Mongo test
-userRouter.post('/mongo', async (ctx, next) => {
-	const newUser = new UserModel(ctx.request.query);
-	await newUser.save();
-	const user = await UserModel.findOne({ firstName: 'vandy' });
-	console.log(user);
-	await next();
-});
-
 userRouter.get('/api/whoami', async (ctx, next) => {
 	if (ctx.isUnauthenticated()) {
 		ctx.throw(403);
@@ -35,13 +26,9 @@ userRouter.get('/api/whoami', async (ctx, next) => {
 	await next();
 });
 
-userRouter.post('/api', async (ctx, next) => {
-	// Dummy logging for now; TODO - flesh out this functionality
-	console.log(ctx.request);
-	ctx.response.status = 200;
-	await next();
-});
-
+/**
+ * Route for logging out
+ */
 userRouter.get('/api/logout', async (ctx, next) => {
 	console.log('> Logging out...');
 	ctx.logout();
@@ -49,9 +36,12 @@ userRouter.get('/api/logout', async (ctx, next) => {
 	await next();
 });
 
-// Create a new local account
-userRouter.post('/api/register/UNSAFE', async (ctx, next) => {
-	const existingUser = await HackerModel.findOne({ email: ctx.request.body.email });
+/**
+ * Route for creating a new local account
+ * Creates both a user and a hacker
+ */
+userRouter.post('/api/register/hacker', async (ctx, next) => {
+	const existingUser = await UserModel.findOne({ email: ctx.request.body.username });
 
 	// found user
 	if (existingUser) {
@@ -61,19 +51,35 @@ userRouter.post('/api/register/UNSAFE', async (ctx, next) => {
 	} else {
 		//no user found, create new user
 		console.log('> Creating new local user.....');
-		const newUser = {
+		const userData = {
 			...ctx.request.body,
 			authLevel: ctx.request.body.authLevel ? ctx.request.body.authLevel : AuthLevel.HACKER,
 			authType: AuthType.LOCAL,
 		};
-		const createdUser = await HackerModel.create(newUser);
+		const createdUser = await UserModel.create(userData);
+
+		// successfully created user, now create hacker
 		if (createdUser) {
-			ctx.body = { authLevel: createdUser.authLevel, success: true, username: createdUser.email };
-			ctx.login(createdUser);
-			console.log('> User:');
-			console.log(createdUser);
-			ctx.redirect('/dashboard');
-			await next();
+			console.log('Created User');
+			const createdHacker = await HackerModel.create({
+				user: createdUser._id,
+				status: Status.Created,
+			});
+			if (createdHacker) {
+				ctx.body = {
+					authLevel: createdUser.authLevel,
+					success: true,
+					username: createdUser.email,
+				};
+				ctx.login(createdUser);
+				console.log('Created Hacker');
+				ctx.redirect('/dashboard');
+				await next();
+			} else {
+				console.log('Error creating new local hacker');
+				ctx.throw(401);
+				await next();
+			}
 		} else {
 			console.log('Error creating new local user');
 			ctx.throw(401);
@@ -82,45 +88,17 @@ userRouter.post('/api/register/UNSAFE', async (ctx, next) => {
 	}
 });
 
-// Create a new local hacker account
-userRouter.post('/api/register/hacker', async (ctx, next) => {
-	const existingUser = await HackerModel.findOne({ email: ctx.request.body.email });
-
-	// found user
-	if (existingUser) {
-		console.log('Error: Account with that email already exists');
-		ctx.throw(409);
-		await next();
+userRouter.get('/api/auth/status', async ctx => {
+	if (ctx.isAuthenticated()) {
+		ctx.body = { authLevel: 'hacker', success: true, username: 'ml@ml.co' };
 	} else {
-		//no user found, create new user
-		console.log('> Creating new local hacker.....');
-		const newHacker = ctx.request.body;
-		newHacker.authType = AuthType.LOCAL;
-		newHacker.authLevel = AuthLevel.HACKER;
-		newHacker.status = Status.Created;
-		console.log(newHacker);
-		console.log('Attempting to create a new hacker');
-		const createdHacker = await HackerModel.create(newHacker);
-		if (createdHacker) {
-			ctx.body = {
-				authLevel: createdHacker.authLevel,
-				success: true,
-				username: createdHacker.email,
-			};
-			ctx.login(createdHacker);
-			console.log('> Hacker:');
-			console.log(createdHacker);
-			ctx.redirect('/dashboard');
-			await next();
-		} else {
-			console.log('Error creating new local hacker');
-			ctx.throw(401);
-			await next();
-		}
+		ctx.throw(401);
 	}
 });
 
-// Login to local account
+/**
+ * Route for logging in to a local account
+ */
 userRouter.post('/api/login', async (ctx, next) => {
 	return passport.authenticate('local', async (err: any, user: any, info: any, status: any) => {
 		console.log('> Local auth');

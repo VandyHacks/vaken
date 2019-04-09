@@ -1,8 +1,11 @@
-import { prop, arrayProp, Ref } from 'typegoose';
+import { prop, arrayProp, Ref, Typegoose } from 'typegoose';
 import { User } from './User';
 import { Sponsor } from './Sponsor';
 
-class SponsorRep extends User {
+class SponsorRep extends Typegoose {
+	@prop({ ref: User, required: true })
+	public user!: Ref<User>;
+
 	@arrayProp({ itemsRef: Sponsor, required: true })
 	public sponsors: Ref<Sponsor>[] = [];
 
@@ -13,8 +16,8 @@ class SponsorRep extends User {
 	public leadRep?: boolean;
 }
 
-const sponsorRepModel = new SponsorRep().getModelForClass(SponsorRep);
+const SponsorRepModel = new SponsorRep().getModelForClass(SponsorRep);
 
-export { SponsorRep, sponsorRepModel };
+export { SponsorRep, SponsorRepModel };
 
 // Copyright (c) 2019 Vanderbilt University

@@ -1,9 +1,13 @@
+import { prop, Ref, Typegoose } from 'typegoose';
 import { User } from './User';
 
-class Organizer extends User {}
+class Organizer extends Typegoose {
+	@prop({ ref: User, required: true })
+	public user!: Ref<User>;
+}
 
-const organizerModel = new Organizer().getModelForClass(Organizer);
+const OrganizerModel = new Organizer().getModelForClass(Organizer);
 
-export { Organizer, organizerModel };
+export { Organizer, OrganizerModel };
 
 // Copyright (c) 2019 Vanderbilt University

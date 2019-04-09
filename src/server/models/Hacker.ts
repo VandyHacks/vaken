@@ -1,10 +1,13 @@
-import { prop, arrayProp } from 'typegoose';
+import { prop, arrayProp, Ref, Typegoose } from 'typegoose';
 import { User } from './User';
 import Ethnicity from '../enums/Ethnicity';
 // import Race from '../enums/Race';
 import Status from '../enums/Status';
 
-class Hacker extends User {
+class Hacker extends Typegoose {
+	@prop({ ref: User, required: true })
+	public user!: Ref<User>;
+
 	@prop({ required: true })
 	public status: Status = Status.Created;
 

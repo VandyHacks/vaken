@@ -3,6 +3,7 @@ import passport from 'koa-passport';
 import bcrypt from 'bcrypt';
 import { Profile as GoogleProfile } from 'passport-google-oauth';
 import { Profile as GithubProfile } from 'passport-github2';
+import { UserModel } from './models/User';
 import { HackerModel } from './models/Hacker';
 import AuthType from './enums/AuthType';
 import AuthLevel from './enums/AuthLevel';
@@ -16,7 +17,7 @@ passport.use(
 		{ passReqToCallback: true },
 		async (req: any, username: string, password: string, done: any) => {
 			console.log('> Local verify function');
-			const user = await HackerModel.findOne({ email: username });
+			const user = await UserModel.findOne({ email: username });
 
 			// no user
 			if (!user) {
@@ -60,7 +61,7 @@ passport.use(
 		) => {
 			console.log('> Google verify function');
 			if (profile.emails) {
-				const user = await HackerModel.findOne({ email: profile.emails[0].value });
+				const user = await UserModel.findOne({ email: profile.emails[0].value });
 
 				// found user
 				if (user) {
@@ -80,12 +81,20 @@ passport.use(
 						email: profile.emails[0].value,
 						googleId: profile.id,
 						password: 'Google!123',
-						status: Status.Created,
 					};
-					const createdUser = await HackerModel.create(newUser);
+					const createdUser = await UserModel.create(newUser);
 					if (createdUser) {
-						console.log(createdUser);
-						done(null, createdUser);
+						// create hacker
+						const createdHacker = await HackerModel.create({
+							user: createdUser._id,
+							status: Status.Created,
+						});
+						if (createdHacker) {
+							console.log(createdUser);
+							done(null, createdUser);
+						} else {
+							done(null, false);
+						}
 					} else {
 						done(null, false);
 					}
@@ -118,7 +127,7 @@ passport.use(
 		) => {
 			console.log('> Github verify function');
 			if (profile.emails) {
-				const user = await HackerModel.findOne({ email: profile.emails[0].value });
+				const user = await UserModel.findOne({ email: profile.emails[0].value });
 
 				// found user
 				if (user) {
@@ -138,12 +147,20 @@ passport.use(
 						email: profile.emails[0].value,
 						githubId: profile.id,
 						password: 'Github!123',
-						status: Status.Created,
 					};
-					const createdUser = await HackerModel.create(newUser);
+					const createdUser = await UserModel.create(newUser);
 					if (createdUser) {
-						console.log(createdUser);
-						done(null, createdUser);
+						// create hacker
+						const createdHacker = await HackerModel.create({
+							user: createdUser._id,
+							status: Status.Created,
+						});
+						if (createdHacker) {
+							console.log(createdUser);
+							done(null, createdUser);
+						} else {
+							done(null, false);
+						}
 					} else {
 						done(null, false);
 					}
@@ -157,14 +174,12 @@ passport.use(
 );
 
 passport.serializeUser((user: any, done: any) => {
-	console.log('serialize user');
 	done(null, user.id);
 });
 
 passport.deserializeUser(async (id: any, done: any) => {
-	console.log('deserialize user');
 	try {
-		const user = await HackerModel.findById(id);
+		const user = await UserModel.findById(id);
 		done(null, user);
 	} catch (err) {
 		done(err, null, { message: 'Failed to deserialize' });
