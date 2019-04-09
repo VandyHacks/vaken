@@ -15,7 +15,7 @@ class HackerResolver {
 	 */
 	@Query(() => Hacker, { nullable: true })
 	public static async getHackerByEmail(@Arg('email') email: string): Promise<Hacker | null> {
-		const user = await UserModel.findOne({ email, authLevel: AuthLevel.HACKER });
+		const user = await UserModel.findOne({ authLevel: AuthLevel.HACKER, email });
 		if (!user) {
 			return null;
 		}
@@ -66,7 +66,6 @@ class HackerResolver {
 		const hackers = await Promise.all(hackerList);
 		hackers.filter(hacker => hacker);
 
-		console.log(hackers);
 		return plainToClass(Hacker, hackers);
 	}
 
