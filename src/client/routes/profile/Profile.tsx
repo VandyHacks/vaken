@@ -9,7 +9,13 @@ import config from './ProfileConfig';
 import AuthContext from '../../contexts/AuthContext';
 import ActionButtonContext from '../../contexts/ActionButtonContext';
 import { formChangeWrapper } from '../../components/Input/helperFunctions';
-import { ConfigField, StyledQuestion, FieldNote, FieldPrompt } from '../application/Application';
+import {
+	ConfigField,
+	StyledQuestion,
+	StyledQuestionPadContainer,
+	FieldNote,
+	FieldPrompt,
+} from '../application/Application';
 import { Spinner } from '../../components/Loading/Spinner';
 import { HeaderButton } from '../../components/Buttons/HeaderButton';
 import { GridColumn } from '../../components/Containers/GridContainers';
@@ -88,10 +94,10 @@ export const Profile: React.FunctionComponent<{}> = (): JSX.Element => {
 
 							return (
 								<StyledQuestion key={title} htmlFor={title}>
-									<div style={{ marginBottom: '0.4rem' }}>
+									<StyledQuestionPadContainer>
 										{title}
 										{field.note ? <FieldNote>{` – ${field.note}`}</FieldNote> : null}
-									</div>
+									</StyledQuestionPadContainer>
 									{field.prompt ? <FieldPrompt>{field.prompt}</FieldPrompt> : null}
 									<field.Component
 										background="white"

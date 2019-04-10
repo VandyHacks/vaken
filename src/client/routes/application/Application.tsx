@@ -59,6 +59,10 @@ export const StyledQuestion = styled.label`
 	}
 `;
 
+export const StyledQuestionPadContainer = styled.div`
+	margin-bottom: 0.4rem;
+`;
+
 export const FieldPrompt = styled.h3`
 	font-weight: lighter;
 	font-size: 1em;
@@ -129,10 +133,10 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 
 							return (
 								<StyledQuestion key={title} htmlFor={title}>
-									<div>
+									<StyledQuestionPadContainer>
 										{title}
 										{field.note ? <FieldNote>{` - ${field.note}`}</FieldNote> : null}
-									</div>
+									</StyledQuestionPadContainer>
 									{field.prompt ? <FieldPrompt>{field.prompt}</FieldPrompt> : null}
 									<field.Component value={fieldValue} onChange={onChange} {...rest} id={title} />
 								</StyledQuestion>
