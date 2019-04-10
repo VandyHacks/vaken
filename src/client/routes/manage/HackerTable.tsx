@@ -255,11 +255,12 @@ const updateHackerStatus = (
 	variables: { email: string; status: string }
 ): Promise<string> => {
 	return mutation({
+		// awaitRefetchQueries: true,
 		mutation: UPDATE_STATUS,
-		refetchQueries: [{ query: GET_HACKERS_STATUS }],
+		// refetchQueries: () => [{ query: GET_HACKERS_STATUS }],
 		update: (proxy, { data: { getAllHackers } }) => {
 			try {
-				let data = proxy.readQuery({ query: GET_HACKERS });
+				const data = proxy.readQuery({ query: GET_HACKERS });
 				data.getAllHackers = data.getAllHackers.map(({ email, status, ...h }: Hacker) => {
 					return email === variables.email
 						? { email, status: variables.status, ...h }
@@ -473,7 +474,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 				draft.selectedColumns = [selectedColumns[0]];
 			});
 		}
-	}, [useRegex]);
+	}, [selectedColumns, table, useRegex]);
 
 	useEffect(() => {
 		// Filter and sort data
@@ -677,12 +678,13 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 													large
 													value="Undecided"
 													onChange={(input: string) => {
-														let newStatus = processSliderInput(input);
+														const newStatus = processSliderInput(input);
 														mutation({
-															refetchQueries: [{ query: GET_HACKERS_STATUS }],
+															// awaitRefetchQueries: true,
+															// refetchQueries: () => [{ query: GET_HACKERS_STATUS }],
 															update: (proxy, { data: { getAllHackers } }) => {
 																try {
-																	let data = proxy.readQuery({ query: GET_HACKERS });
+																	const data = proxy.readQuery({ query: GET_HACKERS });
 																	data.getAllHackers = data.getAllHackers.map(
 																		({ email, status, ...h }: Hacker) => {
 																			return selectedRowsEmails.includes(email)
