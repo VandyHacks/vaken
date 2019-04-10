@@ -109,7 +109,7 @@ class UserResolver {
 	 * @returns {Promise<User>} Updated user
 	 */
 	@Mutation(() => User, {
-		description: "Update a Hacker's status and return updated status",
+		description: 'Update a User',
 	})
 	public static async updateUserTwo(
 		@Arg('email') email: string,
@@ -117,7 +117,7 @@ class UserResolver {
 		@Arg('lastName', { nullable: true }) lastName: string
 	): Promise<User> {
 		// Find the user to update
-		const user = await UserModel.findOne({ email });
+		let user = await UserModel.findOne({ email });
 
 		// Throw an error if no user exists with the provided email address
 		if (!user) {
@@ -125,23 +125,33 @@ class UserResolver {
 		}
 
 		// Try to update the appropriate fields for the desired user
-		try {
-			// Update the rest of the fields
-			await UserModel.updateOne(
-				{ email },
-				{
-					$set: {
-						firstName: firstName !== undefined ? firstName : user.firstName,
-						lastName: lastName !== undefined ? lastName : user.lastName,
-					},
-				}
-			);
-		} catch (err) {
+		const newUser = await UserModel.update(
+			{ email },
+			{
+				$set: {
+					firstName: firstName !== undefined ? firstName : user.firstName,
+					lastName: lastName !== undefined ? lastName : user.lastName,
+				},
+			},
+			{ new: true }
+		);
+
+		if (!newUser) {
 			throw new Error('User could not be updated!');
 		}
 
+		// DEBUG
+		console.log(user);
+		console.log(newUser);
+
 		// Return the updated user
-		return plainToClass(User, user as User);
+		const userObject = newUser.toObject();
+		delete userObject._id;
+		delete userObject.__v;
+		delete userObject.password;
+
+		console.log(userObject);
+		return plainToClass(User, userObject as User);
 	}
 }
 
