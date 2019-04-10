@@ -9,8 +9,8 @@ export const ActionButton = styled.button`
 	border-radius: 1.5rem;
 	text-align: center;
 	box-sizing: border-box;
-    border: none;
-    outline: none;
+	border: none;
+	outline: none;
 	&:focus {
 		outline: none;
 		border: none;

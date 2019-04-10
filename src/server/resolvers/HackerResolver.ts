@@ -2,8 +2,12 @@ import { Resolver, Query, Arg, Mutation } from 'type-graphql';
 import { plainToClass } from 'class-transformer';
 
 import Hacker from '../data/Hacker';
+import HackerGenders from '../data/HackerGenders';
+import HackerShirtSizes from '../data/HackerShirtSizes';
+import HackerStatuses from '../data/HackerStatuses';
+import SchoolCounts from '../data/SchoolCounts';
 import { HackerModel } from '../models/Hacker';
-import { UserModel } from '../models/User';
+import { User, UserModel } from '../models/User';
 import AuthLevel from '../enums/AuthLevel';
 import Status from '../enums/Status';
 import UpdateHackerInput from '../inputs/UpdateHackerInput';
@@ -69,6 +73,97 @@ class HackerResolver {
 		hackers.filter(hacker => hacker);
 
 		return plainToClass(Hacker, hackers);
+	}
+
+	@Query(() => HackerGenders, {
+		description: 'Returns count of hackers for each gender',
+	})
+	public static async getAllHackerGenders(): Promise<HackerGenders> {
+		// Maybe query UserModel instead?
+		const hackerList = await HackerModel.find({}).populate('user');
+
+		const genderData = new HackerGenders();
+		hackerList.forEach(hacker => {
+			const user = hacker.user as User;
+			if (user.gender) {
+				genderData[user.gender] += 1;
+			} else {
+				genderData.UNKNOWN += 1;
+			}
+		});
+
+		return plainToClass(HackerGenders, genderData);
+	}
+
+	@Query(() => HackerShirtSizes, {
+		description: 'Returns count of hackers for each shirt shize',
+	})
+	public static async getAllHackerSizes(): Promise<HackerShirtSizes> {
+		// Maybe query UserModel instead?
+		const hackerList = await HackerModel.find({}).populate('user');
+
+		const sizeData = new HackerShirtSizes();
+		hackerList.forEach(hacker => {
+			const user = hacker.user as User;
+			if (user.shirtSize) {
+				sizeData[user.shirtSize] += 1;
+			} else {
+				sizeData.UNKNOWN += 1;
+			}
+		});
+
+		return plainToClass(HackerShirtSizes, sizeData);
+	}
+
+	@Query(() => HackerStatuses, {
+		description: 'Returns count of hackers at each status',
+	})
+	public static async getAllHackerStatuses(): Promise<HackerStatuses> {
+		// Maybe check for AuthLevel?
+		const hackerList = await HackerModel.find({});
+
+		const statusData = new HackerStatuses();
+		hackerList.forEach(hacker => {
+			statusData[hacker.status] += 1;
+		});
+
+		return plainToClass(HackerStatuses, statusData);
+	}
+
+	/**
+	 * @param {number} number - number of top schools to return
+	 */
+	@Query(() => [SchoolCounts], {
+		description: 'Returns top schools with counts',
+	})
+	public static async getTopHackerSchools(
+		@Arg('number', { nullable: false }) number: number
+	): Promise<SchoolCounts[]> {
+		const hackerList = await HackerModel.find({});
+
+		const schoolData: any = {};
+		hackerList.forEach(hacker => {
+			if (hacker.school) {
+				if (schoolData[hacker.school]) {
+					schoolData[hacker.school] += 1;
+				} else {
+					schoolData[hacker.school] = 1;
+				}
+			}
+		});
+
+		const schoolList: SchoolCounts[] = [];
+		Object.keys(schoolData).forEach(key => {
+			const schoolCount = new SchoolCounts();
+			schoolCount.school = key;
+			schoolCount.counts = schoolData[key];
+			schoolList.push(schoolCount);
+		});
+
+		// Move the largest counts to the beginning of the list
+		schoolList.sort((a, b) => (a.counts < b.counts ? 1 : -1));
+
+		return plainToClass(SchoolCounts, schoolList.slice(0, number));
 	}
 
 	/**
@@ -225,8 +320,18 @@ class HackerResolver {
 		@Arg('email', { nullable: false }) email: string,
 		@Arg('newStatus') newStatus: Status
 	): Promise<Status | null> {
+		if (!Object.values(Status).includes(newStatus)) {
+			console.log('Incorrect newStatus arg');
+			return null;
+		}
+
+		const user = await UserModel.findOne({ email, authLevel: AuthLevel.HACKER });
+		if (!user) {
+			return null;
+		}
+
 		const newHacker = await HackerModel.findOneAndUpdate(
-			{ email },
+			{ user: user._id },
 			{ $set: { status: newStatus } },
 			{ new: true }
 		);

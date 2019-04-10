@@ -54,7 +54,7 @@ export const routes = [
 	{
 		authLevel: [AuthLevel.ORGANIZER],
 		component: NotReady,
-		displayText: 'Manage Sponsor',
+		displayText: 'Manage Sponsors',
 		path: '/manageSponsor',
 	},
 	{

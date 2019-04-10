@@ -2,8 +2,8 @@ import { pre, prop, arrayProp, Typegoose } from 'typegoose';
 import bcrypt from 'bcrypt';
 import AuthType from '../enums/AuthType';
 import AuthLevel from '../enums/AuthLevel';
-import ShirtSize from '../enums/ShirtSize';
 import Gender from '../enums/Gender';
+import ShirtSize from '../enums/ShirtSize';
 
 const saltRounds = 10;
 

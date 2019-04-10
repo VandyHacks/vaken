@@ -6,7 +6,6 @@ import reset from 'styled-reset';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { ApolloProvider } from 'react-apollo';
-import { defaultProps } from 'react-select/lib/Select';
 import LoginPage from './routes/login/Login';
 import Frame from './routes/dashboard/Frame';
 import AuthContext from './contexts/AuthContext';
@@ -38,7 +37,7 @@ const Vaken: React.FunctionComponent = (): JSX.Element => {
 
 	// Uncomment to add dummy data
 	// useEffect(() => {
-	// 	addHackers(true);
+	// addHackers(true);
 	// }, []);
 
 	useEffect(() => {
@@ -54,10 +53,6 @@ const Vaken: React.FunctionComponent = (): JSX.Element => {
 			}
 		});
 	}, [loggedIn]);
-
-	useEffect(() => {
-		//addHackers(false);
-	}, []);
 
 	return (
 		<ApolloProvider client={client}>

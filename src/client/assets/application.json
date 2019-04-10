@@ -8,16 +8,14 @@
 				"input": "input",
 				"title": "First Name",
 				"placeholder": "John",
-				"required": true,
-				"validation": "^(?!\\s*$).+"
+				"required": true
 			},
 			{
 				"name": "lastName",
 				"input": "input",
 				"title": "Last Name",
 				"placholder": "Smith",
-				"required": true,
-				"validation": "^.{6,}$"
+				"required": true
 			},
 			{
 				"name": "dateOfBirth",
