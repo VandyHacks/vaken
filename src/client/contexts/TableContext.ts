@@ -38,6 +38,7 @@ export interface Option {
 	value: string;
 }
 export interface TableState {
+	fuzzySearch: boolean;
 	sortBy?: string;
 	sortDirection?: SortDirectionType;
 	searchValue: string;
@@ -45,16 +46,15 @@ export interface TableState {
 	selectAll: boolean;
 	hasSelection: boolean;
 	selectedRowsEmails: string[];
-	useRegex: boolean;
 }
 
 export const defaultTableState = {
+	fuzzySearch: true,
 	hasSelection: false,
 	searchValue: '',
 	selectAll: false,
 	selectedColumns: [columnOptions[0]],
 	selectedRowsEmails: [],
-	useRegex: false,
 };
 
 export interface TableCtxI {

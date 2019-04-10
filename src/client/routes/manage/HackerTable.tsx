@@ -421,7 +421,7 @@ const onSelectionFinish = (ctx: TableCtxI): ((keys: JSX.Element[]) => void) => {
 const onRegexToggle = (ctx: TableCtxI): ((p: boolean) => void) => {
 	return (p: boolean) =>
 		ctx.update(draft => {
-			draft.useRegex = p;
+			draft.fuzzySearch = p;
 		});
 };
 
@@ -458,7 +458,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		selectAll,
 		hasSelection,
 		searchValue,
-		useRegex,
+		fuzzySearch,
 		selectedColumns,
 		sortBy,
 		sortDirection,
@@ -472,18 +472,18 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 
 	useEffect(() => {
 		// Only search one column in regex mode
-		if (useRegex && selectedColumns.length > 0) {
+		if (!fuzzySearch && selectedColumns.length > 0) {
 			table.update(draft => {
 				draft.selectedColumns = [selectedColumns[0]];
 			});
 		}
-	}, [useRegex]);
+	}, [fuzzySearch]);
 
 	useEffect(() => {
 		// Filter and sort data
 		let newData = [...data];
 
-		if (searchValue.trim() !== '' && !useRegex) {
+		if (searchValue.trim() !== '' && fuzzySearch) {
 			// Fuzzy search selected columns
 			newData = new Fuse(newData, {
 				keys: selectedColumns.map((col: Option) => col.value) as (keyof Hacker)[],
@@ -505,7 +505,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		}
 
 		setSortedData(newData);
-	}, [data, sortBy, sortDirection, selectedColumns, useRegex, searchValue]);
+	}, [data, sortBy, sortDirection, selectedColumns, fuzzySearch, searchValue]);
 
 	// handles the text or regex search and sets the sortedData state with the updated row list
 	// floating button that onClick toggles between selecting all or none of the rows
@@ -540,7 +540,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		<TableLayout>
 			<TableOptions>
 				<ColumnSelect
-					isMulti={!useRegex}
+					isMulti={fuzzySearch}
 					name="colors"
 					defaultValue={[columnOptions[0]]}
 					value={selectedColumns}
@@ -551,10 +551,14 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 				/>
 				<SearchBox
 					value={searchValue}
-					placeholder={useRegex ? "Search by regex string, e.g. '^[a-b].*'" : 'Search by text'}
+					placeholder={fuzzySearch ? 'Search by text' : "Search by regex string, e.g. '^[a-b].*'"}
 					onChange={onSearchBoxEntry(table)}
 				/>
-				<ToggleSwitch label="Use Regex?" checked={useRegex} onChange={onRegexToggle(table)} />
+				<ToggleSwitch
+					label="Fuzzy Search: "
+					checked={fuzzySearch}
+					onChange={onRegexToggle(table)}
+				/>
 			</TableOptions>
 			<TableData>
 				<AutoSizer>
@@ -687,13 +691,13 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 															update: (proxy, { data: { getAllHackers } }) => {
 																try {
 																	let data = proxy.readQuery({ query: GET_HACKERS });
-																	data.getAllHackers = data.getAllHackers.map(
-																		({ email, status, ...h }: Hacker) => {
-																			return selectedRowsEmails.includes(email)
-																				? { email, status: newStatus, ...h }
-																				: { email, status, ...h };
-																		}
-																	);
+																	data.getAllHackers = data.getAllHackers
+																		? data.getAllHackers.map(({ email, status, ...h }: Hacker) => {
+																				return selectedRowsEmails.includes(email)
+																					? { email, status: newStatus, ...h }
+																					: { email, status, ...h };
+																		  })
+																		: null;
 																	proxy.writeQuery({ data, query: GET_HACKERS });
 																} catch (e) {
 																	console.error(e);
