@@ -45,6 +45,10 @@ userRouter.get('/api/logout', async (ctx, next) => {
  * Creates both a user and a hacker
  */
 userRouter.post('/api/register/hacker', async (ctx, next) => {
+	if (ctx.request.body.email) {
+		console.log('Please send email in the username field');
+		ctx.throw(400);
+	}
 	const existingUser = await UserModel.findOne({ email: ctx.request.body.username });
 
 	// found user
@@ -59,7 +63,9 @@ userRouter.post('/api/register/hacker', async (ctx, next) => {
 			...ctx.request.body,
 			authLevel: ctx.request.body.authLevel ? ctx.request.body.authLevel : AuthLevel.HACKER,
 			authType: AuthType.LOCAL,
+			email: ctx.request.body.username,
 		};
+		delete userData.username;
 		const createdUser = await UserModel.create(userData);
 
 		// successfully created user, now create hacker
