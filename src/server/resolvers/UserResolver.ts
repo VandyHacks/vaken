@@ -1,7 +1,7 @@
 import { Resolver, Query, Arg, Mutation, Args } from 'type-graphql';
 import { plainToClass } from 'class-transformer';
 
-import User from '../data/User';
+import { User } from '../data/User';
 import { UserModel } from '../models/User';
 
 @Resolver(() => User)
