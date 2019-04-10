@@ -73,28 +73,25 @@ class HackerResolver {
 		return plainToClass(Hacker, hackers);
 	}
 
-	/**
-	 * Nearly identical to getAllHackerSizes() but doesn't work
-	 */
-	// @Query(() => HackerGenders, {
-	// 	description: 'Returns count of hackers for each gender',
-	// })
-	// public static async getAllHackerGenders(): Promise<HackerGenders> {
-	// 	// Maybe query UserModel instead?
-	// 	const hackerList = await HackerModel.find({}).populate('user');
+	@Query(() => HackerGenders, {
+		description: 'Returns count of hackers for each gender',
+	})
+	public static async getAllHackerGenders(): Promise<HackerGenders> {
+		// Maybe query UserModel instead?
+		const hackerList = await HackerModel.find({}).populate('user');
 
-	// 	const genderData = new HackerGenders();
-	// 	hackerList.forEach(hacker => {
-	// 		const user = hacker.user as User;
-	// 		if (user.gender) {
-	// 			genderData[user.gender] += 1;
-	// 		} else {
-	// 			genderData.UNKNOWN += 1;
-	// 		}
-	// 	});
+		const genderData = new HackerGenders();
+		hackerList.forEach(hacker => {
+			const user = hacker.user as User;
+			if (user.gender) {
+				genderData[user.gender] += 1;
+			} else {
+				genderData.UNKNOWN += 1;
+			}
+		});
 
-	// 	return plainToClass(HackerGenders, genderData);
-	// }
+		return plainToClass(HackerGenders, genderData);
+	}
 
 	@Query(() => HackerShirtSizes, {
 		description: 'Returns count of hackers for each shirt shize',
