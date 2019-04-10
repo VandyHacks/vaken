@@ -682,7 +682,11 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 														const newStatus = processSliderInput(input);
 														mutation({
 															// awaitRefetchQueries: true,
-															// refetchQueries: () => [{ query: GET_HACKERS_STATUS }],
+															// refetchQueries: () => [
+															// 	{
+															// 		query: GET_HACKERS_STATUS,
+															// 	},
+															// ],
 															update: (proxy, { data: { getAllHackers } }) => {
 																try {
 																	const data = proxy.readQuery({ query: GET_HACKERS });

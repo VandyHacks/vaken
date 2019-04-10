@@ -36,7 +36,7 @@ export const PasswordLogin: React.FunctionComponent = (): JSX.Element => {
 			fetch('/api/register/hacker', {
 				body: JSON.stringify({
 					password: pass,
-					email: email,
+					username: email,
 				}),
 				headers: {
 					'Content-Type': 'application/json',

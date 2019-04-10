@@ -27,6 +27,7 @@ const Layout = styled.div`
 		grid-area: content;
 		max-height: 100%;
 		/* border-radius: 2rem; */
+		overflow: auto;
 	}
 
 	.header {
