@@ -4,12 +4,8 @@ import AuthLevel from '../enums/AuthLevel';
 import Gender from '../enums/Gender';
 import ShirtSize from '../enums/ShirtSize';
 
-@ArgsType()
 @InputType()
 class UpdateUserInput implements Partial<User> {
-	@Field({ nullable: false })
-	public email!: string;
-
 	@Field({ nullable: true })
 	public authLevel?: AuthLevel;
 
