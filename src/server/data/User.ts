@@ -9,7 +9,7 @@ import Gender from '../enums/Gender';
 @ObjectType({ description: 'DTO for a generic Vaken user' })
 @InputType()
 @ArgsType()
-export class User {
+class User implements Partial<User> {
 	@Field()
 	public email!: string;
 

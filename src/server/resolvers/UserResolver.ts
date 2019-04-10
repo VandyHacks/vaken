@@ -1,7 +1,7 @@
 import { Resolver, Query, Arg, Mutation, Args } from 'type-graphql';
 import { plainToClass } from 'class-transformer';
 
-import { User } from '../data/User';
+import User from '../data/User';
 import { UserModel } from '../models/User';
 
 @Resolver(() => User)
@@ -48,7 +48,7 @@ class UserResolver {
 
 	/**
 	 * @param {string} email - The email address of the user to update
-	 * @param {User} user - Replacement User object with updated fields
+	 * @param {User} args - Replacement User object with updated fields
 	 * @returns {Promise<User | null>} New and updated User or null
 	 */
 	@Mutation(() => User, {
@@ -56,31 +56,50 @@ class UserResolver {
 	})
 	public static async updateUser(
 		@Arg('email', { nullable: false }) email: string,
-		@Args() user: User
-	): Promise<User | null> {
-		// Identify user by email, update all fields, and save new updatedUser object
-		const updatedUser = await UserModel.findOneAndUpdate(
-			{ email },
-			{
-				$set: {
-					authLevel: user.authLevel,
-					authType: user.authType,
-					dietaryRestrictions: user.dietaryRestrictions,
-					firstName: user.firstName,
-					gender: user.gender,
-					githubId: user.githubId,
-					googleId: user.googleId,
-					lastName: user.lastName,
-					nfcCodes: user.nfcCodes,
-					phoneNumber: user.phoneNumber,
-					shirtSize: user.shirtSize,
-				},
-			},
-			{ new: true }
-		);
+		@Args() args: User
+	): Promise<User> {
+		// Find the user to update
+		const user = await UserModel.findOne({ email });
 
-		// Return the new User or null if the user wasn't found and updated
-		return updatedUser ? plainToClass(User, updatedUser as User) : null;
+		// Throw an error if no user exists with the provided email address
+		if (!user) {
+			throw new Error('User does not exist!');
+		}
+
+		// Try to update the appropriate fields for the desired user
+		try {
+			// Update nfcCodes array first
+			if (args.nfcCodes !== undefined) {
+				await UserModel.updateOne({ email }, { $push: { nfcCodes: args.nfcCodes } }, { new: true });
+			}
+
+			// Update the rest of the fields
+			await UserModel.updateOne(
+				{ email },
+				{
+					$set: {
+						authLevel: args.authLevel !== undefined ? args.authLevel : user.authLevel,
+						dietaryRestrictions:
+							args.dietaryRestrictions !== undefined
+								? args.dietaryRestrictions
+								: user.dietaryRestrictions,
+						firstName: args.firstName !== undefined ? args.firstName : user.firstName,
+						gender: args.gender !== undefined ? args.gender : user.gender,
+						githubId: args.githubId !== undefined ? args.githubId : user.githubId,
+						googleId: args.googleId !== undefined ? args.googleId : user.googleId,
+						lastName: args.lastName !== undefined ? args.lastName : user.lastName,
+						phoneNumber: args.phoneNumber !== undefined ? args.phoneNumber : user.phoneNumber,
+						shirtSize: args.shirtSize !== undefined ? args.shirtSize : user.shirtSize,
+					},
+				},
+				{ new: true }
+			);
+		} catch (err) {
+			throw new Error('User could not be updated!');
+		}
+
+		// Return the updated user
+		return plainToClass(User, user as User);
 	}
 }
 
