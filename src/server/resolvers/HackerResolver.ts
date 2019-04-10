@@ -132,6 +132,7 @@ class HackerResolver {
 
 	/**
 	 * @param {number} number - number of top schools to return
+	 * @returns {Promise<SchoolCounts[]>} an array of SchoolCounts objects
 	 */
 	@Query(() => [SchoolCounts], {
 		description: 'Returns top schools with counts',
@@ -321,11 +322,10 @@ class HackerResolver {
 		@Arg('newStatus') newStatus: Status
 	): Promise<Status | null> {
 		if (!Object.values(Status).includes(newStatus)) {
-			console.log('Incorrect newStatus arg');
-			return null;
+			throw new Error('Incorrect newStatus arg!');
 		}
 
-		const user = await UserModel.findOne({ email, authLevel: AuthLevel.HACKER });
+		const user = await UserModel.findOne({ authLevel: AuthLevel.HACKER, email });
 		if (!user) {
 			return null;
 		}
