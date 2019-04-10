@@ -7,38 +7,38 @@ import ShirtSize from '../enums/ShirtSize';
 @ArgsType()
 @InputType()
 class UpdateUserInput implements Partial<User> {
-	@Field()
+	@Field({ nullable: false })
 	public email!: string;
 
-	@Field()
-	public newNfcCode?: string;
-
-	@Field()
-	public firstName?: string;
-
-	@Field()
-	public lastName?: string;
-
-	@Field()
-	public googleId?: string;
-
-	@Field()
-	public githubId?: string;
-
-	@Field()
+	@Field({ nullable: true })
 	public authLevel?: AuthLevel;
 
-	@Field()
-	public phoneNumber?: string;
+	@Field({ nullable: true })
+	public dietaryRestrictions?: string;
 
-	@Field()
+	@Field({ nullable: true })
+	public firstName?: string;
+
+	@Field({ nullable: true })
 	public gender?: Gender;
 
-	@Field()
-	public shirtSize?: ShirtSize;
+	@Field({ nullable: true })
+	public githubId?: string;
 
-	@Field()
-	public dietaryRestrictions?: string;
+	@Field({ nullable: true })
+	public googleId?: string;
+
+	@Field({ nullable: true })
+	public lastName?: string;
+
+	@Field({ nullable: true })
+	public newNfcCode?: string;
+
+	@Field({ nullable: true })
+	public phoneNumber?: string;
+
+	@Field({ nullable: true })
+	public shirtSize?: ShirtSize;
 }
 
 export default UpdateUserInput;
