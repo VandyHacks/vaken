@@ -34,6 +34,7 @@ const CollapsibleHeader = styled.button`
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: space-between;
+	align-items: center;
 `;
 
 const BGDiv = styled.div`
