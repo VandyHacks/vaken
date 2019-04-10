@@ -70,7 +70,7 @@ class UserResolver {
 		try {
 			// Update nfcCodes array first
 			if (args.nfcCodes !== undefined) {
-				await UserModel.updateOne({ email }, { $push: { nfcCodes: args.nfcCodes } }, { new: true });
+				await UserModel.updateOne({ email }, { $push: { nfcCodes: args.nfcCodes } });
 			}
 
 			// Update the rest of the fields
@@ -91,8 +91,7 @@ class UserResolver {
 						phoneNumber: args.phoneNumber !== undefined ? args.phoneNumber : user.phoneNumber,
 						shirtSize: args.shirtSize !== undefined ? args.shirtSize : user.shirtSize,
 					},
-				},
-				{ new: true }
+				}
 			);
 		} catch (err) {
 			throw new Error('User could not be updated!');
