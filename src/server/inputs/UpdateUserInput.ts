@@ -4,6 +4,12 @@ import AuthLevel from '../enums/AuthLevel';
 import Gender from '../enums/Gender';
 import ShirtSize from '../enums/ShirtSize';
 
+/**
+ * Class representing a data object with updates to an existing User.
+ * Separate from User because all updates are strictly optional when
+ * the appropriate UserResolver mutation is invoked; only the data
+ * to be updated needs to be sent to the Resolver.
+ */
 @InputType()
 class UpdateUserInput implements Partial<User> {
 	@Field({ nullable: true })
