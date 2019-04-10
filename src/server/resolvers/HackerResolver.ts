@@ -176,8 +176,18 @@ class HackerResolver {
 		@Arg('email', { nullable: false }) email: string,
 		@Arg('newStatus') newStatus: Status
 	): Promise<Status | null> {
+		if (!Object.values(Status).includes(newStatus)) {
+			console.log('Incorrect newStatus arg');
+			return null;
+		}
+
+		const user = await UserModel.findOne({ email, authLevel: AuthLevel.HACKER });
+		if (!user) {
+			return null;
+		}
+
 		const newHacker = await HackerModel.findOneAndUpdate(
-			{ email },
+			{ user: user._id },
 			{ $set: { status: newStatus } },
 			{ new: true }
 		);
