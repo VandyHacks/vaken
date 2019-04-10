@@ -1,9 +1,11 @@
-import React, { FunctionComponent, useState, useEffect, useRef } from 'react';
+import React, { useContext, FunctionComponent, useState, useEffect, useRef } from 'react';
 import { useImmer, Update } from 'use-immer';
 import styled from 'styled-components';
 import { formChangeWrapper } from '../../components/Input/helperFunctions';
 import config from '../../assets/application';
 import Collapsible from '../../components/Containers/Collapsible';
+import ActionButtonContext from '../../contexts/ActionButtonContext';
+import { HeaderButton } from '../../components/Buttons/HeaderButton';
 
 export interface ConfigSection {
 	category: string;
@@ -53,12 +55,7 @@ export const StyledQuestion = styled.label`
 	font-size: 1rem;
 
 	& > input {
-		margin-top: 0.4rem;
 		border-radius: 6px;
-	}
-
-	&:last-child {
-		margin-bottom: 1.4rem;
 	}
 `;
 
@@ -80,7 +77,10 @@ export const FieldTitle = styled.span`
 	line-height: 140%;
 `;
 
+const submit = () => {};
+
 export const Application: FunctionComponent<{}> = (): JSX.Element => {
+	const { update: setActionButton } = useContext(ActionButtonContext);
 	const formRef = useRef<HTMLFormElement>(null);
 
 	const initialFormState: any = {};
@@ -95,6 +95,14 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 			}
 		);
 	}, [initialFormState]);
+
+	useEffect((): (() => void) => {
+		if (setActionButton) setActionButton(<HeaderButton text="Submit" onClick={submit} />);
+
+		return () => {
+			if (setActionButton) setActionButton(undefined);
+		};
+	}, []);
 
 	const [formData, setFormData] = useImmer(initialFormState);
 	const [curSection, setCurSection] = useState(config[0].title);

@@ -96,7 +96,7 @@ const statuses = [
 
 export const addHackers = (die: boolean) => {
 	if (die) {
-		for (let i = 0; i < 5000; i += 1) {
+		for (let i = 0; i < 1000; i += 1) {
 			const fn = names[getRandom(21000)];
 			const ln = names[getRandom(21000)];
 			const bool = !!getRandom(2);
@@ -120,15 +120,15 @@ export const addHackers = (die: boolean) => {
 		}
 	}
 
-	// hackers.forEach(hacker =>
-	// 	fetch('/api/register/UNSAFE', {
-	// 		body: JSON.stringify({ ...hacker, password: 'p@ssword1' }),
-	// 		headers: {
-	// 			'Content-Type': 'application/json',
-	// 		},
-	// 		method: 'POST',
-	// 	}).then(res => console.log(res.json))
-	// );
+	hackers.forEach(hacker =>
+		fetch('/api/register/hacker', {
+			body: JSON.stringify({ ...hacker, password: 'p@ssword1' }),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			method: 'POST',
+		}).then(res => console.log(res.json))
+	);
 };
 
 export default addHackers;
