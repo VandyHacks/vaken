@@ -54,7 +54,6 @@ export const StyledQuestion = styled.label`
 	font-size: 1rem;
 
 	& > input {
-		margin-top: 0.4rem;
 		border-radius: 6px;
 		background: white;
 	}
