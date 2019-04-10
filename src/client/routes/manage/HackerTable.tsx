@@ -110,6 +110,10 @@ const TableLayout = styled('div')`
 `;
 
 const TableOptions = styled('div')`
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: space-between;
 	margin-bottom: 1rem;
 `;
 
