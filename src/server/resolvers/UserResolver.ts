@@ -48,8 +48,8 @@ class UserResolver {
 
 	/**
 	 * @param {string} email - The email address of the user to update
-	 * @param {User} args - Replacement User object with updated fields
-	 * @returns {Promise<User | null>} New and updated User or null
+	 * @param {User} args - The fields to update and their new values
+	 * @returns {Promise<User>} Updated user
 	 */
 	@Mutation(() => User, {
 		description: "Update a Hacker's status and return updated status",
