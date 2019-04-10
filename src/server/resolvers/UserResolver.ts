@@ -4,6 +4,9 @@ import { plainToClass } from 'class-transformer';
 import { User } from '../data/User';
 import { UserModel } from '../models/User';
 import UpdateUserInput from '../inputs/UpdateUserInput';
+import AuthLevel from '../enums/AuthLevel';
+import Gender from '../enums/Gender';
+import ShirtSize from '../enums/ShirtSize';
 
 @Resolver(() => User)
 class UserResolver {
@@ -50,72 +53,25 @@ class UserResolver {
 	/**
 	 * @param {string} email - The email address of the user to update
 	 * @param {User} args - The fields to update and their new values
-	 * @returns {Promise<User>} Updated user
-	 */
-	@Mutation(() => User, {
-		description: "Update a Hacker's status and return updated status",
-	})
-	public static async updateUser(
-		@Arg('email') email: string,
-		@Arg('args') args: UpdateUserInput
-	): Promise<User> {
-		// Find the user to update
-		const user = await UserModel.findOne({ email });
-
-		// Throw an error if no user exists with the provided email address
-		if (!user) {
-			throw new Error('User does not exist!');
-		}
-
-		// Try to update the appropriate fields for the desired user
-		try {
-			// Update nfcCodes array first
-			if (args.newNfcCode !== undefined) {
-				await UserModel.updateOne({ args }, { $push: { nfcCodes: args.newNfcCode } });
-			}
-
-			// Update the rest of the fields
-			await UserModel.updateOne(
-				{ email },
-				{
-					$set: {
-						authLevel: args.authLevel !== undefined ? args.authLevel : user.authLevel,
-						dietaryRestrictions:
-							args.dietaryRestrictions !== undefined
-								? args.dietaryRestrictions
-								: user.dietaryRestrictions,
-						firstName: args.firstName !== undefined ? args.firstName : user.firstName,
-						gender: args.gender !== undefined ? args.gender : user.gender,
-						githubId: args.githubId !== undefined ? args.githubId : user.githubId,
-						googleId: args.googleId !== undefined ? args.googleId : user.googleId,
-						lastName: args.lastName !== undefined ? args.lastName : user.lastName,
-						phoneNumber: args.phoneNumber !== undefined ? args.phoneNumber : user.phoneNumber,
-						shirtSize: args.shirtSize !== undefined ? args.shirtSize : user.shirtSize,
-					},
-				}
-			);
-		} catch (err) {
-			throw new Error('User could not be updated!');
-		}
-
-		// Return the updated user
-		return plainToClass(User, user as User);
-	}
-
-	/**
-	 * @param {string} email - The email address of the user to update
-	 * @param {User} firstName - The fields to update and their new values
 	 * @param {User} lastName - The fields to update and their new values
 	 * @returns {Promise<User>} Updated user
 	 */
-	@Mutation(() => User, {
+	@Mutation(() => Boolean, {
 		description: 'Update a User',
 	})
-	public static async updateUserTwo(
+	public static async updateUser(
 		@Arg('email') email: string,
-		@Arg('firstName', { nullable: true }) firstName: string,
-		@Arg('lastName', { nullable: true }) lastName: string
-	): Promise<User> {
+		@Arg('authLevel') authLevel: AuthLevel,
+		@Arg('dietaryRestrictions') dietaryRestrictions: string,
+		@Arg('firstName') firstName: string,
+		@Arg('gender') gender: Gender,
+		@Arg('githubId') githubId: string,
+		@Arg('googleId') googleId: string,
+		@Arg('lastName') lastName: string,
+		@Arg('phoneNumber') phoneNumber: string,
+		@Arg('shirtSize') shirtSize: ShirtSize,
+		@Arg('newNfcCode') newNfcCode: string
+	): Promise<boolean> {
 		// Find the user to update
 		let user = await UserModel.findOne({ email });
 
@@ -125,33 +81,41 @@ class UserResolver {
 		}
 
 		// Try to update the appropriate fields for the desired user
-		const newUser = await UserModel.update(
-			{ email },
-			{
-				$set: {
-					firstName: firstName !== undefined ? firstName : user.firstName,
-					lastName: lastName !== undefined ? lastName : user.lastName,
-				},
-			},
-			{ new: true }
-		);
+		try {
+			// Update nfcCodes array first
+			if (newNfcCode !== undefined) {
+				await UserModel.updateOne({ email }, { $push: { nfcCodes: newNfcCode } });
+			}
 
-		if (!newUser) {
+			await UserModel.updateOne(
+				{ email },
+				{
+					$set: {
+						authLevel: authLevel !== undefined ? authLevel : user.authLevel,
+						dietaryRestrictions:
+							dietaryRestrictions !== undefined ? dietaryRestrictions : user.dietaryRestrictions,
+						firstName: firstName !== undefined ? firstName : user.firstName,
+						gender: gender !== undefined ? gender : user.gender,
+						githubId: githubId !== undefined ? githubId : user.githubId,
+						googleId: googleId !== undefined ? googleId : user.googleId,
+						lastName: lastName !== undefined ? lastName : user.lastName,
+						phoneNumber: phoneNumber !== undefined ? phoneNumber : user.phoneNumber,
+						shirtSize: shirtSize !== undefined ? shirtSize : user.shirtSize,
+					},
+				},
+				{ new: true } // TODO - remove this?
+			);
+		} catch (err) {
 			throw new Error('User could not be updated!');
 		}
 
-		// DEBUG
-		console.log(user);
-		console.log(newUser);
+		return true;
 
 		// Return the updated user
-		const userObject = newUser.toObject();
-		delete userObject._id;
-		delete userObject.__v;
-		delete userObject.password;
-
-		console.log(userObject);
-		return plainToClass(User, userObject as User);
+		// delete newUser._id;
+		// delete newUser.__v;
+		// delete newUser.password;
+		// return plainToClass(User, newUser as User);
 	}
 }
 
