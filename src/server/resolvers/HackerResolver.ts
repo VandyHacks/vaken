@@ -3,7 +3,7 @@ import { plainToClass } from 'class-transformer';
 
 import Hacker from '../data/Hacker';
 import { HackerModel } from '../models/Hacker';
-import { HackerModel } from '../models/Hacker';
+import { UserModel } from '../models/User';
 import AuthLevel from '../enums/AuthLevel';
 import Status from '../enums/Status';
 import UpdateHackerInput from '../inputs/UpdateHackerInput';
@@ -17,20 +17,20 @@ class HackerResolver {
 	 */
 	@Query(() => Hacker, { nullable: true })
 	public static async getHackerByEmail(@Arg('email') email: string): Promise<Hacker | null> {
-		const hacker = await HackerModel.findOne({ authLevel: AuthLevel.HACKER, email });
+		const user = await UserModel.findOne({ authLevel: AuthLevel.HACKER, email });
+		if (!user) {
+			return null;
+		}
+
+		const hacker = await HackerModel.findOne({ user: user._id });
 		if (!hacker) {
 			return null;
 		}
 
-		const hacker = await HackerModel.findOne({ hacker: hacker._id });
-		if (!hacker) {
-			return null;
-		}
-
-		const hackerObject = { ...hacker.toObject(), ...hacker.toObject() };
+		const hackerObject = { ...hacker.toObject(), ...user.toObject() };
 		delete hackerObject._id;
 		delete hackerObject.__v;
-		delete hackerObject.hacker;
+		delete hackerObject.user;
 		delete hackerObject.password;
 
 		return plainToClass(Hacker, hackerObject as Hacker);
@@ -43,20 +43,20 @@ class HackerResolver {
 		description: 'Return all the Hackers in the database',
 	})
 	public static async getAllHackers(): Promise<Hacker[]> {
-		const users = await HackerModel.find({ authLevel: AuthLevel.HACKER });
+		const users = await UserModel.find({ authLevel: AuthLevel.HACKER });
 		if (!users) {
 			return [];
 		}
 
 		const hackerList: Promise<Hacker | null>[] = [];
-		users.forEach(hacker => {
+		users.forEach(user => {
 			hackerList.push(
-				HackerModel.findOne({ hacker: hacker._id }).then(hacker => {
+				HackerModel.findOne({ user: user._id }).then(hacker => {
 					if (hacker) {
-						const hackerObject = { ...hacker.toObject(), ...hacker.toObject() };
+						const hackerObject = { ...hacker.toObject(), ...user.toObject() };
 						delete hackerObject._id;
 						delete hackerObject.__v;
-						delete hackerObject.hacker;
+						delete hackerObject.user;
 						delete hackerObject.password;
 						return hackerObject;
 					} else {
