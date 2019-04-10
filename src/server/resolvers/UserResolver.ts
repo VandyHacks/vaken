@@ -3,6 +3,7 @@ import { plainToClass } from 'class-transformer';
 
 import { User } from '../data/User';
 import { UserModel } from '../models/User';
+import UpdateUserInput from '../inputs/UpdateUserInput';
 
 @Resolver(() => User)
 class UserResolver {
@@ -55,8 +56,8 @@ class UserResolver {
 		description: "Update a Hacker's status and return updated status",
 	})
 	public static async updateUser(
-		@Arg('email', { nullable: false }) email: string,
-		@Args() args: User
+		@Arg('email') email: string,
+		@Arg('args') args: UpdateUserInput
 	): Promise<User> {
 		// Find the user to update
 		const user = await UserModel.findOne({ email });
@@ -69,8 +70,8 @@ class UserResolver {
 		// Try to update the appropriate fields for the desired user
 		try {
 			// Update nfcCodes array first
-			if (args.nfcCodes !== undefined) {
-				await UserModel.updateOne({ email }, { $push: { nfcCodes: args.nfcCodes } });
+			if (args.newNfcCode !== undefined) {
+				await UserModel.updateOne({ args }, { $push: { nfcCodes: args.newNfcCode } });
 			}
 
 			// Update the rest of the fields
@@ -90,6 +91,48 @@ class UserResolver {
 						lastName: args.lastName !== undefined ? args.lastName : user.lastName,
 						phoneNumber: args.phoneNumber !== undefined ? args.phoneNumber : user.phoneNumber,
 						shirtSize: args.shirtSize !== undefined ? args.shirtSize : user.shirtSize,
+					},
+				}
+			);
+		} catch (err) {
+			throw new Error('User could not be updated!');
+		}
+
+		// Return the updated user
+		return plainToClass(User, user as User);
+	}
+
+	/**
+	 * @param {string} email - The email address of the user to update
+	 * @param {User} firstName - The fields to update and their new values
+	 * @param {User} lastName - The fields to update and their new values
+	 * @returns {Promise<User>} Updated user
+	 */
+	@Mutation(() => User, {
+		description: "Update a Hacker's status and return updated status",
+	})
+	public static async updateUserTwo(
+		@Arg('email') email: string,
+		@Arg('firstName', { nullable: true }) firstName: string,
+		@Arg('lastName', { nullable: true }) lastName: string
+	): Promise<User> {
+		// Find the user to update
+		const user = await UserModel.findOne({ email });
+
+		// Throw an error if no user exists with the provided email address
+		if (!user) {
+			throw new Error('User does not exist!');
+		}
+
+		// Try to update the appropriate fields for the desired user
+		try {
+			// Update the rest of the fields
+			await UserModel.updateOne(
+				{ email },
+				{
+					$set: {
+						firstName: firstName !== undefined ? firstName : user.firstName,
+						lastName: lastName !== undefined ? lastName : user.lastName,
 					},
 				}
 			);

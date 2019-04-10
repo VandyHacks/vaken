@@ -7,18 +7,18 @@ import ShirtSize from '../enums/ShirtSize';
 import Gender from '../enums/Gender';
 
 @ObjectType({ description: 'DTO for a generic Vaken user' })
-@InputType()
-export class User implements Partial<User> {
+@ArgsType()
+export class User {
 	@Field()
 	public email!: string;
 
 	@Field(() => [String])
 	public nfcCodes!: string[];
 
-	@Field({ nullable: true })
+	@Field(() => String, { nullable: true })
 	public firstName?: string;
 
-	@Field({ nullable: true })
+	@Field(() => String, { nullable: true })
 	public lastName?: string;
 
 	@Field({ nullable: true })
