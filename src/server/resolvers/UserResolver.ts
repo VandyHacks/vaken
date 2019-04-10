@@ -54,16 +54,7 @@ class UserResolver {
 	 * Updates a user.
 	 *
 	 * @param {string} email - The email address of the user to update
-	 * @param {AuthLevel} authLevel - new authLevel value
-	 * @param {string} dietaryRestrictions - new dietaryRestrictions value
-	 * @param {string} firstName - new firstName value
-	 * @param {Gender} gender - new gender value
-	 * @param {string} githubId - new githubId value
-	 * @param {string} googleId - new googleId value
-	 * @param {string} lastName - new lastName value
-	 * @param {string} newNfcCode - new nfcCode value to push onto the user's array of nfcCodes
-	 * @param {string} phoneNumber - new phoneNumber value
-	 * @param {ShirtSize} shirtSize - new shirtSize value
+	 * @param {UpdateUserInput} data - Data to update the provided user
 	 * @throws an error if any of the Mongo calls fail
 	 * @returns {Promise<boolean>} true if successful
 	 *
@@ -73,16 +64,7 @@ class UserResolver {
 	})
 	public static async updateUser(
 		@Arg('email') email: string,
-		@Arg('authLevel', { nullable: true }) authLevel?: AuthLevel,
-		@Arg('dietaryRestrictions', { nullable: true }) dietaryRestrictions?: string,
-		@Arg('firstName', { nullable: true }) firstName?: string,
-		@Arg('gender', { nullable: true }) gender?: Gender,
-		@Arg('githubId', { nullable: true }) githubId?: string,
-		@Arg('googleId', { nullable: true }) googleId?: string,
-		@Arg('lastName', { nullable: true }) lastName?: string,
-		@Arg('newNfcCode', { nullable: true }) newNfcCode?: string,
-		@Arg('phoneNumber', { nullable: true }) phoneNumber?: string,
-		@Arg('shirtSize', { nullable: true }) shirtSize?: ShirtSize
+		@Arg('data', { nullable: true }) data: UpdateUserInput
 	): Promise<boolean> {
 		// Find the user to update
 		let user = await UserModel.findOne({ email });
@@ -101,56 +83,56 @@ class UserResolver {
 		 */
 		try {
 			// Update authLevel
-			if (authLevel !== undefined) {
-				await UserModel.updateOne({ email }, { $set: { authLevel: authLevel } });
+			if (data.authLevel !== undefined) {
+				await UserModel.updateOne({ email }, { $set: { authLevel: data.authLevel } });
 			}
 
 			// Update dietaryRestrictions
-			if (dietaryRestrictions !== undefined) {
+			if (data.dietaryRestrictions !== undefined) {
 				await UserModel.updateOne(
 					{ email },
-					{ $set: { dietaryRestrictions: dietaryRestrictions } }
+					{ $set: { dietaryRestrictions: data.dietaryRestrictions } }
 				);
 			}
 
 			// Update firstName
-			if (firstName !== undefined) {
-				await UserModel.updateOne({ email }, { $set: { firstName: firstName } });
+			if (data.firstName !== undefined) {
+				await UserModel.updateOne({ email }, { $set: { firstName: data.firstName } });
 			}
 
 			// Update gender
-			if (gender !== undefined) {
-				await UserModel.updateOne({ email }, { $set: { gender: gender } });
+			if (data.gender !== undefined) {
+				await UserModel.updateOne({ email }, { $set: { gender: data.gender } });
 			}
 
 			// Update githubId
-			if (githubId !== undefined) {
-				await UserModel.updateOne({ email }, { $set: { githubId: githubId } });
+			if (data.githubId !== undefined) {
+				await UserModel.updateOne({ email }, { $set: { githubId: data.githubId } });
 			}
 
 			// Update googleId
-			if (googleId !== undefined) {
-				await UserModel.updateOne({ email }, { $set: { googleId: googleId } });
+			if (data.googleId !== undefined) {
+				await UserModel.updateOne({ email }, { $set: { googleId: data.googleId } });
 			}
 
 			// Update lastName
-			if (lastName !== undefined) {
-				await UserModel.updateOne({ email }, { $set: { lastName: lastName } });
+			if (data.lastName !== undefined) {
+				await UserModel.updateOne({ email }, { $set: { lastName: data.lastName } });
 			}
 
 			// Update nfcCodes (note that this is an array and we push just one new value)
-			if (newNfcCode !== undefined) {
-				await UserModel.updateOne({ email }, { $push: { nfcCodes: newNfcCode } });
+			if (data.newNfcCode !== undefined) {
+				await UserModel.updateOne({ email }, { $push: { nfcCodes: data.newNfcCode } });
 			}
 
 			// Update phoneNumber
-			if (phoneNumber !== undefined) {
-				await UserModel.updateOne({ email }, { $set: { phoneNumber: phoneNumber } });
+			if (data.phoneNumber !== undefined) {
+				await UserModel.updateOne({ email }, { $set: { phoneNumber: data.phoneNumber } });
 			}
 
 			// Update shirtSize
-			if (shirtSize !== undefined) {
-				await UserModel.updateOne({ email }, { $set: { shirtSize: shirtSize } });
+			if (data.shirtSize !== undefined) {
+				await UserModel.updateOne({ email }, { $set: { shirtSize: data.shirtSize } });
 			}
 		} catch (err) {
 			throw new Error('User could not be updated!');
