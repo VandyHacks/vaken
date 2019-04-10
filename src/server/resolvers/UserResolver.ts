@@ -51,6 +51,9 @@ class UserResolver {
 	}
 
 	/**
+	 * Updates a user. If a field isn't provided in the GQL mutation, then
+	 * it's considered undefined.
+	 *
 	 * @param {string} email - The email address of the user to update
 	 * @param {User} args - The fields to update and their new values
 	 * @param {User} lastName - The fields to update and their new values
@@ -61,16 +64,16 @@ class UserResolver {
 	})
 	public static async updateUser(
 		@Arg('email') email: string,
-		@Arg('authLevel') authLevel: AuthLevel,
-		@Arg('dietaryRestrictions') dietaryRestrictions: string,
-		@Arg('firstName') firstName: string,
-		@Arg('gender') gender: Gender,
-		@Arg('githubId') githubId: string,
-		@Arg('googleId') googleId: string,
-		@Arg('lastName') lastName: string,
-		@Arg('phoneNumber') phoneNumber: string,
-		@Arg('shirtSize') shirtSize: ShirtSize,
-		@Arg('newNfcCode') newNfcCode: string
+		@Arg('authLevel', { nullable: true }) authLevel: AuthLevel,
+		@Arg('dietaryRestrictions', { nullable: true }) dietaryRestrictions: string,
+		@Arg('firstName', { nullable: true }) firstName: string,
+		@Arg('gender', { nullable: true }) gender: Gender,
+		@Arg('githubId', { nullable: true }) githubId: string,
+		@Arg('googleId', { nullable: true }) googleId: string,
+		@Arg('lastName', { nullable: true }) lastName: string,
+		@Arg('newNfcCode', { nullable: true }) newNfcCode: string,
+		@Arg('phoneNumber', { nullable: true }) phoneNumber: string,
+		@Arg('shirtSize', { nullable: true }) shirtSize: ShirtSize
 	): Promise<boolean> {
 		// Find the user to update
 		let user = await UserModel.findOne({ email });
@@ -82,10 +85,11 @@ class UserResolver {
 
 		// Try to update the appropriate fields for the desired user
 		try {
-			// Update nfcCodes array first
 			if (newNfcCode !== undefined) {
 				await UserModel.updateOne({ email }, { $push: { nfcCodes: newNfcCode } });
 			}
+
+			console.log(dietaryRestrictions);
 
 			await UserModel.updateOne(
 				{ email },
