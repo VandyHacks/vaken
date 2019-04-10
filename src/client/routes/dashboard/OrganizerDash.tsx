@@ -1,34 +1,72 @@
 import React, { FunctionComponent } from 'react';
 import { Bar, Pie } from 'react-chartjs-2';
 import { Link } from 'react-router-dom';
+import { gql } from 'apollo-boost';
+import { Query } from 'react-apollo';
+import { useQuery } from 'react-apollo-hooks';
+import { Spinner } from '../../components/Loading/Spinner';
+import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import TextButton from '../../components/Buttons/TextButton';
 import { OverflowContainer, FlexRow, FlexColumn } from '../../components/Containers/FlexContainers';
 import 'chartjs-plugin-datalabels';
 import STRINGS from '../../assets/strings.json';
 
+const GET_STATISTICS = gql`
+	query Statistics($number: Float!) {
+		getAllHackerGenders {
+			Male
+			Female
+			Other
+			PreferNotToSay
+		}
+		getAllHackerSizes {
+			UXS
+			US
+			UM
+			UL
+			UXL
+			UXXL
+			WS
+			WM
+			WL
+			WXL
+			WXXL
+		}
+		getAllHackerStatuses {
+			Created
+			Verified
+			Started
+			Submitted
+			Accepted
+			Confirmed
+			Rejected
+		}
+		getTopHackerSchools(number: $number) {
+			school
+			counts
+		}
+	}
+`;
+
 const colorPalette = STRINGS.COLOR_PALETTE.slice(1);
 
 const generateColor = (n: number): string[] =>
 	[...Array(n).keys()].map((i: number) => colorPalette[i % colorPalette.length]);
 
-const statusLabels = ['Verified', 'Started', 'Submitted', 'Accepted', 'Confirmed', 'Rejected'];
-const statusData = [22, 43, 230, 176, 89, 3];
-
-const shirtLabels = ['Unisex S', 'Unisex M', 'Unisex L', "Women's S", "Women's M", "Women's L"];
-const shirtData = [83, 40, 58, 60, 23, 51];
-
-const genderLabels = ['Female', 'Male', 'Non-Binary', 'Prefer Not to Say'];
-const genderData = [49, 73, 12, 23];
-
-const barStatusData = {
-	datasets: [
-		{
-			backgroundColor: generateColor(statusData.length),
-			data: statusData,
-		},
-	],
-	labels: statusLabels,
+// TODO(alan): Remove any
+const barStatusData = (data: any) => {
+	const statusData = Object.values(data).slice(0, -1);
+	const statusLabels = Object.keys(data).slice(0, -1);
+	return {
+		datasets: [
+			{
+				backgroundColor: generateColor(statusData.length),
+				data: statusData,
+			},
+		],
+		labels: statusLabels,
+	};
 };
 
 const barStatusOptions = {
@@ -70,14 +108,18 @@ const barStatusOptions = {
 	},
 };
 
-const pieShirtData = {
-	datasets: [
-		{
-			backgroundColor: generateColor(shirtData.length),
-			data: shirtData,
-		},
-	],
-	labels: shirtLabels,
+const pieShirtData = (data: any) => {
+	const shirtData = Object.values(data).slice(0, -1);
+	const shirtLabels = Object.keys(data).slice(0, -1);
+	return {
+		datasets: [
+			{
+				backgroundColor: generateColor(shirtData.length),
+				data: shirtData,
+			},
+		],
+		labels: shirtLabels,
+	};
 };
 
 const pieShirtOptions = {
@@ -94,14 +136,18 @@ const pieShirtOptions = {
 	},
 };
 
-const pieGenderData = {
-	datasets: [
-		{
-			backgroundColor: generateColor(shirtData.length),
-			data: genderData,
-		},
-	],
-	labels: genderLabels,
+const pieGenderData = (data: any) => {
+	const genderData = Object.values(data).slice(0, -1);
+	const genderLabels = Object.keys(data).slice(0, -1);
+	return {
+		datasets: [
+			{
+				backgroundColor: generateColor(genderData.length),
+				data: genderData,
+			},
+		],
+		labels: genderLabels,
+	};
 };
 
 const pieGenderOptions = {
@@ -119,10 +165,20 @@ const pieGenderOptions = {
 };
 
 export const OrganizerDash: FunctionComponent = (): JSX.Element => {
+	const { loading, error, data } = useQuery(GET_STATISTICS, {
+		variables: { number: 5.0 },
+	});
+
+	if (loading) return <Spinner />;
+	if (error) {
+		console.log(error);
+		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
+	}
+	console.log(data);
 	return (
 		<OverflowContainer>
 			<FloatingPopup marginBottom="1rem" backgroundOpacity="1" padding="1.5rem">
-				<Bar data={barStatusData} options={barStatusOptions} />
+				<Bar data={barStatusData(data.getAllHackerStatuses)} options={barStatusOptions} />
 				<Link style={{ textDecoration: 'none' }} to="/managehackers">
 					<TextButton
 						color="white"
@@ -136,10 +192,10 @@ export const OrganizerDash: FunctionComponent = (): JSX.Element => {
 			<FloatingPopup backgroundOpacity="1" padding="1.5rem">
 				<FlexRow>
 					<FlexColumn>
-						<Pie data={pieShirtData} options={pieShirtOptions} />
+						<Pie data={pieShirtData(data.getAllHackerSizes)} options={pieShirtOptions} />
 					</FlexColumn>
 					<FlexColumn>
-						<Pie data={pieGenderData} options={pieGenderOptions} />
+						<Pie data={pieGenderData(data.getAllHackerGenders)} options={pieGenderOptions} />
 					</FlexColumn>
 				</FlexRow>
 			</FloatingPopup>

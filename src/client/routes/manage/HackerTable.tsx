@@ -550,6 +550,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 					value={searchValue}
 					placeholder={useRegex ? "Search by regex string, e.g. '^[a-b].*'" : 'Search by text'}
 					onChange={onSearchBoxEntry(table)}
+					hasIcon
 				/>
 				<ToggleSwitch label="Use Regex?" checked={useRegex} onChange={onRegexToggle(table)} />
 			</TableOptions>

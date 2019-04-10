@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { number } from 'yup';
 import searchIcon from '../../assets/img/search_icon.svg';
 import STRINGS from '../../assets/strings.json';
 
@@ -6,6 +7,7 @@ interface Props {
 	error?: boolean;
 	minWidth?: string;
 	width?: string;
+	hasIcon?: boolean;
 }
 
 const SearchBox = styled('input')`
@@ -18,8 +20,9 @@ const SearchBox = styled('input')`
 	border-radius: 0.375rem;
 	font-size: 1rem;
 	box-sizing: border-box;
-	padding-left: 2rem;
-	background: #ffffff url(${searchIcon}) 0.25rem 50% no-repeat;
+	${(props: Props) => props.hasIcon && 'padding-left: 2rem;'};
+	${(props: Props) =>
+		props.hasIcon && `background: #ffffff url(${searchIcon}) 0.25rem 50% no-repeat;`};
 	:focus,
 	:active {
 		outline: none;

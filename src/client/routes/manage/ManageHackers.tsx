@@ -1,12 +1,11 @@
 import React, { FunctionComponent } from 'react';
 import { gql } from 'apollo-boost';
 import { useQuery } from 'react-apollo-hooks';
-import { Route, Switch, Link } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { useImmer } from 'use-immer';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { Spinner } from '../../components/Loading/Spinner';
-import { ErrorMessage } from '../../components/Text/ErrorMessage';
-import TextButton from '../../components/Buttons/TextButton';
+import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import STRINGS from '../../assets/strings.json';
 import HackerView from './HackerView';
 import HackerTable from './HackerTable';
@@ -26,18 +25,6 @@ export const GET_HACKERS = gql`
 	}
 `;
 
-const Error = (
-	<ErrorMessage>
-		<>
-			<p>There was a problem.</p>
-			<p>Please contact your dev team.</p>
-			<Link style={{ textDecoration: 'none' }} to="/dashboard">
-				<TextButton text="Return to Dashboard" background={STRINGS.WARNING_COLOR} color="white" />
-			</Link>
-		</>
-	</ErrorMessage>
-);
-
 export const ManageHackers: FunctionComponent = (): JSX.Element => {
 	const { loading, error, data } = useQuery(GET_HACKERS);
 	const [tableState, updateTableState] = useImmer<TableState>(defaultTableState);
@@ -51,7 +38,10 @@ export const ManageHackers: FunctionComponent = (): JSX.Element => {
 						path="/manageHackers"
 						render={() => {
 							if (loading) return <Spinner />;
-							if (error) return Error;
+							if (error) {
+								console.log(error);
+								return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
+							}
 							return <HackerTable data={data.getAllHackers} />;
 						}}
 					/>
