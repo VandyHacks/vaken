@@ -61,7 +61,7 @@ userRouter.post('/api/register/hacker', async (ctx, next) => {
 		console.log('> Creating new local user.....');
 		const userData = {
 			...ctx.request.body,
-			authLevel: ctx.request.body.authLevel ? ctx.request.body.authLevel : AuthLevel.HACKER,
+			authLevel: ctx.request.body.authLevel ? ctx.request.body.authLevel : AuthLevel.HACKER, // FIXME: Make sure people can't do this in prod
 			authType: AuthType.LOCAL,
 			email: ctx.request.body.username,
 		};
@@ -72,7 +72,7 @@ userRouter.post('/api/register/hacker', async (ctx, next) => {
 		if (createdUser) {
 			console.log('Created User');
 			const createdHacker = await HackerModel.create({
-				status: Status.Created,
+				status: ctx.request.body.status ? ctx.request.body.status : Status.Created,
 				user: createdUser._id,
 			});
 			if (createdHacker) {
