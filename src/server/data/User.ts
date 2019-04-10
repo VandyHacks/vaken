@@ -7,7 +7,6 @@ import ShirtSize from '../enums/ShirtSize';
 import Gender from '../enums/Gender';
 
 @ObjectType({ description: 'DTO for a generic Vaken user' })
-@ArgsType()
 export class User {
 	@Field()
 	public email!: string;
