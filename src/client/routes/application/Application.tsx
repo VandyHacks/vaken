@@ -109,14 +109,36 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 	}, []);
 
 	const [formData, setFormData] = useImmer(initialFormState);
+
+	const [openSection, setOpenSection] = useState(
+		initialFormState instanceof Array ? initialFormState[0].title : ''
+	);
+
+	const toggleOpen = (e: React.MouseEvent<HTMLButtonElement>): void => {
+		const { id } = e.target as HTMLButtonElement;
+
+		if (openSection === id) {
+			setOpenSection('');
+		} else {
+			setOpenSection(id);
+		}
+
+		e.preventDefault();
+	};
+
 	/* eslint-disable eqeqeq */
 
 	return (
 		<StyledForm ref={formRef}>
 			{config.map((section: ConfigSection, i: number) => {
 				const { fields, category } = section;
+				console.log('opensection', openSection);
 				return (
-					<Collapsible open={!i} title={section.title} key={section.title}>
+					<Collapsible
+						onClick={toggleOpen}
+						open={openSection === section.title}
+						title={section.title}
+						key={section.title}>
 						{fields.map(field => {
 							const { title, fieldName, ...rest } = field;
 							const formCategory = formData[category] || {};

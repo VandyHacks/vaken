@@ -1,15 +1,10 @@
 import styled from 'styled-components';
-import React, { useRef, useState, useEffect } from 'react';
+import React, { FunctionComponent, useRef, useState, useEffect } from 'react';
 import ResizeObserver from 'resize-observer-polyfill';
 import { FlexStartColumn, ContainerProps } from './FlexContainers';
 import { hexToRGB, Props as PopupProps } from './FloatingPopup';
 import DownArrow from '../../assets/img/down_arrow.svg';
 import UpArrow from '../../assets/img/up_arrow.svg';
-
-export interface Props extends PopupProps {
-	title: string;
-	open?: boolean;
-}
 
 export const useMeasure = (): any => {
 	const ref = useRef<any>();
@@ -62,45 +57,25 @@ const CollapsibleBody = styled.div`
 	}
 `;
 
-export class Collapsible extends React.Component<Props, { open: boolean }> {
-	state = {
-		open: !!this.props.open,
-	};
-
-	toggleOpen = (e: React.MouseEvent<HTMLButtonElement>) => {
-		this.setState(({ open }: { open: boolean }) => ({ open: !open }));
-		e.preventDefault();
-	};
-	/*	public static onClick = (
-		state: string,
-		setState: React.Dispatch<React.SetStateAction<string>>
-	): ((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void) => {
-		return (e): void => {
-			const { id } = e.target as HTMLButtonElement;
-
-			if (id === state) {
-				setState('');
-			} else {
-				setState(id);
-			}
-		};
-  }; */
-
-	public render(): JSX.Element {
-		const { title, children, ...rest } = this.props;
-		const { open } = this.state;
-
-		return (
-			<BGDiv>
-				<CollapsibleHeader onClick={this.toggleOpen} id={title} {...rest}>
-					{title}
-					<img src={open ? UpArrow : DownArrow} alt="arrow" />
-				</CollapsibleHeader>
-				<CollapsibleBody className={open ? 'active' : ''}>{children}</CollapsibleBody>
-			</BGDiv>
-		);
-	}
+export interface Props extends PopupProps {
+	title: string;
+	open?: boolean;
+	onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
+
+export const Collapsible: FunctionComponent<Props> = (props): JSX.Element => {
+	const { open, children, title, ...rest } = props;
+
+	return (
+		<BGDiv>
+			<CollapsibleHeader id={title} {...rest}>
+				{title}
+				<img src={open ? UpArrow : DownArrow} alt="arrow" />
+			</CollapsibleHeader>
+			<CollapsibleBody className={open ? 'active' : ''}>{children}</CollapsibleBody>
+		</BGDiv>
+	);
+};
 
 export default Collapsible;
 
