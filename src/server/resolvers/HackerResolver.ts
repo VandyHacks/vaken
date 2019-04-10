@@ -5,6 +5,7 @@ import Hacker from '../data/Hacker';
 import HackerGenders from '../data/HackerGenders';
 import HackerShirtSizes from '../data/HackerShirtSizes';
 import HackerStatuses from '../data/HackerStatuses';
+import SchoolCounts from '../data/SchoolCounts';
 import { HackerModel } from '../models/Hacker';
 import { User, UserModel } from '../models/User';
 import AuthLevel from '../enums/AuthLevel';
@@ -69,7 +70,6 @@ class HackerResolver {
 		const hackers = await Promise.all(hackerList);
 		hackers.filter(hacker => hacker);
 
-		console.log(hackers);
 		return plainToClass(Hacker, hackers);
 	}
 
@@ -126,6 +126,42 @@ class HackerResolver {
 		});
 
 		return plainToClass(HackerStatuses, statusData);
+	}
+
+	/**
+	 * @param {number} number - number of top schools to return
+	 */
+	@Query(() => [SchoolCounts], {
+		description: 'Returns top schools with counts',
+	})
+	public static async getTopHackerSchools(
+		@Arg('number', { nullable: false }) number: number
+	): Promise<SchoolCounts[]> {
+		const hackerList = await HackerModel.find({});
+
+		const schoolData: any = {};
+		hackerList.forEach(hacker => {
+			if (hacker.school) {
+				if (schoolData[hacker.school]) {
+					schoolData[hacker.school] += 1;
+				} else {
+					schoolData[hacker.school] = 1;
+				}
+			}
+		});
+
+		const schoolList: SchoolCounts[] = [];
+		Object.keys(schoolData).forEach(key => {
+			const schoolCount = new SchoolCounts();
+			schoolCount.school = key;
+			schoolCount.counts = schoolData[key];
+			schoolList.push(schoolCount);
+		});
+
+		// Move the largest counts to the beginning of the list
+		schoolList.sort((a, b) => (a.counts < b.counts ? 1 : -1));
+
+		return plainToClass(SchoolCounts, schoolList.slice(0, number));
 	}
 
 	/**
