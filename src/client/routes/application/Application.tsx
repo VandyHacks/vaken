@@ -106,20 +106,14 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 	}, []);
 
 	const [formData, setFormData] = useImmer(initialFormState);
-	const [curSection, setCurSection] = useState(config[0].title);
-
 	/* eslint-disable eqeqeq */
 
 	return (
 		<StyledForm ref={formRef}>
-			{config.map((section: ConfigSection) => {
+			{config.map((section: ConfigSection, i: number) => {
 				const { fields, category } = section;
 				return (
-					<Collapsible
-						onClick={Collapsible.onClick(curSection, setCurSection)}
-						active={curSection}
-						title={section.title}
-						key={section.title}>
+					<Collapsible open={!i} title={section.title} key={section.title}>
 						{fields.map(field => {
 							const { title, fieldName, ...rest } = field;
 							const formCategory = formData[category] || {};

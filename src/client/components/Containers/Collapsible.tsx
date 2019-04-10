@@ -2,13 +2,13 @@ import styled from 'styled-components';
 import React, { useRef, useState, useEffect } from 'react';
 import ResizeObserver from 'resize-observer-polyfill';
 import { FlexStartColumn, ContainerProps } from './FlexContainers';
+import { hexToRGB, Props as PopupProps } from './FloatingPopup';
+import DownArrow from '../../assets/img/down_arrow.svg';
+import UpArrow from '../../assets/img/up_arrow.svg';
 
-export interface Props extends ContainerProps {
-	backgroundOpacity?: string;
-	borderRadius?: string;
+export interface Props extends PopupProps {
 	title: string;
-	active: string;
-	onClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+	open?: boolean;
 }
 
 export const useMeasure = (): any => {
@@ -19,52 +19,58 @@ export const useMeasure = (): any => {
 	return [{ ref }, bounds];
 };
 
-export const FloatingPopup = styled(FlexStartColumn)`
-	transition: ease-in-out all 1s;
-	background-color: rgba(
-		247,
-		245,
-		249,
-		${({ backgroundOpacity = '1' }: Props): string => backgroundOpacity}
-	);
-	border-radius: ${({ borderRadius = '2rem' }: Props): string => borderRadius};
-	padding: ${({ padding = '0' }: Props): string => padding};
-	margin-bottom: ${({ marginBottom = '0' }: Props): string => marginBottom};
-	height: ${({ height = 'min-content' }: Props): string => height};
-	/* height: min-content; */
-	box-sizing: border-box;
-`;
-
 const CollapsibleHeader = styled.button`
-	background-color: #555;
-	color: white;
+	border-radius: 1rem;
+	background-color: #ecebed;
+	color: #6979f8;
 	cursor: pointer;
-	padding: 18px;
+	padding: 14px 1.4rem;
 	width: 100%;
 	border: none;
 	text-align: left;
 	outline: none;
-	font-size: 15px;
+	font-size: 3em;
+	font-weight: bolder;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+`;
+
+const BGDiv = styled.div`
+	background-color: rgba(
+		${({ backgroundColor }: PopupProps): string =>
+			backgroundColor ? hexToRGB(backgroundColor) : '247, 245, 249'},
+		${({ backgroundOpacity = '1' }: PopupProps): string => backgroundOpacity}
+	);
+	border-radius: 1rem;
 `;
 
 const CollapsibleBody = styled.div`
-	padding: 1.5rem;
-	background-color: #f1f1f1;
 	max-height: 0;
+	padding-left: 1.5rem;
 	overflow: hidden;
-	transition: max-height 0.2s ease-out;
+	transition: all 0.2s ease-out;
 	display: grid;
 	grid-auto-flow: row;
 	grid-gap: 1.4rem;
 
 	&.active {
+		padding: 1.5rem;
 		max-height: 100%;
-		overflow: auto;
+		overflow: visible;
 	}
 `;
 
-export class Collapsible extends React.PureComponent<Props, {}> {
-	public static onClick = (
+export class Collapsible extends React.Component<Props, { open: boolean }> {
+	state = {
+		open: !!this.props.open,
+	};
+
+	toggleOpen = (e: React.MouseEvent<HTMLButtonElement>) => {
+		this.setState(({ open }: { open: boolean }) => ({ open: !open }));
+		e.preventDefault();
+	};
+	/*	public static onClick = (
 		state: string,
 		setState: React.Dispatch<React.SetStateAction<string>>
 	): ((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void) => {
@@ -77,18 +83,20 @@ export class Collapsible extends React.PureComponent<Props, {}> {
 				setState(id);
 			}
 		};
-	};
+  }; */
 
 	public render(): JSX.Element {
-		const { title, children, active, ...rest } = this.props;
+		const { title, children, ...rest } = this.props;
+		const { open } = this.state;
 
 		return (
-			<div>
-				<CollapsibleHeader id={title} {...rest}>
+			<BGDiv>
+				<CollapsibleHeader onClick={this.toggleOpen} id={title} {...rest}>
 					{title}
+					<img src={open ? UpArrow : DownArrow} alt="arrow" />
 				</CollapsibleHeader>
-				<CollapsibleBody className={title === active ? 'active' : ''}>{children}</CollapsibleBody>
-			</div>
+				<CollapsibleBody className={open ? 'active' : ''}>{children}</CollapsibleBody>
+			</BGDiv>
 		);
 	}
 }
