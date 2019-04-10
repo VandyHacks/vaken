@@ -9,18 +9,16 @@ export const profile = [
 	{
 		Component: TextInput,
 		fieldName: 'firstName',
-		placeholder: 'John',
-		required: true,
+		placeholder: 'Jane',
 		title: 'First Name',
-		validation: '^(?!\\s*$).+',
+		validation: '.+',
 	},
 	{
 		Component: TextInput,
 		fieldName: 'lastName',
 		placeholder: 'Smith',
-		required: true,
 		title: 'Last Name',
-		validation: '^.{4,}$',
+		validation: '.+',
 	},
 	{
 		Component: TextInput,

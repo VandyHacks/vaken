@@ -12,6 +12,7 @@ import { formChangeWrapper } from '../../components/Input/helperFunctions';
 import { ConfigField, StyledQuestion, FieldNote, FieldPrompt } from '../application/Application';
 import { Spinner } from '../../components/Loading/Spinner';
 import { HeaderButton } from '../../components/Buttons/HeaderButton';
+import { GridColumn } from '../../components/Containers/GridContainers';
 
 const GET_USER_PROFILE = gql`
 	query GET_USER_PROFILE($email: String!) {
@@ -33,10 +34,10 @@ export const Profile: React.FunctionComponent<{}> = (): JSX.Element => {
 	const { email } = useContext(AuthContext);
 	const { update: setActionButton } = useContext(ActionButtonContext);
 	const { data, loading, error } = useQuery(GET_USER_PROFILE, { variables: { email } });
-	const initialFormState: any = { [PROFILE]: data.getUserByEmail };
+	const initialFormState: any = { [PROFILE]: {} };
 	const [formData, setFormData] = useImmer(initialFormState);
 
-	const submit = (): void => {};
+	const submit = (): void => alert(`here's your name: ${formData[PROFILE].firstName}`);
 
 	useEffect((): void => {
 		// Update formData when graphql query changes
@@ -55,7 +56,7 @@ export const Profile: React.FunctionComponent<{}> = (): JSX.Element => {
 		return () => {
 			if (setActionButton) setActionButton(undefined);
 		};
-	}, []);
+	}, [formData]);
 
 	return (
 		<FloatingPopup
@@ -64,45 +65,47 @@ export const Profile: React.FunctionComponent<{}> = (): JSX.Element => {
 			width="100%"
 			backgroundOpacity="1"
 			justifyContent="flex-start"
-			paddingTop="0"
 			alignItems="flex-start"
 			padding="1.5rem">
-			{loading ? (
-				<Spinner />
-			) : (
-				config.map(
-					(field: ConfigField): JSX.Element => {
-						const { title, fieldName, ...rest } = field;
-						const formCategory = formData[PROFILE] || {};
-						const fieldValue = formCategory[fieldName] == undefined ? '' : formCategory[fieldName];
+			<GridColumn gap="1.4rem">
+				{loading ? (
+					<Spinner />
+				) : (
+					config.map(
+						(field: ConfigField): JSX.Element => {
+							const { title, fieldName, ...rest } = field;
+							const formCategory = formData[PROFILE] || {};
+							const fieldValue =
+								formCategory[fieldName] == undefined ? '' : formCategory[fieldName];
 
-						// Use either the class-based static method onChangeWrapper, or a defined
-						// updateFn in the config file, and finally, a fallback for string data types.
-						const onChange = field.Component.updateFn
-							? field.Component.updateFn(setFormData, PROFILE, fieldName)
-							: field.updateFn
-							? field.updateFn(setFormData, PROFILE, fieldName)
-							: formChangeWrapper(setFormData, PROFILE, fieldName);
+							// Use either the class-based static method onChangeWrapper, or a defined
+							// updateFn in the config file, and finally, a fallback for string data types.
+							const onChange = field.Component.updateFn
+								? field.Component.updateFn(setFormData, PROFILE, fieldName)
+								: field.updateFn
+								? field.updateFn(setFormData, PROFILE, fieldName)
+								: formChangeWrapper(setFormData, PROFILE, fieldName);
 
-						return (
-							<StyledQuestion key={title} htmlFor={title}>
-								<div style={{ marginBottom: '0.4rem' }}>
-									{title}
-									{field.note ? <FieldNote>{` – ${field.note}`}</FieldNote> : null}
-								</div>
-								{field.prompt ? <FieldPrompt>{field.prompt}</FieldPrompt> : null}
-								<field.Component
-									background="white"
-									value={fieldValue}
-									onChange={onChange}
-									{...rest}
-									id={title}
-								/>
-							</StyledQuestion>
-						);
-					}
-				)
-			)}
+							return (
+								<StyledQuestion key={title} htmlFor={title}>
+									<div style={{ marginBottom: '0.4rem' }}>
+										{title}
+										{field.note ? <FieldNote>{` – ${field.note}`}</FieldNote> : null}
+									</div>
+									{field.prompt ? <FieldPrompt>{field.prompt}</FieldPrompt> : null}
+									<field.Component
+										background="white"
+										value={fieldValue}
+										onChange={onChange}
+										{...rest}
+										id={title}
+									/>
+								</StyledQuestion>
+							);
+						}
+					)
+				)}
+			</GridColumn>
 		</FloatingPopup>
 	);
 };

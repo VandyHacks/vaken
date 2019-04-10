@@ -102,7 +102,7 @@ export const addHackers = (die: boolean) => {
 			const bool = !!getRandom(2);
 			fetch('/api/register/hacker', {
 				body: JSON.stringify({
-					email: `${fn}.${ln}@gmail.com`,
+					username: `${fn}.${ln}@gmail.com`,
 					firstName: fn,
 					gradYear: getRandom(4) + 2019,
 					lastName: ln,
@@ -120,15 +120,16 @@ export const addHackers = (die: boolean) => {
 		}
 	}
 
-	hackers.forEach(hacker =>
-		fetch('/api/register/hacker', {
-			body: JSON.stringify({ ...hacker, password: 'p@ssword1' }),
+	hackers.forEach(hacker => {
+		const { email, ...rest } = hacker;
+		return fetch('/api/register/hacker', {
+			body: JSON.stringify({ ...rest, username: email, password: 'p@ssword1' }),
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			method: 'POST',
-		}).then(res => console.log(res.json))
-	);
+		}).then(res => console.log(res.json));
+	});
 };
 
 export default addHackers;

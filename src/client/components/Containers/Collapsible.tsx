@@ -48,11 +48,14 @@ const CollapsibleHeader = styled.button`
 `;
 
 const CollapsibleBody = styled.div`
-	padding: 0 18px;
+	padding: 1.5rem;
 	background-color: #f1f1f1;
 	max-height: 0;
 	overflow: hidden;
 	transition: max-height 0.2s ease-out;
+	display: grid;
+	grid-auto-flow: row;
+	grid-gap: 1.4rem;
 
 	&.active {
 		max-height: 100%;

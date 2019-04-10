@@ -65,6 +65,7 @@ const ALink = styled.a`
 	text-align: left;
 	height: max-content;
 	width: 100%;
+	outline: 0 !important;
 
 	&:focus,
 	&:hover,
@@ -72,6 +73,16 @@ const ALink = styled.a`
 	&:link,
 	&:active {
 		text-decoration: none;
+		outline: 0 !important;
+	}
+
+	button:active,
+	button:focus {
+		outline: 0 !important;
+	}
+
+	button::-moz-focus-inner {
+		border: 0;
 	}
 `;
 

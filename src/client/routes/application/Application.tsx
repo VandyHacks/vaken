@@ -51,11 +51,12 @@ export const StyledForm = styled.form`
 export const StyledQuestion = styled.label`
 	display: flex;
 	flex-flow: column nowrap;
-	margin-top: 1.4rem;
 	font-size: 1rem;
 
 	& > input {
+		margin-top: 0.4rem;
 		border-radius: 6px;
+		background: white;
 	}
 `;
 
