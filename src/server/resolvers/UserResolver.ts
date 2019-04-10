@@ -54,7 +54,7 @@ class UserResolver {
 	 * Updates a user.
 	 *
 	 * @param {string} email - The email address of the user to update
-	 * @param {UpdateUserInput} data - Data to update the provided user
+	 * @param {UpdateUserInput} data - Data to update the provided user (only desired fields)
 	 * @throws an error if any of the Mongo calls fail
 	 * @returns {Promise<boolean>} true if successful
 	 *

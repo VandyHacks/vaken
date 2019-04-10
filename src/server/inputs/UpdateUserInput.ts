@@ -1,4 +1,4 @@
-import { Field, InputType, ArgsType } from 'type-graphql';
+import { Field, InputType } from 'type-graphql';
 import User from '../data/User';
 import AuthLevel from '../enums/AuthLevel';
 import Gender from '../enums/Gender';
