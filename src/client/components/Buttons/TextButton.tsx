@@ -34,10 +34,10 @@ export const StyledLoginBtn = styled(Button)`
 `;
 
 const TextButton = (props: Props): JSX.Element => {
-	const { text, ...rest } = props;
+	const { onClick, text, ...rest } = props;
 
 	return (
-		<StyledLoginBtn {...rest}>
+		<StyledLoginBtn onClick={onClick} {...rest}>
 			<CenterButtonText {...rest}>{text}</CenterButtonText>
 		</StyledLoginBtn>
 	);
