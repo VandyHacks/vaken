@@ -51,13 +51,22 @@ class UserResolver {
 	}
 
 	/**
-	 * Updates a user. If a field isn't provided in the GQL mutation, then
-	 * it's considered undefined.
+	 * Updates a user.
 	 *
 	 * @param {string} email - The email address of the user to update
-	 * @param {User} args - The fields to update and their new values
-	 * @param {User} lastName - The fields to update and their new values
-	 * @returns {Promise<User>} Updated user
+	 * @param {AuthLevel} authLevel - new authLevel value
+	 * @param {string} dietaryRestrictions - new dietaryRestrictions value
+	 * @param {string} firstName - new firstName value
+	 * @param {Gender} gender - new gender value
+	 * @param {string} githubId - new githubId value
+	 * @param {string} googleId - new googleId value
+	 * @param {string} lastName - new lastName value
+	 * @param {string} newNfcCode - new nfcCode value to push onto the user's array of nfcCodes
+	 * @param {string} phoneNumber - new phoneNumber value
+	 * @param {ShirtSize} shirtSize - new shirtSize value
+	 * @throws an error if any of the Mongo calls fail
+	 * @returns {Promise<boolean>} true if successful
+	 *
 	 */
 	@Mutation(() => Boolean, {
 		description: 'Update a User',
