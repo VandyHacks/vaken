@@ -64,16 +64,16 @@ class UserResolver {
 	})
 	public static async updateUser(
 		@Arg('email') email: string,
-		@Arg('authLevel', { nullable: true }) authLevel: AuthLevel,
-		@Arg('dietaryRestrictions', { nullable: true }) dietaryRestrictions: string,
-		@Arg('firstName', { nullable: true }) firstName: string,
-		@Arg('gender', { nullable: true }) gender: Gender,
-		@Arg('githubId', { nullable: true }) githubId: string,
-		@Arg('googleId', { nullable: true }) googleId: string,
-		@Arg('lastName', { nullable: true }) lastName: string,
-		@Arg('newNfcCode', { nullable: true }) newNfcCode: string,
-		@Arg('phoneNumber', { nullable: true }) phoneNumber: string,
-		@Arg('shirtSize', { nullable: true }) shirtSize: ShirtSize
+		@Arg('authLevel', { nullable: true }) authLevel?: AuthLevel,
+		@Arg('dietaryRestrictions', { nullable: true }) dietaryRestrictions?: string,
+		@Arg('firstName', { nullable: true }) firstName?: string,
+		@Arg('gender', { nullable: true }) gender?: Gender,
+		@Arg('githubId', { nullable: true }) githubId?: string,
+		@Arg('googleId', { nullable: true }) googleId?: string,
+		@Arg('lastName', { nullable: true }) lastName?: string,
+		@Arg('newNfcCode', { nullable: true }) newNfcCode?: string,
+		@Arg('phoneNumber', { nullable: true }) phoneNumber?: string,
+		@Arg('shirtSize', { nullable: true }) shirtSize?: ShirtSize
 	): Promise<boolean> {
 		// Find the user to update
 		let user = await UserModel.findOne({ email });
@@ -83,43 +83,72 @@ class UserResolver {
 			throw new Error('User does not exist!');
 		}
 
-		// Try to update the appropriate fields for the desired user
+		/*
+		 * Try to update the appropriate fields for the desired user
+
+		 * All the nullable & optional mutation args are considered undefined if not provided
+		 * in the GQL mutation. Unfortunately, we have to write an if-statement for every
+		 * field.
+		 */
 		try {
+			// Update authLevel
+			if (authLevel !== undefined) {
+				await UserModel.updateOne({ email }, { $set: { authLevel: authLevel } });
+			}
+
+			// Update dietaryRestrictions
+			if (dietaryRestrictions !== undefined) {
+				await UserModel.updateOne(
+					{ email },
+					{ $set: { dietaryRestrictions: dietaryRestrictions } }
+				);
+			}
+
+			// Update firstName
+			if (firstName !== undefined) {
+				await UserModel.updateOne({ email }, { $set: { firstName: firstName } });
+			}
+
+			// Update gender
+			if (gender !== undefined) {
+				await UserModel.updateOne({ email }, { $set: { gender: gender } });
+			}
+
+			// Update githubId
+			if (githubId !== undefined) {
+				await UserModel.updateOne({ email }, { $set: { githubId: githubId } });
+			}
+
+			// Update googleId
+			if (googleId !== undefined) {
+				await UserModel.updateOne({ email }, { $set: { googleId: googleId } });
+			}
+
+			// Update lastName
+			if (lastName !== undefined) {
+				await UserModel.updateOne({ email }, { $set: { lastName: lastName } });
+			}
+
+			// Update nfcCodes (note that this is an array and we push just one new value)
 			if (newNfcCode !== undefined) {
 				await UserModel.updateOne({ email }, { $push: { nfcCodes: newNfcCode } });
 			}
 
-			console.log(dietaryRestrictions);
+			// Update phoneNumber
+			if (phoneNumber !== undefined) {
+				await UserModel.updateOne({ email }, { $set: { phoneNumber: phoneNumber } });
+			}
 
-			await UserModel.updateOne(
-				{ email },
-				{
-					$set: {
-						authLevel: authLevel !== undefined ? authLevel : user.authLevel,
-						dietaryRestrictions:
-							dietaryRestrictions !== undefined ? dietaryRestrictions : user.dietaryRestrictions,
-						firstName: firstName !== undefined ? firstName : user.firstName,
-						gender: gender !== undefined ? gender : user.gender,
-						githubId: githubId !== undefined ? githubId : user.githubId,
-						googleId: googleId !== undefined ? googleId : user.googleId,
-						lastName: lastName !== undefined ? lastName : user.lastName,
-						phoneNumber: phoneNumber !== undefined ? phoneNumber : user.phoneNumber,
-						shirtSize: shirtSize !== undefined ? shirtSize : user.shirtSize,
-					},
-				},
-				{ new: true } // TODO - remove this?
-			);
+			// Update shirtSize
+			if (shirtSize !== undefined) {
+				await UserModel.updateOne({ email }, { $set: { shirtSize: shirtSize } });
+			}
 		} catch (err) {
 			throw new Error('User could not be updated!');
 		}
 
+		// If successful, return true
 		return true;
-
-		// Return the updated user
-		// delete newUser._id;
-		// delete newUser.__v;
-		// delete newUser.password;
-		// return plainToClass(User, newUser as User);
 	}
 }
 
