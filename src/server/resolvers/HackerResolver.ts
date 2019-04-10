@@ -2,8 +2,11 @@ import { Resolver, Query, Arg, Mutation } from 'type-graphql';
 import { plainToClass } from 'class-transformer';
 
 import Hacker from '../data/Hacker';
+import HackerGenders from '../data/HackerGenders';
+import HackerShirtSizes from '../data/HackerShirtSizes';
+import HackerStatuses from '../data/HackerStatuses';
 import { HackerModel } from '../models/Hacker';
-import { UserModel } from '../models/User';
+import { User, UserModel } from '../models/User';
 import AuthLevel from '../enums/AuthLevel';
 import Status from '../enums/Status';
 
@@ -68,6 +71,64 @@ class HackerResolver {
 
 		console.log(hackers);
 		return plainToClass(Hacker, hackers);
+	}
+
+	/**
+	 * Nearly identical to getAllHackerSizes() but doesn't work
+	 */
+	// @Query(() => HackerGenders, {
+	// 	description: 'Returns count of hackers for each gender',
+	// })
+	// public static async getAllHackerGenders(): Promise<HackerGenders> {
+	// 	// Maybe query UserModel instead?
+	// 	const hackerList = await HackerModel.find({}).populate('user');
+
+	// 	const genderData = new HackerGenders();
+	// 	hackerList.forEach(hacker => {
+	// 		const user = hacker.user as User;
+	// 		if (user.gender) {
+	// 			genderData[user.gender] += 1;
+	// 		} else {
+	// 			genderData.UNKNOWN += 1;
+	// 		}
+	// 	});
+
+	// 	return plainToClass(HackerGenders, genderData);
+	// }
+
+	@Query(() => HackerShirtSizes, {
+		description: 'Returns count of hackers for each shirt shize',
+	})
+	public static async getAllHackerSizes(): Promise<HackerShirtSizes> {
+		// Maybe query UserModel instead?
+		const hackerList = await HackerModel.find({}).populate('user');
+
+		const sizeData = new HackerShirtSizes();
+		hackerList.forEach(hacker => {
+			const user = hacker.user as User;
+			if (user.shirtSize) {
+				sizeData[user.shirtSize] += 1;
+			} else {
+				sizeData.UNKNOWN += 1;
+			}
+		});
+
+		return plainToClass(HackerShirtSizes, sizeData);
+	}
+
+	@Query(() => HackerStatuses, {
+		description: 'Returns count of hackers at each status',
+	})
+	public static async getAllHackerStatuses(): Promise<HackerStatuses> {
+		// Maybe check for AuthLevel?
+		const hackerList = await HackerModel.find({});
+
+		const statusData = new HackerStatuses();
+		hackerList.forEach(hacker => {
+			statusData[hacker.status] += 1;
+		});
+
+		return plainToClass(HackerStatuses, statusData);
 	}
 
 	/**

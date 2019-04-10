@@ -3,8 +3,8 @@ import { Field, ObjectType, InputType } from 'type-graphql';
 
 import AuthType from '../enums/AuthType';
 import AuthLevel from '../enums/AuthLevel';
-import ShirtSize from '../enums/ShirtSize';
 import Gender from '../enums/Gender';
+import ShirtSize from '../enums/ShirtSize';
 
 @ObjectType({ description: 'DTO for a generic Vaken user' })
 @InputType()
