@@ -31,7 +31,7 @@ class TeamResolver {
 		// If the team doesn't exist, create it
 		if (!team) {
 			try {
-				await teamModel.create({ teamMembers: [{ _id: hacker._id }], teamName, size: 1 });
+				await teamModel.create({ size: 1, teamMembers: [{ _id: hacker._id }], teamName });
 			} catch (err) {
 				throw new Error('Team could not be created!');
 			}
@@ -59,7 +59,7 @@ class TeamResolver {
 
 		// Update the hacker's team
 		try {
-			await HackerModel.updateOne({ email }, { $set: { teamName } });
+			await HackerModel.updateOne({ email }, { $set: { teamName: teamName } });
 		} catch (err) {
 			throw new Error('Hacker team could not be updated!');
 		}
