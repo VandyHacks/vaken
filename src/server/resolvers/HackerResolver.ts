@@ -335,21 +335,21 @@ class HackerResolver {
 	): Promise<boolean> {
 		// Make sure the hacker and team exist
 		const team = await teamModel.findOne({ teamName });
-		const hacker = await HackerModel.findOne({ email });
+		const user = await UserModel.findOne({ authLevel: AuthLevel.HACKER, email });
 
 		// If the hacker doesn't exist, throw an error
-		if (!hacker) {
-			throw new Error('Hacker does not exist!');
+		if (!user) {
+			throw new Error('User does not exist!');
 		}
 
 		// Ensure the team exists and the hacker can join
 		if (!team) {
 			try {
-				await teamModel.create({ size: 1, teamMembers: [{ _id: hacker._id }], teamName });
+				await teamModel.create({ size: 1, teamMembers: [{ _id: user._id }], teamName });
 			} catch (err) {
 				throw new Error('Team could not be created!');
 			}
-		} else if (team.teamMembers.indexOf(hacker._id) != -1) {
+		} else if (team.teamMembers.indexOf(user._id) != -1) {
 			throw new Error('Hacker is already a part of this team!');
 		} else if (team.size === CONSTANTS.MAX_TEAM_SIZE) {
 			throw new Error('This team is already full!');
@@ -358,7 +358,7 @@ class HackerResolver {
 			try {
 				await teamModel.updateOne(
 					{ teamName },
-					{ $push: { teamMembers: { _id: hacker._id } }, $set: { size: team.size + 1 } }
+					{ $push: { teamMembers: { _id: user._id } }, $set: { size: team.size + 1 } }
 				);
 			} catch (err) {
 				throw new Error('Hacker could not be added to team!');
@@ -366,7 +366,7 @@ class HackerResolver {
 
 			// Update the hacker's team
 			try {
-				await HackerModel.updateOne({ email }, { $set: { teamName: teamName } });
+				await HackerModel.updateOne({ _id: user._id }, { $set: { teamName: teamName } });
 			} catch (err) {
 				throw new Error('Hacker team could not be updated!');
 			}
