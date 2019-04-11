@@ -377,6 +377,69 @@ class HackerResolver {
 	}
 
 	/**
+	 * @param {string} email - email address of the user to add to a team
+	 * @returns {boolean} true if successful
+	 * @throws {Error} if unsuccessful
+	 */
+	@Mutation(() => Boolean, {
+		description: 'Leave a team',
+	})
+	public static async leaveTeam(
+		@Arg('email', { nullable: false }) email: string
+	): Promise<boolean> {
+		// Ensure the team and hacker are in a valid state
+		const user = await UserModel.findOne({ authLevel: AuthLevel.HACKER, email });
+
+		// If the user doesn't exist, throw an error
+		if (!user) {
+			throw new Error('User does not exist!');
+		}
+
+		// Get the hacker's team name
+		const hacker = await HackerModel.findOneAndUpdate({ user: user._id }, { new: true });
+
+		if (!hacker) {
+			throw new Error('Hacker does not exist!');
+		}
+
+		const team = await teamModel.findOne({ teamName: hacker.teamName });
+
+		// If the team doesn't exist for some ungodly reason, just update the Hacker and throw an error
+		if (!team) {
+			await HackerModel.updateOne({ _id: user._id }, { $set: { teamName: '' } });
+			throw new Error('Team does not exist!');
+		}
+
+		// Remove hacker from the team
+		try {
+			const updatedTeam = await teamModel.findOneAndUpdate(
+				{ teamName: hacker.teamName },
+				{ $pull: { teamMembers: user._id }, $set: { size: team.size - 1 } },
+				{ new: true }
+			);
+
+			// Remove teamName from Hacker's profile
+			await HackerModel.updateOne({ _id: user._id }, { $set: { teamName: '' } });
+
+			// If the team is now empty, delete it
+			if (updatedTeam && updatedTeam.size === 0) {
+				try {
+					// Doesn't currently work for some reason
+					// We are able to reach this part of the code
+					await teamModel.deleteOne({ teamname: hacker.teamName });
+				} catch (err) {
+					throw new Error('Now empty team could not be deleted!');
+				}
+			}
+		} catch (err) {
+			throw new Error('Hacker could not be removed from team!');
+		}
+
+		// Upon success, return true
+		return true;
+	}
+
+	/**
 	 * @param {string} email - email address of a particular hacker
 	 * @param {Status} newStatus - new status to assign to hacker
 	 * @returns {Status} new status of hacker or null if the hacker doesn't exist
