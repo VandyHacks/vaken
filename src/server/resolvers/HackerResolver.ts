@@ -11,6 +11,8 @@ import { User, UserModel } from '../models/User';
 import AuthLevel from '../enums/AuthLevel';
 import Status from '../enums/Status';
 import UpdateHackerInput from '../inputs/UpdateHackerInput';
+import { teamModel } from '../models/Team';
+import CONSTANTS from '../../common/constants.json';
 
 @Resolver(() => Hacker)
 class HackerResolver {
@@ -184,11 +186,11 @@ class HackerResolver {
 		@Arg('data', { nullable: true }) data: UpdateHackerInput
 	): Promise<boolean> {
 		// Find the hacker to update
-		let hacker = await HackerModel.findOne({ email });
+		const user = await UserModel.findOne({ authLevel: AuthLevel.HACKER, email });
 
-		// Throw an error if no hacker exists with the provided email address
-		if (!hacker) {
-			throw new Error('Hacker does not exist!');
+		// Throw an error if no such user exists
+		if (!user) {
+			throw new Error('User does not exist!');
 		}
 
 		/*
@@ -201,111 +203,176 @@ class HackerResolver {
 		try {
 			// Update status
 			if (data.status !== undefined) {
-				await HackerModel.updateOne({ email }, { $set: { status: data.status } });
+				await HackerModel.updateOne({ user: user._id }, { $set: { status: data.status } });
 			}
 
 			// Update school
 			if (data.school !== undefined) {
-				await HackerModel.updateOne({ email }, { $set: { school: data.school } });
+				await HackerModel.updateOne({ user: user._id }, { $set: { school: data.school } });
 			}
 
 			// Update gradYear
 			if (data.gradYear !== undefined) {
-				await HackerModel.updateOne({ email }, { $set: { gradYear: data.gradYear } });
+				await HackerModel.updateOne({ user: user._id }, { $set: { gradYear: data.gradYear } });
 			}
 
 			// Update ethnicity
 			if (data.ethnicity !== undefined) {
-				await HackerModel.updateOne({ email }, { $set: { ethnicity: data.ethnicity } });
+				await HackerModel.updateOne({ user: user._id }, { $set: { ethnicity: data.ethnicity } });
 			}
 
 			// Update race (this is an array)
 			if (data.race !== undefined) {
-				await HackerModel.updateOne({ email }, { $set: { race: data.race } });
+				await HackerModel.updateOne({ user: user._id }, { $set: { race: data.race } });
 			}
 
 			// Update majors (note that this is an array)
 			if (data.majors !== undefined) {
-				await HackerModel.updateOne({ email }, { $set: { majors: data.majors } });
+				await HackerModel.updateOne({ user: user._id }, { $set: { majors: data.majors } });
 			}
 
 			// Update adult
 			if (data.adult !== undefined) {
-				await HackerModel.updateOne({ email }, { $set: { adult: data.adult } });
+				await HackerModel.updateOne({ user: user._id }, { $set: { adult: data.adult } });
 			}
 
 			// Update firstHackathon
 			if (data.firstHackathon !== undefined) {
-				await HackerModel.updateOne({ email }, { $set: { firstHackathon: data.firstHackathon } });
+				await HackerModel.updateOne(
+					{ user: user._id },
+					{ $set: { firstHackathon: data.firstHackathon } }
+				);
 			}
 
 			// Update volunteer
 			if (data.volunteer !== undefined) {
-				await HackerModel.updateOne({ email }, { $set: { volunteer: data.volunteer } });
+				await HackerModel.updateOne({ user: user._id }, { $set: { volunteer: data.volunteer } });
 			}
 
 			// Update github
 			if (data.github !== undefined) {
-				await HackerModel.updateOne({ email }, { $set: { github: data.github } });
+				await HackerModel.updateOne({ user: user._id }, { $set: { github: data.github } });
 			}
 
 			// Update linkedin
 			if (data.linkedin !== undefined) {
-				await HackerModel.updateOne({ email }, { $set: { linkedin: data.linkedin } });
+				await HackerModel.updateOne({ user: user._id }, { $set: { linkedin: data.linkedin } });
 			}
 
 			// Update devpost
 			if (data.devpost !== undefined) {
-				await HackerModel.updateOne({ email }, { $set: { devpost: data.devpost } });
+				await HackerModel.updateOne({ user: user._id }, { $set: { devpost: data.devpost } });
 			}
 
 			// Update website
 			if (data.website !== undefined) {
-				await HackerModel.updateOne({ email }, { $set: { website: data.website } });
+				await HackerModel.updateOne({ user: user._id }, { $set: { website: data.website } });
 			}
 
 			// Update essays (note this is an array)
 			if (data.essays !== undefined) {
-				await HackerModel.updateOne({ email }, { $set: { essays: data.essays } });
+				await HackerModel.updateOne({ user: user._id }, { $set: { essays: data.essays } });
 			}
 
 			// Update codeOfConduct
 			if (data.codeOfConduct !== undefined) {
-				await HackerModel.updateOne({ email }, { $set: { codeOfConduct: data.codeOfConduct } });
+				await HackerModel.updateOne(
+					{ user: user._id },
+					{ $set: { codeOfConduct: data.codeOfConduct } }
+				);
 			}
 
 			// Update needsReimbursement
 			if (data.needsReimbursement !== undefined) {
 				await HackerModel.updateOne(
-					{ email },
+					{ user: user._id },
 					{ $set: { needsReimbursement: data.needsReimbursement } }
 				);
 			}
 
 			// Update lightningTalk
 			if (data.lightningTalk !== undefined) {
-				await HackerModel.updateOne({ email }, { $set: { lightningTalk: data.lightningTalk } });
+				await HackerModel.updateOne(
+					{ user: user._id },
+					{ $set: { lightningTalk: data.lightningTalk } }
+				);
 			}
 
 			// Update teamCode
 			if (data.teamCode !== undefined) {
-				await HackerModel.updateOne({ email }, { $set: { teamCode: data.teamCode } });
+				await HackerModel.updateOne({ user: user._id }, { $set: { teamCode: data.teamCode } });
 			}
 
 			// Update walkin
 			if (data.walkin !== undefined) {
-				await HackerModel.updateOne({ email }, { $set: { walkin: data.walkin } });
+				await HackerModel.updateOne({ user: user._id }, { $set: { walkin: data.walkin } });
 			}
 
 			// Update teamName
 			if (data.teamName !== undefined) {
-				await HackerModel.updateOne({ email }, { $set: { teamName: data.teamName } });
+				await HackerModel.updateOne({ user: user._id }, { $set: { teamName: data.teamName } });
 			}
 		} catch (err) {
 			throw new Error('Hacker could not be updated!');
 		}
 
 		// If successful, return true
+		return true;
+	}
+
+	/**
+	 * @param {string} email - email address of a particular hacker
+	 * @param {string} teamName - name of team to join
+	 * @throws {err} if unsuccessful
+	 * @returns {Status} true if successful
+	 */
+	@Mutation(() => Status, {
+		description: "Update a Hacker's status and return updated status",
+	})
+	public static async joinTeam(
+		@Arg('email', { nullable: false }) email: string,
+		@Arg('teamName') teamName: string
+	): Promise<boolean> {
+		// Make sure the hacker and team exist
+		const team = await teamModel.findOne({ teamName });
+		const hacker = await HackerModel.findOne({ email });
+
+		// If the hacker doesn't exist, throw an error
+		if (!hacker) {
+			throw new Error('Hacker does not exist!');
+		}
+
+		// Ensure the team exists and the hacker can join
+		if (!team) {
+			try {
+				await teamModel.create({ size: 1, teamMembers: [{ _id: hacker._id }], teamName });
+			} catch (err) {
+				throw new Error('Team could not be created!');
+			}
+		} else if (team.teamMembers.indexOf(hacker._id) != -1) {
+			throw new Error('Hacker is already a part of this team!');
+		} else if (team.size === CONSTANTS.MAX_TEAM_SIZE) {
+			throw new Error('This team is already full!');
+		} else {
+			// Add the hacker to the team
+			try {
+				await teamModel.updateOne(
+					{ teamName },
+					{ $push: { teamMembers: { _id: hacker._id } }, $set: { size: team.size + 1 } }
+				);
+			} catch (err) {
+				throw new Error('Hacker could not be added to team!');
+			}
+
+			// Update the hacker's team
+			try {
+				await HackerModel.updateOne({ email }, { $set: { teamName: teamName } });
+			} catch (err) {
+				throw new Error('Hacker team could not be updated!');
+			}
+		}
+
+		// Upon success, return true
 		return true;
 	}
 
