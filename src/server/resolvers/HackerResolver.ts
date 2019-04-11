@@ -426,7 +426,7 @@ class HackerResolver {
 				try {
 					// Doesn't currently work for some reason
 					// We are able to reach this part of the code
-					await teamModel.deleteOne({ teamname: hacker.teamName });
+					await teamModel.deleteOne({ teamName: hacker.teamName });
 				} catch (err) {
 					throw new Error('Now empty team could not be deleted!');
 				}
