@@ -85,7 +85,7 @@ class TeamResolver {
 		// Ensure the team and hacker are in a valid state
 		const user = await UserModel.findOne({ authLevel: AuthLevel.HACKER, email });
 
-		// If the hacker doesn't exist, throw an error
+		// If the user doesn't exist, throw an error
 		if (!user) {
 			throw new Error('User does not exist!');
 		}
