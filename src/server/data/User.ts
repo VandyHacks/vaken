@@ -5,6 +5,7 @@ import AuthType from '../enums/AuthType';
 import AuthLevel from '../enums/AuthLevel';
 import Gender from '../enums/Gender';
 import ShirtSize from '../enums/ShirtSize';
+import DietaryRestrictions from '../enums/DietaryRestrictions';
 
 @ObjectType({ description: 'DTO for a generic Vaken user' })
 export class User {
@@ -41,8 +42,8 @@ export class User {
 	@Field({ nullable: true })
 	public shirtSize?: ShirtSize;
 
-	@Field({ nullable: true })
-	public dietaryRestrictions?: string;
+	@Field(() => [DietaryRestrictions], { nullable: true })
+	public dietaryRestrictions?: [DietaryRestrictions];
 }
 
 export default User;
