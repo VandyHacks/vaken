@@ -69,7 +69,7 @@ class User extends Typegoose {
 	public shirtSize?: ShirtSize;
 
 	@arrayProp({ items: String })
-	public dietaryRestrictions?: string[];
+	public dietaryRestrictions?: DietaryRestrictions[];
 }
 
 const UserModel = new User().getModelForClass(User);

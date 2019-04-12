@@ -3,6 +3,7 @@ import User from '../data/User';
 import AuthLevel from '../enums/AuthLevel';
 import Gender from '../enums/Gender';
 import ShirtSize from '../enums/ShirtSize';
+import DietaryRestrictions from '../enums/DietaryRestrictions';
 
 /**
  * Class representing a data object with updates to an existing User.
@@ -15,8 +16,8 @@ class UpdateUserInput implements Partial<User> {
 	@Field({ nullable: true })
 	public authLevel?: AuthLevel;
 
-	@Field({ nullable: true })
-	public dietaryRestrictions?: string;
+	@Field(() => [DietaryRestrictions], { nullable: true })
+	public dietaryRestrictions?: [DietaryRestrictions];
 
 	@Field({ nullable: true })
 	public firstName?: string;
