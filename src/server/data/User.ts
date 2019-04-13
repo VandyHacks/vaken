@@ -1,13 +1,13 @@
 import 'reflect-metadata';
-import { Field, ObjectType, InputType } from 'type-graphql';
+import { Field, ObjectType, InputType, ArgsType } from 'type-graphql';
 
 import AuthType from '../enums/AuthType';
 import AuthLevel from '../enums/AuthLevel';
 import Gender from '../enums/Gender';
 import ShirtSize from '../enums/ShirtSize';
+import DietaryRestrictions from '../enums/DietaryRestrictions';
 
 @ObjectType({ description: 'DTO for a generic Vaken user' })
-@InputType()
 export class User {
 	@Field()
 	public email!: string;
@@ -15,10 +15,10 @@ export class User {
 	@Field(() => [String])
 	public nfcCodes!: string[];
 
-	@Field({ nullable: true })
+	@Field(() => String, { nullable: true })
 	public firstName?: string;
 
-	@Field({ nullable: true })
+	@Field(() => String, { nullable: true })
 	public lastName?: string;
 
 	@Field({ nullable: true })
@@ -42,8 +42,8 @@ export class User {
 	@Field({ nullable: true })
 	public shirtSize?: ShirtSize;
 
-	@Field({ nullable: true })
-	public dietaryRestrictions?: string;
+	@Field(() => [DietaryRestrictions], { nullable: true })
+	public dietaryRestrictions?: [DietaryRestrictions];
 }
 
 export default User;

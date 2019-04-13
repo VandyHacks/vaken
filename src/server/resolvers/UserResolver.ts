@@ -1,8 +1,12 @@
-import { Resolver, Query, Arg } from 'type-graphql';
+import { Resolver, Query, Arg, Mutation, Args } from 'type-graphql';
 import { plainToClass } from 'class-transformer';
 
 import { User } from '../data/User';
 import { UserModel } from '../models/User';
+import UpdateUserInput from '../inputs/UpdateUserInput';
+import AuthLevel from '../enums/AuthLevel';
+import Gender from '../enums/Gender';
+import ShirtSize from '../enums/ShirtSize';
 
 @Resolver(() => User)
 class UserResolver {
@@ -44,6 +48,47 @@ class UserResolver {
 			userList.push(userObject);
 		});
 		return plainToClass(User, userList);
+	}
+
+	/**
+	 * Updates a user.
+	 *
+	 * @param {string} email - The email address of the user to update
+	 * @param {UpdateUserInput} data - Data to update the provided user (only desired fields)
+	 * @throws an error if any of the Mongo calls fail
+	 * @returns {Promise<boolean>} true if successful
+	 *
+	 */
+	@Mutation(() => Boolean, {
+		description: 'Update a User',
+	})
+	public static async updateUser(
+		@Arg('email') email: string,
+		@Arg('data', { nullable: true }) data: UpdateUserInput
+	): Promise<boolean> {
+		// Find the user to update
+		const user = await UserModel.findOne({ email });
+
+		// Throw an error if no user exists with the provided email address
+		if (!user) {
+			throw new Error('User does not exist!');
+		}
+
+		// Filter out any undefined data
+		const filteredData: UpdateUserInput = {};
+		Object.keys(data).forEach(key =>
+			key !== undefined ? ((filteredData as any)[key] = (data as any)[key]) : ''
+		);
+
+		// Attempt to update the user
+		try {
+			await UserModel.updateOne({ _id: user._id }, { $set: filteredData });
+		} catch (err) {
+			throw new Error('User could not be updated!');
+		}
+
+		// If successful, return true
+		return true;
 	}
 }
 

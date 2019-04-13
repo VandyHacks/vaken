@@ -81,6 +81,7 @@ async function launchServer(): Promise<void> {
 			TeamResolver,
 			UserResolver,
 		],
+		validate: false,
 		// automatically create `schema.gql` file with schema definition in current folder
 		// emitSchemaFile: path.resolve(__dirname, 'schema.gql'),
 	});

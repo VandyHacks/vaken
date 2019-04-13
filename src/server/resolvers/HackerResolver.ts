@@ -10,16 +10,20 @@ import { HackerModel } from '../models/Hacker';
 import { User, UserModel } from '../models/User';
 import AuthLevel from '../enums/AuthLevel';
 import Status from '../enums/Status';
+import UpdateHackerInput from '../inputs/UpdateHackerInput';
+import { teamModel } from '../models/Team';
+import CONSTANTS from '../../common/constants.json';
 
 @Resolver(() => Hacker)
 class HackerResolver {
 	/**
 	 * @param {string} email - a Hacker's email address
-	 * @returns {Hacker} a Hacker associated with the provided email address or null if not found
+	 * @returns {Promise<Hacker | null>} a Hacker associated with the provided email address
+	 * 																	 or null if not found
 	 */
 	@Query(() => Hacker, { nullable: true })
 	public static async getHackerByEmail(@Arg('email') email: string): Promise<Hacker | null> {
-		const user = await UserModel.findOne({ email, authLevel: AuthLevel.HACKER });
+		const user = await UserModel.findOne({ authLevel: AuthLevel.HACKER, email });
 		if (!user) {
 			return null;
 		}
@@ -130,6 +134,7 @@ class HackerResolver {
 
 	/**
 	 * @param {number} number - number of top schools to return
+	 * @returns {Promise<SchoolCounts[]>} an array of SchoolCounts objects
 	 */
 	@Query(() => [SchoolCounts], {
 		description: 'Returns top schools with counts',
@@ -165,9 +170,50 @@ class HackerResolver {
 	}
 
 	/**
-	 * @param {string} email - email address of a particular user
-	 * @param {Status} newStatus - new status to assign to user
-	 * @returns {Status} new status of user or null if the hacker doesn't exist
+	 * Updates a Hacker.
+	 *
+	 * @param {string} email - The email address of the hacker to update
+	 * @param {UpdateUserInput} data - Data to update the provided hacker (only desired fields)
+	 * @throws an error if any of the Mongo calls fail
+	 * @returns {Promise<boolean>} true if successful
+	 *
+	 */
+	@Mutation(() => Boolean, {
+		description: 'Update a Hacker',
+	})
+	public static async updateHacker(
+		@Arg('email') email: string,
+		@Arg('data', { nullable: true }) data: UpdateHackerInput
+	): Promise<boolean> {
+		// Find the hacker to update
+		const user = await UserModel.findOne({ authLevel: AuthLevel.HACKER, email });
+
+		// Throw an error if no such user exists
+		if (!user) {
+			throw new Error('Hacker does not exist!');
+		}
+
+		// Filter out any undefined data
+		const filteredData: UpdateHackerInput = {};
+		Object.keys(data).forEach(key =>
+			key !== undefined ? ((filteredData as any)[key] = (data as any)[key]) : ''
+		);
+
+		// Attempt to update the hacker
+		try {
+			await HackerModel.updateOne({ user: user._id }, { $set: filteredData });
+		} catch (err) {
+			throw new Error('Hacker could not be updated!');
+		}
+
+		// If successful, return true
+		return true;
+	}
+
+	/**
+	 * @param {string} email - email address of a particular hacker
+	 * @param {Status} newStatus - new status to assign to hacker
+	 * @returns {Status} new status of hacker or null if the hacker doesn't exist
 	 */
 	@Mutation(() => Status, {
 		description: "Update a Hacker's status and return updated status",
@@ -177,11 +223,10 @@ class HackerResolver {
 		@Arg('newStatus') newStatus: Status
 	): Promise<Status | null> {
 		if (!Object.values(Status).includes(newStatus)) {
-			console.log('Incorrect newStatus arg');
-			return null;
+			throw new Error('Incorrect newStatus arg!');
 		}
 
-		const user = await UserModel.findOne({ email, authLevel: AuthLevel.HACKER });
+		const user = await UserModel.findOne({ authLevel: AuthLevel.HACKER, email });
 		if (!user) {
 			return null;
 		}

@@ -4,6 +4,7 @@ import AuthType from '../enums/AuthType';
 import AuthLevel from '../enums/AuthLevel';
 import Gender from '../enums/Gender';
 import ShirtSize from '../enums/ShirtSize';
+import DietaryRestrictions from '../enums/DietaryRestrictions';
 
 const saltRounds = 10;
 
@@ -67,8 +68,8 @@ class User extends Typegoose {
 	@prop()
 	public shirtSize?: ShirtSize;
 
-	@prop()
-	public dietaryRestrictions?: string;
+	@arrayProp({ items: String })
+	public dietaryRestrictions?: DietaryRestrictions[];
 }
 
 const UserModel = new User().getModelForClass(User);
