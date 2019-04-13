@@ -214,7 +214,7 @@ class HackerResolver {
 	 * @throws {Error} if unsuccessful
 	 * @returns {Promise<boolean>} true if successful
 	 */
-	@Mutation(() => Promise, {
+	@Mutation(() => Boolean, {
 		description: 'Allow hackers to join a team',
 	})
 	public static async joinTeam(
@@ -269,7 +269,7 @@ class HackerResolver {
 	 * @throws {Error} if unsuccessful
 	 * @returns {Promise<boolean>} true if successful
 	 */
-	@Mutation(() => Promise, {
+	@Mutation(() => Boolean, {
 		description: 'Allow hackers to leave a team',
 	})
 	public static async leaveTeam(

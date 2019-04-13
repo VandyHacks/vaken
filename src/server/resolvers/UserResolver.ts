@@ -59,7 +59,7 @@ class UserResolver {
 	 * @returns {Promise<boolean>} true if successful
 	 *
 	 */
-	@Mutation(() => Promise, {
+	@Mutation(() => Boolean, {
 		description: 'Update a User',
 	})
 	public static async updateUser(
