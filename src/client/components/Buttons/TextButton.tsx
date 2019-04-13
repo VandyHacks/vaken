@@ -5,13 +5,13 @@ import { Button, CenterButtonText, ButtonProps } from './Buttons';
 interface Props extends ButtonProps {
 	background?: string;
 	color?: string;
-	text: string;
+	text?: string;
 	glowColor?: string;
 	fontSize?: string;
 	onClick?: () => void;
 }
 
-interface StyleProps {
+interface StyleProps extends ButtonProps {
 	background?: string;
 	color?: string;
 	glowColor?: string;
@@ -19,8 +19,6 @@ interface StyleProps {
 
 export const StyledLoginBtn = styled(Button)`
 	background: ${({ background = 'white' }: StyleProps): string => background};
-	margin-top: 1.6rem;
-	margin-bottom: 0.5rem;
 	color: ${({ background = 'black' }: StyleProps): string => background};
 	flex-shrink: 0;
 	font-family: 'Roboto';
@@ -36,11 +34,11 @@ export const StyledLoginBtn = styled(Button)`
 `;
 
 const TextButton = (props: Props): JSX.Element => {
-	const { text } = props;
+	const { onClick, text, ...rest } = props;
 
 	return (
-		<StyledLoginBtn {...props}>
-			<CenterButtonText {...props}>{text}</CenterButtonText>
+		<StyledLoginBtn onClick={onClick} {...rest}>
+			<CenterButtonText {...rest}>{text}</CenterButtonText>
 		</StyledLoginBtn>
 	);
 };

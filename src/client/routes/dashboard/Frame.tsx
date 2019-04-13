@@ -1,4 +1,4 @@
-import React, { Suspense, FunctionComponent, useContext } from 'react';
+import React, { useState, Suspense, FunctionComponent, useContext } from 'react';
 import styled from 'styled-components';
 import { useImmer } from 'use-immer';
 import { Switch, Redirect, Route } from 'react-router-dom';
@@ -7,7 +7,8 @@ import STRINGS from '../../assets/strings.json';
 import Title from '../../components/Text/Title';
 import { routes } from '../../assets/routes';
 import { AuthContext } from '../../contexts/AuthContext';
-
+import { SpaceBetweenRow, OverflowContainer } from '../../components/Containers/FlexContainers';
+import { ActionButtonContext } from '../../contexts/ActionButtonContext';
 export const OrganizerDash = React.lazy(() => import('./OrganizerDash'));
 
 const Layout = styled.div`
@@ -15,6 +16,7 @@ const Layout = styled.div`
 	width: 100vw;
 	display: grid;
 	grid:
+		'sidebar . . .' 1.5rem
 		'sidebar . header .' auto
 		'sidebar . . .' 1.5rem
 		'sidebar . content .' 1fr
@@ -25,6 +27,7 @@ const Layout = styled.div`
 
 	.content {
 		grid-area: content;
+		overflow: auto;
 		max-height: 100%;
 		/* border-radius: 2rem; */
 		overflow: auto;
@@ -43,28 +46,31 @@ const Rectangle = styled.div`
 
 const Frame: FunctionComponent = (props): JSX.Element => {
 	const currentUser = useContext(AuthContext);
-
+	const [ActionButton, setActionButton] = useState<JSX.Element | undefined>(undefined);
 	if (window.location.pathname.startsWith('/login')) {
 		return <Redirect to="/dashboard" />;
 	}
 
 	return (
-		<>
+		<ActionButtonContext.Provider value={{ ActionButton, update: setActionButton }}>
 			<Layout>
 				<div className="header">
-					<Title color={STRINGS.ACCENT_COLOR} margin="1.5rem 0rem 0rem">
-						<Switch>
-							{routes.map(route => {
-								return route.authLevel.includes(currentUser.authLevel) ? (
-									<Route key={route.path} path={route.path} render={() => route.displayText} />
-								) : null;
-							})}
-						</Switch>
-					</Title>
+					<SpaceBetweenRow>
+						<Title color={STRINGS.ACCENT_COLOR} margin="1.5rem 0rem 0rem">
+							<Switch>
+								{routes.map(route => {
+									return route.authLevel.includes(currentUser.authLevel) ? (
+										<Route key={route.path} path={route.path} render={() => route.displayText} />
+									) : null;
+								})}
+							</Switch>
+						</Title>
+						{ActionButton ? ActionButton : null}
+					</SpaceBetweenRow>
 					<Rectangle />
 				</div>
 				<Sidebar />
-				<div className="content">
+				<OverflowContainer className="content">
 					<Suspense fallback={<div>Loading...</div>}>
 						<Switch>
 							{routes.map(route => {
@@ -74,9 +80,9 @@ const Frame: FunctionComponent = (props): JSX.Element => {
 							})}
 						</Switch>
 					</Suspense>
-				</div>
+				</OverflowContainer>
 			</Layout>
-		</>
+		</ActionButtonContext.Provider>
 	);
 };
 

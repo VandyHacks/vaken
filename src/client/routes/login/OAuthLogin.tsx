@@ -28,6 +28,8 @@ const OAuthLogin = (): JSX.Element => {
 			<Link style={{ textDecoration: 'none' }} to="/login/password">
 				<TextButton
 					color="white"
+					marginTop="1.6rem"
+					marginBottom="0.5rem"
 					fontSize="1.4em"
 					background={STRINGS.ACCENT_COLOR}
 					text="Sign in with email"

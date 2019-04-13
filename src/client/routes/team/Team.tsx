@@ -5,15 +5,11 @@ import { Query } from 'react-apollo';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import JoinTeam from './JoinTeam';
 import ViewTeam from './ViewTeam';
-import { displayFlex } from '../../components/Containers/FlexContainers';
+import { FlexColumn } from '../../components/Containers/FlexContainers';
 import Announcment from '../../components/Text/Announcment';
 import STRINGS from '../../assets/strings.json';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import Spinner from '../../components/Loading/Spinner';
-
-const Layout = styled.div`
-	${displayFlex}
-`;
 
 export const GET_TEAM = gql`
 	query HackerTeam($email: String!) {
@@ -25,7 +21,7 @@ export const GET_TEAM = gql`
 
 export const Team: FunctionComponent = (): JSX.Element => {
 	return (
-		<Layout>
+		<FlexColumn>
 			<Announcment value={STRINGS.HACKER_TEAMS_ANNOUNCMENT_TEXT} />
 			<FloatingPopup borderRadius="1rem" width="35rem" backgroundOpacity="1" padding="1.5rem">
 				<Query query={GET_TEAM} variables={{ email: 'ml@mattleon.com' }}>
@@ -47,7 +43,7 @@ export const Team: FunctionComponent = (): JSX.Element => {
 					}}
 				</Query>
 			</FloatingPopup>
-		</Layout>
+		</FlexColumn>
 	);
 };
 

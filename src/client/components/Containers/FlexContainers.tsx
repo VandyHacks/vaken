@@ -49,6 +49,10 @@ export const FlexRow = styled(FlexColumn)`
 	flex-flow: row nowrap;
 `;
 
+export const SpaceBetweenRow = styled(FlexRow)`
+	justify-content: space-between;
+`;
+
 export const FlexStartColumn = styled(FlexColumn)`
 	justify-content: flex-start;
 `;
@@ -63,8 +67,8 @@ export const SpaceBetweenColumn = styled(FlexColumn)`
 `;
 
 export const OverflowContainer = styled.div`
-	width: 100%;
-	height: 100%;
+	max-height: 100%;
+	max-width: 100%;
 	overflow: auto;
 `;
 

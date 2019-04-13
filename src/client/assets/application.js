@@ -14,17 +14,13 @@ export const questions = [
 				Component: TextInput,
 				fieldName: 'firstName',
 				placeholder: 'John',
-				required: true,
 				title: 'First Name',
-				validation: '^(?!\\s*$).+',
 			},
 			{
 				Component: TextInput,
 				fieldName: 'lastName',
 				placeholder: 'Smith',
-				required: true,
 				title: 'Last Name',
-				validation: '^.{4,}$',
 			},
 			{
 				Component: Calendar,

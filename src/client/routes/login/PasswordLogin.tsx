@@ -96,6 +96,8 @@ export const PasswordLogin: React.FunctionComponent<Props> = (): JSX.Element => 
 				<TextButton
 					onClick={onLogin}
 					color="white"
+					marginTop="1.0rem"
+					marginBottom="0.5rem"
 					fontSize="1.4rem"
 					background={STRINGS.ACCENT_COLOR}
 					text="Login"
