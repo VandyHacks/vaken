@@ -217,11 +217,11 @@ class HackerResolver {
 	/**
 	 * @param {string} email - email address of a particular hacker
 	 * @param {string} teamName - name of team to join
-	 * @throws {err} if unsuccessful
-	 * @returns {Status} true if successful
+	 * @throws {Error} if unsuccessful
+	 * @returns {Promise<boolean>} true if successful
 	 */
-	@Mutation(() => Status, {
-		description: "Update a Hacker's status and return updated status",
+	@Mutation(() => Promise, {
+		description: "Update a Hacker's status and return true if update succeeded",
 	})
 	public static async joinTeam(
 		@Arg('email', { nullable: false }) email: string,
@@ -272,10 +272,10 @@ class HackerResolver {
 
 	/**
 	 * @param {string} email - email address of the user to add to a team
-	 * @returns {boolean} true if successful
 	 * @throws {Error} if unsuccessful
+	 * @returns {Promise<boolean>} true if successful
 	 */
-	@Mutation(() => Boolean, {
+	@Mutation(() => Promise, {
 		description: 'Leave a team',
 	})
 	public static async leaveTeam(
