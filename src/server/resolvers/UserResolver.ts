@@ -59,7 +59,7 @@ class UserResolver {
 	 * @returns {Promise<boolean>} true if successful
 	 *
 	 */
-	@Mutation(() => Boolean, {
+	@Mutation(() => Promise, {
 		description: 'Update a User',
 	})
 	public static async updateUser(
@@ -82,58 +82,9 @@ class UserResolver {
 		 * field.
 		 */
 		try {
-			// Update authLevel
-			if (data.authLevel !== undefined) {
-				await UserModel.updateOne({ email }, { $set: { authLevel: data.authLevel } });
-			}
-
-			// Update dietaryRestrictions
-			if (data.dietaryRestrictions !== undefined) {
-				await UserModel.updateOne(
-					{ email },
-					{ $set: { dietaryRestrictions: data.dietaryRestrictions } }
-				);
-			}
-
-			// Update firstName
-			if (data.firstName !== undefined) {
-				await UserModel.updateOne({ email }, { $set: { firstName: data.firstName } });
-			}
-
-			// Update gender
-			if (data.gender !== undefined) {
-				await UserModel.updateOne({ email }, { $set: { gender: data.gender } });
-			}
-
-			// Update githubId
-			if (data.githubId !== undefined) {
-				await UserModel.updateOne({ email }, { $set: { githubId: data.githubId } });
-			}
-
-			// Update googleId
-			if (data.googleId !== undefined) {
-				await UserModel.updateOne({ email }, { $set: { googleId: data.googleId } });
-			}
-
-			// Update lastName
-			if (data.lastName !== undefined) {
-				await UserModel.updateOne({ email }, { $set: { lastName: data.lastName } });
-			}
-
-			// Update nfcCodes (note that this is an array and we push just one new value)
-			if (data.newNfcCode !== undefined) {
-				await UserModel.updateOne({ email }, { $push: { nfcCodes: data.newNfcCode } });
-			}
-
-			// Update phoneNumber
-			if (data.phoneNumber !== undefined) {
-				await UserModel.updateOne({ email }, { $set: { phoneNumber: data.phoneNumber } });
-			}
-
-			// Update shirtSize
-			if (data.shirtSize !== undefined) {
-				await UserModel.updateOne({ email }, { $set: { shirtSize: data.shirtSize } });
-			}
+			// Delete any undefined fields and update the remaining (defined) fields
+			Object.keys(data).forEach(field => (field === undefined ? delete data[field] : ''));
+			await UserModel.updateOne({ user: user._id }, { $set: { data } });
 		} catch (err) {
 			throw new Error('User could not be updated!');
 		}
