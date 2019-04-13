@@ -262,7 +262,7 @@ class HackerResolver {
 
 		// If the user doesn't exist, throw an error
 		if (!user) {
-			throw new Error('Hacker does not exist!');
+			throw new Error('User does not exist!');
 		}
 
 		// Grab the user's associated hacker object
@@ -341,22 +341,22 @@ class HackerResolver {
 
 		const team = await teamModel.findOne({ teamName: hacker.teamName });
 
-		// If the team doesn't exist for some ungodly reason, just update the Hacker and throw an error
 		if (!team) {
-			await HackerModel.updateOne({ user: user._id }, { $set: { teamName: '' } });
 			throw new Error('Team does not exist!');
+		} else if (team.teamMembers.indexOf(hacker._id) === -1) {
+			throw new Error('Hacker is not on this Team!');
 		}
 
 		// Remove hacker from the team
 		try {
 			const updatedTeam = await teamModel.findOneAndUpdate(
 				{ teamName: hacker.teamName },
-				{ $pull: { teamMembers: user._id }, $set: { size: team.size - 1 } },
+				{ $pull: { teamMembers: hacker._id }, $set: { size: team.size - 1 } },
 				{ new: true }
 			);
 
 			// Remove teamName from Hacker's profile
-			await HackerModel.updateOne({ user: user._id }, { $set: { teamName: '' } });
+			await HackerModel.updateOne({ _id: hacker._id }, { $set: { teamName: '' } });
 
 			// If the team is now empty, delete it
 			if (updatedTeam && updatedTeam.size === 0) {
