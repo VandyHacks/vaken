@@ -12,6 +12,9 @@ import Race from '../enums/Race';
  */
 @InputType()
 class UpdateHackerInput implements Partial<Hacker> {
+	// Definition for object keys
+	[key: string]: any;
+
 	@Field({ nullable: true })
 	public status?: Status;
 
