@@ -195,14 +195,10 @@ class HackerResolver {
 
 		/*
 		 * Try to update the appropriate fields for the desired hacker
-
-		 * All the nullable & optional mutation args are considered undefined if not provided
-		 * in the GQL mutation. Unfortunately, we have to write an if-statement for every
-		 * field.
 		 */
 		try {
 			// Delete any undefined fields and update the remaining (defined) fields
-			Object.keys(data).forEach(field => (field === undefined ? delete data.field : ''));
+			Object.keys(data).forEach(key => (key === undefined ? delete data[key] : ''));
 			await HackerModel.updateOne({ user: user._id }, { $set: { data } });
 		} catch (err) {
 			throw new Error('Hacker could not be updated!');
