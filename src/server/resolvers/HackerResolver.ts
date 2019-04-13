@@ -202,7 +202,7 @@ class HackerResolver {
 		 */
 		try {
 			// Delete any undefined fields and update the remaining (defined) fields
-			Object.keys(data).forEach(field => (field === undefined ? delete data[field] : ''));
+			Object.keys(data).forEach(field => (field === undefined ? delete data.field : ''));
 			await HackerModel.updateOne({ user: user._id }, { $set: { data } });
 		} catch (err) {
 			throw new Error('Hacker could not be updated!');

@@ -13,9 +13,6 @@ import DietaryRestrictions from '../enums/DietaryRestrictions';
  */
 @InputType()
 class UpdateUserInput implements Partial<User> {
-	// Index signature
-	[key: string]: any;
-
 	@Field({ nullable: true })
 	public authLevel?: AuthLevel;
 

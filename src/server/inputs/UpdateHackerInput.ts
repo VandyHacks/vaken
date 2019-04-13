@@ -12,9 +12,6 @@ import Race from '../enums/Race';
  */
 @InputType()
 class UpdateHackerInput implements Partial<Hacker> {
-	// Index signature
-	[key: string]: any;
-
 	@Field({ nullable: true })
 	public status?: Status;
 
