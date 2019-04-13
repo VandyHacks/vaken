@@ -551,10 +551,13 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 					onChange={onTableColumnSelect(table)}
 				/>
 				<SearchBox
+					width="100%"
 					value={searchValue}
 					placeholder={fuzzySearch ? 'Search by text' : "Search by regex string, e.g. '^[a-b].*'"}
 					onChange={onSearchBoxEntry(table)}
+					minWidth="15rem"
 					hasIcon
+					flex
 				/>
 				<ToggleSwitch
 					label="Fuzzy Search: "

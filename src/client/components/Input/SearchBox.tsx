@@ -8,9 +8,11 @@ interface Props {
 	minWidth?: string;
 	width?: string;
 	hasIcon?: boolean;
+	flex?: boolean;
 }
 
 const SearchBox = styled('input')`
+	${(props: Props) => props.flex && 'flex-grow: 1;'};
 	min-width: ${(props: Props) => (props.minWidth ? props.minWidth : '30rem')};
 	${(props: Props) => (props.width ? props.width : null)};
 	margin: 0.25rem 1rem 0.25rem 0rem;
