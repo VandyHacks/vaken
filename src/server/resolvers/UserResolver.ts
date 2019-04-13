@@ -67,20 +67,22 @@ class UserResolver {
 		@Arg('data', { nullable: true }) data: UpdateUserInput
 	): Promise<boolean> {
 		// Find the user to update
-		let user = await UserModel.findOne({ email });
+		const user = await UserModel.findOne({ email });
 
 		// Throw an error if no user exists with the provided email address
 		if (!user) {
 			throw new Error('User does not exist!');
 		}
 
-		/*
-		 * Try to update the appropriate fields for the desired user
-		 */
+		// Filter out any undefined data
+		const filteredData: UpdateUserInput = {};
+		Object.keys(data).forEach(key =>
+			key !== undefined ? ((filteredData as any)[key] = (data as any)[key]) : ''
+		);
+
+		// Attempt to update the user
 		try {
-			// Delete any undefined fields and update the remaining (defined) fields
-			Object.keys(data).forEach(key => (key === undefined ? delete data[key] : ''));
-			await UserModel.updateOne({ user: user._id }, { $set: { data } });
+			await UserModel.updateOne({ _id: user._id }, { $set: filteredData });
 		} catch (err) {
 			throw new Error('User could not be updated!');
 		}
