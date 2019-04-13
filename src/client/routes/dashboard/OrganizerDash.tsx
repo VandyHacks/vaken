@@ -2,15 +2,77 @@ import React, { FunctionComponent } from 'react';
 import { Bar, Pie } from 'react-chartjs-2';
 import { Link } from 'react-router-dom';
 import { gql } from 'apollo-boost';
-import { Query } from 'react-apollo';
 import { useQuery } from 'react-apollo-hooks';
+import styled from 'styled-components';
 import { Spinner } from '../../components/Loading/Spinner';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import TextButton from '../../components/Buttons/TextButton';
-import { OverflowContainer, FlexRow, FlexColumn } from '../../components/Containers/FlexContainers';
+import {
+	OverflowContainer,
+	FlexRow,
+	FlexColumn,
+	FlexStartColumn,
+} from '../../components/Containers/FlexContainers';
 import 'chartjs-plugin-datalabels';
 import STRINGS from '../../assets/strings.json';
+
+const Label = styled('span')`
+	font-size: 1.25rem;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 500;
+	color: ${STRINGS.DARK_TEXT_COLOR};
+`;
+
+const Value = styled('span')`
+	font-size: 1.25rem;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 100;
+	color: ${STRINGS.DARK_TEXT_COLOR};
+`;
+
+const StyledUL = styled.ul`
+	font-size: 1rem;
+`;
+
+const StyledLI = styled.li`
+	margin-bottom: 0.5rem;
+`;
+
+const StyledTable = styled.div`
+	grid-area: table;
+`;
+
+const BarLayout = styled.div`
+	grid-area: chart;
+`;
+const LinkLayout = styled(FlexStartColumn)`
+	grid-area: link;
+`;
+
+const PieLayoutLeft = styled.div`
+	grid-area: pie1;
+`;
+
+const PieLayoutRight = styled.div`
+	grid-area: pie2;
+`;
+
+const StyledFloatingPopupTop = styled(FloatingPopup)`
+	display: grid;
+	grid-template-columns: 70% 2rem auto;
+	grid-template-rows: auto auto;
+	grid-template-areas:
+		'chart . table'
+		'link link link';
+`;
+
+const StyledFloatingPopupBottom = styled(FloatingPopup)`
+	display: grid;
+	grid-template-columns: 50% 50%;
+	grid-template-rows: auto;
+	grid-template-areas: 'pie1 pie2';
+`;
 
 const GET_STATISTICS = gql`
 	query Statistics($number: Float!) {
@@ -164,6 +226,25 @@ const pieGenderOptions = {
 	},
 };
 
+interface Props {
+	data: [{ school: string; counts: number }];
+}
+
+const SchoolTable: FunctionComponent<Props> = (props: Props): JSX.Element => {
+	const { data } = props;
+
+	return (
+		<StyledUL>
+			{data.map(d => (
+				<StyledLI key={d.school}>
+					<Label>{`${d.school}: `}</Label>
+					<Value>{d.counts}</Value>
+				</StyledLI>
+			))}
+		</StyledUL>
+	);
+};
+
 export const OrganizerDash: FunctionComponent = (): JSX.Element => {
 	const { loading, error, data } = useQuery(GET_STATISTICS, {
 		variables: { number: 5.0 },
@@ -174,31 +255,36 @@ export const OrganizerDash: FunctionComponent = (): JSX.Element => {
 		console.log(error);
 		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 	}
-	console.log(data);
+
 	return (
 		<OverflowContainer>
-			<FloatingPopup marginBottom="1rem" backgroundOpacity="1" padding="1.5rem">
-				<Bar data={barStatusData(data.getAllHackerStatuses)} options={barStatusOptions} />
-				<Link style={{ textDecoration: 'none' }} to="/managehackers">
-					<TextButton
-						color="white"
-						fontSize="1.4em"
-						background={STRINGS.ACCENT_COLOR}
-						text="Manage hackers"
-						glowColor="rgba(0, 0, 255, 0.67)"
-					/>
-				</Link>
-			</FloatingPopup>
-			<FloatingPopup backgroundOpacity="1" padding="1.5rem">
-				<FlexRow>
-					<FlexColumn>
-						<Pie data={pieShirtData(data.getAllHackerSizes)} options={pieShirtOptions} />
-					</FlexColumn>
-					<FlexColumn>
-						<Pie data={pieGenderData(data.getAllHackerGenders)} options={pieGenderOptions} />
-					</FlexColumn>
-				</FlexRow>
-			</FloatingPopup>
+			<StyledFloatingPopupTop marginBottom="1rem" backgroundOpacity="1" padding="1.5rem">
+				<BarLayout>
+					<Bar data={barStatusData(data.getAllHackerStatuses)} options={barStatusOptions} />
+				</BarLayout>
+				<StyledTable>
+					<SchoolTable data={data.getTopHackerSchools} />
+				</StyledTable>
+				<LinkLayout>
+					<Link style={{ textDecoration: 'none' }} to="/managehackers">
+						<TextButton
+							color="white"
+							fontSize="1.4em"
+							background={STRINGS.ACCENT_COLOR}
+							text="Manage hackers"
+							glowColor="rgba(0, 0, 255, 0.67)"
+						/>
+					</Link>
+				</LinkLayout>
+			</StyledFloatingPopupTop>
+			<StyledFloatingPopupBottom backgroundOpacity="1" padding="1.5rem">
+				<PieLayoutLeft>
+					<Pie data={pieShirtData(data.getAllHackerSizes)} options={pieShirtOptions} />
+				</PieLayoutLeft>
+				<PieLayoutRight>
+					<Pie data={pieGenderData(data.getAllHackerGenders)} options={pieGenderOptions} />
+				</PieLayoutRight>
+			</StyledFloatingPopupBottom>
 		</OverflowContainer>
 	);
 };

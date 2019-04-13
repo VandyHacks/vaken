@@ -48,7 +48,6 @@ const Label = styled('td')`
 	font-weight: 500;
 	font-size: 0.875rem;
 	font-family: 'Roboto', sans-serif;
-	font-weight: 500;
 	color: ${STRINGS.DARK_TEXT_COLOR};
 	text-align: right;
 `;
