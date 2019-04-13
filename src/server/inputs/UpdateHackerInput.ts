@@ -12,7 +12,7 @@ import Race from '../enums/Race';
  */
 @InputType()
 class UpdateHackerInput implements Partial<Hacker> {
-	// Definition for object keys
+	// Index signature
 	[key: string]: any;
 
 	@Field({ nullable: true })

@@ -13,7 +13,7 @@ import DietaryRestrictions from '../enums/DietaryRestrictions';
  */
 @InputType()
 class UpdateUserInput implements Partial<User> {
-	// Definition for object keys
+	// Index signature
 	[key: string]: any;
 
 	@Field({ nullable: true })
