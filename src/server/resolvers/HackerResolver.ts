@@ -256,46 +256,50 @@ class HackerResolver {
 		@Arg('email', { nullable: false }) email: string,
 		@Arg('teamName') teamName: string
 	): Promise<boolean> {
-		// Make sure the team and user exist
-		const team = await teamModel.findOne({ teamName });
+		// Make sure the provided email address corresponds to a user (who is also a hacker)
 		const user = await UserModel.findOne({ authLevel: AuthLevel.HACKER, email });
 
-		// If the user doesn't exist, throw an error
 		if (!user) {
 			throw new Error('User does not exist!');
 		}
 
 		// Grab the hacker object associated with the user
 		const hacker = await HackerModel.findOne({ user: user._id });
-		// console.log(hacker.); // debug
 
 		if (!hacker) {
-			throw new Error('Hacker does not exist. The User is probably not a hacker.');
+			throw new Error('User exists but is not a hacker!');
 		}
 
-		// Ensure the team exists and the hacker can join
+		// Check if the team exists
+		let team = await teamModel.findOne({ teamName });
+
+		// If the team doesn't exist, create it and add the hacker to it
 		if (!team) {
 			try {
 				await teamModel.create({ size: 1, teamMembers: [{ _id: hacker._id }], teamName });
+				await HackerModel.updateOne({ _id: hacker._id }, { $set: { teamName: teamName } });
 			} catch (err) {
-				throw new Error('Team could not be created!');
+				throw new Error('New team could not be created with this hacker!');
 			}
-		} else if (team.teamMembers.indexOf(hacker._id) != -1) {
-			throw new Error('Hacker is already a part of this team!');
-		} else if (team.size === CONSTANTS.MAX_TEAM_SIZE) {
-			throw new Error('This team is already full!');
 		} else {
-			// Add the hacker to the team
-			try {
-				await teamModel.updateOne(
-					{ teamName },
-					{ $push: { teamMembers: { _id: hacker._id } }, $set: { size: team.size + 1 } }
-				);
+			// Check that the team is in a valid state to join
+			if (team.teamMembers.indexOf(user._id) != -1) {
+				throw new Error('Hacker is already a part of this team!');
+			} else if (team.size === CONSTANTS.MAX_TEAM_SIZE) {
+				throw new Error('This team is already full!');
+			} else {
+				try {
+					// Add the hacker to the team
+					await teamModel.updateOne(
+						{ teamName },
+						{ $push: { teamMembers: { user: user._id } }, $set: { size: team.size + 1 } }
+					);
 
-				const newName: string = teamName;
-				await HackerModel.updateOne({ user: user._id }, { $set: { teamName: newName } });
-			} catch (err) {
-				throw new Error('Hacker could not be added to team!');
+					// Update the hacker's team
+					await HackerModel.updateOne({ hacker }, { $set: { teamName: teamName } });
+				} catch (err) {
+					throw new Error('Hacker could not be added to existing team!');
+				}
 			}
 		}
 
