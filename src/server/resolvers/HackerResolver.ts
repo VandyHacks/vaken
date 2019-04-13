@@ -190,16 +190,18 @@ class HackerResolver {
 
 		// Throw an error if no such user exists
 		if (!user) {
-			throw new Error('User does not exist!');
+			throw new Error('Hacker does not exist!');
 		}
 
-		/*
-		 * Try to update the appropriate fields for the desired hacker
-		 */
+		// Filter out any undefined data
+		const filteredData: UpdateHackerInput = {};
+		Object.keys(data).forEach(key =>
+			key !== undefined ? ((filteredData as any)[key] = (data as any)[key]) : ''
+		);
+
+		// Attempt to update the hacker
 		try {
-			// Delete any undefined fields and update the remaining (defined) fields
-			Object.keys(data).forEach(key => (key === undefined ? delete data[key] : ''));
-			await HackerModel.updateOne({ user: user._id }, { $set: { data } });
+			await HackerModel.updateOne({ user: user._id }, { $set: filteredData });
 		} catch (err) {
 			throw new Error('Hacker could not be updated!');
 		}
