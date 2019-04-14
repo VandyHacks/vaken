@@ -361,8 +361,6 @@ class HackerResolver {
 			// If the team is now empty, delete it
 			if (updatedTeam && updatedTeam.size === 0) {
 				try {
-					// Doesn't currently work for some reason
-					// We are able to reach this part of the code
 					await teamModel.deleteOne({ teamName: hacker.teamName });
 				} catch (err) {
 					throw new Error('Now empty team could not be deleted!');
