@@ -333,7 +333,7 @@ class HackerResolver {
 		}
 
 		// Get the hacker's team name
-		const hacker = await HackerModel.findOneAndUpdate({ user: user._id }, { new: true });
+		const hacker = await HackerModel.findOne({ user: user._id });
 
 		if (!hacker) {
 			throw new Error('Hacker does not exist!');
