@@ -356,7 +356,7 @@ class HackerResolver {
 			);
 
 			// Remove teamName from Hacker's profile
-			await HackerModel.updateOne({ _id: hacker._id }, { unset: { teamName: '' } });
+			await HackerModel.updateOne({ _id: hacker._id }, { $unset: { teamName: '' } });
 
 			// If the team is now empty, delete it
 			if (updatedTeam && updatedTeam.size === 0) {
