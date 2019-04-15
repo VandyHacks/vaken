@@ -337,6 +337,8 @@ class HackerResolver {
 
 		if (!hacker) {
 			throw new Error('Hacker does not exist!');
+		} else if (!hacker.teamName) {
+			throw new Error('Hacker is not on a team!');
 		}
 
 		const team = await TeamModel.findOne({ teamName: hacker.teamName });
