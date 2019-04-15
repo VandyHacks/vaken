@@ -254,7 +254,7 @@ class HackerResolver {
 	})
 	public static async joinTeam(
 		@Arg('email', { nullable: false }) email: string,
-		@Arg('teamName') teamName: string
+		@Arg('teamName', { nullable: false }) teamName: string
 	): Promise<boolean> {
 		// Make sure the team and hacker exist
 		const team = await TeamModel.findOne({ teamName });
