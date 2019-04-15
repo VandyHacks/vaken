@@ -15,7 +15,7 @@ class UserResolver {
 		description: 'Return a single User corresponding to a known email address',
 		nullable: true,
 	})
-	public static async getUserByEmail(@Arg('email') email: string): Promise<User | undefined> {
+	public static async user(@Arg('email') email: string): Promise<User | undefined> {
 		const user = await UserModel.findOne({ email });
 		if (!user) {
 			return undefined;
@@ -31,7 +31,7 @@ class UserResolver {
 	 * @returns {[User]} All Users in the Vaken database
 	 */
 	@Query(() => [User], { description: 'Return all Users in the database' })
-	public static async getAllUsers(): Promise<User[]> {
+	public static async users(): Promise<User[]> {
 		const users = await UserModel.find({});
 		if (!users) {
 			return [];
