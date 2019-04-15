@@ -4,9 +4,6 @@ import { plainToClass } from 'class-transformer';
 import { User } from '../data/User';
 import { UserModel } from '../models/User';
 import UpdateUserInput from '../inputs/UpdateUserInput';
-import AuthLevel from '../enums/AuthLevel';
-import Gender from '../enums/Gender';
-import ShirtSize from '../enums/ShirtSize';
 
 @Resolver(() => User)
 class UserResolver {
