@@ -1,6 +1,6 @@
 import { Resolver, Query, Arg, Mutation } from 'type-graphql';
 
-import { teamModel } from '../models/Team';
+import { TeamModel } from '../models/Team';
 import { HackerModel } from '../models/Hacker';
 import CONSTANTS from '../../common/constants.json';
 import { UserModel } from '../models/User';
@@ -17,7 +17,7 @@ class TeamResolver {
 		nullable: true,
 	})
 	public static async getTeamSize(@Arg('teamName') teamName: string): Promise<number> {
-		const team = await teamModel.findOne({ teamName });
+		const team = await TeamModel.findOne({ teamName });
 
 		if (!team) {
 			throw new Error('Team does not exist!');

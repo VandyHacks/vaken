@@ -11,7 +11,7 @@ import { User, UserModel } from '../models/User';
 import AuthLevel from '../enums/AuthLevel';
 import Status from '../enums/Status';
 import UpdateHackerInput from '../inputs/UpdateHackerInput';
-import { teamModel } from '../models/Team';
+import { TeamModel } from '../models/Team';
 import CONSTANTS from '../../common/constants.json';
 
 @Resolver(() => Hacker)
@@ -257,7 +257,7 @@ class HackerResolver {
 		@Arg('teamName') teamName: string
 	): Promise<boolean> {
 		// Make sure the team and hacker exist
-		const team = await teamModel.findOne({ teamName });
+		const team = await TeamModel.findOne({ teamName });
 		const user = await UserModel.findOne({ authLevel: AuthLevel.HACKER, email });
 
 		// If the user doesn't exist, throw an error
@@ -276,7 +276,7 @@ class HackerResolver {
 		// If the team doesn't exist, create it
 		if (!team) {
 			try {
-				await teamModel.create({ size: 1, teamMembers: [{ _id: hacker._id }], teamName });
+				await TeamModel.create({ size: 1, teamMembers: [{ _id: hacker._id }], teamName });
 			} catch (err) {
 				throw new Error('Team could not be created!');
 			}
@@ -293,7 +293,7 @@ class HackerResolver {
 
 			// Add the hacker to the team
 			try {
-				await teamModel.updateOne(
+				await TeamModel.updateOne(
 					{ teamName },
 					{ $push: { teamMembers: { _id: hacker._id } }, $set: { size: team.size + 1 } }
 				);
@@ -339,7 +339,7 @@ class HackerResolver {
 			throw new Error('Hacker does not exist!');
 		}
 
-		const team = await teamModel.findOne({ teamName: hacker.teamName });
+		const team = await TeamModel.findOne({ teamName: hacker.teamName });
 
 		if (!team) {
 			throw new Error('Team does not exist!');
@@ -349,7 +349,7 @@ class HackerResolver {
 
 		// Remove hacker from the team
 		try {
-			const updatedTeam = await teamModel.findOneAndUpdate(
+			const updatedTeam = await TeamModel.findOneAndUpdate(
 				{ teamName: hacker.teamName },
 				{ $pull: { teamMembers: hacker._id }, $set: { size: team.size - 1 } },
 				{ new: true }
@@ -361,7 +361,7 @@ class HackerResolver {
 			// If the team is now empty, delete it
 			if (updatedTeam && updatedTeam.size === 0) {
 				try {
-					await teamModel.deleteOne({ teamName: hacker.teamName });
+					await TeamModel.deleteOne({ teamName: hacker.teamName });
 				} catch (err) {
 					throw new Error('Now empty team could not be deleted!');
 				}
