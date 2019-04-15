@@ -22,7 +22,7 @@ class HackerResolver {
 	 * 																	 or null if not found
 	 */
 	@Query(() => Hacker, { nullable: true })
-	public static async getHackerByEmail(@Arg('email') email: string): Promise<Hacker | null> {
+	public static async hacker(@Arg('email') email: string): Promise<Hacker | null> {
 		const user = await UserModel.findOne({ authLevel: AuthLevel.HACKER, email });
 		if (!user) {
 			return null;
@@ -48,7 +48,7 @@ class HackerResolver {
 	@Query(() => [Hacker], {
 		description: 'Return all the Hackers in the database',
 	})
-	public static async getAllHackers(): Promise<Hacker[]> {
+	public static async hackers(): Promise<Hacker[]> {
 		const users = await UserModel.find({ authLevel: AuthLevel.HACKER });
 		if (!users) {
 			return [];
