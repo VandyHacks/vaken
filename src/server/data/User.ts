@@ -12,8 +12,8 @@ export class User {
 	@Field()
 	public email!: string;
 
-	@Field(() => [String])
-	public nfcCodes!: string[];
+	@Field({ nullable: true })
+	public nfcCode?: string;
 
 	@Field(() => String, { nullable: true })
 	public firstName?: string;

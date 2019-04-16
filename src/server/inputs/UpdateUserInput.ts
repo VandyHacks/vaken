@@ -34,8 +34,8 @@ class UpdateUserInput implements Partial<User> {
 	@Field({ nullable: true })
 	public lastName?: string;
 
-	@Field(() => [String], { nullable: true })
-	public nfcCodes?: string[];
+	@Field({ nullable: true })
+	public nfcCode?: string;
 
 	@Field({ nullable: true })
 	public phoneNumber?: string;

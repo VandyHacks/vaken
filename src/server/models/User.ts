@@ -34,9 +34,8 @@ class User extends Typegoose {
 	@prop({ required: true })
 	public email: string = '';
 
-	// not unique for now to make testing easier
-	@arrayProp({ items: String })
-	public nfcCodes?: string[];
+	@prop()
+	public nfcCode?: string;
 
 	@prop({ required: true })
 	public password: string = '';
