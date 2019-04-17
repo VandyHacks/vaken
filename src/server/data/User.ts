@@ -13,7 +13,7 @@ export class User {
 	public email!: string;
 
 	@Field(() => [String])
-	public nfcCodes!: string[];
+	public nfcCodes?: string[];
 
 	@Field(() => String, { nullable: true })
 	public firstName?: string;
