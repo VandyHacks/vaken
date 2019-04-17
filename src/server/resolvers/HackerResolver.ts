@@ -244,6 +244,7 @@ class HackerResolver {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * @param {string[]} emails - email addresses of users
 	 * @param {Status} newStatus - new status to assign to user
 	 * @returns {Status} new status of user or null if the hacker doesn't exist
@@ -273,6 +274,8 @@ class HackerResolver {
 	}
 
 	/**
+=======
+>>>>>>> 21179400380b23abcbcb07413325790a23efb43b
 	 * @param {string} email - email address of a particular hacker
 	 * @param {string} teamName - name of team to join
 	 * @throws {Error} if unsuccessful
