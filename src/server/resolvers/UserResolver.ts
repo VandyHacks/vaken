@@ -89,7 +89,7 @@ class UserResolver {
 	}
 
 	/**
-	 * Updates a user.
+	 * Updates a user's nfcCodes.
 	 *
 	 * @param {string} email - The email address of the user to update
 	 * @param {string} newNfcCode - New NFC code to add to the User's nfcCodes array
@@ -124,11 +124,13 @@ class UserResolver {
 	}
 
 	/**
+	 * Retrieves a user's presently active NFC code
+	 *
 	 * @param {string} email - email address of a particular user
 	 * @returns {Promise<string>} The given user's active nfcCode
 	 */
 	@Query(() => String, {
-		description: 'Return a single User corresponding to a known email address',
+		description: "Returns a User's active NFC code",
 		nullable: true,
 	})
 	public static async getActiveNfcCode(@Arg('email') email: string): Promise<string> {
