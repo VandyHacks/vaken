@@ -87,6 +87,41 @@ class UserResolver {
 		// If successful, return true
 		return true;
 	}
+
+	/**
+	 * Updates a user.
+	 *
+	 * @param {string} email - The email address of the user to update
+	 * @param {string} newNfcCode - New NFC code to add to the User's nfcCodes array
+	 * @throws an error on failure
+	 * @returns {Promise<boolean>} true if successful
+	 *
+	 */
+	@Mutation(() => Boolean, {
+		description: "Update a User's nfcCodes",
+	})
+	public static async updateNfcCodes(
+		@Arg('email') email: string,
+		@Arg('newNfcCode', { nullable: false }) newNfcCode: string
+	): Promise<boolean> {
+		// Find the user to update
+		const user = await UserModel.findOne({ email });
+
+		// Throw an error if no user exists with the provided email address
+		if (!user) {
+			throw new Error('User does not exist!');
+		}
+
+		// Update the array
+		try {
+			await UserModel.updateOne({ _id: user._id }, { $push: { nfcCodes: newNfcCode } });
+		} catch (err) {
+			throw new Error("User's nfcCodes could not be updated!");
+		}
+
+		// If successful, return true
+		return true;
+	}
 }
 
 export default UserResolver;
