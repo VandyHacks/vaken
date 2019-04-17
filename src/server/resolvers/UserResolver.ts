@@ -80,14 +80,6 @@ class UserResolver {
 		// Update the user
 		try {
 			await UserModel.updateOne({ _id: user._id }, { $set: filteredData });
-
-			// Handle special case for a new nfcCode
-			if (filteredData.newNfcCode) {
-				await UserModel.updateOne(
-					{ _id: user._id },
-					{ $push: { nfcCodes: filteredData.newNfcCode } }
-				);
-			}
 		} catch (err) {
 			throw new Error('User could not be updated!');
 		}
