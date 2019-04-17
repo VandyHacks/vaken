@@ -86,8 +86,8 @@ passport.use(
 					if (createdUser) {
 						// create hacker
 						const createdHacker = await HackerModel.create({
-							user: createdUser._id,
 							status: Status.Created,
+							user: createdUser._id,
 						});
 						if (createdHacker) {
 							console.log(createdUser);
@@ -152,8 +152,8 @@ passport.use(
 					if (createdUser) {
 						// create hacker
 						const createdHacker = await HackerModel.create({
-							user: createdUser._id,
 							status: Status.Created,
+							user: createdUser._id,
 						});
 						if (createdHacker) {
 							console.log(createdUser);
