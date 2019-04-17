@@ -122,6 +122,29 @@ class UserResolver {
 		// If successful, return true
 		return true;
 	}
+
+	/**
+	 * @param {string} email - email address of a particular user
+	 * @returns {Promise<string>} The given user's active nfcCode
+	 */
+	@Query(() => String, {
+		description: 'Return a single User corresponding to a known email address',
+		nullable: true,
+	})
+	public static async getActiveNfcCode(@Arg('email') email: string): Promise<string> {
+		// Find the user
+		const user = await UserModel.findOne({ email });
+
+		// Throw an error if user doesn't exist or user doesn't have any NFC codes
+		if (!user) {
+			throw new Error('User does not exist!');
+		} else if (!user.nfcCodes) {
+			throw new Error('User has no previously assigned NFC codes!');
+		}
+
+		// Return desired value
+		return user.nfcCodes.slice(-1)[0];
+	}
 }
 
 export default UserResolver;
