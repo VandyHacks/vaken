@@ -3,9 +3,9 @@ import { registerEnumType } from 'type-graphql';
 enum DietaryRestrictions {
 	VEGETARIAN = 'Vegetarian',
 	VEGAN = 'Vegan',
-	NUTALLERGY = 'Nut Allergy',
-	LACTOSEALLERGY = 'Lactose Allergy',
-	GLUTENFREE = 'Gluten Free',
+	NUTALLERGY = 'NutAllergy',
+	LACTOSEALLERGY = 'LactoseAllergy',
+	GLUTENFREE = 'GlutenFree',
 	KOSHER = 'Kosher',
 	HALAL = 'Halal',
 }

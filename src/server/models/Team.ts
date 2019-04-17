@@ -13,8 +13,8 @@ class Team extends Typegoose {
 	public size: number = 0;
 }
 
-const teamModel = new Team().getModelForClass(Team);
+const TeamModel = new Team().getModelForClass(Team);
 
-export { Team, teamModel };
+export { Team, TeamModel };
 
 // Copyright (c) 2019 Vanderbilt University

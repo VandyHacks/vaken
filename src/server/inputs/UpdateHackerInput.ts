@@ -1,16 +1,19 @@
-import 'reflect-metadata';
-import { Field, ObjectType, InputType } from 'type-graphql';
-
-import { User } from './User';
+import { Field, InputType } from 'type-graphql';
+import Hacker from '../data/Hacker';
+import Status from '../enums/Status';
 import Ethnicity from '../enums/Ethnicity';
 import Race from '../enums/Race';
-import Status from '../enums/Status';
 
-@ObjectType({ description: 'DTO for a Vaken hacker' })
+/**
+ * Class representing a data object with updates to an existing Hacker.
+ * Separate from User because all updates are strictly optional when
+ * the appropriate HackerResolver mutation is invoked; only the data
+ * to be updated needs to be sent to the Resolver.
+ */
 @InputType()
-export class Hacker extends User {
-	@Field()
-	public status: Status = Status.Created;
+class UpdateHackerInput implements Partial<Hacker> {
+	@Field({ nullable: true })
+	public status?: Status;
 
 	@Field({ nullable: true })
 	public school?: string;
@@ -70,6 +73,4 @@ export class Hacker extends User {
 	public teamName?: string;
 }
 
-export default Hacker;
-
-// Copyright (c) 2019 Vanderbilt University
+export default UpdateHackerInput;

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import koaRouter from 'koa-router';
 import passport from 'koa-passport';
 import { UserModel } from '../models/User';

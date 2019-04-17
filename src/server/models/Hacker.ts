@@ -70,7 +70,7 @@ class Hacker extends Typegoose {
 	public walkin?: boolean;
 
 	@prop()
-	public teamName?: string = '';
+	public teamName?: string;
 }
 
 const HackerModel = new Hacker().getModelForClass(Hacker);
