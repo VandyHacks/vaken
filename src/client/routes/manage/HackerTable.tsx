@@ -45,13 +45,13 @@ const UPDATE_STATUS_AS_BATCH = gql`
 	}
 `;
 
-const GET_HACKERS_STATUS = gql`
-	query {
-		getAllHackers {
-			status
-		}
-	}
-`;
+// const GET_HACKERS_STATUS = gql`
+// 	query {
+// 		getAllHackers {
+// 			status
+// 		}
+// 	}
+// `;
 
 const Float = styled.div`
 	position: fixed;
@@ -262,10 +262,10 @@ const updateHackerStatus = (
 		// awaitRefetchQueries: true,
 		mutation: UPDATE_STATUS,
 		// refetchQueries: () => [{ query: GET_HACKERS_STATUS }],
-		update: (proxy, { data: { getAllHackers } }) => {
+		update: (proxy, { data: { hackers } }) => {
 			try {
 				const data = proxy.readQuery({ query: GET_HACKERS });
-				data.getAllHackers = data.getAllHackers.map(({ email, status, ...h }: Hacker) => {
+				data.hackers = data.hackers.map(({ email, status, ...h }: Hacker) => {
 					return email === variables.email
 						? { email, status: variables.status, ...h }
 						: { email, status, ...h };
@@ -698,11 +698,11 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 															// 		query: GET_HACKERS_STATUS,
 															// 	},
 															// ],
-															update: (proxy, { data: { getAllHackers } }) => {
+															update: (proxy, { data: { hackers } }) => {
 																try {
 																	let data = proxy.readQuery({ query: GET_HACKERS });
-																	data.getAllHackers = data.getAllHackers
-																		? data.getAllHackers.map(({ email, status, ...h }: Hacker) => {
+																	data.hackers = data.hackers
+																		? data.hackers.map(({ email, status, ...h }: Hacker) => {
 																				return selectedRowsEmails.includes(email)
 																					? { email, status: newStatus, ...h }
 																					: { email, status, ...h };

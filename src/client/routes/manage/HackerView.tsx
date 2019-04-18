@@ -61,7 +61,7 @@ const Value = styled('td')`
 
 export const GET_HACKER_DATA = gql`
 	query HackerData($email: String!) {
-		getHackerByEmail(email: $email) {
+		hacker(email: $email) {
 			firstName
 			lastName
 			email

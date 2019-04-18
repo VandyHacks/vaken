@@ -43,7 +43,7 @@ export const JoinTeam: FunctionComponent = (): JSX.Element => {
 							minWidth="26rem"
 							width="26rem"
 							error={errorMsg !== ''}
-							//							hasIcon={false}
+							hasIcon={false}
 						/>
 						<ActionButton
 							onClick={(): void => {

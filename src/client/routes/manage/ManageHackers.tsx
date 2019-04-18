@@ -13,7 +13,7 @@ import { defaultTableState, TableState, TableContext } from '../../contexts/Tabl
 
 export const GET_HACKERS = gql`
 	query {
-		getAllHackers {
+		hackers {
 			firstName
 			lastName
 			email
@@ -42,7 +42,7 @@ export const ManageHackers: FunctionComponent = (): JSX.Element => {
 								console.log(error);
 								return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 							}
-							return <HackerTable data={data.getAllHackers} />;
+							return <HackerTable data={data.hackers} />;
 						}}
 					/>
 				</Switch>
