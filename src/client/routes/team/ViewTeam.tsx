@@ -38,12 +38,6 @@ export const ViewTeam: FunctionComponent<Props> = (props: Props): JSX.Element =>
 
 	const leaveTeam = useMutation(LEAVE_TEAM, {
 		refetchQueries: [{ query: GET_TEAM, variables: { email } }],
-		update: (proxy, mutationResult) => {
-			console.log(proxy);
-			console.log(mutationResult);
-			// setErrorMsg('');
-			// 'Team size has already reached the limit.\nPlease join or create another team.'
-		},
 		variables: {
 			email,
 		},

@@ -59,16 +59,11 @@ export const JoinTeam: FunctionComponent = (): JSX.Element => {
 				/>
 				<ActionButton
 					onClick={() =>
-						joinTeam().then(
-							result => {
-								setErrorMsg('');
-							},
-							error => {
-								setErrorMsg(error.toString());
-							}
-						)
+						joinTeam().then(error => {
+							setErrorMsg(error.toString());
+						})
 					}>
-					Join
+					{'Join'}
 				</ActionButton>
 			</Layout>
 			<ErrorMsg>{errorMsg}</ErrorMsg>
