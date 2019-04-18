@@ -1,34 +1,134 @@
 import React, { FunctionComponent } from 'react';
 import { Bar, Pie } from 'react-chartjs-2';
 import { Link } from 'react-router-dom';
+import { gql } from 'apollo-boost';
+import { useQuery } from 'react-apollo-hooks';
+import styled from 'styled-components';
+import { Spinner } from '../../components/Loading/Spinner';
+import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import TextButton from '../../components/Buttons/TextButton';
-import { OverflowContainer, FlexRow, FlexColumn } from '../../components/Containers/FlexContainers';
+import {
+	OverflowContainer,
+	FlexRow,
+	FlexColumn,
+	FlexStartColumn,
+} from '../../components/Containers/FlexContainers';
 import 'chartjs-plugin-datalabels';
 import STRINGS from '../../assets/strings.json';
+
+const Label = styled('span')`
+	font-size: 1.25rem;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 500;
+	color: ${STRINGS.DARK_TEXT_COLOR};
+`;
+
+const Value = styled('span')`
+	font-size: 1.25rem;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 100;
+	color: ${STRINGS.DARK_TEXT_COLOR};
+`;
+
+const StyledUL = styled.ul`
+	font-size: 1rem;
+`;
+
+const StyledLI = styled.li`
+	margin-bottom: 0.5rem;
+`;
+
+const StyledTable = styled.div`
+	grid-area: table;
+`;
+
+const BarLayout = styled.div`
+	grid-area: chart;
+`;
+const LinkLayout = styled(FlexStartColumn)`
+	grid-area: link;
+`;
+
+const PieLayoutLeft = styled.div`
+	grid-area: pie1;
+`;
+
+const PieLayoutRight = styled.div`
+	grid-area: pie2;
+`;
+
+const StyledFloatingPopupTop = styled(FloatingPopup)`
+	display: grid;
+	grid-template-columns: 70% 2rem auto;
+	grid-template-rows: auto auto;
+	grid-template-areas:
+		'chart . table'
+		'link link link';
+`;
+
+const StyledFloatingPopupBottom = styled(FloatingPopup)`
+	display: grid;
+	grid-template-columns: 50% 50%;
+	grid-template-rows: auto;
+	grid-template-areas: 'pie1 pie2';
+`;
+
+const GET_STATISTICS = gql`
+	query Statistics($number: Float!) {
+		getAllHackerGenders {
+			Male
+			Female
+			Other
+			PreferNotToSay
+		}
+		getAllHackerSizes {
+			UXS
+			US
+			UM
+			UL
+			UXL
+			UXXL
+			WS
+			WM
+			WL
+			WXL
+			WXXL
+		}
+		getAllHackerStatuses {
+			Created
+			Verified
+			Started
+			Submitted
+			Accepted
+			Confirmed
+			Rejected
+		}
+		getTopHackerSchools(number: $number) {
+			school
+			counts
+		}
+	}
+`;
 
 const colorPalette = STRINGS.COLOR_PALETTE.slice(1);
 
 const generateColor = (n: number): string[] =>
 	[...Array(n).keys()].map((i: number) => colorPalette[i % colorPalette.length]);
 
-const statusLabels = ['Verified', 'Started', 'Submitted', 'Accepted', 'Confirmed', 'Rejected'];
-const statusData = [22, 43, 230, 176, 89, 3];
-
-const shirtLabels = ['Unisex S', 'Unisex M', 'Unisex L', "Women's S", "Women's M", "Women's L"];
-const shirtData = [83, 40, 58, 60, 23, 51];
-
-const genderLabels = ['Female', 'Male', 'Non-Binary', 'Prefer Not to Say'];
-const genderData = [49, 73, 12, 23];
-
-const barStatusData = {
-	datasets: [
-		{
-			backgroundColor: generateColor(statusData.length),
-			data: statusData,
-		},
-	],
-	labels: statusLabels,
+// TODO(alan): Remove any
+const barStatusData = (data: any) => {
+	const statusData = Object.values(data).slice(0, -1);
+	const statusLabels = Object.keys(data).slice(0, -1);
+	return {
+		datasets: [
+			{
+				backgroundColor: generateColor(statusData.length),
+				data: statusData,
+			},
+		],
+		labels: statusLabels,
+	};
 };
 
 const barStatusOptions = {
@@ -70,14 +170,18 @@ const barStatusOptions = {
 	},
 };
 
-const pieShirtData = {
-	datasets: [
-		{
-			backgroundColor: generateColor(shirtData.length),
-			data: shirtData,
-		},
-	],
-	labels: shirtLabels,
+const pieShirtData = (data: any) => {
+	const shirtData = Object.values(data).slice(0, -1);
+	const shirtLabels = Object.keys(data).slice(0, -1);
+	return {
+		datasets: [
+			{
+				backgroundColor: generateColor(shirtData.length),
+				data: shirtData,
+			},
+		],
+		labels: shirtLabels,
+	};
 };
 
 const pieShirtOptions = {
@@ -94,14 +198,18 @@ const pieShirtOptions = {
 	},
 };
 
-const pieGenderData = {
-	datasets: [
-		{
-			backgroundColor: generateColor(shirtData.length),
-			data: genderData,
-		},
-	],
-	labels: genderLabels,
+const pieGenderData = (data: any) => {
+	const genderData = Object.values(data).slice(0, -1);
+	const genderLabels = Object.keys(data).slice(0, -1);
+	return {
+		datasets: [
+			{
+				backgroundColor: generateColor(genderData.length),
+				data: genderData,
+			},
+		],
+		labels: genderLabels,
+	};
 };
 
 const pieGenderOptions = {
@@ -118,31 +226,65 @@ const pieGenderOptions = {
 	},
 };
 
+interface Props {
+	data: [{ school: string; counts: number }];
+}
+
+const SchoolTable: FunctionComponent<Props> = (props: Props): JSX.Element => {
+	const { data } = props;
+
+	return (
+		<StyledUL>
+			{data.map(d => (
+				<StyledLI key={d.school}>
+					<Label>{`${d.school}: `}</Label>
+					<Value>{d.counts}</Value>
+				</StyledLI>
+			))}
+		</StyledUL>
+	);
+};
+
 export const OrganizerDash: FunctionComponent = (): JSX.Element => {
+	const { loading, error, data } = useQuery(GET_STATISTICS, {
+		variables: { number: 5.0 },
+	});
+
+	if (loading) return <Spinner />;
+	if (error) {
+		console.log(error);
+		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
+	}
+
 	return (
 		<OverflowContainer>
-			<FloatingPopup marginBottom="1rem" backgroundOpacity="1" padding="1.5rem">
-				<Bar data={barStatusData} options={barStatusOptions} />
-				<Link style={{ textDecoration: 'none' }} to="/managehackers">
-					<TextButton
-						color="white"
-						fontSize="1.4em"
-						background={STRINGS.ACCENT_COLOR}
-						text="Manage hackers"
-						glowColor="rgba(0, 0, 255, 0.67)"
-					/>
-				</Link>
-			</FloatingPopup>
-			<FloatingPopup backgroundOpacity="1" padding="1.5rem">
-				<FlexRow>
-					<FlexColumn>
-						<Pie data={pieShirtData} options={pieShirtOptions} />
-					</FlexColumn>
-					<FlexColumn>
-						<Pie data={pieGenderData} options={pieGenderOptions} />
-					</FlexColumn>
-				</FlexRow>
-			</FloatingPopup>
+			<StyledFloatingPopupTop marginBottom="1rem" backgroundOpacity="1" padding="1.5rem">
+				<BarLayout>
+					<Bar data={barStatusData(data.getAllHackerStatuses)} options={barStatusOptions} />
+				</BarLayout>
+				<StyledTable>
+					<SchoolTable data={data.getTopHackerSchools} />
+				</StyledTable>
+				<LinkLayout>
+					<Link style={{ textDecoration: 'none' }} to="/managehackers">
+						<TextButton
+							color="white"
+							fontSize="1.4em"
+							background={STRINGS.ACCENT_COLOR}
+							text="Manage hackers"
+							glowColor="rgba(0, 0, 255, 0.67)"
+						/>
+					</Link>
+				</LinkLayout>
+			</StyledFloatingPopupTop>
+			<StyledFloatingPopupBottom backgroundOpacity="1" padding="1.5rem">
+				<PieLayoutLeft>
+					<Pie data={pieShirtData(data.getAllHackerSizes)} options={pieShirtOptions} />
+				</PieLayoutLeft>
+				<PieLayoutRight>
+					<Pie data={pieGenderData(data.getAllHackerGenders)} options={pieGenderOptions} />
+				</PieLayoutRight>
+			</StyledFloatingPopupBottom>
 		</OverflowContainer>
 	);
 };

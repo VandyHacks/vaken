@@ -45,13 +45,13 @@ const UPDATE_STATUS_AS_BATCH = gql`
 	}
 `;
 
-const GET_HACKERS_STATUS = gql`
-	query {
-		getAllHackers {
-			status
-		}
-	}
-`;
+// const GET_HACKERS_STATUS = gql`
+// 	query {
+// 		getAllHackers {
+// 			status
+// 		}
+// 	}
+// `;
 
 const Float = styled.div`
 	position: fixed;
@@ -259,12 +259,13 @@ const updateHackerStatus = (
 	variables: { email: string; status: string }
 ): Promise<string> => {
 	return mutation({
+		// awaitRefetchQueries: true,
 		mutation: UPDATE_STATUS,
-		refetchQueries: [{ query: GET_HACKERS_STATUS }],
-		update: (proxy, { data: { getAllHackers } }) => {
+		// refetchQueries: () => [{ query: GET_HACKERS_STATUS }],
+		update: (proxy, { data: { hackers } }) => {
 			try {
-				let data = proxy.readQuery({ query: GET_HACKERS });
-				data.getAllHackers = data.getAllHackers.map(({ email, status, ...h }: Hacker) => {
+				const data = proxy.readQuery({ query: GET_HACKERS });
+				data.hackers = data.hackers.map(({ email, status, ...h }: Hacker) => {
 					return email === variables.email
 						? { email, status: variables.status, ...h }
 						: { email, status, ...h };
@@ -550,9 +551,13 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 					onChange={onTableColumnSelect(table)}
 				/>
 				<SearchBox
+					width="100%"
 					value={searchValue}
 					placeholder={fuzzySearch ? 'Search by text' : "Search by regex string, e.g. '^[a-b].*'"}
 					onChange={onSearchBoxEntry(table)}
+					minWidth="15rem"
+					hasIcon
+					flex
 				/>
 				<ToggleSwitch
 					label="Fuzzy Search: "
@@ -685,14 +690,19 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 													large
 													value="Undecided"
 													onChange={(input: string) => {
-														let newStatus = processSliderInput(input);
+														const newStatus = processSliderInput(input);
 														mutation({
-															refetchQueries: [{ query: GET_HACKERS_STATUS }],
-															update: (proxy, { data: { getAllHackers } }) => {
+															// awaitRefetchQueries: true,
+															// refetchQueries: () => [
+															// 	{
+															// 		query: GET_HACKERS_STATUS,
+															// 	},
+															// ],
+															update: (proxy, { data: { hackers } }) => {
 																try {
 																	let data = proxy.readQuery({ query: GET_HACKERS });
-																	data.getAllHackers = data.getAllHackers
-																		? data.getAllHackers.map(({ email, status, ...h }: Hacker) => {
+																	data.hackers = data.hackers
+																		? data.hackers.map(({ email, status, ...h }: Hacker) => {
 																				return selectedRowsEmails.includes(email)
 																					? { email, status: newStatus, ...h }
 																					: { email, status, ...h };

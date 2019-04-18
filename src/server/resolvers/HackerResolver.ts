@@ -244,6 +244,35 @@ class HackerResolver {
 	}
 
 	/**
+	 * @param {string[]} emails - email addresses of users
+	 * @param {Status} newStatus - new status to assign to user
+	 * @returns {Status} new status of user or null if the hacker doesn't exist
+	 */
+	@Mutation(() => Status, {
+		description: "Update one or more Hacker's status and return updated status",
+	})
+	public static async updateHackerStatusAsBatch(
+		@Arg('emails', type => [String], { nullable: false }) emails: [string],
+		@Arg('newStatus') newStatus: Status
+	): Promise<Status | null> {
+		emails.forEach(async email => {
+			const user = await UserModel.findOne({ authLevel: AuthLevel.HACKER, email });
+			if (!user) {
+				return null;
+			}
+			const newHacker = await HackerModel.findOneAndUpdate(
+				{ user: user._id },
+				{ $set: { status: newStatus } },
+				{ new: true }
+			);
+			if (!newHacker) {
+				return null;
+			}
+		});
+		return newStatus;
+	}
+
+	/**
 	 * @param {string} email - email address of a particular hacker
 	 * @param {string} teamName - name of team to join
 	 * @throws {Error} if unsuccessful

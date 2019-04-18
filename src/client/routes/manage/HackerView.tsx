@@ -48,7 +48,6 @@ const Label = styled('td')`
 	font-weight: 500;
 	font-size: 0.875rem;
 	font-family: 'Roboto', sans-serif;
-	font-weight: 500;
 	color: ${STRINGS.DARK_TEXT_COLOR};
 	text-align: right;
 `;
@@ -62,7 +61,7 @@ const Value = styled('td')`
 
 export const GET_HACKER_DATA = gql`
 	query HackerData($email: String!) {
-		getHackerByEmail(email: $email) {
+		hacker(email: $email) {
 			firstName
 			lastName
 			email

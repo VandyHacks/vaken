@@ -30,6 +30,7 @@ const Layout = styled.div`
 		overflow: auto;
 		max-height: 100%;
 		/* border-radius: 2rem; */
+		overflow: auto;
 	}
 
 	.header {

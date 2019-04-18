@@ -22,7 +22,7 @@ import { GridColumn } from '../../components/Containers/GridContainers';
 
 const GET_USER_PROFILE = gql`
 	query GET_USER_PROFILE($email: String!) {
-		getUserByEmail(email: $email) {
+		user(email: $email) {
 			email
 			firstName
 			lastName
