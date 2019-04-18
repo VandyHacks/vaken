@@ -59,8 +59,8 @@ export const JoinTeam: FunctionComponent = (): JSX.Element => {
 				/>
 				<ActionButton
 					onClick={() =>
-						joinTeam().then(error => {
-							setErrorMsg(error.toString());
+						joinTeam().catch(res => {
+							setErrorMsg(res.graphQLErrors[0].message);
 						})
 					}>
 					{'Join'}
