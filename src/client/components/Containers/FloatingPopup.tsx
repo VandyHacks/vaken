@@ -12,6 +12,9 @@ export interface Props extends ContainerProps {
 	backgroundColor?: string;
 	backgroundOpacity?: string;
 	borderRadius?: string;
+	padding?: string;
+	height?: string;
+	paddingTop?: string;
 }
 
 const FloatingPopup = styled(FlexStartColumn)`
@@ -27,7 +30,6 @@ const FloatingPopup = styled(FlexStartColumn)`
 	height: ${({ height = 'min-content' }: Props): string => height};
 	/* height: min-content; */
 	box-sizing: border-box;
-	padding: 1.5rem;
 	${({ paddingTop }: Props): string => (paddingTop ? `padding-top: ${paddingTop};` : '')}
 `;
 

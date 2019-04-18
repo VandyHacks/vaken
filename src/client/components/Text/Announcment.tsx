@@ -18,7 +18,6 @@ const AnnouncementImg = styled.img`
 `;
 
 const Layout = styled.div`
-	margin: 1.5rem;
 	display: grid;
 	grid-template-columns: 7rem auto;
 	grid-template-rows: auto;
@@ -39,7 +38,7 @@ export const Announcement: FunctionComponent<Props> = (props: Props): JSX.Elemen
 			backgroundOpacity="1"
 			backgroundColor={STRINGS.ACCENT_COLOR}
 			marginBottom="1rem"
-			padding="0rem">
+			padding="1.5rem">
 			<Layout>
 				<AnnouncementImg src={Notification} />
 				<Msg>{value}</Msg>
