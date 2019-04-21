@@ -452,7 +452,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 				draft.selectedColumns = [selectedColumns[0]];
 			});
 		}
-	}, [fuzzySearch, selectedColumns, table]);
+	}, [fuzzySearch]);
 
 	useEffect(() => {
 		// Filter and sort data
