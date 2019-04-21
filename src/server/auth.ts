@@ -23,16 +23,16 @@ passport.use(
 			if (!user) {
 				console.log('> User does not exist');
 				done(null, false);
-			} else if (!(await bcrypt.compare(password, user.password))) {
-				// wrong password
-				console.log('> Incorrect password');
-				done(null, false);
+			} else if (user.authType !== AuthType.LOCAL) {
+				console.log('Wrong auth provider. Please use the standard local login.');
+				done(null, false, { message: 'Wrong auth provider' });
 			} else {
-				// found user
-				if (user.authType !== AuthType.LOCAL) {
-					console.log('Wrong auth provider. Please use the standard local login.');
+				if (!(await bcrypt.compare(password, user.password))) {
+					// wrong password
+					console.log('> Incorrect password');
 					done(null, false);
 				} else {
+					// found user and correct password
 					console.log('> Logging in.....');
 					done(null, user);
 				}
@@ -67,7 +67,7 @@ passport.use(
 				if (user) {
 					if (user.authType !== AuthType.GOOGLE) {
 						console.log('Wrong auth provider. Please use Google.');
-						done(null, false);
+						done(null, false, { message: 'Wrong auth provider' });
 					} else {
 						console.log('> Logging in.....');
 						done(null, user);
@@ -101,7 +101,7 @@ passport.use(
 				}
 			} else {
 				console.log('Missing email in auth profile');
-				done(null, false);
+				done(null, false, { message: 'Profile is missing email' });
 			}
 		}
 	)
@@ -133,7 +133,7 @@ passport.use(
 				if (user) {
 					if (user.authType !== AuthType.GITHUB) {
 						console.log('Wrong auth provider. Please use Github.');
-						done(null, false);
+						done(null, false, { message: 'Wrong auth provider' });
 					} else {
 						console.log('> Logging in.....');
 						done(null, user);
@@ -167,7 +167,7 @@ passport.use(
 				}
 			} else {
 				console.log('Missing email in auth profile');
-				done(null, false);
+				done(null, false, { message: 'Profile is missing email' });
 			}
 		}
 	)
