@@ -49,7 +49,6 @@ const Slider = styled('div')`
 				: 'box-shadow: 0rem 0.1875rem 0.1875rem 0rem #9b9b9b'}
 	}
 `;
-// TODO(alan): insert box shadow? box-shadow: 0px 2px 13px 0px #9b9b9b;
 
 interface Props {
 	label: string;

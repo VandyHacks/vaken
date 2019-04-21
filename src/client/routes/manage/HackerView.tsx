@@ -8,8 +8,6 @@ import Spinner from '../../components/Loading/Spinner';
 import STRINGS from '../../assets/strings.json';
 import { Title } from '../../components/Text/Title';
 import LeftImgButton from '../../components/Buttons/LeftImgButton';
-// // @ts-ignore
-// import Back from '../../assets/img/back.svg?inline';
 import back from '../../assets/img/back.svg';
 
 const Header = styled.div`

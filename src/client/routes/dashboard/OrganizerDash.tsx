@@ -116,8 +116,7 @@ const colorPalette = STRINGS.COLOR_PALETTE.slice(1);
 const generateColor = (n: number): string[] =>
 	[...Array(n).keys()].map((i: number) => colorPalette[i % colorPalette.length]);
 
-// TODO(alan): Remove any
-const barStatusData = (data: any) => {
+const barStatusData = (data: { [key: string]: number }) => {
 	const statusData = Object.values(data).slice(0, -1);
 	const statusLabels = Object.keys(data).slice(0, -1);
 	return {

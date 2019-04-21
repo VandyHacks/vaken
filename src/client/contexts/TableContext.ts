@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import { createContext } from 'react';
 import { SortDirectionType } from 'react-virtualized';
 import { Update } from 'use-immer';
 

@@ -15,11 +15,12 @@ import styled from 'styled-components';
 import Fuse from 'fuse.js';
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
-import { Mutation } from 'react-apollo';
+import { Mutation, MutationFn, FetchResult } from 'react-apollo';
 import { gql } from 'apollo-boost';
-import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
 // TODO(alan): add d.ts file, most already defined here: https://github.com/valerybugakov/react-selectable-fast/blob/master/src/SelectableGroup.js
 // @ts-ignore
+import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
+// import { DocumentNode } from 'graphql';
 import TableButton from '../../components/Buttons/TableButton';
 import ToggleSwitch from '../../components/Buttons/ToggleSwitch';
 import RadioSlider from '../../components/Buttons/RadioSlider';
@@ -30,7 +31,7 @@ import SearchBox from '../../components/Input/SearchBox';
 import plane from '../../assets/img/plane.svg';
 import STRINGS from '../../assets/strings.json';
 import { GET_HACKERS } from './ManageHackers';
-import { TableCtxI, TableContext } from '../../contexts/TableContext';
+import { TableCtxI, TableContext, Hacker, Option } from '../../contexts/TableContext';
 import Row from './Row';
 
 const UPDATE_STATUS = gql`
@@ -44,14 +45,6 @@ const UPDATE_STATUS_AS_BATCH = gql`
 		updateHackerStatusAsBatch(emails: $emails, newStatus: $status)
 	}
 `;
-
-// const GET_HACKERS_STATUS = gql`
-// 	query {
-// 		getAllHackers {
-// 			status
-// 		}
-// 	}
-// `;
 
 const Float = styled.div`
 	position: fixed;
@@ -192,22 +185,6 @@ enum HackerStatus {
 	rejected = 'rejected',
 }
 
-// TODO(alan): convert status from hackerData JSON from types string to HackerStatus and remove union type
-interface Hacker {
-	firstName: string;
-	lastName: string;
-	email: string;
-	gradYear?: number;
-	school?: string;
-	status: HackerStatus | string;
-	needsReimbursement?: boolean;
-}
-
-interface Option {
-	label: string;
-	value: string;
-}
-
 interface Props {
 	data: Hacker[];
 }
@@ -253,14 +230,12 @@ const checkmarkRenderer = ({ cellData }: TableCellProps): JSX.Element => {
 };
 
 // mutation to update a single hacker status
-// TODO(alan): remove any type
 const updateHackerStatus = (
-	mutation: any,
+	mutationFunction: MutationFn,
 	variables: { email: string; status: string }
-): Promise<string> => {
-	return mutation({
+): Promise<void | FetchResult> => {
+	return mutationFunction({
 		// awaitRefetchQueries: true,
-		mutation: UPDATE_STATUS,
 		// refetchQueries: () => [{ query: GET_HACKERS_STATUS }],
 		update: (proxy, { data: { hackers } }) => {
 			try {
@@ -294,11 +269,10 @@ const processSliderInput = (input: string): string => {
 
 // action column that contains the actionable buttons
 const actionRenderer = ({ rowData }: TableCellProps): JSX.Element => {
-	// TODO(alan): extract onChange to own method
 	const { email } = rowData;
 	let { status } = rowData;
 	status = rowData.status.toLowerCase();
-	let sliderValue;
+	let sliderValue: string;
 	switch (status) {
 		case 'accepted':
 			sliderValue = 'Accept';
@@ -478,7 +452,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 				draft.selectedColumns = [selectedColumns[0]];
 			});
 		}
-	}, [fuzzySearch]);
+	}, [fuzzySearch, selectedColumns, table]);
 
 	useEffect(() => {
 		// Filter and sort data
