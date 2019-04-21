@@ -3,13 +3,13 @@ import { SortDirectionType } from 'react-virtualized';
 import { Update } from 'use-immer';
 
 export enum HackerStatus {
-	created = 'created',
-	verified = 'verified',
-	started = 'started',
-	submitted = 'submitted',
-	accepted = 'accepted',
-	confirmed = 'confirmed',
-	rejected = 'rejected',
+	Created = 'Created',
+	Verified = 'Verified',
+	Started = 'Started',
+	Submitted = 'Submitted',
+	Accepted = 'Accepted',
+	Confirmed = 'Confirmed',
+	Rejected = 'Rejected',
 }
 
 export const columnOptions = [
@@ -22,14 +22,13 @@ export const columnOptions = [
 	{ label: 'Reimbursement', value: 'needsReimbursment' },
 ];
 
-// TODO(alan): convert status from hackerData JSON from types string to HackerStatus and remove union type
 export interface Hacker {
 	firstName: string;
 	lastName: string;
 	email: string;
 	gradYear?: number;
 	school?: string;
-	status: HackerStatus | string;
+	status: HackerStatus;
 	needsReimbursement?: boolean;
 }
 

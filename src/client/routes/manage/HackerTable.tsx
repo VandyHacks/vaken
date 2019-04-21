@@ -20,7 +20,6 @@ import { gql } from 'apollo-boost';
 // TODO(alan): add d.ts file, most already defined here: https://github.com/valerybugakov/react-selectable-fast/blob/master/src/SelectableGroup.js
 // @ts-ignore
 import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
-// import { DocumentNode } from 'graphql';
 import TableButton from '../../components/Buttons/TableButton';
 import ToggleSwitch from '../../components/Buttons/ToggleSwitch';
 import RadioSlider from '../../components/Buttons/RadioSlider';
@@ -31,7 +30,7 @@ import SearchBox from '../../components/Input/SearchBox';
 import plane from '../../assets/img/plane.svg';
 import STRINGS from '../../assets/strings.json';
 import { GET_HACKERS } from './ManageHackers';
-import { TableCtxI, TableContext, Hacker, Option } from '../../contexts/TableContext';
+import { TableCtxI, TableContext, Hacker, HackerStatus, Option } from '../../contexts/TableContext';
 import Row from './Row';
 
 const UPDATE_STATUS = gql`
@@ -53,6 +52,7 @@ const Float = styled.div`
 	margin-right: 1rem;
 `;
 
+// Removes unwanted highlighting, adds alternating row colors
 const StyledTable = styled(Table)`
 	.ReactVirtualized__Table__Grid {
 		:focus {
@@ -175,16 +175,6 @@ const columnOptions = [
 	{ label: 'Reimbursement', value: 'needsReimbursment' },
 ];
 
-enum HackerStatus {
-	created = 'created',
-	verified = 'verified',
-	started = 'started',
-	submitted = 'submitted',
-	accepted = 'accepted',
-	confirmed = 'confirmed',
-	rejected = 'rejected',
-}
-
 interface Props {
 	data: Hacker[];
 }
@@ -225,6 +215,7 @@ const renderHeaderAsSVG = (
 	);
 };
 
+// renders a solid checkmark if true, else an empty circle
 const checkmarkRenderer = ({ cellData }: TableCellProps): JSX.Element => {
 	return <Checkmark value={cellData} />;
 };
@@ -258,26 +249,24 @@ const updateHackerStatus = (
 const processSliderInput = (input: string): string => {
 	switch (input.toLowerCase()) {
 		case 'accept':
-			return 'Accepted';
+			return HackerStatus.Accepted;
 		case 'reject':
-			return 'Rejected';
+			return HackerStatus.Rejected;
 		case 'undecided':
 		default:
-			return 'Submitted';
+			return HackerStatus.Submitted;
 	}
 };
 
 // action column that contains the actionable buttons
 const actionRenderer = ({ rowData }: TableCellProps): JSX.Element => {
-	const { email } = rowData;
-	let { status } = rowData;
-	status = rowData.status.toLowerCase();
+	const { email, status } = rowData;
 	let sliderValue: string;
 	switch (status) {
-		case 'accepted':
+		case HackerStatus.Accepted:
 			sliderValue = 'Accept';
 			break;
-		case 'rejected':
+		case HackerStatus.Rejected:
 			sliderValue = 'Reject';
 			break;
 		default:
@@ -300,7 +289,11 @@ const actionRenderer = ({ rowData }: TableCellProps): JSX.Element => {
 								status: newStatus,
 							});
 						}}
-						disable={status !== 'accepted' && status !== 'rejected' && status !== 'submitted'}
+						disable={
+							status !== HackerStatus.Accepted &&
+							status !== HackerStatus.Rejected &&
+							status !== HackerStatus.Submitted
+						}
 					/>
 				)}
 			</Mutation>
@@ -313,6 +306,7 @@ const actionRenderer = ({ rowData }: TableCellProps): JSX.Element => {
 	);
 };
 
+// wrapper to use createSelectable() from react-selectable-fast
 const rowRenderer = (
 	props: TableRowProps & { selectableRef: any; selecting: boolean; selected: boolean }
 ): JSX.Element => {
@@ -322,20 +316,20 @@ const rowRenderer = (
 // mapping from status labels to the colored label images
 const statusRenderer = ({ cellData }: TableCellProps): JSX.Element => {
 	const generateColor = (value: HackerStatus): string => {
-		switch (value.toLowerCase()) {
-			case HackerStatus.created:
+		switch (value) {
+			case HackerStatus.Created:
 				return STRINGS.COLOR_PALETTE[0];
-			case HackerStatus.verified:
+			case HackerStatus.Verified:
 				return STRINGS.COLOR_PALETTE[1];
-			case HackerStatus.started:
+			case HackerStatus.Started:
 				return STRINGS.COLOR_PALETTE[2];
-			case HackerStatus.submitted:
+			case HackerStatus.Submitted:
 				return STRINGS.COLOR_PALETTE[3];
-			case HackerStatus.accepted:
+			case HackerStatus.Accepted:
 				return STRINGS.COLOR_PALETTE[4];
-			case HackerStatus.confirmed:
+			case HackerStatus.Confirmed:
 				return STRINGS.COLOR_PALETTE[5];
-			case HackerStatus.rejected:
+			case HackerStatus.Rejected:
 				return STRINGS.COLOR_PALETTE[6];
 			default:
 				return STRINGS.ACCENT_COLOR;
@@ -344,8 +338,10 @@ const statusRenderer = ({ cellData }: TableCellProps): JSX.Element => {
 	return <Status value={cellData} generateColor={generateColor} />;
 };
 
+// handles basic alphanumeric sorting
 const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
 
+// define thresholds for fuzzy searching
 const fuseOpts = {
 	caseSensitive: true,
 	distance: 100,
@@ -373,6 +369,7 @@ const onToggleSelectAll = (ctx: TableCtxI): (() => void) => {
 	};
 };
 
+// when draggable selection is cleared
 const onSelectionClear = (ctx: TableCtxI): ((p: boolean) => void) => {
 	return (p: boolean) =>
 		ctx.update(draft => {
@@ -382,6 +379,7 @@ const onSelectionClear = (ctx: TableCtxI): ((p: boolean) => void) => {
 		});
 };
 
+// when draggable selection is completed
 const onSelectionFinish = (ctx: TableCtxI): ((keys: JSX.Element[]) => void) => {
 	return (keys: JSX.Element[]): void => {
 		if (keys.length > 0) {
@@ -452,6 +450,8 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 				draft.selectedColumns = [selectedColumns[0]];
 			});
 		}
+		// esline wants to auto-fix this to include table and selectedColumns, but this breaks the toggle
+		// eslint-disable-next-line
 	}, [fuzzySearch]);
 
 	useEffect(() => {
@@ -490,9 +490,13 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 		</FloatingButton>
 	);
 
-	const isSelectable = (status: string): boolean => {
-		const s = status.toLowerCase();
-		return s === 'submitted' || s === 'accepted' || s === 'rejected';
+	// prevents hackers with certain statuses from being selected
+	const isSelectable = (status: HackerStatus): boolean => {
+		return (
+			status === HackerStatus.Submitted ||
+			status === HackerStatus.Accepted ||
+			status === HackerStatus.Rejected
+		);
 	};
 
 	// assigns the row names for styling and to prevent selection
