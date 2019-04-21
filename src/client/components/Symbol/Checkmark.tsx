@@ -17,8 +17,8 @@ export const Checkmark: FunctionComponent<Props> = (props: Props): JSX.Element =
 	const { width, height, value, color } = props;
 	return (
 		<StyledSVG
-			width={width || '1rem'}
-			height={height || '1rem'}
+			width={width || '1.333em'}
+			height={height || '1.333em'}
 			viewBox="0 0 16 16"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg">

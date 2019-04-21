@@ -700,7 +700,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 															// ],
 															update: (proxy, { data: { hackers } }) => {
 																try {
-																	let data = proxy.readQuery({ query: GET_HACKERS });
+																	const data = proxy.readQuery({ query: GET_HACKERS });
 																	data.hackers = data.hackers
 																		? data.hackers.map(({ email, status, ...h }: Hacker) => {
 																				return selectedRowsEmails.includes(email)
