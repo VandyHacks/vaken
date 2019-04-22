@@ -14,6 +14,7 @@ import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import Fuse from 'fuse.js';
 import Select from 'react-select';
+import { ValueType } from 'react-select/lib/types';
 import { Link } from 'react-router-dom';
 import { Mutation, MutationFn, FetchResult } from 'react-apollo';
 import { gql } from 'apollo-boost';
@@ -220,23 +221,57 @@ const checkmarkRenderer = ({ cellData }: TableCellProps): JSX.Element => {
 	return <Checkmark value={cellData} />;
 };
 
+// Note: the following two mutation functions can likely be consolidated with some deep backend refactoring
 // mutation to update a single hacker status
-const updateHackerStatus = (
+const mutateHackerStatus = (
 	mutationFunction: MutationFn,
 	variables: { email: string; status: string }
 ): Promise<void | FetchResult> => {
 	return mutationFunction({
-		// awaitRefetchQueries: true,
-		// refetchQueries: () => [{ query: GET_HACKERS_STATUS }],
-		update: (proxy, { data: { hackers } }) => {
+		update: (proxy, { data: { updateHackerStatus } }) => {
 			try {
-				const data = proxy.readQuery({ query: GET_HACKERS });
-				data.hackers = data.hackers.map(({ email, status, ...h }: Hacker) => {
-					return email === variables.email
-						? { email, status: variables.status, ...h }
-						: { email, status, ...h };
-				});
-				proxy.writeQuery({ data, query: GET_HACKERS });
+				// updateHackerStatusAsBatch is the newStatus after mutation
+				const queryData = proxy.readQuery({ query: GET_HACKERS }) as {
+					hackers: Hacker[] | null;
+				};
+				if (queryData && queryData.hackers) {
+					queryData.hackers = queryData.hackers.map(({ email, status, ...h }: Hacker) => {
+						return email === variables.email
+							? { email, status: updateHackerStatus, ...h }
+							: { email, status, ...h };
+					});
+					proxy.writeQuery({ data: queryData, query: GET_HACKERS });
+				}
+			} catch (e) {
+				console.error(e);
+			}
+		},
+		variables,
+	});
+};
+
+// mutation to update a multiple hacker statuses
+const mutateHackerStatusAsBatch = (
+	mutationFunction: MutationFn,
+	variables: { emails: string[]; status: string }
+): Promise<void | FetchResult> => {
+	return mutationFunction({
+		update: (proxy, { data: { updateHackerStatusAsBatch } }) => {
+			try {
+				// updateHackerStatusAsBatch is the newStatus after mutation
+				const queryData = proxy.readQuery({ query: GET_HACKERS }) as {
+					hackers: Hacker[] | null;
+				};
+				if (queryData && queryData.hackers) {
+					queryData.hackers = queryData.hackers
+						? queryData.hackers.map(({ email, status, ...h }: Hacker) => {
+								return variables.emails.includes(email)
+									? { email, status: updateHackerStatusAsBatch, ...h }
+									: { email, status, ...h };
+						  })
+						: null;
+				}
+				proxy.writeQuery({ data: queryData, query: GET_HACKERS });
 			} catch (e) {
 				console.error(e);
 			}
@@ -284,7 +319,7 @@ const actionRenderer = ({ rowData }: TableCellProps): JSX.Element => {
 						value={sliderValue}
 						onChange={(input: string) => {
 							const newStatus = processSliderInput(input);
-							updateHackerStatus(mutation, {
+							mutateHackerStatus(mutation, {
 								email: rowData.email as string,
 								status: newStatus,
 							});
@@ -398,11 +433,15 @@ const onRegexToggle = (ctx: TableCtxI): ((p: boolean) => void) => {
 		});
 };
 
-const onTableColumnSelect = (ctx: TableCtxI): ((s: any) => void) => {
+const onTableColumnSelect = (ctx: TableCtxI): ((s: ValueType<Option>) => void) => {
 	// Dependency injection
-	return (selected: Option[]) =>
+	return (s: ValueType<Option>) =>
 		ctx.update(draft => {
-			draft.selectedColumns = Array.isArray(selected) ? selected : [selected];
+			if (s == null) {
+				draft.selectedColumns = [];
+			} else {
+				draft.selectedColumns = Array.isArray(s) ? s : [s];
+			}
 		});
 };
 
@@ -526,7 +565,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 					options={columnOptions}
 					className="basic-multi-select"
 					classNamePrefix="select"
-					onChange={onTableColumnSelect(table)}
+					onChange={value => onTableColumnSelect(table)(value as ValueType<Option>)}
 				/>
 				<SearchBox
 					width="100%"
@@ -669,29 +708,9 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 													value="Undecided"
 													onChange={(input: string) => {
 														const newStatus = processSliderInput(input);
-														mutation({
-															// awaitRefetchQueries: true,
-															// refetchQueries: () => [
-															// 	{
-															// 		query: GET_HACKERS_STATUS,
-															// 	},
-															// ],
-															update: (proxy, { data: { hackers } }) => {
-																try {
-																	const data = proxy.readQuery({ query: GET_HACKERS });
-																	data.hackers = data.hackers
-																		? data.hackers.map(({ email, status, ...h }: Hacker) => {
-																				return selectedRowsEmails.includes(email)
-																					? { email, status: newStatus, ...h }
-																					: { email, status, ...h };
-																		  })
-																		: null;
-																	proxy.writeQuery({ data, query: GET_HACKERS });
-																} catch (e) {
-																	console.error(e);
-																}
-															},
-															variables: { emails: selectedRowsEmails, status: newStatus },
+														mutateHackerStatusAsBatch(mutation, {
+															emails: selectedRowsEmails,
+															status: newStatus,
 														});
 														// to deselect afterwards, react-selectable-fast has no clean way to interface with a clearSelection function
 														// so this is a workaround by simulating a click on the SelectAllButton
