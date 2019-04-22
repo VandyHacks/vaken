@@ -5,6 +5,7 @@ import ManageHackers from '../routes/manage/ManageHackers';
 import OrganizerDash from '../routes/dashboard/LazyOrganizerDash';
 import Team from '../routes/team/Team';
 import Profile from '../routes/profile/Profile';
+import Help from '../routes/help/Help';
 
 export const AuthLevel = {
 	HACKER: 'Hacker',
@@ -59,7 +60,7 @@ export const routes = [
 	},
 	{
 		authLevel: [AuthLevel.HACKER, AuthLevel.SPONSOR, AuthLevel.ORGANIZER],
-		component: NotReady,
+		component: Help,
 		displayText: 'Help',
 		path: '/help',
 	},

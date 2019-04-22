@@ -12,5 +12,7 @@
     "HACKER_TEAMS_FOOTER_TEXT": "You can join and leave a team at any time.",
     "GRAPHQL_ORGANIZER_ERROR_MESSAGE": "There was a problem.\nPlease contact your dev team.",
     "GRAPHQL_HACKER_ERROR_MESSAGE": "There was a problem.\nPlease contact help@vandyhacks.org.",
+    "HELP_TEXT": "Please contact us at info@vandyhacks.org with any questions or concerns, and we'd be happy to help you!",
+    "HELP_EMAIL": "info@vandyhacks.org",
     "COLOR_PALETTE": ["#D0C9D6", "#DBA5F5", "#FFC7A6", "#FFE29D", "#7DDFC3", "#A5AFFB", "#FDAFBB"]
 }
