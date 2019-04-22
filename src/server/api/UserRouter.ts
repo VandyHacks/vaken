@@ -73,6 +73,7 @@ userRouter.post('/api/register/hacker', async (ctx, next) => {
 		if (createdUser) {
 			console.log('Created User');
 			const createdHacker = await HackerModel.create({
+				email: createdUser.email,
 				status: ctx.request.body.status ? ctx.request.body.status : Status.Created,
 				user: createdUser._id,
 			});

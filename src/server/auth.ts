@@ -86,6 +86,7 @@ passport.use(
 					if (createdUser) {
 						// create hacker
 						const createdHacker = await HackerModel.create({
+							email: createdUser.email,
 							status: Status.Created,
 							user: createdUser._id,
 						});
@@ -152,6 +153,7 @@ passport.use(
 					if (createdUser) {
 						// create hacker
 						const createdHacker = await HackerModel.create({
+							email: createdUser.email,
 							status: Status.Created,
 							user: createdUser._id,
 						});

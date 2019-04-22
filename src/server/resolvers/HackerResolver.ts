@@ -23,15 +23,11 @@ class HackerResolver {
 	 */
 	@Query(() => Hacker, { nullable: true })
 	public static async hacker(@Arg('email') email: string): Promise<Hacker | null> {
-		const user = await UserModel.findOne({ authLevel: AuthLevel.HACKER, email });
-		if (!user) {
-			return null;
-		}
-
-		const hacker = await HackerModel.findOne({ user: user._id });
+		const hacker = await HackerModel.findOne({ email }).populate('user');
 		if (!hacker) {
 			return null;
 		}
+		const user = hacker.user as InstanceType<any>;
 
 		const hackerObject = { ...hacker.toObject(), ...user.toObject() };
 		delete hackerObject._id;
@@ -49,32 +45,25 @@ class HackerResolver {
 		description: 'Return all the Hackers in the database',
 	})
 	public static async hackers(): Promise<Hacker[]> {
-		const users = await UserModel.find({ authLevel: AuthLevel.HACKER });
-		if (!users) {
+		const hackers = await HackerModel.find({}).populate('user');
+		if (!hackers) {
 			return [];
 		}
 
 		const hackerList: Promise<Hacker | null>[] = [];
-		users.forEach(user => {
-			hackerList.push(
-				HackerModel.findOne({ user: user._id }).then(hacker => {
-					if (hacker) {
-						const hackerObject = { ...hacker.toObject(), ...user.toObject() };
-						delete hackerObject._id;
-						delete hackerObject.__v;
-						delete hackerObject.user;
-						delete hackerObject.password;
-						return hackerObject;
-					} else {
-						return null;
-					}
-				})
-			);
+		hackers.forEach(hacker => {
+			const user = hacker.user as InstanceType<any>;
+			const hackerObject = { ...hacker.toObject(), ...user.toObject() };
+			delete hackerObject._id;
+			delete hackerObject.__v;
+			delete hackerObject.user;
+			delete hackerObject.password;
+			hackerList.push(hackerObject);
 		});
-		const hackers = await Promise.all(hackerList);
-		hackers.filter(hacker => hacker);
+		const hackerObjects = await Promise.all(hackerList);
+		hackerObjects.filter(hacker => hacker);
 
-		return plainToClass(Hacker, hackers);
+		return plainToClass(Hacker, hackerObjects);
 	}
 
 	@Query(() => HackerGenders, {
@@ -185,14 +174,6 @@ class HackerResolver {
 		@Arg('email') email: string,
 		@Arg('data', { nullable: true }) data: UpdateHackerInput
 	): Promise<boolean> {
-		// Find the hacker to update
-		const user = await UserModel.findOne({ authLevel: AuthLevel.HACKER, email });
-
-		// Throw an error if no such user exists
-		if (!user) {
-			throw new Error('Hacker does not exist!');
-		}
-
 		// Filter out any undefined data
 		const filteredData: UpdateHackerInput = {};
 		Object.keys(data).forEach(key =>
@@ -201,7 +182,11 @@ class HackerResolver {
 
 		// Attempt to update the hacker
 		try {
-			await HackerModel.updateOne({ user: user._id }, { $set: filteredData });
+			const res = await HackerModel.updateOne({ email }, { $set: filteredData });
+			if (res.nModified === 0) {
+				console.log('Failed to update hacker');
+				return false;
+			}
 		} catch (err) {
 			throw new Error('Hacker could not be updated!');
 		}
@@ -226,13 +211,8 @@ class HackerResolver {
 			throw new Error('Incorrect newStatus arg!');
 		}
 
-		const user = await UserModel.findOne({ authLevel: AuthLevel.HACKER, email });
-		if (!user) {
-			return null;
-		}
-
 		const newHacker = await HackerModel.findOneAndUpdate(
-			{ user: user._id },
+			{ email },
 			{ $set: { status: newStatus } },
 			{ new: true }
 		);
@@ -256,12 +236,8 @@ class HackerResolver {
 		@Arg('newStatus') newStatus: Status
 	): Promise<Status | null> {
 		emails.forEach(async email => {
-			const user = await UserModel.findOne({ authLevel: AuthLevel.HACKER, email });
-			if (!user) {
-				return null;
-			}
 			const newHacker = await HackerModel.findOneAndUpdate(
-				{ user: user._id },
+				{ email },
 				{ $set: { status: newStatus } },
 				{ new: true }
 			);
@@ -287,15 +263,7 @@ class HackerResolver {
 	): Promise<boolean> {
 		// Make sure the team and hacker exist
 		const team = await TeamModel.findOne({ teamName });
-		const user = await UserModel.findOne({ authLevel: AuthLevel.HACKER, email });
-
-		// If the user doesn't exist, throw an error
-		if (!user) {
-			throw new Error('User does not exist!');
-		}
-
-		// Grab the user's associated hacker object
-		const hacker = await HackerModel.findOne({ user: user._id });
+		const hacker = await HackerModel.findOne({ email });
 
 		// Ensure the hacker object isn't null
 		if (!hacker) {
@@ -322,10 +290,14 @@ class HackerResolver {
 
 			// Add the hacker to the team
 			try {
-				await TeamModel.updateOne(
+				const res = await TeamModel.updateOne(
 					{ teamName },
 					{ $push: { teamMembers: { _id: hacker._id } }, $set: { size: team.size + 1 } }
 				);
+				if (res.nModified === 0) {
+					console.log('Failed to add hacker to team');
+					return false;
+				}
 			} catch (err) {
 				throw new Error('Hacker could not be added to team!');
 			}
@@ -333,7 +305,14 @@ class HackerResolver {
 
 		// Update the hacker's team
 		try {
-			await HackerModel.updateOne({ _id: hacker._id }, { $set: { teamName: teamName } });
+			const res = await HackerModel.updateOne(
+				{ _id: hacker._id },
+				{ $set: { teamName: teamName } }
+			);
+			if (res.nModified === 0) {
+				console.log('Failed to update hacker team');
+				return false;
+			}
 		} catch (err) {
 			throw new Error('Hacker team could not be updated!');
 		}
@@ -354,15 +333,7 @@ class HackerResolver {
 		@Arg('email', { nullable: false }) email: string
 	): Promise<boolean> {
 		// Ensure the team and hacker are in a valid state
-		const user = await UserModel.findOne({ authLevel: AuthLevel.HACKER, email });
-
-		// If the user doesn't exist, throw an error
-		if (!user) {
-			throw new Error('User does not exist!');
-		}
-
-		// Get the hacker's team name
-		const hacker = await HackerModel.findOne({ user: user._id });
+		const hacker = await HackerModel.findOne({ email });
 
 		if (!hacker) {
 			throw new Error('Hacker does not exist!');
@@ -387,7 +358,11 @@ class HackerResolver {
 			);
 
 			// Remove teamName from Hacker's profile
-			await HackerModel.updateOne({ _id: hacker._id }, { $unset: { teamName: '' } });
+			const res = await HackerModel.updateOne({ _id: hacker._id }, { $unset: { teamName: '' } });
+			if (res.nModified === 0) {
+				console.log('Failed to remove team name');
+				return false;
+			}
 
 			// If the team is now empty, delete it
 			if (updatedTeam && updatedTeam.size === 0) {
