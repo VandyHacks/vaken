@@ -93,6 +93,9 @@ const statuses = [
 	'Confirmed',
 	'Rejected',
 ];
+const genders = ['Male', 'Female', 'Other', 'PreferNotToSay'];
+
+const shirtSizes = ['UXS', 'US', 'UM', 'UL', 'UXL', 'UXXL', 'WS', 'WM', 'WL', 'WXL', 'WXXL'];
 
 export const addHackers = (die: boolean) => {
 	if (die) {
@@ -100,17 +103,20 @@ export const addHackers = (die: boolean) => {
 			const fn = names[getRandom(21000)];
 			const ln = names[getRandom(21000)];
 			const bool = !!getRandom(2);
+			const status = statuses[getRandom(7)];
 			fetch('/api/register/hacker', {
 				body: JSON.stringify({
-					username: `${fn}.${ln}@gmail.com`,
 					firstName: fn,
+					gender: genders[getRandom(7)],
 					gradYear: getRandom(4) + 2019,
 					lastName: ln,
 					needsReimbursement: bool,
 					password: 'P@ssword1',
 					school: institutions[getRandom(1430)],
-					status: statuses[getRandom(7)],
+					shirtSize: shirtSizes[getRandom(11)],
+					status,
 					teamName: '',
+					username: `${fn}.${ln}@gmail.com`,
 				}),
 				headers: {
 					'Content-Type': 'application/json',
@@ -123,7 +129,7 @@ export const addHackers = (die: boolean) => {
 	hackers.forEach(hacker => {
 		const { email, ...rest } = hacker;
 		return fetch('/api/register/hacker', {
-			body: JSON.stringify({ ...rest, username: email, password: 'p@ssword1' }),
+			body: JSON.stringify({ ...rest, password: 'p@ssword1', username: email }),
 			headers: {
 				'Content-Type': 'application/json',
 			},
