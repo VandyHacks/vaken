@@ -1,10 +1,6 @@
-import { Resolver, Query, Arg, Mutation } from 'type-graphql';
+import { Resolver, Query, Arg } from 'type-graphql';
 
 import { TeamModel } from '../models/Team';
-import { HackerModel } from '../models/Hacker';
-import CONSTANTS from '../../common/constants.json';
-import { UserModel } from '../models/User';
-import AuthLevel from '../enums/AuthLevel';
 
 @Resolver()
 class TeamResolver {
