@@ -32,13 +32,13 @@ const saltRounds = 10;
 })
 class User extends Typegoose {
 	@prop({ required: true })
-	public email: string = '';
+	public email!: string;
 
 	@arrayProp({ items: String })
 	public nfcCodes?: string[];
 
 	@prop({ required: true })
-	public password: string = '';
+	public password!: string;
 
 	@prop()
 	public firstName?: string;

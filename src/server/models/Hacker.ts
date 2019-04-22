@@ -9,7 +9,7 @@ class Hacker extends Typegoose {
 	public user!: Ref<User>;
 
 	@prop({ required: true })
-	public email: string = '';
+	public email!: string;
 
 	@prop({ required: true })
 	public status: Status = Status.Created;

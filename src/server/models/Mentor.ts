@@ -6,7 +6,7 @@ class Mentor extends Typegoose {
 	public user!: Ref<User>;
 
 	@prop({ required: true })
-	public email: string = '';
+	public email!: string;
 
 	@arrayProp({ items: String, required: true })
 	public shifts?: string[];

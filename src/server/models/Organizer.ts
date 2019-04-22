@@ -6,7 +6,7 @@ class Organizer extends Typegoose {
 	public user!: Ref<User>;
 
 	@prop({ required: true })
-	public email: string = '';
+	public email!: string;
 }
 
 const OrganizerModel = new Organizer().getModelForClass(Organizer);

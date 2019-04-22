@@ -7,7 +7,7 @@ class SponsorRep extends Typegoose {
 	public user!: Ref<User>;
 
 	@prop({ required: true })
-	public email: string = '';
+	public email!: string;
 
 	@arrayProp({ itemsRef: Sponsor, required: true })
 	public sponsors: Ref<Sponsor>[] = [];
