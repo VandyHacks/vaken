@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import STRINGS from '../../assets/strings.json';
@@ -8,7 +8,7 @@ const Message = styled(SmallCenteredText)`
 	white-space: pre-line;
 `;
 
-export const Help: FunctionComponent<> = (): JSX.Element => {
+export const Help = (): JSX.Element => {
 	const helpMessage = STRINGS.HELP_TEXT.split(STRINGS.HELP_EMAIL);
 
 	return (
