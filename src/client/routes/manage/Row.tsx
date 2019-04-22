@@ -5,7 +5,7 @@ import { createSelectable } from 'react-selectable-fast';
 import { TableRowProps } from 'react-virtualized';
 
 interface Props extends TableRowProps {
-	selectableRef: any;
+	selectableRef: string;
 	selected: boolean;
 	selecting: boolean;
 }

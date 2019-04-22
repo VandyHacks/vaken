@@ -23,6 +23,7 @@ export const columnOptions = [
 ];
 
 export interface Hacker {
+	[index: string]: string | HackerStatus | number | boolean | undefined;
 	firstName: string;
 	lastName: string;
 	email: string;

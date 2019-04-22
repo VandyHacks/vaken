@@ -176,10 +176,6 @@ const columnOptions = [
 	{ label: 'Reimbursement', value: 'needsReimbursment' },
 ];
 
-interface Props {
-	data: Hacker[];
-}
-
 interface DeselectElement extends HTMLDivElement {
 	context: {
 		selectable: {
@@ -343,7 +339,7 @@ const actionRenderer = ({ rowData }: TableCellProps): JSX.Element => {
 
 // wrapper to use createSelectable() from react-selectable-fast
 const rowRenderer = (
-	props: TableRowProps & { selectableRef: any; selecting: boolean; selected: boolean }
+	props: TableRowProps & { selectableRef: string; selecting: boolean; selected: boolean }
 ): JSX.Element => {
 	return <Row {...props} />;
 };
@@ -463,6 +459,10 @@ const onSortColumnChange = (ctx: TableCtxI): ((p: SortFnProps) => void) => {
 	};
 };
 
+interface Props {
+	data: Hacker[];
+}
+
 export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element => {
 	const table = useContext(TableContext);
 
@@ -494,7 +494,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 	}, [fuzzySearch]);
 
 	useEffect(() => {
-		// Filter and sort data
+		// filter and sort data
 		let newData = [...data];
 
 		if (searchValue.trim() !== '' && fuzzySearch) {
@@ -504,17 +504,23 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 				...fuseOpts,
 			}).search(searchValue);
 		} else if (searchValue.trim() !== '') {
-			// Filter based on regex
+			// filter based on regex
 			const regex = new RegExp(searchValue, 'i');
-			newData = newData.filter((hacker: any) => regex.test(hacker[selectedColumns[0].value]));
+			// ternary for case when going for empty multi-select to empty single-select
+			newData =
+				selectedColumns.length > 0
+					? newData.filter((hacker: Hacker) =>
+							regex.test(hacker[selectedColumns[0].value] as string)
+					  )
+					: [];
 		}
 
 		// Sort data based on props and context
 		if (sortBy && sortDirection) {
-			newData.sort((a: any, b: any) =>
+			newData.sort((a: Hacker, b: Hacker) =>
 				sortDirection === SortDirection.DESC
-					? collator.compare(b[sortBy], a[sortBy])
-					: collator.compare(a[sortBy], b[sortBy])
+					? collator.compare(b[sortBy] as string, a[sortBy] as string)
+					: collator.compare(a[sortBy] as string, b[sortBy] as string)
 			);
 		}
 
