@@ -1,6 +1,6 @@
-workflow "Scan for secrets" {
+workflow "Scan push for important changes" {
   on = "push"
-  resolves = ["Seekret"]
+  resolves = ["Seekret", "post slack message"]
 }
 
 action "Seekret" {
@@ -32,4 +32,18 @@ action "branch cleanup" {
   env = {
     NO_BRANCH_DELETED_EXIT_CODE = "0"
   }
+}
+
+action "detect dependency changes" {
+  uses = "bencooper222/check-for-node-dep-changes@master"
+  secrets = ["GITHUB_TOKEN"]
+}
+
+action "post slack message" {
+  needs = ["detect dependency changes"]
+  uses = "pullreminders/slack-github-action@master"
+  secrets = [
+    "SLACK_BOT_TOKEN",
+  ]
+  args = "{\"channel\": \"CDJEP2U1X\", \"text\": \"One or more dependencies of Vaken in the default branch have been changed; `npm i` is recommended.\"}}"
 }
