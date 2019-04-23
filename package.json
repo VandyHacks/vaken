@@ -1,19 +1,42 @@
 {
+	"name": "vaken",
+	"version": "0.0.1",
+	"license": "MIT",
+	"main": "dist/index.js",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/vu-cs3892-s19/vaken.git"
+	},
+	"homepage": "https://vaken.vandyhacks.org",
+	"keywords": [
+		"hackathon",
+		"immer",
+		"react",
+		"registration",
+		"ts"
+	],
 	"contributors": [
 		"Matt Leon <matthew.leon@vanderbilt.edu> (https://mattleon.com)",
 		"Irfaan Khalid <irfaan.khalid@vanderbilt.edu> (https://irfaan.me)",
 		"Felix Tiet <felix.tiet@vanderbilt.edu> (http://ftiet.com)",
 		"Alan Wilms <alan.wilms@vanderbilt.edu>"
 	],
-	"browserslist": [
-		"> 1% in US",
-		"firefox ESR",
-		"last 2 versions",
-		"not IE > 10",
-		"not dead"
-	],
 	"bugs": {
 		"url": "https://github.com/vu-cs3892-s19/vaken/issues"
+	},
+	"scripts": {
+		"start-server": "ts-node src/server/index.ts",
+		"dev-server": "./node_modules/nodemon/bin/nodemon.js",
+		"build": "tsc && webpack --config webpack.prod.js --progress --colors",
+		"prod": "npm run build && node ./dist/server/index.js",
+		"format": "prettier --config .prettierrc.json --write \"./**/*.ts*(x)\"",
+		"lint-client": "eslint -c src/client/.eslintrc.js --ext .js,.jsx,.ts,.tsx src/client/",
+		"lint-server": "eslint -c src/server/.eslintrc.js --ext .js,.jsx,.ts,.tsx src/server/",
+		"lint-client-fix": "eslint -c src/client/.eslintrc.js --fix --ext .js,.jsx,.ts,.tsx src/client/",
+		"lint-server-fix": "eslint -c src/server/.eslintrc.js --fix --ext .js,.ts src/server/",
+		"start": "webpack-dev-server --config webpack.dev.js --progress --color",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"typecheck": "tsc -p tsconfig.json --noEmit"
 	},
 	"dependencies": {
 		"@koa/cors": "^2.2.3",
@@ -150,34 +173,11 @@
 		"webpack-dev-server": "^3.1.14",
 		"webpack-merge": "^4.2.1"
 	},
-	"homepage": "https://vaken.vandyhacks.org",
-	"keywords": [
-		"hackathon",
-		"immer",
-		"react",
-		"registration",
-		"ts"
-	],
-	"license": "MIT",
-	"main": "dist/index.js",
-	"name": "vaken",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/vu-cs3892-s19/vaken.git"
-	},
-	"scripts": {
-		"start-server": "ts-node src/server/index.ts",
-		"dev-server": "./node_modules/nodemon/bin/nodemon.js",
-		"build": "tsc && webpack --config webpack.prod.js --progress --colors",
-		"prod": "npm run build && node ./dist/server/index.js",
-		"format": "prettier --config .prettierrc.json --write \"./**/*.ts*(x)\"",
-		"lint-client": "eslint -c src/client/.eslintrc.js --ext .js,.jsx,.ts,.tsx src/client/",
-		"lint-server": "eslint -c src/server/.eslintrc.js --ext .js,.jsx,.ts,.tsx src/server/",
-		"lint-client-fix": "eslint -c src/client/.eslintrc.js --fix --ext .js,.jsx,.ts,.tsx src/client/",
-		"lint-server-fix": "eslint -c src/server/.eslintrc.js --fix --ext .js,.ts src/server/",
-		"start": "webpack-dev-server --config webpack.dev.js --progress --color",
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"typecheck": "tsc -p tsconfig.json --noEmit"
-	},
-	"version": "0.0.1"
+	"browserslist": [
+		"> 1% in US",
+		"firefox ESR",
+		"last 2 versions",
+		"not IE > 10",
+		"not dead"
+	]
 }
