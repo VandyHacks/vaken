@@ -167,7 +167,7 @@
 	},
 	"scripts": {
 		"start-server": "ts-node src/server/index.ts",
-		"dev-server": "./node_modules/nodemon/bin/nodemon.js",
+		"dev-server": "nodemon",
 		"build": "tsc && webpack --config webpack.prod.js --progress --colors",
 		"prod": "npm run build && node ./dist/server/index.js",
 		"format": "prettier --config .prettierrc.json --write \"./**/*.ts*(x)\"",
