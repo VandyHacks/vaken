@@ -16,5 +16,3 @@ class Team extends Typegoose {
 const TeamModel = new Team().getModelForClass(Team);
 
 export { Team, TeamModel };
-
-// Copyright (c) 2019 Vanderbilt University

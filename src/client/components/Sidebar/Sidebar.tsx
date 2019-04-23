@@ -155,5 +155,3 @@ const Sidebar = withRouter(
 );
 
 export default Sidebar;
-
-// Copyright (c) 2019 Vanderbilt University

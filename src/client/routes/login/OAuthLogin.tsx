@@ -41,5 +41,3 @@ const OAuthLogin = (): JSX.Element => {
 };
 
 export default OAuthLogin;
-
-// Copyright (c) 2019 Vanderbilt University

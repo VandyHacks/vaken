@@ -22,5 +22,3 @@ export class HackerGenders {
 }
 
 export default HackerGenders;
-
-// Copyright (c) 2019 Vanderbilt University

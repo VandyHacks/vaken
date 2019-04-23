@@ -187,5 +187,3 @@ passport.deserializeUser(async (id: any, done: any) => {
 		done(err, null, { message: 'Failed to deserialize' });
 	}
 });
-
-// Copyright (c) 2019 Vanderbilt University

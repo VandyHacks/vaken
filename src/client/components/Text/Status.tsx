@@ -46,5 +46,3 @@ export const Status: FunctionComponent<ComponentProps> = (props: ComponentProps)
 };
 
 export default Status;
-
-// Copyright (c) 2019 Vanderbilt University

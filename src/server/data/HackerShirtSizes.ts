@@ -43,5 +43,3 @@ export class HackerShirtSizes {
 }
 
 export default HackerShirtSizes;
-
-// Copyright (c) 2019 Vanderbilt University

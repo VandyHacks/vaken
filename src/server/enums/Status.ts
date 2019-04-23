@@ -15,5 +15,3 @@ registerEnumType(Status, {
 });
 
 export default Status;
-
-// Copyright (c) 2019 Vanderbilt University

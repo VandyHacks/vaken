@@ -52,5 +52,3 @@ export const ManageHackers: FunctionComponent = (): JSX.Element => {
 };
 
 export default ManageHackers;
-
-// Copyright (c) 2019 Vanderbilt University

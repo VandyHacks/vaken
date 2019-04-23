@@ -46,4 +46,3 @@ export const Team: FunctionComponent = (): JSX.Element => {
 };
 
 export default Team;
-// Copyright (c) 2019 Vanderbilt University

@@ -181,5 +181,3 @@ userRouter.get('/api/auth/github/callback', async (ctx, next) => {
 });
 
 export default userRouter;
-
-// Copyright (c) 2019 Vanderbilt University

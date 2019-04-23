@@ -11,5 +11,3 @@ registerEnumType(AuthLevel, {
 });
 
 export default AuthLevel;
-
-// Copyright (c) 2019 Vanderbilt University

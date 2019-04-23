@@ -40,5 +40,3 @@ export const CalendarInput = (props: Props): JSX.Element => {
 };
 
 export default CalendarInput;
-
-// Copyright (c) 2019 Vanderbilt University

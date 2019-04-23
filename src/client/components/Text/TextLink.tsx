@@ -24,5 +24,3 @@ const TextLink = styled(Link)`
 `;
 
 export default TextLink;
-
-// Copyright (c) 2019 Vanderbilt University

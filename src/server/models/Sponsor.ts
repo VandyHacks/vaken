@@ -30,5 +30,3 @@ class Sponsor extends Typegoose {
 const sponsorModel = new Sponsor().getModelForClass(Sponsor);
 
 export { Sponsor, sponsorModel };
-
-// Copyright (c) 2019 Vanderbilt University

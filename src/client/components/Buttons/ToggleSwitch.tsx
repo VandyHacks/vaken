@@ -69,5 +69,3 @@ export const ToggleSwitch: FunctionComponent<Props> = (props: Props): JSX.Elemen
 };
 
 export default ToggleSwitch;
-
-// Copyright (c) 2019 Vanderbilt University

@@ -21,5 +21,3 @@ const LeftImgTextInput = (props: Props): JSX.Element => {
 };
 
 export default LeftImgTextInput;
-
-// Copyright (c) 2019 Vanderbilt University

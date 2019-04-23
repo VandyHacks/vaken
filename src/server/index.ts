@@ -106,5 +106,3 @@ async function launchServer(): Promise<void> {
 
 // Launch server with GraphQL endpoint
 launchServer();
-
-// Copyright (c) 2019 Vanderbilt University

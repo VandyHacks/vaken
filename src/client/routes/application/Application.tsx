@@ -172,5 +172,3 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 };
 
 export default Application;
-
-// Copyright (c) 2019 Vanderbilt University

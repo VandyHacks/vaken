@@ -25,5 +25,3 @@ export const Row: FunctionComponent<Props> = (props: Props): JSX.Element => {
 };
 
 export default createSelectable(Row);
-
-// Copyright (c) 2019 Vanderbilt University

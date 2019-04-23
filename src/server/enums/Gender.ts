@@ -12,5 +12,3 @@ registerEnumType(Gender, {
 });
 
 export default Gender;
-
-// Copyright (c) 2019 Vanderbilt University

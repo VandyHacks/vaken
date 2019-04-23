@@ -87,5 +87,3 @@ const Frame: FunctionComponent = (props): JSX.Element => {
 };
 
 export default Frame;
-
-// Copyright (c) 2019 Vanderbilt University

@@ -71,5 +71,3 @@ export const OverflowContainer = styled.div`
 	max-width: 100%;
 	overflow: auto;
 `;
-
-// Copyright (c) 2019 Vanderbilt University

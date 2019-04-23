@@ -117,5 +117,3 @@ export const Profile: React.FunctionComponent<{}> = (): JSX.Element => {
 };
 
 export default Profile;
-
-// Copyright (c) 2019 Vanderbilt University

@@ -29,5 +29,3 @@ export function passwordValidation(p: string): boolean {
 export function containsAlphaCharacters(i: string): boolean {
 	return /\w+/.test(i);
 }
-
-// Copyright (c) 2019 Vanderbilt University

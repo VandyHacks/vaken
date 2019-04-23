@@ -78,5 +78,3 @@ export const Collapsible: FunctionComponent<Props> = (props): JSX.Element => {
 };
 
 export default Collapsible;
-
-// Copyright (c) 2019 Vanderbilt University

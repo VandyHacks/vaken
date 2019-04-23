@@ -71,5 +71,3 @@ export class Hacker extends User {
 }
 
 export default Hacker;
-
-// Copyright (c) 2019 Vanderbilt University

@@ -39,5 +39,3 @@ export const Input = styled.input`
 `;
 
 export default Input;
-
-// Copyright (c) 2019 Vanderbilt University

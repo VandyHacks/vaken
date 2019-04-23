@@ -15,5 +15,3 @@ registerEnumType(DietaryRestrictions, {
 });
 
 export default DietaryRestrictions;
-
-// Copyright (c) 2019 Vanderbilt University

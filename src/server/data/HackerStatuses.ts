@@ -28,5 +28,3 @@ export class HackerStatuses {
 }
 
 export default HackerStatuses;
-
-// Copyright (c) 2019 Vanderbilt University

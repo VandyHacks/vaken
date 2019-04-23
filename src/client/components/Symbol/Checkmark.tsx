@@ -45,5 +45,3 @@ export const Checkmark: FunctionComponent<Props> = (props: Props): JSX.Element =
 };
 
 export default Checkmark;
-
-// Copyright (c) 2019 Vanderbilt University

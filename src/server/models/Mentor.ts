@@ -18,5 +18,3 @@ class Mentor extends Typegoose {
 const mentorModel = new Mentor().getModelForClass(Mentor);
 
 export { Mentor, mentorModel };
-
-// Copyright (c) 2019 Vanderbilt University

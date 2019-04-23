@@ -74,5 +74,3 @@ class User extends Typegoose {
 const UserModel = new User().getModelForClass(User);
 
 export { User, UserModel };
-
-// Copyright (c) 2019 Vanderbilt University

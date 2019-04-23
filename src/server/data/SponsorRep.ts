@@ -17,5 +17,3 @@ export class SponsorRep extends User {
 }
 
 export default SponsorRep;
-
-// Copyright (c) 2019 Vanderbilt University

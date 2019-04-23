@@ -6,5 +6,3 @@ import { SponsorRep } from '../data/SponsorRep';
 class SponsorRepResolver {}
 
 export default SponsorRepResolver;
-
-// Copyright (c) 2019 Vanderbilt University

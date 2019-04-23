@@ -7,5 +7,3 @@ import User from './User';
 export class Organizer extends User {}
 
 export default Organizer;
-
-// Copyright (c) 2019 Vanderbilt University

@@ -44,5 +44,3 @@ const FloatingPopup = styled(FlexStartColumn)`
  */
 
 export default FloatingPopup;
-
-// Copyright (c) 2019 Vanderbilt University

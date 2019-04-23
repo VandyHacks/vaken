@@ -33,5 +33,3 @@ export class Sponsor {
 }
 
 export default Sponsor;
-
-// Copyright (c) 2019 Vanderbilt University

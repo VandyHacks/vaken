@@ -47,5 +47,3 @@ export class User {
 }
 
 export default User;
-
-// Copyright (c) 2019 Vanderbilt University

@@ -6,5 +6,3 @@ import { Mentor } from '../data/Mentor';
 class MentorResolver {}
 
 export default MentorResolver;
-
-// Copyright (c) 2019 Vanderbilt University

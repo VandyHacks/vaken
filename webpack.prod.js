@@ -5,5 +5,3 @@ module.exports = merge.smart(common, {
 	mode: 'production',
 	devtool: 'source-map',
 });
-
-// Copyright (c) 2019 Vanderbilt University

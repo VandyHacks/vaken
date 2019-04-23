@@ -745,5 +745,3 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 };
 
 export default HackerTable;
-
-// Copyright (c) 2019 Vanderbilt University

@@ -76,5 +76,3 @@ module.exports = {
 		extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
 	},
 };
-
-// Copyright (c) 2019 Vanderbilt University

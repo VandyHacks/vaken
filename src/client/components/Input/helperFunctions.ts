@@ -62,5 +62,3 @@ export function regexWrapper(regex: string): (p: string) => boolean {
 	const compiledRegex = new RegExp(regex);
 	return (p: string): boolean => (p.length === 0 ? true : compiledRegex.test(p));
 }
-
-// Copyright (c) 2019 Vanderbilt University

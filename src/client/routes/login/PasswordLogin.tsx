@@ -115,5 +115,3 @@ export const PasswordLogin: React.FunctionComponent<Props> = (): JSX.Element => 
 };
 
 export default PasswordLogin;
-
-// Copyright (c) 2019 Vanderbilt University

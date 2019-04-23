@@ -13,5 +13,3 @@ registerEnumType(Race, {
 });
 
 export default Race;
-
-// Copyright (c) 2019 Vanderbilt University

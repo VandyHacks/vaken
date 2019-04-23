@@ -6,5 +6,3 @@ import { Organizer } from '../data/Organizer';
 class OrganizerResolver {}
 
 export default OrganizerResolver;
-
-// Copyright (c) 2019 Vanderbilt University

@@ -79,5 +79,3 @@ class Hacker extends Typegoose {
 const HackerModel = new Hacker().getModelForClass(Hacker);
 
 export { Hacker, HackerModel };
-
-// Copyright (c) 2019 Vanderbilt University

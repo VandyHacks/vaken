@@ -10,5 +10,3 @@ registerEnumType(Ethnicity, {
 });
 
 export default Ethnicity;
-
-// Copyright (c) 2019 Vanderbilt University

@@ -43,5 +43,3 @@ const NavButton = (props: Props): JSX.Element => {
 };
 
 export default NavButton;
-
-// Copyright (c) 2019 Vanderbilt University

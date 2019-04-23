@@ -11,5 +11,3 @@ export class SchoolCounts {
 }
 
 export default SchoolCounts;
-
-// Copyright (c) 2019 Vanderbilt University

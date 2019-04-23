@@ -13,5 +13,3 @@ export class Mentor extends User {
 }
 
 export default Mentor;
-
-// Copyright (c) 2019 Vanderbilt University
