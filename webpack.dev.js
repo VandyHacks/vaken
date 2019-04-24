@@ -23,7 +23,7 @@ module.exports = merge.smart(common, {
 				target: `http://server:${process.env.SERVER_PORT}`,
 			},
 			'/graphql': {
-				target: `http://server:${process.env.CLIENT_PORT}`,
+				target: `http://server:${process.env.SERVER_PORT}`,
 			},
 		},
 	},
