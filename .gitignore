@@ -1,4 +1,7 @@
+<<<<<<< b833e396f9766c6e195bf9ca96b7ed581175a4b1
 
+=======
+>>>>>>> Push basic .vscode config
 # Created by https://www.gitignore.io/api/node,linux,macos,windows,jetbrains+all,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=node,linux,macos,windows,jetbrains+all,visualstudiocode
 
@@ -244,5 +247,8 @@ dist/
 
 dist
 .env
+<<<<<<< b833e396f9766c6e195bf9ca96b7ed581175a4b1
 
 # Copyright (c) 2019 Vanderbilt University
+=======
+>>>>>>> Push basic .vscode config
