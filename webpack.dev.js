@@ -4,6 +4,10 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const webpack = require('webpack');
 const common = require('./webpack.common.js');
 
+// Validate env vars
+if (!process.env.CLIENT_PORT) throw 'CLIENT_PORT not set';
+if (!process.env.SERVER_PORT) throw 'SERVER_PORT not set';
+
 module.exports = merge.smart(common, {
 	mode: 'development',
 	devtool: 'inline-source-map',
@@ -11,11 +15,15 @@ module.exports = merge.smart(common, {
 		hot: true, // Enable hot module replacement
 		open: true, // Open browser on 'npm start'
 		quiet: true, // Pretty console output
-		port: 8081,
+		port: process.env.CLIENT_PORT,
+		host: '0.0.0.0',
 		historyApiFallback: true,
 		proxy: {
 			'/api': {
-				target: 'http://localhost:8080',
+				target: `http://server:${process.env.SERVER_PORT}`,
+			},
+			'/graphql': {
+				target: `http://server:${process.env.CLIENT_PORT}`,
 			},
 		},
 	},
