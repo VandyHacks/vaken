@@ -58,5 +58,3 @@ export const GraphQLErrorMessage: FunctionComponent<GraphQLErrorMessage> = (
 		</ErrorMessage>
 	);
 };
-
-// Copyright (c) 2019 Vanderbilt University
