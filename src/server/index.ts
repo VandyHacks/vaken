@@ -47,6 +47,7 @@ app.use(userRouter.routes());
 const DB_URL = process.env.MONGO_URL || 'mongodb://localhost:27017/test';
 
 // Connect to mongo database
+if (!process.env.MONGO_BASE_URL) throw 'MONGO_BASE_URL not set';
 mongoose
 	.connect(DB_URL, {
 		useCreateIndex: true,
