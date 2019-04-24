@@ -34,7 +34,13 @@ action "branch cleanup" {
   }
 }
 
+action "check is default branch" {
+  uses = "actions/bin/filter@master"
+  args = "branch dev"
+}
+
 action "detect dependency changes" {
+  needs = ["check is default branch"]
   uses = "bencooper222/check-for-node-dep-changes@master"
   secrets = ["GITHUB_TOKEN"]
 }
