@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  server:
+    build: .
+    env_file:
+      - server.env
+      - .env
+    expose: 
+      - ${SERVER_PORT}
+    environment:
+      SERVER_PORT: ${SERVER_PORT}
+      MONGO_BASE_URL: mongodb://mongodb:27017
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    volumes:
+      - ./src/server:/usr/src/app/src/server
+      - ./src/common:/usr/src/app/src/common
+    links:
+      - mongodb
+    command: npm run dev-server
+
+  client:
+    build: .
+    env_file: 
+      - .env
+    environment:
+      CLIENT_PORT: ${CLIENT_PORT}
+    expose: 
+      - ${CLIENT_PORT}
+    ports: 
+      - ${CLIENT_PORT}:${CLIENT_PORT}
+    volumes:
+      - ./src/client:/usr/src/app/src/client
+      - ./src/common:/usr/src/app/src/common
+    links:
+      - server
+    command: npm run start
+
+  mongodb:
+    image: mongo:latest
+    environment:
+      MONGO_DATA_DIR: /data/db
+      MONGO_LOG_DIR: /dev/null
+    volumes:
+      - ./dist/data/db:/data/db
+    ports:
+      - ${MONGO_PORT}:${MONGO_PORT}
+    command: mongod --smallfiles --logpath=/dev/null
