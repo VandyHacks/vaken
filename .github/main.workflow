@@ -17,7 +17,7 @@ action "Label when approved" {
   secrets = ["GITHUB_TOKEN"]
   env = {
     LABEL_NAME = "approved"
-    APPROVALS  = "1"
+    APPROVALS  = "2"
   }
 }
 
