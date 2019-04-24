@@ -1,0 +1,7 @@
+{
+	"eslint.enable": true,
+	// "eslint.run": "onSave", // do this in your user settings if you want it
+	"eslint.packageManager": "npm",
+	"npm.enableScriptExplorer": true,
+	"editor.formatOnSave": true
+}
