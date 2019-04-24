@@ -19,7 +19,7 @@ const GlobalStyle = createGlobalStyle`
 		font-family: 'Roboto', sans-serif;
 
 		${reset}
-    user-select: none;
+	user-select: none;
 		margin: 0;
 		padding: 0;
 		width: 100vw;
