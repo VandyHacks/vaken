@@ -16,7 +16,7 @@ const LeftImgButton = (props: Props): JSX.Element => {
 	const { img, imgAlt, color, text, onClick, ...ButtonProps } = props;
 	return (
 		<Button {...ButtonProps} onClick={onClick}>
-			<FlexRow height="min-content" width="min-content" /* Edge case of centering icons */>
+			<FlexRow height="min-content" width="min-content">
 				<RightPaddedImg src={img} alt={imgAlt} />
 			</FlexRow>
 			<CenterButtonText color={color}>{text}</CenterButtonText>

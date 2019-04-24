@@ -9,6 +9,7 @@ import { routes } from '../../assets/routes';
 import { AuthContext } from '../../contexts/AuthContext';
 import { SpaceBetweenRow, OverflowContainer } from '../../components/Containers/FlexContainers';
 import { ActionButtonContext } from '../../contexts/ActionButtonContext';
+
 export const OrganizerDash = React.lazy(() => import('./OrganizerDash'));
 
 const Layout = styled.div`
@@ -65,7 +66,7 @@ const Frame: FunctionComponent = (props): JSX.Element => {
 								})}
 							</Switch>
 						</Title>
-						{ActionButton ? ActionButton : null}
+						{ActionButton || null}
 					</SpaceBetweenRow>
 					<Rectangle />
 				</div>
