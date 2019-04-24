@@ -30,10 +30,6 @@
 		"build": "tsc && webpack --config webpack.prod.js --progress --colors",
 		"prod": "npm run build && node ./dist/server/index.js",
 		"format": "prettier --config .prettierrc.json --write \"./**/*.ts*(x)\"",
-		"lint-client": "eslint -c src/client/.eslintrc.js --ext .js,.jsx,.ts,.tsx src/client/",
-		"lint-server": "eslint -c src/server/.eslintrc.js --ext .js,.jsx,.ts,.tsx src/server/",
-		"lint-client-fix": "eslint -c src/client/.eslintrc.js --fix --ext .js,.jsx,.ts,.tsx src/client/",
-		"lint-server-fix": "eslint -c src/server/.eslintrc.js --fix --ext .js,.ts src/server/",
 		"start": "webpack-dev-server --config webpack.dev.js --progress --color",
 		"test": "jest",
 		"typecheck": "tsc -p tsconfig.json --noEmit",
@@ -132,8 +128,14 @@
 		"eslint-config-airbnb": "^17.1.0",
 		"eslint-config-prettier": "^4.2.0",
 		"eslint-config-typescript": "^1.1.0",
+<<<<<<< HEAD
 		"eslint-import-resolver-webpack": "^0.11.1",
 		"eslint-plugin-import": "^2.17.2",
+=======
+		"eslint-import-resolver-typescript": "^1.1.1",
+		"eslint-import-resolver-webpack": "^0.11.0",
+		"eslint-plugin-import": "^2.16.0",
+>>>>>>> Diffed eslint files to have common config and specific client/server ones
 		"eslint-plugin-jsx-a11y": "^6.2.1",
 		"eslint-plugin-prettier": "^3.1.0",
 		"eslint-plugin-react": "^7.13.0",
