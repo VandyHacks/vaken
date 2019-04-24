@@ -54,7 +54,7 @@ export const Profile: React.FunctionComponent<{}> = (): JSX.Element => {
 				draft[PROFILE] = { ...data.getUserByEmail };
 			});
 		}
-	}, [data]);
+	}, [data, setFormData]);
 
 	useEffect((): (() => void) => {
 		if (setActionButton) setActionButton(<HeaderButton text="Submit" onClick={submit} />);
@@ -62,7 +62,7 @@ export const Profile: React.FunctionComponent<{}> = (): JSX.Element => {
 		return () => {
 			if (setActionButton) setActionButton(undefined);
 		};
-	}, [formData]);
+	}, [formData, setActionButton, submit]);
 
 	return (
 		<FloatingPopup

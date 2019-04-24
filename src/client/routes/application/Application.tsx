@@ -106,7 +106,7 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 		return () => {
 			if (setActionButton) setActionButton(undefined);
 		};
-	}, []);
+	}, [setActionButton]);
 
 	const [formData, setFormData] = useImmer(initialFormState);
 

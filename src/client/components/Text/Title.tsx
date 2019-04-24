@@ -21,7 +21,7 @@ export const Title = styled.h1`
 	color: ${(props: Props) => props.color || 'black'};
 	margin: ${(props: Props) => props.margin || '1.5rem'};
 	margin-top: 0;
-	${(props: Props) => props.textAlign ? `text-align: ${props.textAlign};` : null};
+	${(props: Props) => (props.textAlign ? `text-align: ${props.textAlign};` : null)};
 `;
 
 export default Title;
