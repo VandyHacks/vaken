@@ -30,13 +30,12 @@
 		"build": "tsc && webpack --config webpack.prod.js --progress --colors",
 		"prod": "npm run build && node ./dist/server/index.js",
 		"format": "prettier --config .prettierrc.json --write \"./**/*.ts*(x)\"",
-		"lint-client": "eslint -c src/client/.eslintrc.js --ext .js,.jsx,.ts,.tsx src/client/",
-		"lint-server": "eslint -c src/server/.eslintrc.js --ext .js,.jsx,.ts,.tsx src/server/",
-		"lint-client-fix": "eslint -c src/client/.eslintrc.js --fix --ext .js,.jsx,.ts,.tsx src/client/",
-		"lint-server-fix": "eslint -c src/server/.eslintrc.js --fix --ext .js,.ts src/server/",
 		"start": "webpack-dev-server --config webpack.dev.js --progress --color",
 		"test": "jest --passWithNoTests",
-		"typecheck": "tsc -p tsconfig.json --noEmit"
+		"typecheck": "tsc -p tsconfig.json --noEmit",
+		"lint-check": "eslint --ext .js,.jsx,.ts,.tsx src/",
+		"lint-fix": "eslint --fix --ext .js,.jsx,.ts,.tsx src/",
+		"lint": "eslint"
 	},
 	"dependencies": {
 		"@koa/cors": "^2.2.3",
@@ -142,6 +141,7 @@
 		"eslint-config-airbnb": "^17.1.0",
 		"eslint-config-prettier": "^4.0.0",
 		"eslint-config-typescript": "^1.1.0",
+		"eslint-import-resolver-typescript": "^1.1.1",
 		"eslint-import-resolver-webpack": "^0.11.0",
 		"eslint-plugin-import": "^2.16.0",
 		"eslint-plugin-jsx-a11y": "^6.2.1",

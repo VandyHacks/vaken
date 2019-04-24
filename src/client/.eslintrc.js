@@ -1,5 +1,5 @@
+// for the client ONLY
 module.exports = {
-	parser: '@typescript-eslint/parser', // Specifies the ESLint parser
 	extends: [
 		'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
 		'plugin:react/recommended',
@@ -14,7 +14,7 @@ module.exports = {
 			},
 		},
 	},
-	plugins: ['sort-keys-fix', 'react', 'react-hooks'],
+	plugins: ['react', 'react-hooks'],
 	parserOptions: {
 		ecmaFeatures: {
 			jsx: true,
@@ -37,7 +37,6 @@ module.exports = {
 				extensions: ['.tsx', '.jsx'],
 			},
 		],
-		'sort-keys-fix/sort-keys-fix': ['error', 'asc', { caseSensitive: true, natural: true }],
 		'jsx-a11y/label-has-associated-control': [
 			1,
 			{
@@ -48,7 +47,7 @@ module.exports = {
 			},
 		],
 		'jsx-a11y/label-has-for': [0],
-		'typescript/explicit-function-return-type': "off",
-		'@typescript-eslint/explicit-function-return-type': "off",
+		'typescript/explicit-function-return-type': 'off',
+		'@typescript-eslint/explicit-function-return-type': 'off',
 	},
 };

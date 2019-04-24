@@ -1,8 +1,6 @@
 module.exports = {
-  "roots": [
-    "tests"
-  ],
-  "transform": {
-    "^.+\\.tsx?$": "ts-jest"
-  },
-}
+	roots: ['tests'],
+	transform: {
+		'^.+\\.tsx?$': 'ts-jest',
+	},
+};
