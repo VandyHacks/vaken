@@ -3,5 +3,10 @@
 	// "eslint.run": "onSave", // do this in your user settings if you want it
 	"eslint.packageManager": "npm",
 	"npm.enableScriptExplorer": true,
-	"editor.formatOnSave": true
+	"editor.formatOnSave": true,
+
+	"search.exclude": {
+		"**/node_modules": true,
+		"**/bower_components": true
+	}
 }
