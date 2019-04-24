@@ -26,4 +26,3 @@ const LeftImgButton = (props: Props): JSX.Element => {
 };
 
 export default LeftImgButton;
-// 	{/* Edge case of centering icons*/}
