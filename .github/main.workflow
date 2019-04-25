@@ -51,5 +51,5 @@ action "post slack message" {
   secrets = [
     "SLACK_BOT_TOKEN",
   ]
-  args = "{\"channel\": \"CDJEP2U1X\", \"text\": \"One or more dependencies of Vaken in the default branch have been changed; `npm i` is recommended.\"}}"
+  args = "{\"channel\": \"CJ67S2CSK\", \"text\": \"One or more dependencies of Vaken in the default branch have been changed; `npm i` is recommended.\"}}"
 }
