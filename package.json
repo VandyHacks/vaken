@@ -35,7 +35,7 @@
 		"lint-client-fix": "eslint -c src/client/.eslintrc.js --fix --ext .js,.jsx,.ts,.tsx src/client/",
 		"lint-server-fix": "eslint -c src/server/.eslintrc.js --fix --ext .js,.ts src/server/",
 		"start": "webpack-dev-server --config webpack.dev.js --progress --color",
-		"test": "jest --passWithNoTests",
+		"test": "jest",
 		"typecheck": "tsc -p tsconfig.json --noEmit"
 	},
 	"dependencies": {
