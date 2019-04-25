@@ -23,7 +23,7 @@ const app = new koa();
 const router = new koaRouter();
 
 // Default port to listen
-const port = 8080;
+const PORT = process.env.PORT || 8080;
 
 // Define a route handler for the default home page
 app.use(serve(`${__dirname}/app`));
@@ -43,9 +43,11 @@ app.use(passport.session());
 app.use(router.routes());
 app.use(userRouter.routes());
 
+const DB_URL = process.env.MONGO_URL || 'mongodb://localhost:27017/test';
+
 // Connect to mongo database
 mongoose
-	.connect('mongodb://localhost:27017/test', {
+	.connect(DB_URL, {
 		useCreateIndex: true,
 		useFindAndModify: false,
 		useNewUrlParser: true,
@@ -96,10 +98,10 @@ async function launchServer(): Promise<void> {
 
 	// Begin listening on the defined port
 	app.listen(
-		port,
+		PORT,
 		(): void => {
 			// eslint-disable-next-line no-console
-			console.log(`>>> Server started at http://localhost:${port}${apollo.graphqlPath}`);
+			console.log(`>>> Server started at http://localhost:${PORT}${apollo.graphqlPath}`);
 		}
 	);
 }
