@@ -27,6 +27,12 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run: 'npm run lint-check'
+  audit:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: 'npm audit --audit-level=critical --only=prod'
   test:
     <<: *defaults
     steps:
@@ -39,6 +45,9 @@ workflows:
   all:
     jobs:
       - install
+      - audit:
+          requires:
+            - install
       - test:
           requires:
             - install
