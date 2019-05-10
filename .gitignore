@@ -249,4 +249,5 @@ dist/
 dist
 .env
 
+# access our documentation via netlify
 docs/
