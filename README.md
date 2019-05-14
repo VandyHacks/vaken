@@ -3,11 +3,11 @@
 
 A next-gen hackathon registration system.
 
-### Why
+## Why
 
-Quill sucks. We rewrote it using modern tools.
+We wanted a modern platform to manage hackathons. 
 
-### Tooling
+## Tooling
 
 - TypeScript
 - GraphQL via Apollo
@@ -20,10 +20,13 @@ Quill sucks. We rewrote it using modern tools.
 - Koa
 
 
-### Screenshots
+## Screenshots
 
 :)
 
-### Contributing
+## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md)
+
+## Thanks
+- To [Netlify](https://netlify.com) for providing us with a free pro plan to manage our documentation site.
