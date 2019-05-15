@@ -39,7 +39,7 @@ export const ManageHackers: FunctionComponent = (): JSX.Element => {
 						render={() => {
 							if (loading) return <Spinner />;
 							if (error) {
-								console.log(error);
+								//	console.log(error);
 								return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 							}
 							return <HackerTable data={data.hackers} />;

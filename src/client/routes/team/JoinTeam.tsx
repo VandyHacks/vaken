@@ -7,7 +7,6 @@ import STRINGS from '../../assets/strings.json';
 import ActionButton from '../../components/Buttons/ActionButton';
 import { GET_TEAM } from './Team';
 import { AuthContext } from '../../contexts/AuthContext';
-import { FlexDiv } from '../../components/Containers/FlexContainers';
 
 const JOIN_TEAM = gql`
 	mutation JoinTeam($email: String!, $teamName: String!) {

@@ -5,9 +5,9 @@ import produce from 'immer';
 import SqLogo from '../../assets/img/square_hackathon_logo.svg';
 import STRINGS from '../../assets/strings.json';
 import NavButton from '../Buttons/NavButton';
-import { FlexStartColumn, SpaceBetweenColumn, FlexEndColumn } from '../Containers/FlexContainers';
+import { SpaceBetweenColumn, FlexEndColumn } from '../Containers/FlexContainers';
 import SmallCenteredText from '../Text/SmallCenteredText';
-import { currentAuth, AuthLevel, routes } from '../../assets/routes';
+import { routes } from '../../assets/routes';
 import AuthContext from '../../contexts/AuthContext';
 
 interface Props {}
@@ -40,12 +40,12 @@ const HorizontalLine = styled.hr`
 	margin-bottom: 2rem;
 `;
 
-const HorizontalLineWithoutPad = styled.hr`
-	margin: 0 2rem;
-	width: calc(100% - 4rem);
-	border: 0.03125rem solid white;
-	opacity: 0.1;
-`;
+// const HorizontalLineWithoutPad = styled.hr`
+// 	margin: 0 2rem;
+// 	width: calc(100% - 4rem);
+// 	border: 0.03125rem solid white;
+// 	opacity: 0.1;
+// `;
 
 const HorizontalLineLogout = styled(HorizontalLine)`
 	margin-top: 0;
@@ -118,7 +118,8 @@ const ColumnWithSeparators = styled.ul`
 `;
 
 const Sidebar = withRouter(
-	(props: Props): JSX.Element => {
+	// Removed props for eslint, no-unused-vars
+	(): JSX.Element => {
 		const currentUser = useContext(AuthContext);
 		return (
 			<Layout>

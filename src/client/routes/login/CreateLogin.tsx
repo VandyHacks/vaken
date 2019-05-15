@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import { Redirect } from 'react-router-dom';
 import emailIcon from '../../assets/img/email_icon.svg';
 import lockIcon from '../../assets/img/lock_icon.svg';
 import TextButton from '../../components/Buttons/TextButton';
