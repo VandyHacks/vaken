@@ -16,6 +16,7 @@ import OrganizerResolver from './resolvers/OrganizerResolver';
 import SponsorRepResolver from './resolvers/SponsorRepResolver';
 import SponsorResolver from './resolvers/SponsorResolver';
 import TeamResolver from './resolvers/TeamResolver';
+import logger from './logger';
 
 // eslint-disable-next-line new-cap
 const app = new koa();
@@ -57,11 +58,11 @@ mongoose
 	.then(
 		(): void => {
 			// eslint-disable-next-line no-console
-			console.log('>>> MongoDB Connected');
+			logger.log('>>> MongoDB Connected');
 		},
 		(err): void => {
 			// eslint-disable-next-line no-console
-			console.log('err:', err);
+			logger.log('err:', err);
 		}
 	);
 
@@ -103,7 +104,7 @@ async function launchServer(): Promise<void> {
 		PORT,
 		(): void => {
 			// eslint-disable-next-line no-console
-			console.log(`>>> Server started at http://localhost:${PORT}${apollo.graphqlPath}`);
+			logger.log(`>>> Server started at http://localhost:${PORT}${apollo.graphqlPath}`);
 		}
 	);
 }
