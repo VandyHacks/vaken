@@ -1,5 +1,6 @@
 {
 	"out": "./docs",
 	"ignoreCompilerErrors": true,
-	"mode": "file"
+	"mode": "file",
+	"src": "./src"
 }
