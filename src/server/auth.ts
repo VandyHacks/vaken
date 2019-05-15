@@ -8,6 +8,7 @@ import { HackerModel } from './models/Hacker';
 import AuthType from './enums/AuthType';
 import AuthLevel from './enums/AuthLevel';
 import Status from './enums/Status';
+import logger from './logger';
 
 // Local authentication for non-SSO users
 const LocalStrategy = require('passport-local').Strategy;
@@ -16,24 +17,24 @@ passport.use(
 	new LocalStrategy(
 		{ passReqToCallback: true },
 		async (req: any, username: string, password: string, done: any) => {
-			console.log('> Local verify function');
+			logger.log('> Local verify function');
 			const user = await UserModel.findOne({ email: username });
 
 			// no user
 			if (!user) {
-				console.log('> User does not exist');
+				logger.log('> User does not exist');
 				done(null, false);
 			} else if (user.authType !== AuthType.LOCAL) {
-				console.log('Wrong auth provider. Please use the standard local login.');
+				logger.log('Wrong auth provider. Please use the standard local login.');
 				done(null, false, { message: 'Wrong auth provider' });
 			} else {
 				if (!(await bcrypt.compare(password, user.password))) {
 					// wrong password
-					console.log('> Incorrect password');
+					logger.log('> Incorrect password');
 					done(null, false);
 				} else {
 					// found user and correct password
-					console.log('> Logging in.....');
+					logger.log('> Logging in.....');
 					done(null, user);
 				}
 			}
@@ -59,22 +60,22 @@ passport.use(
 			profile: GoogleProfile,
 			done: any
 		) => {
-			console.log('> Google verify function');
+			logger.log('> Google verify function');
 			if (profile.emails) {
 				const user = await UserModel.findOne({ email: profile.emails[0].value });
 
 				// found user
 				if (user) {
 					if (user.authType !== AuthType.GOOGLE) {
-						console.log('Wrong auth provider. Please use Google.');
+						logger.log('Wrong auth provider. Please use Google.');
 						done(null, false, { message: 'Wrong auth provider' });
 					} else {
-						console.log('> Logging in.....');
+						logger.log('> Logging in.....');
 						done(null, user);
 					}
 				} else {
 					// no user found, create new user
-					console.log('> Creating user.....');
+					logger.log('> Creating user.....');
 					const newUser = {
 						authLevel: AuthLevel.HACKER,
 						authType: AuthType.GOOGLE,
@@ -91,7 +92,7 @@ passport.use(
 							user: createdUser._id,
 						});
 						if (createdHacker) {
-							console.log(createdUser);
+							logger.log(createdUser);
 							done(null, createdUser);
 						} else {
 							done(null, false);
@@ -101,7 +102,7 @@ passport.use(
 					}
 				}
 			} else {
-				console.log('Missing email in auth profile');
+				logger.log('Missing email in auth profile');
 				done(null, false, { message: 'Profile is missing email' });
 			}
 		}
@@ -126,22 +127,22 @@ passport.use(
 			profile: GithubProfile,
 			done: any
 		) => {
-			console.log('> Github verify function');
+			logger.log('> Github verify function');
 			if (profile.emails) {
 				const user = await UserModel.findOne({ email: profile.emails[0].value });
 
 				// found user
 				if (user) {
 					if (user.authType !== AuthType.GITHUB) {
-						console.log('Wrong auth provider. Please use Github.');
+						logger.log('Wrong auth provider. Please use Github.');
 						done(null, false, { message: 'Wrong auth provider' });
 					} else {
-						console.log('> Logging in.....');
+						logger.log('> Logging in.....');
 						done(null, user);
 					}
 				} else {
 					// no user found, create new user
-					console.log('> Creating user.....');
+					logger.log('> Creating user.....');
 					const newUser = {
 						authLevel: AuthLevel.HACKER,
 						authType: AuthType.GITHUB,
@@ -158,7 +159,7 @@ passport.use(
 							user: createdUser._id,
 						});
 						if (createdHacker) {
-							console.log(createdUser);
+							logger.log(createdUser);
 							done(null, createdUser);
 						} else {
 							done(null, false);
@@ -168,7 +169,7 @@ passport.use(
 					}
 				}
 			} else {
-				console.log('Missing email in auth profile');
+				logger.log('Missing email in auth profile');
 				done(null, false, { message: 'Profile is missing email' });
 			}
 		}
