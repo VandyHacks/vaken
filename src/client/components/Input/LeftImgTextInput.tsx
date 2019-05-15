@@ -1,8 +1,8 @@
 import React from 'react';
-import produce from 'immer';
+// import produce from 'immer';
 import { RightPaddedImg, ButtonOutline } from '../Buttons/Buttons';
 import TextInput, { Props as InputProps } from './TextInput';
-import { checkValid, regexWrapper } from './helperFunctions';
+import { regexWrapper } from './helperFunctions';
 
 interface Props extends InputProps {
 	img: string;

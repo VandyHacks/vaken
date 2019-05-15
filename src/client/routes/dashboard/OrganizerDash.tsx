@@ -8,12 +8,7 @@ import { Spinner } from '../../components/Loading/Spinner';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import TextButton from '../../components/Buttons/TextButton';
-import {
-	OverflowContainer,
-	FlexRow,
-	FlexColumn,
-	FlexStartColumn,
-} from '../../components/Containers/FlexContainers';
+import { OverflowContainer, FlexStartColumn } from '../../components/Containers/FlexContainers';
 import 'chartjs-plugin-datalabels';
 import STRINGS from '../../assets/strings.json';
 
@@ -251,7 +246,7 @@ export const OrganizerDash: FunctionComponent = (): JSX.Element => {
 
 	if (loading) return <Spinner />;
 	if (error) {
-		console.log(error);
+		// console.log(error);
 		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 	}
 

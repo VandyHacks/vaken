@@ -132,7 +132,7 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 		<StyledForm ref={formRef}>
 			{config.map((section: ConfigSection, i: number) => {
 				const { fields, category } = section;
-				console.log('opensection', openSection);
+				// console.log('opensection', openSection);
 				return (
 					<Collapsible
 						onClick={toggleOpen}

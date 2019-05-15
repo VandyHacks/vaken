@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import React, { FunctionComponent, useRef, useState, useEffect } from 'react';
 import ResizeObserver from 'resize-observer-polyfill';
-import { FlexStartColumn, ContainerProps } from './FlexContainers';
+// import { FlexStartColumn, ContainerProps } from './FlexContainers';
 import { hexToRGB, Props as PopupProps } from './FloatingPopup';
 import DownArrow from '../../assets/img/down_arrow.svg';
 import UpArrow from '../../assets/img/up_arrow.svg';

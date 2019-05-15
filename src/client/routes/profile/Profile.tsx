@@ -2,8 +2,6 @@ import React, { useEffect, useContext } from 'react';
 import { useImmer } from 'use-immer';
 import { gql } from 'apollo-boost';
 import { useQuery } from 'react-apollo-hooks';
-import TextButton from '../../components/Buttons/TextButton';
-import STRINGS from '../../assets/strings.json';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import config from './ProfileConfig';
 import AuthContext from '../../contexts/AuthContext';
@@ -47,10 +45,10 @@ export const Profile: React.FunctionComponent<{}> = (): JSX.Element => {
 
 	useEffect((): void => {
 		// Update formData when graphql query changes
-		console.log(data.getUserByEmail);
+		// console.log(data.getUserByEmail);
 		if (data.getUserByEmail) {
 			setFormData(draft => {
-				console.log('setting form data');
+				// console.log('setting form data');
 				draft[PROFILE] = { ...data.getUserByEmail };
 			});
 		}
@@ -82,7 +80,7 @@ export const Profile: React.FunctionComponent<{}> = (): JSX.Element => {
 							const { title, fieldName, ...rest } = field;
 							const formCategory = formData[PROFILE] || {};
 							const fieldValue =
-								formCategory[fieldName] == undefined ? '' : formCategory[fieldName];
+								formCategory[fieldName] === undefined ? '' : formCategory[fieldName];
 
 							// Use either the class-based static method onChangeWrapper, or a defined
 							// updateFn in the config file, and finally, a fallback for string data types.

@@ -13,9 +13,9 @@ interface Props extends ButtonProps {
 }
 
 const LeftImgButton = (props: Props): JSX.Element => {
-	const { img, imgAlt, color, text, onClick, ...ButtonProps } = props;
+	const { img, imgAlt, color, text, onClick, ...PropsButtonProps } = props;
 	return (
-		<Button {...ButtonProps} onClick={onClick}>
+		<Button {...PropsButtonProps} onClick={onClick}>
 			{/* Edge case of centering icons */}
 			<FlexRow height="min-content" width="min-content">
 				<RightPaddedImg src={img} alt={imgAlt} />
