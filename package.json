@@ -5,7 +5,7 @@
 	"main": "dist/index.js",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/vu-cs3892-s19/vaken.git"
+		"url": "git+https://github.com/VandyHacks/vaken/issues.git"
 	},
 	"homepage": "https://vaken.vandyhacks.org",
 	"keywords": [
@@ -22,7 +22,7 @@
 		"Alan Wilms <alan.wilms@vanderbilt.edu>"
 	],
 	"bugs": {
-		"url": "https://github.com/vu-cs3892-s19/vaken/issues"
+		"url": "https://github.com/VandyHacks/vaken/issues"
 	},
 	"scripts": {
 		"start-server": "ts-node src/server/index.ts",
