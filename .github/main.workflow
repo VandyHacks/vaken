@@ -1,10 +1,6 @@
 workflow "Scan push for important changes" {
   on = "push"
-  resolves = ["Seekret", "post slack message"]
-}
-
-action "Seekret" {
-  uses = "docker://cdssnc/seekret-github-action"
+  resolves = ["post slack message"]
 }
 
 workflow "Label approved pull requests" {
