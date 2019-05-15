@@ -33,7 +33,10 @@
 		"start": "webpack-dev-server --config webpack.dev.js --progress --color",
 		"test": "jest",
 		"typecheck": "tsc -p tsconfig.json --noEmit",
-		"docs": "typedoc"
+		"docs": "typedoc",
+		"lint-check": "eslint --ext .js,.jsx,.ts,.tsx src/",
+		"lint-fix": "eslint --fix --ext .js,.jsx,.ts,.tsx src/",
+		"lint-ci": "eslint --ext .js,.jsx,.ts,.tsx src/ --format junit --output-file ~/reports/eslint.xml"
 	},
 	"dependencies": {
 		"@koa/cors": "^2.2.3",
