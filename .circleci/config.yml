@@ -26,7 +26,11 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/project
-      - run: 'npm run lint-check'
+      - run: 'npm run lint-ci'
+      - store_test_results:
+          path: ~/reports
+      - store_artifacts:
+          path: ~/reports   
   audit:
     <<: *defaults
     steps:
