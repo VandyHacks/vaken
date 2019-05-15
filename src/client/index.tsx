@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { createGlobalStyle } from 'styled-components';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import reset from 'styled-reset';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
@@ -11,7 +11,7 @@ import Frame from './routes/dashboard/Frame';
 import AuthContext from './contexts/AuthContext';
 import LoginContext from './contexts/LoginContext';
 import { User } from '../common/models/User';
-import addHackers from './temp/AddHackers';
+// import addHackers from './temp/AddHackers';
 
 const GlobalStyle = createGlobalStyle`
 	body {

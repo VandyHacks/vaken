@@ -103,11 +103,11 @@ export const HackerView: React.FunctionComponent<RouteComponentProps<{}>> = (
 				}
 
 				if (error) {
-					console.log(error);
+					// console.log(error);
 					return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 				}
 
-				console.log(data);
+				// console.log(data);
 				// console.log(data.getHackerByEmail.teamName);
 				const {
 					firstName,

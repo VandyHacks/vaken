@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import { Redirect } from 'react-router-dom';
 import emailIcon from '../../assets/img/email_icon.svg';
 import lockIcon from '../../assets/img/lock_icon.svg';
 import arrowIcon from '../../assets/img/right_arrow.svg';
@@ -106,7 +105,8 @@ export const PasswordLogin: React.FunctionComponent<Props> = (): JSX.Element => 
 				<TextLink to="/login">Forgot Username / Password?</TextLink>
 				<FlexRow>
 					<TextLink fontSize="1.4rem" color={STRINGS.ACCENT_COLOR} to="/login/create">
-						New User? Create Account <LeftPaddedImg src={arrowIcon} alt="Right Arrow" />
+						New User ? Create Account
+						<LeftPaddedImg src={arrowIcon} alt="Right Arrow" />
 					</TextLink>
 				</FlexRow>
 			</SpaceBetweenColumn>
