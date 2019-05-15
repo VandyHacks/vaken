@@ -35,7 +35,7 @@
 		"typecheck": "tsc -p tsconfig.json --noEmit",
 		"lint-check": "eslint --ext .js,.jsx,.ts,.tsx src/",
 		"lint-fix": "eslint --fix --ext .js,.jsx,.ts,.tsx src/",
-		"lint": "eslint"
+		"lint-ci": "eslint --ext .js,.jsx,.ts,.tsx src/ --format junit --output-file ~/reports/eslint.xml"
 	},
 	"dependencies": {
 		"@koa/cors": "^2.2.3",
