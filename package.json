@@ -5,7 +5,7 @@
 	"main": "dist/index.js",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/VandyHacks/vaken/issues.git"
+		"url": "git+https://github.com/VandyHacks/vaken.git"
 	},
 	"homepage": "https://vaken.vandyhacks.org",
 	"keywords": [
