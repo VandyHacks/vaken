@@ -134,7 +134,8 @@ export const addHackers = (die: boolean) => {
 				'Content-Type': 'application/json',
 			},
 			method: 'POST',
-		}).then(res => console.log(res.json));
+		});
+		//	Removed log statement on json for fetch.
 	});
 };
 
