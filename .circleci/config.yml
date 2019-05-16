@@ -28,9 +28,7 @@ jobs:
           at: ~/project
       - run: 'npm run lint-ci'
       - store_test_results:
-          path: ~/project/vaken/reports/eslint
-      - store_artifacts:
-          path: ~/project/vaken/reports/eslint   
+          path: ~/project/vaken/reports/lint  
   audit:
     <<: *defaults
     steps:
@@ -45,10 +43,7 @@ jobs:
       - run: 
           command: 'npm run test-ci && cd .. && ls'
       - store_test_results:
-          path: ~/project/vaken/reports/jest
-      - store_artifacts:
-          path: ~/project/vaken/reports/jest   
-          
+          path: ~/project/vaken/reports/test
 
 
 version: 2
