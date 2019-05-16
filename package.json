@@ -36,7 +36,8 @@
 		"lint-server-fix": "eslint -c src/server/.eslintrc.js --fix --ext .js,.ts src/server/",
 		"start": "webpack-dev-server --config webpack.dev.js --progress --color",
 		"test": "jest",
-		"typecheck": "tsc -p tsconfig.json --noEmit"
+		"typecheck": "tsc -p tsconfig.json --noEmit",
+		"docs": "typedoc"
 	},
 	"dependencies": {
 		"@koa/cors": "^2.2.3",
@@ -80,6 +81,7 @@
 		"styled-components": "^4.2.0",
 		"styled-reset": "^1.7.1",
 		"type-graphql": "^0.16.0",
+		"typedoc": "^0.14.2",
 		"typegoose": "^5.6.0",
 		"use-immer": "^0.1.0",
 		"yup": "^0.26.10"
