@@ -307,7 +307,7 @@ const actionRenderer = ({ rowData }: TableCellProps): JSX.Element => {
 	return (
 		<Actions className="ignore-select">
 			<Mutation mutation={UPDATE_STATUS}>
-				{mutation => (
+				{(mutation: MutationFn) => (
 					<RadioSlider
 						option1="Accept"
 						option2="Undecided"
@@ -704,7 +704,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 								)}
 								{hasSelection && (
 									<Mutation mutation={UPDATE_STATUS_AS_BATCH}>
-										{mutation => (
+										{(mutation: MutationFn) => (
 											<Float className="ignore-select">
 												<RadioSlider
 													option1="Accept"
