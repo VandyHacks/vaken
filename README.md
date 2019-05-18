@@ -1,12 +1,13 @@
 # Vaken
 [![CircleCI](https://circleci.com/gh/VandyHacks/vaken.svg?style=svg)](https://circleci.com/gh/VandyHacks/vaken)
+[![codecov](https://codecov.io/gh/VandyHacks/vaken/branch/dev/graph/badge.svg)](https://codecov.io/gh/VandyHacks/vaken)
+![GitHub](https://img.shields.io/github/license/vandyhacks/vaken.svg)
 
 A next-gen hackathon registration system.
 
 ## Why
 
-Quill sucks. We rewrote it using modern tools.
-
+We needed a way to manage attendees and we wanted to provide a great developer experience as well. 
 ## Tooling
 
 - TypeScript
