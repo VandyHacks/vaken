@@ -1,5 +1,5 @@
 # Vaken
-[![CircleCI](https://circleci.com/gh/VandyHacks/vaken.svg?style=svg)](https://circleci.com/gh/VandyHacks/vaken)
+[![CircleCI](https://circleci.com/gh/VandyHacks/vaken.svg?style=svg)](https://circleci.com/gh/VandyHacks/vaken) [![Greenkeeper badge](https://badges.greenkeeper.io/VandyHacks/vaken.svg)](https://greenkeeper.io/)
 
 A next-gen hackathon registration system.
 
