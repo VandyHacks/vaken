@@ -1,0 +1,1 @@
+module.exports = require('../../src/client/.eslintrc'); // just use the frontend eslint config
