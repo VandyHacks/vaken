@@ -2,6 +2,7 @@
 [![CircleCI](https://circleci.com/gh/VandyHacks/vaken.svg?style=svg)](https://circleci.com/gh/VandyHacks/vaken)
 [![codecov](https://codecov.io/gh/VandyHacks/vaken/branch/dev/graph/badge.svg)](https://codecov.io/gh/VandyHacks/vaken)
 ![GitHub](https://img.shields.io/github/license/vandyhacks/vaken.svg)
+[![Depfu](https://badges.depfu.com/badges/cef18db6a35fb2d23a3a917ea9b6d852/overview.svg)](https://depfu.com/github/VandyHacks/vaken?project_id=7955)
 
 A next-gen hackathon registration system.
 
