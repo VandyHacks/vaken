@@ -60,7 +60,7 @@
 		"koa-router": "^7.4.0",
 		"koa-session": "^5.11.0",
 		"koa-static": "^5.0.0",
-		"mongoose": "^5.5.8",
+		"mongoose": "^5.4.15",
 		"passport-github2": "^0.1.11",
 		"passport-google-oauth": "^1.0.0",
 		"passport-local": "^1.0.0",
