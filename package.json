@@ -131,7 +131,7 @@
 		"error-overlay-webpack-plugin": "^0.1.7",
 		"eslint": "^5.16.0",
 		"eslint-config-airbnb": "^17.1.0",
-		"eslint-config-prettier": "^4.2.0",
+		"eslint-config-prettier": "^4.3.0",
 		"eslint-config-typescript": "^1.1.0",
 		"eslint-import-resolver-typescript": "^1.1.1",
 		"eslint-import-resolver-webpack": "^0.11.1",
