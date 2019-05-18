@@ -571,7 +571,9 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 					options={columnOptions}
 					className="basic-multi-select"
 					classNamePrefix="select"
-					onChange={value => onTableColumnSelect(table)(value as ValueType<Option>)}
+					onChange={(value: ValueType<Option>) =>
+						onTableColumnSelect(table)(value as ValueType<Option>)
+					}
 				/>
 				<SearchBox
 					width="100%"
