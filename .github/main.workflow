@@ -1,4 +1,4 @@
-workflow "Scan push for important changes" {
+workflow "Scan for dependency changes" {
   on = "push"
   resolves = ["post slack message"]
 }
@@ -48,4 +48,19 @@ action "post slack message" {
     "SLACK_BOT_TOKEN",
   ]
   args = "{\"channel\": \"CJ67S2CSK\", \"text\": \"One or more dependencies of Vaken in the default branch have been changed; `npm i` is recommended.\"}}"
+}
+
+workflow "Make a draft PR onpush" {
+  on = "push"
+  resolves = ["make draft pr"]
+}
+
+
+action "make draft pr" {
+  uses = "vsoch/pull-request-action@master"
+  secrets = ["GITHUB_TOKEN"]
+  env = {
+    PULL_REQUEST_DRAFT = "true"
+    PULL_REQUEST_BRANCH = "dev"
+  }
 }
