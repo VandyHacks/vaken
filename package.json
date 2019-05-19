@@ -40,7 +40,7 @@
 		"lint-ci": "eslint --ext .js,.jsx,.ts,.tsx src/ --format junit --output-file ./reports/lint/eslint/results.xml"
 	},
 	"dependencies": {
-		"@koa/cors": "^2.2.3",
+		"@koa/cors": "^3.0.0",
 		"@svgr/webpack": "^4.2.0",
 		"apollo-boost": "^0.3.1",
 		"apollo-server-koa": "^2.5.0",
