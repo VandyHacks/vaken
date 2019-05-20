@@ -28,7 +28,13 @@ jobs:
           at: ~/project
       - run: 'npm run lint-ci'
       - store_test_results:
-          path: ~/project/vaken/reports/lint  
+          path: ~/project/vaken/reports/lint
+  typecheck:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: 'npm run typecheck'  
   audit:
     <<: *defaults
     steps:
@@ -58,6 +64,9 @@ workflows:
           requires:
             - install
       - lint:
+          requires:
+            - install
+      - typecheck:
           requires:
             - install
   version: 2
