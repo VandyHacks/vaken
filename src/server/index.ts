@@ -57,12 +57,10 @@ mongoose
 	})
 	.then(
 		(): void => {
-			// eslint-disable-next-line no-console
-			logger.log('>>> MongoDB Connected');
+			logger.info('>>> MongoDB Connected');
 		},
 		(err): void => {
-			// eslint-disable-next-line no-console
-			logger.log('err:', err);
+			logger.error('err:', err);
 		}
 	);
 
@@ -103,8 +101,7 @@ async function launchServer(): Promise<void> {
 	app.listen(
 		PORT,
 		(): void => {
-			// eslint-disable-next-line no-console
-			logger.log(`>>> Server started at http://localhost:${PORT}${apollo.graphqlPath}`);
+			logger.info(`>>> Server started at http://localhost:${PORT}${apollo.graphqlPath}`);
 		}
 	);
 }

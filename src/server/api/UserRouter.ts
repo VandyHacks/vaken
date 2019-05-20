@@ -35,7 +35,7 @@ userRouter.get('/api/whoami', async (ctx, next) => {
  * Route for logging out
  */
 userRouter.get('/api/logout', async (ctx, next) => {
-	logger.log('> Logging out...');
+	logger.debug('> Logging out...');
 	ctx.logout();
 	ctx.redirect('/login');
 	await next();
@@ -47,19 +47,19 @@ userRouter.get('/api/logout', async (ctx, next) => {
  */
 userRouter.post('/api/register/hacker', async (ctx, next) => {
 	if (ctx.request.body.email) {
-		logger.log('Please send email in the username field');
+		logger.error('Please send email in the username field');
 		ctx.throw(400);
 	}
 	const existingUser = await UserModel.findOne({ email: ctx.request.body.username });
 
 	// found user
 	if (existingUser) {
-		logger.log('Error: Account with that email already exists');
+		logger.error('Error: Account with that email already exists');
 		ctx.throw(409);
 		await next();
 	} else {
 		//no user found, create new user
-		logger.log('> Creating new local user.....');
+		logger.debug('> Creating new local user.....');
 		const userData = {
 			...ctx.request.body,
 			authLevel: ctx.request.body.authLevel ? ctx.request.body.authLevel : AuthLevel.HACKER, // FIXME: Make sure people can't do this in prod
@@ -71,7 +71,7 @@ userRouter.post('/api/register/hacker', async (ctx, next) => {
 
 		// successfully created user, now create hacker
 		if (createdUser) {
-			logger.log('Created User');
+			logger.debug('Created User');
 			const createdHacker = await HackerModel.create({
 				email: createdUser.email,
 				gradYear: ctx.request.body.gradYear,
@@ -87,16 +87,16 @@ userRouter.post('/api/register/hacker', async (ctx, next) => {
 					username: createdUser.email,
 				};
 				ctx.login(createdUser);
-				logger.log('Created Hacker');
+				logger.debug('Created Hacker');
 				ctx.redirect('/dashboard');
 				await next();
 			} else {
-				logger.log('Error creating new local hacker');
+				logger.error('Error creating new local hacker');
 				ctx.throw(401);
 				await next();
 			}
 		} else {
-			logger.log('Error creating new local user');
+			logger.error('Error creating new local user');
 			ctx.throw(401);
 			await next();
 		}
@@ -120,12 +120,12 @@ userRouter.get('/api/auth/status', async ctx => {
  */
 userRouter.post('/api/login', async (ctx, next) => {
 	return passport.authenticate('local', async (err: any, user: any, info: any, status: any) => {
-		logger.log('> Local auth');
+		logger.debug('> Local auth');
 		if (user) {
 			ctx.body = { authLevel: user.authLevel, success: true, username: user.email };
 			ctx.login(user);
-			logger.log('> User:');
-			logger.log(ctx.state.user);
+			logger.debug('> User:');
+			logger.debug(ctx.state.user);
 			ctx.redirect('/dashboard');
 			await next();
 		} else {
@@ -147,8 +147,8 @@ userRouter.get('/api/auth/google/callback', async (ctx, next) => {
 		if (user) {
 			ctx.body = { authLevel: user.authLevel, success: true, username: user.email };
 			ctx.login(user);
-			logger.log('> User:');
-			logger.log(ctx.state.user);
+			logger.debug('> User:');
+			logger.debug(ctx.state.user);
 			ctx.redirect('/dashboard');
 			await next();
 		} else {
@@ -168,8 +168,8 @@ userRouter.get('/api/auth/github/callback', async (ctx, next) => {
 		if (user) {
 			ctx.body = { authLevel: user.authLevel, success: true, username: user.email };
 			ctx.login(user);
-			logger.log('> User:');
-			logger.log(ctx.state.user);
+			logger.debug('> User:');
+			logger.debug(ctx.state.user);
 			ctx.redirect('/dashboard');
 			await next();
 		} else {

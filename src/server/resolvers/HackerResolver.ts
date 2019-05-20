@@ -185,7 +185,7 @@ class HackerResolver {
 		try {
 			const res = await HackerModel.updateOne({ email }, { $set: filteredData });
 			if (res.nModified === 0) {
-				logger.log('Failed to update hacker');
+				logger.warn('Failed to update hacker');
 				return false;
 			}
 		} catch (err) {
@@ -296,7 +296,7 @@ class HackerResolver {
 					{ $push: { teamMembers: { _id: hacker._id } }, $set: { size: team.size + 1 } }
 				);
 				if (res.nModified === 0) {
-					logger.log('Failed to add hacker to team');
+					logger.warn('Failed to add hacker to team');
 					return false;
 				}
 			} catch (err) {
@@ -311,7 +311,7 @@ class HackerResolver {
 				{ $set: { teamName: teamName } }
 			);
 			if (res.nModified === 0) {
-				logger.log('Failed to update hacker team');
+				logger.warn('Failed to update hacker team');
 				return false;
 			}
 		} catch (err) {
@@ -361,7 +361,7 @@ class HackerResolver {
 			// Remove teamName from Hacker's profile
 			const res = await HackerModel.updateOne({ _id: hacker._id }, { $unset: { teamName: '' } });
 			if (res.nModified === 0) {
-				logger.log('Failed to remove team name');
+				logger.warn('Failed to remove team name');
 				return false;
 			}
 
