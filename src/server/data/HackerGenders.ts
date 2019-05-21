@@ -4,7 +4,7 @@ import { ObjectType, Field } from 'type-graphql';
 import Gender from '../enums/Gender';
 
 @ObjectType({ description: 'DTO for a count of hacker genders' })
-export class HackerGenders {
+export default class HackerGenders {
 	@Field()
 	public [Gender.Male]: number = 0;
 
@@ -20,5 +20,3 @@ export class HackerGenders {
 	@Field()
 	public UNKNOWN: number = 0;
 }
-
-export default HackerGenders;

@@ -4,7 +4,7 @@ import { ObjectType, Field } from 'type-graphql';
 import ShirtSize from '../enums/ShirtSize';
 
 @ObjectType({ description: 'DTO for a count of hacker shirt sizes' })
-export class HackerShirtSizes {
+export default class HackerShirtSizes {
 	@Field()
 	public [ShirtSize.UXS]: number = 0;
 
@@ -41,5 +41,3 @@ export class HackerShirtSizes {
 	@Field()
 	public UNKNOWN: number = 0;
 }
-
-export default HackerShirtSizes;

@@ -1,5 +1,4 @@
 import React from 'react';
-// import produce from 'immer';
 import { RightPaddedImg, ButtonOutline } from '../Buttons/Buttons';
 import TextInput, { Props as InputProps } from './TextInput';
 import { regexWrapper } from './helperFunctions';

@@ -1,14 +1,14 @@
 import 'reflect-metadata';
 import { Field, ObjectType, InputType } from 'type-graphql';
 
-import { User } from './User';
+import User from './User';
 import Ethnicity from '../enums/Ethnicity';
 import Race from '../enums/Race';
 import Status from '../enums/Status';
 
 @ObjectType({ description: 'DTO for a Vaken hacker' })
 @InputType()
-export class Hacker extends User {
+export default class Hacker extends User {
 	@Field()
 	public status: Status = Status.Created;
 
@@ -69,5 +69,3 @@ export class Hacker extends User {
 	@Field({ nullable: true })
 	public teamName?: string;
 }
-
-export default Hacker;
