@@ -6,7 +6,7 @@ import Tier from '../enums/Tier';
 
 @ObjectType({ description: 'DTO for a Vaken sponsor' })
 @InputType()
-export class Sponsor {
+export default class Sponsor {
 	@Field()
 	public name: string = '';
 
@@ -31,5 +31,3 @@ export class Sponsor {
 	@Field()
 	public lightningTalkInfo?: string;
 }
-
-export default Sponsor;

@@ -7,8 +7,4 @@ module.exports = {
 	rules: {
 		'sort-keys-fix/sort-keys-fix': ['error', 'asc', { caseSensitive: true, natural: true }],
 	},
-	env: {
-		browser: true,
-		node: true
-	}
 };
