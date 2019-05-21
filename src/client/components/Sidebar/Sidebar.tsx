@@ -37,13 +37,6 @@ const HorizontalLine = styled.hr`
 	margin-bottom: 2rem;
 `;
 
-// const HorizontalLineWithoutPad = styled.hr`
-// 	margin: 0 2rem;
-// 	width: calc(100% - 4rem);
-// 	border: 0.03125rem solid white;
-// 	opacity: 0.1;
-// `;
-
 const HorizontalLineLogout = styled(HorizontalLine)`
 	margin-top: 0;
 	margin-bottom: 1rem;

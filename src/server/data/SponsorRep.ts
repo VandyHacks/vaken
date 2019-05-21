@@ -2,10 +2,10 @@ import 'reflect-metadata';
 import { Field, ObjectType } from 'type-graphql';
 
 import User from './User';
-import { Sponsor } from './Sponsor';
+import Sponsor from './Sponsor';
 
 @ObjectType({ description: 'DTO for a Vaken sponsor rep' })
-export class SponsorRep extends User {
+export default class SponsorRep extends User {
 	@Field(() => [Sponsor])
 	public sponsors!: [Sponsor];
 
@@ -15,5 +15,3 @@ export class SponsorRep extends User {
 	@Field()
 	public leadRep!: boolean;
 }
-
-export default SponsorRep;

@@ -8,7 +8,7 @@ import ShirtSize from '../enums/ShirtSize';
 import DietaryRestrictions from '../enums/DietaryRestrictions';
 
 @ObjectType({ description: 'DTO for a generic Vaken user' })
-export class User {
+export default class User {
 	@Field()
 	public email!: string;
 
@@ -45,5 +45,3 @@ export class User {
 	@Field(() => [DietaryRestrictions], { nullable: true })
 	public dietaryRestrictions?: [DietaryRestrictions];
 }
-
-export default User;

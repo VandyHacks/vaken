@@ -4,7 +4,7 @@ import { ObjectType, Field } from 'type-graphql';
 import Status from '../enums/Status';
 
 @ObjectType({ description: 'DTO for a count of hacker statuses' })
-export class HackerStatuses {
+export default class HackerStatuses {
 	@Field()
 	public [Status.Created]: number = 0;
 
@@ -26,5 +26,3 @@ export class HackerStatuses {
 	@Field()
 	public [Status.Rejected]: number = 0;
 }
-
-export default HackerStatuses;
