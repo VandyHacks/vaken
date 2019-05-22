@@ -130,7 +130,7 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 
 	return (
 		<StyledForm ref={formRef}>
-			{config.map((section: ConfigSection, i: number) => {
+			{config.map((section: ConfigSection) => {
 				const { fields, category } = section;
 				// console.log('opensection', openSection);
 				return (

@@ -17,8 +17,6 @@ import {
 	passwordValidation,
 } from '../../../common/ValidationFunctions';
 
-interface Props {}
-
 /**
  * @brief Validates and submits login information to server
  * @param {string} username - username/email of user's account
@@ -28,13 +26,16 @@ interface Props {}
  */
 export const validateAndSubmitLogin = (
 	username: string,
-	password: string,
-	setInvalidFn: React.Dispatch<React.SetStateAction<boolean>>
+	password: string
+	// setInvalidFn: React.Dispatch<React.SetStateAction<boolean>>
 ): void => {
 	const emailValid = emailValidation(username);
 	const passValid = passwordValidation(password);
 	// Do one more check for valid fields (to handle edge case where
 	// constructor sets valids to true)
+	if (emailValid && passValid) {
+		// dummy
+	}
 };
 
 /**

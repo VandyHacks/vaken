@@ -47,7 +47,7 @@ const Rectangle = styled.div`
 	background: ${STRINGS.ACCENT_COLOR};
 `;
 
-const Frame: FunctionComponent = (props): JSX.Element => {
+const Frame: FunctionComponent = (): JSX.Element => {
 	const currentUser = useContext(AuthContext);
 	const [ActionButton, setActionButton] = useState<JSX.Element | undefined>(undefined);
 	if (window.location.pathname.startsWith('/login')) {
