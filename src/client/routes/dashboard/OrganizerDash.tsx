@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { gql } from 'apollo-boost';
 import { useQuery } from 'react-apollo-hooks';
 import styled from 'styled-components';
+import { ChartOptions } from 'chart.js';
+
 import { Spinner } from '../../components/Loading/Spinner';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
@@ -130,7 +132,7 @@ const barStatusData = (data: { [key: string]: number }) => {
 	};
 };
 
-const barStatusOptions = {
+const barStatusOptions: ChartOptions = {
 	legend: {
 		display: false,
 	},
