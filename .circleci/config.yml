@@ -1,6 +1,6 @@
 defaults: &defaults
   docker:
-    - image: 'circleci/node:11.9'
+    - image: 'circleci/node:12.2'
   working_directory: ~/project/vaken
 
 jobs:
