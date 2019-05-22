@@ -72,7 +72,7 @@
 		"react-apollo-hooks": "^0.4.5",
 		"react-chartjs-2": "^2.7.6",
 		"react-dom": "^16.8.6",
-		"react-router-dom": "^4.3.1",
+		"react-router-dom": "^5.0.0",
 		"react-select": "^2.4.3",
 		"react-selectable-fast": "^2.2.2",
 		"react-sortable-hoc": "^1.9.1",
