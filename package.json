@@ -80,7 +80,6 @@
 		"react-virtualized": "^9.21.1",
 		"reflect-metadata": "^0.1.13",
 		"resize-observer-polyfill": "^1.5.1",
-		"style-loader": "^0.23.1",
 		"styled-components": "^4.2.0",
 		"styled-reset": "^1.7.1",
 		"type-graphql": "^0.16.0",
