@@ -17,6 +17,8 @@ import {
 import { Spinner } from '../../components/Loading/Spinner';
 import { HeaderButton } from '../../components/Buttons/HeaderButton';
 import { GridColumn } from '../../components/Containers/GridContainers';
+import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
+import STRINGS from '../../assets/strings.json';
 
 const GET_USER_PROFILE = gql`
 	query GET_USER_PROFILE($email: String!) {
@@ -62,6 +64,12 @@ export const Profile: React.FunctionComponent<{}> = (): JSX.Element => {
 		};
 	}, [formData, setActionButton, submit]);
 
+	// if error getting profile
+	if (error) {
+		// console.log(error);
+		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
+	}
+	// if successfully got profile
 	return (
 		<FloatingPopup
 			borderRadius="1rem"
