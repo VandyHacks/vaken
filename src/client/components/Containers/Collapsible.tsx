@@ -1,18 +1,17 @@
 import styled from 'styled-components';
-import React, { FunctionComponent, useRef, useState, useEffect } from 'react';
-import ResizeObserver from 'resize-observer-polyfill';
-// import { FlexStartColumn, ContainerProps } from './FlexContainers';
+import React, { FunctionComponent } from 'react';
 import { hexToRGB, Props as PopupProps } from './FloatingPopup';
 import DownArrow from '../../assets/img/down_arrow.svg';
 import UpArrow from '../../assets/img/up_arrow.svg';
 
+/*
 export const useMeasure = (): any => {
 	const ref = useRef<any>();
 	const [bounds, set] = useState({ height: 0, left: 0, top: 0, width: 0 });
 	const [ro] = useState(() => new ResizeObserver(([entry]: any) => set(entry.contentRect)));
 	useEffect(() => (ro.observe(ref.current), ro.disconnect), [ro]);
 	return [{ ref }, bounds];
-};
+}; */
 
 const CollapsibleHeader = styled.button`
 	border-radius: 1rem;
