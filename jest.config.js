@@ -1,6 +1,9 @@
+/* eslint-disable */
 module.exports = {
-	roots: ['tests'],
-	transform: {
-		'^.+\\.tsx?$': 'ts-jest',
-	},
+	collectCoverage: true,
+	collectCoverageFrom: ['./src/**/*.{ts,tsx}'],
+	preset: 'ts-jest',
+	reporters: ['default', ['jest-junit', { outputDirectory: './reports/test/jest', outputName: 'results.xml' }]],
+	testEnvironment: 'node',
+
 };

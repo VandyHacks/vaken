@@ -16,6 +16,7 @@ import OrganizerResolver from './resolvers/OrganizerResolver';
 import SponsorRepResolver from './resolvers/SponsorRepResolver';
 import SponsorResolver from './resolvers/SponsorResolver';
 import TeamResolver from './resolvers/TeamResolver';
+import logger from './logger';
 
 // eslint-disable-next-line new-cap
 const app = new koa();
@@ -34,7 +35,7 @@ app.keys = ['secretsauce'];
 
 // Authentication using Passport
 if (process.env.NODE_ENV !== 'production') {
-	require('dotenv').load();
+	require('dotenv').config();
 }
 require('./auth');
 
@@ -56,12 +57,10 @@ mongoose
 	})
 	.then(
 		(): void => {
-			// eslint-disable-next-line no-console
-			console.log('>>> MongoDB Connected');
+			logger.info('>>> MongoDB Connected');
 		},
 		(err): void => {
-			// eslint-disable-next-line no-console
-			console.log('err:', err);
+			logger.error('err:', err);
 		}
 	);
 
@@ -102,8 +101,7 @@ async function launchServer(): Promise<void> {
 	app.listen(
 		PORT,
 		(): void => {
-			// eslint-disable-next-line no-console
-			console.log(`>>> Server started at http://localhost:${PORT}${apollo.graphqlPath}`);
+			logger.info(`>>> Server started at http://localhost:${PORT}${apollo.graphqlPath}`);
 		}
 	);
 }

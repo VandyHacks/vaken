@@ -95,6 +95,7 @@ export const HackerView: React.FunctionComponent<RouteComponentProps<{}>> = (
 		return <Redirect to="/manageHackers" />;
 	}
 	return (
+		// fixed type issues for data, loading, error by pinning @react/types. watch this issue: apollographql/react-apollo#2971
 		<Query query={GET_HACKER_DATA} variables={{ email: location.state.email }}>
 			{({ data, loading, error }) => {
 				if (loading) {

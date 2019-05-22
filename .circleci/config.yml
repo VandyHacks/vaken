@@ -1,6 +1,6 @@
 defaults: &defaults
   docker:
-    - image: 'circleci/node:11.9'
+    - image: 'circleci/node:12.2'
   working_directory: ~/project/vaken
 
 jobs:
@@ -26,7 +26,15 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/project
-      - run: 'npm run lint-check'
+      - run: 'npm run lint-ci'
+      - store_test_results:
+          path: ~/project/vaken/reports/lint
+  typecheck:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: 'npm run typecheck'  
   audit:
     <<: *defaults
     steps:
@@ -38,7 +46,10 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/project
-      - run: 'npm t'
+      - run: 
+          command: 'npm run test-ci'
+      - store_test_results:
+          path: ~/project/vaken/reports/test
 
 version: 2
 workflows:
@@ -52,6 +63,9 @@ workflows:
           requires:
             - install
       - lint:
+          requires:
+            - install
+      - typecheck:
           requires:
             - install
   version: 2
