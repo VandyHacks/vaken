@@ -10,10 +10,12 @@
 	"homepage": "https://vaken.vandyhacks.org",
 	"keywords": [
 		"hackathon",
-		"immer",
+		"graphql",
+		"typescript",
+		"koa",
 		"react",
-		"registration",
-		"ts"
+		"mongodb",
+		"registration"
 	],
 	"contributors": [
 		"Matt Leon <matthew.leon@vanderbilt.edu> (https://mattleon.com)",
@@ -150,7 +152,6 @@
 		"image-webpack-loader": "^4.6.0",
 		"jest": "^24.8.0",
 		"nodemon": "^1.18.9",
-		"passport-google-oauth2": "^0.2.0",
 		"pino-pretty": "^3.0.0",
 		"prettier": "^1.17.1",
 		"prettier-eslint": "^8.8.2",
