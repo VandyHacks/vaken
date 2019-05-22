@@ -64,7 +64,7 @@
 		"koa-static": "^5.0.0",
 		"mongoose": "^5.5.10",
 		"passport-github2": "^0.1.11",
-		"passport-google-oauth": "^1.0.0",
+		"passport-google-oauth": "^2.0.0",
 		"passport-local": "^1.0.0",
 		"pino": "^5.12.5",
 		"react": "^16.8.6",
