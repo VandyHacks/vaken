@@ -40,10 +40,9 @@ export const validateAndSubmitLogin = (
 
 /**
  * PasswordLogin is React Hooks component that will display a password login prompt
- * @param {Props} props - currently not used
  * @returns {JSX.Element} a React.Fragment containing inputs and a login button
  */
-export const PasswordLogin: React.FunctionComponent<Props> = (): JSX.Element => {
+export const PasswordLogin: React.FunctionComponent = (): JSX.Element => {
 	const [email, setEmail] = useState('');
 	const [pass, setPass] = useState('');
 	const [invalid, setInvalid] = useState(false);
