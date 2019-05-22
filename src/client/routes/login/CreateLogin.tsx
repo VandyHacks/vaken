@@ -17,7 +17,6 @@ import { LoginContext } from '../../contexts/LoginContext';
 
 /**
  * PasswordLogin is React Hooks component that will display a password login prompt
- * @param {Props} props - currently not used
  * @returns {JSX.Element} a React.Fragment containing inputs and a login button
  */
 export const PasswordLogin: React.FunctionComponent = (): JSX.Element => {
