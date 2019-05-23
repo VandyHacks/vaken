@@ -15,10 +15,10 @@ class UserResolver {
 		description: 'Return a single User corresponding to a known email address',
 		nullable: true,
 	})
-	public static async user(@Arg('email') email: string): Promise<User | undefined> {
+	public static async user(@Arg('email') email: string): Promise<User> {
 		const user = await UserModel.findOne({ email });
 		if (!user) {
-			return undefined;
+			throw new Error('User does not exist!');
 		}
 		const userObject = user.toObject();
 		delete userObject._id;
