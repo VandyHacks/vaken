@@ -37,8 +37,8 @@
 		"test-ci": "jest --ci --runInBand",
 		"typecheck": "tsc -p tsconfig.json --noEmit",
 		"docs": "typedoc",
-		"lint-check": "eslint --report-unused-disable-directives --ext .js,.jsx,.ts,.tsx __tests__/ src/",
-		"lint-fix": "eslint --report-unused-disable-directives --fix --ext .js,.jsx,.ts,.tsx __tests__/ src/",
+		"lint-check": "eslint --cache --report-unused-disable-directives --ext .js,.jsx,.ts,.tsx __tests__/ src/",
+		"lint-fix": "eslint --cache --report-unused-disable-directives --fix --ext .js,.jsx,.ts,.tsx __tests__/ src/",
 		"lint-ci": "eslint --ext .js,.jsx,.ts,.tsx __tests__/ src/ --format junit --output-file ./reports/lint/eslint/results.xml"
 	},
 	"dependencies": {
