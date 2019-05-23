@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { NavLink as UglyNavLink, withRouter } from 'react-router-dom';
 import produce from 'immer';
 // @ts-ignore
-import SqLogo from '../../assets/img/square_hackathon_logo.svg?inline';
+import SqLogo from '../../assets/img/square_hackathon_logo.svg';
 import STRINGS from '../../assets/strings.json';
 import NavButton from '../Buttons/NavButton';
 import { FlexStartColumn, SpaceBetweenColumn, FlexEndColumn } from '../Containers/FlexContainers';
