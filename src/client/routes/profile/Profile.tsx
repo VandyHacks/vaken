@@ -92,11 +92,12 @@ export const Profile: React.FunctionComponent<{}> = (): JSX.Element => {
 
 							// Use either the class-based static method onChangeWrapper, or a defined
 							// updateFn in the config file, and finally, a fallback for string data types.
-							const onChange = field.Component.updateFn
-								? field.Component.updateFn(setFormData, PROFILE, fieldName)
-								: field.updateFn
+							const onChangeFallback = field.updateFn
 								? field.updateFn(setFormData, PROFILE, fieldName)
 								: formChangeWrapper(setFormData, PROFILE, fieldName);
+							const onChange = field.Component.updateFn
+								? field.Component.updateFn(setFormData, PROFILE, fieldName)
+								: onChangeFallback;
 
 							return (
 								<StyledQuestion key={title} htmlFor={title}>

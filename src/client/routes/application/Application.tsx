@@ -147,11 +147,12 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 
 							// Use either the class-based static method onChangeWrapper, or a defined
 							// updateFn in the config file, and finally, a fallback for string data types.
-							const onChange = field.Component.updateFn
-								? field.Component.updateFn(setFormData, category, fieldName)
-								: field.updateFn
+							const onChangeFallback = field.updateFn
 								? field.updateFn(setFormData, category, fieldName)
 								: formChangeWrapper(setFormData, category, fieldName);
+							const onChange = field.Component.updateFn
+								? field.Component.updateFn(setFormData, category, fieldName)
+								: onChangeFallback;
 
 							return (
 								<StyledQuestion key={title} htmlFor={title}>
