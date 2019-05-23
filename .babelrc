@@ -1,19 +1,15 @@
 {
-    "presets": [
-        "@babel/env",
-        "@babel/preset-typescript",
-        "@babel/preset-react"
-    ],
-    "plugins": [
-        "@babel/proposal-class-properties",
-        "@babel/proposal-object-rest-spread",
-        "@babel/proposal-export-namespace-from",
-        "@babel/proposal-throw-expressions",
-        "@babel/syntax-dynamic-import",
-        "babel-plugin-styled-components",
-        ["import", {
-            "libraryName": "antd",
-            "style": true,   // or 'css'
-        }]
-    ]
+	"presets": [
+		"@babel/env",
+		"@babel/preset-typescript",
+		"@babel/preset-react"
+	],
+	"plugins": [
+		"@babel/proposal-class-properties",
+		"@babel/proposal-object-rest-spread",
+		"@babel/proposal-export-namespace-from",
+		"@babel/proposal-throw-expressions",
+		"@babel/syntax-dynamic-import",
+		"babel-plugin-styled-components"
+	]
 }
