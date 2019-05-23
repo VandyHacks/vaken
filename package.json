@@ -116,7 +116,7 @@
 		"@types/react-dom": "^16.8.4",
 		"@types/react-router": "^5.0.1",
 		"@types/react-router-dom": "^4.3.3",
-		"@types/react-select": "^2.0.18",
+		"@types/react-select": "^2.0.19",
 		"@types/react-test-renderer": "^16.8.1",
 		"@types/react-virtualized": "^9.21.1",
 		"@types/styled-components": "4.1.8",
