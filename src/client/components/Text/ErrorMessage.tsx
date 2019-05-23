@@ -2,7 +2,6 @@ import React, { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
-// @ts-ignore
 import SadFace from '../../assets/img/sad_face.svg';
 import TextButton from '../Buttons/TextButton';
 

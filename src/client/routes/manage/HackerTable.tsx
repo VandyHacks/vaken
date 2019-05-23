@@ -18,8 +18,6 @@ import { ValueType } from 'react-select/lib/types';
 import { Link } from 'react-router-dom';
 import { Mutation, MutationFn, FetchResult } from 'react-apollo';
 import { gql } from 'apollo-boost';
-// TODO(alan): add d.ts file, most already defined here: https://github.com/valerybugakov/react-selectable-fast/blob/master/src/SelectableGroup.js
-// @ts-ignore
 import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
 import TableButton from '../../components/Buttons/TableButton';
 import ToggleSwitch from '../../components/Buttons/ToggleSwitch';
