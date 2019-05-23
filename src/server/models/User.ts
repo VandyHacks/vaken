@@ -1,5 +1,5 @@
 import { pre, prop, arrayProp, Typegoose } from 'typegoose';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import AuthType from '../enums/AuthType';
 import AuthLevel from '../enums/AuthLevel';
 import Gender from '../enums/Gender';

@@ -1,5 +1,5 @@
 import passport from 'koa-passport';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { Profile as GoogleProfile } from 'passport-google-oauth';
 import { Profile as GithubProfile } from 'passport-github2';
 import { UserModel } from './models/User';
