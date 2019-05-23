@@ -47,10 +47,10 @@ export const Profile: React.FunctionComponent<{}> = (): JSX.Element => {
 
 	useEffect((): void => {
 		// Update formData when graphql query changes
-		// console.log(data.getUserByEmail);
+		console.log(data.getUserByEmail);
 		if (data.getUserByEmail) {
 			setFormData(draft => {
-				// console.log('setting form data');
+				console.log('setting form data');
 				draft[PROFILE] = { ...data.getUserByEmail };
 			});
 		}
@@ -66,7 +66,7 @@ export const Profile: React.FunctionComponent<{}> = (): JSX.Element => {
 
 	// if error getting profile
 	if (error) {
-		// console.log(error);
+		console.log(error);
 		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 	}
 	// if successfully got profile

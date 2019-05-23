@@ -248,7 +248,7 @@ export const OrganizerDash: FunctionComponent = (): JSX.Element => {
 
 	if (loading) return <Spinner />;
 	if (error) {
-		// console.log(error);
+		console.log(error);
 		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 	}
 
