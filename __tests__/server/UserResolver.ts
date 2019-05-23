@@ -1,7 +1,13 @@
 import UserResolver from '../../src/server/resolvers/UserResolver';
 
+import mockingoose from 'mockingoose';
+import { UserModel } from '../../src/server/models/User';
+
 beforeAll(() => {
-	const app = require('../../src/server/index');
+	const errFn = () => {
+		throw new Error('User does not exist!');
+	};
+	mockingoose(UserModel).toReturn(errFn, 'findOne');
 });
 const MOCK_EMAIL = 'mock@gmail.com';
 
@@ -31,6 +37,6 @@ describe('Test UserResolver', () => {
 	it('get all users', async () => {
 		// check for team that doesn't exist
 		const res = await UserResolver.users();
-		expect(res).toBe([]);
+		expect(res).toStrictEqual([]);
 	});
 });
