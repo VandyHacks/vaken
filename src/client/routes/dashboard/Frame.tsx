@@ -1,6 +1,5 @@
 import React, { useState, Suspense, FunctionComponent, useContext } from 'react';
 import styled from 'styled-components';
-// import { useImmer } from 'use-immer';
 import { Switch, Redirect, Route } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import STRINGS from '../../assets/strings.json';
@@ -11,8 +10,6 @@ import { SpaceBetweenRow, OverflowContainer } from '../../components/Containers/
 import { ActionButtonContext } from '../../contexts/ActionButtonContext';
 
 export const OrganizerDash = React.lazy(() => import('./OrganizerDash'));
-
-/* eslint-env browser */
 
 const Layout = styled.div`
 	height: 100vh;
