@@ -2,9 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Update } from 'use-immer';
 import { AppField } from '../../routes/application/ApplicationConfig';
-// @ts-ignore
 import UncheckedSvg from '../../assets/img/unchecked_box.svg';
-// @ts-ignore
 import CheckedSvg from '../../assets/img/checked_box.svg';
 
 interface Props extends AppField {
