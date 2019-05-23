@@ -33,7 +33,7 @@ export const Team: FunctionComponent = (): JSX.Element => {
 		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_HACKER_ERROR_MESSAGE} />;
 	}
 
-	// console.log(data);
+	console.log(data);
 	const { teamName } = data.hacker;
 	return (
 		<FlexColumn>

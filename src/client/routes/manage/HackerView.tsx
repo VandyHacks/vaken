@@ -90,7 +90,7 @@ export const HackerView: React.FunctionComponent<RouteComponentProps<{}>> = (
 	props: RouteComponentProps<{}>
 ): JSX.Element => {
 	const { location } = props;
-	// console.log(props.location.state.email);
+	console.log(props.location.state.email);
 	if (!location || !location.state || !location.state.email) {
 		return <Redirect to="/manageHackers" />;
 	}
@@ -103,12 +103,12 @@ export const HackerView: React.FunctionComponent<RouteComponentProps<{}>> = (
 				}
 
 				if (error) {
-					// console.log(error);
+					console.log(error);
 					return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 				}
 
-				// console.log(data);
-				// console.log(data.getHackerByEmail.teamName);
+				console.log(data);
+				console.log(data.getHackerByEmail.teamName);
 				const {
 					firstName,
 					lastName,

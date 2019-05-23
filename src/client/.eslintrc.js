@@ -49,8 +49,9 @@ module.exports = {
 		'jsx-a11y/label-has-for': [0],
 		'typescript/explicit-function-return-type': 'off',
 		'@typescript-eslint/explicit-function-return-type': 'off',
+		'no-console': 'off',
 	},
 	env: {
-		browser: true
-	}
+		browser: true,
+	},
 };
