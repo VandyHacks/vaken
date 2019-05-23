@@ -1,6 +1,4 @@
 import React, { FunctionComponent } from 'react';
-// TODO(alan): fix
-// @ts-ignore
 import { createSelectable } from 'react-selectable-fast';
 import { TableRowProps } from 'react-virtualized';
 
