@@ -1,17 +1,17 @@
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_d)">
-<rect x="0" y="0" width="24" height="24" rx="6" fill="white"/>
-<rect x="0.5" y="0.5" width="23" height="23" rx="5.5" stroke="#ECEBED"/>
-</g>
-<defs>
-<filter id="filter0_d" x="0" y="0" width="24" height="24" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
-<feOffset dy="7"/>
-<feGaussianBlur stdDeviation="32"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.07 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
-</filter>
-</defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+    <g filter="url(#filter0_d)">
+        <rect width="24" height="24" x="0" y="0" fill="white" rx="6"/>
+        <rect width="23" height="23" x="0.5" y="0.5" stroke="#ECEBED" rx="5.5"/>
+    </g>
+    <defs>
+        <filter id="filter0_d" width="24" height="24" x="0" y="0" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+            <feOffset dy="7"/>
+            <feGaussianBlur stdDeviation="32"/>
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.07 0"/>
+            <feBlend in2="BackgroundImageFix" mode="normal" result="effect1_dropShadow"/>
+            <feBlend in="SourceGraphic" in2="effect1_dropShadow" mode="normal" result="shape"/>
+        </filter>
+    </defs>
 </svg>

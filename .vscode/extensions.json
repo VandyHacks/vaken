@@ -3,6 +3,7 @@
 		"dbaeumer.vscode-eslint",
 		"eg2.vscode-npm-script",
 		"msjsdiag.debugger-for-chrome",
-		"omartawfik.github-actions-vscode"
+		"omartawfik.github-actions-vscode",
+		"jock.svg"
 	]
 }
