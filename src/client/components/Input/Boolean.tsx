@@ -20,10 +20,12 @@ export class Boolean extends PureComponent<SliderProps, {}> {
 			const { id } = e.target;
 			setState(
 				(draft): void => {
+					// @ts-ignore: no-implicit-any
 					if (!draft[category]) {
+						// @ts-ignore: no-implicit-any
 						draft[category] = {};
 					}
-
+					// @ts-ignore: no-implicit-any
 					draft[category][fieldName] = id === 'Yes';
 				}
 			);
