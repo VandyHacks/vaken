@@ -15,7 +15,7 @@ const LocalStrategy = require('passport-local').Strategy;
 passport.use(
 	new LocalStrategy(
 		{ passReqToCallback: true },
-		async (req: any, username: string, password: string, done: any) => {
+		async (req: any, username: string, password: string, done: Function) => {
 			logger.debug('> Local verify function');
 			const user = await UserModel.findOne({ email: username });
 
@@ -57,7 +57,7 @@ passport.use(
 			accessToken: string,
 			refreshToken: string,
 			profile: GoogleProfile,
-			done: any
+			done: Function
 		) => {
 			logger.debug('> Google verify function');
 			if (profile.emails) {
@@ -124,7 +124,7 @@ passport.use(
 			accessToken: string,
 			refreshToken: string,
 			profile: GithubProfile,
-			done: any
+			done: Function
 		) => {
 			logger.debug('> Github verify function');
 			if (profile.emails) {
@@ -175,11 +175,11 @@ passport.use(
 	)
 );
 
-passport.serializeUser((user: any, done: any) => {
+passport.serializeUser((user: any, done: Function) => {
 	done(null, user.id);
 });
 
-passport.deserializeUser(async (id: any, done: any) => {
+passport.deserializeUser(async (id: any, done: Function) => {
 	try {
 		const user = await UserModel.findById(id);
 		done(null, user);
@@ -187,3 +187,6 @@ passport.deserializeUser(async (id: any, done: any) => {
 		done(err, null, { message: 'Failed to deserialize' });
 	}
 });
+
+// for testing
+export default passport;
