@@ -3,17 +3,14 @@ import TeamResolver from '../../src/server/resolvers/TeamResolver';
 import mockingoose from 'mockingoose';
 import { TeamModel } from '../../src/server/models/Team';
 
-beforeAll(() => {
-	const errFn = () => {
-		throw new Error('Team does not exist!');
-	};
-	mockingoose(TeamModel).toReturn(errFn, 'findOne');
-});
+beforeAll(() => {});
 
 describe('Test TeamResolver', () => {
 	it('getTeamSize throws error when team name not found', async () => {
+		mockingoose(TeamModel).toReturn(null, 'findOne');
 		// check for team that doesn't exist
-		const num = await TeamResolver.getTeamSize('mockteam');
-		expect(num).toThrowError(new Error('Team does not exist!'));
+
+		// toThrow doesn't work for async funcs https://github.com/facebook/jest/issues/1700
+		expect(TeamResolver.getTeamSize('mockteam')).rejects.toEqual(new Error('Team does not exist!'));
 	});
 });

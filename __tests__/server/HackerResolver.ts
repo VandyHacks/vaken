@@ -58,12 +58,15 @@ describe('HackerResolver', () => {
 
 	it('hacker joining team with bad email', async () => {
 		// check for team that doesn't exist
-		const res = await HackerResolver.joinTeam(MOCK_EMAIL, 'mockteam');
-		expect(res).toThrowError(new Error('Hacker does not exist!'));
+		expect(HackerResolver.joinTeam(MOCK_EMAIL, 'mockteam')).rejects.toEqual(
+			new Error('Hacker does not exist!')
+		);
 	});
 	it('hacker joining team with valid email, bad team', async () => {
+		mockingoose(HackerModel).toReturn({}, 'findOne');
 		// check for team that doesn't exist
-		const res = await HackerResolver.joinTeam(MOCK_EMAIL, 'mockteam');
-		expect(res).toThrowError(new Error('Team could not be created!'));
+		expect(HackerResolver.joinTeam(MOCK_EMAIL, 'mockteam')).rejects.toEqual(
+			new Error('Team could not be created!')
+		);
 	});
 });

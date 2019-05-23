@@ -4,28 +4,28 @@ import mockingoose from 'mockingoose';
 import { UserModel } from '../../src/server/models/User';
 
 beforeAll(() => {
-	const errFn = () => {
-		throw new Error('User does not exist!');
-	};
-	mockingoose(UserModel).toReturn(errFn, 'findOne');
+	mockingoose(UserModel).toReturn(null, 'findOne');
 });
 const MOCK_EMAIL = 'mock@gmail.com';
 
 describe('Test UserResolver', () => {
 	it('getActiveNfcCode for user', async () => {
 		// check for team that doesn't exist
-		const res = await UserResolver.getActiveNfcCode(MOCK_EMAIL);
-		expect(res).toThrowError(new Error('User does not exist!'));
+		expect(UserResolver.getActiveNfcCode(MOCK_EMAIL)).rejects.toEqual(
+			new Error('User does not exist!')
+		);
 	});
 	it('updateNfcCodes for user', async () => {
 		// check for team that doesn't exist
-		const res = await UserResolver.updateNfcCodes(MOCK_EMAIL, 'newcode');
-		expect(res).toThrowError(new Error('User does not exist!'));
+		expect(UserResolver.updateNfcCodes(MOCK_EMAIL, 'newcode')).rejects.toEqual(
+			new Error('User does not exist!')
+		);
 	});
 	it('updateUser', async () => {
 		// check for team that doesn't exist
-		const res = await UserResolver.updateUser(MOCK_EMAIL, {});
-		expect(res).toThrowError(new Error('User does not exist!'));
+		expect(UserResolver.updateUser(MOCK_EMAIL, {})).rejects.toEqual(
+			new Error('User does not exist!')
+		);
 	});
 
 	it('get one user by email', async () => {
