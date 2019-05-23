@@ -11,7 +11,6 @@ import Frame from './routes/dashboard/Frame';
 import AuthContext from './contexts/AuthContext';
 import LoginContext from './contexts/LoginContext';
 import { User } from '../common/models/User';
-// import addHackers from './temp/AddHackers';
 
 const GlobalStyle = createGlobalStyle`
 	body {
