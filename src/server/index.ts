@@ -106,5 +106,8 @@ async function launchServer(): Promise<void> {
 	);
 }
 
+// for testing
+export default app;
+
 // Launch server with GraphQL endpoint
 launchServer();
