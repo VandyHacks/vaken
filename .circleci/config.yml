@@ -2,6 +2,9 @@ defaults: &defaults
   docker:
     - image: 'circleci/node:12.2'
   working_directory: ~/project/vaken
+version: 2.1
+orbs:
+  codecov: codecov/codecov@1.0.4
 
 jobs:
   install:
@@ -50,9 +53,9 @@ jobs:
           command: 'npm run test-ci'
       - store_test_results:
           path: ~/project/vaken/reports/test
+      - codecov/upload:
+          file: coverage/*.json
 
-
-version: 2
 workflows:
   all:
     jobs:
@@ -69,4 +72,3 @@ workflows:
       - typecheck:
           requires:
             - install
-  version: 2

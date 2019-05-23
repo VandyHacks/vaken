@@ -5,6 +5,6 @@ module.exports = {
 	preset: 'ts-jest',
 	reporters: ['default', ['jest-junit', { outputDirectory: './reports/test/jest', outputName: 'results.xml' }]],
 	testEnvironment: 'node',
-
+	testPathIgnorePatterns: ["/node_modules/", ".eslintrc.js"],
 };
 
