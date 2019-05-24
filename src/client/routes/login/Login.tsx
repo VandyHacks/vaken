@@ -25,5 +25,3 @@ const LoginPage: FunctionComponent = (): JSX.Element => (
 );
 
 export default LoginPage;
-
-// Copyright (c) 2019 Vanderbilt University
