@@ -1,8 +1,13 @@
 {
 	"name": "vaken",
+	"description": "Next-gen hacker registration system",
 	"version": "0.0.1",
 	"license": "MIT",
 	"main": "dist/index.js",
+	"engines": {
+		"node": ">=12.0.0",
+		"npm": ">=6.0.0"
+	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/VandyHacks/vaken.git"
@@ -88,7 +93,6 @@
 		"use-immer": "^0.1.0",
 		"yup": "^0.27.0"
 	},
-	"description": "Next-gen hacker registration system",
 	"devDependencies": {
 		"@babel/core": "^7.4.5",
 		"@babel/plugin-proposal-class-properties": "^7.4.4",
