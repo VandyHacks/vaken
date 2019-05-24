@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Sidebar 1`] = `
+exports[`Sidebar renders properly 1`] = `
 <div
   className="sc-fYxtnH jgPElb"
 >
