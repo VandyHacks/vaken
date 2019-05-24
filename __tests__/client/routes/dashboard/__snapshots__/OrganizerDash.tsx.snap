@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OrganizerDash 1`] = `
+<ul
+  className="sc-kpOJdX ibgOHi"
+>
+  <li
+    className="sc-dxgOiQ cbKfUb"
+  >
+    <span
+      className="sc-kgoBCf eCiLFY"
+    >
+      mockschool: 
+    </span>
+    <span
+      className="sc-kGXeez lbwhzW"
+    >
+      1
+    </span>
+  </li>
+</ul>
+`;
