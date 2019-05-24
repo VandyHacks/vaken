@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Login renders properly 1`] = `
+<div
+  className="sc-kAzzGY bLVWJd"
+>
+  <div
+    className="sc-bdVaJa sc-bwzfXH sc-ifAKCX sc-chPdSV fTRmMz"
+    height="25"
+    width="27rem"
+  >
+    <h1
+      className="sc-kgoBCf boOpPq"
+      color="#3f3356"
+    >
+      VandyHacks
+    </h1>
+    <a
+      href="/api/auth/google"
+      style={
+        Object {
+          "textDecoration": "none",
+        }
+      }
+    >
+      <button
+        className="sc-gqjmRU iicoRd"
+      >
+        <div
+          className="sc-bdVaJa sc-bwzfXH sc-htpNat dyMbAR"
+          height="min-content"
+          width="min-content"
+        >
+          <img
+            alt="Google logo"
+            className="sc-iwsKbI kXBzef"
+            src={[Function]}
+          />
+        </div>
+        <div
+          className="sc-htoDjs gdgsvs"
+          color="#3f3356"
+        >
+          Sign in with Google
+        </div>
+      </button>
+    </a>
+    <a
+      href="/api/auth/github"
+      style={
+        Object {
+          "textDecoration": "none",
+        }
+      }
+    >
+      <button
+        className="sc-gqjmRU iicoRd"
+      >
+        <div
+          className="sc-bdVaJa sc-bwzfXH sc-htpNat dyMbAR"
+          height="min-content"
+          width="min-content"
+        >
+          <img
+            alt="GitHub logo"
+            className="sc-iwsKbI kXBzef"
+            src={[Function]}
+          />
+        </div>
+        <div
+          className="sc-htoDjs gdgsvs"
+          color="#3f3356"
+        >
+          Sign in with GitHub
+        </div>
+      </button>
+    </a>
+    <a
+      href="/login/password"
+      onClick={[Function]}
+      style={
+        Object {
+          "textDecoration": "none",
+        }
+      }
+    >
+      <button
+        className="sc-gqjmRU sc-fjdhpX eSCzku"
+        color="white"
+        fontSize="1.4em"
+      >
+        <div
+          className="sc-htoDjs kSfDbb"
+          color="white"
+          fontSize="1.4em"
+        >
+          Sign in with email
+        </div>
+      </button>
+    </a>
+  </div>
+</div>
+`;

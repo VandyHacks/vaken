@@ -2,14 +2,13 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
 
-import Sidebar from '../../../../src/client/components/Sidebar/Sidebar';
+import Login from '../../../../src/client/routes/login/Login';
 
-it('Sidebar', async () => {
+it('Login renders properly', async () => {
 	const component = renderer
 		.create(
-			// see https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/guides/testing.md
 			<MemoryRouter>
-				<Sidebar />
+				<Login />
 			</MemoryRouter>
 		)
 		.toJSON();

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`OrganizerDash 1`] = `
+exports[`Test SchoolTable renders properly 1`] = `
 <ul
   className="sc-kpOJdX ibgOHi"
 >

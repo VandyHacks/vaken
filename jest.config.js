@@ -6,6 +6,8 @@ module.exports = {
 		'../../assets/img/square_hackathon_logo.svg': '<rootDir>/__mocks__/svgrMock.js',
 		'.+\\.svg?.+$': '@svgr/webpack', // see https://github.com/smooth-code/svgr/issues/83
 		'react-virtualized/styles.css': 'jest-transform-css',
+
+		'\\.(jpg|jpeg|png|gif)$': '<rootDir>/__mocks__/svgrMock.js',
 	},
 	preset: 'ts-jest',
 	reporters: [
