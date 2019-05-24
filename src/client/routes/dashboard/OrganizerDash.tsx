@@ -76,7 +76,7 @@ const StyledFloatingPopupBottom = styled(FloatingPopup)`
 	grid-template-areas: 'pie1 pie2';
 `;
 
-const GET_STATISTICS = gql`
+export const GET_STATISTICS = gql`
 	query Statistics($number: Float!) {
 		getAllHackerGenders {
 			Male
@@ -231,7 +231,7 @@ interface Props {
 	data: [{ school: string; counts: number }];
 }
 
-const SchoolTable: FunctionComponent<Props> = (props: Props): JSX.Element => {
+export const SchoolTable: FunctionComponent<Props> = (props: Props): JSX.Element => {
 	const { data } = props;
 
 	return (
