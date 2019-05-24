@@ -34,7 +34,7 @@
 		"format": "prettier --config .prettierrc.json --write \"./**/*.ts*(x)\"",
 		"start": "webpack-dev-server --config webpack.dev.js --progress --color",
 		"test": "jest --onlyChanged",
-		"test-ci": "jest --passWithNoTests --ci --runInBand",
+		"test-ci": "jest --ci --runInBand",
 		"typecheck": "tsc -p tsconfig.json --noEmit",
 		"docs": "typedoc",
 		"lint-check": "eslint --ext .js,.jsx,.ts,.tsx __tests__/ src/",
