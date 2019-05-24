@@ -2,12 +2,14 @@ import 'reflect-metadata';
 import { Field, ObjectType } from 'type-graphql';
 
 import User from './User';
-import Sponsor from './Sponsor';
 
 @ObjectType({ description: 'DTO for a Vaken sponsor rep' })
 export default class SponsorRep extends User {
-	@Field(() => [Sponsor])
-	public sponsors!: [Sponsor];
+	/**
+	 *  names of sponsor companies this rep belongs to
+	 */
+	@Field(() => [String])
+	public sponsors!: string[];
 
 	@Field()
 	public title!: string;

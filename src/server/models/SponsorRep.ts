@@ -1,6 +1,5 @@
 import { prop, arrayProp, Ref, Typegoose } from 'typegoose';
 import { User } from './User';
-import { Sponsor } from './Sponsor';
 
 class SponsorRep extends Typegoose {
 	@prop({ ref: User, required: true })
@@ -9,8 +8,8 @@ class SponsorRep extends Typegoose {
 	@prop({ required: true })
 	public email!: string;
 
-	@arrayProp({ itemsRef: Sponsor, required: true })
-	public sponsors: Ref<Sponsor>[] = [];
+	@arrayProp({ items: String, required: true })
+	public sponsors: string[] = [];
 
 	@prop()
 	public title?: string;
