@@ -18,6 +18,8 @@ jobs:
   install:
     <<: *defaults
     steps:
+      - attach_workspace:
+          at: ~/project    
       - restore_cache:
           keys:
             - 'dependency-cache-{{ checksum "package-lock.json" }}'
@@ -27,10 +29,10 @@ jobs:
           key: 'dependency-cache-{{ checksum "package-lock.json" }}'
           paths:
             - node_modules
-      # - persist_to_workspace:
-      #     root: ~/project
-      #     paths:
-      #       - vaken
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - vaken
   lint:
     <<: *defaults
     steps:
@@ -50,7 +52,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/project
-      - run: 'ls && pwd && npm audit --audit-level=critical --only=prod'
+      - run: 'npm audit --audit-level=critical --only=prod'
   test:
     <<: *defaults
     steps:
