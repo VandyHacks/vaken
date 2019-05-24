@@ -17,7 +17,7 @@ global.fetch = jest.fn().mockImplementation(() =>
 			message: 'hello world';
 		},
 	})
-);*/
+); */
 
 it('Test SchoolTable renders properly', async () => {
 	// see https://www.apollographql.com/docs/react/recipes/testing
@@ -43,7 +43,7 @@ it('Test SchoolTable renders properly', async () => {
     */
 
 	const component = renderer
-		.create(<SchoolTable data={[{ school: 'mockschool', counts: 1 }]} />)
+		.create(<SchoolTable data={[{ counts: 1, school: 'mockschool' }]} />)
 		.toJSON();
 	expect(component).toMatchSnapshot();
 });
