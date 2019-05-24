@@ -19,7 +19,6 @@ const saltRounds = 10;
 		if (err) {
 			return next();
 		}
-		// eslint-disable-next-line no-shadow
 		bcrypt.hash(user.password, salt, (err, hash) => {
 			if (err) {
 				return next();

@@ -18,9 +18,7 @@ import SponsorResolver from './resolvers/SponsorResolver';
 import TeamResolver from './resolvers/TeamResolver';
 import logger from './logger';
 
-// eslint-disable-next-line new-cap
 const app = new koa();
-// eslint-disable-next-line new-cap
 const router = new koaRouter();
 
 // Default port to listen
