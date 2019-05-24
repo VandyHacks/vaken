@@ -1,7 +1,7 @@
 import institutions from '../assets/data/institutions.json';
 import names from '../assets/data/names.json';
 
-const hackers = [
+export const hackers = [
 	{
 		email: 'ml@mattleon.com',
 		firstName: 'Matthew',
