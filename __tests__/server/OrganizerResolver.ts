@@ -1,7 +1,7 @@
 import OrganizerResolver from '../../src/server/resolvers/OrganizerResolver';
 
 // import mockingoose from 'mockingoose';
-import { Organizer } from '../../src/server/data/Organizer';
+import Organizer from '../../src/server/data/Organizer';
 
 beforeAll(() => {
 	// mockingoose(OrganizerModel).toReturn(null, 'findOne');

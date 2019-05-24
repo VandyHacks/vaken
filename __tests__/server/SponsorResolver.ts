@@ -1,7 +1,7 @@
 import SponsorResolver from '../../src/server/resolvers/SponsorResolver';
 
 // import mockingoose from 'mockingoose';
-import { Sponsor } from '../../src/server/data/Sponsor';
+import Sponsor from '../../src/server/data/Sponsor';
 
 beforeAll(() => {
 	// mockingoose(SponsorModel).toReturn(null, 'findOne');
