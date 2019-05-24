@@ -33,7 +33,7 @@
 		"prod": "npm run build && node ./dist/server/index.js",
 		"format": "prettier --config .prettierrc.json --write \"./**/*.ts*(x)\"",
 		"start": "webpack-dev-server --config webpack.dev.js --progress --color",
-		"test": "jest",
+		"test": "jest --onlyChanged",
 		"test-ci": "jest --passWithNoTests --ci --runInBand",
 		"typecheck": "tsc -p tsconfig.json --noEmit",
 		"docs": "typedoc",
