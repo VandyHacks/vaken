@@ -22,5 +22,5 @@ module.exports = {
 		'^.+\\.jsx?$': 'babel-jest',
 		'^.+\\.css$': 'jest-transform-css',
 	},
-	setupFiles: ['./__mocks__/client.js'],
+	setupFiles: ['./__mocks__/client.js', './__mocks__/env.js'],
 };
