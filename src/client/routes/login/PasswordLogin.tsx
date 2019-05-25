@@ -10,33 +10,9 @@ import STRINGS from '../../assets/strings.json';
 import LeftImgTextInput from '../../components/Input/LeftImgTextInput';
 import LoginContext from '../../contexts/LoginContext';
 import { onChangeWrapper } from '../../components/Input/helperFunctions';
-import {
-	PASSWORD_REGEX,
-	EMAIL_REGEX,
-	emailValidation,
-	passwordValidation,
-} from '../../../common/ValidationFunctions';
+import { PASSWORD_REGEX, EMAIL_REGEX } from '../../../common/ValidationFunctions';
 
-/**
- * @brief Validates and submits login information to server
- * @param {string} username - username/email of user's account
- * @param {string} password - password of user's account
- * @param {function} setInvalidFn - func to update the html response code on error
- * @returns {void}
- */
-export const validateAndSubmitLogin = (
-	username: string,
-	password: string
-	// setInvalidFn: React.Dispatch<React.SetStateAction<boolean>>
-): void => {
-	const emailValid = emailValidation(username);
-	const passValid = passwordValidation(password);
-	// Do one more check for valid fields (to handle edge case where
-	// constructor sets valids to true)
-	if (emailValid && passValid) {
-		// dummy
-	}
-};
+import onLogin from './LoginHandler';
 
 /**
  * PasswordLogin is React Hooks component that will display a password login prompt
@@ -47,29 +23,6 @@ export const PasswordLogin: React.FunctionComponent = (): JSX.Element => {
 	const [pass, setPass] = useState('');
 	const [invalid, setInvalid] = useState(false);
 	const loginCtx = useContext(LoginContext);
-
-	const onLogin = (): void => {
-		if (emailValidation(email) && passwordValidation(pass)) {
-			fetch('/api/login', {
-				body: JSON.stringify({
-					password: pass,
-					username: email,
-				}),
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				method: 'POST',
-			})
-				.then(res => {
-					if (res.status === 200 && res.redirected) {
-						loginCtx.update(true);
-					} else {
-						setInvalid(true);
-					}
-				})
-				.catch(err => console.error(err));
-		}
-	};
 
 	return (
 		<>
@@ -95,7 +48,7 @@ export const PasswordLogin: React.FunctionComponent = (): JSX.Element => {
 			/>
 			<SpaceBetweenColumn height="10rem">
 				<TextButton
-					onClick={onLogin}
+					onClick={() => onLogin('/api/login', email, pass, loginCtx.update, setInvalid)}
 					color="white"
 					marginTop="1.0rem"
 					marginBottom="0.5rem"

@@ -5,15 +5,10 @@ import TextButton from '../../components/Buttons/TextButton';
 import STRINGS from '../../assets/strings.json';
 import LeftImgTextInput from '../../components/Input/LeftImgTextInput';
 import { onChangeWrapper } from '../../components/Input/helperFunctions';
-import {
-	PASSWORD_REGEX,
-	EMAIL_REGEX,
-	emailValidation,
-	passwordValidation,
-} from '../../../common/ValidationFunctions';
+import { PASSWORD_REGEX, EMAIL_REGEX } from '../../../common/ValidationFunctions';
 import { LoginContext } from '../../contexts/LoginContext';
 
-/* globals fetch */
+import onLogin from './LoginHandler';
 
 /**
  * PasswordLogin is React Hooks component that will display a password login prompt
@@ -26,28 +21,6 @@ export const PasswordLogin: React.FunctionComponent = (): JSX.Element => {
 	const [invalid, setInvalid] = useState(false);
 	const loginCtx = useContext(LoginContext);
 
-	const onLogin = (): void => {
-		if (emailValidation(email) && passwordValidation(pass)) {
-			fetch('/api/register/hacker', {
-				body: JSON.stringify({
-					password: pass,
-					username: email,
-				}),
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				method: 'POST',
-			})
-				.then(res => {
-					if (res.status === 200 && res.redirected) {
-						loginCtx.update(true);
-					} else {
-						setInvalid(true);
-					}
-				})
-				.catch(err => console.error(err));
-		}
-	};
 	return (
 		<>
 			<LeftImgTextInput
@@ -82,7 +55,7 @@ export const PasswordLogin: React.FunctionComponent = (): JSX.Element => {
 				invalid={invalid}
 			/>
 			<TextButton
-				onClick={onLogin}
+				onClick={() => onLogin('/api/register/hacker', email, pass, loginCtx.update, setInvalid)}
 				marginTop="1.0rem"
 				marginBottom="0.5rem"
 				color="white"
