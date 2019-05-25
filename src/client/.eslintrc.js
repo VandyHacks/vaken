@@ -40,8 +40,8 @@ module.exports = {
 			},
 		],
 		'jsx-a11y/label-has-for': [0],
-		'@typescript-eslint/explicit-function-return-type': 'off',
-		'no-console': 'off',
+		'@typescript-eslint/explicit-function-return-type': 'off', // doesn't play well with styled components
+		'no-console': 'off', // allow console for debugging, webpack will remove for prod builds
 	},
 	env: {
 		browser: true,
