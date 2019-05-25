@@ -30,7 +30,10 @@ npm start # runs frontend with hot reload using Webpack Dev Server
 ### Testing
 
 We use Jest for testing. Snapshot testing is mostly for frontend, while mocking is preferable for backend.
+
 Our local jest tests use the `--only-changed` option, which runs tests only for files that are actually changed, to speed up testing. NOTE: the CI will run all the tests regardless.
+
+Jest configs are split using projects into specific backend and frontend configurations (see [./jest.config.js](./jest.config.js))
 
 Running tests
 ```bash
@@ -39,11 +42,15 @@ npm t # runs tests with coverage
 
 ### Linting
 
-We use Eslint for linting. The linting tests are cached with the `--cache` option.
+We use Eslint for linting. The linting tests are cached with the `--cache` option. 
 
-client config: `./src/client/eslintrc.js`
-server config: `./src/server/eslintrc.js`
-general config: `./eslintrc.js`
+NOTE: there are multiple eslint files. The rules are cascaded with the rule in the more specific directory taking priority (see [Eslint cascading hierarchy](https://eslint.org/docs/user-guide/configuring#configuration-cascading-and-hierarchy))
+
+- client config: [./src/client/.eslintrc.js](./src/client/.eslintrc.js)
+- server config: [./src/server/.eslintrc.js](./src/server/.eslintrc.js)
+- general config: [./.eslintrc.js](./.eslintrc.js)
+- test config: [./\__tests__/.eslintrc.js](./__tests__/.eslintrc.js)
+- test config (frontend-specific tests): [./\__tests__/client/.eslintrc.js](./__tests__/client/.eslintrc.js)
 
 
 ```bash
