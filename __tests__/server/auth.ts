@@ -7,6 +7,3 @@ describe('Test auth.ts', () => {
 		}
 	});
 });
-
-// hack for isolated-modules
-export const foo = undefined;

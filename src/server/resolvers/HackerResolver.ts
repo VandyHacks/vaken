@@ -7,8 +7,7 @@ import HackerShirtSizes from '../data/HackerShirtSizes';
 import HackerStatuses from '../data/HackerStatuses';
 import SchoolCounts from '../data/SchoolCounts';
 import { HackerModel } from '../models/Hacker';
-import { User, UserModel } from '../models/User';
-import AuthLevel from '../enums/AuthLevel';
+import { User } from '../models/User';
 import Status from '../enums/Status';
 import UpdateHackerInput from '../inputs/UpdateHackerInput';
 import { TeamModel } from '../models/Team';
@@ -233,7 +232,7 @@ class HackerResolver {
 		description: "Update one or more Hacker's status and return updated status",
 	})
 	public static async updateHackerStatusAsBatch(
-		@Arg('emails', type => [String], { nullable: false }) emails: [string],
+		@Arg('emails', { nullable: false }) emails: [string],
 		@Arg('newStatus') newStatus: Status
 	): Promise<Status | null> {
 		emails.forEach(async email => {
@@ -280,7 +279,7 @@ class HackerResolver {
 			}
 		} else {
 			// Check if the user is already part of the team
-			if (team.teamMembers.indexOf(hacker._id) != -1) {
+			if (team.teamMembers.indexOf(hacker._id) !== -1) {
 				throw new Error('Hacker is already a part of this team!');
 			}
 

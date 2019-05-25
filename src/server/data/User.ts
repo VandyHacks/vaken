@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Field, ObjectType, InputType, ArgsType } from 'type-graphql';
+import { Field, ObjectType } from 'type-graphql';
 
 import AuthType from '../enums/AuthType';
 import AuthLevel from '../enums/AuthLevel';

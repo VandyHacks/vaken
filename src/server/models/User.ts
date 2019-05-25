@@ -25,9 +25,10 @@ const saltRounds = 10;
 			}
 
 			user.password = hash;
-			next();
+			return next();
 		});
 	});
+	return next();
 })
 class User extends Typegoose {
 	@prop({ required: true })
