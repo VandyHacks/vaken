@@ -2,17 +2,16 @@
 // if you're looking for a client (especially React) or server lint rule
 // go to the configs in their respective directories
 module.exports = {
+	extends: [
+		'airbnb', // Airbnb style guide
+		'plugin:promise/recommended',
+		'plugin:prettier/recommended', // Enables eslint-plugin-prettier and displays prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
+	],
 	parser: '@typescript-eslint/parser', // Specifies the ESLint parser
-	plugins: ['sort-keys-fix'],
+	plugins: ['sort-keys-fix', 'promise'],
 	rules: {
 		'sort-keys-fix/sort-keys-fix': ['error', 'asc', { caseSensitive: true, natural: true }],
-	},
-	// fixes https://github.com/eslint/eslint/issues/4344
-	parserOptions: {
-		ecmaVersion: 6,
-		sourceType: 'module',
-		ecmaFeatures: {
-			jsx: true,
-		},
+		'prettier/prettier': 'error',
+		'no-param-reassign': [2, { props: true, ignorePropertyModificationsFor: ['draft'] }],
 	},
 };
