@@ -53,24 +53,27 @@ const Vaken: React.FunctionComponent = (): JSX.Element => {
 	// }, []);
 
 	useEffect(() => {
-		fetch('/api/whoami').then(res => {
-			if (res.status === 200) {
-				res.json().then(body => {
-					setUser(body);
-					setLoggedIn(true);
+		fetch('/api/whoami')
+			.then(res => {
+				if (res.status === 200) {
+					res.json().then(body => {
+						setUser(body);
+						setLoggedIn(true);
+						setReady(true);
+					});
+				} else {
 					setReady(true);
-				});
-			} else {
-				setReady(true);
-			}
-		});
+				}
+				return res;
+			})
+			.catch(err => console.error(err));
 	}, [loggedIn]);
 
 	return (
 		<ApolloProvider client={client}>
 			<ApolloHooksProvider client={client}>
 				<GlobalStyle />
-				<BrowserRouter>{stateMachine}</BrowserRouter>
+				<BrowserRouter>{stateMachine()}</BrowserRouter>
 			</ApolloHooksProvider>
 		</ApolloProvider>
 	);
