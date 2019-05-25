@@ -118,8 +118,8 @@ userRouter.get('/api/auth/status', async ctx => {
 /**
  * Route for logging in to a local account
  */
-userRouter.post('/api/login', async (ctx, next) => {
-	return passport.authenticate('local', async (err: any, user: any) => {
+userRouter.post('/api/login', async (ctx, next) =>
+	passport.authenticate('local', async (err: any, user: any) => {
 		logger.debug('> Local auth');
 		if (user) {
 			ctx.body = { authLevel: user.authLevel, success: true, username: user.email };
@@ -132,8 +132,8 @@ userRouter.post('/api/login', async (ctx, next) => {
 			ctx.throw(401);
 			await next();
 		}
-	})(ctx, next);
-});
+	})(ctx, next)
+);
 
 // Google SSO
 userRouter.get(
@@ -142,8 +142,8 @@ userRouter.get(
 );
 
 // Google SSO callback
-userRouter.get('/api/auth/google/callback', async (ctx, next) => {
-	return passport.authenticate('google', async (err: any, user: any) => {
+userRouter.get('/api/auth/google/callback', async (ctx, next) =>
+	passport.authenticate('google', async (err: any, user: any) => {
 		if (user) {
 			ctx.body = { authLevel: user.authLevel, success: true, username: user.email };
 			ctx.login(user);
@@ -156,15 +156,15 @@ userRouter.get('/api/auth/google/callback', async (ctx, next) => {
 			ctx.redirect('/login');
 			await next();
 		}
-	})(ctx, next);
-});
+	})(ctx, next)
+);
 
 // Github SSO
 userRouter.get('/api/auth/github', passport.authenticate('github', { scope: ['user:email'] }));
 
 // Github SSO callback
-userRouter.get('/api/auth/github/callback', async (ctx, next) => {
-	return passport.authenticate('github', async (err: any, user: any) => {
+userRouter.get('/api/auth/github/callback', async (ctx, next) =>
+	passport.authenticate('github', async (err: any, user: any) => {
 		if (user) {
 			ctx.body = { authLevel: user.authLevel, success: true, username: user.email };
 			ctx.login(user);
@@ -177,7 +177,7 @@ userRouter.get('/api/auth/github/callback', async (ctx, next) => {
 			ctx.redirect('/login');
 			await next();
 		}
-	})(ctx, next);
-});
+	})(ctx, next)
+);
 
 export default userRouter;

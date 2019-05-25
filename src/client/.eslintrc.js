@@ -1,11 +1,7 @@
 // for the client ONLY
 module.exports = {
 	// NOTE: this stacks on top of common eslint rules
-	extends: [
-		'plugin:react/recommended',
-		'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
-		'prettier/@typescript-eslint', // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
-	],
+	extends: ['plugin:react/recommended'],
 	settings: {
 		'import/resolver': {
 			webpack: {
@@ -44,7 +40,6 @@ module.exports = {
 			},
 		],
 		'jsx-a11y/label-has-for': [0],
-		'typescript/explicit-function-return-type': 'off',
 		'@typescript-eslint/explicit-function-return-type': 'off',
 		'no-console': 'off',
 	},
