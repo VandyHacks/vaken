@@ -5,20 +5,12 @@ describe('Test AddHackers', () => {
 		expect(hackers).toBeInstanceOf(Array);
 		hackers.forEach(e => expect(e).toHaveProperty('email'));
 	});
-	it('Add hackers (die=true) calls fetch method', async () => {
-		try {
-			addHackers(true);
-		} catch (e) {
-			// TODO: mock fetch
-			expect(e).toStrictEqual(new ReferenceError('fetch is not defined'));
-		}
+	it('Add hackers (die=true) does not throw error', async () => {
+		addHackers(true);
+		expect(1).toBe(1);
 	});
-	it('Add hackers (die=false) calls fetch method', async () => {
-		try {
-			addHackers(false);
-		} catch (e) {
-			// TODO: mock fetch
-			expect(e).toStrictEqual(new ReferenceError('fetch is not defined'));
-		}
+	it('Add hackers (die=false) does not throw error', async () => {
+		addHackers(false);
+		expect(1).toBe(1);
 	});
 });
