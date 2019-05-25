@@ -60,9 +60,10 @@ export interface Props extends PopupProps {
 	title: string;
 	open?: boolean;
 	onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+	children?: JSX.Element[] | JSX.Element;
 }
 
-export const Collapsible: FunctionComponent<Props> = (props): JSX.Element => {
+export const Collapsible: FunctionComponent<Props> = (props: Props): JSX.Element => {
 	const { open, children, title, ...rest } = props;
 
 	return (

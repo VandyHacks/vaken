@@ -6,7 +6,7 @@ import STRINGS from '../../assets/strings.json';
 import NavButton from '../Buttons/NavButton';
 import { SpaceBetweenColumn, FlexEndColumn } from '../Containers/FlexContainers';
 import SmallCenteredText from '../Text/SmallCenteredText';
-import { routes } from '../../assets/routes';
+import routes from '../../assets/routes';
 import AuthContext from '../../contexts/AuthContext';
 
 const Layout = styled.div`
