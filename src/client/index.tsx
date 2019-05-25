@@ -34,6 +34,19 @@ const Vaken: React.FunctionComponent = (): JSX.Element => {
 	const [ready, setReady] = useState();
 	const [user, setUser] = useState(new User());
 
+	const stateMachine: React.FunctionComponent = (): JSX.Element | null => {
+		if (!ready) return null;
+		return loggedIn ? (
+			<AuthContext.Provider value={user}>
+				<Frame />
+			</AuthContext.Provider>
+		) : (
+			<LoginContext.Provider value={{ state: loggedIn, update: setLoggedIn }}>
+				<LoginPage />
+			</LoginContext.Provider>
+		);
+	};
+
 	// Uncomment to add dummy data
 	// useEffect(() => {
 	// addHackers(true);
@@ -57,19 +70,7 @@ const Vaken: React.FunctionComponent = (): JSX.Element => {
 		<ApolloProvider client={client}>
 			<ApolloHooksProvider client={client}>
 				<GlobalStyle />
-				<BrowserRouter>
-					{ready ? (
-						loggedIn ? (
-							<AuthContext.Provider value={user}>
-								<Frame />
-							</AuthContext.Provider>
-						) : (
-							<LoginContext.Provider value={{ state: loggedIn, update: setLoggedIn }}>
-								<LoginPage />
-							</LoginContext.Provider>
-						)
-					) : null}
-				</BrowserRouter>
+				<BrowserRouter>{stateMachine}</BrowserRouter>
 			</ApolloHooksProvider>
 		</ApolloProvider>
 	);

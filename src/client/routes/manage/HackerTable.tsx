@@ -461,6 +461,18 @@ interface Props {
 	data: Hacker[];
 }
 
+// header renderer for travel reimbursement part of table
+const reimbursementHeaderRenderer = ({ dataKey, sortBy, sortDirection, label }: TableHeaderProps) =>
+	renderHeaderAsSVG(
+		{
+			dataKey,
+			label,
+			sortBy,
+			sortDirection,
+		},
+		plane
+	);
+
 export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element => {
 	const table = useContext(TableContext);
 
@@ -664,17 +676,7 @@ export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element
 										dataKey="needsReimbursement"
 										width={30}
 										minWidth={20}
-										headerRenderer={({ dataKey, sortBy, sortDirection, label }: TableHeaderProps) =>
-											renderHeaderAsSVG(
-												{
-													dataKey,
-													label,
-													sortBy,
-													sortDirection,
-												},
-												plane
-											)
-										}
+										headerRenderer={reimbursementHeaderRenderer}
 										cellRenderer={checkmarkRenderer}
 									/>
 									<Column

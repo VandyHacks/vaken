@@ -90,7 +90,7 @@ export const HackerView: React.FunctionComponent<RouteComponentProps<{}>> = (
 	props: RouteComponentProps<{}>
 ): JSX.Element => {
 	const { location } = props;
-	console.log(props.location.state.email);
+	console.log(location.state.email);
 	if (!location || !location.state || !location.state.email) {
 		return <Redirect to="/manageHackers" />;
 	}
