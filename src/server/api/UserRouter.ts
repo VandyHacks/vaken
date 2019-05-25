@@ -58,7 +58,7 @@ userRouter.post('/api/register/hacker', async (ctx, next) => {
 		ctx.throw(409);
 		await next();
 	} else {
-		//no user found, create new user
+		// no user found, create new user
 		logger.debug('> Creating new local user.....');
 		const userData = {
 			...ctx.request.body,

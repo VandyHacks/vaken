@@ -1,6 +1,6 @@
+import mockingoose from 'mockingoose';
 import HackerResolver from '../../src/server/resolvers/HackerResolver';
 
-import mockingoose from 'mockingoose';
 import { HackerModel } from '../../src/server/models/Hacker';
 import { TeamModel } from '../../src/server/models/Team';
 import Status from '../../src/server/enums/Status';
