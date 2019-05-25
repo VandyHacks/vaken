@@ -37,13 +37,15 @@ export const PasswordLogin: React.FunctionComponent = (): JSX.Element => {
 					'Content-Type': 'application/json',
 				},
 				method: 'POST',
-			}).then(res => {
-				if (res.status === 200 && res.redirected) {
-					loginCtx.update(true);
-				} else {
-					setInvalid(true);
-				}
-			});
+			})
+				.then(res => {
+					if (res.status === 200 && res.redirected) {
+						loginCtx.update(true);
+					} else {
+						setInvalid(true);
+					}
+				})
+				.catch(err => console.error(err));
 		}
 	};
 	return (

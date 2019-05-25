@@ -119,7 +119,7 @@ userRouter.get('/api/auth/status', async ctx => {
  * Route for logging in to a local account
  */
 userRouter.post('/api/login', async (ctx, next) => {
-	return passport.authenticate('local', async (err: any, user: any, info: any, status: any) => {
+	return passport.authenticate('local', async (err: any, user: any) => {
 		logger.debug('> Local auth');
 		if (user) {
 			ctx.body = { authLevel: user.authLevel, success: true, username: user.email };
@@ -143,7 +143,7 @@ userRouter.get(
 
 // Google SSO callback
 userRouter.get('/api/auth/google/callback', async (ctx, next) => {
-	return passport.authenticate('google', async (err: any, user: any, info: any, status: any) => {
+	return passport.authenticate('google', async (err: any, user: any) => {
 		if (user) {
 			ctx.body = { authLevel: user.authLevel, success: true, username: user.email };
 			ctx.login(user);
@@ -164,7 +164,7 @@ userRouter.get('/api/auth/github', passport.authenticate('github', { scope: ['us
 
 // Github SSO callback
 userRouter.get('/api/auth/github/callback', async (ctx, next) => {
-	return passport.authenticate('github', async (err: any, user: any, info: any, status: any) => {
+	return passport.authenticate('github', async (err: any, user: any) => {
 		if (user) {
 			ctx.body = { authLevel: user.authLevel, success: true, username: user.email };
 			ctx.login(user);

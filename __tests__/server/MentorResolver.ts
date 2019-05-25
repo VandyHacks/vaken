@@ -1,4 +1,3 @@
-import mockingoose from 'mockingoose';
 import MentorResolver from '../../src/server/resolvers/MentorResolver';
 
 import { mentorModel } from '../../src/server/models/Mentor';

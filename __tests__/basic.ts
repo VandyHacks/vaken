@@ -9,7 +9,3 @@ test('basic', () => {
 test('basic again', () => {
 	expect(sum(1, 2)).toBe(3);
 });
-
-// This hack is fine for a small testing file:
-// https://stackoverflow.com/questions/33977054/cannot-compile-namespaces-when-the-isolatedmodules-flag-is-provided
-export const foo = 'foo';

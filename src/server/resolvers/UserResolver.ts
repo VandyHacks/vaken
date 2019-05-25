@@ -1,4 +1,4 @@
-import { Resolver, Query, Arg, Mutation, Args } from 'type-graphql';
+import { Resolver, Query, Arg, Mutation } from 'type-graphql';
 import { plainToClass } from 'class-transformer';
 
 import User from '../data/User';
@@ -73,9 +73,13 @@ class UserResolver {
 
 		// Filter out any undefined data
 		const filteredData: UpdateUserInput = {};
-		Object.keys(data).forEach(key =>
-			key !== undefined ? ((filteredData as any)[key] = (data as any)[key]) : ''
-		);
+		Object.keys(data).forEach(key => {
+			if (key !== undefined) {
+				(filteredData as any)[key] = (data as any)[key];
+				return (filteredData as any)[key];
+			}
+			return '';
+		});
 
 		// Update the user
 		try {
