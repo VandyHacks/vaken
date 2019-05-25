@@ -1,3 +1,6 @@
+/*
+// old mock for client, now unused b/c jest config split
+
 import { JSDOM } from 'jsdom';
 // from https://github.com/oliviertassinari/react-swipeable-views/issues/336#issuecomment-326807429
 function createDOM() {
@@ -20,3 +23,4 @@ function createDOM() {
 	};
 }
 createDOM();
+*/
