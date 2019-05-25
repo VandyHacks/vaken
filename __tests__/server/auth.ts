@@ -1,4 +1,5 @@
 import passport from '../../src/server/auth';
+
 const MOCK_CB = jest.fn();
 beforeEach(() => {
 	// reset each time
