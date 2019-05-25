@@ -232,7 +232,8 @@ class HackerResolver {
 		description: "Update one or more Hacker's status and return updated status",
 	})
 	public static async updateHackerStatusAsBatch(
-		@Arg('emails', { nullable: false }) emails: [string],
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		@Arg('emails', type => [String], { nullable: false }) emails: [string],
 		@Arg('newStatus') newStatus: Status
 	): Promise<Status | null> {
 		emails.forEach(async email => {
