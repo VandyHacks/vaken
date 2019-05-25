@@ -12,7 +12,7 @@ module.exports = {
 			// client-side testing config
 			displayName: 'Test client',
 			testMatch: ['<rootDir>/__tests__/client/**'],
-			// setupFiles: ['./__mocks__/client.js'],
+			setupFiles: ['./__mocks__/fetch.js'],
 			testEnvironment: 'jsdom',
 			moduleNameMapper: {
 				'../../assets/img/square_hackathon_logo.svg': '<rootDir>/__mocks__/svgrMock.js',

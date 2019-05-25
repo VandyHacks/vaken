@@ -5,17 +5,6 @@ import renderer from 'react-test-renderer';
 // import ApolloClient from 'apollo-boost';
 import { SchoolTable } from '../../../../src/client/routes/dashboard/OrganizerDash';
 
-// mock fetch
-/*
-global.fetch = jest.fn().mockImplementation(() =>
-	Promise.resolve({
-		ok: true,
-		json: () => {
-			message: 'hello world';
-		},
-	})
-); */
-
 it('Test SchoolTable renders properly', async () => {
 	// see https://www.apollographql.com/docs/react/recipes/testing
 
