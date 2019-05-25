@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test RadioSlider RadioSlider renders correctly 1`] = `
+<div
+  className="sc-bdVaJa sKpin"
+>
+  <div
+    className="sc-bwzfXH bOrHqw"
+    id="a"
+    onClick={[Function]}
+  >
+    a
+  </div>
+  <div
+    className="sc-bwzfXH bOrHqw"
+    id="b"
+    onClick={[Function]}
+  >
+    b
+  </div>
+  <div
+    className="sc-bwzfXH bOrHqw"
+    id="c"
+    onClick={[Function]}
+  >
+    c
+  </div>
+</div>
+`;
