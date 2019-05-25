@@ -3,6 +3,7 @@ import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
 
 import Sidebar from '../../../../src/client/components/Sidebar/Sidebar';
+
 describe('Test Sidebar', () => {
 	it('Sidebar renders correctly', async () => {
 		const component = renderer
