@@ -26,16 +26,14 @@ passport.use(
 			} else if (user.authType !== AuthType.LOCAL) {
 				logger.warn('Wrong auth provider. Please use the standard local login.');
 				done(null, false, { message: 'Wrong auth provider' });
+			} else if (!(await bcrypt.compare(password, user.password))) {
+				// wrong password
+				logger.debug('> Incorrect password');
+				done(null, false);
 			} else {
-				if (!(await bcrypt.compare(password, user.password))) {
-					// wrong password
-					logger.debug('> Incorrect password');
-					done(null, false);
-				} else {
-					// found user and correct password
-					logger.debug('> Logging in.....');
-					done(null, user);
-				}
+				// found user and correct password
+				logger.debug('> Logging in.....');
+				done(null, user);
 			}
 		}
 	)

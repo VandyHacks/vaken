@@ -1,6 +1,6 @@
+import mockingoose from 'mockingoose';
 import MentorResolver from '../../src/server/resolvers/MentorResolver';
 
-import mockingoose from 'mockingoose';
 import { mentorModel } from '../../src/server/models/Mentor';
 
 beforeAll(() => {

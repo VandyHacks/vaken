@@ -306,10 +306,7 @@ class HackerResolver {
 
 		// Update the hacker's team
 		try {
-			const res = await HackerModel.updateOne(
-				{ _id: hacker._id },
-				{ $set: { teamName: teamName } }
-			);
+			const res = await HackerModel.updateOne({ _id: hacker._id }, { $set: { teamName } });
 			if (res.nModified === 0) {
 				logger.warn('Failed to update hacker team');
 				return false;

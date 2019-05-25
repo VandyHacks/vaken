@@ -1,6 +1,6 @@
+import mockingoose from 'mockingoose';
 import UserResolver from '../../src/server/resolvers/UserResolver';
 
-import mockingoose from 'mockingoose';
 import { UserModel } from '../../src/server/models/User';
 
 beforeAll(() => {
