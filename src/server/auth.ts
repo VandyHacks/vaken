@@ -125,6 +125,7 @@ passport.use(
 			done: Function
 		) => {
 			logger.debug('> Github verify function');
+			logger.debug(`Emails: ${profile.emails}`);
 			if (profile.emails) {
 				const user = await UserModel.findOne({ email: profile.emails[0].value });
 

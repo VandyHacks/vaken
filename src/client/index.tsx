@@ -34,7 +34,7 @@ const Vaken: React.FunctionComponent = (): JSX.Element => {
 	const [ready, setReady] = useState();
 	const [user, setUser] = useState(new User());
 
-	const stateMachine: React.FunctionComponent = (): JSX.Element | null => {
+	const StateMachine: React.FunctionComponent = (): JSX.Element | null => {
 		if (!ready) return null;
 		return loggedIn ? (
 			<AuthContext.Provider value={user}>
@@ -73,7 +73,9 @@ const Vaken: React.FunctionComponent = (): JSX.Element => {
 		<ApolloProvider client={client}>
 			<ApolloHooksProvider client={client}>
 				<GlobalStyle />
-				<BrowserRouter>{stateMachine()}</BrowserRouter>
+				<BrowserRouter>
+					<StateMachine />
+				</BrowserRouter>
 			</ApolloHooksProvider>
 		</ApolloProvider>
 	);
