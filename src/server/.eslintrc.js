@@ -9,6 +9,7 @@ module.exports = {
 		'no-unused-vars': 'off', // disable base rule
 		'@typescript-eslint/no-unused-vars': ['error', { vars: 'local' }], // local vars prevent exported enums from being declared unused
 		// ---------------------------------------------------------//
+		'@typescript-eslint/explicit-function-return-type': 'off', // eslint doesn't like lambda type defs in @Query and @Mutation decorators
 	},
 	settings: {
 		'import/parsers': {
