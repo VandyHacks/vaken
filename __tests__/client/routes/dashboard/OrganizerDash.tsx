@@ -1,12 +1,9 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { ApolloProvider } from 'react-apollo';
-import { MockedProvider } from 'react-apollo/test-utils';
-import ApolloClient from 'apollo-boost';
-import OrganizerDash, {
-	GET_STATISTICS,
-	SchoolTable,
-} from '../../../../src/client/routes/dashboard/OrganizerDash';
+// import { ApolloProvider } from 'react-apollo';
+// import { MockedProvider } from 'react-apollo/test-utils';
+// import ApolloClient from 'apollo-boost';
+import { SchoolTable } from '../../../../src/client/routes/dashboard/OrganizerDash';
 
 // mock fetch
 /*

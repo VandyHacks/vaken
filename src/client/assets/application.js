@@ -6,7 +6,7 @@ import Slider from '../components/Input/Slider';
 import Boolean from '../components/Input/Boolean';
 import Calendar from '../components/Input/Calendar';
 
-export const questions = [
+const questions = [
 	{
 		category: 'demographicInfo',
 		fields: [

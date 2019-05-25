@@ -22,10 +22,10 @@ describe('Test HackerTable', () => {
 					<HackerTable
 						data={[
 							{
+								email: 'fakeemail@gmail.com',
 								firstName: 'a',
 								lastName: 'a',
 								status: HackerStatus.Accepted,
-								email: 'fakeemail@gmail.com',
 							},
 						]}
 					/>
