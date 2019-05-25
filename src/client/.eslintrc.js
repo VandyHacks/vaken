@@ -1,11 +1,10 @@
 // for the client ONLY
 module.exports = {
+	// NOTE: this stacks on top of common eslint rules
 	extends: [
-		'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
 		'plugin:react/recommended',
-		'airbnb', // Airbnb style guide
+		'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
 		'prettier/@typescript-eslint', // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
-		'plugin:prettier/recommended', // Enables eslint-plugin-prettier and displays prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
 	],
 	settings: {
 		'import/resolver': {
@@ -26,9 +25,7 @@ module.exports = {
 	rules: {
 		'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
 		'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
-		'prettier/prettier': 'error',
 		'react/jsx-indent': [2, 'tab', { checkAttributes: true }],
-		'no-param-reassign': [2, { props: true, ignorePropertyModificationsFor: ['draft'] }],
 		'react/jsx-indent-props': [2, 'tab'],
 		'react/jsx-closing-bracket-location': [0, 'tag-aligned'], // Handled by prettier
 		'react/jsx-filename-extension': [
