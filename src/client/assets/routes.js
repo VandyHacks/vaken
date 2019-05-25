@@ -15,7 +15,7 @@ export const AuthLevel = {
 
 export const currentAuth = AuthLevel.ORGANIZER;
 
-export const routes = [
+const routes = [
 	{
 		authLevel: [AuthLevel.ORGANIZER],
 		component: OrganizerDash,

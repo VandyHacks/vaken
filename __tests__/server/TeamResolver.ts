@@ -1,7 +1,6 @@
-import TeamResolver from '../../src/server/resolvers/TeamResolver';
-
 import mockingoose from 'mockingoose';
 import { TeamModel } from '../../src/server/models/Team';
+import TeamResolver from '../../src/server/resolvers/TeamResolver';
 
 beforeAll(() => {});
 

@@ -7,4 +7,12 @@ module.exports = {
 	rules: {
 		'sort-keys-fix/sort-keys-fix': ['error', 'asc', { caseSensitive: true, natural: true }],
 	},
+	// fixes https://github.com/eslint/eslint/issues/4344
+	parserOptions: {
+		ecmaVersion: 6,
+		sourceType: 'module',
+		ecmaFeatures: {
+			jsx: true,
+		},
+	},
 };
