@@ -47,6 +47,8 @@ const onLogin = (
 				}
 			})
 			.catch(err => console.error(err));
+	} else {
+		console.error('Email or password is not in a valid format.');
 	}
 };
 
