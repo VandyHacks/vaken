@@ -54,13 +54,16 @@ mongoose
 		useNewUrlParser: true,
 	})
 	.then(
-		(): void => {
+		(): boolean => {
 			logger.info('>>> MongoDB Connected');
+			return true;
 		},
-		(err): void => {
+		(err): boolean => {
 			logger.error('err:', err);
+			return false;
 		}
-	);
+	)
+	.catch(err => logger.error(err));
 
 /*
  * GraphQL
