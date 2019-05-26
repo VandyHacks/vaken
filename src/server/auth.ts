@@ -175,7 +175,7 @@ passport.use(
 );
 
 passport.serializeUser(
-	async (user: User, done: Function): Promise<any> => {
+	async (user: any, done): Promise<any> => {
 		done(null, user.id);
 	}
 );
@@ -186,7 +186,8 @@ passport.deserializeUser(
 			const user = await UserModel.findById(id);
 			done(null, user);
 		} catch (err) {
-			done(err, null, { message: 'Failed to deserialize' });
+			logger.error('Failed to deserialize');
+			done(err);
 		}
 	}
 );
