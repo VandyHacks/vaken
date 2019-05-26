@@ -2,7 +2,7 @@ import passport from 'koa-passport';
 import bcrypt from 'bcryptjs';
 import { Profile as GoogleProfile } from 'passport-google-oauth';
 import { Profile as GithubProfile } from 'passport-github2';
-import { UserModel } from './models/User';
+import { UserModel, User } from './models/User';
 import { HackerModel } from './models/Hacker';
 import AuthType from './enums/AuthType';
 import AuthLevel from './enums/AuthLevel';
@@ -43,6 +43,46 @@ passport.use(
 	)
 );
 
+// create hacker from user
+export const createHackerFromUser = async (user: User, done: Function) => {
+	const createdHacker = await HackerModel.create({
+		email: user.email,
+		status: Status.Created,
+		user: user._id,
+	});
+	if (createdHacker) {
+		logger.debug(user);
+		done(null, user);
+	} else {
+		done(null, false);
+	}
+};
+
+// create a new user
+export const createAuthenticatedUser = async (
+	authType: AuthType,
+	email: string,
+	id: any,
+	done: Function
+) => {
+	logger.debug('> Creating user.....');
+	const newUser = {
+		authLevel: AuthLevel.HACKER,
+		authType,
+		email,
+		githubId: authType === AuthType.GITHUB ? id : undefined,
+		googleId: authType === AuthType.GOOGLE ? id : undefined,
+		password: `${authType}!123`,
+	};
+	const createdUser = await UserModel.create(newUser);
+	if (createdUser) {
+		// create hacker
+		createHackerFromUser(createdUser, done);
+	} else {
+		done(null, false);
+	}
+};
+
 // factory to create OAuth strategy handlers for Passport
 export const createStrategyHandler = (authType: AuthType) => async (
 	req: any,
@@ -53,7 +93,8 @@ export const createStrategyHandler = (authType: AuthType) => async (
 ): Promise<any> => {
 	logger.debug(`> ${authType} verify function`);
 	if (profile.emails) {
-		const user = await UserModel.findOne({ email: profile.emails[0].value });
+		const profileEmail = profile.emails[0].value;
+		const user = await UserModel.findOne({ email: profileEmail });
 
 		// found user
 		if (user) {
@@ -66,31 +107,7 @@ export const createStrategyHandler = (authType: AuthType) => async (
 			}
 		} else {
 			// no user found, create new user
-			logger.debug('> Creating user.....');
-			const newUser = {
-				authLevel: AuthLevel.HACKER,
-				authType,
-				email: profile.emails[0].value,
-				googleId: profile.id,
-				password: `${authType}!123`,
-			};
-			const createdUser = await UserModel.create(newUser);
-			if (createdUser) {
-				// create hacker
-				const createdHacker = await HackerModel.create({
-					email: createdUser.email,
-					status: Status.Created,
-					user: createdUser._id,
-				});
-				if (createdHacker) {
-					logger.debug(createdUser);
-					done(null, createdUser);
-				} else {
-					done(null, false);
-				}
-			} else {
-				done(null, false);
-			}
+			createAuthenticatedUser(authType, profileEmail, (user as any).id, done);
 		}
 	} else {
 		logger.warn('Missing email in auth profile');
