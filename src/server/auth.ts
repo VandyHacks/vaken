@@ -11,6 +11,10 @@ import logger from './logger';
 
 // Local authentication for non-SSO users
 const LocalStrategy = require('passport-local').Strategy;
+// Google OAuth2 authentication
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+// Github OAuth2 authentication
+const GitHubStrategy = require('passport-github2').Strategy;
 
 passport.use(
 	new LocalStrategy(
@@ -39,8 +43,60 @@ passport.use(
 	)
 );
 
-// Google OAuth2 authentication
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+// factory to create OAuth strategy handlers for Passport
+export const createStrategyHandler = (authType: AuthType) => async (
+	req: any,
+	accessToken: string,
+	refreshToken: string,
+	profile: GoogleProfile | GithubProfile,
+	done: Function
+): Promise<any> => {
+	logger.debug(`> ${authType} verify function`);
+	if (profile.emails) {
+		const user = await UserModel.findOne({ email: profile.emails[0].value });
+
+		// found user
+		if (user) {
+			if (user.authType !== authType) {
+				logger.warn(`Wrong auth provider. Please use ${authType}.`);
+				done(null, false, { message: 'Wrong auth provider' });
+			} else {
+				logger.debug('> Logging in.....');
+				done(null, user);
+			}
+		} else {
+			// no user found, create new user
+			logger.debug('> Creating user.....');
+			const newUser = {
+				authLevel: AuthLevel.HACKER,
+				authType,
+				email: profile.emails[0].value,
+				googleId: profile.id,
+				password: `${authType}!123`,
+			};
+			const createdUser = await UserModel.create(newUser);
+			if (createdUser) {
+				// create hacker
+				const createdHacker = await HackerModel.create({
+					email: createdUser.email,
+					status: Status.Created,
+					user: createdUser._id,
+				});
+				if (createdHacker) {
+					logger.debug(createdUser);
+					done(null, createdUser);
+				} else {
+					done(null, false);
+				}
+			} else {
+				done(null, false);
+			}
+		}
+	} else {
+		logger.warn('Missing email in auth profile');
+		done(null, false, { message: 'Profile is missing email' });
+	}
+};
 
 passport.use(
 	new GoogleStrategy(
@@ -50,64 +106,9 @@ passport.use(
 			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
 			passReqToCallback: true,
 		},
-		async (
-			req: any,
-			accessToken: string,
-			refreshToken: string,
-			profile: GoogleProfile,
-			done: Function
-		) => {
-			logger.debug('> Google verify function');
-			if (profile.emails) {
-				const user = await UserModel.findOne({ email: profile.emails[0].value });
-
-				// found user
-				if (user) {
-					if (user.authType !== AuthType.GOOGLE) {
-						logger.warn('Wrong auth provider. Please use Google.');
-						done(null, false, { message: 'Wrong auth provider' });
-					} else {
-						logger.debug('> Logging in.....');
-						done(null, user);
-					}
-				} else {
-					// no user found, create new user
-					logger.debug('> Creating user.....');
-					const newUser = {
-						authLevel: AuthLevel.HACKER,
-						authType: AuthType.GOOGLE,
-						email: profile.emails[0].value,
-						googleId: profile.id,
-						password: 'Google!123',
-					};
-					const createdUser = await UserModel.create(newUser);
-					if (createdUser) {
-						// create hacker
-						const createdHacker = await HackerModel.create({
-							email: createdUser.email,
-							status: Status.Created,
-							user: createdUser._id,
-						});
-						if (createdHacker) {
-							logger.debug(createdUser);
-							done(null, createdUser);
-						} else {
-							done(null, false);
-						}
-					} else {
-						done(null, false);
-					}
-				}
-			} else {
-				logger.warn('Missing email in auth profile');
-				done(null, false, { message: 'Profile is missing email' });
-			}
-		}
+		createStrategyHandler(AuthType.GOOGLE)
 	)
 );
-
-// Github OAuth2 authentication
-const GitHubStrategy = require('passport-github2').Strategy;
 
 passport.use(
 	new GitHubStrategy(
@@ -117,60 +118,7 @@ passport.use(
 			clientSecret: process.env.GITHUB_CLIENT_SECRET,
 			passReqToCallback: true,
 		},
-		async (
-			req: any,
-			accessToken: string,
-			refreshToken: string,
-			profile: GithubProfile,
-			done: Function
-		) => {
-			logger.debug('> Github verify function');
-			logger.debug(`Emails: ${profile.emails}`);
-			if (profile.emails) {
-				const user = await UserModel.findOne({ email: profile.emails[0].value });
-
-				// found user
-				if (user) {
-					if (user.authType !== AuthType.GITHUB) {
-						logger.warn('Wrong auth provider. Please use Github.');
-						done(null, false, { message: 'Wrong auth provider' });
-					} else {
-						logger.debug('> Logging in.....');
-						done(null, user);
-					}
-				} else {
-					// no user found, create new user
-					logger.debug('> Creating user.....');
-					const newUser = {
-						authLevel: AuthLevel.HACKER,
-						authType: AuthType.GITHUB,
-						email: profile.emails[0].value,
-						githubId: profile.id,
-						password: 'Github!123',
-					};
-					const createdUser = await UserModel.create(newUser);
-					if (createdUser) {
-						// create hacker
-						const createdHacker = await HackerModel.create({
-							email: createdUser.email,
-							status: Status.Created,
-							user: createdUser._id,
-						});
-						if (createdHacker) {
-							logger.debug(createdUser);
-							done(null, createdUser);
-						} else {
-							done(null, false);
-						}
-					} else {
-						done(null, false);
-					}
-				}
-			} else {
-				logger.warn('Missing email in auth profile');
-				done(null, false, { message: 'Profile is missing email' });
-			}
-		}
+		createStrategyHandler(AuthType.GITHUB)
 	)
 );
 
