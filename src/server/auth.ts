@@ -2,7 +2,7 @@ import passport from 'koa-passport';
 import bcrypt from 'bcryptjs';
 import { Profile as GoogleProfile } from 'passport-google-oauth';
 import { Profile as GithubProfile } from 'passport-github2';
-import { UserModel } from './models/User';
+import { User, UserModel } from './models/User';
 import { HackerModel } from './models/Hacker';
 import AuthType from './enums/AuthType';
 import AuthLevel from './enums/AuthLevel';
@@ -15,7 +15,7 @@ const LocalStrategy = require('passport-local').Strategy;
 passport.use(
 	new LocalStrategy(
 		{ passReqToCallback: true },
-		async (req: any, username: string, password: string, done: Function) => {
+		async (req: any, username: string, password: string, done: Function): Promise<any> => {
 			logger.debug('> Local verify function');
 			const user = await UserModel.findOne({ email: username });
 
@@ -56,7 +56,7 @@ passport.use(
 			refreshToken: string,
 			profile: GoogleProfile,
 			done: Function
-		) => {
+		): Promise<any> => {
 			logger.debug('> Google verify function');
 			if (profile.emails) {
 				const user = await UserModel.findOne({ email: profile.emails[0].value });
@@ -123,7 +123,7 @@ passport.use(
 			refreshToken: string,
 			profile: GithubProfile,
 			done: Function
-		) => {
+		): Promise<any> => {
 			logger.debug('> Github verify function');
 			logger.debug(`Emails: ${profile.emails}`);
 			if (profile.emails) {
@@ -174,18 +174,22 @@ passport.use(
 	)
 );
 
-passport.serializeUser((user: any, done: Function) => {
-	done(null, user.id);
-});
-
-passport.deserializeUser(async (id: any, done: Function) => {
-	try {
-		const user = await UserModel.findById(id);
-		done(null, user);
-	} catch (err) {
-		done(err, null, { message: 'Failed to deserialize' });
+passport.serializeUser(
+	async (user: User, done: Function): Promise<any> => {
+		done(null, user.id);
 	}
-});
+);
+
+passport.deserializeUser(
+	async (id: any, done: Function): Promise<any> => {
+		try {
+			const user = await UserModel.findById(id);
+			done(null, user);
+		} catch (err) {
+			done(err, null, { message: 'Failed to deserialize' });
+		}
+	}
+);
 
 // for testing
 export default passport;
