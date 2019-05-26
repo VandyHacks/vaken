@@ -1,5 +1,6 @@
 import passport from 'koa-passport';
 import bcrypt from 'bcryptjs';
+import { InstanceType } from 'typegoose'; // https://github.com/szokodiakos/typegoose#instancetype
 import { Profile as GoogleProfile } from 'passport-google-oauth';
 import { Profile as GithubProfile } from 'passport-github2';
 import { UserModel, User } from './models/User';
@@ -44,7 +45,7 @@ passport.use(
 );
 
 // create hacker from user
-export const createHackerFromUser = async (user: User, done: Function) => {
+export const createHackerFromUser = async (user: InstanceType<User>, done: Function) => {
 	const createdHacker = await HackerModel.create({
 		email: user.email,
 		status: Status.Created,
@@ -139,7 +140,7 @@ passport.use(
 	)
 );
 
-passport.serializeUser((user: any, done: Function) => {
+passport.serializeUser((user: InstanceType<User>, done: Function) => {
 	done(null, user.id);
 });
 
