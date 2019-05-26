@@ -37,7 +37,7 @@
 		"start-server": "ts-node src/server/index.ts",
 		"dev-server": "nodemon",
 		"build": "tsc && webpack --config webpack.prod.js --progress --colors",
-		"prod": "npm run build && node ./dist/server/index.js",
+		"prod": "npm run build && node ./dist/src/server/index.js",
 		"format": "prettier --config .prettierrc.json --write \"./**/*.ts*(x)\"",
 		"start": "webpack-dev-server --config webpack.dev.js --progress --color",
 		"test": "jest --onlyChanged",
