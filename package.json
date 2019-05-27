@@ -80,7 +80,7 @@
 		"react-chartjs-2": "^2.7.6",
 		"react-dom": "^16.8.6",
 		"react-router-dom": "^5.0.0",
-		"react-select": "^2.4.3",
+		"react-select": "^3.0.3",
 		"react-selectable-fast": "^2.2.2",
 		"react-spring": "^8.0.20",
 		"react-virtualized": "^9.21.1",
