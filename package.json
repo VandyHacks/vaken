@@ -157,7 +157,7 @@
 		"jest": "^24.8.0",
 		"jest-transform-css": "^2.0.0",
 		"mockingoose": "^2.13.0",
-		"nodemon": "^1.18.9",
+		"nodemon": "^1.19.1",
 		"pino-pretty": "^3.0.1",
 		"prettier": "^1.17.1",
 		"react-test-renderer": "^16.8.6",
