@@ -104,7 +104,7 @@
 		"@babel/preset-react": "^7.0.0",
 		"@babel/preset-typescript": "^7.3.3",
 		"@types/bcryptjs": "^2.4.2",
-		"@types/chart.js": "^2.7.52",
+		"@types/chart.js": "^2.7.53",
 		"@types/graphql": "^14.2.0",
 		"@types/jest": "^24.0.13",
 		"@types/koa": "^2.0.48",
