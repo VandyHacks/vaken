@@ -113,7 +113,7 @@
 		"@types/koa-session": "^5.10.0",
 		"@types/koa-static": "^4.0.1",
 		"@types/mongoose": "^5.5.3",
-		"@types/node": "^12.0.2",
+		"@types/node": "^12.0.5",
 		"@types/passport-github2": "^1.2.4",
 		"@types/passport-google-oauth": "^1.0.41",
 		"@types/passport-local": "^1.0.33",
