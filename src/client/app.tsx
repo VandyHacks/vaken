@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
 		font-family: 'Roboto', sans-serif;
 
 		${reset}
-	user-select: none;
+		user-select: none;
 		margin: 0;
 		padding: 0;
 		width: 100vw;
@@ -52,20 +52,21 @@ const Vaken: React.FunctionComponent = (): JSX.Element => {
 	// }, []);
 
 	useEffect(() => {
-		fetch('/api/whoami')
-			.then(res => {
-				if (res.status === 200) {
-					res.json().then(body => {
-						setUser(body);
-						setLoggedIn(true);
+		if (!loggedIn)
+			fetch('/api/whoami')
+				.then(res => {
+					if (res.status === 200) {
+						res.json().then(body => {
+							setUser(body);
+							setLoggedIn(true);
+							setReady(true);
+						});
+					} else {
 						setReady(true);
-					});
-				} else {
-					setReady(true);
-				}
-				return res;
-			})
-			.catch(err => console.error(err));
+					}
+					return res;
+				})
+				.catch(err => console.error(err));
 	}, [loggedIn]);
 
 	return (
