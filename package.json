@@ -184,10 +184,11 @@
 		"webpack-merge": "^4.2.1"
 	},
 	"browserslist": [
-		"> 1% in US",
-		"firefox ESR",
-		"last 2 versions",
-		"not IE > 10",
-		"not dead"
+		"last 2 chrome versions",
+		"last 2 firefox versions",
+		"last 2 safari versions",
+		"last 2 edge versions",
+		"last 2 ios versions",
+		"last 2 chromeandroid versions"
 	]
 }

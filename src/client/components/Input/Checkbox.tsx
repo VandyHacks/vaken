@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Update } from 'use-immer';
 import { AppField } from '../../routes/application/ApplicationConfig';
-import UncheckedSvg from '../../assets/img/unchecked_box.svg?inline';
-import CheckedSvg from '../../assets/img/checked_box.svg?inline';
+import UncheckedSvg from '../../assets/img/unchecked_box.svg';
+import CheckedSvg from '../../assets/img/checked_box.svg';
 
 interface Props extends AppField {
 	options?: string[];
@@ -112,9 +112,9 @@ export class Checkbox extends React.PureComponent<Props, {}> {
 									/>
 									<label htmlFor={option}>
 										{value.has(option) ? (
-											<CheckedSvg width={24} height={24} />
+											<img src={CheckedSvg} alt="checked" width={24} height={24} />
 										) : (
-											<UncheckedSvg width={24} height={24} />
+											<img src={UncheckedSvg} alt="unchecked" width={24} height={24} />
 										)}
 										{option}
 									</label>

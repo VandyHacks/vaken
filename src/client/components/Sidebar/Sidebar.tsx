@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { NavLink as UglyNavLink, withRouter } from 'react-router-dom';
-import SqLogo from '../../assets/img/square_hackathon_logo.svg?inline';
+import SqLogo from '../../assets/img/square_hackathon_logo.svg';
 import STRINGS from '../../assets/strings.json';
 import NavButton from '../Buttons/NavButton';
 import { SpaceBetweenColumn, FlexEndColumn } from '../Containers/FlexContainers';
@@ -115,7 +115,7 @@ const Sidebar = withRouter(
 			<Layout>
 				<Background>
 					<Logo>
-						<SqLogo />
+						<img src={SqLogo} alt="VH graphic" />
 					</Logo>
 					<HorizontalLine />
 					<SpaceBetweenColumn height="calc(100% - calc(8rem + 160px))">

@@ -22,7 +22,7 @@ module.exports = {
 				extensions: ['.js', '.ts', '.jsx', '.tsx', '.json'],
 			},
 			webpack: {
-				extensions: ['.svg', '.svg?inline', '.graphql'],
+				extensions: ['.svg', '.graphql'],
 			},
 		},
 	},
