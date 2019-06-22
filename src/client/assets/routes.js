@@ -1,11 +1,11 @@
-import NotReady from '../routes/dashboard/NotReady';
-import Application from '../routes/application/Application';
-import HackerDash from '../routes/dashboard/HackerDash';
-import ManageHackers from '../routes/manage/ManageHackers';
+import { NotReady } from '../routes/dashboard/NotReady';
+import { Application } from '../routes/application/Application';
+import { HackerDash } from '../routes/dashboard/HackerDash';
+import { ManageHackers } from '../routes/manage/ManageHackers';
 import OrganizerDash from '../routes/dashboard/LazyOrganizerDash';
-import Team from '../routes/team/Team';
-import Profile from '../routes/profile/Profile';
-import Help from '../routes/help/Help';
+import { Team } from '../routes/team/Team';
+import { Profile } from '../routes/profile/Profile';
+import { Help } from '../routes/help/Help';
 
 export const AuthLevel = {
 	HACKER: 'Hacker',

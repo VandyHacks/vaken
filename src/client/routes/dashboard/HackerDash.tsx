@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import TextButton from '../../components/Buttons/TextButton';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { FlexColumn, FlexStartColumn } from '../../components/Containers/FlexContainers';
-import Title from '../../components/Text/Title';
+import { Title } from '../../components/Text/Title';
 import STRINGS from '../../assets/strings.json';
 import { ButtonOutline, CenterButtonText } from '../../components/Buttons/Buttons';
 import applicationIncompleteSVG from '../../assets/img/application_incomplete.svg';
-import SmallCenteredText from '../../components/Text/SmallCenteredText';
+import { SmallCenteredText } from '../../components/Text/SmallCenteredText';
 
 export const HackerDash: FunctionComponent = (): JSX.Element => {
 	return (

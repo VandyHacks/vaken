@@ -8,7 +8,7 @@ import { FlexRow, SpaceBetweenColumn } from '../../components/Containers/FlexCon
 import TextLink from '../../components/Text/TextLink';
 import STRINGS from '../../assets/strings.json';
 import LeftImgTextInput from '../../components/Input/LeftImgTextInput';
-import LoginContext from '../../contexts/LoginContext';
+import { LoginContext } from '../../contexts/LoginContext';
 import { onChangeWrapper } from '../../components/Input/helperFunctions';
 import {
 	PASSWORD_REGEX,
@@ -48,26 +48,27 @@ export const PasswordLogin: React.FunctionComponent = (): JSX.Element => {
 	const [invalid, setInvalid] = useState(false);
 	const loginCtx = useContext(LoginContext);
 
-	const onLogin = (): void => {
+	const onLogin = async (): Promise<void> => {
 		if (emailValidation(email) && passwordValidation(pass)) {
-			fetch('/api/login', {
-				body: JSON.stringify({
-					password: pass,
-					username: email,
-				}),
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				method: 'POST',
-			})
-				.then(res => {
-					if (res.status === 200 && res.redirected) {
-						loginCtx.update(true);
-					} else {
-						setInvalid(true);
-					}
-				})
-				.catch(err => console.error(err));
+			try {
+				const res = await fetch('/api/login', {
+					body: JSON.stringify({
+						password: pass,
+						username: email,
+					}),
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					method: 'POST',
+				});
+				if (res.status === 200 && res.redirected) {
+					loginCtx.update(true);
+				} else {
+					setInvalid(true);
+				}
+			} catch (err) {
+				console.error(err);
+			}
 		}
 	};
 

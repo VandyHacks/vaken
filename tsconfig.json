@@ -11,7 +11,7 @@
 		"moduleResolution": "node",
 		"resolveJsonModule": true,
 		"strict": true,
-		"target": "es6",
+		"target": "es2017",
 		"lib": [
 			"es5",
 			"es6",

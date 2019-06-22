@@ -47,6 +47,7 @@ app.use(userRouter.routes());
 const DB_URL = process.env.MONGO_URL || 'mongodb://localhost:27017/test';
 
 // Connect to mongo database
+// eslint-disable-next-line promise/catch-or-return
 mongoose
 	.connect(DB_URL, {
 		useCreateIndex: true,
@@ -54,6 +55,7 @@ mongoose
 		useNewUrlParser: true,
 	})
 	.then(
+		// eslint-disable-next-line promise/always-return
 		(): void => {
 			logger.info('>>> MongoDB Connected');
 		},

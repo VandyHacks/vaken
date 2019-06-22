@@ -26,28 +26,31 @@ export const PasswordLogin: React.FunctionComponent = (): JSX.Element => {
 	const [invalid, setInvalid] = useState(false);
 	const loginCtx = useContext(LoginContext);
 
-	const onLogin = (): void => {
+	const onLogin = async (): Promise<void> => {
 		if (emailValidation(email) && passwordValidation(pass)) {
-			fetch('/api/register/hacker', {
-				body: JSON.stringify({
-					password: pass,
-					username: email,
-				}),
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				method: 'POST',
-			})
-				.then(res => {
-					if (res.status === 200 && res.redirected) {
-						loginCtx.update(true);
-					} else {
-						setInvalid(true);
-					}
-				})
-				.catch(err => console.error(err));
+			try {
+				const res = await fetch('/api/register/hacker', {
+					body: JSON.stringify({
+						password: pass,
+						username: email,
+					}),
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					method: 'POST',
+				});
+
+				if (res.status === 200 && res.redirected) {
+					loginCtx.update(true);
+				} else {
+					setInvalid(true);
+				}
+			} catch (err) {
+				console.error(err);
+			}
 		}
 	};
+
 	return (
 		<>
 			<LeftImgTextInput

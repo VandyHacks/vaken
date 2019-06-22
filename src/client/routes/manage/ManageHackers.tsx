@@ -7,8 +7,8 @@ import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { Spinner } from '../../components/Loading/Spinner';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import STRINGS from '../../assets/strings.json';
-import HackerView from './HackerView';
-import HackerTable from './HackerTable';
+import { HackerView } from './HackerView';
+import { HackerTable } from './HackerTable';
 import { defaultTableState, TableState, TableContext } from '../../contexts/TableContext';
 
 export const GET_HACKERS = gql`

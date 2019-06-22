@@ -1,23 +1,15 @@
 import React, { FunctionComponent, useContext } from 'react';
-import { gql } from 'apollo-boost';
 import { useQuery } from 'react-apollo-hooks';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
-import JoinTeam from './JoinTeam';
-import ViewTeam from './ViewTeam';
+import { GET_TEAM } from './queries';
+import { JoinTeam } from './JoinTeam';
+import { ViewTeam } from './ViewTeam';
 import { FlexColumn } from '../../components/Containers/FlexContainers';
 import Announcment from '../../components/Text/Announcment';
 import STRINGS from '../../assets/strings.json';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
-import Spinner from '../../components/Loading/Spinner';
+import { Spinner } from '../../components/Loading/Spinner';
 import { AuthContext } from '../../contexts/AuthContext';
-
-export const GET_TEAM = gql`
-	query HackerTeam($email: String!) {
-		hacker(email: $email) {
-			teamName
-		}
-	}
-`;
 
 export const Team: FunctionComponent = (): JSX.Element => {
 	const user = useContext(AuthContext);

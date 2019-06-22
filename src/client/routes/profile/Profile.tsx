@@ -1,11 +1,11 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useCallback } from 'react';
 import { useImmer } from 'use-immer';
 import { gql } from 'apollo-boost';
 import { useQuery } from 'react-apollo-hooks';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import config from './ProfileConfig';
-import AuthContext from '../../contexts/AuthContext';
-import ActionButtonContext from '../../contexts/ActionButtonContext';
+import { AuthContext } from '../../contexts/AuthContext';
+import { ActionButtonContext } from '../../contexts/ActionButtonContext';
 import { formChangeWrapper } from '../../components/Input/helperFunctions';
 import {
 	ConfigField,
@@ -43,7 +43,10 @@ export const Profile: React.FunctionComponent<{}> = (): JSX.Element => {
 	const initialFormState: any = { [PROFILE]: {} };
 	const [formData, setFormData] = useImmer(initialFormState);
 
-	const submit = (): void => alert(`here's your name: ${formData[PROFILE].firstName}`);
+	const submit = useCallback(
+		(): void => alert(`here's your name: ${formData[PROFILE].firstName}`),
+		[formData]
+	);
 
 	useEffect((): void => {
 		// Update formData when graphql query changes

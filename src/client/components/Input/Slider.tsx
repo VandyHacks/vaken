@@ -83,8 +83,6 @@ export class Slider extends React.PureComponent<Props, {}> {
 	public render(): JSX.Element {
 		const { options = ['default'], value, onChange } = this.props;
 
-		/* eslint-disable eqeqeq */
-
 		return (
 			<fieldset>
 				<SliderContainer>

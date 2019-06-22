@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
-import Dashboard from '../../../../src/client/routes/dashboard/Dashboard';
+import { Dashboard } from '../../../../src/client/routes/dashboard/Dashboard';
 
 describe('Test Dashboard', () => {
 	it('renders hackerdash on /dashboard route', async () => {

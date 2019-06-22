@@ -44,58 +44,68 @@ passport.use(
 );
 
 // factory to create OAuth strategy handlers for Passport
-export const createStrategyHandler = (authType: AuthType) => async (
+export const createStrategyHandler = (
+	authType: AuthType
+): ((
 	req: any,
 	accessToken: string,
 	refreshToken: string,
 	profile: GoogleProfile | GithubProfile,
 	done: Function
-): Promise<any> => {
-	logger.debug(`> ${authType} verify function`);
-	if (profile.emails) {
-		const user = await UserModel.findOne({ email: profile.emails[0].value });
+) => Promise<any>) => {
+	return async (
+		req: any,
+		accessToken: string,
+		refreshToken: string,
+		profile: GoogleProfile | GithubProfile,
+		done: Function
+	): Promise<any> => {
+		logger.debug(`> ${authType} verify function`);
+		if (profile.emails) {
+			const user = await UserModel.findOne({ email: profile.emails[0].value });
 
-		// found user
-		if (user) {
-			if (user.authType !== authType) {
-				logger.warn(`Wrong auth provider. Please use ${authType}.`);
-				done(null, false, { message: 'Wrong auth provider' });
+			// found user
+			if (user) {
+				if (user.authType !== authType) {
+					logger.warn(`Wrong auth provider. Please use ${authType}.`);
+					done(null, false, { message: 'Wrong auth provider' });
+				} else {
+					logger.debug('> Logging in.....');
+					done(null, user);
+				}
 			} else {
-				logger.debug('> Logging in.....');
-				done(null, user);
-			}
-		} else {
-			// no user found, create new user
-			logger.debug('> Creating user.....');
-			const newUser = {
-				authLevel: AuthLevel.HACKER,
-				authType,
-				email: profile.emails[0].value,
-				googleId: profile.id,
-				password: `${authType}!123`,
-			};
-			const createdUser = await UserModel.create(newUser);
-			if (createdUser) {
-				// create hacker
-				const createdHacker = await HackerModel.create({
-					email: createdUser.email,
-					status: Status.Created,
-					user: createdUser._id,
-				});
-				if (createdHacker) {
-					logger.debug(createdUser);
-					done(null, createdUser);
+				// no user found, create new user
+				logger.debug('> Creating user.....');
+				const newUser = {
+					authLevel: AuthLevel.HACKER,
+					authType,
+					email: profile.emails[0].value,
+					googleId: profile.id,
+					password: `${authType}!123`,
+				};
+				const createdUser = await UserModel.create(newUser);
+				if (createdUser) {
+					// create hacker
+					const createdHacker = await HackerModel.create({
+						email: createdUser.email,
+						status: Status.Created,
+						user: createdUser._id,
+					});
+					if (createdHacker) {
+						logger.debug(createdUser);
+						done(null, createdUser);
+					} else {
+						done(null, false);
+					}
 				} else {
 					done(null, false);
 				}
-			} else {
-				done(null, false);
 			}
+		} else {
+			logger.warn('Missing email in auth profile');
+			done(null, false, { message: 'Profile is missing email' });
 		}
-	} else {
-		logger.warn('Missing email in auth profile');
-		done(null, false, { message: 'Profile is missing email' });
-	}
+	};
 };
 
 passport.use(

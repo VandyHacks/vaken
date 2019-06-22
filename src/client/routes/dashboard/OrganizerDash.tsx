@@ -14,6 +14,14 @@ import { OverflowContainer, FlexStartColumn } from '../../components/Containers/
 import 'chartjs-plugin-datalabels';
 import STRINGS from '../../assets/strings.json';
 
+interface DataSet {
+	datasets: {
+		backgroundColor: string[];
+		data: any[];
+	}[];
+	labels: string[];
+}
+
 const Label = styled('span')`
 	font-size: 1.25rem;
 	font-family: 'Roboto', sans-serif;
@@ -113,7 +121,7 @@ const colorPalette = STRINGS.COLOR_PALETTE.slice(1);
 const generateColor = (n: number): string[] =>
 	[...Array(n).keys()].map((i: number) => colorPalette[i % colorPalette.length]);
 
-const barStatusData = (data: { [key: string]: number }) => {
+const barStatusData = (data: { [key: string]: number }): DataSet => {
 	const statusData = Object.values(data).slice(0, -1);
 	const statusLabels = Object.keys(data).slice(0, -1);
 	return {
@@ -166,7 +174,7 @@ const barStatusOptions: ChartOptions = {
 	},
 };
 
-const pieShirtData = (data: any) => {
+const pieShirtData = (data: any): DataSet => {
 	const shirtLabels = Object.keys(data).slice(0, -1);
 
 	// this casting solution is bad - we should just fix the explicit any in the method param
@@ -197,7 +205,7 @@ const pieShirtOptions = {
 	},
 };
 
-const pieGenderData = (data: any) => {
+const pieGenderData = (data: any): DataSet => {
 	const genderLabels = Object.keys(data).slice(0, -1);
 
 	// this casting solution is bad - we should just fix the explicit any in the method param

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Update } from 'use-immer';
-import Slider, { Props as SliderProps } from './Slider';
+import { Slider, Props as SliderProps } from './Slider';
 
 export class Boolean extends PureComponent<SliderProps, {}> {
 	/**

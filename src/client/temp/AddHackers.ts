@@ -81,7 +81,7 @@ export const hackers = [
 	},
 ];
 
-const getRandom = (max: number) => {
+const getRandom = (max: number): number => {
 	return Math.floor(Math.random() * max);
 };
 const statuses = [
@@ -97,45 +97,52 @@ const genders = ['Male', 'Female', 'Other', 'PreferNotToSay'];
 
 const shirtSizes = ['UXS', 'US', 'UM', 'UL', 'UXL', 'UXXL', 'WS', 'WM', 'WL', 'WXL', 'WXXL'];
 
-export const addHackers = (die: boolean) => {
+export const addHackers = async (die: boolean): Promise<void> => {
+	const promises: Promise<Response>[] = [];
 	if (die) {
 		for (let i = 0; i < 1000; i += 1) {
 			const fn = names[getRandom(21000)];
 			const ln = names[getRandom(21000)];
 			const bool = !!getRandom(2);
 			const status = statuses[getRandom(7)];
-			fetch('/api/register/hacker', {
-				body: JSON.stringify({
-					firstName: fn,
-					gender: genders[getRandom(7)],
-					gradYear: getRandom(4) + 2019,
-					lastName: ln,
-					needsReimbursement: bool,
-					password: 'P@ssword1',
-					school: institutions[getRandom(1430)],
-					shirtSize: shirtSizes[getRandom(11)],
-					status,
-					teamName: '',
-					username: `${fn}.${ln}@gmail.com`,
-				}),
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				method: 'POST',
-			});
+			promises.push(
+				fetch('/api/register/hacker', {
+					body: JSON.stringify({
+						firstName: fn,
+						gender: genders[getRandom(7)],
+						gradYear: getRandom(4) + 2019,
+						lastName: ln,
+						needsReimbursement: bool,
+						password: 'P@ssword1',
+						school: institutions[getRandom(1430)],
+						shirtSize: shirtSizes[getRandom(11)],
+						status,
+						teamName: '',
+						username: `${fn}.${ln}@gmail.com`,
+					}),
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					method: 'POST',
+				})
+			);
 		}
 	}
 
 	hackers.forEach(hacker => {
 		const { email, ...rest } = hacker;
-		return fetch('/api/register/hacker', {
-			body: JSON.stringify({ ...rest, password: 'p@ssword1', username: email }),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			method: 'POST',
-		}).then(res => console.log(res.json));
+		promises.push(
+			fetch('/api/register/hacker', {
+				body: JSON.stringify({ ...rest, password: 'p@ssword1', username: email }),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				method: 'POST',
+			})
+		);
 	});
+
+	await Promise.all(promises);
 };
 
 export default addHackers;

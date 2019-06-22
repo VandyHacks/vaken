@@ -19,18 +19,31 @@ import { Link } from 'react-router-dom';
 import { Mutation, MutationFn, FetchResult } from 'react-apollo';
 import { gql } from 'apollo-boost';
 import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
-import TableButton from '../../components/Buttons/TableButton';
-import ToggleSwitch from '../../components/Buttons/ToggleSwitch';
-import RadioSlider from '../../components/Buttons/RadioSlider';
-import FloatingButton from '../../components/Buttons/FloatingButton';
-import Status from '../../components/Text/Status';
-import Checkmark from '../../components/Symbol/Checkmark';
+import { TableButton } from '../../components/Buttons/TableButton';
+import { ToggleSwitch } from '../../components/Buttons/ToggleSwitch';
+import { RadioSlider } from '../../components/Buttons/RadioSlider';
+import { FloatingButton } from '../../components/Buttons/FloatingButton';
+import { Status } from '../../components/Text/Status';
+import { Checkmark } from '../../components/Symbol/Checkmark';
 import SearchBox from '../../components/Input/SearchBox';
 import plane from '../../assets/img/plane.svg';
 import STRINGS from '../../assets/strings.json';
-import { GET_HACKERS } from './ManageHackers';
 import { TableCtxI, TableContext, Hacker, HackerStatus, Option } from '../../contexts/TableContext';
-import Row from './Row';
+import { Row } from './Row';
+
+export const GET_HACKERS = gql`
+	query {
+		hackers {
+			firstName
+			lastName
+			email
+			gradYear
+			school
+			status
+			needsReimbursement
+		}
+	}
+`;
 
 const UPDATE_STATUS = gql`
 	mutation UpdateHackerStatus($email: String!, $status: String!) {
@@ -462,7 +475,12 @@ interface Props {
 }
 
 // header renderer for travel reimbursement part of table
-const reimbursementHeaderRenderer = ({ dataKey, sortBy, sortDirection, label }: TableHeaderProps) =>
+const reimbursementHeaderRenderer = ({
+	dataKey,
+	sortBy,
+	sortDirection,
+	label,
+}: TableHeaderProps): JSX.Element =>
 	renderHeaderAsSVG(
 		{
 			dataKey,

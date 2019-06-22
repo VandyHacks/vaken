@@ -2,7 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 // import { MemoryRouter } from 'react-router-dom';
 
-import Application from '../../../../src/client/routes/application/Application';
+import { Application } from '../../../../src/client/routes/application/Application';
 
 jest.mock('../../../../src/client/assets/data/institutions.json', () => ['Vanderbilt University']);
 
