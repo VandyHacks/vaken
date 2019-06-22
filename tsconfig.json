@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"module": "commonjs",
+		"module": "esnext",
 		"allowJs": true,
 		"allowSyntheticDefaultImports": true,
 		"emitDecoratorMetadata": true,
@@ -10,27 +10,10 @@
 		"jsx": "react",
 		"moduleResolution": "node",
 		"resolveJsonModule": true,
+		"sourceMap": true,
 		"strict": true,
-		"target": "es2017",
-		"lib": [
-			"es5",
-			"es6",
-			"dom",
-			"es2015",
-			"es2015.core",
-			"es2015.collection",
-			"es2015.generator",
-			"es2015.iterable",
-			"es2015.promise",
-			"es2015.proxy",
-			"es2015.reflect",
-			"es2015.symbol",
-			"es2015.symbol.wellknown",
-			"esnext.asynciterable",
-			"es2017.object",
-			"es2017"
-		],
-		"outDir": "dist",
+		"target": "esnext",
+		"outDir": "./dist/",
 		"baseUrl": ".",
 		"paths": {
 			"*": ["node_modules/*"]

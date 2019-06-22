@@ -28,15 +28,7 @@ module.exports = {
 			},
 			{
 				test: /\.svg$/,
-				oneOf: [
-					{
-						resourceQuery: /inline/,
-						use: ['@svgr/webpack'],
-					},
-					{
-						use: ['@svgr/webpack', 'file-loader'],
-					},
-				],
+				use: ['@svgr/webpack', 'file-loader'],
 			},
 			{
 				include: /node_modules/,
