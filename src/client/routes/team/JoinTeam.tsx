@@ -1,18 +1,11 @@
 import React, { FunctionComponent, useState, useContext } from 'react';
 import styled from 'styled-components';
 import { useMutation } from 'react-apollo-hooks';
-import { gql } from 'apollo-boost';
 import SearchBox from '../../components/Input/SearchBox';
 import STRINGS from '../../assets/strings.json';
-import ActionButton from '../../components/Buttons/ActionButton';
-import { GET_TEAM } from './Team';
+import { ActionButton } from '../../components/Buttons/ActionButton';
 import { AuthContext } from '../../contexts/AuthContext';
-
-const JOIN_TEAM = gql`
-	mutation JoinTeam($email: String!, $teamName: String!) {
-		joinTeam(email: $email, teamName: $teamName)
-	}
-`;
+import { GET_TEAM, JOIN_TEAM } from './queries';
 
 const Layout = styled.div`
 	margin-bottom: 0.125rem;

@@ -2,12 +2,12 @@ import React, { FunctionComponent } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import STRINGS from '../../assets/strings.json';
 import bg from '../../assets/img/login_bg.jpg';
-import PasswordLogin from './PasswordLogin';
+import { PasswordLogin } from './PasswordLogin';
 import OAuthLogin from './OAuthLogin';
 import CreateLogin from './CreateLogin';
 import Background from '../../components/Containers/Background';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
-import Title from '../../components/Text/Title';
+import { Title } from '../../components/Text/Title';
 
 const LoginPage: FunctionComponent = (): JSX.Element => (
 	<>

@@ -1,21 +1,14 @@
 import React, { FunctionComponent, useContext } from 'react';
 import styled from 'styled-components';
 import { useMutation } from 'react-apollo-hooks';
-import { gql } from 'apollo-boost';
 import { FlexColumn } from '../../components/Containers/FlexContainers';
 import STRINGS from '../../assets/strings.json';
-import Title from '../../components/Text/Title';
+import { Title } from '../../components/Text/Title';
 import { CenterButtonText } from '../../components/Buttons/Buttons';
-import SmallCenteredText from '../../components/Text/SmallCenteredText';
+import { SmallCenteredText } from '../../components/Text/SmallCenteredText';
 import TextButton from '../../components/Buttons/TextButton';
-import { GET_TEAM } from './Team';
+import { GET_TEAM, LEAVE_TEAM } from './queries';
 import { AuthContext } from '../../contexts/AuthContext';
-
-const LEAVE_TEAM = gql`
-	mutation LeaveTeam($email: String!) {
-		leaveTeam(email: $email)
-	}
-`;
 
 interface ButtonProps {
 	background?: string;

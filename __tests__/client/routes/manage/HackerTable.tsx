@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
-import HackerTable from '../../../../src/client/routes/manage/HackerTable';
+import { HackerTable } from '../../../../src/client/routes/manage/HackerTable';
 import { HackerStatus } from '../../../../src/client/contexts/TableContext';
 
 // NOTE: mock() must be called OUTSIDE the describe() methods b/c hoisted to top of scope

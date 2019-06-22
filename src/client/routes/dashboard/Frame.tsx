@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Switch, Redirect, Route } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import STRINGS from '../../assets/strings.json';
-import Title from '../../components/Text/Title';
+import { Title } from '../../components/Text/Title';
 import routes from '../../assets/routes';
 import { AuthContext } from '../../contexts/AuthContext';
 import { SpaceBetweenRow, OverflowContainer } from '../../components/Containers/FlexContainers';

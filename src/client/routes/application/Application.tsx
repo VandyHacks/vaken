@@ -3,8 +3,8 @@ import { useImmer, Update } from 'use-immer';
 import styled from 'styled-components';
 import { formChangeWrapper } from '../../components/Input/helperFunctions';
 import config from '../../assets/application';
-import Collapsible from '../../components/Containers/Collapsible';
-import ActionButtonContext from '../../contexts/ActionButtonContext';
+import { Collapsible } from '../../components/Containers/Collapsible';
+import { ActionButtonContext } from '../../contexts/ActionButtonContext';
 import { HeaderButton } from '../../components/Buttons/HeaderButton';
 
 export interface ConfigSection {
@@ -81,7 +81,7 @@ export const FieldTitle = styled.span`
 	line-height: 140%;
 `;
 
-const submit = () => {};
+const submit = (): void => {};
 
 export const Application: FunctionComponent<{}> = (): JSX.Element => {
 	const { update: setActionButton } = useContext(ActionButtonContext);
@@ -123,8 +123,6 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 
 		e.preventDefault();
 	};
-
-	/* eslint-disable eqeqeq */
 
 	return (
 		<StyledForm ref={formRef}>

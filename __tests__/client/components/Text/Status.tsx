@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import Status from '../../../../src/client/components/Text/Status';
+import { Status } from '../../../../src/client/components/Text/Status';
 
 describe('Test Status', () => {
 	it('renders correctly', async () => {

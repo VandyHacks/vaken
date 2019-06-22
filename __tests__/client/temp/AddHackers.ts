@@ -1,4 +1,4 @@
-import addHackers, { hackers } from '../../../src/client/temp/AddHackers';
+import { addHackers, hackers } from '../../../src/client/temp/AddHackers';
 
 describe('Test AddHackers', () => {
 	it('Hackers to add are valid', async () => {

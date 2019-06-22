@@ -4,7 +4,7 @@ import { Query } from 'react-apollo';
 import styled from 'styled-components';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
-import Spinner from '../../components/Loading/Spinner';
+import { Spinner } from '../../components/Loading/Spinner';
 import STRINGS from '../../assets/strings.json';
 import { Title } from '../../components/Text/Title';
 import LeftImgButton from '../../components/Buttons/LeftImgButton';

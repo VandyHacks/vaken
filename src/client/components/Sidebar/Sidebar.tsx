@@ -5,9 +5,9 @@ import SqLogo from '../../assets/img/square_hackathon_logo.svg?inline';
 import STRINGS from '../../assets/strings.json';
 import NavButton from '../Buttons/NavButton';
 import { SpaceBetweenColumn, FlexEndColumn } from '../Containers/FlexContainers';
-import SmallCenteredText from '../Text/SmallCenteredText';
+import { SmallCenteredText } from '../Text/SmallCenteredText';
 import routes from '../../assets/routes';
-import AuthContext from '../../contexts/AuthContext';
+import { AuthContext } from '../../contexts/AuthContext';
 
 const Layout = styled.div`
 	grid-area: sidebar;

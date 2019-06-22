@@ -10,13 +10,4 @@ module.exports = {
 		'@typescript-eslint/no-unused-vars': ['error', { vars: 'local' }], // local vars prevent exported enums from being declared unused
 		// ---------------------------------------------------------//
 	},
-	plugins: ['@typescript-eslint'],
-	settings: {
-		'import/parsers': {
-			'@typescript-eslint/parser': ['.ts', '.tsx'],
-		},
-		'import/resolver': {
-			typescript: {},
-		},
-	},
 };

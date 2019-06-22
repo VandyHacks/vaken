@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import RadioSlider from '../../../../src/client/components/Buttons/RadioSlider';
+import { RadioSlider } from '../../../../src/client/components/Buttons/RadioSlider';
 
 describe('Test RadioSlider', () => {
 	it('RadioSlider renders correctly', async () => {

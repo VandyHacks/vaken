@@ -1,4 +1,4 @@
-import AuthContext from '../../../src/client/contexts/AuthContext';
+import { AuthContext } from '../../../src/client/contexts/AuthContext';
 
 describe('Test AuthContext', () => {
 	it('Initializes', async () => {

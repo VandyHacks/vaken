@@ -7,8 +7,8 @@ import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { ApolloProvider } from 'react-apollo';
 import LoginPage from './routes/login/Login';
 import Frame from './routes/dashboard/Frame';
-import AuthContext from './contexts/AuthContext';
-import LoginContext from './contexts/LoginContext';
+import { AuthContext } from './contexts/AuthContext';
+import { LoginContext } from './contexts/LoginContext';
 import { User } from '../common/models/User';
 
 const GlobalStyle = createGlobalStyle`
@@ -53,20 +53,22 @@ const Vaken: React.FunctionComponent = (): JSX.Element => {
 
 	useEffect(() => {
 		if (!loggedIn)
-			fetch('/api/whoami')
-				.then(res => {
+			(async () => {
+				try {
+					const res = await fetch('/api/whoami');
 					if (res.status === 200) {
-						res.json().then(body => {
-							setUser(body);
-							setLoggedIn(true);
-							setReady(true);
-						});
+						const body = await res.json();
+						setUser(body);
+						setLoggedIn(true);
+						setReady(true);
 					} else {
 						setReady(true);
 					}
 					return res;
-				})
-				.catch(err => console.error(err));
+				} catch (e) {
+					console.error(e);
+				}
+			})();
 	}, [loggedIn]);
 
 	return (

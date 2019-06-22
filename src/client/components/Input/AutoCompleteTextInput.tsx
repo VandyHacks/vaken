@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import Input, { Props as InputProps } from './TextInput';
+import { Input, Props as InputProps } from './TextInput';
 
 interface Props extends InputProps {
 	options?: string[];
