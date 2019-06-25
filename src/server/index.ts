@@ -1,110 +1,44 @@
-import koa from 'koa';
-import koaRouter from 'koa-router';
-import serve from 'koa-static';
-import bodyParser from 'koa-bodyparser';
-import mongoose from 'mongoose';
-import passport from 'koa-passport';
-import session from 'koa-session';
-import { ApolloServer } from 'apollo-server-koa';
-import { buildSchema } from 'type-graphql';
+import { ApolloServer, makeExecutableSchema } from 'apollo-server-koa';
+import { DIRECTIVES } from '@graphql-codegen/typescript-mongodb';
+import Koa from 'koa';
+import pino from 'pino';
+import gqlSchema from '../common/schema.graphql';
+import { resolvers } from './resolvers';
+import { initDb } from './collections';
+import Context from './context';
 
-import userRouter from './api/UserRouter';
-import UserResolver from './resolvers/UserResolver';
-import HackerResolver from './resolvers/HackerResolver';
-import MentorResolver from './resolvers/MentorResolver';
-import OrganizerResolver from './resolvers/OrganizerResolver';
-import SponsorRepResolver from './resolvers/SponsorRepResolver';
-import SponsorResolver from './resolvers/SponsorResolver';
-import TeamResolver from './resolvers/TeamResolver';
-import logger from './logger';
+(async () => {
+	const models = await initDb();
+	const logger = pino();
 
-const app = new koa();
-const router = new koaRouter();
+	const context: Context = {
+		models,
+	};
 
-// Default port to listen
-const PORT = process.env.PORT || 8080;
-
-// Define a route handler for the default home page
-app.use(serve(`${__dirname}/app`));
-
-app.use(session(app));
-app.use(bodyParser());
-app.keys = ['secretsauce'];
-
-// Authentication using Passport
-if (process.env.NODE_ENV !== 'production') {
-	require('dotenv').config();
-}
-require('./auth');
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-// Add the defined routes to the application
-app.use(router.routes());
-app.use(userRouter.routes());
-
-const DB_URL = process.env.MONGO_URL || 'mongodb://localhost:27017/test';
-
-// Connect to mongo database
-// eslint-disable-next-line promise/catch-or-return
-mongoose
-	.connect(DB_URL, {
-		useCreateIndex: true,
-		useFindAndModify: false,
-		useNewUrlParser: true,
-	})
-	.then(
-		// eslint-disable-next-line promise/always-return
-		(): void => {
-			logger.info('>>> MongoDB Connected');
+	const schema = makeExecutableSchema({
+		resolverValidationOptions: {
+			requireResolversForAllFields: true,
+			requireResolversForResolveType: false,
 		},
-		(err): void => {
-			logger.error('err:', err);
-		}
-	);
-
-/*
- * GraphQL
- */
-
-/**
- * Build a schema, configure an Apollo server, and connect Koa
- * @returns {Promise<void>} no return
- */
-async function launchServer(): Promise<void> {
-	// build TypeGraphQL executable schema
-	const schema = await buildSchema({
-		resolvers: [
-			HackerResolver,
-			MentorResolver,
-			OrganizerResolver,
-			SponsorRepResolver,
-			SponsorResolver,
-			TeamResolver,
-			UserResolver,
-		],
-		validate: false,
-		// automatically create `schema.gql` file with schema definition in current folder
-		// emitSchemaFile: path.resolve(__dirname, 'schema.gql'),
+		resolvers: resolvers as {},
+		typeDefs: [DIRECTIVES, gqlSchema],
 	});
 
-	// Create GraphQL server
-	const apollo = new ApolloServer({
+	const server = new ApolloServer({
+		context: context,
+		formatError: error => {
+			logger.error(error);
+			return error;
+		},
 		playground: true,
-		schema,
+		schema: schema,
 	});
 
-	apollo.applyMiddleware({ app });
+	const app = new Koa();
+	server.applyMiddleware({ app });
 
-	// Begin listening on the defined port
-	app.listen(PORT, (): void => {
-		logger.info(`>>> Server started at http://localhost:${PORT}${apollo.graphqlPath}`);
-	});
-}
-
-// for testing
-export default app;
-
-// Launch server with GraphQL endpoint
-launchServer();
+	app.listen(
+		{ port: 8080 },
+		() => void logger.info(`Server ready at http://localhost:8080${server.graphqlPath}`)
+	);
+})();

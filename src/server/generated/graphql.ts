@@ -78,6 +78,7 @@ export type Hacker = User & {
 	gender?: Maybe<Scalars['String']>;
 	dietaryRestrictions: Array<DietaryRestriction>;
 	race: Array<Race>;
+	userType: Scalars['String'];
 	modifiedAt: Scalars['Int'];
 	status: ApplicationStatus;
 	school?: Maybe<Scalars['String']>;
@@ -86,7 +87,7 @@ export type Hacker = User & {
 	adult?: Maybe<Scalars['Boolean']>;
 	volunteer?: Maybe<Scalars['Boolean']>;
 	github?: Maybe<Scalars['String']>;
-	teamCode?: Maybe<Scalars['ID']>;
+	team?: Maybe<Team>;
 };
 
 export type Login = {
@@ -116,6 +117,7 @@ export type Mentor = User & {
 	gender?: Maybe<Scalars['String']>;
 	dietaryRestrictions: Array<DietaryRestriction>;
 	race: Array<Race>;
+	userType: Scalars['String'];
 	shifts: Array<Shift>;
 	skills: Array<Scalars['String']>;
 };
@@ -134,7 +136,53 @@ export type Organizer = User & {
 	gender?: Maybe<Scalars['String']>;
 	dietaryRestrictions: Array<DietaryRestriction>;
 	race: Array<Race>;
+	userType: Scalars['String'];
 	permissions: Array<Maybe<Scalars['String']>>;
+};
+
+export type Query = {
+	__typename?: 'Query';
+	me: User;
+	hacker: Hacker;
+	hackers: Array<Hacker>;
+	organizer: Organizer;
+	organizers: Array<Organizer>;
+	mentor: Mentor;
+	mentors: Array<Mentor>;
+	team: Team;
+	teams: Array<Team>;
+};
+
+export type QueryHackerArgs = {
+	id: Scalars['ID'];
+};
+
+export type QueryHackersArgs = {
+	sortDirection?: Maybe<SortDirection>;
+};
+
+export type QueryOrganizerArgs = {
+	id: Scalars['ID'];
+};
+
+export type QueryOrganizersArgs = {
+	sortDirection?: Maybe<SortDirection>;
+};
+
+export type QueryMentorArgs = {
+	id: Scalars['ID'];
+};
+
+export type QueryMentorsArgs = {
+	sortDirection?: Maybe<SortDirection>;
+};
+
+export type QueryTeamArgs = {
+	id: Scalars['ID'];
+};
+
+export type QueryTeamsArgs = {
+	sortDirection?: Maybe<SortDirection>;
 };
 
 export enum Race {
@@ -166,12 +214,17 @@ export enum ShirtSize {
 	Wxxl = 'WXXL',
 }
 
+export enum SortDirection {
+	Asc = 'ASC',
+	Desc = 'DESC',
+}
+
 export type Team = {
 	__typename?: 'Team';
 	id: Scalars['ID'];
 	createdAt: Scalars['Int'];
 	name?: Maybe<Scalars['String']>;
-	members: Array<Hacker>;
+	memberIds: Array<Scalars['ID']>;
 	size: Scalars['Int'];
 };
 
@@ -188,10 +241,12 @@ export type User = {
 	gender?: Maybe<Scalars['String']>;
 	dietaryRestrictions: Array<DietaryRestriction>;
 	race: Array<Race>;
+	userType: Scalars['String'];
 };
 
 export enum UserType {
 	Hacker = 'HACKER',
+	Mentor = 'MENTOR',
 	Organizer = 'ORGANIZER',
 	Sponsor = 'SPONSOR',
 	SuperAdmin = 'SUPER_ADMIN',
@@ -254,27 +309,29 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-	String: MaybePromise<Scalars['String']>;
-	Boolean: MaybePromise<Scalars['Boolean']>;
-	User: MaybePromise<User>;
+	Query: MaybePromise<{}>;
+	User: MaybePromise<Omit<User, 'logins'> & { logins: Array<ResolversTypes['Login']> }>;
 	ID: MaybePromise<Scalars['ID']>;
 	Int: MaybePromise<Scalars['Int']>;
-	Login: MaybePromise<Login>;
+	Login: MaybePromise<LoginDbObject>;
 	LoginProvider: LoginProvider;
+	String: MaybePromise<Scalars['String']>;
 	ShirtSize: ShirtSize;
 	DietaryRestriction: DietaryRestriction;
 	Race: Race;
+	Hacker: MaybePromise<HackerDbObject>;
+	ApplicationStatus: ApplicationStatus;
+	Boolean: MaybePromise<Scalars['Boolean']>;
+	Team: MaybePromise<TeamDbObject>;
+	SortDirection: SortDirection;
+	Organizer: MaybePromise<OrganizerDbObject>;
+	Mentor: MaybePromise<MentorDbObject>;
+	Shift: MaybePromise<ShiftDbObject>;
 	AuthLevel: AuthLevel;
 	Gender: Gender;
-	ApplicationStatus: ApplicationStatus;
 	UserType: UserType;
-	ApplicationQuestion: MaybePromise<ApplicationQuestion>;
-	ApplicationField: MaybePromise<ApplicationField>;
-	Hacker: MaybePromise<Hacker>;
-	Shift: MaybePromise<Shift>;
-	Mentor: MaybePromise<Mentor>;
-	Team: MaybePromise<Team>;
-	Organizer: MaybePromise<Organizer>;
+	ApplicationQuestion: MaybePromise<ApplicationQuestionDbObject>;
+	ApplicationField: MaybePromise<ApplicationFieldDbObject>;
 	AdditionalEntityFields: AdditionalEntityFields;
 };
 
@@ -379,6 +436,7 @@ export type HackerResolvers<ContextType = any, ParentType = ResolversTypes['Hack
 		ContextType
 	>;
 	race?: Resolver<Array<ResolversTypes['Race']>, ParentType, ContextType>;
+	userType?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 	modifiedAt?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
 	status?: Resolver<ResolversTypes['ApplicationStatus'], ParentType, ContextType>;
 	school?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -387,7 +445,7 @@ export type HackerResolvers<ContextType = any, ParentType = ResolversTypes['Hack
 	adult?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
 	volunteer?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
 	github?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-	teamCode?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+	team?: Resolver<Maybe<ResolversTypes['Team']>, ParentType, ContextType>;
 };
 
 export type LoginResolvers<ContextType = any, ParentType = ResolversTypes['Login']> = {
@@ -413,6 +471,7 @@ export type MentorResolvers<ContextType = any, ParentType = ResolversTypes['Ment
 		ContextType
 	>;
 	race?: Resolver<Array<ResolversTypes['Race']>, ParentType, ContextType>;
+	userType?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 	shifts?: Resolver<Array<ResolversTypes['Shift']>, ParentType, ContextType>;
 	skills?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
 };
@@ -434,7 +493,25 @@ export type OrganizerResolvers<ContextType = any, ParentType = ResolversTypes['O
 		ContextType
 	>;
 	race?: Resolver<Array<ResolversTypes['Race']>, ParentType, ContextType>;
+	userType?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 	permissions?: Resolver<Array<Maybe<ResolversTypes['String']>>, ParentType, ContextType>;
+};
+
+export type QueryResolvers<ContextType = any, ParentType = ResolversTypes['Query']> = {
+	me?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+	hacker?: Resolver<ResolversTypes['Hacker'], ParentType, ContextType, QueryHackerArgs>;
+	hackers?: Resolver<Array<ResolversTypes['Hacker']>, ParentType, ContextType, QueryHackersArgs>;
+	organizer?: Resolver<ResolversTypes['Organizer'], ParentType, ContextType, QueryOrganizerArgs>;
+	organizers?: Resolver<
+		Array<ResolversTypes['Organizer']>,
+		ParentType,
+		ContextType,
+		QueryOrganizersArgs
+	>;
+	mentor?: Resolver<ResolversTypes['Mentor'], ParentType, ContextType, QueryMentorArgs>;
+	mentors?: Resolver<Array<ResolversTypes['Mentor']>, ParentType, ContextType, QueryMentorsArgs>;
+	team?: Resolver<ResolversTypes['Team'], ParentType, ContextType, QueryTeamArgs>;
+	teams?: Resolver<Array<ResolversTypes['Team']>, ParentType, ContextType, QueryTeamsArgs>;
 };
 
 export type ShiftResolvers<ContextType = any, ParentType = ResolversTypes['Shift']> = {
@@ -446,12 +523,12 @@ export type TeamResolvers<ContextType = any, ParentType = ResolversTypes['Team']
 	id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
 	createdAt?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
 	name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-	members?: Resolver<Array<ResolversTypes['Hacker']>, ParentType, ContextType>;
+	memberIds?: Resolver<Array<ResolversTypes['ID']>, ParentType, ContextType>;
 	size?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
 };
 
 export type UserResolvers<ContextType = any, ParentType = ResolversTypes['User']> = {
-	__resolveType: TypeResolveFn<'Hacker' | 'Mentor' | 'Organizer', ParentType, ContextType>;
+	__resolveType: TypeResolveFn<'Hacker' | 'Organizer' | 'Mentor', ParentType, ContextType>;
 	id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
 	createdAt?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
 	secondaryIds?: Resolver<Array<ResolversTypes['ID']>, ParentType, ContextType>;
@@ -468,6 +545,7 @@ export type UserResolvers<ContextType = any, ParentType = ResolversTypes['User']
 		ContextType
 	>;
 	race?: Resolver<Array<ResolversTypes['Race']>, ParentType, ContextType>;
+	userType?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = any> = {
@@ -477,6 +555,7 @@ export type Resolvers<ContextType = any> = {
 	Login?: LoginResolvers<ContextType>;
 	Mentor?: MentorResolvers<ContextType>;
 	Organizer?: OrganizerResolvers<ContextType>;
+	Query?: QueryResolvers<ContextType>;
 	Shift?: ShiftResolvers<ContextType>;
 	Team?: TeamResolvers<ContextType>;
 	User?: UserResolvers;
@@ -523,9 +602,42 @@ export type UserDbInterface = {
 export type LoginDbObject = {
 	createdAt: Date;
 	provider: string;
-	_id: ObjectID;
+	token: string;
 	email: string;
 	type: UserType;
+};
+
+export type HackerDbObject = UserDbInterface & {
+	modifiedAt: number;
+	status: string;
+	school?: Maybe<string>;
+	gradYear?: Maybe<number>;
+	majors: Array<string>;
+	adult?: Maybe<boolean>;
+	volunteer?: Maybe<boolean>;
+	github?: Maybe<string>;
+	team?: Maybe<TeamDbObject>;
+};
+
+export type TeamDbObject = {
+	_id: ObjectID;
+	createdAt: Date;
+	name?: Maybe<string>;
+	memberIds: Array<string>;
+};
+
+export type OrganizerDbObject = UserDbInterface & {
+	permissions: Array<Maybe<string>>;
+};
+
+export type MentorDbObject = UserDbInterface & {
+	shifts: Array<ShiftDbObject>;
+	skills: Array<string>;
+};
+
+export type ShiftDbObject = {
+	begin: Date;
+	end: Date;
 };
 
 export type ApplicationQuestionDbObject = {
@@ -539,30 +651,4 @@ export type ApplicationFieldDbObject = {
 	createdAt: Date;
 	question: ApplicationQuestionDbObject;
 	answer?: Maybe<string>;
-};
-
-export type HackerDbObject = UserDbInterface & {
-	modifiedAt: number;
-	status: string;
-	school?: Maybe<string>;
-	gradYear?: Maybe<number>;
-	majors: Array<string>;
-	adult?: Maybe<boolean>;
-	volunteer?: Maybe<boolean>;
-	github?: Maybe<string>;
-	teamCode?: Maybe<string>;
-};
-
-export type ShiftDbObject = {
-	begin: Date;
-	end: Date;
-};
-
-export type MentorDbObject = UserDbInterface & {
-	shifts: Array<ShiftDbObject>;
-	skills: Array<string>;
-};
-
-export type OrganizerDbObject = UserDbInterface & {
-	permissions: Array<Maybe<string>>;
 };
