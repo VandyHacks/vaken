@@ -3,15 +3,15 @@ import React from 'react';
 import { Button, LeftButtonText } from './Buttons';
 
 interface Props {
-	color?: string;
-	text: string;
-	fontSize?: string;
 	active?: boolean;
+	color?: string;
+	fontSize?: string;
+	text: string;
 }
 
 interface StyleProps {
-	color?: string;
 	active?: boolean;
+	color?: string;
 }
 
 export const StyledNavBtn = styled(Button)`

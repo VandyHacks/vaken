@@ -3,18 +3,18 @@ import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
 
 interface Props {
+	borderRadius?: string;
 	fontColor?: string;
 	fontFamily?: string;
 	fontSize?: string;
 	fontWeight?: number;
 	textAlign?: string;
-	borderRadius?: string;
 	width?: string;
 }
 
 interface ComponentProps extends Props {
-	value: any;
 	generateColor?: (value: any) => string;
+	value: any;
 }
 
 interface StyledProps extends Props {

@@ -6,11 +6,11 @@ import UncheckedSvg from '../../assets/img/unchecked_box.svg';
 import CheckedSvg from '../../assets/img/checked_box.svg';
 
 interface Props extends AppField {
-	options?: string[];
 	children?: React.ReactNode;
-	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-	value: any;
 	name: string;
+	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	options?: string[];
+	value: any;
 }
 
 const CheckboxContainer = styled.div`

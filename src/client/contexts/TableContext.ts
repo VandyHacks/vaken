@@ -3,13 +3,13 @@ import { SortDirectionType } from 'react-virtualized';
 import { Update } from 'use-immer';
 
 export enum HackerStatus {
-	Created = 'Created',
-	Verified = 'Verified',
-	Started = 'Started',
-	Submitted = 'Submitted',
-	Accepted = 'Accepted',
-	Confirmed = 'Confirmed',
-	Rejected = 'Rejected',
+	Created,
+	Verified,
+	Started,
+	Submitted,
+	Accepted,
+	Confirmed,
+	Rejected,
 }
 
 export const columnOptions = [
@@ -24,13 +24,13 @@ export const columnOptions = [
 
 export interface Hacker {
 	[index: string]: string | HackerStatus | number | boolean | undefined;
-	firstName: string;
-	lastName: string;
 	email: string;
+	firstName: string;
 	gradYear?: number;
+	lastName: string;
+	needsReimbursement?: boolean;
 	school?: string;
 	status: HackerStatus;
-	needsReimbursement?: boolean;
 }
 
 export interface Option {
@@ -39,13 +39,13 @@ export interface Option {
 }
 export interface TableState {
 	fuzzySearch: boolean;
+	hasSelection: boolean;
+	searchValue: string;
+	selectAll: boolean;
+	selectedColumns: Option[];
+	selectedRowsEmails: string[];
 	sortBy?: string;
 	sortDirection?: SortDirectionType;
-	searchValue: string;
-	selectedColumns: Option[];
-	selectAll: boolean;
-	hasSelection: boolean;
-	selectedRowsEmails: string[];
 }
 
 export const defaultTableState = {

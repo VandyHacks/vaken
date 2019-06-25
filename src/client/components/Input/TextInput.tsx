@@ -3,19 +3,19 @@ import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
 
 export interface Props {
-	color?: string;
-	value: string;
-	required?: boolean;
-	placeholder?: string;
-	type?: string;
-	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-	onBlur?: () => void;
-	id?: string;
-	className?: string;
-	list?: string;
-	fontSize?: string;
-	pattern?: string;
 	background?: string;
+	className?: string;
+	color?: string;
+	fontSize?: string;
+	id?: string;
+	list?: string;
+	onBlur?: () => void;
+	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	pattern?: string;
+	placeholder?: string;
+	required?: boolean;
+	type?: string;
+	value: string;
 }
 
 export const Input = styled.input`

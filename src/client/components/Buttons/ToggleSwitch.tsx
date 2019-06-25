@@ -51,8 +51,8 @@ const Slider = styled('div')`
 `;
 
 interface Props {
-	label: string;
 	checked: boolean;
+	label: string;
 	onChange?: (value: boolean) => void;
 }
 

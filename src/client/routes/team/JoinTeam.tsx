@@ -5,7 +5,7 @@ import SearchBox from '../../components/Input/SearchBox';
 import STRINGS from '../../assets/strings.json';
 import { ActionButton } from '../../components/Buttons/ActionButton';
 import { AuthContext } from '../../contexts/AuthContext';
-import { GET_TEAM, JOIN_TEAM } from './queries';
+import { GET_TEAM, JOIN_TEAM } from './teams.graphql';
 
 const Layout = styled.div`
 	margin-bottom: 0.125rem;

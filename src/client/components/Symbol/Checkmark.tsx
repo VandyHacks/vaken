@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
 
 interface Props {
-	value: boolean;
 	color?: string;
-	width?: string;
 	height?: string;
+	value: boolean;
+	width?: string;
 }
 
 const StyledSVG = styled('svg')`

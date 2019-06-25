@@ -2,10 +2,10 @@ import styled from 'styled-components';
 
 interface Props {
 	color?: string;
-	margin?: string;
-	fontSize?: string;
 	fontFamily?: string;
+	fontSize?: string;
 	fontWeight?: string;
+	margin?: string;
 	textAlign?: string;
 }
 
