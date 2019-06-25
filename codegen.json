@@ -1,0 +1,22 @@
+{
+	"schema": "./src/common/schema.graphql.ts",
+	"documents": "./src/client/**/*.graphql.ts",
+	"overwrite": true,
+	"generates": {
+		"src/server/generated/graphql.ts": {
+			"plugins": ["typescript", "typescript-resolvers", "typescript-mongodb"],
+			"config": {
+				"mappers": {
+					"ApplicationField": "ApplicationFieldDbObject",
+					"ApplicationQuestion": "ApplicationQuestionDbObject",
+					"Hacker": "HackerDbObject",
+					"Login": "LoginDbObject",
+					"Mentor": "MentorDbObject",
+					"Organizer": "OrganizerDbObject",
+					"Shift": "ShiftDbObject",
+					"Team": "TeamDbObject"
+				}
+			}
+		}
+	}
+}
