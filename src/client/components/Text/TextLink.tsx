@@ -6,8 +6,8 @@ interface Props {
 	fontFamily?: string;
 	fontSize?: string;
 	fontWeight?: number;
-	textDecoration?: string;
 	glowColor?: string;
+	textDecoration?: string;
 }
 
 const TextLink = styled(Link)`

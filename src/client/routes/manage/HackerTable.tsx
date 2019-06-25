@@ -350,7 +350,7 @@ const actionRenderer = ({ rowData }: TableCellProps): JSX.Element => {
 
 // wrapper to use createSelectable() from react-selectable-fast
 const rowRenderer = (
-	props: TableRowProps & { selectableRef: string; selecting: boolean; selected: boolean }
+	props: TableRowProps & { selectableRef: string; selected: boolean; selecting: boolean }
 ): JSX.Element => {
 	return <Row {...props} />;
 };

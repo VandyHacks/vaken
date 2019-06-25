@@ -5,10 +5,10 @@ import { Button, CenterButtonText, ButtonProps } from './Buttons';
 interface Props extends ButtonProps {
 	background?: string;
 	color?: string;
-	text?: string;
-	glowColor?: string;
 	fontSize?: string;
+	glowColor?: string;
 	onClick?: () => void;
+	text?: string;
 }
 
 interface StyleProps extends ButtonProps {

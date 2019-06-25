@@ -15,7 +15,7 @@ module.exports = {
 		'prettier/@typescript-eslint', // Enables eslint-plugin-prettier and displays prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
 	],
 	parser: '@typescript-eslint/parser', // Specifies the ESLint parser
-	plugins: ['@typescript-eslint', 'prettier', 'sort-keys-fix', 'promise'],
+	plugins: ['@typescript-eslint', 'prettier', 'sort-keys-fix', 'promise', 'typescript-sort-keys'],
 	settings: {
 		'import/resolver': {
 			typescript: {
@@ -31,6 +31,8 @@ module.exports = {
 		project: './tsconfig.json',
 	},
 	rules: {
+		'typescript-sort-keys/interface': 2,
+		'typescript-sort-keys/string-enum': 2,
 		'@typescript-eslint/explicit-function-return-type': [
 			2,
 			{ allowExpressions: true, allowTypedFunctionExpressions: true },

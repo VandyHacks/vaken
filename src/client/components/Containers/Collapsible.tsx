@@ -57,10 +57,10 @@ const CollapsibleBody = styled.div`
 `;
 
 export interface Props extends PopupProps {
-	title: string;
-	open?: boolean;
-	onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 	children?: JSX.Element[] | JSX.Element;
+	onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+	open?: boolean;
+	title: string;
 }
 
 export const Collapsible: FunctionComponent<Props> = (props: Props): JSX.Element => {

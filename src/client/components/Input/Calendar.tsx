@@ -3,16 +3,16 @@ import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
 
 export interface Props {
-	color?: string;
-	value: string;
-	required?: boolean;
-	placeholder?: string;
-	type?: string;
-	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-	onBlur?: () => void;
-	id?: string;
 	className?: string;
+	color?: string;
+	id?: string;
 	list?: string;
+	onBlur?: () => void;
+	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	placeholder?: string;
+	required?: boolean;
+	type?: string;
+	value: string;
 }
 
 export const StyledCalInput = styled.input`

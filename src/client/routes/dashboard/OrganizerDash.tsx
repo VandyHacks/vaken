@@ -237,7 +237,7 @@ const pieGenderOptions = {
 };
 
 interface Props {
-	data: [{ school: string; counts: number }];
+	data: [{ counts: number; school: string }];
 }
 
 export const SchoolTable: FunctionComponent<Props> = (props: Props): JSX.Element => {

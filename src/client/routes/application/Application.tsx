@@ -15,23 +15,23 @@ export interface ConfigSection {
 
 export interface ConfigField {
 	Component: any;
+	default?: any;
 	fieldName: string;
+	note?: string;
+	optional?: boolean;
+	options?: any;
+	other?: boolean;
 	placeholder?: string;
+	prompt?: string;
 	required?: boolean;
 	title: string;
-	validation?: string;
-	options?: any;
-	default?: any;
-	other?: boolean;
-	optional?: boolean;
-	prompt?: string;
-	note?: string;
 	updateFn?: (setState: Update<any>, category: string, fieldName: string) => void;
+	validation?: string;
 }
 
 interface Question {
-	input: any;
 	fieldName: string;
+	input: any;
 }
 
 interface Section {

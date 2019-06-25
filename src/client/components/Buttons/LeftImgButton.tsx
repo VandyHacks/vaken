@@ -3,13 +3,13 @@ import { Button, ButtonProps, RightPaddedImg, CenterButtonText } from './Buttons
 import { FlexRow } from '../Containers/FlexContainers';
 
 interface Props extends ButtonProps {
+	background?: string;
+	color?: string;
+	glowColor?: string;
 	img: string;
 	imgAlt: string;
-	text: string;
-	color?: string;
-	background?: string;
-	glowColor?: string;
 	onClick?: () => void;
+	text: string;
 }
 
 const LeftImgButton = (props: Props): JSX.Element => {

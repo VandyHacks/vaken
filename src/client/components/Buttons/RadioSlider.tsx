@@ -3,24 +3,24 @@ import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
 
 interface Props {
+	disable?: boolean;
+	large?: boolean;
+	onChange?: (input: string) => void;
 	option1: string;
 	option2: string;
 	option3: string;
-	large?: boolean;
-	onChange?: (input: string) => void;
 	value: string;
-	disable?: boolean;
 }
 
 interface SelectorProps {
-	width: string;
-	left: string;
 	color: string;
+	left: string;
+	width: string;
 }
 
 interface WrapperProps {
-	large: boolean;
 	disable: boolean;
+	large: boolean;
 }
 
 const Wrapper = styled('div')`

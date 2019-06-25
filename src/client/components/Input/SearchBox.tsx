@@ -4,10 +4,10 @@ import STRINGS from '../../assets/strings.json';
 
 interface Props {
 	error?: boolean;
+	flex?: boolean;
+	hasIcon?: boolean;
 	minWidth?: string;
 	width?: string;
-	hasIcon?: boolean;
-	flex?: boolean;
 }
 
 const SearchBox = styled('input')`

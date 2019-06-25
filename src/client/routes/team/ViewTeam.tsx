@@ -7,7 +7,7 @@ import { Title } from '../../components/Text/Title';
 import { CenterButtonText } from '../../components/Buttons/Buttons';
 import { SmallCenteredText } from '../../components/Text/SmallCenteredText';
 import TextButton from '../../components/Buttons/TextButton';
-import { GET_TEAM, LEAVE_TEAM } from './queries';
+import { GET_TEAM, LEAVE_TEAM } from './teams.graphql';
 import { AuthContext } from '../../contexts/AuthContext';
 
 interface ButtonProps {

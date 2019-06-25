@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useContext } from 'react';
 import { useQuery } from 'react-apollo-hooks';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
-import { GET_TEAM } from './queries';
+import { GET_TEAM } from './teams.graphql';
 import { JoinTeam } from './JoinTeam';
 import { ViewTeam } from './ViewTeam';
 import { FlexColumn } from '../../components/Containers/FlexContainers';

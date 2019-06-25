@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"module": "esnext",
+		"module": "commonjs",
 		"allowJs": true,
 		"allowSyntheticDefaultImports": true,
 		"emitDecoratorMetadata": true,

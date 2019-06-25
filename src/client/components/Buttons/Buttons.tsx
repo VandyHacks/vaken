@@ -2,27 +2,27 @@ import styled from 'styled-components';
 import { displayFlex } from '../Containers/FlexContainers';
 
 interface ButtonTextProps {
-	fontSize?: string;
 	color?: string;
+	fontSize?: string;
 	fontWeight?: string;
 }
 
 export interface ButtonProps {
-	glowColor?: string;
-	width?: string;
 	background?: string;
+	glowColor?: string;
 	height?: string;
-	padding?: string;
-	paddingTop?: string;
-	paddingLeft?: string;
-	paddingRight?: string;
-	paddingBottom?: string;
+	invalid?: boolean;
 	margin?: string;
-	marginTop?: string;
+	marginBottom?: string;
 	marginLeft?: string;
 	marginRight?: string;
-	marginBottom?: string;
-	invalid?: boolean;
+	marginTop?: string;
+	padding?: string;
+	paddingBottom?: string;
+	paddingLeft?: string;
+	paddingRight?: string;
+	paddingTop?: string;
+	width?: string;
 }
 
 export const CenterButtonText = styled.div`

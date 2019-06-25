@@ -4,11 +4,11 @@ import styled from 'styled-components';
 import { AppField } from '../../routes/application/ApplicationConfig';
 
 export interface Props extends AppField {
-	options?: string[];
 	children?: React.ReactNode;
-	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-	value: any;
 	name: string;
+	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	options?: string[];
+	value: any;
 }
 
 const SliderContainer = styled.div`

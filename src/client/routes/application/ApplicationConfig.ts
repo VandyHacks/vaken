@@ -1,15 +1,15 @@
 export interface AppSection {
-	fields: AppField[];
 	category: string;
+	fields: AppField[];
 	title: string;
 }
 
 export interface AppField {
 	fieldName: string;
+	input: string;
+	note?: string;
 	placeholder?: string;
 	required?: boolean;
 	title: string;
 	validation?: string;
-	note?: string;
-	input: string;
 }

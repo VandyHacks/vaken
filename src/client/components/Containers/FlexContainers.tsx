@@ -1,22 +1,22 @@
 import styled from 'styled-components';
 
 export interface ContainerProps {
-	height?: string;
-	width?: string;
+	alignItems?: string;
+	background?: string;
 	flex?: string;
-	padding?: string;
+	height?: string;
+	justifyContent?: string;
 	margin?: string;
 	marginBottom?: string;
-	marginTop?: string;
-	marginRight?: string;
 	marginLeft?: string;
+	marginRight?: string;
+	marginTop?: string;
+	padding?: string;
 	paddingBottom?: string;
-	paddingTop?: string;
-	paddingRight?: string;
 	paddingLeft?: string;
-	background?: string;
-	justifyContent?: string;
-	alignItems?: string;
+	paddingRight?: string;
+	paddingTop?: string;
+	width?: string;
 }
 
 export const displayFlex = `

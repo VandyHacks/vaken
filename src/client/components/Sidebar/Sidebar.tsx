@@ -79,8 +79,8 @@ const NavLink = ALink.withComponent(UglyNavLink);
 
 interface Route {
 	authLevel: string[];
-	path: string;
 	displayText: string;
+	path: string;
 }
 
 const ColumnWithSeparators = styled.ul`

@@ -3,8 +3,8 @@ import TextButton from './TextButton';
 import STRINGS from '../../assets/strings.json';
 
 export const HeaderButton: React.FunctionComponent<{
-	text: string;
 	onClick: () => void;
+	text: string;
 }> = props => {
 	return (
 		<TextButton
