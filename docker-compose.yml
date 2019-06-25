@@ -4,9 +4,8 @@ services:
   server:
     build: .
     env_file:
-      - server.env
       - .env
-    expose: 
+    expose:
       - ${SERVER_PORT}
     environment:
       SERVER_PORT: ${SERVER_PORT}
@@ -14,28 +13,20 @@ services:
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
     volumes:
-      - ./src/server:/usr/src/app/src/server
-      - ./src/common:/usr/src/app/src/common
-    links:
+      - ./src:/usr/src/app/src:ro
+    depends_on:
       - mongodb
     command: npm run dev-server
 
   client:
     build: .
-    env_file: 
+    env_file:
       - .env
-    environment:
-      CLIENT_PORT: ${CLIENT_PORT}
-    expose: 
+    expose:
       - ${CLIENT_PORT}
-    ports: 
+    ports:
       - ${CLIENT_PORT}:${CLIENT_PORT}
-    volumes:
-      - ./src/client:/usr/src/app/src/client
-      - ./src/common:/usr/src/app/src/common
-    links:
-      - server
-    command: npm run start
+    command: npm start
 
   mongodb:
     image: mongo:latest
@@ -44,6 +35,6 @@ services:
       MONGO_LOG_DIR: /dev/null
     volumes:
       - ./dist/data/db:/data/db
-    ports:
-      - ${MONGO_PORT}:${MONGO_PORT}
+    expose:
+      - ${MONGO_PORT}
     command: mongod --smallfiles --logpath=/dev/null

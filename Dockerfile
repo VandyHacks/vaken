@@ -1,14 +1,14 @@
 FROM node
 
-# Working directory
-WORKDIR /usr/src/app
-
 # Build empty project with package- and package-lock.json to enable caching
-COPY package*.json ./
+WORKDIR /tmp
+COPY package*.json /tmp/
+RUN npm config set registry http://registry.npmjs.org/ && npm install
 
-RUN npm i
+WORKDIR /usr/src/app
 
 # Copy over app source
 COPY . .
 
-EXPOSE 8080
+# Re-copy clean node_modules to app dir
+RUN cp -a /tmp/node_modules /usr/src/app/

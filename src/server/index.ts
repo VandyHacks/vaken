@@ -32,9 +32,7 @@ app.use(bodyParser());
 app.keys = ['secretsauce'];
 
 // Authentication using Passport
-if (process.env.NODE_ENV !== 'production') {
-	require('dotenv').config();
-}
+require('dotenv').config();
 require('./auth');
 
 app.use(passport.initialize());
@@ -44,7 +42,7 @@ app.use(passport.session());
 app.use(router.routes());
 app.use(userRouter.routes());
 
-const DB_URL = process.env.MONGO_URL || 'mongodb://localhost:27017/test';
+const DB_URL = `${process.env.MONGO_BASE_URL || 'mongodb://localhost:27017'}/test`;
 
 // Connect to mongo database
 if (!process.env.MONGO_BASE_URL) throw 'MONGO_BASE_URL not set';
