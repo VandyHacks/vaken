@@ -171,7 +171,7 @@
 		"typescript": "^3.4.5",
 		"typescript-eslint-parser": "^22.0.0",
 		"webpack": "^4.32.2",
-		"webpack-cli": "^3.3.2",
+		"webpack-cli": "^3.3.5",
 		"webpack-dev-server": "^3.4.1",
 		"webpack-merge": "^4.2.1"
 	},
