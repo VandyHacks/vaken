@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Update } from 'use-immer';
 import { AppField } from '../../routes/application/ApplicationConfig';
-import UncheckedSvg from '../../assets/img/unchecked_box.svg';
-import CheckedSvg from '../../assets/img/checked_box.svg';
+import UncheckedSvg from '../../assets/img/unchecked_box.svg?inline';
+import CheckedSvg from '../../assets/img/checked_box.svg?inline';
 
 interface Props extends AppField {
 	options?: string[];

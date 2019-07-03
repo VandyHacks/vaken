@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
-import SadFace from '../../assets/img/sad_face.svg';
+import SadFace from '../../assets/img/sad_face.svg?inline';
 import TextButton from '../Buttons/TextButton';
 
 const Rectangle = styled.div`
