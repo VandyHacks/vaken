@@ -78,7 +78,7 @@ export type Hacker = User & {
 	gender?: Maybe<Scalars['String']>;
 	dietaryRestrictions: Array<DietaryRestriction>;
 	race: Array<Race>;
-	userType: Scalars['String'];
+	userType: UserType;
 	modifiedAt: Scalars['Int'];
 	status: ApplicationStatus;
 	school?: Maybe<Scalars['String']>;
@@ -95,6 +95,7 @@ export type Login = {
 	createdAt: Scalars['Int'];
 	provider: LoginProvider;
 	token: Scalars['ID'];
+	userType: UserType;
 };
 
 export enum LoginProvider {
@@ -117,7 +118,7 @@ export type Mentor = User & {
 	gender?: Maybe<Scalars['String']>;
 	dietaryRestrictions: Array<DietaryRestriction>;
 	race: Array<Race>;
-	userType: Scalars['String'];
+	userType: UserType;
 	shifts: Array<Shift>;
 	skills: Array<Scalars['String']>;
 };
@@ -136,7 +137,7 @@ export type Organizer = User & {
 	gender?: Maybe<Scalars['String']>;
 	dietaryRestrictions: Array<DietaryRestriction>;
 	race: Array<Race>;
-	userType: Scalars['String'];
+	userType: UserType;
 	permissions: Array<Maybe<Scalars['String']>>;
 };
 
@@ -241,7 +242,7 @@ export type User = {
 	gender?: Maybe<Scalars['String']>;
 	dietaryRestrictions: Array<DietaryRestriction>;
 	race: Array<Race>;
-	userType: Scalars['String'];
+	userType: UserType;
 };
 
 export enum UserType {
@@ -310,11 +311,12 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
 	Query: MaybePromise<{}>;
-	User: MaybePromise<Omit<User, 'logins'> & { logins: Array<ResolversTypes['Login']> }>;
+	User: MaybePromise<UserDbInterface>;
 	ID: MaybePromise<Scalars['ID']>;
 	Int: MaybePromise<Scalars['Int']>;
 	Login: MaybePromise<LoginDbObject>;
 	LoginProvider: LoginProvider;
+	UserType: UserType;
 	String: MaybePromise<Scalars['String']>;
 	ShirtSize: ShirtSize;
 	DietaryRestriction: DietaryRestriction;
@@ -329,7 +331,6 @@ export type ResolversTypes = {
 	Shift: MaybePromise<ShiftDbObject>;
 	AuthLevel: AuthLevel;
 	Gender: Gender;
-	UserType: UserType;
 	ApplicationQuestion: MaybePromise<ApplicationQuestionDbObject>;
 	ApplicationField: MaybePromise<ApplicationFieldDbObject>;
 	AdditionalEntityFields: AdditionalEntityFields;
@@ -436,7 +437,7 @@ export type HackerResolvers<ContextType = any, ParentType = ResolversTypes['Hack
 		ContextType
 	>;
 	race?: Resolver<Array<ResolversTypes['Race']>, ParentType, ContextType>;
-	userType?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+	userType?: Resolver<ResolversTypes['UserType'], ParentType, ContextType>;
 	modifiedAt?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
 	status?: Resolver<ResolversTypes['ApplicationStatus'], ParentType, ContextType>;
 	school?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -452,6 +453,7 @@ export type LoginResolvers<ContextType = any, ParentType = ResolversTypes['Login
 	createdAt?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
 	provider?: Resolver<ResolversTypes['LoginProvider'], ParentType, ContextType>;
 	token?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+	userType?: Resolver<ResolversTypes['UserType'], ParentType, ContextType>;
 };
 
 export type MentorResolvers<ContextType = any, ParentType = ResolversTypes['Mentor']> = {
@@ -471,7 +473,7 @@ export type MentorResolvers<ContextType = any, ParentType = ResolversTypes['Ment
 		ContextType
 	>;
 	race?: Resolver<Array<ResolversTypes['Race']>, ParentType, ContextType>;
-	userType?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+	userType?: Resolver<ResolversTypes['UserType'], ParentType, ContextType>;
 	shifts?: Resolver<Array<ResolversTypes['Shift']>, ParentType, ContextType>;
 	skills?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
 };
@@ -493,7 +495,7 @@ export type OrganizerResolvers<ContextType = any, ParentType = ResolversTypes['O
 		ContextType
 	>;
 	race?: Resolver<Array<ResolversTypes['Race']>, ParentType, ContextType>;
-	userType?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+	userType?: Resolver<ResolversTypes['UserType'], ParentType, ContextType>;
 	permissions?: Resolver<Array<Maybe<ResolversTypes['String']>>, ParentType, ContextType>;
 };
 
@@ -545,7 +547,7 @@ export type UserResolvers<ContextType = any, ParentType = ResolversTypes['User']
 		ContextType
 	>;
 	race?: Resolver<Array<ResolversTypes['Race']>, ParentType, ContextType>;
-	userType?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+	userType?: Resolver<ResolversTypes['UserType'], ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = any> = {
@@ -603,6 +605,7 @@ export type LoginDbObject = {
 	createdAt: Date;
 	provider: string;
 	token: string;
+	userType: string;
 	email: string;
 	type: UserType;
 };

@@ -14,8 +14,22 @@
 					"Mentor": "MentorDbObject",
 					"Organizer": "OrganizerDbObject",
 					"Shift": "ShiftDbObject",
-					"Team": "TeamDbObject"
+					"Team": "TeamDbObject",
+					"User": "UserDbInterface"
 				}
+			}
+		},
+		"src/client/generated/graphql.ts": {
+			"plugins": [
+				"typescript",
+				"typescript-operations",
+				"typescript-mongodb",
+				"typescript-react-apollo"
+			],
+			"config": {
+				"withHOC": false,
+				"withComponent": false,
+				"withHooks": true
 			}
 		}
 	}
