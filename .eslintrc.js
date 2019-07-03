@@ -13,5 +13,6 @@ module.exports = {
 		'sort-keys-fix/sort-keys-fix': ['error', 'asc', { caseSensitive: true, natural: true }],
 		'prettier/prettier': 'error',
 		'no-param-reassign': [2, { props: true, ignorePropertyModificationsFor: ['draft'] }],
+		'@typescript-eslint/no-explicit-any': 'off',
 	},
 };

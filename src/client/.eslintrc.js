@@ -47,6 +47,7 @@ module.exports = {
 		'typescript/explicit-function-return-type': 'off',
 		'@typescript-eslint/explicit-function-return-type': 'off',
 		'no-console': 'off',
+		'@typescript-eslint/no-explicit-any': 'off',
 	},
 	env: {
 		browser: true,

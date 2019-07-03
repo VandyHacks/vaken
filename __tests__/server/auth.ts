@@ -1,6 +1,6 @@
+import { Profile as GoogleProfile } from 'passport-google-oauth';
 import passport, { createStrategyHandler } from '../../src/server/auth';
 import AuthType from '../../src/server/enums/AuthType';
-import { Profile as GoogleProfile } from 'passport-google-oauth';
 
 const MOCK_CB = jest.fn();
 beforeEach(() => {

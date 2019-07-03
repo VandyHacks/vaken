@@ -44,9 +44,9 @@
 		"test-ci": "jest --ci --runInBand",
 		"typecheck": "tsc -p tsconfig.json --noEmit",
 		"docs": "typedoc",
-		"lint-check": "eslint --cache --report-unused-disable-directives --ext .js,.jsx,.ts,.tsx __tests__/ src/",
-		"lint-fix": "eslint --cache --report-unused-disable-directives --fix --ext .js,.jsx,.ts,.tsx __tests__/ src/",
-		"lint-ci": "eslint --ext .js,.jsx,.ts,.tsx __tests__/ src/ --format junit --output-file ./reports/lint/eslint/results.xml"
+		"lint-check": "eslint --cache --report-unused-disable-directives --ext .js,.jsx,.ts,.tsx __tests__/ __mocks__/ src/",
+		"lint-fix": "eslint --cache --report-unused-disable-directives --fix --ext .js,.jsx,.ts,.tsx __tests__/ __mocks__/ src/",
+		"lint-ci": "eslint --ext .js,.jsx,.ts,.tsx __tests__/ __mocks__/ src/ --format junit --output-file ./reports/lint/eslint/results.xml"
 	},
 	"dependencies": {
 		"@koa/cors": "^3.0.0",

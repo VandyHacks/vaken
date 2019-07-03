@@ -4,7 +4,7 @@
 global.fetch = () =>
 	new Promise(() => ({
 		json: () => {
-			message: 'ok';
+			'ok';
 		},
 		status: 200,
 	}));
