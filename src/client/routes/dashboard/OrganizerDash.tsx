@@ -167,8 +167,11 @@ const barStatusOptions: ChartOptions = {
 };
 
 const pieShirtData = (data: any) => {
-	const shirtData = Object.values(data).slice(0, -1);
 	const shirtLabels = Object.keys(data).slice(0, -1);
+
+	// this casting solution is bad - we should just fix the explicit any in the method param
+	const shirtData = Object.values(data).slice(0, -1) as number[];
+
 	return {
 		datasets: [
 			{
@@ -195,8 +198,11 @@ const pieShirtOptions = {
 };
 
 const pieGenderData = (data: any) => {
-	const genderData = Object.values(data).slice(0, -1);
 	const genderLabels = Object.keys(data).slice(0, -1);
+
+	// this casting solution is bad - we should just fix the explicit any in the method param
+	const genderData = Object.values(data).slice(0, -1) as number[];
+
 	return {
 		datasets: [
 			{
