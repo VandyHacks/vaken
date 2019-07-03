@@ -1,9 +1,13 @@
 import { gql } from 'apollo-boost';
 
 export const GET_TEAM = gql`
-	input GetTeamInput {}
+	input GetTeamInput {
+		name: String!
+	}
 
-	mutation team {}
+	mutation team($input: GetTeamInput) {
+		team(input: $input)
+	}
 `;
 
 export const LEAVE_TEAM = gql`

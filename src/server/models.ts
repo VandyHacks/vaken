@@ -37,4 +37,4 @@ export const initDb = async (): Promise<Models> => {
 	};
 };
 
-export default initDb;
+export default initDb();

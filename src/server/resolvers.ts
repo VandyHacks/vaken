@@ -1,4 +1,4 @@
-import { UserInputError } from 'apollo-server-koa';
+import { UserInputError, AuthenticationError } from 'apollo-server-koa';
 import {
 	ApplicationFieldResolvers,
 	ApplicationQuestionResolvers,
@@ -149,6 +149,10 @@ export const resolvers: Resolvers = {
 			return hacker;
 		},
 		hackers: async (root, args, ctx: Context) => ctx.models.Hackers.find().toArray(),
+		me: (root, args, ctx: Context) => {
+			if (!ctx.user) throw new AuthenticationError(`user is not logged in`);
+			return ctx.user;
+		},
 		mentor: async (root, { id }, ctx: Context) => {
 			const mentor = await ctx.models.Mentors.findOne({ _id: id });
 			if (!mentor) throw new UserInputError(`mentor with id: ${id} not found`);

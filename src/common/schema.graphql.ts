@@ -1,20 +1,20 @@
 import { gql } from 'apollo-boost';
 
 export default gql`
-	interface User @abstractEntity(discriminatorField: "userType") {
-		id: ID! @id @column
-		createdAt: Int! @column(overrideType: "Date")
-		secondaryIds: [ID!]! @column
-		logins: [Login!]! @embedded
-		email: String! @column
-		firstName: String! @column
-		preferredName: String! @column
-		lastName: String! @column
-		shirtSize: ShirtSize @column
-		gender: String @column
-		dietaryRestrictions: [DietaryRestriction!]! @column
-		race: [Race!]! @column
-		userType: String! @column
+	interface User {
+		id: ID!  
+		createdAt: Int!
+		secondaryIds: [ID!]!
+		logins: [Login!]! 
+		email: String! 
+		firstName: String! 
+		preferredName: String! 
+		lastName: String! 
+		shirtSize: ShirtSize 
+		gender: String 
+		dietaryRestrictions: [DietaryRestriction!]! 
+		race: [Race!]! 
+		userType: UserType! 
 	}
 
 	enum AuthLevel {
@@ -92,29 +92,30 @@ export default gql`
 		DESC
 	}
 
-	type ApplicationQuestion @entity {
-		prompt: String! @column
-		instruction: String @column
-		note: String @column
+	type ApplicationQuestion {
+		prompt: String! 
+		instruction: String 
+		note: String 
 	}
 
-	type ApplicationField @entity(embedded: true) {
-		id: ID! @column
-		createdAt: Int! @column(overrideType: "Date")
-		question: ApplicationQuestion! @embedded
-		answer: String @column
+	type ApplicationField {
+		id: ID! 
+		createdAt: Int!
+		question: ApplicationQuestion! 
+		answer: String 
 	}
 
 	type Login
-		@entity(
+		(
 			additionalFields: [{ path: "email", type: "string" }, { path: "type", type: "UserType" }]
 		) {
-		createdAt: Int! @column(overrideType: "Date")
-		provider: LoginProvider! @column
-		token: ID! @column
+		createdAt: Int!
+		provider: LoginProvider! 
+		token: ID! 
+		userType: UserType! 
 	}
 
-	type Hacker implements User @entity {
+	type Hacker implements User {
 		id: ID!
 		createdAt: Int!
 		secondaryIds: [ID!]!
@@ -127,24 +128,24 @@ export default gql`
 		gender: String
 		dietaryRestrictions: [DietaryRestriction!]!
 		race: [Race!]!
-		userType: String!
-		modifiedAt: Int! @column
-		status: ApplicationStatus! @column
-		school: String @column
-		gradYear: Int @column
-		majors: [String!]! @column
-		adult: Boolean @column
-		volunteer: Boolean @column
-		github: String @column
-		team: Team @embedded
+		userType: UserType!
+		modifiedAt: Int! 
+		status: ApplicationStatus! 
+		school: String 
+		gradYear: Int 
+		majors: [String!]! 
+		adult: Boolean 
+		volunteer: Boolean 
+		github: String 
+		team: Team 
 	}
 
-	type Shift @entity(embedded: true) {
-		begin: Int! @column(overrideType: "Date")
-		end: Int! @column(overrideType: "Date")
+	type Shift {
+		begin: Int!
+		end: Int!
 	}
 
-	type Mentor implements User @entity {
+	type Mentor implements User {
 		id: ID!
 		createdAt: Int!
 		secondaryIds: [ID!]!
@@ -157,20 +158,20 @@ export default gql`
 		gender: String
 		dietaryRestrictions: [DietaryRestriction!]!
 		race: [Race!]!
-		userType: String!
-		shifts: [Shift!]! @embedded
-		skills: [String!]! @column
+		userType: UserType!
+		shifts: [Shift!]! 
+		skills: [String!]! 
 	}
 
-	type Team @entity(embedded: true) {
-		id: ID! @id @column
-		createdAt: Int! @column(overrideType: "Date")
-		name: String @column
-		memberIds: [ID!]! @column
+	type Team {
+		id: ID!  
+		createdAt: Int!
+		name: String 
+		memberIds: [ID!]! 
 		size: Int!
 	}
 
-	type Organizer implements User @entity {
+	type Organizer implements User  {
 		id: ID!
 		createdAt: Int!
 		secondaryIds: [ID!]!
@@ -183,8 +184,8 @@ export default gql`
 		gender: String
 		dietaryRestrictions: [DietaryRestriction!]!
 		race: [Race!]!
-		userType: String!
-		permissions: [String]! @column
+		userType: UserType!
+		permissions: [String]! 
 	}
 
 	type Query {

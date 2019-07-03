@@ -1,31 +1,48 @@
-import { ApolloServer, makeExecutableSchema } from 'apollo-server-koa';
+import { ApolloServer, makeExecutableSchema } from 'apollo-server-express';
 import { DIRECTIVES } from '@graphql-codegen/typescript-mongodb';
-import Koa from 'koa';
-import pino from 'pino';
+import express from 'express';
+import passport from 'passport';
 import gqlSchema from '../common/schema.graphql';
 import { resolvers } from './resolvers';
-import { initDb } from './collections';
+import modelsPromise from './models';
 import Context from './context';
+import logger from './logger';
+import { strategies, registerAuthRoutes } from './auth';
+
+const app = express();
+
+app.use(passport.initialize());
+passport.use('github', strategies.github);
+passport.use('google', strategies.google);
+
+registerAuthRoutes(app);
+
+app.use('/graphql', (req, res, next) => {
+	passport.authenticate(['google', 'github'], (err, user) => {
+		if (user) {
+			req.user = user;
+		}
+
+		next();
+	})(req, res, next);
+});
+
+const schema = makeExecutableSchema({
+	resolverValidationOptions: {
+		requireResolversForAllFields: true,
+		requireResolversForResolveType: false,
+	},
+	resolvers: resolvers as {},
+	typeDefs: [DIRECTIVES, gqlSchema],
+});
 
 (async () => {
-	const models = await initDb();
-	const logger = pino();
-
-	const context: Context = {
-		models,
-	};
-
-	const schema = makeExecutableSchema({
-		resolverValidationOptions: {
-			requireResolversForAllFields: true,
-			requireResolversForResolveType: false,
-		},
-		resolvers: resolvers as {},
-		typeDefs: [DIRECTIVES, gqlSchema],
-	});
-
+	const models = await modelsPromise;
 	const server = new ApolloServer({
-		context: context,
+		context: ({ req }): Context => ({
+			models,
+			user: req.user,
+		}),
 		formatError: error => {
 			logger.error(error);
 			return error;
@@ -34,7 +51,6 @@ import Context from './context';
 		schema: schema,
 	});
 
-	const app = new Koa();
 	server.applyMiddleware({ app });
 
 	app.listen(
