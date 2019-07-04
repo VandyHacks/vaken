@@ -121,7 +121,7 @@ const Sidebar = withRouter(
 					<SpaceBetweenColumn height="calc(100% - calc(8rem + 160px))">
 						<ColumnWithSeparators>
 							{routes.map((route: Route) => {
-								return route.authLevel.includes(currentUser.authLevel) ? (
+								return route.authLevel.includes(currentUser.userType) ? (
 									<li key={route.path}>
 										<NavLink to={route.path} activeClassName="active">
 											<NavButtonWhiteText text={route.displayText} />

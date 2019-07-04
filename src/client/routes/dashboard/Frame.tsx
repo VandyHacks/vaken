@@ -59,7 +59,7 @@ const Frame: FunctionComponent = (): JSX.Element => {
 						<Title color={STRINGS.ACCENT_COLOR} margin="1.5rem 0rem 0rem">
 							<Switch>
 								{routes.map(route => {
-									return route.authLevel.includes(currentUser.authLevel) ? (
+									return route.authLevel.includes(currentUser.userType) ? (
 										<Route key={route.path} path={route.path} render={() => route.displayText} />
 									) : null;
 								})}
@@ -74,7 +74,7 @@ const Frame: FunctionComponent = (): JSX.Element => {
 					<Suspense fallback={<div>Loading...</div>}>
 						<Switch>
 							{routes.map(route => {
-								return route.authLevel.includes(currentUser.authLevel) ? (
+								return route.authLevel.includes(currentUser.userType) ? (
 									<Route key={route.path} path={route.path} render={() => <route.component />} />
 								) : null;
 							})}

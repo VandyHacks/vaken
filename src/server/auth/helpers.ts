@@ -61,6 +61,7 @@ export const verifyCallback = async (profile: Profile, done: VerifyCallback): Pr
 				logins: [],
 				majors: [],
 				modifiedAt: new Date().getTime(),
+				phoneNumber: '',
 				preferredName: '',
 				race: [],
 				secondaryIds: [],

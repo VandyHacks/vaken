@@ -1,7 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import LeftImgButton from '../../components/Buttons/LeftImgButton';
-import TextButton from '../../components/Buttons/TextButton';
 import googleLogo from '../../assets/img/google_logo.svg';
 import githubLogo from '../../assets/img/github_logo.svg';
 import STRINGS from '../../assets/strings.json';
@@ -25,17 +23,6 @@ const OAuthLogin = (): JSX.Element => {
 					text="Sign in with GitHub"
 				/>
 			</a>
-			<Link style={{ textDecoration: 'none' }} to="/login/password">
-				<TextButton
-					color="white"
-					marginTop="1.6rem"
-					marginBottom="0.5rem"
-					fontSize="1.4em"
-					background={STRINGS.ACCENT_COLOR}
-					text="Sign in with email"
-					glowColor="rgba(0, 0, 255, 0.67)"
-				/>
-			</Link>
 		</>
 	);
 };

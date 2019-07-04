@@ -1,4 +1,6 @@
 import gql from 'graphql-tag';
+import * as ReactApolloHooks from 'react-apollo-hooks';
+import * as ReactApollo from 'react-apollo';
 export type Maybe<T> = T | null;
 export type MaybePromise<T> = Promise<T> | T;
 /** All built-in and custom scalars, mapped to their actual values */
@@ -76,8 +78,9 @@ export type Hacker = User & {
 	shirtSize?: Maybe<ShirtSize>;
 	gender?: Maybe<Scalars['String']>;
 	dietaryRestrictions: Array<DietaryRestriction>;
-	race: Array<Race>;
 	userType: UserType;
+	phoneNumber?: Maybe<Scalars['String']>;
+	race: Array<Race>;
 	modifiedAt: Scalars['Int'];
 	status: ApplicationStatus;
 	school?: Maybe<Scalars['String']>;
@@ -116,10 +119,25 @@ export type Mentor = User & {
 	shirtSize?: Maybe<ShirtSize>;
 	gender?: Maybe<Scalars['String']>;
 	dietaryRestrictions: Array<DietaryRestriction>;
-	race: Array<Race>;
 	userType: UserType;
+	phoneNumber?: Maybe<Scalars['String']>;
 	shifts: Array<Shift>;
 	skills: Array<Scalars['String']>;
+};
+
+export type Mutation = {
+	__typename?: 'Mutation';
+	updateMyProfile: User;
+	updateProfile: User;
+};
+
+export type MutationUpdateMyProfileArgs = {
+	input: UserInputType;
+};
+
+export type MutationUpdateProfileArgs = {
+	id: Scalars['ID'];
+	input: UserInputType;
 };
 
 export type Organizer = User & {
@@ -135,8 +153,8 @@ export type Organizer = User & {
 	shirtSize?: Maybe<ShirtSize>;
 	gender?: Maybe<Scalars['String']>;
 	dietaryRestrictions: Array<DietaryRestriction>;
-	race: Array<Race>;
 	userType: UserType;
+	phoneNumber?: Maybe<Scalars['String']>;
 	permissions: Array<Maybe<Scalars['String']>>;
 };
 
@@ -240,8 +258,19 @@ export type User = {
 	shirtSize?: Maybe<ShirtSize>;
 	gender?: Maybe<Scalars['String']>;
 	dietaryRestrictions: Array<DietaryRestriction>;
-	race: Array<Race>;
 	userType: UserType;
+	phoneNumber?: Maybe<Scalars['String']>;
+};
+
+export type UserInputType = {
+	firstName?: Maybe<Scalars['String']>;
+	lastName?: Maybe<Scalars['String']>;
+	email?: Maybe<Scalars['String']>;
+	preferredName?: Maybe<Scalars['String']>;
+	shirtSize?: Maybe<Scalars['String']>;
+	gender?: Maybe<Scalars['String']>;
+	dietaryRestrictions?: Maybe<Scalars['String']>;
+	phoneNumber?: Maybe<Scalars['String']>;
 };
 
 export enum UserType {
@@ -251,6 +280,49 @@ export enum UserType {
 	Sponsor = 'SPONSOR',
 	SuperAdmin = 'SUPER_ADMIN',
 }
+export type MeQueryVariables = {};
+
+export type MeQuery = { __typename?: 'Query' } & {
+	me: { __typename?: 'Hacker' | 'Organizer' | 'Mentor' } & Pick<
+		User,
+		'id' | 'firstName' | 'lastName' | 'userType'
+	>;
+};
+
+export type MyProfileQueryVariables = {};
+
+export type MyProfileQuery = { __typename?: 'Query' } & {
+	me: { __typename?: 'Hacker' | 'Organizer' | 'Mentor' } & Pick<
+		User,
+		| 'id'
+		| 'firstName'
+		| 'lastName'
+		| 'email'
+		| 'preferredName'
+		| 'shirtSize'
+		| 'gender'
+		| 'dietaryRestrictions'
+		| 'phoneNumber'
+	>;
+};
+
+export type UpdateMyProfileMutationVariables = {
+	input: UserInputType;
+};
+
+export type UpdateMyProfileMutation = { __typename?: 'Mutation' } & {
+	updateMyProfile: { __typename?: 'Hacker' | 'Organizer' | 'Mentor' } & Pick<
+		User,
+		| 'firstName'
+		| 'lastName'
+		| 'email'
+		| 'preferredName'
+		| 'shirtSize'
+		| 'gender'
+		| 'dietaryRestrictions'
+		| 'phoneNumber'
+	>;
+};
 import { ObjectID } from 'mongodb';
 export type UserDbInterface = {
 	_id: ObjectID;
@@ -264,8 +336,8 @@ export type UserDbInterface = {
 	shirtSize?: Maybe<string>;
 	gender?: Maybe<string>;
 	dietaryRestrictions: Array<string>;
-	race: Array<string>;
 	userType: string;
+	phoneNumber?: Maybe<string>;
 };
 
 export type LoginDbObject = {
@@ -278,6 +350,7 @@ export type LoginDbObject = {
 };
 
 export type HackerDbObject = UserDbInterface & {
+	race: Array<string>;
 	modifiedAt: number;
 	status: string;
 	school?: Maybe<string>;
@@ -322,3 +395,72 @@ export type ApplicationFieldDbObject = {
 	question: ApplicationQuestionDbObject;
 	answer?: Maybe<string>;
 };
+
+export const MeDocument = gql`
+	query me {
+		me {
+			id
+			firstName
+			lastName
+			userType
+		}
+	}
+`;
+
+export function useMeQuery(baseOptions?: ReactApolloHooks.QueryHookOptions<MeQueryVariables>) {
+	return ReactApolloHooks.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
+}
+export const MyProfileDocument = gql`
+	query myProfile {
+		me {
+			id
+			firstName
+			lastName
+			email
+			preferredName
+			shirtSize
+			gender
+			dietaryRestrictions
+			phoneNumber
+		}
+	}
+`;
+
+export function useMyProfileQuery(
+	baseOptions?: ReactApolloHooks.QueryHookOptions<MyProfileQueryVariables>
+) {
+	return ReactApolloHooks.useQuery<MyProfileQuery, MyProfileQueryVariables>(
+		MyProfileDocument,
+		baseOptions
+	);
+}
+export const UpdateMyProfileDocument = gql`
+	mutation updateMyProfile($input: UserInputType!) {
+		updateMyProfile(input: $input) {
+			firstName
+			lastName
+			email
+			preferredName
+			shirtSize
+			gender
+			dietaryRestrictions
+			phoneNumber
+		}
+	}
+`;
+export type UpdateMyProfileMutationFn = ReactApollo.MutationFn<
+	UpdateMyProfileMutation,
+	UpdateMyProfileMutationVariables
+>;
+
+export function useUpdateMyProfileMutation(
+	baseOptions?: ReactApolloHooks.MutationHookOptions<
+		UpdateMyProfileMutation,
+		UpdateMyProfileMutationVariables
+	>
+) {
+	return ReactApolloHooks.useMutation<UpdateMyProfileMutation, UpdateMyProfileMutationVariables>(
+		UpdateMyProfileDocument,
+		baseOptions
+	);
+}

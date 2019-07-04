@@ -1,5 +1,6 @@
 // import AutoComplete from '../../components/Input/AutoCompleteTextInput';
-import TextInput from '../../components/Input/TextInput';
+import { Gender, ShirtSize, DietaryRestriction } from '../../generated/graphql';
+import { Input as TextInput } from '../../components/Input/TextInput';
 import { Checkbox } from '../../components/Input/Checkbox';
 import { Slider } from '../../components/Input/Slider';
 import { Boolean } from '../../components/Input/Boolean';
@@ -9,9 +10,16 @@ export const profile = [
 	{
 		Component: TextInput,
 		fieldName: 'firstName',
-		placeholder: 'Jane',
+		placeholder: 'Janet',
 		title: 'First Name',
 		validation: '.+',
+	},
+	{
+		Component: TextInput,
+		fieldName: 'preferredName',
+		placeholder: 'Jane',
+		title: 'Preferred Name',
+		validation: '*',
 	},
 	{
 		Component: TextInput,
@@ -23,7 +31,7 @@ export const profile = [
 	{
 		Component: TextInput,
 		fieldName: 'phoneNumber',
-		placeholder: '(615) 555-2689',
+		placeholder: '(615) 555-1234',
 		title: 'Phone Number',
 		validation: '^(\\(?\\+?[0-9]*\\)?)?[0-9_\\- \\(\\)]*$',
 	},
@@ -31,21 +39,27 @@ export const profile = [
 		Component: Slider,
 		fieldName: 'shirtSize',
 		optional: true,
-		options: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+		options: [
+			ShirtSize.Uxs,
+			ShirtSize.Us,
+			ShirtSize.Um,
+			ShirtSize.Ul,
+			ShirtSize.Uxl,
+			ShirtSize.Uxxl,
+			ShirtSize.Ws,
+			ShirtSize.Wm,
+			ShirtSize.Wl,
+			ShirtSize.Wxl,
+			ShirtSize.Wxxl,
+		],
 		other: true,
 		title: 'T-Shirt Size',
-	},
-	{
-		Component: Boolean,
-		default: false,
-		fieldName: 'smsNotif',
-		title: 'Would you like to receive sms notifications?',
 	},
 	{
 		Component: Slider,
 		fieldName: 'gender',
 		optional: true,
-		options: ['Male', 'Female', 'Other', 'N/A'],
+		options: [Gender.Female, Gender.Male, Gender.Other, Gender.PreferNotToSay],
 		other: true,
 		title: 'Gender',
 	},
@@ -53,7 +67,15 @@ export const profile = [
 		Component: Checkbox,
 		fieldName: 'dietaryRestrictions',
 		optional: true,
-		options: ['Vegan', 'Vegetarian', 'Gluten Free', 'Paleo'],
+		options: [
+			DietaryRestriction.GlutenFree,
+			DietaryRestriction.Vegetarian,
+			DietaryRestriction.Vegan,
+			DietaryRestriction.LactoseAllergy,
+			DietaryRestriction.NutAllergy,
+			DietaryRestriction.Halal,
+			DietaryRestriction.Kosher,
+		],
 		title: 'Dietary Restrictions',
 	},
 ];

@@ -1,16 +1,14 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
-import { Update } from 'use-immer';
-import { AppField } from '../../routes/application/ApplicationConfig';
 import UncheckedSvg from '../../assets/img/unchecked_box.svg';
 import CheckedSvg from '../../assets/img/checked_box.svg';
 
-interface Props extends AppField {
-	children?: React.ReactNode;
-	name: string;
-	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+const SEPARATOR = '|';
+
+interface Props {
 	options?: string[];
-	value: any;
+	setState: (value: string) => void;
+	value: string;
 }
 
 const CheckboxContainer = styled.div`
@@ -47,85 +45,43 @@ const CheckboxContainer = styled.div`
 	}
 `;
 
-export class Checkbox extends React.PureComponent<Props, {}> {
-	/**
-	 * updateFn wraps a setState function to take a react Input event function
-	 * and modify the Set at `category/fieldName` to represent the updated input
-	 * @param {function} setState - function that will update the state
-	 * @param {string} category - the category to update
-	 * @param {string} fieldName - name of field to update
-	 * @returns {function} function suitable for a react input onChange={} prop
-	 */
-	public static updateFn = (
-		setState: Update<any>,
-		category: string,
-		fieldName: string
-	): ((e: React.ChangeEvent<HTMLInputElement>) => void) => {
-		return (e): void => {
-			const { type, checked, id } = e.target;
-			if (type === 'checkbox') {
-				setState((draft): void => {
-					if (!draft[category]) {
-						draft[category] = {};
-					}
-					if (!(draft[category][fieldName] instanceof Set)) {
-						draft[category][fieldName] = new Set<string>();
-					}
+export const Checkbox: FC<Props> = ({ value, options = ['default'], setState }: Props) => {
+	const selected = new Set(value.split(SEPARATOR));
+	const onChange = ({ currentTarget: { id } }: React.FormEvent<HTMLInputElement>): void => {
+		if (selected.has(id)) selected.delete(id);
+		else selected.add(id);
 
-					/* Get around Immer's lack of native support for Set/Map by duplicating the 
-				 set and changing the necessary fields, then changing the pointer to the new set. */
-					const newSet = new Set(draft[category][fieldName]);
-					if (checked) {
-						newSet.add(id);
-					} else {
-						newSet.delete(id);
-					}
-
-					draft[category][fieldName] = newSet;
-				});
-			} else {
-				throw new Error('Wrong type passed to formChangeWrapper');
-			}
-		};
+		setState(Array.from(selected).join(SEPARATOR));
 	};
 
-	public render(): JSX.Element {
-		const { options = ['default'], onChange } = this.props;
-		let { value } = this.props;
-
-		if (!(value instanceof Set)) {
-			value = new Set();
-		}
-
-		return (
-			<fieldset>
-				<CheckboxContainer>
-					{options.map(
-						(option: string): JSX.Element => {
-							return (
-								<div key={option}>
-									<input
-										checked={value.has(option)}
-										type="checkbox"
-										id={option}
-										onChange={onChange}
-									/>
-									<label htmlFor={option}>
-										{value.has(option) ? (
-											<img src={CheckedSvg} alt="checked" width={24} height={24} />
-										) : (
-											<img src={UncheckedSvg} alt="unchecked" width={24} height={24} />
-										)}
-										{option}
-									</label>
-								</div>
-							);
-						}
-					)}
-				</CheckboxContainer>
-			</fieldset>
-		);
-	}
-}
+	return (
+		<fieldset>
+			<CheckboxContainer>
+				{options.map(
+					(option: string): JSX.Element => {
+						return (
+							<div key={option}>
+								<input
+									checked={selected.has(option)}
+									type="checkbox"
+									id={option}
+									onChange={onChange}
+								/>
+								<label htmlFor={option}>
+									{selected.has(option) ? (
+										<img src={CheckedSvg} alt="checked" width={24} height={24} />
+									) : (
+										<img src={UncheckedSvg} alt="unchecked" width={24} height={24} />
+									)}
+									{option}
+								</label>
+							</div>
+						);
+					}
+				)}
+			</CheckboxContainer>
+		</fieldset>
+	);
+};
 
 export default Checkbox;
