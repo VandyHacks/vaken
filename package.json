@@ -11,7 +11,9 @@
     "setup": "ts-node scripts/dbsetup.ts",
     "start": "ts-node src/server.ts",
     "test": "jest",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "husky": {
     "hooks": {
@@ -50,7 +52,8 @@
     "mongoose": "^5.3.15",
     "reflect-metadata": "^0.1.12",
     "simple-oauth2": "^2.2.1",
-    "typegoose": "^5.4.1"
+    "typegoose": "^5.4.1",
+    "snyk": "^1.189.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
@@ -77,5 +80,6 @@
     "tslint-config-airbnb": "^5.11.1",
     "tslint-config-prettier": "^1.17.0",
     "typescript": "^3.2.2"
-  }
+  },
+  "snyk": true
 }
