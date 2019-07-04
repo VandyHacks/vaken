@@ -1,71 +1,50 @@
-import React, { useEffect, useContext, useCallback } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useImmer } from 'use-immer';
-import { gql } from 'apollo-boost';
-import { useQuery } from 'react-apollo-hooks';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import config from './ProfileConfig';
-import { AuthContext } from '../../contexts/AuthContext';
 import { ActionButtonContext } from '../../contexts/ActionButtonContext';
-import { formChangeWrapper } from '../../components/Input/helperFunctions';
-import {
-	ConfigField,
-	StyledQuestion,
-	StyledQuestionPadContainer,
-	FieldNote,
-	FieldPrompt,
-} from '../application/Application';
+import { StyledQuestion, StyledQuestionPadContainer } from '../application/Application';
 import { Spinner } from '../../components/Loading/Spinner';
 import { HeaderButton } from '../../components/Buttons/HeaderButton';
 import { GridColumn } from '../../components/Containers/GridContainers';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import STRINGS from '../../assets/strings.json';
-
-const GET_USER_PROFILE = gql`
-	query GET_USER_PROFILE($email: String!) {
-		user(email: $email) {
-			email
-			firstName
-			lastName
-			phoneNumber
-			gender
-			shirtSize
-			dietaryRestrictions
-		}
-	}
-`;
-
-const PROFILE = 'profile';
+import {
+	useMyProfileQuery,
+	UserInputType,
+	useUpdateMyProfileMutation,
+} from '../../generated/graphql';
 
 export const Profile: React.FunctionComponent<{}> = (): JSX.Element => {
-	const { email } = useContext(AuthContext);
 	const { update: setActionButton } = useContext(ActionButtonContext);
-	const { data, loading, error } = useQuery(GET_USER_PROFILE, { variables: { email } });
-	const initialFormState: any = { [PROFILE]: {} };
-	const [formData, setFormData] = useImmer(initialFormState);
+	const { data, loading, error } = useMyProfileQuery();
+	const [loaded, setLoaded] = useState(false);
+	const [input, setInput] = useImmer<UserInputType>({});
+	const updateProfile = useUpdateMyProfileMutation();
 
-	const submit = useCallback(
-		(): void => alert(`here's your name: ${formData[PROFILE].firstName}`),
-		[formData]
-	);
-
-	useEffect((): void => {
-		// Update formData when graphql query changes
-		console.log(data.getUserByEmail);
-		if (data.getUserByEmail) {
-			setFormData(draft => {
-				console.log('setting form data');
-				draft[PROFILE] = { ...data.getUserByEmail };
-			});
-		}
-	}, [data, setFormData]);
+	const createOnChangeHandler = (
+		fieldName: keyof UserInputType
+	): ((value: string) => void) => value => {
+		void setInput(draft => void (draft[fieldName] = value));
+	};
 
 	useEffect((): (() => void) => {
-		if (setActionButton) setActionButton(<HeaderButton text="Submit" onClick={submit} />);
+		if (setActionButton)
+			setActionButton(
+				<HeaderButton text="Submit" onClick={() => void updateProfile({ variables: { input } })} />
+			);
 
 		return () => {
 			if (setActionButton) setActionButton(undefined);
 		};
-	}, [formData, setActionButton, submit]);
+	}, [input, setActionButton, updateProfile]);
+
+	useEffect((): void => {
+		if (!loaded && data) {
+			setInput(draft => Object.assign(draft, data.me));
+			setLoaded(true);
+		}
+	}, [data, loaded, setInput]);
 
 	// if error getting profile
 	if (error) {
@@ -87,32 +66,17 @@ export const Profile: React.FunctionComponent<{}> = (): JSX.Element => {
 					<Spinner />
 				) : (
 					config.map(
-						(field: ConfigField): JSX.Element => {
-							const { title, fieldName, ...rest } = field;
-							const formCategory = formData[PROFILE] || {};
-							const fieldValue =
-								formCategory[fieldName] === undefined ? '' : formCategory[fieldName];
-
-							// Use either the class-based static method onChangeWrapper, or a defined
-							// updateFn in the config file, and finally, a fallback for string data types.
-							const onChangeFallback = field.updateFn
-								? field.updateFn(setFormData, PROFILE, fieldName)
-								: formChangeWrapper(setFormData, PROFILE, fieldName);
-							const onChange = field.Component.updateFn
-								? field.Component.updateFn(setFormData, PROFILE, fieldName)
-								: onChangeFallback;
-
+						(field): JSX.Element => {
+							const { Component, title, fieldName, ...rest } = field;
+							const inputKey = fieldName as keyof UserInputType;
+							const inputVal = input[inputKey];
 							return (
 								<StyledQuestion key={title} htmlFor={title}>
-									<StyledQuestionPadContainer>
-										{title}
-										{field.note ? <FieldNote>{` – ${field.note}`}</FieldNote> : null}
-									</StyledQuestionPadContainer>
-									{field.prompt ? <FieldPrompt>{field.prompt}</FieldPrompt> : null}
-									<field.Component
+									<StyledQuestionPadContainer>{title}</StyledQuestionPadContainer>
+									<Component
 										background="white"
-										value={fieldValue}
-										onChange={onChange}
+										value={inputVal || ''}
+										setState={createOnChangeHandler(inputKey)}
 										{...rest}
 										id={title}
 									/>

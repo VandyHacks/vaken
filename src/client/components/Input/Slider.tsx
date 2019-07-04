@@ -1,14 +1,10 @@
-import React from 'react';
-import { Update } from 'use-immer';
+import React, { FC, FormEventHandler } from 'react';
 import styled from 'styled-components';
-import { AppField } from '../../routes/application/ApplicationConfig';
 
-export interface Props extends AppField {
-	children?: React.ReactNode;
-	name: string;
-	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+export interface Props {
 	options?: string[];
-	value: any;
+	setState: (value: string) => void;
+	value: string;
 }
 
 const SliderContainer = styled.div`
@@ -50,56 +46,25 @@ const SliderContainer = styled.div`
 	}
 `;
 
-export class Slider extends React.PureComponent<Props, {}> {
-	/**
-	 * updateFn wraps a setState function to take a react Input event function
-	 * and modify the string at `category/fieldName` to represent the updated input
-	 * @param {function} setState - function that will update the state
-	 * @param {string} category - the category to update
-	 * @param {string} fieldName - name of field to update
-	 * @returns {function} function suitable for a react input onChange={} prop
-	 */
-	public static updateFn = (
-		setState: Update<any>,
-		category: string,
-		fieldName: string
-	): ((e: React.ChangeEvent<HTMLInputElement>) => void) => {
-		return (e): void => {
-			const { type, id } = e.target;
-			if (type === 'radio') {
-				setState((draft): void => {
-					if (!draft[category]) {
-						draft[category] = {};
+export const Slider: FC<Props> = ({ options = ['default'], value, setState }: Props) => {
+	const onChange: FormEventHandler<HTMLInputElement> = ({ currentTarget: { id } }) =>
+		setState(id === value ? '' : id);
+
+	return (
+		<fieldset>
+			<SliderContainer>
+				{options.map(
+					(option: string): JSX.Element => {
+						return (
+							<React.Fragment key={option}>
+								<input checked={value === option} type="radio" id={option} onChange={onChange} />
+								<label htmlFor={option}>{option}</label>
+							</React.Fragment>
+						);
 					}
-
-					draft[category][fieldName] = id;
-				});
-			} else {
-				throw new Error('Wrong type passed to formChangeWrapper');
-			}
-		};
-	};
-
-	public render(): JSX.Element {
-		const { options = ['default'], value, onChange } = this.props;
-
-		return (
-			<fieldset>
-				<SliderContainer>
-					{options.map(
-						(option: string): JSX.Element => {
-							return (
-								<React.Fragment key={option}>
-									<input checked={value == option} type="radio" id={option} onChange={onChange} />
-									<label htmlFor={option}>{option}</label>
-								</React.Fragment>
-							);
-						}
-					)}
-				</SliderContainer>
-			</fieldset>
-		);
-	}
-}
-
+				)}
+			</SliderContainer>
+		</fieldset>
+	);
+};
 export default Slider;

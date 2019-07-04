@@ -77,8 +77,9 @@ export type Hacker = User & {
 	shirtSize?: Maybe<ShirtSize>;
 	gender?: Maybe<Scalars['String']>;
 	dietaryRestrictions: Array<DietaryRestriction>;
-	race: Array<Race>;
 	userType: UserType;
+	phoneNumber?: Maybe<Scalars['String']>;
+	race: Array<Race>;
 	modifiedAt: Scalars['Int'];
 	status: ApplicationStatus;
 	school?: Maybe<Scalars['String']>;
@@ -117,10 +118,25 @@ export type Mentor = User & {
 	shirtSize?: Maybe<ShirtSize>;
 	gender?: Maybe<Scalars['String']>;
 	dietaryRestrictions: Array<DietaryRestriction>;
-	race: Array<Race>;
 	userType: UserType;
+	phoneNumber?: Maybe<Scalars['String']>;
 	shifts: Array<Shift>;
 	skills: Array<Scalars['String']>;
+};
+
+export type Mutation = {
+	__typename?: 'Mutation';
+	updateMyProfile: User;
+	updateProfile: User;
+};
+
+export type MutationUpdateMyProfileArgs = {
+	input: UserInputType;
+};
+
+export type MutationUpdateProfileArgs = {
+	id: Scalars['ID'];
+	input: UserInputType;
 };
 
 export type Organizer = User & {
@@ -136,8 +152,8 @@ export type Organizer = User & {
 	shirtSize?: Maybe<ShirtSize>;
 	gender?: Maybe<Scalars['String']>;
 	dietaryRestrictions: Array<DietaryRestriction>;
-	race: Array<Race>;
 	userType: UserType;
+	phoneNumber?: Maybe<Scalars['String']>;
 	permissions: Array<Maybe<Scalars['String']>>;
 };
 
@@ -241,8 +257,19 @@ export type User = {
 	shirtSize?: Maybe<ShirtSize>;
 	gender?: Maybe<Scalars['String']>;
 	dietaryRestrictions: Array<DietaryRestriction>;
-	race: Array<Race>;
 	userType: UserType;
+	phoneNumber?: Maybe<Scalars['String']>;
+};
+
+export type UserInputType = {
+	firstName?: Maybe<Scalars['String']>;
+	lastName?: Maybe<Scalars['String']>;
+	email?: Maybe<Scalars['String']>;
+	preferredName?: Maybe<Scalars['String']>;
+	shirtSize?: Maybe<Scalars['String']>;
+	gender?: Maybe<Scalars['String']>;
+	dietaryRestrictions?: Maybe<Scalars['String']>;
+	phoneNumber?: Maybe<Scalars['String']>;
 };
 
 export enum UserType {
@@ -320,8 +347,8 @@ export type ResolversTypes = {
 	String: MaybePromise<Scalars['String']>;
 	ShirtSize: ShirtSize;
 	DietaryRestriction: DietaryRestriction;
-	Race: Race;
 	Hacker: MaybePromise<HackerDbObject>;
+	Race: Race;
 	ApplicationStatus: ApplicationStatus;
 	Boolean: MaybePromise<Scalars['Boolean']>;
 	Team: MaybePromise<TeamDbObject>;
@@ -329,6 +356,8 @@ export type ResolversTypes = {
 	Organizer: MaybePromise<OrganizerDbObject>;
 	Mentor: MaybePromise<MentorDbObject>;
 	Shift: MaybePromise<ShiftDbObject>;
+	Mutation: MaybePromise<{}>;
+	UserInputType: UserInputType;
 	AuthLevel: AuthLevel;
 	Gender: Gender;
 	ApplicationQuestion: MaybePromise<ApplicationQuestionDbObject>;
@@ -436,8 +465,9 @@ export type HackerResolvers<ContextType = any, ParentType = ResolversTypes['Hack
 		ParentType,
 		ContextType
 	>;
-	race?: Resolver<Array<ResolversTypes['Race']>, ParentType, ContextType>;
 	userType?: Resolver<ResolversTypes['UserType'], ParentType, ContextType>;
+	phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+	race?: Resolver<Array<ResolversTypes['Race']>, ParentType, ContextType>;
 	modifiedAt?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
 	status?: Resolver<ResolversTypes['ApplicationStatus'], ParentType, ContextType>;
 	school?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -472,10 +502,25 @@ export type MentorResolvers<ContextType = any, ParentType = ResolversTypes['Ment
 		ParentType,
 		ContextType
 	>;
-	race?: Resolver<Array<ResolversTypes['Race']>, ParentType, ContextType>;
 	userType?: Resolver<ResolversTypes['UserType'], ParentType, ContextType>;
+	phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
 	shifts?: Resolver<Array<ResolversTypes['Shift']>, ParentType, ContextType>;
 	skills?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+};
+
+export type MutationResolvers<ContextType = any, ParentType = ResolversTypes['Mutation']> = {
+	updateMyProfile?: Resolver<
+		ResolversTypes['User'],
+		ParentType,
+		ContextType,
+		MutationUpdateMyProfileArgs
+	>;
+	updateProfile?: Resolver<
+		ResolversTypes['User'],
+		ParentType,
+		ContextType,
+		MutationUpdateProfileArgs
+	>;
 };
 
 export type OrganizerResolvers<ContextType = any, ParentType = ResolversTypes['Organizer']> = {
@@ -494,8 +539,8 @@ export type OrganizerResolvers<ContextType = any, ParentType = ResolversTypes['O
 		ParentType,
 		ContextType
 	>;
-	race?: Resolver<Array<ResolversTypes['Race']>, ParentType, ContextType>;
 	userType?: Resolver<ResolversTypes['UserType'], ParentType, ContextType>;
+	phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
 	permissions?: Resolver<Array<Maybe<ResolversTypes['String']>>, ParentType, ContextType>;
 };
 
@@ -546,8 +591,8 @@ export type UserResolvers<ContextType = any, ParentType = ResolversTypes['User']
 		ParentType,
 		ContextType
 	>;
-	race?: Resolver<Array<ResolversTypes['Race']>, ParentType, ContextType>;
 	userType?: Resolver<ResolversTypes['UserType'], ParentType, ContextType>;
+	phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = any> = {
@@ -556,6 +601,7 @@ export type Resolvers<ContextType = any> = {
 	Hacker?: HackerResolvers<ContextType>;
 	Login?: LoginResolvers<ContextType>;
 	Mentor?: MentorResolvers<ContextType>;
+	Mutation?: MutationResolvers<ContextType>;
 	Organizer?: OrganizerResolvers<ContextType>;
 	Query?: QueryResolvers<ContextType>;
 	Shift?: ShiftResolvers<ContextType>;
@@ -597,8 +643,8 @@ export type UserDbInterface = {
 	shirtSize?: Maybe<string>;
 	gender?: Maybe<string>;
 	dietaryRestrictions: Array<string>;
-	race: Array<string>;
 	userType: string;
+	phoneNumber?: Maybe<string>;
 };
 
 export type LoginDbObject = {
@@ -611,6 +657,7 @@ export type LoginDbObject = {
 };
 
 export type HackerDbObject = UserDbInterface & {
+	race: Array<string>;
 	modifiedAt: number;
 	status: string;
 	school?: Maybe<string>;

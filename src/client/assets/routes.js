@@ -6,60 +6,53 @@ import OrganizerDash from '../routes/dashboard/LazyOrganizerDash';
 import { Team } from '../routes/team/Team';
 import { Profile } from '../routes/profile/Profile';
 import { Help } from '../routes/help/Help';
-
-export const AuthLevel = {
-	HACKER: 'Hacker',
-	ORGANIZER: 'Organizer',
-	SPONSOR: 'Sponsor',
-};
-
-export const currentAuth = AuthLevel.ORGANIZER;
+import { UserType } from '../generated/graphql';
 
 const routes = [
 	{
-		authLevel: [AuthLevel.ORGANIZER],
+		authLevel: [UserType.Organizer],
 		component: OrganizerDash,
 		displayText: 'Dashboard',
 		path: '/dashboard',
 	},
 	{
-		authLevel: [AuthLevel.HACKER, AuthLevel.SPONSOR],
+		authLevel: [UserType.Hacker, UserType.Sponsor],
 		component: HackerDash,
 		displayText: 'Dashboard',
 		path: '/dashboard',
 	},
 	{
-		authLevel: [AuthLevel.HACKER, AuthLevel.SPONSOR, AuthLevel.ORGANIZER],
+		authLevel: [UserType.Hacker, UserType.Sponsor, UserType.Organizer],
 		component: Profile,
 		displayText: 'Profile',
 		path: '/profile',
 	},
 	{
-		authLevel: [AuthLevel.HACKER],
+		authLevel: [UserType.Hacker],
 		component: Application,
 		displayText: 'Application',
 		path: '/application',
 	},
 	{
-		authLevel: [AuthLevel.HACKER],
+		authLevel: [UserType.Hacker],
 		component: Team,
 		displayText: 'Team',
 		path: '/team',
 	},
 	{
-		authLevel: [AuthLevel.ORGANIZER],
+		authLevel: [UserType.Organizer],
 		component: ManageHackers,
 		displayText: 'Manage Hackers',
 		path: '/manageHackers',
 	},
 	{
-		authLevel: [AuthLevel.ORGANIZER],
+		authLevel: [UserType.Organizer],
 		component: NotReady,
 		displayText: 'Manage Sponsors',
 		path: '/manageSponsor',
 	},
 	{
-		authLevel: [AuthLevel.HACKER, AuthLevel.SPONSOR, AuthLevel.ORGANIZER],
+		authLevel: [UserType.Hacker, UserType.Sponsor, UserType.Organizer],
 		component: Help,
 		displayText: 'Help',
 		path: '/help',

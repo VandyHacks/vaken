@@ -1,20 +1,20 @@
 import { gql } from 'apollo-boost';
 
 export default gql`
-	interface User {
-		id: ID!  
-		createdAt: Int!
-		secondaryIds: [ID!]!
-		logins: [Login!]! 
-		email: String! 
-		firstName: String! 
-		preferredName: String! 
-		lastName: String! 
-		shirtSize: ShirtSize 
-		gender: String 
-		dietaryRestrictions: [DietaryRestriction!]! 
-		race: [Race!]! 
-		userType: UserType! 
+	interface User @abstractEntity(discriminatorField: "userType") {
+		id: ID! @id @column
+		createdAt: Int! @column(overrideType: "Date")
+		secondaryIds: [ID!]! @column
+		logins: [Login!]! @embedded
+		email: String! @column
+		firstName: String! @column
+		preferredName: String! @column
+		lastName: String! @column
+		shirtSize: ShirtSize @column
+		gender: String @column
+		dietaryRestrictions: [DietaryRestriction!]! @column
+		userType: UserType! @column
+		phoneNumber: String @column
 	}
 
 	enum AuthLevel {
@@ -92,30 +92,41 @@ export default gql`
 		DESC
 	}
 
-	type ApplicationQuestion {
-		prompt: String! 
-		instruction: String 
-		note: String 
+	type ApplicationQuestion @entity {
+		prompt: String! @column
+		instruction: String @column
+		note: String @column
 	}
 
-	type ApplicationField {
-		id: ID! 
-		createdAt: Int!
-		question: ApplicationQuestion! 
-		answer: String 
+	type ApplicationField @entity(embedded: true) {
+		id: ID! @column
+		createdAt: Int! @column(overrideType: "Date")
+		question: ApplicationQuestion! @embedded
+		answer: String @column
 	}
 
 	type Login
-		(
+		@entity(
 			additionalFields: [{ path: "email", type: "string" }, { path: "type", type: "UserType" }]
 		) {
-		createdAt: Int!
-		provider: LoginProvider! 
-		token: ID! 
-		userType: UserType! 
+		createdAt: Int! @column(overrideType: "Date")
+		provider: LoginProvider! @column
+		token: ID! @column
+		userType: UserType! @column
 	}
 
-	type Hacker implements User {
+	input UserInputType {
+		firstName: String
+		lastName: String
+		email: String
+		preferredName: String
+		shirtSize: String
+		gender: String
+		dietaryRestrictions: String
+		phoneNumber: String
+	}
+
+	type Hacker implements User @entity {
 		id: ID!
 		createdAt: Int!
 		secondaryIds: [ID!]!
@@ -127,25 +138,26 @@ export default gql`
 		shirtSize: ShirtSize
 		gender: String
 		dietaryRestrictions: [DietaryRestriction!]!
-		race: [Race!]!
 		userType: UserType!
-		modifiedAt: Int! 
-		status: ApplicationStatus! 
-		school: String 
-		gradYear: Int 
-		majors: [String!]! 
-		adult: Boolean 
-		volunteer: Boolean 
-		github: String 
-		team: Team 
+		phoneNumber: String
+		race: [Race!]! @column
+		modifiedAt: Int! @column
+		status: ApplicationStatus! @column
+		school: String @column
+		gradYear: Int @column
+		majors: [String!]! @column
+		adult: Boolean @column
+		volunteer: Boolean @column
+		github: String @column
+		team: Team @embedded
 	}
 
-	type Shift {
-		begin: Int!
-		end: Int!
+	type Shift @entity(embedded: true) {
+		begin: Int! @column(overrideType: "Date")
+		end: Int! @column(overrideType: "Date")
 	}
 
-	type Mentor implements User {
+	type Mentor implements User @entity {
 		id: ID!
 		createdAt: Int!
 		secondaryIds: [ID!]!
@@ -157,21 +169,21 @@ export default gql`
 		shirtSize: ShirtSize
 		gender: String
 		dietaryRestrictions: [DietaryRestriction!]!
-		race: [Race!]!
 		userType: UserType!
-		shifts: [Shift!]! 
-		skills: [String!]! 
+		phoneNumber: String
+		shifts: [Shift!]! @embedded
+		skills: [String!]! @column
 	}
 
-	type Team {
-		id: ID!  
-		createdAt: Int!
-		name: String 
-		memberIds: [ID!]! 
+	type Team @entity(embedded: true) {
+		id: ID! @id @column
+		createdAt: Int! @column(overrideType: "Date")
+		name: String @column
+		memberIds: [ID!]! @column
 		size: Int!
 	}
 
-	type Organizer implements User  {
+	type Organizer implements User @entity {
 		id: ID!
 		createdAt: Int!
 		secondaryIds: [ID!]!
@@ -183,9 +195,9 @@ export default gql`
 		shirtSize: ShirtSize
 		gender: String
 		dietaryRestrictions: [DietaryRestriction!]!
-		race: [Race!]!
 		userType: UserType!
-		permissions: [String]! 
+		phoneNumber: String
+		permissions: [String]! @column
 	}
 
 	type Query {
@@ -198,5 +210,10 @@ export default gql`
 		mentors(sortDirection: SortDirection): [Mentor!]!
 		team(id: ID!): Team!
 		teams(sortDirection: SortDirection): [Team!]!
+	}
+
+	type Mutation {
+		updateMyProfile(input: UserInputType!): User!
+		updateProfile(id: ID!, input: UserInputType!): User!
 	}
 `;

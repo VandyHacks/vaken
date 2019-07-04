@@ -3,3 +3,4 @@ dist/
 webpack.*.js
 *.d.ts
 graphql.ts
+generated/

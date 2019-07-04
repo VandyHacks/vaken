@@ -1,4 +1,5 @@
-import { UserInputError, AuthenticationError } from 'apollo-server-koa';
+import { UserInputError, AuthenticationError, ApolloError } from 'apollo-server-express';
+import { ObjectID } from 'bson';
 import {
 	ApplicationFieldResolvers,
 	ApplicationQuestionResolvers,
@@ -15,8 +16,12 @@ import {
 	ShirtSize,
 	LoginProvider,
 	ApplicationStatus,
+	UserDbInterface,
+	MutationResolvers,
+	UserInputType,
 } from './generated/graphql';
 import Context from './context';
+import { Models } from './models';
 
 function toDietEnum(restriction: string): DietaryRestriction {
 	if (!Object.values(DietaryRestriction).includes(restriction))
@@ -47,16 +52,41 @@ function toApplicationStatusEnum(status: string): ApplicationStatus {
 	return status as ApplicationStatus;
 }
 
+async function updateUser(
+	user: { email: string; userType: string },
+	args: UserInputType,
+	models: Models
+): Promise<UserDbInterface | undefined> {
+	if (user.userType === UserType.Hacker) {
+		const { value } = await models.Hackers.findOneAndUpdate(
+			{ email: user.email },
+			{ $set: args }
+		);
+		return value;
+	} else if (user.userType === UserType.Organizer) {
+		const { value } = await models.Organizers.findOneAndUpdate(
+			{ email: user.email },
+			{ $set: args }
+		);
+		return value;
+	}
+	throw new ApolloError(`updateUser for userType ${user.userType} not implemented`);
+}
+
 export interface Resolvers {
 	ApplicationField: ApplicationFieldResolvers;
 	ApplicationQuestion: ApplicationQuestionResolvers;
 	Hacker: HackerResolvers;
 	Login: LoginResolvers;
 	Mentor: MentorResolvers;
+	Mutation: MutationResolvers;
 	Organizer: OrganizerResolvers;
 	Query: QueryResolvers;
 	Shift: ShiftResolvers;
 	Team: TeamResolvers;
+	User: {
+		__resolveType: (user: UserDbInterface) => 'Hacker' | 'Organizer' | 'Mentor';
+	};
 }
 
 export const resolvers: Resolvers = {
@@ -80,7 +110,7 @@ export const resolvers: Resolvers = {
 		gender: async hacker => (await hacker).gender || null,
 		github: async hacker => (await hacker).github || null,
 		gradYear: async hacker => (await hacker).gradYear || null,
-		id: async hacker => (await hacker)._id.toHexString(),
+		id: async hacker => ((await hacker)._id as unknown) as string,
 		lastName: async hacker => (await hacker).lastName,
 		logins: async hacker => (await hacker).logins || null,
 		majors: async hacker => (await hacker).majors || [],
@@ -109,11 +139,10 @@ export const resolvers: Resolvers = {
 		email: async mentor => (await mentor).email,
 		firstName: async mentor => (await mentor).firstName,
 		gender: async mentor => (await mentor).gender || null,
-		id: async mentor => (await mentor)._id.toHexString(),
+		id: async mentor => ((await mentor)._id as unknown) as string,
 		lastName: async mentor => (await mentor).lastName,
 		logins: async mentor => (await mentor).logins || null,
 		preferredName: async mentor => (await mentor).preferredName,
-		race: async mentor => (await mentor).race.map(toRaceEnum) || null,
 		secondaryIds: async mentor => (await mentor).secondaryIds,
 		shifts: async mentor => (await mentor).shifts,
 		shirtSize: async mentor => {
@@ -123,18 +152,28 @@ export const resolvers: Resolvers = {
 		skills: async mentor => (await mentor).skills,
 		userType: () => UserType.Mentor,
 	},
+	Mutation: {
+		updateMyProfile: async (root, args, ctx: Context) => {
+			if (!ctx.user) throw new AuthenticationError(`cannot update profile: user not logged in`);
+			const result = await updateUser(ctx.user, args.input, ctx.models);
+			if (!result)
+				throw new UserInputError(
+					`unable to update profile: "${JSON.stringify(ctx.user)}" not found `
+				);
+			return result;
+		},
+	},
 	Organizer: {
 		createdAt: async organizer => (await organizer).createdAt.getTime(),
 		dietaryRestrictions: async organizer => (await organizer).dietaryRestrictions.map(toDietEnum),
 		email: async organizer => (await organizer).email,
 		firstName: async organizer => (await organizer).firstName,
 		gender: async organizer => (await organizer).gender || null,
-		id: async organizer => (await organizer)._id.toHexString(),
+		id: async organizer => ((await organizer)._id as unknown) as string,
 		lastName: async organizer => (await organizer).lastName,
 		logins: async organizer => (await organizer).logins || null,
 		permissions: async organizer => (await organizer).permissions,
 		preferredName: async organizer => (await organizer).preferredName,
-		race: async organizer => (await organizer).race.map(toRaceEnum) || null,
 		secondaryIds: async organizer => (await organizer).secondaryIds,
 		shirtSize: async organizer => {
 			const { shirtSize } = await organizer;
@@ -182,6 +221,18 @@ export const resolvers: Resolvers = {
 		memberIds: async team => (await team).memberIds,
 		name: async team => (await team).name || null,
 		size: async team => (await team).memberIds.length,
+	},
+	User: {
+		__resolveType: user => {
+			switch (user.userType) {
+				case UserType.Hacker:
+					return 'Hacker';
+				case UserType.Organizer:
+					return 'Organizer';
+				default:
+					throw new AuthenticationError(`cannot decode UserType "${user.userType}`);
+			}
+		},
 	},
 };
 

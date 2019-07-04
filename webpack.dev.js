@@ -17,6 +17,9 @@ module.exports = merge.smart(common, {
 			'/api': {
 				target: 'http://localhost:8080',
 			},
+			'/graphql': {
+				target: 'http://localhost:8080',
+			},
 		},
 	},
 	module: {

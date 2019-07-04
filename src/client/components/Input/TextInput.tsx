@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, FormEventHandler } from 'react';
 import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
 
@@ -18,7 +18,7 @@ export interface Props {
 	value: string;
 }
 
-export const Input = styled.input`
+export const RawInput = styled.input`
 	background: ${({ background = 'transparent' }: Props): string => background};
 	padding: 0.75rem;
 	width: 17rem;
@@ -37,5 +37,20 @@ export const Input = styled.input`
 		outline: none;
 	}
 `;
+
+interface InputProps {
+	background?: string;
+	id?: string;
+	setState: (value: string) => void;
+	validation?: string;
+	value: string;
+}
+
+export const Input: FC<InputProps> = ({ setState, ...rest }: InputProps) => {
+	const onChange: FormEventHandler<HTMLInputElement> = ({ currentTarget: { value } }) =>
+		setState(value);
+
+	return <RawInput {...rest} onChange={onChange} />;
+};
 
 export default Input;

@@ -2,14 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { createGlobalStyle } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
 import reset from 'styled-reset';
-import ApolloClient from 'apollo-boost';
-import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
-import { ApolloProvider } from 'react-apollo';
 import LoginPage from './routes/login/Login';
 import Frame from './routes/dashboard/Frame';
 import { AuthContext } from './contexts/AuthContext';
 import { LoginContext } from './contexts/LoginContext';
-import { User } from '../common/models/User';
+import { useMeQuery, MeQuery } from './generated/graphql';
 
 const GlobalStyle = createGlobalStyle`
 	body {
@@ -26,60 +23,38 @@ const GlobalStyle = createGlobalStyle`
 	}
 `;
 
-const client = new ApolloClient({ uri: 'http://localhost:8080/graphql' });
-
 const Vaken: React.FunctionComponent = (): JSX.Element => {
-	const [loggedIn, setLoggedIn] = useState();
 	const [ready, setReady] = useState();
-	const [user, setUser] = useState(new User());
+	const [user, setUser] = useState<MeQuery['me'] | undefined>(undefined);
+	const { data, error, loading } = useMeQuery();
 
 	const StateMachine: React.FunctionComponent = (): JSX.Element | null => {
 		if (!ready) return null;
-		return loggedIn ? (
+		return user ? (
 			<AuthContext.Provider value={user}>
 				<Frame />
 			</AuthContext.Provider>
 		) : (
-			<LoginContext.Provider value={{ state: loggedIn, update: setLoggedIn }}>
-				<LoginPage />
-			</LoginContext.Provider>
+			<LoginPage />
 		);
 	};
 
-	// Uncomment to add dummy data
-	// useEffect(() => {
-	// addHackers(true);
-	// }, []);
-
 	useEffect(() => {
-		if (!loggedIn)
-			(async () => {
-				try {
-					const res = await fetch('/api/whoami');
-					if (res.status === 200) {
-						const body = await res.json();
-						setUser(body);
-						setLoggedIn(true);
-						setReady(true);
-					} else {
-						setReady(true);
-					}
-					return res;
-				} catch (e) {
-					console.error(e);
-				}
-			})();
-	}, [loggedIn]);
+		if (loading && ready) {
+			setReady(false);
+		} else if (error && !ready) {
+			setReady(true);
+		} else if (data && data.me && !ready) {
+			setUser(data.me);
+			setReady(true);
+		}
+	}, [loading, ready, error, data]);
 
 	return (
-		<ApolloProvider client={client}>
-			<ApolloHooksProvider client={client}>
-				<GlobalStyle />
-				<BrowserRouter>
-					<StateMachine />
-				</BrowserRouter>
-			</ApolloHooksProvider>
-		</ApolloProvider>
+		<BrowserRouter>
+			<GlobalStyle />
+			<StateMachine />
+		</BrowserRouter>
 	);
 };
 
