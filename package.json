@@ -90,7 +90,7 @@
     "styled-reset": "^2.0.16",
     "type-graphql": "^0.16.0",
     "typegoose": "^5.7.2",
-    "use-immer": "^0.1.0",
+    "use-immer": "^0.3.2",
     "yup": "^0.27.0"
   },
   "devDependencies": {
