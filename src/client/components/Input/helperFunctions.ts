@@ -31,14 +31,12 @@ export function formChangeWrapper(
 	return (e): void => {
 		const { value } = e.target;
 
-		setState(
-			(draft): void => {
-				if (!draft[category]) {
-					draft[category] = {};
-				}
-				draft[category][fieldName] = value;
+		setState((draft): void => {
+			if (!draft[category]) {
+				draft[category] = {};
 			}
-		);
+			draft[category][fieldName] = value;
+		});
 	};
 }
 

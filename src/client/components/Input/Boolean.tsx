@@ -18,17 +18,15 @@ export class Boolean extends PureComponent<SliderProps, {}> {
 	): ((e: React.ChangeEvent<HTMLInputElement>) => void) => {
 		return e => {
 			const { id } = e.target;
-			setState(
-				(draft): void => {
+			setState((draft): void => {
+				// @ts-ignore: no-implicit-any
+				if (!draft[category]) {
 					// @ts-ignore: no-implicit-any
-					if (!draft[category]) {
-						// @ts-ignore: no-implicit-any
-						draft[category] = {};
-					}
-					// @ts-ignore: no-implicit-any
-					draft[category][fieldName] = id === 'Yes';
+					draft[category] = {};
 				}
-			);
+				// @ts-ignore: no-implicit-any
+				draft[category][fieldName] = id === 'Yes';
+			});
 		};
 	};
 

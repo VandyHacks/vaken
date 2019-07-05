@@ -96,12 +96,9 @@ async function launchServer(): Promise<void> {
 	apollo.applyMiddleware({ app });
 
 	// Begin listening on the defined port
-	app.listen(
-		PORT,
-		(): void => {
-			logger.info(`>>> Server started at http://localhost:${PORT}${apollo.graphqlPath}`);
-		}
-	);
+	app.listen(PORT, (): void => {
+		logger.info(`>>> Server started at http://localhost:${PORT}${apollo.graphqlPath}`);
+	});
 }
 
 // for testing

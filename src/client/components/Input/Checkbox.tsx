@@ -64,27 +64,25 @@ export class Checkbox extends React.PureComponent<Props, {}> {
 		return (e): void => {
 			const { type, checked, id } = e.target;
 			if (type === 'checkbox') {
-				setState(
-					(draft): void => {
-						if (!draft[category]) {
-							draft[category] = {};
-						}
-						if (!(draft[category][fieldName] instanceof Set)) {
-							draft[category][fieldName] = new Set<string>();
-						}
-
-						/* Get around Immer's lack of native support for Set/Map by duplicating the 
-				 set and changing the necessary fields, then changing the pointer to the new set. */
-						const newSet = new Set(draft[category][fieldName]);
-						if (checked) {
-							newSet.add(id);
-						} else {
-							newSet.delete(id);
-						}
-
-						draft[category][fieldName] = newSet;
+				setState((draft): void => {
+					if (!draft[category]) {
+						draft[category] = {};
 					}
-				);
+					if (!(draft[category][fieldName] instanceof Set)) {
+						draft[category][fieldName] = new Set<string>();
+					}
+
+					/* Get around Immer's lack of native support for Set/Map by duplicating the 
+				 set and changing the necessary fields, then changing the pointer to the new set. */
+					const newSet = new Set(draft[category][fieldName]);
+					if (checked) {
+						newSet.add(id);
+					} else {
+						newSet.delete(id);
+					}
+
+					draft[category][fieldName] = newSet;
+				});
 			} else {
 				throw new Error('Wrong type passed to formChangeWrapper');
 			}
