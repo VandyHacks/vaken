@@ -89,15 +89,13 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 
 	const initialFormState: any = {};
 	useEffect(() => {
-		config.forEach(
-			(section: ConfigSection): void => {
-				initialFormState[section.category] = {};
+		config.forEach((section: ConfigSection): void => {
+			initialFormState[section.category] = {};
 
-				section.fields.forEach((field: ConfigField) => {
-					initialFormState[section.category][field.fieldName] = field.default || undefined;
-				});
-			}
-		);
+			section.fields.forEach((field: ConfigField) => {
+				initialFormState[section.category][field.fieldName] = field.default || undefined;
+			});
+		});
 	}, [initialFormState]);
 
 	useEffect((): (() => void) => {

@@ -67,15 +67,13 @@ export class Slider extends React.PureComponent<Props, {}> {
 		return (e): void => {
 			const { type, id } = e.target;
 			if (type === 'radio') {
-				setState(
-					(draft): void => {
-						if (!draft[category]) {
-							draft[category] = {};
-						}
-
-						draft[category][fieldName] = id;
+				setState((draft): void => {
+					if (!draft[category]) {
+						draft[category] = {};
 					}
-				);
+
+					draft[category][fieldName] = id;
+				});
 			} else {
 				throw new Error('Wrong type passed to formChangeWrapper');
 			}
