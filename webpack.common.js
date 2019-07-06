@@ -7,6 +7,7 @@ const ASSET_PATH = process.env.ASSET_PATH || '/';
 module.exports = {
 	context: __dirname, // to automagically find tsconfig.json
 	entry: ['./src/client/index'],
+	stats: 'minimal',
 	module: {
 		rules: [
 			{

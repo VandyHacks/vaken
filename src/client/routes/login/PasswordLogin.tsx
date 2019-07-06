@@ -1,3 +1,5 @@
+/** DEPRECATED JULY 2019 */
+
 import React, { useState, useContext } from 'react';
 import emailIcon from '../../assets/img/email_icon.svg';
 import lockIcon from '../../assets/img/lock_icon.svg';

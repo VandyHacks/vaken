@@ -1,5 +1,5 @@
 import { UserInputError, AuthenticationError, ApolloError } from 'apollo-server-express';
-import { ObjectID } from 'bson';
+import { ObjectID } from 'mongodb';
 import {
 	ApplicationFieldResolvers,
 	ApplicationQuestionResolvers,
@@ -146,7 +146,7 @@ export const resolvers: Resolvers = {
 		gender: async hacker => (await hacker).gender || null,
 		github: async hacker => (await hacker).github || null,
 		gradYear: async hacker => (await hacker).gradYear || null,
-		id: async hacker => ((await hacker)._id as unknown) as string,
+		id: async hacker => (await hacker)._id.toHexString(),
 		lastName: async hacker => (await hacker).lastName,
 		logins: async hacker => (await hacker).logins || null,
 		majors: async hacker => (await hacker).majors || [],
@@ -181,7 +181,7 @@ export const resolvers: Resolvers = {
 		email: async mentor => (await mentor).email,
 		firstName: async mentor => (await mentor).firstName,
 		gender: async mentor => (await mentor).gender || null,
-		id: async mentor => ((await mentor)._id as unknown) as string,
+		id: async mentor => (await mentor)._id.toHexString(),
 		lastName: async mentor => (await mentor).lastName,
 		logins: async mentor => (await mentor).logins || null,
 		preferredName: async mentor => (await mentor).preferredName,
@@ -265,7 +265,7 @@ export const resolvers: Resolvers = {
 		email: async organizer => (await organizer).email,
 		firstName: async organizer => (await organizer).firstName,
 		gender: async organizer => (await organizer).gender || null,
-		id: async organizer => ((await organizer)._id as unknown) as string,
+		id: async organizer => (await organizer)._id.toHexString(),
 		lastName: async organizer => (await organizer).lastName,
 		logins: async organizer => (await organizer).logins || null,
 		permissions: async organizer => (await organizer).permissions,
@@ -279,7 +279,9 @@ export const resolvers: Resolvers = {
 	},
 	Query: {
 		hacker: async (root, { id }, ctx: Context) => {
-			const hacker = await ctx.models.Hackers.findOne({ _id: id });
+			const hacker = await ctx.models.Hackers.findOne({
+				_id: ObjectID.createFromHexString(id),
+			});
 			if (!hacker) throw new UserInputError(`hacker with id: ${id} not found`);
 			return hacker;
 		},
@@ -289,19 +291,21 @@ export const resolvers: Resolvers = {
 			return fetchUser(ctx.user, ctx.models);
 		},
 		mentor: async (root, { id }, ctx: Context) => {
-			const mentor = await ctx.models.Mentors.findOne({ _id: id });
+			const mentor = await ctx.models.Mentors.findOne({ _id: ObjectID.createFromHexString(id) });
 			if (!mentor) throw new UserInputError(`mentor with id: ${id} not found`);
 			return mentor;
 		},
 		mentors: async (root, args, ctx: Context) => ctx.models.Mentors.find().toArray(),
 		organizer: async (root, { id }, ctx: Context) => {
-			const organizer = await ctx.models.Organizers.findOne({ _id: id });
+			const organizer = await ctx.models.Organizers.findOne({
+				_id: ObjectID.createFromHexString(id),
+			});
 			if (!organizer) throw new UserInputError(`organizer with id: ${id} not found`);
 			return organizer;
 		},
 		organizers: async (root, args, ctx: Context) => ctx.models.Organizers.find().toArray(),
 		team: async (root, { id }, ctx: Context) => {
-			const team = await ctx.models.Teams.findOne({ _id: id });
+			const team = await ctx.models.Teams.findOne({ _id: ObjectID.createFromHexString(id) });
 			if (!team) throw new UserInputError(`team with id: ${id} not found`);
 			return team;
 		},
