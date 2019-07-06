@@ -5,14 +5,25 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
+			"type": "chrome",
+			"request": "attach",
+			"name": "Client (Chrome Attach)",
+			"port": 9222,
+			"smartStep": true,
+			"showAsyncStacks": true,
+			"urlFilter": "http://localhost:8081",
+			"webRoot": "${workspaceFolder}"
+		},
+		{
 			"type": "node",
-			"request": "launch",
-			"name": "Vaken Server",
-			"args": ["${workspaceFolder}/src/server/index.ts"],
-			"cwd": "${workspaceFolder}",
+			"request": "attach",
+			"name": "Server (Node Attach)",
 			"protocol": "inspector",
-			"sourceMaps": true,
-			"runtimeArgs": ["-r", "dotenv/config", "--nolazy", "-r", "ts-node/register"]
+			"smartStep": true,
+			"port": 9229,
+			"restart": true,
+			"showAsyncStacks": true,
+			"cwd": "${workspaceRoot}"
 		}
 	]
 }

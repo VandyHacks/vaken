@@ -46,7 +46,6 @@ export const verifyCallback = async (profile: Profile, done: VerifyCallback): Pr
 				email,
 				provider: profile.provider,
 				token: profile.id,
-				type: UserType.Hacker,
 				userType: UserType.Hacker,
 			});
 

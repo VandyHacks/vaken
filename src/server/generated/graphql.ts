@@ -661,7 +661,6 @@ export type LoginDbObject = {
 	token: string;
 	userType: string;
 	email: string;
-	type: UserType;
 };
 
 export type HackerDbObject = UserDbInterface & {
