@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test LeftImgTextInput LeftImgTextInput renders correctly 1`] = `
+<div
+  className="sc-VigVT sc-jTzLTM gLPapD"
+>
+  <img
+    alt="b"
+    className="sc-iwsKbI kXBzef"
+    src="a"
+  />
+  <input
+    className="sc-fjdhpX hNpcum"
+    onChange={[Function]}
+    value="c"
+  />
+</div>
+`;
