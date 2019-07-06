@@ -141,7 +141,10 @@ export const resolvers: Resolvers = {
 	Hacker: {
 		adult: async hacker => (await hacker).adult || null,
 		createdAt: async hacker => (await hacker).createdAt.getTime(),
-		dietaryRestrictions: async hacker => (await hacker).dietaryRestrictions.map(toDietEnum),
+		dietaryRestrictions: async hacker => {
+			const { dietaryRestrictions = [] } = await hacker;
+			return dietaryRestrictions.map(toDietEnum);
+		},
 		email: async hacker => (await hacker).email,
 		firstName: async hacker => (await hacker).firstName,
 		gender: async hacker => (await hacker).gender || null,
@@ -180,7 +183,10 @@ export const resolvers: Resolvers = {
 	},
 	Mentor: {
 		createdAt: async mentor => (await mentor).createdAt.getTime(),
-		dietaryRestrictions: async mentor => (await mentor).dietaryRestrictions.map(toDietEnum),
+		dietaryRestrictions: async mentor => {
+			const { dietaryRestrictions = [] } = await mentor;
+			return dietaryRestrictions.map(toDietEnum);
+		},
 		email: async mentor => (await mentor).email,
 		firstName: async mentor => (await mentor).firstName,
 		gender: async mentor => (await mentor).gender || null,
@@ -277,7 +283,10 @@ export const resolvers: Resolvers = {
 	},
 	Organizer: {
 		createdAt: async organizer => (await organizer).createdAt.getTime(),
-		dietaryRestrictions: async organizer => (await organizer).dietaryRestrictions.map(toDietEnum),
+		dietaryRestrictions: async organizer => {
+			const { dietaryRestrictions = [] } = await organizer;
+			return dietaryRestrictions.map(toDietEnum);
+		},
 		email: async organizer => (await organizer).email,
 		firstName: async organizer => (await organizer).firstName,
 		gender: async organizer => (await organizer).gender || null,
