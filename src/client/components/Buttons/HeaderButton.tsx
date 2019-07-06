@@ -17,7 +17,7 @@ export const HeaderButton: FC<Props> = ({ children, onClick, width }: Props) => 
 		if (result && result.then) {
 			setInAction(true);
 			setTimeout(async () => {
-				// Wait 700 ms or until the action completes, whichever is comes later.
+				// Wait 700 ms or until the action completes, whichever comes later.
 				// This prevents the quick flash of the loader, while also providing
 				// feedback to the user.
 				await result;
