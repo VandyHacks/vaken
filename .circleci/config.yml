@@ -59,7 +59,7 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run:
-          command: 'npm run check:tests:ci'
+          command: 'npm run check:test:ci'
       - store_test_results:
           path: ~/project/vaken/reports/test
       - codecov/upload:
