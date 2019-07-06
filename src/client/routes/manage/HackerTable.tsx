@@ -232,7 +232,7 @@ const checkmarkRenderer = ({ cellData }: TableCellProps): JSX.Element => {
 // mutation to update a single hacker status
 const mutateHackerStatus = (
 	mutationFunction: MutationFn,
-	variables: { email: string; status: string }
+	variables: { email: string; status: HackerStatus }
 ): Promise<void | FetchResult> => {
 	return mutationFunction({
 		update: (proxy, { data: { updateHackerStatus } }) => {
@@ -260,7 +260,7 @@ const mutateHackerStatus = (
 // mutation to update a multiple hacker statuses
 const mutateHackerStatusAsBatch = (
 	mutationFunction: MutationFn,
-	variables: { emails: string[]; status: string }
+	variables: { emails: string[]; status: HackerStatus }
 ): Promise<void | FetchResult> => {
 	return mutationFunction({
 		update: (proxy, { data: { updateHackerStatusAsBatch } }) => {

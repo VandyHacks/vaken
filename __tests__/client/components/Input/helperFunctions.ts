@@ -1,7 +1,6 @@
 import React from 'react';
 import {
 	onChangeWrapper,
-	formChangeWrapper,
 	checkValid,
 	regexWrapper,
 } from '../../../../src/client/components/Input/helperFunctions';
@@ -21,10 +20,6 @@ describe('Test Helper functions', () => {
 
 	it('test onChangeWrapper', async () => {
 		await onChangeWrapper(MOCK_CB)(event);
-		expect(MOCK_CB.mock.calls.length).toBe(1); // called once
-	});
-	it('test formChangeWrapper', async () => {
-		await formChangeWrapper(MOCK_CB, '', '')(event);
 		expect(MOCK_CB.mock.calls.length).toBe(1); // called once
 	});
 	it('test checkValid for empty case', async () => {
