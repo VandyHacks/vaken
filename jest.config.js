@@ -1,7 +1,7 @@
 /* eslint-disable */
 module.exports = {
 	collectCoverage: true,
-	collectCoverageFrom: ['./src/**/*.{ts,tsx}', '!./src/**/*graphql.ts'],
+	collectCoverageFrom: ['./src/**/*.{ts,tsx}', '!./src/**/*graphql.ts', '!./src/**/*.d.ts'],
 	reporters: [
 		'default',
 		['jest-junit', { outputDirectory: './reports/test/jest', outputName: 'results.xml' }],
