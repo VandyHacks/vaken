@@ -34,7 +34,7 @@ module.exports = {
 		{
 			// server-side testing config
 			displayName: 'Test server',
-			testMatch: ['<rootDir>/__tests__/server/**/*.ts'],
+			testMatch: ['<rootDir>/src/server/**/*.test.ts'],
 			setupFiles: ['./__mocks__/env.js'],
 			testEnvironment: 'node',
 			snapshotResolver: './__mocks__/snapshotResolver',
@@ -44,10 +44,14 @@ module.exports = {
 			preset: 'ts-jest',
 		},
 		{
-			// misc testing config
+			// testing config for ./common
 			displayName: 'Test other',
-			testMatch: ['<rootDir>/__tests__/*.ts'],
+			testMatch: ['<rootDir>/src/common/**/*.test.ts'],
 			setupFiles: ['./__mocks__/env.js'],
+			transform: {
+				'^.+\\.jsx?$': 'babel-jest',
+			},
+			preset: 'ts-jest',
 			testPathIgnorePatterns: ['.eslintrc.js'],
 		},
 	],
