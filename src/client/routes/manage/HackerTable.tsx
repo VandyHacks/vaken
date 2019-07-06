@@ -491,7 +491,7 @@ const reimbursementHeaderRenderer = ({
 		plane
 	);
 
-export const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element => {
+const HackerTable: FunctionComponent<Props> = (props: Props): JSX.Element => {
 	const table = useContext(TableContext);
 
 	const {
