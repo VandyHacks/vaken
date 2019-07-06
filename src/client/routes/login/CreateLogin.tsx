@@ -1,4 +1,5 @@
-// /** DEPRECATED JULY 2019 */
+/** DEPRECATED JULY 2019 */
+export default {};
 
 // import React, { useState, useContext } from 'react';
 // import emailIcon from '../../assets/img/email_icon.svg';
