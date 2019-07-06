@@ -38,7 +38,7 @@ export const HackerDash: FunctionComponent = (): JSX.Element => {
 								fontSize="1.4em"
 								background={STRINGS.ACCENT_COLOR}
 								glowColor="rgba(0, 0, 255, 0.67)">
-								<p>Complete your application</p>
+								Complete your application
 							</TextButton>
 						</Link>
 					</FlexColumn>

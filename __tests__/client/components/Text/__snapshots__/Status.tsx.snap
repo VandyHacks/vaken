@@ -3,8 +3,7 @@
 exports[`Test Status renders correctly 1`] = `
 <div
   className="sc-bdVaJa fhDPKM"
-  value="mock"
 >
-  mock
+  5
 </div>
 `;

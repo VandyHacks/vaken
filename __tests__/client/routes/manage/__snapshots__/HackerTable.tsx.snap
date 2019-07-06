@@ -2,13 +2,13 @@
 
 exports[`Test HackerTable renders correctly 1`] = `
 <div
-  className="sc-gipzik fqRcvL"
+  className="sc-VigVT eMHnLq"
 >
   <div
-    className="sc-csuQGl ezGhYM"
+    className="sc-jTzLTM fnfASu"
   >
     <div
-      className="css-1pcexqc-container basic-multi-select sc-bRBYWo iuFLcU"
+      className="css-1pcexqc-container basic-multi-select sc-jzJRlG bCOCiF"
       onKeyDown={[Function]}
     >
       <div
@@ -182,7 +182,7 @@ exports[`Test HackerTable renders correctly 1`] = `
     </label>
   </div>
   <div
-    className="sc-Rmtcm cldSvD"
+    className="sc-fjdhpX fFdGVu"
   >
     <div
       style={

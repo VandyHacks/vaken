@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
+import { HackerStatus } from '../../contexts/TableContext';
 
 interface Props {
 	borderRadius?: string;
@@ -13,8 +14,8 @@ interface Props {
 }
 
 interface ComponentProps extends Props {
-	generateColor?: (value: any) => string;
-	value: string;
+	generateColor?: (value: HackerStatus) => string;
+	value: HackerStatus;
 }
 
 interface StyledProps extends Props {

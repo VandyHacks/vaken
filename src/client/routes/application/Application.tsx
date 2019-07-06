@@ -1,18 +1,10 @@
-import React, {
-	useContext,
-	FunctionComponent,
-	useState,
-	useEffect,
-	useRef,
-	useCallback,
-} from 'react';
+import React, { useContext, FunctionComponent, useState, useEffect, useCallback, FC } from 'react';
 import styled from 'styled-components';
-import { useImmer } from 'use-immer';
 import config from '../../assets/application';
 import { Collapsible } from '../../components/Containers/Collapsible';
 import { ActionButtonContext } from '../../contexts/ActionButtonContext';
 import { HeaderButton } from '../../components/Buttons/HeaderButton';
-import { ApplicationField, ApplicationQuestion } from '../../generated/graphql';
+import { InputProps } from '../../components/Input/TextInput';
 
 export interface ConfigSection {
 	category: string;
@@ -21,28 +13,18 @@ export interface ConfigSection {
 }
 
 export interface ConfigField {
-	Component: any;
-	default?: any;
+	Component: FC<InputProps>;
+	default?: string;
 	fieldName: string;
 	note?: string;
 	optional?: boolean;
-	options?: any;
+	options?: string[];
 	other?: boolean;
 	placeholder?: string;
 	prompt?: string;
 	required?: boolean;
 	title: string;
 	validation?: string;
-}
-
-interface Question {
-	fieldName: string;
-	input: any;
-}
-
-interface Section {
-	name: string;
-	questions: Question[];
 }
 
 export const StyledForm = styled.form`
@@ -90,7 +72,6 @@ export const FieldTitle = styled.span`
 export const Application: FunctionComponent<{}> = (): JSX.Element => {
 	const { update: setActionButton } = useContext(ActionButtonContext);
 	const [openSection, setOpenSection] = useState('');
-	const formRef = useRef<HTMLFormElement>(null);
 
 	useEffect((): (() => void) => {
 		if (setActionButton)
@@ -115,7 +96,7 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 	);
 
 	return (
-		<StyledForm ref={formRef}>
+		<StyledForm>
 			{config.map(({ fields, title }: ConfigSection) => (
 				<Collapsible onClick={toggleOpen} open={openSection === title} title={title} key={title}>
 					{fields.map(field => (
@@ -125,7 +106,12 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 								{field.note ? <FieldNote>{` - ${field.note}`}</FieldNote> : null}
 							</StyledQuestionPadContainer>
 							{field.prompt ? <FieldPrompt>{field.prompt}</FieldPrompt> : null}
-							<field.Component value="" {...field} id={field.title} />
+							<field.Component
+								setState={(value: string) => void value}
+								value=""
+								{...field}
+								id={field.title}
+							/>
 						</StyledQuestion>
 					))}
 				</Collapsible>

@@ -10,7 +10,10 @@ exports[`Test Sidebar Sidebar renders correctly 1`] = `
     <div
       className="sc-hEsumM hzCnxB"
     >
-      <icon-mock />
+      <img
+        alt="VH graphic"
+        src="icon-mock"
+      />
     </div>
     <hr
       className="sc-ktHwxA bXeZNy"
