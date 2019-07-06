@@ -51,7 +51,9 @@ export const GraphQLErrorMessage: FunctionComponent<GraphQLErrorMessage> = (
 			<>
 				<StyledP>{text}</StyledP>
 				<Link style={{ textDecoration: 'none' }} to="/dashboard">
-					<TextButton text="Return to Dashboard" background={STRINGS.WARNING_COLOR} color="white" />
+					<TextButton background={STRINGS.WARNING_COLOR} color="white">
+						<p>Return to Dashboard</p>
+					</TextButton>
 				</Link>
 			</>
 		</ErrorMessage>

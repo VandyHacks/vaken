@@ -281,9 +281,9 @@ export const OrganizerDash: FunctionComponent = (): JSX.Element => {
 							color="white"
 							fontSize="1.4em"
 							background={STRINGS.ACCENT_COLOR}
-							text="Manage hackers"
-							glowColor="rgba(0, 0, 255, 0.67)"
-						/>
+							glowColor="rgba(0, 0, 255, 0.67)">
+							<p>Manage hackers</p>
+						</TextButton>
 					</Link>
 				</LinkLayout>
 			</StyledFloatingPopupTop>

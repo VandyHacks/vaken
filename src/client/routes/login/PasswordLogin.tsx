@@ -9,7 +9,6 @@ import TextLink from '../../components/Text/TextLink';
 import STRINGS from '../../assets/strings.json';
 import LeftImgTextInput from '../../components/Input/LeftImgTextInput';
 import { LoginContext } from '../../contexts/LoginContext';
-import { onChangeWrapper } from '../../components/Input/helperFunctions';
 import {
 	PASSWORD_REGEX,
 	EMAIL_REGEX,
@@ -78,7 +77,7 @@ export const PasswordLogin: React.FunctionComponent = (): JSX.Element => {
 				img={emailIcon}
 				imgAlt="Email icon"
 				fontSize="1.2rem"
-				onChange={onChangeWrapper(setEmail)}
+				setState={setEmail}
 				value={email}
 				placeholder="Email"
 				pattern={EMAIL_REGEX.source}
@@ -87,7 +86,7 @@ export const PasswordLogin: React.FunctionComponent = (): JSX.Element => {
 				img={lockIcon}
 				imgAlt="Lock icon"
 				fontSize="1.2rem"
-				onChange={onChangeWrapper(setPass)}
+				setState={setPass}
 				value={pass}
 				placeholder="Password"
 				type="password"
@@ -102,9 +101,9 @@ export const PasswordLogin: React.FunctionComponent = (): JSX.Element => {
 					marginBottom="0.5rem"
 					fontSize="1.4rem"
 					background={STRINGS.ACCENT_COLOR}
-					text="Login"
-					glowColor="rgba(0, 0, 255, 0.67)"
-				/>
+					glowColor="rgba(0, 0, 255, 0.67)">
+					<p>Login</p>
+				</TextButton>
 				<TextLink to="/login">Forgot Username / Password?</TextLink>
 				<FlexRow>
 					<TextLink fontSize="1.4rem" color={STRINGS.ACCENT_COLOR} to="/login/create">

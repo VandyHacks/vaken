@@ -9,7 +9,7 @@ module.exports = merge.smart(common, {
 	devtool: 'inline-source-map',
 	devServer: {
 		hot: true, // Enable hot module replacement
-		open: true, // Open browser on 'npm start'
+		open: false, // Do not open browser on 'npm start'
 		quiet: true, // Pretty console output
 		port: 8081,
 		historyApiFallback: true,

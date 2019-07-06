@@ -1,29 +1,23 @@
-import React, { FC, FormEventHandler } from 'react';
+import React, { FC, FormEventHandler, InputHTMLAttributes } from 'react';
 import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
 
-export interface Props {
+export interface StyleProps extends InputHTMLAttributes<HTMLInputElement> {
 	background?: string;
-	className?: string;
-	color?: string;
 	fontSize?: string;
-	id?: string;
-	list?: string;
-	onBlur?: () => void;
-	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-	pattern?: string;
-	placeholder?: string;
-	required?: boolean;
-	type?: string;
+}
+
+export interface InputProps extends StyleProps {
+	setState: (value: string) => void;
 	value: string;
 }
 
 export const RawInput = styled.input`
-	background: ${({ background = 'transparent' }: Props): string => background};
+	background: ${({ background = 'transparent' }: StyleProps): string => background};
 	padding: 0.75rem;
 	width: 17rem;
 	border: none;
-	font-size: ${({ fontSize = '1em' }: Props): string => fontSize};
+	font-size: ${({ fontSize = '1em' }: StyleProps): string => fontSize};
 	color: ${STRINGS.DARK_TEXT_COLOR};
 	::placeholder {
 		color: ${STRINGS.LIGHT_TEXT_COLOR};
@@ -37,14 +31,6 @@ export const RawInput = styled.input`
 		outline: none;
 	}
 `;
-
-interface InputProps {
-	background?: string;
-	id?: string;
-	setState: (value: string) => void;
-	validation?: string;
-	value: string;
-}
 
 export const Input: FC<InputProps> = ({ setState, ...rest }: InputProps) => {
 	const onChange: FormEventHandler<HTMLInputElement> = ({ currentTarget: { value } }) =>

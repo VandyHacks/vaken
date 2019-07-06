@@ -126,12 +126,12 @@ export const HackerView: React.FunctionComponent<RouteComponentProps<{}>> = (
 								color="#ffffff"
 								img={back}
 								imgAlt="left arrow"
-								text="Back to table"
 								width="auto"
 								onClick={() => props.history.goBack()}
 								paddingLeft="1.5rem"
-								paddingRight="1.5rem"
-							/>
+								paddingRight="1.5rem">
+								Back to table
+							</LeftImgButton>
 						</Header>
 						<Profile>
 							<Title

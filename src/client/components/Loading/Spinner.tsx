@@ -1,6 +1,10 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
+
+interface StyleProps {
+	color?: string;
+}
 
 const Wrapper = styled.div`
 	& {
@@ -12,7 +16,7 @@ const Wrapper = styled.div`
 	& > div {
 		width: 1rem;
 		height: 1rem;
-		background-color: ${STRINGS.ACCENT_COLOR};
+		background-color: ${({ color }: StyleProps) => color || STRINGS.ACCENT_COLOR};
 
 		border-radius: 100%;
 		display: inline-block;
@@ -55,9 +59,9 @@ const Wrapper = styled.div`
 	}
 `;
 
-export const Spinner: FunctionComponent = (): JSX.Element => {
+export const Spinner: FC<StyleProps> = (props: StyleProps): JSX.Element => {
 	return (
-		<Wrapper>
+		<Wrapper {...props}>
 			<div className="bounce1" />
 			<div className="bounce2" />
 			<div className="bounce3" />

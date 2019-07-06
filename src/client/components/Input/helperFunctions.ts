@@ -1,5 +1,3 @@
-import { Update } from 'use-immer';
-
 /**
  * onChangeWrapper wraps a setState function to take a react Input event function
  * @param {function} updateFn - function that will update the state
@@ -12,31 +10,6 @@ export function onChangeWrapper(
 	return (e: React.ChangeEvent<HTMLInputElement>): void => {
 		const { value } = e.target;
 		updateFn(value);
-	};
-}
-
-/**
- * formChangeWrapper wraps a setState function to take a react Input event function
- * this method is designed to be a fallback for string data types only
- * @param {function} setState - function that will update the state
- * @param {string} category - the category to update
- * @param {string} fieldName - name of field to update
- * @returns {function} function suitable for a react input onChange={} prop
- */
-export function formChangeWrapper(
-	setState: Update<any>,
-	category: string,
-	fieldName: string
-): (e: React.ChangeEvent<HTMLInputElement>) => void {
-	return (e): void => {
-		const { value } = e.target;
-
-		setState((draft): void => {
-			if (!draft[category]) {
-				draft[category] = {};
-			}
-			draft[category][fieldName] = value;
-		});
 	};
 }
 

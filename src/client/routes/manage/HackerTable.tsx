@@ -288,7 +288,7 @@ const mutateHackerStatusAsBatch = (
 };
 
 // maps the radio slider labels to the hacker status
-const processSliderInput = (input: string): string => {
+const processSliderInput = (input: string): HackerStatus => {
 	switch (input.toLowerCase()) {
 		case 'accept':
 			return HackerStatus.Accepted;

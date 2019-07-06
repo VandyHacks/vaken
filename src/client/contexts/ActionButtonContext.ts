@@ -1,8 +1,8 @@
-import { createContext } from 'react';
+import { createContext, ReactNode } from 'react';
 
 export const ActionButtonContext = createContext<{
-	ActionButton?: JSX.Element;
-	update?: (n?: JSX.Element) => void;
+	ActionButton?: ReactNode;
+	update?: (n?: ReactNode) => void;
 }>({});
 
 export default ActionButtonContext;

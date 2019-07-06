@@ -1,10 +1,9 @@
 import React, { FC, FormEventHandler } from 'react';
 import styled from 'styled-components';
+import { InputProps } from './TextInput';
 
-export interface Props {
+export interface Props extends InputProps {
 	options?: string[];
-	setState: (value: string) => void;
-	value: string;
 }
 
 const SliderContainer = styled.div`
@@ -36,6 +35,7 @@ const SliderContainer = styled.div`
 		text-align: center;
 		font-size: 1rem;
 		transition: color 0.2s ease-out, background-color 0.15s ease-out, box-shadow 0.15s ease-out;
+		white-space: nowrap;
 	}
 
 	input:checked + label {
@@ -46,25 +46,39 @@ const SliderContainer = styled.div`
 	}
 `;
 
-export const Slider: FC<Props> = ({ options = ['default'], value, setState }: Props) => {
+export const SliderSansTextTransform: FC<Props> = ({
+	options = ['default'],
+	value,
+	setState,
+	className,
+}: Props) => {
 	const onChange: FormEventHandler<HTMLInputElement> = ({ currentTarget: { id } }) =>
 		setState(id === value ? '' : id);
 
 	return (
 		<fieldset>
-			<SliderContainer>
+			<SliderContainer className={className}>
 				{options.map(
-					(option: string): JSX.Element => {
-						return (
-							<React.Fragment key={option}>
-								<input checked={value === option} type="radio" id={option} onChange={onChange} />
-								<label htmlFor={option}>{option}</label>
-							</React.Fragment>
-						);
-					}
+					(option: string): JSX.Element => (
+						<React.Fragment key={option}>
+							<input checked={value === option} type="radio" id={option} onChange={onChange} />
+							<label htmlFor={option}>{option.replace(/_/g, ' ')}</label>
+						</React.Fragment>
+					)
 				)}
 			</SliderContainer>
 		</fieldset>
 	);
 };
+
+export const Slider = styled(SliderSansTextTransform)`
+	label {
+		text-transform: lowercase;
+
+		&::first-letter {
+			text-transform: uppercase;
+		}
+	}
+`;
+
 export default Slider;

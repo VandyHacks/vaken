@@ -1,8 +1,8 @@
+import React from 'react';
 import { NotReady } from '../routes/dashboard/NotReady';
 import { Application } from '../routes/application/Application';
 import { HackerDash } from '../routes/dashboard/HackerDash';
 import { ManageHackers } from '../routes/manage/ManageHackers';
-import OrganizerDash from '../routes/dashboard/LazyOrganizerDash';
 import { Team } from '../routes/team/Team';
 import { Profile } from '../routes/profile/Profile';
 import { Help } from '../routes/help/Help';
@@ -11,7 +11,7 @@ import { UserType } from '../generated/graphql';
 const routes = [
 	{
 		authLevel: [UserType.Organizer],
-		component: OrganizerDash,
+		component: React.lazy(() => import('../routes/dashboard/OrganizerDash')),
 		displayText: 'Dashboard',
 		path: '/dashboard',
 	},

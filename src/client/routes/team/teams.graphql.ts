@@ -1,32 +1,45 @@
 import { gql } from 'apollo-boost';
 
-export const GET_TEAM = gql`
-	input GetTeamInput {
-		name: String!
+export default gql`
+	query team {
+		me {
+			id
+			... on Hacker {
+				team {
+					id
+					name
+					memberIds
+					size
+				}
+			}
+		}
 	}
 
-	mutation team($input: GetTeamInput) {
-		team(input: $input)
-	}
-`;
-
-export const LEAVE_TEAM = gql`
-	input LeaveTeamInput {
-		user: ID!
-	}
-
-	mutation LeaveTeam($input: LeaveTeamInput!) {
-		leaveTeam(input: $input)
-	}
-`;
-
-export const JOIN_TEAM = gql`
-	input JoinTeamInput {
-		user: ID!
-		team: ID!
+	mutation joinTeam($input: TeamInput!) {
+		joinTeam(input: $input) {
+			id
+			... on Hacker {
+				team {
+					id
+					name
+					memberIds
+					size
+				}
+			}
+		}
 	}
 
-	mutation JoinTeam($input: JoinTeamInput) {
-		joinTeam(input: $input)
+	mutation leaveTeam {
+		leaveTeam {
+			id
+			... on Hacker {
+				team {
+					id
+					name
+					memberIds
+					size
+				}
+			}
+		}
 	}
 `;

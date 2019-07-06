@@ -1,25 +1,10 @@
 import styled from 'styled-components';
-import React from 'react';
+import React, { FC } from 'react';
 import { Button, CenterButtonText, ButtonProps } from './Buttons';
 
-interface Props extends ButtonProps {
-	background?: string;
-	color?: string;
-	fontSize?: string;
-	glowColor?: string;
-	onClick?: () => void;
-	text?: string;
-}
-
-interface StyleProps extends ButtonProps {
-	background?: string;
-	color?: string;
-	glowColor?: string;
-}
-
 export const StyledLoginBtn = styled(Button)`
-	background: ${({ background = 'white' }: StyleProps): string => background};
-	color: ${({ background = 'black' }: StyleProps): string => background};
+	background: ${({ background }: ButtonProps) => background || 'white'};
+	color: ${({ background }: ButtonProps) => background || 'black'};
 	flex-shrink: 0;
 	font-family: 'Roboto';
 	font-size: 1rem;
@@ -29,18 +14,21 @@ export const StyledLoginBtn = styled(Button)`
 	&:focus,
 	&:active {
 		box-shadow: 0px 0px 20px 0px
-			${({ glowColor = 'RGBA(0, 0, 0, 255, 0.67)' }: StyleProps): string => glowColor};
+			${({ glowColor = 'RGBA(0, 0, 0, 255, 0.67)' }: ButtonProps) => glowColor};
 	}
 `;
 
-const TextButton = (props: Props): JSX.Element => {
-	const { onClick, text, ...rest } = props;
-
-	return (
-		<StyledLoginBtn onClick={onClick} {...rest}>
-			<CenterButtonText {...rest}>{text}</CenterButtonText>
-		</StyledLoginBtn>
-	);
-};
+const TextButton: FC<ButtonProps> = ({
+	children,
+	onClick,
+	fontWeight,
+	fontSize,
+	color,
+	...props
+}: ButtonProps) => (
+	<StyledLoginBtn onClick={onClick} {...props}>
+		<CenterButtonText {...{ color, fontSize, fontWeight }}>{children}</CenterButtonText>
+	</StyledLoginBtn>
+);
 
 export default TextButton;

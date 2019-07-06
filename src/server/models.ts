@@ -10,6 +10,11 @@ import {
 	TeamDbObject,
 } from './generated/graphql';
 
+export interface UserTeamIndexDbObject {
+	email: string;
+	team: string;
+}
+
 export interface Models {
 	ApplicationFields: Collection<ApplicationFieldDbObject>;
 	ApplicationQuestions: Collection<ApplicationQuestionDbObject>;
@@ -19,6 +24,7 @@ export interface Models {
 	Organizers: Collection<OrganizerDbObject>;
 	Shifts: Collection<ShiftDbObject>;
 	Teams: Collection<TeamDbObject>;
+	UserTeamIndicies: Collection<UserTeamIndexDbObject>;
 }
 
 export const initDb = async (): Promise<Models> => {
@@ -34,6 +40,7 @@ export const initDb = async (): Promise<Models> => {
 		Organizers: db.collection<OrganizerDbObject>('organizers'),
 		Shifts: db.collection<ShiftDbObject>('shifts'),
 		Teams: db.collection<TeamDbObject>('teams'),
+		UserTeamIndicies: db.collection<UserTeamIndexDbObject>('userTeams'),
 	};
 };
 

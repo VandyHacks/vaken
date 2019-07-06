@@ -129,15 +129,21 @@ export type Mutation = {
 	__typename?: 'Mutation';
 	updateMyProfile: User;
 	updateProfile: User;
+	joinTeam: Hacker;
+	leaveTeam: Hacker;
 };
 
 export type MutationUpdateMyProfileArgs = {
-	input: UserInputType;
+	input: UserInput;
 };
 
 export type MutationUpdateProfileArgs = {
 	id: Scalars['ID'];
-	input: UserInputType;
+	input: UserInput;
+};
+
+export type MutationJoinTeamArgs = {
+	input: TeamInput;
 };
 
 export type Organizer = User & {
@@ -160,7 +166,7 @@ export type Organizer = User & {
 
 export type Query = {
 	__typename?: 'Query';
-	me: User;
+	me?: Maybe<User>;
 	hacker: Hacker;
 	hackers: Array<Hacker>;
 	organizer: Organizer;
@@ -219,17 +225,12 @@ export type Shift = {
 };
 
 export enum ShirtSize {
-	Uxs = 'UXS',
-	Us = 'US',
-	Um = 'UM',
-	Ul = 'UL',
-	Uxl = 'UXL',
-	Uxxl = 'UXXL',
-	Ws = 'WS',
-	Wm = 'WM',
-	Wl = 'WL',
-	Wxl = 'WXL',
-	Wxxl = 'WXXL',
+	Xs = 'XS',
+	S = 'S',
+	M = 'M',
+	L = 'L',
+	Xl = 'XL',
+	Xxl = 'XXL',
 }
 
 export enum SortDirection {
@@ -244,6 +245,10 @@ export type Team = {
 	name?: Maybe<Scalars['String']>;
 	memberIds: Array<Scalars['ID']>;
 	size: Scalars['Int'];
+};
+
+export type TeamInput = {
+	name: Scalars['String'];
 };
 
 export type User = {
@@ -262,7 +267,7 @@ export type User = {
 	phoneNumber?: Maybe<Scalars['String']>;
 };
 
-export type UserInputType = {
+export type UserInput = {
 	firstName?: Maybe<Scalars['String']>;
 	lastName?: Maybe<Scalars['String']>;
 	email?: Maybe<Scalars['String']>;
@@ -283,16 +288,39 @@ export enum UserType {
 export type MeQueryVariables = {};
 
 export type MeQuery = { __typename?: 'Query' } & {
-	me: { __typename?: 'Hacker' | 'Organizer' | 'Mentor' } & Pick<
-		User,
-		'id' | 'firstName' | 'lastName' | 'userType'
+	me: Maybe<
+		{ __typename?: 'Hacker' | 'Organizer' | 'Mentor' } & Pick<
+			User,
+			'id' | 'firstName' | 'lastName' | 'userType' | 'email'
+		>
 	>;
 };
 
 export type MyProfileQueryVariables = {};
 
 export type MyProfileQuery = { __typename?: 'Query' } & {
-	me: { __typename?: 'Hacker' | 'Organizer' | 'Mentor' } & Pick<
+	me: Maybe<
+		{ __typename?: 'Hacker' | 'Organizer' | 'Mentor' } & Pick<
+			User,
+			| 'id'
+			| 'firstName'
+			| 'lastName'
+			| 'email'
+			| 'preferredName'
+			| 'shirtSize'
+			| 'gender'
+			| 'dietaryRestrictions'
+			| 'phoneNumber'
+		>
+	>;
+};
+
+export type UpdateMyProfileMutationVariables = {
+	input: UserInput;
+};
+
+export type UpdateMyProfileMutation = { __typename?: 'Mutation' } & {
+	updateMyProfile: { __typename?: 'Hacker' | 'Organizer' | 'Mentor' } & Pick<
 		User,
 		| 'id'
 		| 'firstName'
@@ -306,22 +334,35 @@ export type MyProfileQuery = { __typename?: 'Query' } & {
 	>;
 };
 
-export type UpdateMyProfileMutationVariables = {
-	input: UserInputType;
+export type TeamQueryVariables = {};
+
+export type TeamQuery = { __typename?: 'Query' } & {
+	me: Maybe<
+		{ __typename?: 'Hacker' | 'Organizer' | 'Mentor' } & Pick<User, 'id'> &
+			({ __typename?: 'Hacker' } & {
+				team: Maybe<{ __typename?: 'Team' } & Pick<Team, 'id' | 'name' | 'memberIds' | 'size'>>;
+			})
+	>;
 };
 
-export type UpdateMyProfileMutation = { __typename?: 'Mutation' } & {
-	updateMyProfile: { __typename?: 'Hacker' | 'Organizer' | 'Mentor' } & Pick<
-		User,
-		| 'firstName'
-		| 'lastName'
-		| 'email'
-		| 'preferredName'
-		| 'shirtSize'
-		| 'gender'
-		| 'dietaryRestrictions'
-		| 'phoneNumber'
-	>;
+export type JoinTeamMutationVariables = {
+	input: TeamInput;
+};
+
+export type JoinTeamMutation = { __typename?: 'Mutation' } & {
+	joinTeam: { __typename?: 'Hacker' } & Pick<Hacker, 'id'> &
+		({ __typename?: 'Hacker' } & {
+			team: Maybe<{ __typename?: 'Team' } & Pick<Team, 'id' | 'name' | 'memberIds' | 'size'>>;
+		});
+};
+
+export type LeaveTeamMutationVariables = {};
+
+export type LeaveTeamMutation = { __typename?: 'Mutation' } & {
+	leaveTeam: { __typename?: 'Hacker' } & Pick<Hacker, 'id'> &
+		({ __typename?: 'Hacker' } & {
+			team: Maybe<{ __typename?: 'Team' } & Pick<Team, 'id' | 'name' | 'memberIds' | 'size'>>;
+		});
 };
 import { ObjectID } from 'mongodb';
 export type UserDbInterface = {
@@ -403,6 +444,7 @@ export const MeDocument = gql`
 			firstName
 			lastName
 			userType
+			email
 		}
 	}
 `;
@@ -435,8 +477,9 @@ export function useMyProfileQuery(
 	);
 }
 export const UpdateMyProfileDocument = gql`
-	mutation updateMyProfile($input: UserInputType!) {
+	mutation updateMyProfile($input: UserInput!) {
 		updateMyProfile(input: $input) {
+			id
 			firstName
 			lastName
 			email
@@ -461,6 +504,81 @@ export function useUpdateMyProfileMutation(
 ) {
 	return ReactApolloHooks.useMutation<UpdateMyProfileMutation, UpdateMyProfileMutationVariables>(
 		UpdateMyProfileDocument,
+		baseOptions
+	);
+}
+export const TeamDocument = gql`
+	query team {
+		me {
+			id
+			... on Hacker {
+				team {
+					id
+					name
+					memberIds
+					size
+				}
+			}
+		}
+	}
+`;
+
+export function useTeamQuery(baseOptions?: ReactApolloHooks.QueryHookOptions<TeamQueryVariables>) {
+	return ReactApolloHooks.useQuery<TeamQuery, TeamQueryVariables>(TeamDocument, baseOptions);
+}
+export const JoinTeamDocument = gql`
+	mutation joinTeam($input: TeamInput!) {
+		joinTeam(input: $input) {
+			id
+			... on Hacker {
+				team {
+					id
+					name
+					memberIds
+					size
+				}
+			}
+		}
+	}
+`;
+export type JoinTeamMutationFn = ReactApollo.MutationFn<
+	JoinTeamMutation,
+	JoinTeamMutationVariables
+>;
+
+export function useJoinTeamMutation(
+	baseOptions?: ReactApolloHooks.MutationHookOptions<JoinTeamMutation, JoinTeamMutationVariables>
+) {
+	return ReactApolloHooks.useMutation<JoinTeamMutation, JoinTeamMutationVariables>(
+		JoinTeamDocument,
+		baseOptions
+	);
+}
+export const LeaveTeamDocument = gql`
+	mutation leaveTeam {
+		leaveTeam {
+			id
+			... on Hacker {
+				team {
+					id
+					name
+					memberIds
+					size
+				}
+			}
+		}
+	}
+`;
+export type LeaveTeamMutationFn = ReactApollo.MutationFn<
+	LeaveTeamMutation,
+	LeaveTeamMutationVariables
+>;
+
+export function useLeaveTeamMutation(
+	baseOptions?: ReactApolloHooks.MutationHookOptions<LeaveTeamMutation, LeaveTeamMutationVariables>
+) {
+	return ReactApolloHooks.useMutation<LeaveTeamMutation, LeaveTeamMutationVariables>(
+		LeaveTeamDocument,
 		baseOptions
 	);
 }

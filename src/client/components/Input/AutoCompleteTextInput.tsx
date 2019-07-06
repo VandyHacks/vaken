@@ -1,13 +1,13 @@
 import React, { FunctionComponent } from 'react';
-import { Input, Props as InputProps } from './TextInput';
+import { Input, InputProps } from './TextInput';
 
 interface Props extends InputProps {
 	options?: string[];
 }
 
-const AutoComplete: FunctionComponent<Props> = (props: Props): JSX.Element => {
+const AutoComplete: FunctionComponent<Props> = (props: Props) => {
 	const { options = ['default'], value } = props;
-	const listID = options[0] || 'list';
+	const [listID = 'list'] = options;
 
 	return (
 		<>
@@ -18,8 +18,7 @@ const AutoComplete: FunctionComponent<Props> = (props: Props): JSX.Element => {
 						return <option key={item} value={item} />;
 					}
 				)}
-				{options.includes(value as string) ? null : <option value={value as string} />}
-				{/* // FIXME */}
+				{options.includes(value) ? null : <option value={value} />}
 			</datalist>
 		</>
 	);

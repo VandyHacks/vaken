@@ -21,10 +21,10 @@ const FloatingPopup = styled(FlexStartColumn)`
 			backgroundColor ? hexToRGB(backgroundColor) : '247, 245, 249'},
 		${({ backgroundOpacity = '1' }: Props): string => backgroundOpacity}
 	);
-	border-radius: ${({ borderRadius = '2rem' }: Props): string => borderRadius};
-	padding: ${({ padding = '1.5rem' }: Props): string => padding};
-	margin-bottom: ${({ marginBottom = '0' }: Props): string => marginBottom};
-	height: ${({ height = 'min-content' }: Props): string => height};
+	border-radius: ${({ borderRadius = '2rem' }: Props) => borderRadius};
+	padding: ${({ padding = '1.5rem' }: Props) => padding};
+	margin-bottom: ${({ marginBottom = '0' }: Props) => marginBottom};
+	height: ${({ height = 'min-content' }: Props) => height};
 	/* height: min-content; */
 	box-sizing: border-box;
 	${({ paddingTop }: Props): string => (paddingTop ? `padding-top: ${paddingTop};` : '')}

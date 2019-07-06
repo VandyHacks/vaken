@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import { hexToRGB, Props as PopupProps } from './FloatingPopup';
 import DownArrow from '../../assets/img/down_arrow.svg';
 import UpArrow from '../../assets/img/up_arrow.svg';
@@ -57,13 +57,13 @@ const CollapsibleBody = styled.div`
 `;
 
 export interface Props extends PopupProps {
-	children?: JSX.Element[] | JSX.Element;
+	children?: React.ReactNode;
 	onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 	open?: boolean;
 	title: string;
 }
 
-export const Collapsible: FunctionComponent<Props> = (props: Props): JSX.Element => {
+export const Collapsible: FC<Props> = (props: Props) => {
 	const { open, children, title, ...rest } = props;
 
 	return (
