@@ -1,7 +1,7 @@
 {
 	"name": "vaken",
 	"description": "Next-gen hacker registration system",
-	"version": "0.0.1",
+	"version": "0.2.0",
 	"license": "MIT",
 	"main": "dist/index.js",
 	"engines": {
@@ -17,7 +17,7 @@
 		"hackathon",
 		"graphql",
 		"typescript",
-		"koa",
+		"express",
 		"react",
 		"mongodb",
 		"registration"
