@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
-import { HackerTable } from './HackerTable';
+import HackerTable from './HackerTable';
 import { HackerStatus } from '../../contexts/TableContext';
 
 // NOTE: mock() must be called OUTSIDE the describe() methods b/c hoisted to top of scope
@@ -9,7 +9,7 @@ import { HackerStatus } from '../../contexts/TableContext';
 jest.mock('react-selectable-fast', () => ({
 	SelectableGroup: () => 'SelectableGroup',
 }));
-jest.mock('../../../../src/client/routes/manage/Row', () => () => 'Row');
+jest.mock('./Row', () => () => 'Row');
 
 describe('Test HackerTable', () => {
 	it('renders correctly', async () => {

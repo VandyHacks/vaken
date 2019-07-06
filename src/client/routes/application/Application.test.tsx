@@ -4,7 +4,7 @@ import renderer from 'react-test-renderer';
 
 import { Application } from './Application';
 
-jest.mock('../../../../src/client/assets/data/institutions.json', () => ['Vanderbilt University']);
+jest.mock('../../assets/data/institutions.json', () => ['Vanderbilt University']);
 
 describe('Test Application', () => {
 	it(' renders correctly', async () => {
