@@ -2,8 +2,8 @@
 import { Gender, ShirtSize, DietaryRestriction } from '../../generated/graphql';
 import { Input as TextInput } from '../../components/Input/TextInput';
 import { Checkbox } from '../../components/Input/Checkbox';
-import { Slider, SliderSansTextTransform } from '../../components/Input/Slider';
-import { Boolean } from '../../components/Input/Boolean';
+import { Slider } from '../../components/Input/Slider';
+// import { Boolean } from '../../components/Input/Boolean';
 // import Calendar from '../../components/Input/Calendar';
 
 export const profile = [

@@ -9,7 +9,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { SpaceBetweenRow, OverflowContainer } from '../../components/Containers/FlexContainers';
 import { ActionButtonContext } from '../../contexts/ActionButtonContext';
 import { UserType } from '../../generated/graphql';
-import HackerDash from './HackerDash';
+import { HackerDash } from './HackerDash';
 
 export const OrganizerDash = React.lazy(() => import('./OrganizerDash'));
 

@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from 'react';
-import { Bar, Pie } from 'react-chartjs-2';
+import { Bar, Pie, ChartData } from 'react-chartjs-2';
 import { Link } from 'react-router-dom';
 import { gql } from 'apollo-boost';
 import { useQuery } from 'react-apollo-hooks';
 import styled from 'styled-components';
-import { ChartOptions } from 'chart.js';
+import chartjs, { ChartOptions } from 'chart.js';
 
 import { Spinner } from '../../components/Loading/Spinner';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
@@ -13,14 +13,6 @@ import TextButton from '../../components/Buttons/TextButton';
 import { OverflowContainer, FlexStartColumn } from '../../components/Containers/FlexContainers';
 import 'chartjs-plugin-datalabels';
 import STRINGS from '../../assets/strings.json';
-
-interface DataSet {
-	datasets: {
-		backgroundColor: string[];
-		data: any[];
-	}[];
-	labels: string[];
-}
 
 const Label = styled('span')`
 	font-size: 1.25rem;
@@ -121,7 +113,7 @@ const colorPalette = STRINGS.COLOR_PALETTE.slice(1);
 const generateColor = (n: number): string[] =>
 	[...Array(n).keys()].map((i: number) => colorPalette[i % colorPalette.length]);
 
-const barStatusData = (data: { [key: string]: number }): DataSet => {
+const barStatusData = (data: { [key: string]: number }): ChartData<chartjs.ChartData> => {
 	const statusData = Object.values(data).slice(0, -1);
 	const statusLabels = Object.keys(data).slice(0, -1);
 	return {
@@ -174,11 +166,9 @@ const barStatusOptions: ChartOptions = {
 	},
 };
 
-const pieShirtData = (data: any): DataSet => {
+const pieShirtData = (data: { [key: string]: number }): ChartData<chartjs.ChartData> => {
 	const shirtLabels = Object.keys(data).slice(0, -1);
-
-	// this casting solution is bad - we should just fix the explicit any in the method param
-	const shirtData = Object.values(data).slice(0, -1) as number[];
+	const shirtData = Object.values(data).slice(0, -1);
 
 	return {
 		datasets: [
@@ -205,11 +195,9 @@ const pieShirtOptions = {
 	},
 };
 
-const pieGenderData = (data: any): DataSet => {
+const pieGenderData = (data: { [key: string]: number }): ChartData<chartjs.ChartData> => {
 	const genderLabels = Object.keys(data).slice(0, -1);
-
-	// this casting solution is bad - we should just fix the explicit any in the method param
-	const genderData = Object.values(data).slice(0, -1) as number[];
+	const genderData = Object.values(data).slice(0, -1);
 
 	return {
 		datasets: [

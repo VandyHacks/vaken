@@ -14,7 +14,7 @@ interface Props {
 
 interface ComponentProps extends Props {
 	generateColor?: (value: any) => string;
-	value: any;
+	value: string;
 }
 
 interface StyledProps extends Props {
@@ -32,17 +32,14 @@ const StyledDiv = styled('div')`
 	width: ${(props: StyledProps) => props.width || '5rem'};
 `;
 
-export const Status: FunctionComponent<ComponentProps> = (props: ComponentProps): JSX.Element => {
-	const { value, generateColor } = props;
-
-	// check if it exists before calling
-	return typeof generateColor === 'function' ? (
-		<StyledDiv {...props} backgroundColor={generateColor(value)}>
-			{value}
-		</StyledDiv>
-	) : (
-		<StyledDiv {...props}>{value}</StyledDiv>
-	);
-};
+export const Status: FunctionComponent<ComponentProps> = ({
+	value,
+	generateColor,
+	...props
+}: ComponentProps): JSX.Element => (
+	<StyledDiv {...props} backgroundColor={generateColor && generateColor(value)}>
+		{value}
+	</StyledDiv>
+);
 
 export default Status;
