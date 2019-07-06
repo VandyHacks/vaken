@@ -1,3 +1,5 @@
+/** DEPRECATED JULY 2019 */
+
 import React, { useState, useContext } from 'react';
 import emailIcon from '../../assets/img/email_icon.svg';
 import lockIcon from '../../assets/img/lock_icon.svg';
@@ -15,10 +17,10 @@ import { LoginContext } from '../../contexts/LoginContext';
 /* globals fetch */
 
 /**
- * PasswordLogin is React Hooks component that will display a password login prompt
+ * CreateLogin is React Hooks component that will display a password login prompt
  * @returns {JSX.Element} a React.Fragment containing inputs and a login button
  */
-export const PasswordLogin: React.FunctionComponent = (): JSX.Element => {
+export const CreateLogin: React.FunctionComponent = (): JSX.Element => {
 	const [email, setEmail] = useState('');
 	const [pass, setPass] = useState('');
 	const [passAgain, setPassAgain] = useState('');
@@ -97,4 +99,4 @@ export const PasswordLogin: React.FunctionComponent = (): JSX.Element => {
 	);
 };
 
-export default PasswordLogin;
+export default CreateLogin;

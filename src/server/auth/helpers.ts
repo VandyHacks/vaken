@@ -1,6 +1,6 @@
-import { VerifyCallback } from 'passport-oauth2'; // eslint-disable-line import/no-extraneous-dependencies
+import { VerifyCallback } from 'passport-oauth2';
 import { Profile } from 'passport';
-import { ObjectID } from 'bson';
+import { ObjectID } from 'mongodb';
 import { UserDbInterface, UserType, ApplicationStatus } from '../generated/graphql';
 import modelsPromise from '../models';
 import logger from '../logger';
