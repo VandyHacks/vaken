@@ -41,14 +41,14 @@ const questions = [
 			},
 			{
 				Component: Boolean,
-				default: false,
+				default: 'No',
 				fieldName: 'ethnicity',
 				prompt: 'Are you Spanish, Hispanic, or Latino?',
 				title: 'Ethnicity',
 			},
 			{
 				Component: Checkbox,
-				default: new Set(),
+				default: '',
 				fieldName: 'race',
 				note: 'Choose all that apply.',
 				options: [

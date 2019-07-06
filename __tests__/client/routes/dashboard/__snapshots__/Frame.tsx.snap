@@ -11,9 +11,11 @@ exports[`Test Frame Frame renders correctly 1`] = `
       className="sc-bdVaJa sc-bwzfXH sc-htpNat sc-bxivhb efNTZh"
     >
       <h1
-        className="sc-eHgmQL bdgdaJ"
+        className="sc-jWBwVP gEoWbI"
         color="#6979f8"
-      />
+      >
+        Dashboard
+      </h1>
     </div>
     <div
       className="sc-btzYZH YdMdw"
@@ -28,7 +30,10 @@ exports[`Test Frame Frame renders correctly 1`] = `
       <div
         className="sc-hEsumM hzCnxB"
       >
-        <icon-mock />
+        <img
+          alt="VH graphic"
+          src="icon-mock"
+        />
       </div>
       <hr
         className="sc-ktHwxA bXeZNy"
@@ -163,6 +168,81 @@ exports[`Test Frame Frame renders correctly 1`] = `
   </div>
   <div
     className="content sc-gzVnrw jfMsJw"
-  />
+  >
+    <div
+      className="sc-bdVaJa sc-bwzfXH sc-ifAKCX kHHPcv"
+    >
+      <div
+        className="sc-bdVaJa sc-bwzfXH sc-ifAKCX sc-kpOJdX kpxAxA"
+        height="min-content"
+        width="36rem"
+      >
+        <div
+          className="sc-bdVaJa sc-bwzfXH dgnCwc"
+        >
+          <h1
+            className="sc-jWBwVP hKGawI"
+            fontSize="1.8rem"
+          >
+            Your application status is:
+          </h1>
+          <div
+            className="sc-VigVT sc-jTzLTM bHJZvB"
+          >
+            <div
+              className="sc-htoDjs ewDcVm"
+              color="#FF647C"
+              fontSize="1.8rem"
+              fontWeight="bold"
+            >
+              INCOMPLETE
+            </div>
+          </div>
+          <img
+            alt="Man wearing hoodie at holographic computer"
+            src={[Function]}
+          />
+          <h1
+            className="sc-jzJRlG koJNxc"
+            color="#3F3356"
+            fontSize="1rem"
+          >
+            <span
+              style={
+                Object {
+                  "fontWeight": "bold",
+                }
+              }
+            >
+              You still need to finish your application.
+            </span>
+            <br />
+            The deadline is January 1, 2020 at 11:59 pm (EST).
+          </h1>
+          <a
+            href="/application"
+            onClick={[Function]}
+            style={
+              Object {
+                "textDecoration": "none",
+              }
+            }
+          >
+            <button
+              className="sc-gqjmRU sc-eNQAEJ fvHoVz"
+            >
+              <div
+                className="sc-htoDjs kSfDbb"
+                color="white"
+                fontSize="1.4em"
+              >
+                Complete your application
+              </div>
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;

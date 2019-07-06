@@ -2,13 +2,12 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import UncheckedSvg from '../../assets/img/unchecked_box.svg';
 import CheckedSvg from '../../assets/img/checked_box.svg';
+import { InputProps } from './TextInput';
 
 const SEPARATOR = '|';
 
-interface Props {
+interface Props extends InputProps {
 	options?: string[];
-	setState: (value: string) => void;
-	value: string;
 }
 
 const CheckboxContainer = styled.div`

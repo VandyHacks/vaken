@@ -2,15 +2,15 @@
 
 exports[`Login renders properly 1`] = `
 <div
-  className="sc-kAzzGY bLVWJd"
+  className="sc-fjdhpX ebOgGV"
 >
   <div
-    className="sc-bdVaJa sc-bwzfXH sc-ifAKCX sc-chPdSV fTRmMz"
+    className="sc-bdVaJa sc-bwzfXH sc-ifAKCX sc-jzJRlG hPKjIj"
     height="25"
     width="27rem"
   >
     <h1
-      className="sc-kgoBCf boOpPq"
+      className="sc-cSHVUG cCZQiR"
       color="#3f3356"
     >
       VandyHacks
@@ -38,8 +38,7 @@ exports[`Login renders properly 1`] = `
           />
         </div>
         <div
-          className="sc-htoDjs gdgsvs"
-          color="#3f3356"
+          className="sc-htoDjs kcuBgu"
         >
           Sign in with Google
         </div>
@@ -68,33 +67,9 @@ exports[`Login renders properly 1`] = `
           />
         </div>
         <div
-          className="sc-htoDjs gdgsvs"
-          color="#3f3356"
+          className="sc-htoDjs kcuBgu"
         >
           Sign in with GitHub
-        </div>
-      </button>
-    </a>
-    <a
-      href="/login/password"
-      onClick={[Function]}
-      style={
-        Object {
-          "textDecoration": "none",
-        }
-      }
-    >
-      <button
-        className="sc-gqjmRU sc-fjdhpX eSCzku"
-        color="white"
-        fontSize="1.4em"
-      >
-        <div
-          className="sc-htoDjs kSfDbb"
-          color="white"
-          fontSize="1.4em"
-        >
-          Sign in with email
         </div>
       </button>
     </a>
