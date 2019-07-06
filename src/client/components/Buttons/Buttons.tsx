@@ -1,46 +1,48 @@
 import styled from 'styled-components';
+import CSS from 'csstype';
+import { ButtonHTMLAttributes } from 'react';
 import { displayFlex } from '../Containers/FlexContainers';
 
-interface ButtonTextProps {
-	color?: string;
-	fontSize?: string;
-	fontWeight?: string;
-}
-
-export interface ButtonProps {
-	background?: string;
-	glowColor?: string;
-	height?: string;
-	invalid?: boolean;
-	margin?: string;
-	marginBottom?: string;
-	marginLeft?: string;
-	marginRight?: string;
-	marginTop?: string;
-	padding?: string;
-	paddingBottom?: string;
-	paddingLeft?: string;
-	paddingRight?: string;
-	paddingTop?: string;
-	width?: string;
-}
+export type LeftButtonTextProps = Pick<CSS.Properties, 'color' | 'fontSize'>;
+export type CenterButtonTextProps = LeftButtonTextProps & Pick<CSS.Properties, 'fontWeight'>;
+export type ButtonProps = CenterButtonTextProps &
+	Pick<
+		CSS.Properties,
+		| 'background'
+		| 'height'
+		| 'margin'
+		| 'marginBottom'
+		| 'marginLeft'
+		| 'marginRight'
+		| 'marginTop'
+		| 'padding'
+		| 'paddingBottom'
+		| 'paddingLeft'
+		| 'paddingRight'
+		| 'paddingTop'
+		| 'width'
+	> &
+	ButtonHTMLAttributes<HTMLButtonElement> & {
+		glowColor?: string;
+		invalid?: boolean;
+	};
 
 export const CenterButtonText = styled.div`
 	${displayFlex}
 	height: 100%;
 	text-align: center;
 	font-family: 'Roboto';
-	font-size: ${(props: ButtonTextProps) => props.fontSize || '1.4rem'};
-	font-weight: ${(props: ButtonTextProps) => props.fontWeight || 'normal'};
-	color: ${(props: ButtonTextProps) => props.color || 'black'};
+	font-size: ${({ fontSize }: CenterButtonTextProps) => fontSize || '1.4rem'};
+	font-weight: ${({ fontWeight }: CenterButtonTextProps) => fontWeight || 'normal'};
+	color: ${({ color }: CenterButtonTextProps) => color || 'black'};
 `;
 
 export const LeftButtonText = styled(CenterButtonText)`
 	${displayFlex}
 	align-items: flex-start;
 	font-family: 'Roboto Condensed';
-	font-size: ${(props: ButtonTextProps) => props.fontSize || '1.4rem'};
-	color: ${(props: ButtonTextProps) => props.color || 'black'};
+	font-size: ${({ fontSize }: LeftButtonTextProps) => fontSize || '1.4rem'};
+	color: ${({ color }: LeftButtonTextProps) => color || 'black'};
 `;
 
 export const RightPaddedImg = styled.img`
@@ -54,19 +56,19 @@ export const LeftPaddedImg = styled.img`
 export const Button = styled.button`
 	${displayFlex}
 	flex-flow: row;
-	font-weight: 400;
-	height: ${({ height = '3.2rem' }: ButtonProps) => height};
-	width: ${({ width = '23.33rem' }: ButtonProps) => width};
-	padding: ${({ padding = '0' }: ButtonProps) => padding};
-	padding-bottom: ${({ paddingBottom = '0' }: ButtonProps) => paddingBottom};
-	padding-top: ${({ paddingTop = '0' }: ButtonProps) => paddingTop};
-	padding-left: ${({ paddingLeft = '0' }: ButtonProps) => paddingLeft};
-	padding-right: ${({ paddingRight = '0' }: ButtonProps) => paddingRight};
-	margin: ${({ margin = '0' }: ButtonProps) => margin};
+	font-weight: ${({ fontWeight }: ButtonProps) => fontWeight || 400};
+	height: ${({ height }: ButtonProps) => height || '3.2rem'};
+	width: ${({ width }: ButtonProps) => width || '23.33rem'};
+	padding: ${({ padding }: ButtonProps) => padding || 0};
+	padding-bottom: ${({ paddingBottom }: ButtonProps) => paddingBottom || 0};
+	padding-top: ${({ paddingTop }: ButtonProps) => paddingTop || 0};
+	padding-left: ${({ paddingLeft }: ButtonProps) => paddingLeft || 0};
+	padding-right: ${({ paddingRight }: ButtonProps) => paddingRight || 0};
+	margin: ${({ margin }: ButtonProps) => margin || 0};
 	margin-bottom: ${({ marginBottom = '1.6rem' }: ButtonProps) => marginBottom};
-	margin-top: ${({ marginTop = '0' }: ButtonProps) => marginTop};
-	margin-left: ${({ marginLeft = '0' }: ButtonProps) => marginLeft};
-	margin-right: ${({ marginRight = '0' }: ButtonProps) => marginRight};
+	margin-top: ${({ marginTop }: ButtonProps) => marginTop || 0};
+	margin-left: ${({ marginLeft }: ButtonProps) => marginLeft || 0};
+	margin-right: ${({ marginRight }: ButtonProps) => marginRight || 0};
 	background: ${({ background = 'rgba(255, 255, 255, 1)' }: ButtonProps) => background};
 	border-radius: 1rem;
 	cursor: pointer;

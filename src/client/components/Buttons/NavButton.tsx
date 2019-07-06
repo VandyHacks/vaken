@@ -1,22 +1,15 @@
 import styled from 'styled-components';
-import React from 'react';
+import React, { HTMLAttributes, FC } from 'react';
+import CSS from 'csstype';
 import { Button, LeftButtonText } from './Buttons';
 
-interface Props {
+interface StyleProps extends Pick<CSS.Properties, 'color'> {
 	active?: boolean;
-	color?: string;
-	fontSize?: string;
-	text: string;
-}
-
-interface StyleProps {
-	active?: boolean;
-	color?: string;
 }
 
 export const StyledNavBtn = styled(Button)`
 	background: ${({ active }: StyleProps): string => (active ? 'RGBA(255, 255, 255, 0.2)' : 'none')};
-	color: ${({ color = 'black' }: StyleProps): string => color};
+	color: ${({ color }: StyleProps): string => color || 'black'};
 	font-weight: ${({ active }: StyleProps): string => (active ? 'bold' : 'regular')};
 	border-radius: 0;
 	justify-content: flex-start;
@@ -32,14 +25,13 @@ export const StyledNavBtn = styled(Button)`
 	}
 `;
 
-const NavButton = (props: Props): JSX.Element => {
-	const { text } = props;
-
-	return (
-		<StyledNavBtn {...props}>
-			<LeftButtonText {...props}>{text}</LeftButtonText>
-		</StyledNavBtn>
-	);
-};
+const NavButton: FC<HTMLAttributes<HTMLElement>> = ({
+	children,
+	...props
+}: HTMLAttributes<HTMLElement>) => (
+	<StyledNavBtn {...props}>
+		<LeftButtonText {...props}>{children}</LeftButtonText>
+	</StyledNavBtn>
+);
 
 export default NavButton;

@@ -50,17 +50,12 @@ export default gql`
 	}
 
 	enum ShirtSize {
-		UXS
-		US
-		UM
-		UL
-		UXL
-		UXXL
-		WS
-		WM
-		WL
-		WXL
-		WXXL
+		XS
+		S
+		M
+		L
+		XL
+		XXL
 	}
 
 	enum ApplicationStatus {
@@ -105,25 +100,11 @@ export default gql`
 		answer: String @column
 	}
 
-	type Login
-		@entity(
-			additionalFields: [{ path: "email", type: "string" }, { path: "type", type: "UserType" }]
-		) {
+	type Login @entity(additionalFields: [{ path: "email", type: "string" }]) {
 		createdAt: Int! @column(overrideType: "Date")
 		provider: LoginProvider! @column
 		token: ID! @column
 		userType: UserType! @column
-	}
-
-	input UserInputType {
-		firstName: String
-		lastName: String
-		email: String
-		preferredName: String
-		shirtSize: String
-		gender: String
-		dietaryRestrictions: String
-		phoneNumber: String
 	}
 
 	type Hacker implements User @entity {
@@ -201,7 +182,7 @@ export default gql`
 	}
 
 	type Query {
-		me: User!
+		me: User # May be used when not logged in.
 		hacker(id: ID!): Hacker!
 		hackers(sortDirection: SortDirection): [Hacker!]!
 		organizer(id: ID!): Organizer!
@@ -212,8 +193,25 @@ export default gql`
 		teams(sortDirection: SortDirection): [Team!]!
 	}
 
+	input UserInput {
+		firstName: String
+		lastName: String
+		email: String
+		preferredName: String
+		shirtSize: String
+		gender: String
+		dietaryRestrictions: String
+		phoneNumber: String
+	}
+
+	input TeamInput {
+		name: String!
+	}
+
 	type Mutation {
-		updateMyProfile(input: UserInputType!): User!
-		updateProfile(id: ID!, input: UserInputType!): User!
+		updateMyProfile(input: UserInput!): User!
+		updateProfile(id: ID!, input: UserInput!): User!
+		joinTeam(input: TeamInput!): Hacker!
+		leaveTeam: Hacker!
 	}
 `;

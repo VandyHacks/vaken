@@ -31,10 +31,10 @@ const questions = [
 			},
 			{
 				Component: Slider,
-				default: 2019,
+				default: '2019',
 				fieldName: 'graduationYear',
 				optional: true,
-				options: [2019, 2020, 2021, 2022],
+				options: ['2019', '2020', '2021', '2022'],
 				other: true,
 				title: 'Graduation Year',
 				type: 'number',

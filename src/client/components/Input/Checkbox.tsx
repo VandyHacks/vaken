@@ -34,6 +34,15 @@ const CheckboxContainer = styled.div`
 		text-align: left;
 		font-size: 1.1rem;
 		cursor: pointer;
+		text-transform: lowercase;
+
+		img {
+			padding-right: 0.5rem;
+		}
+
+		p::first-letter {
+			text-transform: uppercase;
+		}
 	}
 
 	svg {
@@ -46,7 +55,7 @@ const CheckboxContainer = styled.div`
 `;
 
 export const Checkbox: FC<Props> = ({ value, options = ['default'], setState }: Props) => {
-	const selected = new Set(value.split(SEPARATOR));
+	const selected = value.length ? new Set(value.split(SEPARATOR)) : new Set();
 	const onChange = ({ currentTarget: { id } }: React.FormEvent<HTMLInputElement>): void => {
 		if (selected.has(id)) selected.delete(id);
 		else selected.add(id);
@@ -73,7 +82,7 @@ export const Checkbox: FC<Props> = ({ value, options = ['default'], setState }: 
 									) : (
 										<img src={UncheckedSvg} alt="unchecked" width={24} height={24} />
 									)}
-									{option}
+									<p>{option.replace('_', ' ')}</p>
 								</label>
 							</div>
 						);

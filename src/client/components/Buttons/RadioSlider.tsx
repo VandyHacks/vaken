@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, FC } from 'react';
 import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
 
@@ -59,7 +59,7 @@ const Selector = styled('div')`
 
 const disabledColor = '#696969';
 
-export const RadioSlider: FunctionComponent<Props> = (props: Props): JSX.Element => {
+export const RadioSlider: FC<Props> = (props: Props) => {
 	const { option1, option2, option3, disable } = props;
 	const [selected, setSelected] = useState(option2);
 	const [width, setWidth] = useState(0);

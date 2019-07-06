@@ -18,7 +18,8 @@ import {
 	ApplicationStatus,
 	UserDbInterface,
 	MutationResolvers,
-	UserInputType,
+	UserInput,
+	Gender,
 } from './generated/graphql';
 import Context from './context';
 import { Models } from './models';
@@ -32,6 +33,11 @@ function toDietEnum(restriction: string): DietaryRestriction {
 function toRaceEnum(race: string): Race {
 	if (!Object.values(Race).includes(race)) throw new UserInputError(`Invalid race ${race}`);
 	return race as Race;
+}
+
+function toGenderEnum(gender: string): Gender {
+	if (!Object.values(Gender).includes(gender)) throw new UserInputError(`Invalid gender ${gender}`);
+	return gender as Gender;
 }
 
 function toShirtSizeEnum(size: string): ShirtSize {
@@ -54,21 +60,51 @@ function toApplicationStatusEnum(status: string): ApplicationStatus {
 
 async function updateUser(
 	user: { email: string; userType: string },
-	args: UserInputType,
+	args: UserInput,
 	models: Models
-): Promise<UserDbInterface | undefined> {
+): Promise<UserDbInterface> {
+	const newValues = {
+		...args,
+		dietaryRestrictions: args.dietaryRestrictions
+			? args.dietaryRestrictions.split('|').map(toDietEnum)
+			: [],
+		gender: args.gender ? toGenderEnum(args.gender) : '',
+		modifiedAt: new Date().getTime(),
+		shirtSize: args.shirtSize ? toShirtSizeEnum(args.shirtSize) : '',
+	};
+
 	if (user.userType === UserType.Hacker) {
 		const { value } = await models.Hackers.findOneAndUpdate(
 			{ email: user.email },
-			{ $set: args }
+			{ $set: newValues },
+			{ returnOriginal: false }
 		);
+		if (!value) throw new UserInputError(`user ${user.email} not found`);
 		return value;
 	} else if (user.userType === UserType.Organizer) {
 		const { value } = await models.Organizers.findOneAndUpdate(
 			{ email: user.email },
-			{ $set: args }
+			{ $set: newValues },
+			{ returnOriginal: false }
 		);
+		if (!value) throw new UserInputError(`user ${user.email} not found`);
 		return value;
+	}
+	throw new ApolloError(`updateUser for userType ${user.userType} not implemented`);
+}
+
+async function fetchUser(
+	user: { email: string; userType: string },
+	models: Models
+): Promise<UserDbInterface> {
+	if (user.userType === UserType.Hacker) {
+		const hacker = await models.Hackers.findOne({ email: user.email });
+		if (!hacker) throw new UserInputError(`hacker "${user.email}" not found`);
+		return hacker;
+	} else if (user.userType === UserType.Organizer) {
+		const organizer = await models.Organizers.findOne({ email: user.email });
+		if (!organizer) throw new UserInputError(`user ${user.email} not found`);
+		return organizer;
 	}
 	throw new ApolloError(`updateUser for userType ${user.userType} not implemented`);
 }
@@ -124,7 +160,13 @@ export const resolvers: Resolvers = {
 			return shirtSize ? toShirtSizeEnum(shirtSize) : null;
 		},
 		status: async hacker => toApplicationStatusEnum((await hacker).status),
-		team: async hacker => (await hacker).team || null,
+		team: async (hacker, args, { models }: Context) => {
+			const team = await models.UserTeamIndicies.findOne({ email: (await hacker).email });
+			if (!team) return { _id: new ObjectID(), createdAt: new Date(0), memberIds: [], name: '' };
+			const result = await models.Teams.findOne({ name: team.team });
+			if (!result) throw new UserInputError(`error getting team for ${(await hacker).email}`);
+			return result;
+		},
 		userType: () => UserType.Hacker,
 		volunteer: async hacker => (await hacker).volunteer || null,
 	},
@@ -153,6 +195,60 @@ export const resolvers: Resolvers = {
 		userType: () => UserType.Mentor,
 	},
 	Mutation: {
+		joinTeam: async (root, { input: { name } }, { models, user }: Context) => {
+			if (!user || user.userType !== UserType.Hacker)
+				throw new AuthenticationError(`user "${JSON.stringify(user)}" must be hacker`);
+			const team = await models.Teams.findOne({ name });
+			if (!team) {
+				await models.Teams.insertOne({
+					_id: new ObjectID(),
+					createdAt: new Date(),
+					memberIds: [],
+					name,
+				});
+			}
+			const { ok, lastErrorObject: err } = await models.Teams.findOneAndUpdate(
+				{ name },
+				{ $push: { memberIds: user.email } }
+			);
+			if (!ok) throw new UserInputError(`error adding "${user.email}" to team "${name}": ${err}`);
+			const result = await models.UserTeamIndicies.findOneAndUpdate(
+				{ email: user.email },
+				{ $set: { email: user.email, team: name } },
+				{ upsert: true }
+			);
+			if (!result.ok) {
+				throw new UserInputError(
+					`error adding "${user.email}" to team index "${name}": ${result.lastErrorObject}`
+				);
+			}
+
+			const ret = await models.Hackers.findOne({ email: user.email });
+			if (!ret) throw new AuthenticationError(`hacker not found: ${user.email}`);
+			return ret;
+		},
+		leaveTeam: async (root, args, { models, user }: Context) => {
+			if (!user || user.userType !== UserType.Hacker)
+				throw new AuthenticationError(`user "${JSON.stringify(user)}" must be hacker`);
+			const { value, ok, lastErrorObject: err } = await models.UserTeamIndicies.findOneAndDelete({
+				email: user.email,
+			});
+			if (!value || !ok)
+				throw new UserInputError(`error removing user team index: ${JSON.stringify(err)}`);
+
+			const { value: team, ok: okTeam, lastErrorObject: e } = await models.Teams.findOneAndUpdate(
+				{ name: value.team },
+				{ $pull: { memberIds: user.email } },
+				{ returnOriginal: false }
+			);
+			if (!team || !okTeam)
+				throw new UserInputError(`error removing user from team: ${JSON.stringify(e)}`);
+			if (!team.memberIds.length) models.Teams.findOneAndDelete({ name: value.team });
+
+			const ret = await models.Hackers.findOne({ email: user.email });
+			if (!ret) throw new AuthenticationError(`hacker not found: ${user.email}`);
+			return ret;
+		},
 		updateMyProfile: async (root, args, ctx: Context) => {
 			if (!ctx.user) throw new AuthenticationError(`cannot update profile: user not logged in`);
 			const result = await updateUser(ctx.user, args.input, ctx.models);
@@ -188,9 +284,9 @@ export const resolvers: Resolvers = {
 			return hacker;
 		},
 		hackers: async (root, args, ctx: Context) => ctx.models.Hackers.find().toArray(),
-		me: (root, args, ctx: Context) => {
+		me: async (root, args, ctx: Context) => {
 			if (!ctx.user) throw new AuthenticationError(`user is not logged in`);
-			return ctx.user;
+			return fetchUser(ctx.user, ctx.models);
 		},
 		mentor: async (root, { id }, ctx: Context) => {
 			const mentor = await ctx.models.Mentors.findOne({ _id: id });

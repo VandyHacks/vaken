@@ -128,15 +128,21 @@ export type Mutation = {
 	__typename?: 'Mutation';
 	updateMyProfile: User;
 	updateProfile: User;
+	joinTeam: Hacker;
+	leaveTeam: Hacker;
 };
 
 export type MutationUpdateMyProfileArgs = {
-	input: UserInputType;
+	input: UserInput;
 };
 
 export type MutationUpdateProfileArgs = {
 	id: Scalars['ID'];
-	input: UserInputType;
+	input: UserInput;
+};
+
+export type MutationJoinTeamArgs = {
+	input: TeamInput;
 };
 
 export type Organizer = User & {
@@ -159,7 +165,7 @@ export type Organizer = User & {
 
 export type Query = {
 	__typename?: 'Query';
-	me: User;
+	me?: Maybe<User>;
 	hacker: Hacker;
 	hackers: Array<Hacker>;
 	organizer: Organizer;
@@ -218,17 +224,12 @@ export type Shift = {
 };
 
 export enum ShirtSize {
-	Uxs = 'UXS',
-	Us = 'US',
-	Um = 'UM',
-	Ul = 'UL',
-	Uxl = 'UXL',
-	Uxxl = 'UXXL',
-	Ws = 'WS',
-	Wm = 'WM',
-	Wl = 'WL',
-	Wxl = 'WXL',
-	Wxxl = 'WXXL',
+	Xs = 'XS',
+	S = 'S',
+	M = 'M',
+	L = 'L',
+	Xl = 'XL',
+	Xxl = 'XXL',
 }
 
 export enum SortDirection {
@@ -243,6 +244,10 @@ export type Team = {
 	name?: Maybe<Scalars['String']>;
 	memberIds: Array<Scalars['ID']>;
 	size: Scalars['Int'];
+};
+
+export type TeamInput = {
+	name: Scalars['String'];
 };
 
 export type User = {
@@ -261,7 +266,7 @@ export type User = {
 	phoneNumber?: Maybe<Scalars['String']>;
 };
 
-export type UserInputType = {
+export type UserInput = {
 	firstName?: Maybe<Scalars['String']>;
 	lastName?: Maybe<Scalars['String']>;
 	email?: Maybe<Scalars['String']>;
@@ -357,7 +362,8 @@ export type ResolversTypes = {
 	Mentor: MaybePromise<MentorDbObject>;
 	Shift: MaybePromise<ShiftDbObject>;
 	Mutation: MaybePromise<{}>;
-	UserInputType: UserInputType;
+	UserInput: UserInput;
+	TeamInput: TeamInput;
 	AuthLevel: AuthLevel;
 	Gender: Gender;
 	ApplicationQuestion: MaybePromise<ApplicationQuestionDbObject>;
@@ -521,6 +527,8 @@ export type MutationResolvers<ContextType = any, ParentType = ResolversTypes['Mu
 		ContextType,
 		MutationUpdateProfileArgs
 	>;
+	joinTeam?: Resolver<ResolversTypes['Hacker'], ParentType, ContextType, MutationJoinTeamArgs>;
+	leaveTeam?: Resolver<ResolversTypes['Hacker'], ParentType, ContextType>;
 };
 
 export type OrganizerResolvers<ContextType = any, ParentType = ResolversTypes['Organizer']> = {
@@ -545,7 +553,7 @@ export type OrganizerResolvers<ContextType = any, ParentType = ResolversTypes['O
 };
 
 export type QueryResolvers<ContextType = any, ParentType = ResolversTypes['Query']> = {
-	me?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+	me?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
 	hacker?: Resolver<ResolversTypes['Hacker'], ParentType, ContextType, QueryHackerArgs>;
 	hackers?: Resolver<Array<ResolversTypes['Hacker']>, ParentType, ContextType, QueryHackersArgs>;
 	organizer?: Resolver<ResolversTypes['Organizer'], ParentType, ContextType, QueryOrganizerArgs>;

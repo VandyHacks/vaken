@@ -15,8 +15,9 @@ export default gql`
 		}
 	}
 
-	mutation updateMyProfile($input: UserInputType!) {
+	mutation updateMyProfile($input: UserInput!) {
 		updateMyProfile(input: $input) {
+			id
 			firstName
 			lastName
 			email

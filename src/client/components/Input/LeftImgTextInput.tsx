@@ -1,6 +1,6 @@
 import React from 'react';
 import { RightPaddedImg, ButtonOutline } from '../Buttons/Buttons';
-import TextInput, { Props as InputProps } from './TextInput';
+import TextInput, { InputProps } from './TextInput';
 import { regexWrapper } from './helperFunctions';
 
 interface Props extends InputProps {

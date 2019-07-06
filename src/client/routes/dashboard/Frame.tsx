@@ -8,6 +8,8 @@ import routes from '../../assets/routes';
 import { AuthContext } from '../../contexts/AuthContext';
 import { SpaceBetweenRow, OverflowContainer } from '../../components/Containers/FlexContainers';
 import { ActionButtonContext } from '../../contexts/ActionButtonContext';
+import { UserType } from '../../generated/graphql';
+import HackerDash from './HackerDash';
 
 export const OrganizerDash = React.lazy(() => import('./OrganizerDash'));
 
@@ -46,7 +48,7 @@ const Rectangle = styled.div`
 
 const Frame: FunctionComponent = (): JSX.Element => {
 	const currentUser = useContext(AuthContext);
-	const [ActionButton, setActionButton] = useState<JSX.Element | undefined>(undefined);
+	const [ActionButton, setActionButton] = useState<React.ReactNode>(null);
 	if (window.location.pathname.startsWith('/login')) {
 		return <Redirect to="/dashboard" />;
 	}
@@ -63,6 +65,7 @@ const Frame: FunctionComponent = (): JSX.Element => {
 										<Route key={route.path} path={route.path} render={() => route.displayText} />
 									) : null;
 								})}
+								<Route path="/">Dashboard</Route>
 							</Switch>
 						</Title>
 						{ActionButton || null}
@@ -78,6 +81,9 @@ const Frame: FunctionComponent = (): JSX.Element => {
 									<Route key={route.path} path={route.path} render={() => <route.component />} />
 								) : null;
 							})}
+							<Route path="/">
+								{currentUser.userType === UserType.Organizer ? <OrganizerDash /> : <HackerDash />}
+							</Route>
 						</Switch>
 					</Suspense>
 				</OverflowContainer>

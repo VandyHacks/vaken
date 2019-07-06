@@ -7,6 +7,7 @@ export default gql`
 			firstName
 			lastName
 			userType
+			email
 		}
 	}
 `;

@@ -124,7 +124,7 @@ const Sidebar = withRouter(
 								return route.authLevel.includes(currentUser.userType) ? (
 									<li key={route.path}>
 										<NavLink to={route.path} activeClassName="active">
-											<NavButtonWhiteText text={route.displayText} />
+											<NavButtonWhiteText>{route.displayText}</NavButtonWhiteText>
 										</NavLink>
 									</li>
 								) : null;
@@ -132,7 +132,7 @@ const Sidebar = withRouter(
 						</ColumnWithSeparators>
 						<FlexEndColumn height="min-content" paddingBottom="1rem">
 							<ALink href="/api/logout">
-								<NavButtonWhiteText text="Logout" />
+								<NavButtonWhiteText>Logout</NavButtonWhiteText>
 							</ALink>
 							<HorizontalLineLogout />
 							<SmallCenteredText>{STRINGS.HACKATHON_TITLE}</SmallCenteredText>

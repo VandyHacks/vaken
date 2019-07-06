@@ -4,7 +4,6 @@ import lockIcon from '../../assets/img/lock_icon.svg';
 import TextButton from '../../components/Buttons/TextButton';
 import STRINGS from '../../assets/strings.json';
 import LeftImgTextInput from '../../components/Input/LeftImgTextInput';
-import { onChangeWrapper } from '../../components/Input/helperFunctions';
 import {
 	PASSWORD_REGEX,
 	EMAIL_REGEX,
@@ -57,7 +56,7 @@ export const PasswordLogin: React.FunctionComponent = (): JSX.Element => {
 				img={emailIcon}
 				imgAlt="Email icon"
 				fontSize="1.2rem"
-				onChange={onChangeWrapper(setEmail)}
+				setState={setEmail}
 				value={email}
 				placeholder="Email"
 				pattern={EMAIL_REGEX.source}
@@ -66,7 +65,7 @@ export const PasswordLogin: React.FunctionComponent = (): JSX.Element => {
 				img={lockIcon}
 				imgAlt="Lock icon"
 				fontSize="1.2rem"
-				onChange={onChangeWrapper(setPass)}
+				setState={setPass}
 				value={pass}
 				placeholder="Password"
 				type="password"
@@ -77,7 +76,7 @@ export const PasswordLogin: React.FunctionComponent = (): JSX.Element => {
 				img={lockIcon}
 				imgAlt="Lock icon"
 				fontSize="1.2rem"
-				onChange={onChangeWrapper(setPassAgain)}
+				setState={setPassAgain}
 				value={passAgain}
 				placeholder="Password (Again)"
 				type="password"
@@ -91,9 +90,9 @@ export const PasswordLogin: React.FunctionComponent = (): JSX.Element => {
 				color="white"
 				fontSize="1.4rem"
 				background={STRINGS.ACCENT_COLOR}
-				text="Create Account"
-				glowColor="rgba(0, 0, 255, 0.67)"
-			/>
+				glowColor="rgba(0, 0, 255, 0.67)">
+				<p>Create Account</p>
+			</TextButton>
 		</>
 	);
 };

@@ -1,19 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
-
-export interface Props {
-	className?: string;
-	color?: string;
-	id?: string;
-	list?: string;
-	onBlur?: () => void;
-	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-	placeholder?: string;
-	required?: boolean;
-	type?: string;
-	value: string;
-}
+import { InputProps } from './TextInput';
 
 export const StyledCalInput = styled.input`
 	padding: 0.75rem;
@@ -35,8 +23,8 @@ export const StyledCalInput = styled.input`
 	}
 `;
 
-export const CalendarInput = (props: Props): JSX.Element => {
-	return <StyledCalInput type="date" {...props} />;
-};
+export const CalendarInput = (props: InputProps): JSX.Element => (
+	<StyledCalInput type="date" {...props} />
+);
 
 export default CalendarInput;

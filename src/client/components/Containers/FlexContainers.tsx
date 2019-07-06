@@ -1,23 +1,24 @@
 import styled from 'styled-components';
+import CSS from 'csstype';
 
-export interface ContainerProps {
-	alignItems?: string;
-	background?: string;
-	flex?: string;
-	height?: string;
-	justifyContent?: string;
-	margin?: string;
-	marginBottom?: string;
-	marginLeft?: string;
-	marginRight?: string;
-	marginTop?: string;
-	padding?: string;
-	paddingBottom?: string;
-	paddingLeft?: string;
-	paddingRight?: string;
-	paddingTop?: string;
-	width?: string;
-}
+export type FlexDivProps = Pick<CSS.Properties, 'alignItems' | 'justifyContent'>;
+export type ContainerProps = FlexDivProps &
+	Pick<
+		CSS.Properties,
+		| 'background'
+		| 'height'
+		| 'margin'
+		| 'marginBottom'
+		| 'marginLeft'
+		| 'marginRight'
+		| 'marginTop'
+		| 'padding'
+		| 'paddingBottom'
+		| 'paddingLeft'
+		| 'paddingRight'
+		| 'paddingTop'
+		| 'width'
+	>;
 
 export const displayFlex = `
 	display: flex;
@@ -34,15 +35,15 @@ export const FlexDiv = styled.div`
 `;
 
 export const FlexColumn = styled(FlexDiv)`
-	height: ${({ height = '100%' }: ContainerProps): string => height};
-	width: ${({ width = '100%' }: ContainerProps): string => width};
-	padding: ${({ padding = '100%' }: ContainerProps): string => padding};
-	padding-bottom: ${({ paddingBottom = '0' }: ContainerProps): string => paddingBottom};
-	padding-top: ${({ paddingTop = '0' }: ContainerProps): string => paddingTop};
-	padding-left: ${({ paddingLeft = '0' }: ContainerProps): string => paddingLeft};
-	padding-right: ${({ paddingRight = '0' }: ContainerProps): string => paddingRight};
-	margin: ${({ margin = '0' }: ContainerProps): string => margin};
-	${({ background }: ContainerProps): string => (background ? `background: ${background};` : '')}
+	height: ${({ height = '100%' }: ContainerProps) => height};
+	width: ${({ width = '100%' }: ContainerProps) => width};
+	padding: ${({ padding = '100%' }: ContainerProps) => padding};
+	padding-bottom: ${({ paddingBottom = '0' }: ContainerProps) => paddingBottom};
+	padding-top: ${({ paddingTop = '0' }: ContainerProps) => paddingTop};
+	padding-left: ${({ paddingLeft = '0' }: ContainerProps) => paddingLeft};
+	padding-right: ${({ paddingRight = '0' }: ContainerProps) => paddingRight};
+	margin: ${({ margin = '0' }: ContainerProps) => margin};
+	${({ background }: ContainerProps) => (background ? `background: ${background};` : '')}
 `;
 
 export const FlexRow = styled(FlexColumn)`

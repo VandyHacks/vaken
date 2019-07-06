@@ -5,8 +5,7 @@ import reset from 'styled-reset';
 import LoginPage from './routes/login/Login';
 import Frame from './routes/dashboard/Frame';
 import { AuthContext } from './contexts/AuthContext';
-import { LoginContext } from './contexts/LoginContext';
-import { useMeQuery, MeQuery } from './generated/graphql';
+import { useMeQuery } from './generated/graphql';
 
 const GlobalStyle = createGlobalStyle`
 	body {
@@ -25,13 +24,12 @@ const GlobalStyle = createGlobalStyle`
 
 const Vaken: React.FunctionComponent = (): JSX.Element => {
 	const [ready, setReady] = useState();
-	const [user, setUser] = useState<MeQuery['me'] | undefined>(undefined);
 	const { data, error, loading } = useMeQuery();
 
 	const StateMachine: React.FunctionComponent = (): JSX.Element | null => {
 		if (!ready) return null;
-		return user ? (
-			<AuthContext.Provider value={user}>
+		return data && data.me ? (
+			<AuthContext.Provider value={data.me}>
 				<Frame />
 			</AuthContext.Provider>
 		) : (
@@ -45,7 +43,6 @@ const Vaken: React.FunctionComponent = (): JSX.Element => {
 		} else if (error && !ready) {
 			setReady(true);
 		} else if (data && data.me && !ready) {
-			setUser(data.me);
 			setReady(true);
 		}
 	}, [loading, ready, error, data]);
