@@ -11,9 +11,10 @@ module.exports = {
 		{
 			// client-side testing config
 			displayName: 'Test client',
-			testMatch: ['<rootDir>/__tests__/client/**'],
+			testMatch: ['<rootDir>/src/client/**/*.test.ts*'],
 			setupFiles: ['./__mocks__/fetch.js'],
 			testEnvironment: 'jsdom',
+			snapshotResolver: './__mocks__/snapshotResolver',
 			moduleNameMapper: {
 				'../../assets/img/square_hackathon_logo.svg': '<rootDir>/__mocks__/svgrMock.js',
 				'../../assets/img/unchecked_box.svg': '<rootDir>/__mocks__/svgrMock.js',
@@ -36,6 +37,7 @@ module.exports = {
 			testMatch: ['<rootDir>/__tests__/server/**/*.ts'],
 			setupFiles: ['./__mocks__/env.js'],
 			testEnvironment: 'node',
+			snapshotResolver: './__mocks__/snapshotResolver',
 			transform: {
 				'^.+\\.jsx?$': 'babel-jest',
 			},

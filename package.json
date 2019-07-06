@@ -52,9 +52,9 @@
 		"check:test": "jest --onlyChanged",
 		"check:test:ci": "jest --ci --runInBand",
 		"check:types": "tsc -p tsconfig.json --noEmit",
-		"check:lint": "eslint --cache --report-unused-disable-directives --ext .js,.jsx,.ts,.tsx __tests__/ src/",
-		"check:lint:fix": "npm run check:lint --fix",
-		"check:lint:ci": "eslint --ext .js,.jsx,.ts,.tsx __tests__/ src/ --format junit --output-file ./reports/lint/eslint/results.xml",
+		"check:lint": "eslint --cache --report-unused-disable-directives --ext .js,.jsx,.ts,.tsx src/",
+		"check:lint:fix": "npm run check:lint -- --fix",
+		"check:lint:ci": "eslint --ext .js,.jsx,.ts,.tsx src/ --format junit --output-file ./reports/lint/eslint/results.xml",
 		"check": "concurrently -c bgBlue.bold,bgMagenta.bold,bgGreen.bold \"npm:check:lint\"  \"npm:check:types\" \"npm:check:test\""
 	},
 	"dependencies": {
