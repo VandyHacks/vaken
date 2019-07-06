@@ -23,6 +23,7 @@ import {
 } from './generated/graphql';
 import Context from './context';
 import { Models } from './models';
+import User from '../common/models/User';
 
 function toDietEnum(restriction: string): DietaryRestriction {
 	if (!Object.values(DietaryRestriction).includes(restriction))
@@ -110,16 +111,16 @@ async function fetchUser(
 }
 
 export interface Resolvers {
-	ApplicationField: ApplicationFieldResolvers;
-	ApplicationQuestion: ApplicationQuestionResolvers;
-	Hacker: HackerResolvers;
-	Login: LoginResolvers;
-	Mentor: MentorResolvers;
-	Mutation: MutationResolvers;
-	Organizer: OrganizerResolvers;
-	Query: QueryResolvers;
-	Shift: ShiftResolvers;
-	Team: TeamResolvers;
+	ApplicationField: Required<ApplicationFieldResolvers>;
+	ApplicationQuestion: Required<ApplicationQuestionResolvers>;
+	Hacker: Required<HackerResolvers>;
+	Login: Required<LoginResolvers>;
+	Mentor: Required<MentorResolvers>;
+	Mutation: Required<MutationResolvers>;
+	Organizer: Required<OrganizerResolvers>;
+	Query: Required<QueryResolvers>;
+	Shift: Required<ShiftResolvers>;
+	Team: Required<TeamResolvers>;
 	User: {
 		__resolveType: (user: UserDbInterface) => 'Hacker' | 'Organizer' | 'Mentor';
 	};
@@ -151,6 +152,7 @@ export const resolvers: Resolvers = {
 		logins: async hacker => (await hacker).logins || null,
 		majors: async hacker => (await hacker).majors || [],
 		modifiedAt: async hacker => (await hacker).modifiedAt,
+		phoneNumber: async hacker => (await hacker).phoneNumber || null,
 		preferredName: async hacker => (await hacker).preferredName,
 		race: async hacker => (await hacker).race.map(toRaceEnum) || null,
 		school: async hacker => (await hacker).school || null,
@@ -174,6 +176,7 @@ export const resolvers: Resolvers = {
 		createdAt: async login => (await login).createdAt.getTime(),
 		provider: async login => toLoginProviderEnum((await login).provider),
 		token: async login => (await login).token,
+		userType: async login => (await login).userType as UserType,
 	},
 	Mentor: {
 		createdAt: async mentor => (await mentor).createdAt.getTime(),
@@ -184,6 +187,7 @@ export const resolvers: Resolvers = {
 		id: async mentor => (await mentor)._id.toHexString(),
 		lastName: async mentor => (await mentor).lastName,
 		logins: async mentor => (await mentor).logins || null,
+		phoneNumber: async mentor => (await mentor).phoneNumber || null,
 		preferredName: async mentor => (await mentor).preferredName,
 		secondaryIds: async mentor => (await mentor).secondaryIds,
 		shifts: async mentor => (await mentor).shifts,
@@ -250,6 +254,18 @@ export const resolvers: Resolvers = {
 			return ret;
 		},
 		updateMyProfile: async (root, args, ctx: Context) => {
+			// Enables a user to update their own profile
+			if (!ctx.user) throw new AuthenticationError(`cannot update profile: user not logged in`);
+			const result = await updateUser(ctx.user, args.input, ctx.models);
+			if (!result)
+				throw new UserInputError(
+					`unable to update profile: "${JSON.stringify(ctx.user)}" not found `
+				);
+			return result;
+		},
+		updateProfile: async (root, args, ctx: Context) => {
+			// TODO: fix this
+			// This should enable admins to change profile of other users
 			if (!ctx.user) throw new AuthenticationError(`cannot update profile: user not logged in`);
 			const result = await updateUser(ctx.user, args.input, ctx.models);
 			if (!result)
@@ -269,6 +285,7 @@ export const resolvers: Resolvers = {
 		lastName: async organizer => (await organizer).lastName,
 		logins: async organizer => (await organizer).logins || null,
 		permissions: async organizer => (await organizer).permissions,
+		phoneNumber: async organizer => (await organizer).phoneNumber || null,
 		preferredName: async organizer => (await organizer).preferredName,
 		secondaryIds: async organizer => (await organizer).secondaryIds,
 		shirtSize: async organizer => {
