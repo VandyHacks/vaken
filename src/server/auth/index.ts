@@ -6,10 +6,8 @@ import { strategy as google } from './google';
 export const strategies = { github, google };
 
 export const registerAuthRoutes = (app: Express): void => {
-	passport.serializeUser((user, done) => void console.log('serializing user') || done(null, user));
-	passport.deserializeUser(
-		(user, done) => void console.log('deserializing user') || done(null, user)
-	);
+	passport.serializeUser((user, done) => void done(null, user));
+	passport.deserializeUser((user, done) => void done(null, user));
 
 	app.get(
 		'/api/auth/google',
@@ -20,7 +18,7 @@ export const registerAuthRoutes = (app: Express): void => {
 		passport.authenticate('google', {
 			failureRedirect: '/login',
 		}),
-		(req, res) => void console.log(req.user) || res.redirect('/')
+		(req, res) => void res.redirect('/')
 	);
 
 	app.get('/api/auth/github', passport.authenticate('github', { scope: ['user:email'] }));
@@ -29,7 +27,7 @@ export const registerAuthRoutes = (app: Express): void => {
 		passport.authenticate('github', {
 			failureRedirect: '/login',
 		}),
-		(req, res) => void console.log(req.user) || res.redirect('/')
+		(req, res) => void res.redirect('/')
 	);
 
 	app.get('/api/logout', function(req, res) {
