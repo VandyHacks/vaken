@@ -19,5 +19,5 @@
 			"*": ["node_modules/*"]
 		}
 	},
-	"include": ["src/**/*", "__tests__/**/*"]
+	"include": ["src/**/*"]
 }
