@@ -1,5 +1,5 @@
 import { UserInputError, AuthenticationError, ApolloError } from 'apollo-server-express';
-import { ObjectID, Collection } from 'mongodb';
+import { ObjectID, Collection, ObjectId, FilterQuery } from 'mongodb';
 import {
 	ApplicationFieldResolvers,
 	ApplicationQuestionResolvers,
@@ -19,13 +19,11 @@ import {
 	UserDbInterface,
 	MutationResolvers,
 	UserInput,
-	ResolverFn,
 	Gender,
 	UserResolvers,
 } from './generated/graphql';
 import Context from './context';
 import { Models } from './models';
-import User from '../common/models/User';
 
 function toDietEnum(restriction: string): DietaryRestriction {
 	if (!Object.values(DietaryRestriction).includes(restriction))
@@ -59,6 +57,24 @@ function toApplicationStatusEnum(status: string): ApplicationStatus {
 	if (!Object.values(ApplicationStatus).includes(status))
 		throw new UserInputError(`Invalid application status: ${status}`);
 	return status as ApplicationStatus;
+}
+
+async function query<T>(filter: FilterQuery<T>, model: Collection<T>): Promise<T> {
+	const obj = await model.findOne(filter);
+	if (!obj)
+		throw new UserInputError(
+			`obj with filters: "${JSON.stringify(filter)}" not found in collection "${
+				model.collectionName
+			}"`
+		);
+	return obj;
+}
+
+async function queryById<T extends { _id: ObjectId }>(
+	id: string,
+	model: Collection<T>
+): Promise<T> {
+	return query<T>({ _id: ObjectID.createFromHexString(id) }, model);
 }
 
 async function updateUser(
@@ -97,19 +113,15 @@ async function updateUser(
 }
 
 async function fetchUser(
-	user: { email: string; userType: string },
+	{ email, userType }: { email: string; userType: string },
 	models: Models
 ): Promise<UserDbInterface> {
-	if (user.userType === UserType.Hacker) {
-		const hacker = await models.Hackers.findOne({ email: user.email });
-		if (!hacker) throw new UserInputError(`hacker "${user.email}" not found`);
-		return hacker;
-	} else if (user.userType === UserType.Organizer) {
-		const organizer = await models.Organizers.findOne({ email: user.email });
-		if (!organizer) throw new UserInputError(`user ${user.email} not found`);
-		return organizer;
+	if (userType === UserType.Hacker) {
+		return query({ email }, models.Hackers);
+	} else if (userType === UserType.Organizer) {
+		return query({ email }, models.Organizers);
 	}
-	throw new ApolloError(`updateUser for userType ${user.userType} not implemented`);
+	throw new ApolloError(`updateUser for userType ${userType} not implemented`);
 }
 
 export interface Resolvers {
@@ -149,20 +161,6 @@ const userResolvers: Required<Omit<UserResolvers, '__resolveType' | 'userType'>>
 	},
 };
 
-async function queryById<T extends { _id: ObjectID }>(
-	id: string,
-	model: Collection<T>
-): Promise<T> {
-	const obj = await model.findOne({
-		_id: ObjectID.createFromHexString(id),
-	});
-	if (!obj)
-		throw new UserInputError(
-			`obj with id: "${id}" not found in collection "${model.collectionName}"`
-		);
-	return obj;
-}
-
 export const resolvers: Resolvers = {
 	ApplicationField: {
 		answer: async field => (await field).answer || null,
@@ -189,9 +187,7 @@ export const resolvers: Resolvers = {
 		team: async (hacker, args, { models }: Context) => {
 			const team = await models.UserTeamIndicies.findOne({ email: (await hacker).email });
 			if (!team) return { _id: new ObjectID(), createdAt: new Date(0), memberIds: [], name: '' };
-			const result = await models.Teams.findOne({ name: team.team });
-			if (!result) throw new UserInputError(`error getting team for ${(await hacker).email}`);
-			return result;
+			return query({ name: team.team }, models.Teams);
 		},
 		userType: () => UserType.Hacker,
 		volunteer: async hacker => (await hacker).volunteer || null,
@@ -214,17 +210,17 @@ export const resolvers: Resolvers = {
 		userType: () => UserType.Mentor,
 	},
 	Mutation: {
-		hackerStatus: async (root, { input: { id, status } }, { user, models }: Context) => {
-			if (!user || user.userType !== UserType.Organizer)
-				throw new AuthenticationError(`user ${JSON.stringify(user)} must be an organizer`);
-			const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
-				{ _id: id },
-				{ $set: { status } },
-				{ returnOriginal: false }
-			);
-			if (!ok || err || !value) throw new UserInputError(`user ${id} error (${value}): ${err}`);
-			return value;
-		},
+		// hackerStatus: async (_, { input: { id, status } }, { user, models }: Context) => {
+		// 	if (!user || user.userType !== UserType.Organizer)
+		// 		throw new AuthenticationError(`user ${JSON.stringify(user)} must be an organizer`);
+		// 	const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
+		// 		{ _id: id },
+		// 		{ $set: { status } },
+		// 		{ returnOriginal: false }
+		// 	);
+		// 	if (!ok || err || !value) throw new UserInputError(`user ${id} error (${value}): ${err}`);
+		// 	return value;
+		// },
 		joinTeam: async (root, { input: { name } }, { models, user }: Context) => {
 			if (!user || user.userType !== UserType.Hacker)
 				throw new AuthenticationError(`user "${JSON.stringify(user)}" must be hacker`);
