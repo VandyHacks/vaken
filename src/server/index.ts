@@ -27,7 +27,7 @@ app.use((req, res, next) =>
 	})(req, res, next)
 );
 
-const schema = makeExecutableSchema({
+export const schema = makeExecutableSchema({
 	resolverValidationOptions: {
 		requireResolversForAllFields: true,
 		requireResolversForResolveType: false,
@@ -58,3 +58,6 @@ const schema = makeExecutableSchema({
 		() => void logger.info(`Server ready at http://localhost:8080${server.graphqlPath}`)
 	);
 })();
+
+// for testing
+export default app;
