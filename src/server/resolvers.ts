@@ -1,5 +1,5 @@
 import { UserInputError, AuthenticationError, ApolloError } from 'apollo-server-express';
-import { ObjectID } from 'mongodb';
+import { ObjectID, Collection } from 'mongodb';
 import {
 	ApplicationFieldResolvers,
 	ApplicationQuestionResolvers,
@@ -19,7 +19,9 @@ import {
 	UserDbInterface,
 	MutationResolvers,
 	UserInput,
+	ResolverFn,
 	Gender,
+	UserResolvers,
 } from './generated/graphql';
 import Context from './context';
 import { Models } from './models';
@@ -126,6 +128,41 @@ export interface Resolvers {
 	};
 }
 
+const userResolvers: Required<Omit<UserResolvers, '__resolveType' | 'userType'>> = {
+	createdAt: async field => (await field).createdAt.getTime(),
+	dietaryRestrictions: async user => {
+		const { dietaryRestrictions = [] } = await user;
+		return dietaryRestrictions.map(toDietEnum);
+	},
+	email: async user => (await user).email,
+	firstName: async user => (await user).firstName,
+	gender: async user => (await user).gender || null,
+	id: async user => (await user)._id.toHexString(),
+	lastName: async user => (await user).lastName,
+	logins: async user => (await user).logins || null,
+	phoneNumber: async user => (await user).phoneNumber || null,
+	preferredName: async user => (await user).preferredName,
+	secondaryIds: async user => (await user).secondaryIds,
+	shirtSize: async user => {
+		const { shirtSize } = await user;
+		return shirtSize ? toShirtSizeEnum(shirtSize) : null;
+	},
+};
+
+async function queryById<T extends { _id: ObjectID }>(
+	id: string,
+	model: Collection<T>
+): Promise<T> {
+	const obj = await model.findOne({
+		_id: ObjectID.createFromHexString(id),
+	});
+	if (!obj)
+		throw new UserInputError(
+			`obj with id: "${id}" not found in collection "${model.collectionName}"`
+		);
+	return obj;
+}
+
 export const resolvers: Resolvers = {
 	ApplicationField: {
 		answer: async field => (await field).answer || null,
@@ -139,31 +176,15 @@ export const resolvers: Resolvers = {
 		prompt: async question => (await question).prompt,
 	},
 	Hacker: {
+		...userResolvers,
 		adult: async hacker => (await hacker).adult || null,
-		createdAt: async hacker => (await hacker).createdAt.getTime(),
-		dietaryRestrictions: async hacker => {
-			const { dietaryRestrictions = [] } = await hacker;
-			return dietaryRestrictions.map(toDietEnum);
-		},
-		email: async hacker => (await hacker).email,
-		firstName: async hacker => (await hacker).firstName,
 		gender: async hacker => (await hacker).gender || null,
 		github: async hacker => (await hacker).github || null,
 		gradYear: async hacker => (await hacker).gradYear || null,
-		id: async hacker => (await hacker)._id.toHexString(),
-		lastName: async hacker => (await hacker).lastName,
-		logins: async hacker => (await hacker).logins || null,
 		majors: async hacker => (await hacker).majors || [],
 		modifiedAt: async hacker => (await hacker).modifiedAt,
-		phoneNumber: async hacker => (await hacker).phoneNumber || null,
-		preferredName: async hacker => (await hacker).preferredName,
 		race: async hacker => (await hacker).race.map(toRaceEnum) || null,
 		school: async hacker => (await hacker).school || null,
-		secondaryIds: async hacker => (await hacker).secondaryIds,
-		shirtSize: async hacker => {
-			const { shirtSize } = await hacker;
-			return shirtSize ? toShirtSizeEnum(shirtSize) : null;
-		},
 		status: async hacker => toApplicationStatusEnum((await hacker).status),
 		team: async (hacker, args, { models }: Context) => {
 			const team = await models.UserTeamIndicies.findOne({ email: (await hacker).email });
@@ -182,20 +203,8 @@ export const resolvers: Resolvers = {
 		userType: async login => (await login).userType as UserType,
 	},
 	Mentor: {
+		...userResolvers,
 		createdAt: async mentor => (await mentor).createdAt.getTime(),
-		dietaryRestrictions: async mentor => {
-			const { dietaryRestrictions = [] } = await mentor;
-			return dietaryRestrictions.map(toDietEnum);
-		},
-		email: async mentor => (await mentor).email,
-		firstName: async mentor => (await mentor).firstName,
-		gender: async mentor => (await mentor).gender || null,
-		id: async mentor => (await mentor)._id.toHexString(),
-		lastName: async mentor => (await mentor).lastName,
-		logins: async mentor => (await mentor).logins || null,
-		phoneNumber: async mentor => (await mentor).phoneNumber || null,
-		preferredName: async mentor => (await mentor).preferredName,
-		secondaryIds: async mentor => (await mentor).secondaryIds,
 		shifts: async mentor => (await mentor).shifts,
 		shirtSize: async mentor => {
 			const { shirtSize } = await mentor;
@@ -205,6 +214,17 @@ export const resolvers: Resolvers = {
 		userType: () => UserType.Mentor,
 	},
 	Mutation: {
+		hackerStatus: async (root, { input: { id, status } }, { user, models }: Context) => {
+			if (!user || user.userType !== UserType.Organizer)
+				throw new AuthenticationError(`user ${JSON.stringify(user)} must be an organizer`);
+			const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
+				{ _id: id },
+				{ $set: { status } },
+				{ returnOriginal: false }
+			);
+			if (!ok || err || !value) throw new UserInputError(`user ${id} error (${value}): ${err}`);
+			return value;
+		},
 		joinTeam: async (root, { input: { name } }, { models, user }: Context) => {
 			if (!user || user.userType !== UserType.Hacker)
 				throw new AuthenticationError(`user "${JSON.stringify(user)}" must be hacker`);
@@ -282,59 +302,22 @@ export const resolvers: Resolvers = {
 		},
 	},
 	Organizer: {
-		createdAt: async organizer => (await organizer).createdAt.getTime(),
-		dietaryRestrictions: async organizer => {
-			const { dietaryRestrictions = [] } = await organizer;
-			return dietaryRestrictions.map(toDietEnum);
-		},
-		email: async organizer => (await organizer).email,
-		firstName: async organizer => (await organizer).firstName,
-		gender: async organizer => (await organizer).gender || null,
-		id: async organizer => (await organizer)._id.toHexString(),
-		lastName: async organizer => (await organizer).lastName,
-		logins: async organizer => (await organizer).logins || null,
+		...userResolvers,
 		permissions: async organizer => (await organizer).permissions,
-		phoneNumber: async organizer => (await organizer).phoneNumber || null,
-		preferredName: async organizer => (await organizer).preferredName,
-		secondaryIds: async organizer => (await organizer).secondaryIds,
-		shirtSize: async organizer => {
-			const { shirtSize } = await organizer;
-			return shirtSize ? toShirtSizeEnum(shirtSize) : null;
-		},
 		userType: () => UserType.Organizer,
 	},
 	Query: {
-		hacker: async (root, { id }, ctx: Context) => {
-			const hacker = await ctx.models.Hackers.findOne({
-				_id: ObjectID.createFromHexString(id),
-			});
-			if (!hacker) throw new UserInputError(`hacker with id: ${id} not found`);
-			return hacker;
-		},
+		hacker: async (root, { id }, ctx: Context) => queryById(id, ctx.models.Hackers),
 		hackers: async (root, args, ctx: Context) => ctx.models.Hackers.find().toArray(),
 		me: async (root, args, ctx: Context) => {
 			if (!ctx.user) throw new AuthenticationError(`user is not logged in`);
 			return fetchUser(ctx.user, ctx.models);
 		},
-		mentor: async (root, { id }, ctx: Context) => {
-			const mentor = await ctx.models.Mentors.findOne({ _id: ObjectID.createFromHexString(id) });
-			if (!mentor) throw new UserInputError(`mentor with id: ${id} not found`);
-			return mentor;
-		},
+		mentor: async (root, { id }, ctx: Context) => queryById(id, ctx.models.Mentors),
 		mentors: async (root, args, ctx: Context) => ctx.models.Mentors.find().toArray(),
-		organizer: async (root, { id }, ctx: Context) => {
-			const organizer = await ctx.models.Organizers.findOne({
-				_id: ObjectID.createFromHexString(id),
-			});
-			if (!organizer) throw new UserInputError(`organizer with id: ${id} not found`);
-			return organizer;
-		},
+		organizer: async (root, { id }, ctx: Context) => queryById(id, ctx.models.Organizers),
 		organizers: async (root, args, ctx: Context) => ctx.models.Organizers.find().toArray(),
-		team: async (root, { id }, ctx: Context) => {
-			const team = await ctx.models.Teams.findOne({ _id: ObjectID.createFromHexString(id) });
-			if (!team) throw new UserInputError(`team with id: ${id} not found`);
-			return team;
-		},
+		team: async (root, { id }, ctx: Context) => queryById(id, ctx.models.Teams),
 		teams: async (root, args, ctx: Context) => ctx.models.Teams.find().toArray(),
 	},
 	Shift: {
