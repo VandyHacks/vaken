@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HeaderButton 1`] = `
+<button
+  className="sc-gqjmRU sc-fjdhpX gwQYRy"
+  height="auto"
+  onClick={[Function]}
+  width="auto"
+>
+  <div
+    className="sc-htoDjs ewjgrL"
+    color="white"
+    fontSize="1.4rem"
+  >
+    <div>
+      child
+    </div>
+  </div>
+</button>
+`;
