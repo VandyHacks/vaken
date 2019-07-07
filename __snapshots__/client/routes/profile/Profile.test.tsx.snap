@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Profile renders correctly 1`] = `
+<div
+  className="sc-bdVaJa sc-bwzfXH sc-ifAKCX sc-htoDjs ctxRTm"
+  height="auto"
+  width="100%"
+>
+  <div
+    className="sc-eHgmQL hFocxY"
+  >
+    <div
+      className="sc-jKJlTe jPONAn"
+    >
+      <div
+        className="bounce1"
+      />
+      <div
+        className="bounce2"
+      />
+      <div
+        className="bounce3"
+      />
+    </div>
+  </div>
+</div>
+`;
