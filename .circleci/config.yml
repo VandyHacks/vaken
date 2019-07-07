@@ -19,7 +19,7 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace:
-          at: ~/project    
+          at: ~/project
       - restore_cache:
           keys:
             - 'dependency-cache-{{ checksum "package-lock.json" }}'
@@ -46,7 +46,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/project
-      - run: 'npm run typecheck'  
+      - run: 'npm run typecheck'
   audit:
     <<: *defaults
     steps:
@@ -58,7 +58,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/project
-      - run: 
+      - run:
           command: 'npm run test-ci'
       - store_test_results:
           path: ~/project/vaken/reports/test
@@ -66,7 +66,7 @@ jobs:
           file: coverage/*.json
 
 workflows:
-  all:
+  commit:
     jobs:
       - setup
       - install:
