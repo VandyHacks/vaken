@@ -2,6 +2,8 @@ defaults: &defaults
   docker:
     - image: 'circleci/node:12'
   working_directory: ~/project/vaken
+  environment:
+    CC_TEST_REPORTER_ID: 'b6cea094202296cdea6867cd99c1efa9aab7ad0a9679ec999e890d3fd3bcaaf0' # write only so all good
 version: 2.1
 orbs:
   codecov: codecov/codecov@1.0.4
@@ -59,11 +61,20 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run:
-          command: 'npm run check:test:ci'
+          name: 'Run tests'
+          command: |
+            # download codeclimate test reporter as a static binary
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+            ./cc-test-reporter before-build
+            npm run check:test:ci
+            ./cc-test-reporter format-coverage -t lcov ./coverage/lcov.info
+            ./cc-test-reporter upload-coverage
       - store_test_results:
           path: ~/project/vaken/reports/test
       - codecov/upload:
-          file: coverage/*.json
+          file: coverage/lcov.info
+
   build:
     <<: *defaults
     steps:

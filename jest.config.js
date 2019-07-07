@@ -7,6 +7,7 @@ module.exports = {
 		'!./src/**/*.d.ts',
 		'!**/*.test.ts*',
 	],
+	coverageReporters: ['lcov'],
 	reporters: [
 		'default',
 		['jest-junit', { outputDirectory: './reports/test/jest', outputName: 'results.xml' }],
