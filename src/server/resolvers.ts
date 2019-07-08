@@ -210,17 +210,30 @@ export const resolvers: Resolvers = {
 		userType: () => UserType.Mentor,
 	},
 	Mutation: {
-		// hackerStatus: async (_, { input: { id, status } }, { user, models }: Context) => {
-		// 	if (!user || user.userType !== UserType.Organizer)
-		// 		throw new AuthenticationError(`user ${JSON.stringify(user)} must be an organizer`);
-		// 	const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
-		// 		{ _id: id },
-		// 		{ $set: { status } },
-		// 		{ returnOriginal: false }
-		// 	);
-		// 	if (!ok || err || !value) throw new UserInputError(`user ${id} error (${value}): ${err}`);
-		// 	return value;
-		// },
+		hackerStatus: async (_, { input: { id, status } }, { user, models }: Context) => {
+			if (!user || user.userType !== UserType.Organizer)
+				throw new AuthenticationError(`user ${JSON.stringify(user)} must be an organizer`);
+			const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
+				{ _id: ObjectID.createFromHexString(id) },
+				{ $set: { status } },
+				{ returnOriginal: false }
+			);
+			if (!ok || err || !value)
+				throw new UserInputError(`user ${id} (${value}) error: ${JSON.stringify(err)}`);
+			return value;
+		},
+		hackerStatuses: async (_, { input: { ids, status } }, { user, models }: Context) => {
+			if (!user || user.userType !== UserType.Organizer)
+				throw new AuthenticationError(`user ${JSON.stringify(user)} must be an organizer`);
+			const objectIds = ids.map(id => ObjectID.createFromHexString(id));
+			const { result } = await models.Hackers.updateMany(
+				{ $in: { _id: objectIds } },
+				{ $set: { status } }
+			);
+			if (!result.ok) throw new UserInputError(`!ok updating ${JSON.stringify(ids)}}`);
+
+			return models.Hackers.find({ $in: { _id: objectIds } }).toArray();
+		},
 		joinTeam: async (root, { input: { name } }, { models, user }: Context) => {
 			if (!user || user.userType !== UserType.Hacker)
 				throw new AuthenticationError(`user "${JSON.stringify(user)}" must be hacker`);

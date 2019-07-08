@@ -91,6 +91,16 @@ export type Hacker = User & {
 	team?: Maybe<Team>;
 };
 
+export type HackerStatusesInput = {
+	ids: Array<Scalars['ID']>;
+	status: ApplicationStatus;
+};
+
+export type HackerStatusInput = {
+	id: Scalars['ID'];
+	status: ApplicationStatus;
+};
+
 export type Login = {
 	__typename?: 'Login';
 	createdAt: Scalars['Int'];
@@ -130,6 +140,8 @@ export type Mutation = {
 	updateProfile: User;
 	joinTeam: Hacker;
 	leaveTeam: Hacker;
+	hackerStatus: Hacker;
+	hackerStatuses: Array<Hacker>;
 };
 
 export type MutationUpdateMyProfileArgs = {
@@ -143,6 +155,14 @@ export type MutationUpdateProfileArgs = {
 
 export type MutationJoinTeamArgs = {
 	input: TeamInput;
+};
+
+export type MutationHackerStatusArgs = {
+	input: HackerStatusInput;
+};
+
+export type MutationHackerStatusesArgs = {
+	input: HackerStatusesInput;
 };
 
 export type Organizer = User & {
@@ -364,6 +384,8 @@ export type ResolversTypes = {
 	Mutation: MaybePromise<{}>;
 	UserInput: UserInput;
 	TeamInput: TeamInput;
+	HackerStatusInput: HackerStatusInput;
+	HackerStatusesInput: HackerStatusesInput;
 	AuthLevel: AuthLevel;
 	Gender: Gender;
 	ApplicationQuestion: MaybePromise<ApplicationQuestionDbObject>;
@@ -529,6 +551,18 @@ export type MutationResolvers<ContextType = any, ParentType = ResolversTypes['Mu
 	>;
 	joinTeam?: Resolver<ResolversTypes['Hacker'], ParentType, ContextType, MutationJoinTeamArgs>;
 	leaveTeam?: Resolver<ResolversTypes['Hacker'], ParentType, ContextType>;
+	hackerStatus?: Resolver<
+		ResolversTypes['Hacker'],
+		ParentType,
+		ContextType,
+		MutationHackerStatusArgs
+	>;
+	hackerStatuses?: Resolver<
+		Array<ResolversTypes['Hacker']>,
+		ParentType,
+		ContextType,
+		MutationHackerStatusesArgs
+	>;
 };
 
 export type OrganizerResolvers<ContextType = any, ParentType = ResolversTypes['Organizer']> = {

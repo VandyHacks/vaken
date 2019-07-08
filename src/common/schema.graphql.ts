@@ -208,10 +208,22 @@ export default gql`
 		name: String!
 	}
 
+	input HackerStatusInput {
+		id: ID!
+		status: ApplicationStatus!
+	}
+
+	input HackerStatusesInput {
+		ids: [ID!]!
+		status: ApplicationStatus!
+	}
+
 	type Mutation {
 		updateMyProfile(input: UserInput!): User!
 		updateProfile(id: ID!, input: UserInput!): User!
 		joinTeam(input: TeamInput!): Hacker!
 		leaveTeam: Hacker!
+		hackerStatus(input: HackerStatusInput!): Hacker!
+		hackerStatuses(input: HackerStatusesInput!): [Hacker!]!
 	}
 `;
