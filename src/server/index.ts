@@ -10,9 +10,12 @@ import Context from './context';
 import logger from './logger';
 import { strategies, registerAuthRoutes } from './auth';
 
+const { SESSION_SECRET } = process.env;
+if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
+
 const app = express();
 
-app.use(session({ secret: 'superSecretSecret' }));
+app.use(session({ secret: SESSION_SECRET }));
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use('github', strategies.github);
