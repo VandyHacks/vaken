@@ -64,6 +64,13 @@ jobs:
           path: ~/project/vaken/reports/test
       - codecov/upload:
           file: coverage/*.json
+  build:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          command: 'npm run build'
 
 workflows:
   all:
@@ -82,5 +89,8 @@ workflows:
           requires:
             - install
       - typecheck:
+          requires:
+            - install
+      - build:
           requires:
             - install
