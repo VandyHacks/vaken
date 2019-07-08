@@ -92,6 +92,16 @@ export type Hacker = User & {
 	team?: Maybe<Team>;
 };
 
+export type HackerStatusesInput = {
+	ids: Array<Scalars['ID']>;
+	status: ApplicationStatus;
+};
+
+export type HackerStatusInput = {
+	id: Scalars['ID'];
+	status: ApplicationStatus;
+};
+
 export type Login = {
 	__typename?: 'Login';
 	createdAt: Scalars['Int'];
@@ -131,6 +141,8 @@ export type Mutation = {
 	updateProfile: User;
 	joinTeam: Hacker;
 	leaveTeam: Hacker;
+	hackerStatus: Hacker;
+	hackerStatuses: Array<Hacker>;
 };
 
 export type MutationUpdateMyProfileArgs = {
@@ -144,6 +156,14 @@ export type MutationUpdateProfileArgs = {
 
 export type MutationJoinTeamArgs = {
 	input: TeamInput;
+};
+
+export type MutationHackerStatusArgs = {
+	input: HackerStatusInput;
+};
+
+export type MutationHackerStatusesArgs = {
+	input: HackerStatusesInput;
 };
 
 export type Organizer = User & {
@@ -294,6 +314,33 @@ export type MeQuery = { __typename?: 'Query' } & {
 			'id' | 'firstName' | 'lastName' | 'userType' | 'email'
 		>
 	>;
+};
+
+export type HackersQueryVariables = {};
+
+export type HackersQuery = { __typename?: 'Query' } & {
+	hackers: Array<
+		{ __typename?: 'Hacker' } & Pick<
+			Hacker,
+			'id' | 'firstName' | 'lastName' | 'email' | 'gradYear' | 'school' | 'status'
+		>
+	>;
+};
+
+export type HackerStatusMutationVariables = {
+	input: HackerStatusInput;
+};
+
+export type HackerStatusMutation = { __typename?: 'Mutation' } & {
+	hackerStatus: { __typename?: 'Hacker' } & Pick<Hacker, 'id' | 'status'>;
+};
+
+export type HackerStatusesMutationVariables = {
+	input: HackerStatusesInput;
+};
+
+export type HackerStatusesMutation = { __typename?: 'Mutation' } & {
+	hackerStatuses: Array<{ __typename?: 'Hacker' } & Pick<Hacker, 'id' | 'status'>>;
 };
 
 export type MyProfileQueryVariables = {};
@@ -450,6 +497,76 @@ export const MeDocument = gql`
 
 export function useMeQuery(baseOptions?: ReactApolloHooks.QueryHookOptions<MeQueryVariables>) {
 	return ReactApolloHooks.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
+}
+export const HackersDocument = gql`
+	query hackers {
+		hackers {
+			id
+			firstName
+			lastName
+			email
+			gradYear
+			school
+			status
+		}
+	}
+`;
+
+export function useHackersQuery(
+	baseOptions?: ReactApolloHooks.QueryHookOptions<HackersQueryVariables>
+) {
+	return ReactApolloHooks.useQuery<HackersQuery, HackersQueryVariables>(
+		HackersDocument,
+		baseOptions
+	);
+}
+export const HackerStatusDocument = gql`
+	mutation hackerStatus($input: HackerStatusInput!) {
+		hackerStatus(input: $input) {
+			id
+			status
+		}
+	}
+`;
+export type HackerStatusMutationFn = ReactApollo.MutationFn<
+	HackerStatusMutation,
+	HackerStatusMutationVariables
+>;
+
+export function useHackerStatusMutation(
+	baseOptions?: ReactApolloHooks.MutationHookOptions<
+		HackerStatusMutation,
+		HackerStatusMutationVariables
+	>
+) {
+	return ReactApolloHooks.useMutation<HackerStatusMutation, HackerStatusMutationVariables>(
+		HackerStatusDocument,
+		baseOptions
+	);
+}
+export const HackerStatusesDocument = gql`
+	mutation hackerStatuses($input: HackerStatusesInput!) {
+		hackerStatuses(input: $input) {
+			id
+			status
+		}
+	}
+`;
+export type HackerStatusesMutationFn = ReactApollo.MutationFn<
+	HackerStatusesMutation,
+	HackerStatusesMutationVariables
+>;
+
+export function useHackerStatusesMutation(
+	baseOptions?: ReactApolloHooks.MutationHookOptions<
+		HackerStatusesMutation,
+		HackerStatusesMutationVariables
+	>
+) {
+	return ReactApolloHooks.useMutation<HackerStatusesMutation, HackerStatusesMutationVariables>(
+		HackerStatusesDocument,
+		baseOptions
+	);
 }
 export const MyProfileDocument = gql`
 	query myProfile {

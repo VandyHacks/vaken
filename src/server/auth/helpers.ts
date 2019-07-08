@@ -64,7 +64,7 @@ export const verifyCallback = async (profile: Profile, done: VerifyCallback): Pr
 				preferredName: '',
 				race: [],
 				secondaryIds: [],
-				status: ApplicationStatus.Confirmed,
+				status: ApplicationStatus.Created,
 				userType: UserType.Hacker,
 			});
 		}

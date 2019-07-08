@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
+import { ApplicationStatus } from '../../generated/graphql';
 import STRINGS from '../../assets/strings.json';
-import { HackerStatus } from '../../contexts/TableContext';
 
 interface Props {
 	borderRadius?: string;
@@ -14,8 +14,8 @@ interface Props {
 }
 
 interface ComponentProps extends Props {
-	generateColor?: (value: HackerStatus) => string;
-	value: HackerStatus;
+	generateColor?: (value: ApplicationStatus) => string;
+	value: ApplicationStatus;
 }
 
 interface StyledProps extends Props {
@@ -31,6 +31,11 @@ const StyledDiv = styled('div')`
 	text-align: ${(props: StyledProps) => props.textAlign || 'center'};
 	border-radius: ${(props: StyledProps) => props.borderRadius || '1rem'};
 	width: ${(props: StyledProps) => props.width || '5rem'};
+	text-transform: lowercase;
+
+	&::first-letter {
+		text-transform: capitalize;
+	}
 `;
 
 export const Status: FunctionComponent<ComponentProps> = ({

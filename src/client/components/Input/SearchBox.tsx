@@ -10,7 +10,7 @@ interface Props {
 	width?: string;
 }
 
-const SearchBox = styled('input')`
+export const SearchBox = styled('input')`
 	${(props: Props) => props.flex && 'flex-grow: 1;'};
 	min-width: ${(props: Props) => (props.minWidth ? props.minWidth : '30rem')};
 	${(props: Props) => (props.width ? props.width : null)};
