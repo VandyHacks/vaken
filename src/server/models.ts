@@ -28,7 +28,7 @@ export interface Models {
 }
 
 export const initDb = async (): Promise<Models> => {
-	const dbUrl = process.env['MONGODB_BASE_URL'] || 'mongodb://localhost:27017';
+	const dbUrl = process.env.MONGODB_BASE_URL || 'mongodb://localhost:27017';
 	const db = (await MongoClient.connect(dbUrl, { useNewUrlParser: true })).db('vaken');
 
 	return {

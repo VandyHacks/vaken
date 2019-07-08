@@ -2,10 +2,8 @@
 // if you're looking for a client (especially React) or server lint rule
 // go to the configs in their respective directories
 module.exports = {
-	env: { 'jest/globals': true },
 	extends: [
 		'airbnb', // Airbnb style guide
-		'eslint:recommended',
 		'plugin:@typescript-eslint/eslint-recommended',
 		'plugin:@typescript-eslint/recommended',
 		'plugin:import/errors',
@@ -39,6 +37,9 @@ module.exports = {
 		project: './tsconfig.json',
 	},
 	rules: {
+		'no-void': 0,
+		'no-underscore-dangle': 0,
+		'no-return-assign': [2, 'except-parens'],
 		'typescript-sort-keys/interface': 2,
 		'typescript-sort-keys/string-enum': 2,
 		'@typescript-eslint/explicit-function-return-type': [
@@ -54,4 +55,10 @@ module.exports = {
 		],
 	},
 	root: true,
+	overrides: [
+		{
+			files: ['**/*.test.js'],
+			env: { 'jest/globals': true },
+		},
+	],
 };

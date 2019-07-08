@@ -30,7 +30,7 @@ export const registerAuthRoutes = (app: Express): void => {
 		(req, res) => void res.redirect('/')
 	);
 
-	app.get('/api/logout', function(req, res) {
+	app.get('/api/logout', (req, res) => {
 		req.logout();
 		res.redirect('/');
 	});
