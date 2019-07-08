@@ -2,8 +2,8 @@
 
 exports[`Test Status renders correctly 1`] = `
 <div
-  className="sc-bdVaJa fhDPKM"
+  className="sc-bdVaJa dSRTDI"
 >
-  5
+  CONFIRMED
 </div>
 `;

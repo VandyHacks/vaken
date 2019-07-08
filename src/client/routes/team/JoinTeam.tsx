@@ -1,7 +1,7 @@
 import React, { FC, useState, ChangeEventHandler, useCallback } from 'react';
 import styled from 'styled-components';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
-import SearchBox from '../../components/Input/SearchBox';
+import { SearchBox } from '../../components/Input/SearchBox';
 import { ActionButton } from '../../components/Buttons/ActionButton';
 import { useJoinTeamMutation } from '../../generated/graphql';
 

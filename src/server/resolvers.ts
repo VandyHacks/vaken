@@ -100,7 +100,8 @@ async function updateUser(
 		);
 		if (!value) throw new UserInputError(`user ${user.email} not found`);
 		return value;
-	} else if (user.userType === UserType.Organizer) {
+	}
+	if (user.userType === UserType.Organizer) {
 		const { value } = await models.Organizers.findOneAndUpdate(
 			{ email: user.email },
 			{ $set: newValues },
@@ -118,7 +119,8 @@ async function fetchUser(
 ): Promise<UserDbInterface> {
 	if (userType === UserType.Hacker) {
 		return query({ email }, models.Hackers);
-	} else if (userType === UserType.Organizer) {
+	}
+	if (userType === UserType.Organizer) {
 		return query({ email }, models.Organizers);
 	}
 	throw new ApolloError(`updateUser for userType ${userType} not implemented`);

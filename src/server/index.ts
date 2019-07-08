@@ -51,7 +51,7 @@ export const schema = makeExecutableSchema({
 			return error;
 		},
 		playground: true,
-		schema: schema,
+		schema,
 	});
 
 	server.applyMiddleware({ app });
