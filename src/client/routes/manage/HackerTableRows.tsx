@@ -1,4 +1,6 @@
 import React from 'react';
+import { MutationFn } from 'react-apollo-hooks';
+
 import {
 	Column,
 	SortIndicator,
@@ -17,8 +19,9 @@ import { Row } from './Row';
 import actionRenderer from './ActionRenderer';
 import { reimbursementHeaderRenderer } from './ReimbursementHeader';
 
-import { ApplicationStatus } from '../../generated/graphql';
+import { ApplicationStatus, HackerStatusMutationFn } from '../../generated/graphql';
 import STRINGS from '../../assets/strings.json';
+import { SortFnProps } from './HackerTableTypes';
 import { TableCtxI } from '../../contexts/TableContext';
 
 // Removes unwanted highlighting, adds alternating row colors
@@ -114,16 +117,16 @@ const statusRenderer = ({ cellData }: TableCellProps): JSX.Element => {
 };
 
 interface HackerTableRowsProps {
-	width: string;
-	height: string;
-	updateStatus: Function;
-	sortedData: Object[];
-	onSortColumnChange: Function;
 	generateRowClassName: Function;
+	height: number;
+	onSortColumnChange: (ctx: TableCtxI) => (p: SortFnProps) => void;
+	sortedData: unknown[];
 	table: TableCtxI;
+	updateStatus: HackerStatusMutationFn;
+	width: number;
 }
 
-const HackerTableRows = ({
+export const HackerTableRows = ({
 	width,
 	height,
 	updateStatus,

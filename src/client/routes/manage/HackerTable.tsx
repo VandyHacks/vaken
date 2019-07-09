@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useRef, FC } from 'react';
-import { AutoSizer, SortDirection, SortDirectionType } from 'react-virtualized';
+import { AutoSizer, SortDirection } from 'react-virtualized';
 import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import Fuse from 'fuse.js';
@@ -15,12 +15,12 @@ import { TableCtxI, TableContext, Option } from '../../contexts/TableContext';
 import {
 	useHackerStatusMutation,
 	ApplicationStatus,
-	HackersQuery,
 	useHackerStatusesMutation,
 } from '../../generated/graphql';
 
-import DeselectElement, { SliderInput } from './SliderInput';
 import { HackerTableRows } from './HackerTableRows';
+import { DeselectElement, SliderInput } from './SliderInput';
+import { QueriedHacker, SortFnProps } from './HackerTableTypes';
 
 const Float = styled.div`
 	position: fixed;
@@ -95,9 +95,6 @@ const ColumnSelect = styled(Select)`
 		color: #000000;
 	}
 `;
-
-type ArrayType<T> = T extends (infer U)[] ? U : never;
-type QueriedHacker = ArrayType<HackersQuery['hackers']>;
 
 const columnOptions: { label: string; value: keyof QueriedHacker }[] = [
 	{ label: 'First Name', value: 'firstName' },
@@ -180,10 +177,6 @@ const onTableColumnSelect = (ctx: TableCtxI): ((s: ValueType<Option>) => void) =
 		});
 };
 
-interface SortFnProps {
-	sortBy?: keyof QueriedHacker;
-	sortDirection?: SortDirectionType;
-}
 const onSortColumnChange = (ctx: TableCtxI): ((p: SortFnProps) => void) => {
 	return ({ sortBy, sortDirection }) => {
 		const { sortBy: prevSortBy, sortDirection: prevSortDirection } = ctx.state;
@@ -366,7 +359,12 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 							)}
 							{hasSelection && (
 								<Float className="ignore-select">
-									<SliderInput updateStatuses={updateStatuses} deselect={deselect} />
+									<SliderInput
+										updateStatuses={updateStatuses}
+										deselect={deselect}
+										selectedRowsEmails={selectedRowsEmails}
+										sortBy={sortBy}
+									/>
 								</Float>
 							)}
 						</SelectableGroup>

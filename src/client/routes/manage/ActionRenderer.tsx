@@ -1,11 +1,14 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 
 import { RadioSlider } from '../../components/Buttons/RadioSlider';
-import { ApplicationStatus } from '../../generated/graphql';
-import { QueriedHacker, processSliderInput } from './HackerTableHelper';
+import { TableButton } from '../../components/Buttons/TableButton';
+import { processSliderInput } from './SliderInput';
+import { QueriedHacker } from './HackerTableTypes';
+import { ApplicationStatus, HackerStatusMutationFn } from '../../generated/graphql';
 
 interface ActionRendererProps {
 	rowData: QueriedHacker;
@@ -16,7 +19,7 @@ const Actions = styled('div')`
 
 // action column that contains the actionable buttons
 export default function actionRenderer(
-	updateStatus: MutationFn<HackerStatusMutation, HackerStatusMutationVariables>
+	updateStatus: HackerStatusMutationFn
 ): (p: ActionRendererProps) => JSX.Element {
 	return function ActionRenderer({ rowData: { id, status } }: ActionRendererProps) {
 		let sliderValue: string;

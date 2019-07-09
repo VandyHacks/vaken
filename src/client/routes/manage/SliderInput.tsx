@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { RadioSlider } from '../../components/Buttons/RadioSlider';
-import { ApplicationStatus } from '../../generated/graphql';
+import { QueriedHacker } from './HackerTableTypes';
+import { ApplicationStatus, HackerStatusesMutationFn } from '../../generated/graphql';
 
 export interface DeselectElement extends HTMLDivElement {
 	context: {
@@ -12,7 +13,7 @@ export interface DeselectElement extends HTMLDivElement {
 }
 
 // maps the radio slider labels to the hacker status
-const processSliderInput = (input: string): ApplicationStatus => {
+export const processSliderInput = (input: string): ApplicationStatus => {
 	switch (input.toLowerCase()) {
 		case 'accept':
 			return ApplicationStatus.Accepted;
@@ -26,10 +27,10 @@ const processSliderInput = (input: string): ApplicationStatus => {
 
 interface SliderInputProps {
 	deselect: React.RefObject<DeselectElement>;
-	updateStatuses: Function;
 	selectedRowsEmails: string[];
-	sortBy: undefined as keyof HackersQuery['hackers'][0] | undefined;
-};
+	sortBy: keyof QueriedHacker;
+	updateStatuses: HackerStatusesMutationFn;
+}
 
 export const SliderInput = ({
 	updateStatuses,
