@@ -1,18 +1,8 @@
-import React, { useContext, useState, useEffect, useRef, FC } from 'react';
-import {
-	Table,
-	Column,
-	AutoSizer,
-	SortDirection,
-	SortIndicator,
-	TableHeaderProps,
-	TableCellProps,
-	TableRowProps,
-	SortDirectionType,
-	Index,
-} from 'react-virtualized';
+import React from 'react';
+import { SortIndicator, TableHeaderProps } from 'react-virtualized';
 import 'react-virtualized/styles.css';
-import styled from 'styled-components';
+
+import plane from '../../assets/img/plane.svg';
 
 // renders an svg instead of a text label, will with a clickable sort indicator
 const renderHeaderAsSVG = (

@@ -24,7 +24,6 @@ import { FloatingButton } from '../../components/Buttons/FloatingButton';
 import { Status } from '../../components/Text/Status';
 import { Checkmark } from '../../components/Symbol/Checkmark';
 import { SearchBox } from '../../components/Input/SearchBox';
-import plane from '../../assets/img/plane.svg';
 import STRINGS from '../../assets/strings.json';
 import { TableCtxI, TableContext, Option } from '../../contexts/TableContext';
 import {
@@ -35,7 +34,7 @@ import {
 import { Row } from './Row';
 import actionRenderer from './ActionRenderer';
 import { QueriedHacker, processSliderInput } from './HackerTableHelper';
-import reimbursementHeaderRenderer from './ReimbursementHeader';
+import { reimbursementHeaderRenderer } from './ReimbursementHeader';
 
 const Float = styled.div`
 	position: fixed;
