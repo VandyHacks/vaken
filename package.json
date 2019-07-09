@@ -64,7 +64,7 @@
 		"apollo-server-express": "^2.6.6",
 		"chart.js": "^2.8.0",
 		"chartjs-plugin-datalabels": "^0.6.0",
-		"csstype": "^2.6.5",
+		"csstype": "^2.6.6",
 		"dotenv": "^8.0.0",
 		"express": "^4.17.1",
 		"express-session": "^1.16.2",
