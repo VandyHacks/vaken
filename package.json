@@ -168,7 +168,7 @@
 		"ts-node-dev": "^1.0.0-pre.40",
 		"typedoc": "^0.14.2",
 		"typescript": "^3.5.2",
-		"webpack": "^4.35.2",
+		"webpack": "^4.35.3",
 		"webpack-dev-server": "^3.7.2",
 		"webpack-merge": "^4.2.1"
 	},
