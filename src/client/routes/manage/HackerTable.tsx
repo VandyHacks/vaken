@@ -16,10 +16,8 @@ import styled from 'styled-components';
 import Fuse from 'fuse.js';
 import Select from 'react-select';
 import { ValueType } from 'react-select/src/types';
-import { Link } from 'react-router-dom';
-import { MutationFn } from 'react-apollo';
 import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
-import { TableButton } from '../../components/Buttons/TableButton';
+
 import { ToggleSwitch } from '../../components/Buttons/ToggleSwitch';
 import { RadioSlider } from '../../components/Buttons/RadioSlider';
 import { FloatingButton } from '../../components/Buttons/FloatingButton';
@@ -31,16 +29,13 @@ import STRINGS from '../../assets/strings.json';
 import { TableCtxI, TableContext, Option } from '../../contexts/TableContext';
 import {
 	useHackerStatusMutation,
-	HackersQuery,
 	ApplicationStatus,
-	HackerStatusMutation,
-	HackerStatusMutationVariables,
 	useHackerStatusesMutation,
 } from '../../generated/graphql';
 import { Row } from './Row';
-
-type ArrayType<T> = T extends (infer U)[] ? U : never;
-type QueriedHacker = ArrayType<HackersQuery['hackers']>;
+import actionRenderer from './ActionRenderer';
+import { QueriedHacker, processSliderInput } from './HackerTableHelper';
+import reimbursementHeaderRenderer from './ReimbursementHeader';
 
 const Float = styled.div`
 	position: fixed;
@@ -157,11 +152,6 @@ const ColumnSelect = styled(Select)`
 		color: #000000;
 	}
 `;
-
-const Actions = styled('div')`
-	display: flex;
-`;
-
 const columnOptions: { label: string; value: keyof QueriedHacker }[] = [
 	{ label: 'First Name', value: 'firstName' },
 	{ label: 'Last Name', value: 'lastName' },
@@ -194,83 +184,11 @@ const renderHeaderAsLabel = ({
 	);
 };
 
-// renders an svg instead of a text label, will with a clickable sort indicator
-const renderHeaderAsSVG = (
-	{ dataKey, sortBy, sortDirection, label }: TableHeaderProps,
-	svg: string
-): JSX.Element => {
-	return (
-		<>
-			<img alt={String(label)} src={svg} />
-			{sortBy === dataKey && <SortIndicator sortDirection={sortDirection} />}
-		</>
-	);
-};
-
 // renders a solid checkmark if true, else an empty circle
 const checkmarkRenderer = ({ cellData }: TableCellProps): JSX.Element => {
 	return <Checkmark value={cellData} />;
 };
 
-// maps the radio slider labels to the hacker status
-const processSliderInput = (input: string): ApplicationStatus => {
-	switch (input.toLowerCase()) {
-		case 'accept':
-			return ApplicationStatus.Accepted;
-		case 'reject':
-			return ApplicationStatus.Rejected;
-		case 'undecided':
-		default:
-			return ApplicationStatus.Submitted;
-	}
-};
-
-interface ActionRendererProps {
-	rowData: QueriedHacker;
-}
-// action column that contains the actionable buttons
-function actionRenderer(
-	updateStatus: MutationFn<HackerStatusMutation, HackerStatusMutationVariables>
-): (p: ActionRendererProps) => JSX.Element {
-	return function ActionRenderer({ rowData: { id, status } }: ActionRendererProps) {
-		let sliderValue: string;
-		switch (status) {
-			case ApplicationStatus.Accepted:
-				sliderValue = 'Accept';
-				break;
-			case ApplicationStatus.Rejected:
-				sliderValue = 'Reject';
-				break;
-			default:
-				sliderValue = 'Undecided';
-		}
-
-		return (
-			<Actions className="ignore-select">
-				<RadioSlider
-					option1="Accept"
-					option2="Undecided"
-					option3="Reject"
-					value={sliderValue}
-					onChange={(input: string) => {
-						const newStatus = processSliderInput(input);
-						updateStatus({ variables: { input: { id, status: newStatus } } });
-					}}
-					disable={
-						status !== ApplicationStatus.Accepted &&
-						status !== ApplicationStatus.Rejected &&
-						status !== ApplicationStatus.Submitted
-					}
-				/>
-				<Link
-					style={{ textDecoration: 'none' }}
-					to={{ pathname: '/manageHackers/hacker', state: { id } }}>
-					<TableButton>View</TableButton>
-				</Link>
-			</Actions>
-		);
-	};
-}
 // wrapper to use createSelectable() from react-selectable-fast
 const rowRenderer = (
 	props: TableRowProps & { selectableRef: string; selected: boolean; selecting: boolean }
@@ -395,23 +313,6 @@ const onSortColumnChange = (ctx: TableCtxI): ((p: SortFnProps) => void) => {
 interface HackerTableProps {
 	data: QueriedHacker[];
 }
-
-// header renderer for travel reimbursement part of table
-const reimbursementHeaderRenderer = ({
-	dataKey,
-	sortBy,
-	sortDirection,
-	label,
-}: TableHeaderProps): JSX.Element =>
-	renderHeaderAsSVG(
-		{
-			dataKey,
-			label,
-			sortBy,
-			sortDirection,
-		},
-		plane
-	);
 
 const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Element => {
 	const table = useContext(TableContext);
