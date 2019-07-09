@@ -21,11 +21,12 @@ npm i # install local dependencies
 npm i -g nodemon webpack webpack-cli typescript ts-node # install global dependencies
 ```
 
+[Install MongoDB](https://www.mongodb.com/download-center/community) locally and run it
+
 ### Running the app:
 
 ```bash
-npm run dev-server # start backend first
-npm start # runs frontend with hot reload using Webpack Dev Server
+npm start # runs backend + frontend, both reloading on changes
 ```
 
 ### Testing
@@ -39,7 +40,8 @@ Jest configs are split using projects into specific backend and frontend configu
 Running tests
 
 ```bash
-npm t # runs tests with coverage
+npm run check:test # runs only changed tests
+npm run check:test:ci # runs all tests
 ```
 
 ### Linting
@@ -53,8 +55,8 @@ NOTE: there are multiple eslint files. The rules are cascaded with the rule in t
 - general config: [./.eslintrc.js](./.eslintrc.js)
 
 ```bash
-npm run lint-check # runs the linter
-npm run lint-fix # runs the linter with autofix
+npm run check:lint # runs the linter
+npm run check:lint:fix # runs the linter with autofix
 ```
 
 ### Folder Structure
@@ -92,7 +94,7 @@ We use:
 
 ### Bots
 
-- Dependabot Preview - makes PRs for dependency upgrades
+- Dependabot Preview - makes PRs for dependency upgrades (set to weekly updates, configure in [Dashboard](https://app.dependabot.com)
 - Codecov - creates code coverage report for each PR, works with Circle CI
 
 ### Github Actions
