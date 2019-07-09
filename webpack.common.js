@@ -53,6 +53,7 @@ module.exports = {
 		filename: 'app.bundle.js',
 		path: path.resolve(__dirname, 'dist/server/app'),
 		publicPath: ASSET_PATH,
+		crossOriginLoading: 'anonymous',
 	},
 	plugins: [
 		new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }), // Check types asynchronously
