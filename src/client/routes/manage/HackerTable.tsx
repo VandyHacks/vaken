@@ -19,7 +19,6 @@ import { ValueType } from 'react-select/src/types';
 import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
 
 import { ToggleSwitch } from '../../components/Buttons/ToggleSwitch';
-import { RadioSlider } from '../../components/Buttons/RadioSlider';
 import { FloatingButton } from '../../components/Buttons/FloatingButton';
 import { Status } from '../../components/Text/Status';
 import { Checkmark } from '../../components/Symbol/Checkmark';
@@ -29,11 +28,12 @@ import { TableCtxI, TableContext, Option } from '../../contexts/TableContext';
 import {
 	useHackerStatusMutation,
 	ApplicationStatus,
+	HackersQuery,
 	useHackerStatusesMutation,
 } from '../../generated/graphql';
 import { Row } from './Row';
 import actionRenderer from './ActionRenderer';
-import { QueriedHacker, processSliderInput } from './HackerTableHelper';
+import DeselectElement, { SliderInput } from './HackerTableHelper';
 import { reimbursementHeaderRenderer } from './ReimbursementHeader';
 
 const Float = styled.div`
@@ -151,6 +151,10 @@ const ColumnSelect = styled(Select)`
 		color: #000000;
 	}
 `;
+
+type ArrayType<T> = T extends (infer U)[] ? U : never;
+type QueriedHacker = ArrayType<HackersQuery['hackers']>;
+
 const columnOptions: { label: string; value: keyof QueriedHacker }[] = [
 	{ label: 'First Name', value: 'firstName' },
 	{ label: 'Last Name', value: 'lastName' },
@@ -159,14 +163,6 @@ const columnOptions: { label: string; value: keyof QueriedHacker }[] = [
 	{ label: 'Graduation Year', value: 'gradYear' },
 	{ label: 'Status', value: 'status' },
 ];
-
-interface DeselectElement extends HTMLDivElement {
-	context: {
-		selectable: {
-			clearSelection: () => void;
-		};
-	};
-}
 
 // renders a text label with a clickable sort indicator
 const renderHeaderAsLabel = ({
@@ -542,30 +538,7 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 							)}
 							{hasSelection && (
 								<Float className="ignore-select">
-									<RadioSlider
-										option1="Accept"
-										option2="Undecided"
-										option3="Reject"
-										large
-										value="Undecided"
-										onChange={(input: string) => {
-											const newStatus = processSliderInput(input);
-											updateStatuses({
-												variables: { input: { ids: selectedRowsEmails, status: newStatus } },
-											});
-											// to deselect afterwards, react-selectable-fast has no clean way to interface with a clearSelection function
-											// so this is a workaround by simulating a click on the SelectAllButton
-											if (
-												sortBy === 'status' &&
-												deselect &&
-												deselect.current &&
-												deselect.current.context &&
-												deselect.current.context.selectable
-											) {
-												deselect.current.context.selectable.clearSelection();
-											}
-										}}
-									/>
+									<SliderInput updateStatuses={updateStatuses} deselect={deselect} />
 								</Float>
 							)}
 						</SelectableGroup>
