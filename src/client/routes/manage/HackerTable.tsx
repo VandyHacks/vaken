@@ -15,7 +15,6 @@ import { TableCtxI, TableContext, Option } from '../../contexts/TableContext';
 import {
 	useHackerStatusMutation,
 	ApplicationStatus,
-	HackersQuery,
 	useHackerStatusesMutation,
 } from '../../generated/graphql';
 
