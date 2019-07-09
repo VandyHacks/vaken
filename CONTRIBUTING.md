@@ -94,7 +94,7 @@ We use:
 
 ### Bots
 
-- Dependabot Preview - makes PRs for dependency upgrades (set to weekly updates, configure in [Dashboard](https://app.dependabot.com)
+- Dependabot Preview - makes PRs for dependency upgrades (set to monthly updates, configure in [Dashboard](https://app.dependabot.com)
 - Codecov - creates code coverage report for each PR, works with Circle CI
 
 ### Github Actions
