@@ -26,35 +26,33 @@ import Context from './context';
 import { Models } from './models';
 
 function toDietEnum(restriction: string): DietaryRestriction {
-	if (!Object.values(DietaryRestriction).includes(restriction))
+	if (!(restriction in DietaryRestriction))
 		throw new UserInputError(`Invalid dietary restriction ${restriction}`);
 	return restriction as DietaryRestriction;
 }
 
 function toRaceEnum(race: string): Race {
-	if (!Object.values(Race).includes(race)) throw new UserInputError(`Invalid race ${race}`);
+	if (!(race in Race)) throw new UserInputError(`Invalid race ${race}`);
 	return race as Race;
 }
 
 function toGenderEnum(gender: string): Gender {
-	if (!Object.values(Gender).includes(gender)) throw new UserInputError(`Invalid gender ${gender}`);
+	if (!(gender in Gender)) throw new UserInputError(`Invalid gender ${gender}`);
 	return gender as Gender;
 }
 
 function toShirtSizeEnum(size: string): ShirtSize {
-	if (!Object.values(ShirtSize).includes(size))
-		throw new UserInputError(`Invalid shirt size: ${size}`);
+	if (!(size in ShirtSize)) throw new UserInputError(`Invalid shirt size: ${size}`);
 	return size as ShirtSize;
 }
 
 function toLoginProviderEnum(input: string): LoginProvider {
-	if (!Object.values(LoginProvider).includes(input))
-		throw new UserInputError(`Invalid login provider: ${input}`);
+	if (!(input in LoginProvider)) throw new UserInputError(`Invalid login provider: ${input}`);
 	return input as LoginProvider;
 }
 
 function toApplicationStatusEnum(status: string): ApplicationStatus {
-	if (!Object.values(ApplicationStatus).includes(status))
+	if (!(status in ApplicationStatus))
 		throw new UserInputError(`Invalid application status: ${status}`);
 	return status as ApplicationStatus;
 }
