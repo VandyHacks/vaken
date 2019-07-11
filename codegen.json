@@ -16,7 +16,9 @@
 					"Organizer": "OrganizerDbObject",
 					"Shift": "ShiftDbObject",
 					"Team": "TeamDbObject",
-					"User": "UserDbInterface"
+					"User": "UserDbInterface",
+					"Travel": "TravelDbObject",
+					"File": "FileDbObject"
 				},
 				"skipTypenames": false
 			}

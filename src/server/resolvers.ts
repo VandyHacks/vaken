@@ -21,6 +21,8 @@ import {
 	UserInput,
 	Gender,
 	UserResolvers,
+	File,
+	FileDbObject,
 } from './generated/graphql';
 import Context from './context';
 import { Models } from './models';
@@ -193,6 +195,7 @@ export const resolvers: Resolvers = {
 		},
 		userType: () => UserType.Hacker,
 		volunteer: async hacker => (await hacker).volunteer || null,
+		travel: async hacker => (await hacker).travel || null,
 	},
 	Login: {
 		createdAt: async login => (await login).createdAt.getTime(),
@@ -310,6 +313,15 @@ export const resolvers: Resolvers = {
 					`unable to update profile: "${JSON.stringify(ctx.user)}" not found `
 				);
 			return result;
+		},
+		uploadFile: async (root, args, ctx: Context) => {
+			// Save file to filesystem 
+			// https://github.com/jaydenseric/apollo-upload-examples
+
+			// Return result 
+			// File obj with id, path, filename,mimetype
+
+			
 		},
 	},
 	Organizer: {

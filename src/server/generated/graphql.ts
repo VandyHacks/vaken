@@ -1,4 +1,4 @@
-import { GraphQLResolveInfo } from 'graphql';
+import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 export type Maybe<T> = T | null;
 export type MaybePromise<T> = Promise<T> | T;
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
@@ -9,6 +9,7 @@ export type Scalars = {
 	Boolean: boolean;
 	Int: number;
 	Float: number;
+	Upload: any;
 };
 
 export type AdditionalEntityFields = {
@@ -57,6 +58,14 @@ export enum DietaryRestriction {
 	Halal = 'HALAL',
 }
 
+export type File = {
+	__typename?: 'File';
+	id: Scalars['ID'];
+	path: Scalars['String'];
+	filename: Scalars['String'];
+	mimetype: Scalars['String'];
+};
+
 export enum Gender {
 	Male = 'MALE',
 	Female = 'FEMALE',
@@ -89,6 +98,7 @@ export type Hacker = User & {
 	volunteer?: Maybe<Scalars['Boolean']>;
 	github?: Maybe<Scalars['String']>;
 	team?: Maybe<Team>;
+	travel?: Maybe<Travel>;
 };
 
 export type HackerStatusesInput = {
@@ -142,6 +152,7 @@ export type Mutation = {
 	leaveTeam: Hacker;
 	hackerStatus: Hacker;
 	hackerStatuses: Array<Hacker>;
+	singleUpload: File;
 };
 
 export type MutationUpdateMyProfileArgs = {
@@ -163,6 +174,10 @@ export type MutationHackerStatusArgs = {
 
 export type MutationHackerStatusesArgs = {
 	input: HackerStatusesInput;
+};
+
+export type MutationSingleUploadArgs = {
+	input: Scalars['Upload'];
 };
 
 export type Organizer = User & {
@@ -268,6 +283,22 @@ export type Team = {
 
 export type TeamInput = {
 	name: Scalars['String'];
+};
+
+export type Travel = {
+	__typename?: 'Travel';
+	id: Scalars['ID'];
+	createdAt: Scalars['Int'];
+	originCity?: Maybe<Scalars['String']>;
+	receipts?: Maybe<Array<Maybe<TravelReceipt>>>;
+};
+
+export type TravelReceipt = {
+	__typename?: 'TravelReceipt';
+	id: Scalars['ID'];
+	createdAt: Scalars['Int'];
+	amount: Scalars['Int'];
+	content: File;
 };
 
 export type User = {
@@ -377,6 +408,9 @@ export type ResolversTypes = {
 	ApplicationStatus: ApplicationStatus;
 	Boolean: MaybePromise<Scalars['Boolean']>;
 	Team: MaybePromise<TeamDbObject>;
+	Travel: MaybePromise<TravelDbObject>;
+	TravelReceipt: MaybePromise<Omit<TravelReceipt, 'content'> & { content: ResolversTypes['File'] }>;
+	File: MaybePromise<FileDbObject>;
 	SortDirection: SortDirection;
 	Organizer: MaybePromise<OrganizerDbObject>;
 	Mentor: MaybePromise<MentorDbObject>;
@@ -386,6 +420,7 @@ export type ResolversTypes = {
 	TeamInput: TeamInput;
 	HackerStatusInput: HackerStatusInput;
 	HackerStatusesInput: HackerStatusesInput;
+	Upload: MaybePromise<Scalars['Upload']>;
 	AuthLevel: AuthLevel;
 	Gender: Gender;
 	ApplicationQuestion: MaybePromise<ApplicationQuestionDbObject>;
@@ -477,6 +512,13 @@ export type ApplicationQuestionResolvers<
 	note?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
 };
 
+export type FileResolvers<ContextType = any, ParentType = ResolversTypes['File']> = {
+	id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+	path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+	filename?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+	mimetype?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+};
+
 export type HackerResolvers<ContextType = any, ParentType = ResolversTypes['Hacker']> = {
 	id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
 	createdAt?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -505,6 +547,7 @@ export type HackerResolvers<ContextType = any, ParentType = ResolversTypes['Hack
 	volunteer?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
 	github?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
 	team?: Resolver<Maybe<ResolversTypes['Team']>, ParentType, ContextType>;
+	travel?: Resolver<Maybe<ResolversTypes['Travel']>, ParentType, ContextType>;
 };
 
 export type LoginResolvers<ContextType = any, ParentType = ResolversTypes['Login']> = {
@@ -563,6 +606,12 @@ export type MutationResolvers<ContextType = any, ParentType = ResolversTypes['Mu
 		ContextType,
 		MutationHackerStatusesArgs
 	>;
+	singleUpload?: Resolver<
+		ResolversTypes['File'],
+		ParentType,
+		ContextType,
+		MutationSingleUploadArgs
+	>;
 };
 
 export type OrganizerResolvers<ContextType = any, ParentType = ResolversTypes['Organizer']> = {
@@ -616,6 +665,31 @@ export type TeamResolvers<ContextType = any, ParentType = ResolversTypes['Team']
 	size?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
 };
 
+export type TravelResolvers<ContextType = any, ParentType = ResolversTypes['Travel']> = {
+	id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+	createdAt?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+	originCity?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+	receipts?: Resolver<
+		Maybe<Array<Maybe<ResolversTypes['TravelReceipt']>>>,
+		ParentType,
+		ContextType
+	>;
+};
+
+export type TravelReceiptResolvers<
+	ContextType = any,
+	ParentType = ResolversTypes['TravelReceipt']
+> = {
+	id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+	createdAt?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+	amount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+	content?: Resolver<ResolversTypes['File'], ParentType, ContextType>;
+};
+
+export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Upload'], any> {
+	name: 'Upload';
+}
+
 export type UserResolvers<ContextType = any, ParentType = ResolversTypes['User']> = {
 	__resolveType: TypeResolveFn<'Hacker' | 'Organizer' | 'Mentor', ParentType, ContextType>;
 	id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -640,6 +714,7 @@ export type UserResolvers<ContextType = any, ParentType = ResolversTypes['User']
 export type Resolvers<ContextType = any> = {
 	ApplicationField?: ApplicationFieldResolvers<ContextType>;
 	ApplicationQuestion?: ApplicationQuestionResolvers<ContextType>;
+	File?: FileResolvers<ContextType>;
 	Hacker?: HackerResolvers<ContextType>;
 	Login?: LoginResolvers<ContextType>;
 	Mentor?: MentorResolvers<ContextType>;
@@ -648,6 +723,9 @@ export type Resolvers<ContextType = any> = {
 	Query?: QueryResolvers<ContextType>;
 	Shift?: ShiftResolvers<ContextType>;
 	Team?: TeamResolvers<ContextType>;
+	Travel?: TravelResolvers<ContextType>;
+	TravelReceipt?: TravelReceiptResolvers<ContextType>;
+	Upload?: GraphQLScalarType;
 	User?: UserResolvers;
 };
 
@@ -708,6 +786,7 @@ export type HackerDbObject = UserDbInterface & {
 	volunteer?: Maybe<boolean>;
 	github?: Maybe<string>;
 	team?: Maybe<TeamDbObject>;
+	travel?: Maybe<TravelDbObject>;
 };
 
 export type TeamDbObject = {
@@ -715,6 +794,25 @@ export type TeamDbObject = {
 	createdAt: Date;
 	name?: Maybe<string>;
 	memberIds: Array<string>;
+};
+
+export type TravelDbObject = {
+	_id: ObjectID;
+	createdAt: Date;
+	originCity?: Maybe<string>;
+};
+
+export type TravelReceiptDbObject = {
+	_id: ObjectID;
+	createdAt: Date;
+	amount: number;
+};
+
+export type FileDbObject = {
+	_id: ObjectID;
+	path: string;
+	filename: string;
+	mimetype: string;
 };
 
 export type OrganizerDbObject = UserDbInterface & {

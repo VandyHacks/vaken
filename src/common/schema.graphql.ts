@@ -131,6 +131,7 @@ export default gql`
 		volunteer: Boolean @column
 		github: String @column
 		team: Team @embedded
+		travel: Travel @embedded
 	}
 
 	type Shift @entity(embedded: true) {
@@ -162,6 +163,27 @@ export default gql`
 		name: String @column
 		memberIds: [ID!]! @column
 		size: Int!
+	}
+
+	type Travel @entity(embedded: true) {
+		id: ID! @id @column
+		createdAt: Int! @column(overrideType: "Date")
+		originCity: String @column
+		receipts: [TravelReceipt]
+	}
+
+	type File @entity {
+		id: ID! @id @column
+		path: String! @column
+		filename: String! @column
+		mimetype: String! @column
+	}
+
+	type TravelReceipt @entity(embedded: true) {
+		id: ID! @id @column
+		createdAt: Int! @column(overrideType: "Date")
+		amount: Int! @column
+		content: File!
 	}
 
 	type Organizer implements User @entity {
@@ -218,6 +240,8 @@ export default gql`
 		status: ApplicationStatus!
 	}
 
+	scalar Upload
+
 	type Mutation {
 		updateMyProfile(input: UserInput!): User!
 		updateProfile(id: ID!, input: UserInput!): User!
@@ -225,5 +249,7 @@ export default gql`
 		leaveTeam: Hacker!
 		hackerStatus(input: HackerStatusInput!): Hacker!
 		hackerStatuses(input: HackerStatusesInput!): [Hacker!]!
+		singleUpload(input: Upload!): File!
+		#multipleUpload(files: [Upload!]!): [File!]!
 	}
 `;

@@ -10,6 +10,7 @@ export type Scalars = {
 	Boolean: boolean;
 	Int: number;
 	Float: number;
+	Upload: any;
 };
 
 export type AdditionalEntityFields = {
@@ -58,6 +59,14 @@ export enum DietaryRestriction {
 	Halal = 'HALAL',
 }
 
+export type File = {
+	__typename?: 'File';
+	id: Scalars['ID'];
+	path: Scalars['String'];
+	filename: Scalars['String'];
+	mimetype: Scalars['String'];
+};
+
 export enum Gender {
 	Male = 'MALE',
 	Female = 'FEMALE',
@@ -90,6 +99,7 @@ export type Hacker = User & {
 	volunteer?: Maybe<Scalars['Boolean']>;
 	github?: Maybe<Scalars['String']>;
 	team?: Maybe<Team>;
+	travel?: Maybe<Travel>;
 };
 
 export type HackerStatusesInput = {
@@ -143,6 +153,7 @@ export type Mutation = {
 	leaveTeam: Hacker;
 	hackerStatus: Hacker;
 	hackerStatuses: Array<Hacker>;
+	singleUpload: File;
 };
 
 export type MutationUpdateMyProfileArgs = {
@@ -164,6 +175,10 @@ export type MutationHackerStatusArgs = {
 
 export type MutationHackerStatusesArgs = {
 	input: HackerStatusesInput;
+};
+
+export type MutationSingleUploadArgs = {
+	input: Scalars['Upload'];
 };
 
 export type Organizer = User & {
@@ -269,6 +284,22 @@ export type Team = {
 
 export type TeamInput = {
 	name: Scalars['String'];
+};
+
+export type Travel = {
+	__typename?: 'Travel';
+	id: Scalars['ID'];
+	createdAt: Scalars['Int'];
+	originCity?: Maybe<Scalars['String']>;
+	receipts?: Maybe<Array<Maybe<TravelReceipt>>>;
+};
+
+export type TravelReceipt = {
+	__typename?: 'TravelReceipt';
+	id: Scalars['ID'];
+	createdAt: Scalars['Int'];
+	amount: Scalars['Int'];
+	content: File;
 };
 
 export type User = {
@@ -411,6 +442,31 @@ export type LeaveTeamMutation = { __typename?: 'Mutation' } & {
 			team: Maybe<{ __typename?: 'Team' } & Pick<Team, 'id' | 'name' | 'memberIds' | 'size'>>;
 		});
 };
+
+export type TravelQueryVariables = {};
+
+export type TravelQuery = { __typename?: 'Query' } & {
+	me: Maybe<
+		{ __typename?: 'Hacker' | 'Organizer' | 'Mentor' } & Pick<User, 'id'> &
+			({ __typename?: 'Hacker' } & {
+				travel: Maybe<
+					{ __typename?: 'Travel' } & Pick<Travel, 'id' | 'createdAt' | 'originCity'> & {
+							receipts: Maybe<
+								Array<Maybe<{ __typename?: 'TravelReceipt' } & Pick<TravelReceipt, 'id'>>>
+							>;
+						}
+				>;
+			})
+	>;
+};
+
+export type UploadFileMutationVariables = {
+	input: Scalars['Upload'];
+};
+
+export type UploadFileMutation = { __typename?: 'Mutation' } & {
+	singleUpload: { __typename?: 'File' } & Pick<File, 'id' | 'path' | 'filename' | 'mimetype'>;
+};
 import { ObjectID } from 'mongodb';
 export type UserDbInterface = {
 	_id: ObjectID;
@@ -447,6 +503,7 @@ export type HackerDbObject = UserDbInterface & {
 	volunteer?: Maybe<boolean>;
 	github?: Maybe<string>;
 	team?: Maybe<TeamDbObject>;
+	travel?: Maybe<TravelDbObject>;
 };
 
 export type TeamDbObject = {
@@ -454,6 +511,25 @@ export type TeamDbObject = {
 	createdAt: Date;
 	name?: Maybe<string>;
 	memberIds: Array<string>;
+};
+
+export type TravelDbObject = {
+	_id: ObjectID;
+	createdAt: Date;
+	originCity?: Maybe<string>;
+};
+
+export type TravelReceiptDbObject = {
+	_id: ObjectID;
+	createdAt: Date;
+	amount: number;
+};
+
+export type FileDbObject = {
+	_id: ObjectID;
+	path: string;
+	filename: string;
+	mimetype: string;
 };
 
 export type OrganizerDbObject = UserDbInterface & {
@@ -695,6 +771,55 @@ export function useLeaveTeamMutation(
 ) {
 	return ReactApolloHooks.useMutation<LeaveTeamMutation, LeaveTeamMutationVariables>(
 		LeaveTeamDocument,
+		baseOptions
+	);
+}
+export const TravelDocument = gql`
+	query travel {
+		me {
+			id
+			... on Hacker {
+				travel {
+					id
+					createdAt
+					originCity
+					receipts {
+						id
+					}
+				}
+			}
+		}
+	}
+`;
+
+export function useTravelQuery(
+	baseOptions?: ReactApolloHooks.QueryHookOptions<TravelQueryVariables>
+) {
+	return ReactApolloHooks.useQuery<TravelQuery, TravelQueryVariables>(TravelDocument, baseOptions);
+}
+export const UploadFileDocument = gql`
+	mutation uploadFile($input: Upload!) {
+		singleUpload(input: $input) {
+			id
+			path
+			filename
+			mimetype
+		}
+	}
+`;
+export type UploadFileMutationFn = ReactApollo.MutationFn<
+	UploadFileMutation,
+	UploadFileMutationVariables
+>;
+
+export function useUploadFileMutation(
+	baseOptions?: ReactApolloHooks.MutationHookOptions<
+		UploadFileMutation,
+		UploadFileMutationVariables
+	>
+) {
+	return ReactApolloHooks.useMutation<UploadFileMutation, UploadFileMutationVariables>(
+		UploadFileDocument,
 		baseOptions
 	);
 }

@@ -40,6 +40,12 @@ const routes = [
 		path: '/team',
 	},
 	{
+		authLevel: [UserType.Hacker, UserType.Organizer],
+		component: Team,
+		displayText: 'Travel',
+		path: '/travel',
+	},
+	{
 		authLevel: [UserType.Organizer],
 		component: ManageHackers,
 		displayText: 'Manage Hackers',
