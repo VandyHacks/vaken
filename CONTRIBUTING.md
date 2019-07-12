@@ -21,7 +21,7 @@ npm i # install local dependencies
 npm i -g nodemon webpack webpack-cli typescript ts-node # install global dependencies
 ```
 
-[Install MongoDB](https://www.mongodb.com/download-center/community) locally and run it
+[Install MongoDB](https://www.mongodb.com/download-center/community) locally and run it (or use [MongoDB Atlas](https://www.mongodb.com/cloud/atlas))
 
 ### Running the app:
 
@@ -88,9 +88,10 @@ We use:
 - Circle CI
 - Eslint (there's a different config for server and client)
 - Prettier (can be used with `npm format` but we also use the eslint integration)
-- Nodemon
+- [Ts-node-dev](https://github.com/whitecolor/ts-node-dev) for auto reloading server
+- [dotansimha/graphql-code-generator](https://github.com/dotansimha/graphql-code-generator) for automatic code generation
 - Webpack Dev Server
-- TypeDoc - for documentation
+- [TypeDoc](https://typedoc.org/) - for documentation
 
 ### Bots
 
