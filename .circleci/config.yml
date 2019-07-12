@@ -52,7 +52,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/project
-      - run: 'npm audit --audit-level=critical --only=prod'
+      - run: 'npm audit --audit-level=high --only=prod'
   test:
     <<: *defaults
     steps:
