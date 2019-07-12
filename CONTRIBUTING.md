@@ -28,6 +28,8 @@ npm i -g nodemon webpack webpack-cli typescript ts-node # install global depende
 ```bash
 npm start # runs backend + frontend, both reloading on changes
 ```
+Now to go `localhost:8080` to see the page.
+NOTE: you can also go to `localhost:8080/graphql` to see an interactive GraphQL IDE!
 
 ### Testing
 
