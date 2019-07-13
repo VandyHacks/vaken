@@ -21,15 +21,16 @@ npm i # install local dependencies
 npm i -g nodemon webpack webpack-cli typescript ts-node # install global dependencies
 ```
 
-[Install MongoDB](https://www.mongodb.com/download-center/community) locally and run it (or use [MongoDB Atlas](https://www.mongodb.com/cloud/atlas))
+You will need a MongoDB instance running in order for the application to work correctly. We recommend using [MongoDB Atlas](https://www.mongodb.com/cloud/atlas). Another option is to [Install MongoDB](https://www.mongodb.com/download-center/community) locally and run it.
 
 ### Running the app:
 
 ```bash
 npm start # runs backend + frontend, both reloading on changes
 ```
-Now to go `localhost:8080` to see the page.
-NOTE: you can also go to `localhost:8080/graphql` to see an interactive GraphQL IDE!
+
+Now to go `localhost:8081` to see the page.
+NOTE: you can also go to `localhost:8080/graphql` to see an interactive GraphQL IDE to try out queries and mutations.
 
 ### Testing
 
@@ -81,6 +82,16 @@ npm run check:lint:fix # runs the linter with autofix
     - `models.ts` - graphql models
     - `resolvers.ts` - graphql resolvers
 - `// lots of config files here`
+
+NOTE: We use [dotansimha/graphql-code-generator](https://github.com/dotansimha/graphql-code-generator) for automatic code generation. The mappings for schema models to db models are in [./codegen.json](./codegen.json).
+
+Schemas:
+[./src/client/routes/team/teams.graphql.ts](./src/client/routes/team/teams.graphql.ts) - team data
+[./src/client/routes/profile/user.graphql.ts](./src/client/routes/profile/user.graphql.ts) - for a specific user
+[./src/client/routes/manage/hackers.graphql.ts](./src/client/routes/manage/hackers.graphql.ts) - hacker table
+[./src/client/me.graphql.ts](./src/common/schema.graphql.ts) - personal logged in user
+
+[./src/common/schema.graphql.ts](./src/common/schema.graphql.ts) - main schema
 
 ### Tooling
 
