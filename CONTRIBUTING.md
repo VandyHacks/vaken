@@ -21,7 +21,11 @@ npm i # install local dependencies
 npm i -g nodemon webpack webpack-cli typescript ts-node # install global dependencies
 ```
 
-You will need a MongoDB instance running in order for the application to work correctly. We recommend using [MongoDB Atlas](https://www.mongodb.com/cloud/atlas). Another option is to [Install MongoDB](https://www.mongodb.com/download-center/community) locally and run it.
+**Installing MongoDB:**
+
+You will need a MongoDB instance running in order for the application to work correctly. We recommend using [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) to set up a cluster. Another option is to [install MongoDB locally](https://www.mongodb.com/download-center/community) and run it.
+
+In addition, we recommend getting [MongoDB Compass](https://www.mongodb.com/download-center/compass) to view and edit data easily.
 
 ### Running the app:
 
