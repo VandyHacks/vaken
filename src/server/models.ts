@@ -29,9 +29,14 @@ export interface Models {
 
 export const initDb = async (): Promise<Models> => {
 	const dbUrl = process.env.MONGODB_BASE_URL || 'mongodb://localhost:27017';
+	// creates the db the first time it's called if it doesn't exist
 	const db = (await MongoClient.connect(dbUrl, { useNewUrlParser: true })).db('vaken');
 
 	return {
+		/**
+		 * creates the collections the first time it's called if it doesn't exist
+		 * NOTE: these will not show up initially in MongoDB Atlas UI until they're no longer empty collections
+		 */
 		ApplicationFields: db.collection<ApplicationFieldDbObject>('applicationFields'),
 		ApplicationQuestions: db.collection<ApplicationQuestionDbObject>('applicationQuestions'),
 		Hackers: db.collection<HackerDbObject>('Hackers'),
