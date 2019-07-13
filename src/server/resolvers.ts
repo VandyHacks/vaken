@@ -164,6 +164,9 @@ const userResolvers: Required<Omit<UserResolvers, '__resolveType' | 'userType'>>
 };
 
 export const resolvers: Resolvers = {
+	/**
+	 * These resolvers are for querying fields
+	 */
 	ApplicationField: {
 		answer: async field => (await field).answer || null,
 		createdAt: async field => (await field).createdAt.getTime(),
@@ -211,6 +214,10 @@ export const resolvers: Resolvers = {
 		skills: async mentor => (await mentor).skills,
 		userType: () => UserType.Mentor,
 	},
+	/**
+	 * These mutations modify data
+	 * Each may contain  authentication checks as well
+	 */
 	Mutation: {
 		hackerStatus: async (_, { input: { id, status } }, { user, models }: Context) => {
 			if (!user || user.userType !== UserType.Organizer)

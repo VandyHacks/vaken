@@ -15,6 +15,7 @@ if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
 
 const app = express();
 
+// Register auth functions
 app.use(session({ secret: SESSION_SECRET }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -40,7 +41,9 @@ export const schema = makeExecutableSchema({
 });
 
 (async () => {
+	// creates all models and connects to the database
 	const models = await modelsPromise;
+	// starts apollo GraphQL server
 	const server = new ApolloServer({
 		context: ({ req }): Context => ({
 			models,
@@ -56,6 +59,7 @@ export const schema = makeExecutableSchema({
 
 	server.applyMiddleware({ app });
 
+	// starts Express web HTTP server
 	app.listen(
 		{ port: 8080 },
 		() => void logger.info(`Server ready at http://localhost:8080${server.graphqlPath}`)
