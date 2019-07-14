@@ -49,19 +49,17 @@ export const resolvers: CustomResolvers<Context> = {
 	 * These resolvers are for querying fields
 	 */
 	ApplicationField: {
-		answer: async field => (await field).answer || null,
+		answer: async field => (await field).answer || '',
 		createdAt: async field => (await field).createdAt.getTime(),
 		id: async field => (await field).id,
 		question: async field => (await field).question,
-	},
-	ApplicationQuestion: {
-		instruction: async question => (await question).instruction || null,
-		note: async question => (await question).note || null,
-		prompt: async question => (await question).prompt,
+		userId: async field => (await field).userId,
 	},
 	Hacker: {
 		...userResolvers,
 		adult: async hacker => (await hacker).adult || null,
+		application: async (hacker, args, { models }: Context) =>
+			models.ApplicationFields.find({ userId: (await hacker)._id }).toArray(),
 		gender: async hacker => (await hacker).gender || null,
 		github: async hacker => (await hacker).github || null,
 		gradYear: async hacker => (await hacker).gradYear || null,
@@ -172,6 +170,30 @@ export const resolvers: CustomResolvers<Context> = {
 
 			const ret = await models.Hackers.findOne({ email: hacker.email });
 			if (!ret) throw new AuthenticationError(`hacker not found: ${hacker.email}`);
+			return ret;
+		},
+		updateMyApplication: async (root, args, ctx: Context) => {
+			// Enables a user to update their application
+			if (!ctx.user) throw new AuthenticationError(`cannot update application: user not logged in`);
+			const { _id } = ctx.user;
+			// update app answers if they exist
+			await Promise.all(
+				args.input.map(async ({ question, answer }) => {
+					const { value, lastErrorObject } = await ctx.models.ApplicationFields.findOneAndUpdate(
+						{ question, userId: _id },
+						{ $set: { answer, question, userId: _id } },
+						{ returnOriginal: false, upsert: true }
+					);
+					if (lastErrorObject || !value) {
+						throw new UserInputError(
+							`error inputting user application input ${JSON.stringify(lastErrorObject)}`
+						);
+					}
+					return value;
+				})
+			);
+			const ret = await ctx.models.Hackers.findOne({ _id });
+			if (!ret) throw new AuthenticationError(`hacker not found: ${_id}`);
 			return ret;
 		},
 		updateMyProfile: async (root, { input }, { models, user }) => {

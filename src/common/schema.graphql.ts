@@ -87,17 +87,12 @@ export default gql`
 		DESC
 	}
 
-	type ApplicationQuestion @entity {
-		prompt: String! @column
-		instruction: String @column
-		note: String @column
-	}
-
 	type ApplicationField @entity(embedded: true) {
 		id: ID! @column
 		createdAt: Float! @column(overrideType: "Date")
-		question: ApplicationQuestion! @embedded
+		question: String! @embedded
 		answer: String @column
+		userId: ID! @column
 	}
 
 	type Login @entity(additionalFields: [{ path: "email", type: "string" }]) {
@@ -131,6 +126,7 @@ export default gql`
 		volunteer: Boolean @column
 		github: String @column
 		team: Team @embedded
+		application: [ApplicationField!]! @embedded
 	}
 
 	type Shift @entity(embedded: true) {
@@ -218,7 +214,13 @@ export default gql`
 		status: ApplicationStatus!
 	}
 
+	input ApplicationInput {
+		question: String!
+		answer: String!
+	}
+
 	type Mutation {
+		updateMyApplication(input: [ApplicationInput!]!): User!
 		updateMyProfile(input: UserInput!): User!
 		updateProfile(id: ID!, input: UserInput!): User!
 		joinTeam(input: TeamInput!): Hacker!
