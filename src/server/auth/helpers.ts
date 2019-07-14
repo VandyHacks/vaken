@@ -8,13 +8,39 @@ import { Models } from '../models';
 import { fetchUser } from '../resolvers/helpers';
 import logger from '../logger';
 
+export async function getUserFromDb(email: string, userType?: string): Promise<UserDbInterface> {
+	const { Hackers, Organizers, Sponsors } = await DB.collections();
+
+	let user: UserDbInterface | null = null;
+	switch (userType) {
+		case UserType.Hacker:
+			user = await Hackers.findOne({ email });
+			break;
+		case UserType.Organizer:
+			user = await Organizers.findOne({ email });
+			break;
+		case UserType.Sponsor:
+			user = await Sponsors.findOne({ email });
+			break;
+		default:
+			throw new Error(`invalid userType '${userType}'`);
+	}
+
+	if (!user) {
+		throw new Error(`couldn't find user (${user}) with email ${email}`);
+	}
+
+	return user;
+}
+
 export const verifyCallback = async (
 	models: Models,
 	profile: Profile,
 	done: VerifyCallback | GVerifyCallback
 ): Promise<void> => {
 	const { Logins, Hackers } = models;
-	const { userType } = (await Logins.findOne({
+
+	let { userType } = (await Logins.findOne({
 		provider: profile.provider,
 		token: profile.id,
 	})) || { userType: null };
@@ -28,13 +54,35 @@ export const verifyCallback = async (
 		if (userType == null) {
 			// Login must not exist.
 			logger.info(`inserting login for ${email} for ${profile.provider}`);
-			await Logins.insertOne({
-				createdAt: new Date(),
-				email,
-				provider: profile.provider,
-				token: profile.id,
-				userType: UserType.Hacker,
-			});
+			// before checking hacker check if it is a whitelist sponsor
+			const verifySponsor = await Sponsors.findOne({ email });
+			if (verifySponsor != null) {
+				// it is a sponsor and change the status of the sponsor
+				await Logins.insertOne({
+					createdAt: new Date(),
+					email,
+					provider: profile.provider,
+					token: profile.id,
+					userType: UserType.Sponsor,
+				});
+				// useSponsorStatusMutation({
+				// 	variables: { input: { email, status: SponsorStatus.Created } }
+				// });
+				await Sponsors.findOneAndUpdate(
+					{ email },
+					{ $set: { status: SponsorStatus.Created } },
+					{ returnOriginal: false }
+				);
+				userType = UserType.Sponsor;
+			} else {
+				await Logins.insertOne({
+					createdAt: new Date(),
+					email,
+					provider: profile.provider,
+					token: profile.id,
+					userType: UserType.Hacker,
+				});
+			}
 
 			try {
 				// If user is truthy, then we need to insert a new user.
