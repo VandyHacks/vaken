@@ -3,6 +3,7 @@ import {
 	ApplicationFieldDbObject,
 	EventDbObject,
 	HackerDbObject,
+	SponsorDbObject,
 	LoginDbObject,
 	MentorDbObject,
 	OrganizerDbObject,
@@ -25,6 +26,7 @@ export interface Models {
 	Mentors: Collection<MentorDbObject>;
 	Organizers: Collection<OrganizerDbObject>;
 	Shifts: Collection<ShiftDbObject>;
+	Sponsors: Collection<SponsorDbObject>;
 	Teams: Collection<TeamDbObject>;
 	UserTeamIndicies: Collection<UserTeamIndexDbObject>;
 }
@@ -102,6 +104,7 @@ export default class DB {
 					Mentors: db.collection<MentorDbObject>('mentors'),
 					Organizers: db.collection<OrganizerDbObject>('organizers'),
 					Shifts: db.collection<ShiftDbObject>('shifts'),
+					Sponsors: db.collection<SponsorDbObject>('sponsors'),
 					Teams: db.collection<TeamDbObject>('teams'),
 					UserTeamIndicies: db.collection<UserTeamIndexDbObject>('userTeams'),
 				};
