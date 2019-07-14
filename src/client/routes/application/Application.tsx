@@ -1,10 +1,13 @@
 import React, { useContext, FunctionComponent, useState, useEffect, useCallback, FC } from 'react';
 import styled from 'styled-components';
+import { useImmer } from 'use-immer';
 import config from '../../assets/application';
 import { Collapsible } from '../../components/Containers/Collapsible';
 import { ActionButtonContext } from '../../contexts/ActionButtonContext';
 import { HeaderButton } from '../../components/Buttons/HeaderButton';
 import { InputProps } from '../../components/Input/TextInput';
+import { useUpdateMyApplicationMutation, useMyApplicationQuery } from '../../generated/graphql';
+import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 
 export interface ConfigSection {
 	category: string;
@@ -72,11 +75,37 @@ export const FieldTitle = styled.span`
 export const Application: FunctionComponent<{}> = (): JSX.Element => {
 	const { update: setActionButton } = useContext(ActionButtonContext);
 	const [openSection, setOpenSection] = useState('');
+	const [input, setInput] = useImmer<{ answer: string; question: string }[]>([]);
+	const updateApplication = useUpdateMyApplicationMutation();
+	const { data, error, loading } = useMyApplicationQuery();
+
+	// [{ObjectID: firstName, input: 'hello', changed: false}]
+	// Only update changed QuestionIDs
+	const createOnChangeHandler = (fieldName: string): ((value: string) => void) => value => {
+		void setInput(draft => {
+			const element = draft.find(el => el.question === fieldName);
+			// FIXME: add a changed field to the question
+			if (!element) {
+				draft.push({ answer: value, question: fieldName });
+			} else {
+				element.answer = value;
+			}
+		});
+	};
+
+	const valueHandler = (fieldName: string): string => {
+		const element = input.find(el => el.question === fieldName);
+		return element ? element.answer : '';
+	};
 
 	useEffect((): (() => void) => {
 		if (setActionButton)
 			setActionButton(
-				<HeaderButton onClick={() => {}} width="8em">
+				<HeaderButton
+					onClick={() => {
+						updateApplication({ variables: { input } });
+					}}
+					width="8em">
 					Submit
 				</HeaderButton>
 			);
@@ -84,7 +113,23 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 		return () => {
 			if (setActionButton) setActionButton(undefined);
 		};
-	}, [setActionButton]);
+	}, [input, setActionButton, updateApplication]);
+
+	useEffect((): void => {
+		if (!loading && data && data.me) {
+			const { application } = data.me; // eslint-disable-line @typescript-eslint/no-unused-vars
+			setInput(draft => {
+				application.forEach(({ answer, question }) => {
+					const element = draft.find(el => el.question === question);
+					if (element) {
+						element.answer = answer;
+					} else {
+						draft.push({ answer, question });
+					}
+				});
+			});
+		}
+	}, [data, loading, setInput]);
 
 	const toggleOpen = useCallback(
 		(e: React.MouseEvent<HTMLButtonElement>): void => {
@@ -94,6 +139,12 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 		},
 		[openSection]
 	);
+
+	// if error getting application input
+	if (error) {
+		console.log(error);
+		return <GraphQLErrorMessage text={JSON.stringify(error)} />;
+	}
 
 	return (
 		<StyledForm>
@@ -107,8 +158,8 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 							</StyledQuestionPadContainer>
 							{field.prompt ? <FieldPrompt>{field.prompt}</FieldPrompt> : null}
 							<field.Component
-								setState={(value: string) => void value}
-								value=""
+								setState={createOnChangeHandler(field.title)}
+								value={valueHandler(field.title)}
 								{...field}
 								id={field.title}
 							/>
