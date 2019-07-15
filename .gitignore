@@ -249,3 +249,7 @@ docs
 
 #ignore ci reports
 reports
+
+# ignore generated files
+src/server/generated
+src/client/generated
