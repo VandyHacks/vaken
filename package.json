@@ -47,7 +47,7 @@
 		"start": "npm run dev",
 		"build:server": "tsc",
 		"build:client": "webpack --config webpack.prod.js --colors",
-		"build": "concurrently -n client,server -c bgBlue.bold,bgMagenta.bold \"npm:build:client\" \"npm:build:server\"",
+		"build": "concurrently -n client,server -c bgBlue.bold,bgMagenta.bold \"npm:generate\" \"npm:build:client\" \"npm:build:server\"",
 		"prod": "npm run build && node ./dist/server/index.js",
 		"format": "prettier --config .prettierrc.json --write \"./**/*.ts*(x)\"",
 		"check:test": "jest --onlyChanged",
