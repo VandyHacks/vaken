@@ -5,6 +5,7 @@
 	"eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
 	"npm.enableScriptExplorer": true,
 	"editor.formatOnSave": true,
+	"prettier.eslintIntegration": true,
 
 	"search.exclude": {
 		"**/node_modules": true,
