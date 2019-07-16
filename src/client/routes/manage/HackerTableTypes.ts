@@ -9,8 +9,3 @@ export interface SortFnProps {
 	sortBy?: keyof QueriedHacker;
 	sortDirection?: SortDirectionType;
 }
-
-export default {
-	QueriedHacker,
-	SortFnProps,
-};

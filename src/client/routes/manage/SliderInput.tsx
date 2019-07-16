@@ -28,7 +28,7 @@ export const processSliderInput = (input: string): ApplicationStatus => {
 interface SliderInputProps {
 	deselect: React.RefObject<DeselectElement>;
 	selectedRowsEmails: string[];
-	sortBy: keyof QueriedHacker;
+	sortBy?: keyof QueriedHacker;
 	updateStatuses: HackerStatusesMutationFn;
 }
 
