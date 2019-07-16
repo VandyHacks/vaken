@@ -236,12 +236,12 @@ export const resolvers: Resolvers = {
 				throw new AuthenticationError(`user ${JSON.stringify(user)} must be an organizer`);
 			const objectIds = ids.map(id => ObjectID.createFromHexString(id));
 			const { result } = await models.Hackers.updateMany(
-				{ $in: { _id: objectIds } },
+				{ _id: { $in: objectIds } },
 				{ $set: { status } }
 			);
 			if (!result.ok) throw new UserInputError(`!ok updating ${JSON.stringify(ids)}}`);
 
-			return models.Hackers.find({ $in: { _id: objectIds } }).toArray();
+			return models.Hackers.find({ _id: { $in: objectIds } }).toArray();
 		},
 		joinTeam: async (root, { input: { name } }, { models, user }: Context) => {
 			if (!user || user.userType !== UserType.Hacker)
