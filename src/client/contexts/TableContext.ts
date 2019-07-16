@@ -14,7 +14,7 @@ export const defaultTableState = {
 	searchValue: '',
 	selectAll: false,
 	selectedColumns: [{ label: 'First Name', value: 'firstName' }] as Option[],
-	selectedRowsEmails: [] as string[],
+	selectedRowsIds: [] as string[],
 	sortBy: undefined as keyof HackersQuery['hackers'][0] | undefined,
 	sortDirection: 'ASC' as SortDirectionType | undefined,
 };

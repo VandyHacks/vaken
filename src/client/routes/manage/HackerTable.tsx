@@ -142,7 +142,7 @@ const onSelectionClear = (ctx: TableCtxI): ((p: boolean) => void) => {
 		ctx.update(draft => {
 			draft.selectAll = false;
 			draft.hasSelection = p;
-			draft.selectedRowsEmails = [];
+			draft.selectedRowsIds = [];
 		});
 };
 
@@ -152,7 +152,7 @@ const onSelectionFinish = (ctx: TableCtxI): ((keys: JSX.Element[]) => void) => {
 		if (keys.length > 0) {
 			ctx.update(draft => {
 				draft.hasSelection = true;
-				draft.selectedRowsEmails = keys.map((key: JSX.Element) => key.props.rowData.email);
+				draft.selectedRowsIds = keys.map((key: JSX.Element) => key.props.rowData.id);
 			});
 		}
 	};
@@ -211,7 +211,7 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 		selectedColumns,
 		sortBy,
 		sortDirection,
-		selectedRowsEmails,
+		selectedRowsIds,
 	} = table.state;
 
 	useEffect(() => {
@@ -280,10 +280,10 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 		if (index < 0) className = 'headerRow';
 		else {
 			className = index % 2 === 0 ? 'evenRow' : 'oddRow';
-			const { status, email } = sortedData[index];
+			const { status, id } = sortedData[index];
 			if (!isSelectable(status)) {
 				className = className.concat(' ignore-select');
-			} else if (selectAll || selectedRowsEmails.includes(email)) {
+			} else if (selectAll || selectedRowsIds.includes(id)) {
 				className = className.concat(' selected');
 			}
 		}
@@ -349,9 +349,9 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 									onClick={() =>
 										table.update(draft => {
 											draft.hasSelection = true;
-											draft.selectedRowsEmails = sortedData
+											draft.selectedRowsIds = sortedData
 												.filter(row => isSelectable(row.status))
-												.map(row => row.email);
+												.map(row => row.id);
 										})
 									}>
 									{SelectAllButton}
@@ -362,7 +362,7 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 									<SliderInput
 										updateStatuses={updateStatuses}
 										deselect={deselect}
-										selectedRowsEmails={selectedRowsEmails}
+										selectedRowsIds={selectedRowsIds}
 										sortBy={sortBy}
 									/>
 								</Float>

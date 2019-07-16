@@ -27,7 +27,7 @@ export const processSliderInput = (input: string): ApplicationStatus => {
 
 interface SliderInputProps {
 	deselect: React.RefObject<DeselectElement>;
-	selectedRowsEmails: string[];
+	selectedRowsIds: string[];
 	sortBy?: keyof QueriedHacker;
 	updateStatuses: HackerStatusesMutationFn;
 }
@@ -35,7 +35,7 @@ interface SliderInputProps {
 export const SliderInput = ({
 	updateStatuses,
 	deselect,
-	selectedRowsEmails,
+	selectedRowsIds,
 	sortBy,
 }: SliderInputProps): JSX.Element => {
 	return (
@@ -48,7 +48,7 @@ export const SliderInput = ({
 			onChange={(input: string) => {
 				const newStatus = processSliderInput(input);
 				updateStatuses({
-					variables: { input: { ids: selectedRowsEmails, status: newStatus } },
+					variables: { input: { ids: selectedRowsIds, status: newStatus } },
 				});
 				// to deselect afterwards, react-selectable-fast has no clean way to interface with a clearSelection function
 				// so this is a workaround by simulating a click on the SelectAllButton
