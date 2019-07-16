@@ -29,6 +29,13 @@ const CollapsibleHeader = styled.button`
 	flex-flow: row nowrap;
 	justify-content: space-between;
 	align-items: center;
+
+	img {
+		transition: 0.5s all;
+	}
+	img.open {
+		transform: rotate(-180deg);
+	}
 `;
 
 const BGDiv = styled.div`
@@ -70,7 +77,7 @@ export const Collapsible: FC<Props> = (props: Props) => {
 		<BGDiv>
 			<CollapsibleHeader id={title} {...rest}>
 				{title}
-				<img src={open ? UpArrow : DownArrow} alt="arrow" />
+				<img src={UpArrow} className={open ? 'open' : ''} alt="arrow" />
 			</CollapsibleHeader>
 			<CollapsibleBody className={open ? 'active' : ''}>{children}</CollapsibleBody>
 		</BGDiv>
