@@ -45,17 +45,18 @@ const SliderContainer = styled.div`
 		/* border-color: #6979f8; */
 		z-index: 1;
 	}
+
+	input:not(:checked):focus + label {
+		/* Color for keyboard users */
+		box-shadow: inset 0 0 2px 2px #6979f8;
+	}
 `;
 
-export const SliderSansTextTransform: FC<Props> = ({
-	options = ['default'],
-	value,
-	setState,
-	className,
-}: Props) => {
+export const SliderSansTitleCase: FC<Props> = ({ value, setState, ...props }: Props) => {
 	const onChange: FormEventHandler<HTMLInputElement> = ({ currentTarget: { id } }) =>
 		setState(id === value ? '' : id);
 
+	const { options = ['default'], className } = props;
 	return (
 		<fieldset>
 			<SliderContainer className={className}>
@@ -63,7 +64,7 @@ export const SliderSansTextTransform: FC<Props> = ({
 					(option: string): JSX.Element => (
 						<React.Fragment key={option}>
 							<input checked={value === option} type="radio" id={option} onChange={onChange} />
-							<label htmlFor={option}>{title(option)}</label>
+							<label htmlFor={option}>{option}</label>
 						</React.Fragment>
 					)
 				)}
@@ -72,14 +73,9 @@ export const SliderSansTextTransform: FC<Props> = ({
 	);
 };
 
-export const Slider = styled(SliderSansTextTransform)`
-	label {
-		text-transform: lowercase;
-
-		&::first-letter {
-			text-transform: uppercase;
-		}
-	}
-`;
+// Default export should use good title case conventions.
+export const Slider: FC<Props> = ({ options = ['default'], ...props }: Props) => (
+	<SliderSansTitleCase options={options.map(op => title(op))} {...props} />
+);
 
 export default Slider;

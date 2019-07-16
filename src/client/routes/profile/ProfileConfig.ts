@@ -2,7 +2,7 @@
 import { Gender, ShirtSize, DietaryRestriction } from '../../generated/graphql';
 import { Input as TextInput } from '../../components/Input/TextInput';
 import { Checkbox } from '../../components/Input/Checkbox';
-import { Slider, SliderSansTextTransform } from '../../components/Input/Slider';
+import { Slider, SliderSansTitleCase } from '../../components/Input/Slider';
 // import { Boolean } from '../../components/Input/Boolean';
 // import Calendar from '../../components/Input/Calendar';
 
@@ -40,7 +40,7 @@ export const profile = [
 		validation: '^(\\(?\\+?[0-9]*\\)?)?[0-9_\\- \\(\\)]*$',
 	},
 	{
-		Component: SliderSansTextTransform,
+		Component: SliderSansTitleCase,
 		fieldName: 'shirtSize',
 		optional: true,
 		options: [ShirtSize.Xs, ShirtSize.S, ShirtSize.M, ShirtSize.L, ShirtSize.Xl, ShirtSize.Xxl],
