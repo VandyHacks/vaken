@@ -11,13 +11,10 @@ module.exports = merge.smart(common, {
 			hashFuncNames: ['sha384'],
 			enabled: true,
 		}),
-		// only need this if we have a packtracker token in the env. That should only be CI.
-		process.env.PACKTRACKER_TOKEN == null
-			? {}
-			: new PacktrackerPlugin({
-					project_token: process.env.PACKTRACKER_TOKEN,
-					upload: true,
-					fail_build: true,
-			  }),
+		new PacktrackerPlugin({
+			project_token: process.env.PACKTRACKER_TOKEN,
+			upload: process.env.CI,
+			fail_build: true,
+		}),
 	],
 });
