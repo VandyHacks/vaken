@@ -94,17 +94,17 @@ NOTE: We use [dotansimha/graphql-code-generator](https://github.com/dotansimha/g
 
 Schemas:
 
-- [./src/common/schema.graphql.ts](./src/common/schema.graphql.ts) - main schema, shared among server and client
-- [./src/client/routes/team/teams.graphql.ts](./src/client/routes/team/teams.graphql.ts) - team data
-- [./src/client/routes/profile/user.graphql.ts](./src/client/routes/profile/user.graphql.ts) - for a specific user
-- [./src/client/routes/manage/hackers.graphql.ts](./src/client/routes/manage/hackers.graphql.ts) - hacker table
-- [./src/client/me.graphql.ts](./src/common/schema.graphql.ts) - personal logged in user
+- [./src/common/schema.graphql](./src/common/schema.graphql) - main schema, shared among server and client
+- [./src/client/routes/team/teams.graphql](./src/client/routes/team/teams.graphql) - team data
+- [./src/client/routes/profile/user.graphql](./src/client/routes/profile/user.graphql) - for a specific user
+- [./src/client/routes/manage/hackers.graphql](./src/client/routes/manage/hackers.graphql) - hacker table
+- [./src/client/me.graphql](./src/common/schema.graphql) - personal logged in user
 
 Models:
-In [./src/server/models.ts](./src/server/models.ts)
+In [./src/server/models](./src/server/models)
 
 Resolvers:
-In [./src/server/resolvers.ts](./src/server/resolvers.ts)
+In [./src/server/resolvers](./src/server/resolvers)
 
 ### Tooling
 

@@ -1,6 +1,6 @@
 {
-	"schema": "./src/common/schema.graphql.ts",
-	"documents": "./src/client/**/*.graphql.ts",
+	"schema": "./src/common/schema.graphql",
+	"documents": "./src/client/**/*.graphql",
 	"overwrite": true,
 	"watch": false,
 	"generates": {
