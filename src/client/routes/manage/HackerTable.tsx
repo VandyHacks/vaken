@@ -15,7 +15,7 @@ import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import Fuse from 'fuse.js';
 import Select from 'react-select';
-import { ValueType } from 'react-select/lib/types';
+import { ValueType } from 'react-select/src/types';
 import { Link } from 'react-router-dom';
 import { MutationFn } from 'react-apollo';
 import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
