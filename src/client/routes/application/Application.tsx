@@ -117,7 +117,7 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 
 	useEffect((): void => {
 		if (!loading && data && data.me) {
-			const { application } = data.me; // eslint-disable-line @typescript-eslint/no-unused-vars
+			const { application } = data.me;
 			setInput(draft => {
 				application.forEach(({ answer, question }) => {
 					const element = draft.find(el => el.question === question);

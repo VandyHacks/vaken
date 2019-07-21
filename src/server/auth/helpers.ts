@@ -35,6 +35,7 @@ export const verifyCallback = async (
 			logger.info(`inserting user ${email}`);
 			await Hackers.insertOne({
 				_id: new ObjectID(),
+				application: [],
 				createdAt: new Date(),
 				dietaryRestrictions: [],
 				email,
