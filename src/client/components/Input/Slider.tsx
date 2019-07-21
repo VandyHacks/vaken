@@ -1,5 +1,6 @@
 import React, { FC, FormEventHandler } from 'react';
 import styled from 'styled-components';
+import { title } from 'case';
 import { InputProps } from './TextInput';
 
 export interface Props extends InputProps {
@@ -62,7 +63,7 @@ export const SliderSansTextTransform: FC<Props> = ({
 					(option: string): JSX.Element => (
 						<React.Fragment key={option}>
 							<input checked={value === option} type="radio" id={option} onChange={onChange} />
-							<label htmlFor={option}>{option.replace(/_/g, ' ')}</label>
+							<label htmlFor={option}>{title(option)}</label>
 						</React.Fragment>
 					)
 				)}
