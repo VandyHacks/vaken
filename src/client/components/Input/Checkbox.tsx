@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
+import { title } from 'case';
 import UncheckedSvg from '../../assets/img/unchecked_box.svg';
 import CheckedSvg from '../../assets/img/checked_box.svg';
 import { InputProps } from './TextInput';
@@ -33,14 +34,9 @@ const CheckboxContainer = styled.div`
 		text-align: left;
 		font-size: 1.1rem;
 		cursor: pointer;
-		text-transform: lowercase;
 
 		img {
 			padding-right: 0.5rem;
-		}
-
-		p::first-letter {
-			text-transform: uppercase;
 		}
 	}
 
@@ -81,7 +77,7 @@ export const Checkbox: FC<Props> = ({ value, options = ['default'], setState }: 
 									) : (
 										<img src={UncheckedSvg} alt="unchecked" width={24} height={24} />
 									)}
-									<p>{option.replace('_', ' ')}</p>
+									<p>{title(option)}</p>
 								</label>
 							</div>
 						);
