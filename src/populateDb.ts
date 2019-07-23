@@ -1,6 +1,6 @@
 import { ObjectID } from 'mongodb';
+import faker from 'faker';
 import institutions from './client/assets/data/institutions.json';
-import names from './client/assets/data/names.json';
 import {
 	ApplicationStatus,
 	ShirtSize,
@@ -18,14 +18,14 @@ const addHackers = async (): Promise<void> => {
 	const models = await modelsPromise;
 	const newHackers: HackerDbObject[] = [];
 	for (let i = 0; i < 800; i += 1) {
-		const fn = names[getRandom(21000)];
-		const ln = names[getRandom(21000)];
+		const fn = faker.name.firstName();
+		const ln = faker.name.lastName();
 		console.log(`Adding hacker ${i}`);
 		newHackers.push({
 			_id: new ObjectID(),
 			createdAt: new Date(),
 			dietaryRestrictions: [Object.values(DietaryRestriction)[getRandom(7)]],
-			email: `${fn}.${ln}@gmail.com`,
+			email: faker.internet.email(),
 			firstName: fn,
 			gender: Object.values(Gender)[getRandom(7)],
 			gradYear: getRandom(4) + 2019,
@@ -33,8 +33,8 @@ const addHackers = async (): Promise<void> => {
 			logins: [],
 			majors: [],
 			modifiedAt: new Date().getTime(),
-			phoneNumber: '',
-			preferredName: '',
+			phoneNumber: faker.phone.phoneNumber(),
+			preferredName: fn,
 			race: [Object.values(Race)[getRandom(6)]],
 			school: institutions[getRandom(1430)],
 			secondaryIds: [],
