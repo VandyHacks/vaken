@@ -3,7 +3,7 @@ defaults: &defaults
     - image: 'circleci/node:12'
   working_directory: ~/project/vaken
   environment:
-    CC_TEST_REPORTER_ID: 'b6cea094202296cdea6867cd99c1efa9aab7ad0a9679ec999e890d3fd3bcaaf0' # write only so all good
+    CC_TEST_REPORTER_ID: ${CODECLIMATE_TOKEN}
 version: 2.1
 orbs:
   codecov: codecov/codecov@1.0.4
