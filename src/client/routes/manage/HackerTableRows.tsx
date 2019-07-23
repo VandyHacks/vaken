@@ -1,5 +1,4 @@
 import React from 'react';
-import { MutationFn } from 'react-apollo-hooks';
 
 import {
 	Column,
@@ -10,7 +9,6 @@ import {
 	TableRowProps,
 	Index,
 } from 'react-virtualized';
-import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import { Status } from '../../components/Text/Status';
 import { Checkmark } from '../../components/Symbol/Checkmark';

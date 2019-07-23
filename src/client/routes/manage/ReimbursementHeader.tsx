@@ -1,6 +1,5 @@
 import React from 'react';
 import { SortIndicator, TableHeaderProps } from 'react-virtualized';
-import 'react-virtualized/styles.css';
 
 import plane from '../../assets/img/plane.svg';
 
