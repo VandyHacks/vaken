@@ -3,8 +3,4 @@ coverage:
     project:
       default:
         target: auto
-<<<<<<< HEAD
-        threshold: .1 # allows coverage to drop by up to .1%
-=======
         threshold: 1 # allows coverage to drop by up to 1% on a PR. 
->>>>>>> 6879074... Change codecov threshold to 1%
