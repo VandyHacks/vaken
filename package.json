@@ -45,7 +45,6 @@
 		"dev:client": "webpack-dev-server --config webpack.dev.js --color",
 		"dev": "concurrently -n client,server,codegen -c bgBlue.bold,bgMagenta.bold,bgYellow.bold \"npm:dev:client\" \"npm:dev:server:debug\" \"npm:generate:watch\"",
 		"start": "npm run dev",
-		"populate": "node -r ts-node/register -r dotenv/config ./src/populateDb.ts",
 		"build:server": "tsc",
 		"build:client": "webpack --config webpack.prod.js --colors",
 		"build": "concurrently -n client,server -c bgBlue.bold,bgMagenta.bold \"npm:build:client\" \"npm:build:server\"",

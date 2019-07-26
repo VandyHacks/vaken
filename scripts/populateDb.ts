@@ -1,6 +1,6 @@
 import { ObjectID } from 'mongodb';
 import faker from 'faker';
-import institutions from './client/assets/data/institutions.json';
+import institutions from '../src/client/assets/data/institutions.json';
 import {
 	ApplicationStatus,
 	ShirtSize,
@@ -9,8 +9,10 @@ import {
 	Race,
 	UserType,
 	HackerDbObject,
-} from './server/generated/graphql';
-import modelsPromise from './server/models';
+} from '../src/server/generated/graphql';
+import { initDb } from '../src/server/models';
+
+require('dotenv').config();
 
 const getRandom = (max: number): number => Math.floor(Math.random() * max);
 const NUM_HACKERS = 800;
@@ -42,7 +44,7 @@ const generateHacker: () => HackerDbObject = () => {
 };
 
 const addHackers = async (): Promise<void> => {
-	const models = await modelsPromise;
+	const models = await initDb();
 	const newHackers: HackerDbObject[] = [];
 	for (let i = 0; i < NUM_HACKERS; i += 1) {
 		console.log(`Adding hacker ${i}`);
