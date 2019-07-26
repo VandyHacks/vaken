@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 
 import 'react-virtualized/styles.css';
@@ -17,8 +17,17 @@ const Actions = styled('div')`
 	display: flex;
 `;
 
+function enableApplicationStatusSlider(status: string): boolean {
+	return ([
+		ApplicationStatus.Accepted,
+		ApplicationStatus.Rejected,
+		ApplicationStatus.Submitted,
+	] as string[]).includes(status);
+}
+
 function convertApplicationStatus(status: ApplicationStatus): string {
 	switch (status) {
+		case ApplicationStatus.Confirmed:
 		case ApplicationStatus.Accepted:
 			return 'Accept';
 		case ApplicationStatus.Rejected:
@@ -31,7 +40,7 @@ function convertApplicationStatus(status: ApplicationStatus): string {
 // action column that contains the actionable buttons
 export default function actionRenderer(
 	updateStatus: HackerStatusMutationFn
-): (p: ActionRendererProps) => JSX.Element {
+): FC<ActionRendererProps> {
 	return function ActionRenderer({ rowData: { id, status } }: ActionRendererProps) {
 		return (
 			<Actions className="ignore-select">
@@ -44,11 +53,7 @@ export default function actionRenderer(
 						const newStatus = processSliderInput(input);
 						updateStatus({ variables: { input: { id, status: newStatus } } });
 					}}
-					disable={
-						status !== ApplicationStatus.Accepted &&
-						status !== ApplicationStatus.Rejected &&
-						status !== ApplicationStatus.Submitted
-					}
+					disable={!enableApplicationStatusSlider(status)}
 				/>
 				<Link
 					style={{ textDecoration: 'none' }}
