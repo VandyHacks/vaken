@@ -1,0 +1,90 @@
+import { UserInputError, ApolloError } from 'apollo-server-express';
+import { ObjectID, Collection, ObjectId, FilterQuery } from 'mongodb';
+import {
+	DietaryRestriction,
+	UserType,
+	ShirtSize,
+	UserDbInterface,
+	UserInput,
+	Gender,
+} from '../generated/graphql';
+import { Models } from '../models';
+
+export function toEnum<T extends {}>(enumObject: T): (input: string) => T[keyof T] {
+	return (input: string): T[keyof T] => {
+		if (!Object.keys(enumObject).includes(input)) {
+			throw new UserInputError(
+				`Invalid enum value: "${input}" is not in "${enumObject.constructor.name}"`
+			);
+		}
+		return enumObject[input as keyof T];
+	};
+}
+
+export async function query<T>(filter: FilterQuery<T>, model: Collection<T>): Promise<T> {
+	const obj = await model.findOne(filter);
+	if (!obj)
+		throw new UserInputError(
+			`obj with filters: "${JSON.stringify(filter)}" not found in collection "${
+				model.collectionName
+			}"`
+		);
+	return obj;
+}
+
+export async function queryById<T extends { _id: ObjectId }>(
+	id: string,
+	model: Collection<T>
+): Promise<T> {
+	return query<T>({ _id: ObjectID.createFromHexString(id) }, model);
+}
+
+export async function updateUser_<T>(
+	user: { email: string },
+	args: UserInput,
+	collection: Collection<T>
+): Promise<T> {
+	const newValues = {
+		...args,
+		dietaryRestrictions: args.dietaryRestrictions
+			? args.dietaryRestrictions.split('|').map(toEnum(DietaryRestriction))
+			: undefined,
+		gender: args.gender ? toEnum(Gender)(args.gender) : undefined,
+		modifiedAt: new Date().getTime(),
+		shirtSize: args.shirtSize ? toEnum(ShirtSize)(args.shirtSize) : undefined,
+	};
+	const { value } = await collection.findOneAndUpdate(
+		{ email: user.email },
+		{ $set: newValues },
+		{ returnOriginal: false }
+	);
+	if (!value) throw new UserInputError(`user ${user.email} not found`);
+	return value;
+}
+
+export async function updateUser(
+	user: { email: string; userType: string },
+	args: UserInput,
+	models: Models
+): Promise<UserDbInterface> {
+	if (user.userType === UserType.Hacker) {
+		return updateUser_(user, args, models.Hackers);
+	}
+	if (user.userType === UserType.Organizer) {
+		return updateUser_(user, args, models.Organizers);
+	}
+	throw new ApolloError(`updateUser for userType ${user.userType} not implemented`);
+}
+
+export async function fetchUser(
+	{ email, userType }: { email: string; userType: string },
+	models: Models
+): Promise<UserDbInterface> {
+	if (userType === UserType.Hacker) {
+		return query({ email }, models.Hackers);
+	}
+	if (userType === UserType.Organizer) {
+		return query({ email }, models.Organizers);
+	}
+	throw new ApolloError(`updateUser for userType ${userType} not implemented`);
+}

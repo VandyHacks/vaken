@@ -1,15 +1,6 @@
-import { UserInputError, AuthenticationError, ApolloError } from 'apollo-server-express';
-import { ObjectID, Collection, ObjectId, FilterQuery } from 'mongodb';
+import { UserInputError, AuthenticationError } from 'apollo-server-express';
+import { ObjectID } from 'mongodb';
 import {
-	ApplicationFieldResolvers,
-	ApplicationQuestionResolvers,
-	HackerResolvers,
-	LoginResolvers,
-	MentorResolvers,
-	OrganizerResolvers,
-	QueryResolvers,
-	ShiftResolvers,
-	TeamResolvers,
 	DietaryRestriction,
 	UserType,
 	Race,
@@ -17,109 +8,22 @@ import {
 	LoginProvider,
 	ApplicationStatus,
 	UserDbInterface,
-	MutationResolvers,
-	UserInput,
-	Gender,
 	UserResolvers,
-} from './generated/graphql';
-import Context from './context';
-import { Models } from './models';
+	Resolvers,
+} from '../generated/graphql';
+import Context from '../context';
+import { fetchUser, query, queryById, toEnum, updateUser } from './helpers';
 
-function toEnum<T extends {}>(enumObject: T): (input: string) => T[keyof T] {
-	return (input: string): T[keyof T] => {
-		if (!Object.keys(enumObject).includes(input)) {
-			throw new UserInputError(
-				`Invalid enum value: "${input}" is not in "${enumObject.constructor.name}"`
-			);
-		}
-		return enumObject[input as keyof T];
-	};
-}
-
-async function query<T>(filter: FilterQuery<T>, model: Collection<T>): Promise<T> {
-	const obj = await model.findOne(filter);
-	if (!obj)
-		throw new UserInputError(
-			`obj with filters: "${JSON.stringify(filter)}" not found in collection "${
-				model.collectionName
-			}"`
-		);
-	return obj;
-}
-
-async function queryById<T extends { _id: ObjectId }>(
-	id: string,
-	model: Collection<T>
-): Promise<T> {
-	return query<T>({ _id: ObjectID.createFromHexString(id) }, model);
-}
-
-async function updateUser(
-	user: { email: string; userType: string },
-	args: UserInput,
-	models: Models
-): Promise<UserDbInterface> {
-	const newValues = {
-		...args,
-		dietaryRestrictions: args.dietaryRestrictions
-			? args.dietaryRestrictions.split('|').map(toEnum(DietaryRestriction))
-			: [],
-		gender: args.gender ? toEnum(Gender)(args.gender) : '',
-		modifiedAt: new Date().getTime(),
-		shirtSize: args.shirtSize ? toEnum(ShirtSize)(args.shirtSize) : '',
-	};
-
-	if (user.userType === UserType.Hacker) {
-		const { value } = await models.Hackers.findOneAndUpdate(
-			{ email: user.email },
-			{ $set: newValues },
-			{ returnOriginal: false }
-		);
-		if (!value) throw new UserInputError(`user ${user.email} not found`);
-		return value;
-	}
-	if (user.userType === UserType.Organizer) {
-		const { value } = await models.Organizers.findOneAndUpdate(
-			{ email: user.email },
-			{ $set: newValues },
-			{ returnOriginal: false }
-		);
-		if (!value) throw new UserInputError(`user ${user.email} not found`);
-		return value;
-	}
-	throw new ApolloError(`updateUser for userType ${user.userType} not implemented`);
-}
-
-async function fetchUser(
-	{ email, userType }: { email: string; userType: string },
-	models: Models
-): Promise<UserDbInterface> {
-	if (userType === UserType.Hacker) {
-		return query({ email }, models.Hackers);
-	}
-	if (userType === UserType.Organizer) {
-		return query({ email }, models.Organizers);
-	}
-	throw new ApolloError(`updateUser for userType ${userType} not implemented`);
-}
-
-export interface Resolvers {
-	ApplicationField: Required<ApplicationFieldResolvers>;
-	ApplicationQuestion: Required<ApplicationQuestionResolvers>;
-	Hacker: Required<HackerResolvers>;
-	Login: Required<LoginResolvers>;
-	Mentor: Required<MentorResolvers>;
-	Mutation: Required<MutationResolvers>;
-	Organizer: Required<OrganizerResolvers>;
-	Query: Required<QueryResolvers>;
-	Shift: Required<ShiftResolvers>;
-	Team: Required<TeamResolvers>;
+/**
+ * Used to define a __resolveType function on the User resolver that doesn't take in a promise. This is important as it
+ */
+export type CustomResolvers<T> = Omit<Resolvers<T>, 'User'> & {
 	User: {
 		__resolveType: (user: UserDbInterface) => 'Hacker' | 'Organizer' | 'Mentor';
 	};
-}
+};
 
-const userResolvers: Required<Omit<UserResolvers, '__resolveType' | 'userType'>> = {
+const userResolvers: Omit<UserResolvers, '__resolveType' | 'userType'> = {
 	createdAt: async field => (await field).createdAt.getTime(),
 	dietaryRestrictions: async user => {
 		const { dietaryRestrictions = [] } = await user;
@@ -140,7 +44,7 @@ const userResolvers: Required<Omit<UserResolvers, '__resolveType' | 'userType'>>
 	},
 };
 
-export const resolvers: Resolvers = {
+export const resolvers: CustomResolvers<Context> = {
 	/**
 	 * These resolvers are for querying fields
 	 */
@@ -193,7 +97,7 @@ export const resolvers: Resolvers = {
 	},
 	/**
 	 * These mutations modify data
-	 * Each may contain  authentication checks as well
+	 * Each may contain authentication checks as well
 	 */
 	Mutation: {
 		hackerStatus: async (_, { input: { id, status } }, { user, models }: Context) => {
@@ -274,7 +178,7 @@ export const resolvers: Resolvers = {
 			if (!ret) throw new AuthenticationError(`hacker not found: ${user.email}`);
 			return ret;
 		},
-		updateMyProfile: async (root, args, ctx: Context) => {
+		updateMyProfile: async (root, args, ctx) => {
 			// Enables a user to update their own profile
 			if (!ctx.user) throw new AuthenticationError(`cannot update profile: user not logged in`);
 			const result = await updateUser(ctx.user, args.input, ctx.models);
@@ -284,7 +188,7 @@ export const resolvers: Resolvers = {
 				);
 			return result;
 		},
-		updateProfile: async (root, args, ctx: Context) => {
+		updateProfile: async (root, args, ctx) => {
 			// TODO: fix this
 			// This should enable admins to change profile of other users
 			if (!ctx.user) throw new AuthenticationError(`cannot update profile: user not logged in`);
@@ -302,18 +206,18 @@ export const resolvers: Resolvers = {
 		userType: () => UserType.Organizer,
 	},
 	Query: {
-		hacker: async (root, { id }, ctx: Context) => queryById(id, ctx.models.Hackers),
-		hackers: async (root, args, ctx: Context) => ctx.models.Hackers.find().toArray(),
-		me: async (root, args, ctx: Context) => {
+		hacker: async (root, { id }, ctx) => queryById(id, ctx.models.Hackers),
+		hackers: async (root, args, ctx) => ctx.models.Hackers.find().toArray(),
+		me: async (root, args, ctx) => {
 			if (!ctx.user) throw new AuthenticationError(`user is not logged in`);
 			return fetchUser(ctx.user, ctx.models);
 		},
-		mentor: async (root, { id }, ctx: Context) => queryById(id, ctx.models.Mentors),
-		mentors: async (root, args, ctx: Context) => ctx.models.Mentors.find().toArray(),
-		organizer: async (root, { id }, ctx: Context) => queryById(id, ctx.models.Organizers),
-		organizers: async (root, args, ctx: Context) => ctx.models.Organizers.find().toArray(),
-		team: async (root, { id }, ctx: Context) => queryById(id, ctx.models.Teams),
-		teams: async (root, args, ctx: Context) => ctx.models.Teams.find().toArray(),
+		mentor: async (root, { id }, ctx) => queryById(id, ctx.models.Mentors),
+		mentors: async (root, args, ctx) => ctx.models.Mentors.find().toArray(),
+		organizer: async (root, { id }, ctx) => queryById(id, ctx.models.Organizers),
+		organizers: async (root, args, ctx) => ctx.models.Organizers.find().toArray(),
+		team: async (root, { id }, ctx) => queryById(id, ctx.models.Teams),
+		teams: async (root, args, ctx) => ctx.models.Teams.find().toArray(),
 	},
 	Shift: {
 		begin: async shift => (await shift).begin.getTime(),
