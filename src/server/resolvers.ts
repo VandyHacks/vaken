@@ -25,38 +25,15 @@ import {
 import Context from './context';
 import { Models } from './models';
 
-function toDietEnum(restriction: string): DietaryRestriction {
-	if (!Object.values(DietaryRestriction).includes(restriction))
-		throw new UserInputError(`Invalid dietary restriction ${restriction}`);
-	return restriction as DietaryRestriction;
-}
-
-function toRaceEnum(race: string): Race {
-	if (!Object.values(Race).includes(race)) throw new UserInputError(`Invalid race ${race}`);
-	return race as Race;
-}
-
-function toGenderEnum(gender: string): Gender {
-	if (!Object.values(Gender).includes(gender)) throw new UserInputError(`Invalid gender ${gender}`);
-	return gender as Gender;
-}
-
-function toShirtSizeEnum(size: string): ShirtSize {
-	if (!Object.values(ShirtSize).includes(size))
-		throw new UserInputError(`Invalid shirt size: ${size}`);
-	return size as ShirtSize;
-}
-
-function toLoginProviderEnum(input: string): LoginProvider {
-	if (!Object.values(LoginProvider).includes(input))
-		throw new UserInputError(`Invalid login provider: ${input}`);
-	return input as LoginProvider;
-}
-
-function toApplicationStatusEnum(status: string): ApplicationStatus {
-	if (!Object.values(ApplicationStatus).includes(status))
-		throw new UserInputError(`Invalid application status: ${status}`);
-	return status as ApplicationStatus;
+function toEnum<T extends {}>(enumObject: T): (input: string) => T[keyof T] {
+	return (input: string): T[keyof T] => {
+		if (!Object.keys(enumObject).includes(input)) {
+			throw new UserInputError(
+				`Invalid enum value: "${input}" is not in "${enumObject.constructor.name}"`
+			);
+		}
+		return enumObject[input as keyof T];
+	};
 }
 
 async function query<T>(filter: FilterQuery<T>, model: Collection<T>): Promise<T> {
@@ -85,11 +62,11 @@ async function updateUser(
 	const newValues = {
 		...args,
 		dietaryRestrictions: args.dietaryRestrictions
-			? args.dietaryRestrictions.split('|').map(toDietEnum)
+			? args.dietaryRestrictions.split('|').map(toEnum(DietaryRestriction))
 			: [],
-		gender: args.gender ? toGenderEnum(args.gender) : '',
+		gender: args.gender ? toEnum(Gender)(args.gender) : '',
 		modifiedAt: new Date().getTime(),
-		shirtSize: args.shirtSize ? toShirtSizeEnum(args.shirtSize) : '',
+		shirtSize: args.shirtSize ? toEnum(ShirtSize)(args.shirtSize) : '',
 	};
 
 	if (user.userType === UserType.Hacker) {
@@ -146,7 +123,7 @@ const userResolvers: Required<Omit<UserResolvers, '__resolveType' | 'userType'>>
 	createdAt: async field => (await field).createdAt.getTime(),
 	dietaryRestrictions: async user => {
 		const { dietaryRestrictions = [] } = await user;
-		return dietaryRestrictions.map(toDietEnum);
+		return dietaryRestrictions.map(toEnum(DietaryRestriction));
 	},
 	email: async user => (await user).email,
 	firstName: async user => (await user).firstName,
@@ -159,7 +136,7 @@ const userResolvers: Required<Omit<UserResolvers, '__resolveType' | 'userType'>>
 	secondaryIds: async user => (await user).secondaryIds,
 	shirtSize: async user => {
 		const { shirtSize } = await user;
-		return shirtSize ? toShirtSizeEnum(shirtSize) : null;
+		return shirtSize ? toEnum(ShirtSize)(shirtSize) : null;
 	},
 };
 
@@ -186,9 +163,9 @@ export const resolvers: Resolvers = {
 		gradYear: async hacker => (await hacker).gradYear || null,
 		majors: async hacker => (await hacker).majors || [],
 		modifiedAt: async hacker => (await hacker).modifiedAt,
-		race: async hacker => (await hacker).race.map(toRaceEnum) || null,
+		race: async hacker => (await hacker).race.map(toEnum(Race)) || null,
 		school: async hacker => (await hacker).school || null,
-		status: async hacker => toApplicationStatusEnum((await hacker).status),
+		status: async hacker => toEnum(ApplicationStatus)((await hacker).status),
 		team: async (hacker, args, { models }: Context) => {
 			const team = await models.UserTeamIndicies.findOne({ email: (await hacker).email });
 			if (!team) return { _id: new ObjectID(), createdAt: new Date(0), memberIds: [], name: '' };
@@ -199,7 +176,7 @@ export const resolvers: Resolvers = {
 	},
 	Login: {
 		createdAt: async login => (await login).createdAt.getTime(),
-		provider: async login => toLoginProviderEnum((await login).provider),
+		provider: async login => toEnum(LoginProvider)((await login).provider),
 		token: async login => (await login).token,
 		userType: async login => (await login).userType as UserType,
 	},
@@ -209,7 +186,7 @@ export const resolvers: Resolvers = {
 		shifts: async mentor => (await mentor).shifts,
 		shirtSize: async mentor => {
 			const { shirtSize } = await mentor;
-			return shirtSize ? toShirtSizeEnum(shirtSize) : null;
+			return shirtSize ? toEnum(ShirtSize)(shirtSize) : null;
 		},
 		skills: async mentor => (await mentor).skills,
 		userType: () => UserType.Mentor,
