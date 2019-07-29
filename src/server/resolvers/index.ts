@@ -10,6 +10,7 @@ import {
 	UserDbInterface,
 	UserResolvers,
 	Resolvers,
+	EventType,
 } from '../generated/graphql';
 import Context from '../context';
 import { fetchUser, query, queryById, toEnum, updateUser, checkIsAuthorized } from './helpers';
