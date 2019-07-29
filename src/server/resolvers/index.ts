@@ -10,6 +10,7 @@ import {
 	UserDbInterface,
 	UserResolvers,
 	Resolvers,
+	EventType,
 } from '../generated/graphql';
 import Context from '../context';
 import { fetchUser, query, queryById, toEnum, updateUser, checkIsAuthorized } from './helpers';
@@ -58,6 +59,17 @@ export const resolvers: CustomResolvers<Context> = {
 		instruction: async question => (await question).instruction || null,
 		note: async question => (await question).note || null,
 		prompt: async question => (await question).prompt,
+	},
+	Event: {
+		end: async event => (await event).end.getTime(),
+		id: async event => (await event)._id.toHexString(),
+		location: async event => (await event).location,
+		start: async event => (await event).start.getTime(),
+		summary: async event => (await event).summary,
+		type: async event => {
+			const { type } = await event;
+			return toEnum(EventType)(type);
+		},
 	},
 	Hacker: {
 		...userResolvers,
@@ -192,6 +204,8 @@ export const resolvers: CustomResolvers<Context> = {
 		userType: () => UserType.Organizer,
 	},
 	Query: {
+		event: async (root, { id }, ctx) => queryById(id, ctx.models.Events),
+		events: async (root, args, ctx) => ctx.models.Events.find().toArray(),
 		hacker: async (root, { id }, ctx) => queryById(id, ctx.models.Hackers),
 		hackers: async (root, args, ctx) => ctx.models.Hackers.find().toArray(),
 		me: async (root, args, ctx) => {
