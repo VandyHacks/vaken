@@ -82,6 +82,13 @@ export default gql`
 		SUPER_ADMIN
 	}
 
+	enum EventType {
+		MAIN
+		SPONSOR
+		FOOD
+		HXP
+	}
+
 	enum SortDirection {
 		ASC
 		DESC
@@ -105,6 +112,15 @@ export default gql`
 		provider: LoginProvider! @column
 		token: ID! @column
 		userType: UserType! @column
+	}
+
+	type Event @entity {
+		id: ID! @id @column
+		summary: String! @column
+		location: String! @column
+		type: EventType! @column
+		start: Int! @column(overrideType: "Date")
+		end: Int! @column(overrideType: "Date")
 	}
 
 	type Hacker implements User @entity {
@@ -185,6 +201,8 @@ export default gql`
 		me: User # May be used when not logged in.
 		hacker(id: ID!): Hacker!
 		hackers(sortDirection: SortDirection): [Hacker!]!
+		event(id: ID!): Event!
+		events(sortDirection: SortDirection): [Event!]!
 		organizer(id: ID!): Organizer!
 		organizers(sortDirection: SortDirection): [Organizer!]!
 		mentor(id: ID!): Mentor!
