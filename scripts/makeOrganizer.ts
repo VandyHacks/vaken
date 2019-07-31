@@ -22,7 +22,7 @@ const printUsage = (): void =>
 	const user = await models.Hackers.findOne({ email: args[0] });
 	if (!user) {
 		console.error(`Couldn't find your user... did you try logging in first?`);
-		return;
+		return void process.exit(1);
 	}
 
 	// Update the user's login entry to point to organizers.
@@ -33,7 +33,7 @@ const printUsage = (): void =>
 	);
 	if (!ok || !value) {
 		console.error(lastErrorObject);
-		return;
+		return void process.exit(2);
 	}
 
 	// Only insert user into organizers collection if changing login was successful.
@@ -45,10 +45,9 @@ const printUsage = (): void =>
 	});
 	if (!result.ok) {
 		console.error('Error: (Unspecified) while inserting user into organizers collection');
-		return;
+		return void process.exit(3);
 	}
 
 	console.log(`${args[0]} is now an organizer :) Happy hacking!`);
+	return void process.exit();
 })();
-
-process.exit();
