@@ -1,4 +1,4 @@
-import { UserInputError, ApolloError } from 'apollo-server-express';
+import { UserInputError, ApolloError, AuthenticationError } from 'apollo-server-express';
 import { ObjectID, Collection, ObjectId, FilterQuery } from 'mongodb';
 import {
 	DietaryRestriction,
@@ -87,4 +87,24 @@ export async function fetchUser(
 		return query({ email }, models.Organizers);
 	}
 	throw new ApolloError(`updateUser for userType ${userType} not implemented`);
+}
+
+/**
+ * Funtion to check if the user has the authorization required to continue.
+ * If not, the function will throw a GraphQL AuthenticationError.
+ * @param requiredType The authorization level the user should have.
+ * @param user The user to check against requiredType.
+ * @returns The user object, coerced to a non-null type.
+ */
+export function checkIsAuthorized<T extends UserDbInterface>(
+	requiredType: UserType | UserType[],
+	user?: T
+): T {
+	if (!user || requiredType) {
+		throw new AuthenticationError(
+			`user ${user && user.email}: ${JSON.stringify(user)} must be a "${requiredType}"`
+		);
+	}
+
+	return user;
 }

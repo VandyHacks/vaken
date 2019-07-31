@@ -12,7 +12,7 @@ import {
 	Resolvers,
 } from '../generated/graphql';
 import Context from '../context';
-import { fetchUser, query, queryById, toEnum, updateUser } from './helpers';
+import { fetchUser, query, queryById, toEnum, updateUser, checkIsAuthorized } from './helpers';
 
 /**
  * Used to define a __resolveType function on the User resolver that doesn't take in a promise. This is important as it
@@ -70,7 +70,7 @@ export const resolvers: CustomResolvers<Context> = {
 		race: async hacker => (await hacker).race.map(toEnum(Race)) || null,
 		school: async hacker => (await hacker).school || null,
 		status: async hacker => toEnum(ApplicationStatus)((await hacker).status),
-		team: async (hacker, args, { models }: Context) => {
+		team: async (hacker, args, { models }) => {
 			const team = await models.UserTeamIndicies.findOne({ email: (await hacker).email });
 			if (!team) return { _id: new ObjectID(), createdAt: new Date(0), memberIds: [], name: '' };
 			return query({ name: team.team }, models.Teams);
@@ -100,9 +100,8 @@ export const resolvers: CustomResolvers<Context> = {
 	 * Each may contain authentication checks as well
 	 */
 	Mutation: {
-		hackerStatus: async (_, { input: { id, status } }, { user, models }: Context) => {
-			if (!user || user.userType !== UserType.Organizer)
-				throw new AuthenticationError(`user ${JSON.stringify(user)} must be an organizer`);
+		hackerStatus: async (_, { input: { id, status } }, { user, models }) => {
+			checkIsAuthorized(UserType.Organizer, user);
 			const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
 				{ _id: ObjectID.createFromHexString(id) },
 				{ $set: { status } },
@@ -112,9 +111,8 @@ export const resolvers: CustomResolvers<Context> = {
 				throw new UserInputError(`user ${id} (${value}) error: ${JSON.stringify(err)}`);
 			return value;
 		},
-		hackerStatuses: async (_, { input: { ids, status } }, { user, models }: Context) => {
-			if (!user || user.userType !== UserType.Organizer)
-				throw new AuthenticationError(`user ${JSON.stringify(user)} must be an organizer`);
+		hackerStatuses: async (_, { input: { ids, status } }, { user, models }) => {
+			checkIsAuthorized(UserType.Organizer, user);
 			const objectIds = ids.map(id => ObjectID.createFromHexString(id));
 			const { result } = await models.Hackers.updateMany(
 				{ _id: { $in: objectIds } },
@@ -124,9 +122,8 @@ export const resolvers: CustomResolvers<Context> = {
 
 			return models.Hackers.find({ _id: { $in: objectIds } }).toArray();
 		},
-		joinTeam: async (root, { input: { name } }, { models, user }: Context) => {
-			if (!user || user.userType !== UserType.Hacker)
-				throw new AuthenticationError(`user "${JSON.stringify(user)}" must be hacker`);
+		joinTeam: async (root, { input: { name } }, { models, user }) => {
+			const hacker = checkIsAuthorized(UserType.Hacker, user);
 			const team = await models.Teams.findOne({ name });
 			if (!team) {
 				await models.Teams.insertOne({
@@ -138,66 +135,55 @@ export const resolvers: CustomResolvers<Context> = {
 			}
 			const { ok, lastErrorObject: err } = await models.Teams.findOneAndUpdate(
 				{ name },
-				{ $push: { memberIds: user.email } }
+				{ $push: { memberIds: hacker.email } }
 			);
-			if (!ok) throw new UserInputError(`error adding "${user.email}" to team "${name}": ${err}`);
+			if (!ok) throw new UserInputError(`error adding "${hacker.email}" to team "${name}": ${err}`);
 			const result = await models.UserTeamIndicies.findOneAndUpdate(
-				{ email: user.email },
-				{ $set: { email: user.email, team: name } },
+				{ email: hacker.email },
+				{ $set: { email: hacker.email, team: name } },
 				{ upsert: true }
 			);
 			if (!result.ok) {
 				throw new UserInputError(
-					`error adding "${user.email}" to team index "${name}": ${result.lastErrorObject}`
+					`error adding "${hacker.email}" to team index "${name}": ${result.lastErrorObject}`
 				);
 			}
 
-			const ret = await models.Hackers.findOne({ email: user.email });
-			if (!ret) throw new AuthenticationError(`hacker not found: ${user.email}`);
+			const ret = await models.Hackers.findOne({ email: hacker.email });
+			if (!ret) throw new AuthenticationError(`hacker not found: ${hacker.email}`);
 			return ret;
 		},
-		leaveTeam: async (root, args, { models, user }: Context) => {
-			if (!user || user.userType !== UserType.Hacker)
-				throw new AuthenticationError(`user "${JSON.stringify(user)}" must be hacker`);
+		leaveTeam: async (root, args, { models, user }) => {
+			const hacker = checkIsAuthorized(UserType.Hacker, user);
 			const { value, ok, lastErrorObject: err } = await models.UserTeamIndicies.findOneAndDelete({
-				email: user.email,
+				email: hacker.email,
 			});
 			if (!value || !ok)
 				throw new UserInputError(`error removing user team index: ${JSON.stringify(err)}`);
 
 			const { value: team, ok: okTeam, lastErrorObject: e } = await models.Teams.findOneAndUpdate(
 				{ name: value.team },
-				{ $pull: { memberIds: user.email } },
+				{ $pull: { memberIds: hacker.email } },
 				{ returnOriginal: false }
 			);
 			if (!team || !okTeam)
 				throw new UserInputError(`error removing user from team: ${JSON.stringify(e)}`);
 			if (!team.memberIds.length) models.Teams.findOneAndDelete({ name: value.team });
 
-			const ret = await models.Hackers.findOne({ email: user.email });
-			if (!ret) throw new AuthenticationError(`hacker not found: ${user.email}`);
+			const ret = await models.Hackers.findOne({ email: hacker.email });
+			if (!ret) throw new AuthenticationError(`hacker not found: ${hacker.email}`);
 			return ret;
 		},
-		updateMyProfile: async (root, args, ctx) => {
+		updateMyProfile: async (root, { input }, { models, user }) => {
 			// Enables a user to update their own profile
-			if (!ctx.user) throw new AuthenticationError(`cannot update profile: user not logged in`);
-			const result = await updateUser(ctx.user, args.input, ctx.models);
+			if (!user) throw new AuthenticationError(`cannot update profile: user not logged in`);
+			const result = await updateUser(user, input, models);
 			if (!result)
-				throw new UserInputError(
-					`unable to update profile: "${JSON.stringify(ctx.user)}" not found `
-				);
+				throw new UserInputError(`unable to update profile: "${JSON.stringify(user)}" not found `);
 			return result;
 		},
-		updateProfile: async (root, args, ctx) => {
-			// TODO: fix this
-			// This should enable admins to change profile of other users
-			if (!ctx.user) throw new AuthenticationError(`cannot update profile: user not logged in`);
-			const result = await updateUser(ctx.user, args.input, ctx.models);
-			if (!result)
-				throw new UserInputError(
-					`unable to update profile: "${JSON.stringify(ctx.user)}" not found `
-				);
-			return result;
+		updateProfile: async () => {
+			throw new UserInputError('Not implemented :(');
 		},
 	},
 	Organizer: {
