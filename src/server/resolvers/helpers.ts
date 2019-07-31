@@ -10,14 +10,20 @@ import {
 } from '../generated/graphql';
 import { Models } from '../models';
 
+/**
+ * Higher-order function creating a verification function for an enum. When
+ * used in the form `toEnum(myEnum)(myVal)`, will ensure that `myVal` is a
+ * value of `myEnum` and return the value coerced to a value of the enum.
+ * @param enumObject Enum object containing values to compare the input against.
+ */
 export function toEnum<T extends {}>(enumObject: T): (input: string) => T[keyof T] {
 	return (input: string): T[keyof T] => {
-		if (!Object.keys(enumObject).includes(input)) {
+		if (!Object.values(enumObject).includes(input)) {
 			throw new UserInputError(
-				`Invalid enum value: "${input}" is not in "${enumObject.constructor.name}"`
+				`Invalid enum value: "${input}" is not in "${JSON.stringify(Object.values(enumObject))}"`
 			);
 		}
-		return enumObject[input as keyof T];
+		return (input as unknown) as T[keyof T];
 	};
 }
 
