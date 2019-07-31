@@ -18,8 +18,7 @@
 					"Team": "TeamDbObject",
 					"User": "UserDbInterface"
 				},
-				"skipTypenames": false,
-				"avoidOptionals": true
+				"skipTypenames": false
 			}
 		},
 		"src/client/generated/graphql.ts": {
