@@ -3,6 +3,7 @@ import { ObjectID, Collection, ObjectId, FilterQuery } from 'mongodb';
 import {
 	ApplicationFieldResolvers,
 	ApplicationQuestionResolvers,
+	EmailedListResolvers,
 	HackerResolvers,
 	LoginResolvers,
 	MentorResolvers,
@@ -10,6 +11,7 @@ import {
 	QueryResolvers,
 	ShiftResolvers,
 	TeamResolvers,
+	EmailType,
 	DietaryRestriction,
 	UserType,
 	Race,
@@ -57,6 +59,12 @@ function toApplicationStatusEnum(status: string): ApplicationStatus {
 	if (!Object.values(ApplicationStatus).includes(status))
 		throw new UserInputError(`Invalid application status: ${status}`);
 	return status as ApplicationStatus;
+}
+
+function toEmailTypeEnum(emailType: string): EmailType {
+	if (!Object.values(EmailType).includes(emailType))
+		throw new UserInputError(`Invalid email type: ${emailType}`);
+	return emailType as EmailType;
 }
 
 async function query<T>(filter: FilterQuery<T>, model: Collection<T>): Promise<T> {
@@ -129,6 +137,7 @@ async function fetchUser(
 export interface Resolvers {
 	ApplicationField: Required<ApplicationFieldResolvers>;
 	ApplicationQuestion: Required<ApplicationQuestionResolvers>;
+	EmailedList: Required<EmailedListResolvers>;
 	Hacker: Required<HackerResolvers>;
 	Login: Required<LoginResolvers>;
 	Mentor: Required<MentorResolvers>;
@@ -177,6 +186,10 @@ export const resolvers: Resolvers = {
 		instruction: async question => (await question).instruction || null,
 		note: async question => (await question).note || null,
 		prompt: async question => (await question).prompt,
+	},
+	EmailedList: {
+		emailType: async list => toEmailTypeEnum((await list).emailType),
+		emails: async list => (await list).emails,
 	},
 	Hacker: {
 		...userResolvers,

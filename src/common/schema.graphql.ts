@@ -87,6 +87,10 @@ export default gql`
 		DESC
 	}
 
+	enum EmailType {
+		TEST
+	}
+
 	type ApplicationQuestion @entity {
 		prompt: String! @column
 		instruction: String @column
@@ -191,6 +195,11 @@ export default gql`
 		mentors(sortDirection: SortDirection): [Mentor!]!
 		team(id: ID!): Team!
 		teams(sortDirection: SortDirection): [Team!]!
+	}
+
+	type EmailedList @entity {
+		emailType: EmailType! @column
+		emails: [String]! @column
 	}
 
 	input UserInput {

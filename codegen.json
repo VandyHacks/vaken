@@ -10,6 +10,7 @@
 				"mappers": {
 					"ApplicationField": "ApplicationFieldDbObject",
 					"ApplicationQuestion": "ApplicationQuestionDbObject",
+					"EmailedList": "EmailedListDbObject",
 					"Hacker": "HackerDbObject",
 					"Login": "LoginDbObject",
 					"Mentor": "MentorDbObject",
