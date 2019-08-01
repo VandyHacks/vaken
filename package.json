@@ -133,7 +133,7 @@
 		"@types/supertest": "^2.0.8",
 		"@types/yup": "^0.26.20",
 		"@typescript-eslint/eslint-plugin": "^1.11.0",
-		"@typescript-eslint/parser": "^1.11.0",
+		"@typescript-eslint/parser": "^1.13.0",
 		"babel-jest": "^24.8.0",
 		"babel-loader": "^8.0.6",
 		"concurrently": "^4.1.1",
