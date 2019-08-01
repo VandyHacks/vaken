@@ -131,7 +131,7 @@
 		"@types/react-virtualized": "^9.21.2",
 		"@types/styled-components": "4.1.8",
 		"@types/supertest": "^2.0.8",
-		"@types/yup": "^0.26.20",
+		"@types/yup": "^0.26.22",
 		"@typescript-eslint/eslint-plugin": "^1.11.0",
 		"@typescript-eslint/parser": "^1.13.0",
 		"babel-jest": "^24.8.0",
