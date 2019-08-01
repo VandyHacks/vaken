@@ -102,11 +102,8 @@ export async function fetchUser(
  * @param user The user to check against requiredType.
  * @returns The user object, coerced to a non-null type.
  */
-export function checkIsAuthorized<T extends UserDbInterface>(
-	requiredType: UserType | UserType[],
-	user?: T
-): T {
-	if (!user || requiredType) {
+export function checkIsAuthorized<T extends UserDbInterface>(requiredType: UserType, user?: T): T {
+	if (!user || requiredType !== user.userType) {
 		throw new AuthenticationError(
 			`user ${user && user.email}: ${JSON.stringify(user)} must be a "${requiredType}"`
 		);
