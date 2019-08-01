@@ -76,6 +76,7 @@
 		"graphql": "^14.4.2",
 		"jest-junit": "^6.4.0",
 		"mongodb": "^3.2.7",
+		"nodemailer": "^6.3.0",
 		"passport": "^0.4.0",
 		"passport-github2": "^0.1.11",
 		"passport-google-oauth20": "^2.0.0",
