@@ -5,7 +5,7 @@ import passport from 'passport';
 import session from 'express-session';
 import gqlSchema from '../common/schema.graphql';
 import { resolvers } from './resolvers';
-import modelsPromise from './models';
+import { initDb } from './models';
 import Context from './context';
 import logger from './logger';
 import { strategies, registerAuthRoutes } from './auth';
@@ -42,7 +42,7 @@ export const schema = makeExecutableSchema({
 
 (async () => {
 	// creates all models and connects to the database
-	const models = await modelsPromise;
+	const models = await initDb();
 	// starts apollo GraphQL server
 	const server = new ApolloServer({
 		context: ({ req }): Context => ({

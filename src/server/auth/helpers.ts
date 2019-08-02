@@ -2,11 +2,11 @@ import { VerifyCallback } from 'passport-oauth2';
 import { Profile } from 'passport';
 import { ObjectID } from 'mongodb';
 import { UserDbInterface, UserType, ApplicationStatus } from '../generated/graphql';
-import modelsPromise from '../models';
+import { initDb } from '../models';
 import logger from '../logger';
 
 export async function getUserFromDb(email: string, userType?: string): Promise<UserDbInterface> {
-	const { Hackers, Organizers } = await modelsPromise;
+	const { Hackers, Organizers } = await initDb();
 
 	let user: UserDbInterface | null = null;
 	switch (userType) {
@@ -28,7 +28,7 @@ export async function getUserFromDb(email: string, userType?: string): Promise<U
 }
 
 export const verifyCallback = async (profile: Profile, done: VerifyCallback): Promise<void> => {
-	const { Logins, Hackers } = await modelsPromise;
+	const { Logins, Hackers } = await initDb();
 	const { userType } = (await Logins.findOne({
 		provider: profile.provider,
 		token: profile.id,

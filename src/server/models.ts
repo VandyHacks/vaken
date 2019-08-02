@@ -27,8 +27,7 @@ export interface Models {
 	UserTeamIndicies: Collection<UserTeamIndexDbObject>;
 }
 
-export const initDb = async (): Promise<Models> => {
-	const dbUrl = process.env.MONGODB_BASE_URL || 'mongodb://localhost:27017';
+export const initDbWithConnStr = async (dbUrl: string): Promise<Models> => {
 	// creates the db the first time it's called if it doesn't exist
 	const db = (await MongoClient.connect(dbUrl, { useNewUrlParser: true })).db('vaken');
 
@@ -49,4 +48,7 @@ export const initDb = async (): Promise<Models> => {
 	};
 };
 
-export default initDb();
+export const initDb = async (): Promise<Models> => {
+	const dbUrl = process.env.MONGODB_BASE_URL || 'mongodb://localhost:27017';
+	return initDbWithConnStr(dbUrl);
+};
