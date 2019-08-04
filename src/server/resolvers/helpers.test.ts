@@ -27,11 +27,24 @@ let mongoServer: MongoMemoryServer;
 let mongoClient: MongoClient;
 let models: Models;
 
+const testHackerId = new ObjectId();
+const testHacker = ({
+	_id: testHackerId,
+	email: 'foo@bar.com',
+} as unknown) as HackerDbObject;
+const testOrganizerId = new ObjectId();
+const testOrganizer = ({
+	_id: testOrganizerId,
+	email: 'foo@bar.com',
+} as unknown) as OrganizerDbObject;
+
 beforeAll(async () => {
 	try {
 		mongoServer = new MongoMemoryServer();
 		const mongoUri = await mongoServer.getConnectionString();
 		models = await initDbWithConnStr(mongoUri);
+		await models.Hackers.insertOne(testHacker);
+		await models.Organizers.insertOne(testOrganizer);
 	} catch (err) {
 		// eslint-disable-next-line no-console
 		console.error(err);
@@ -87,15 +100,7 @@ describe('Test resolver helpers', () => {
 		});
 
 		it('retrieves an object from the database', async () => {
-			const testHacker = ({
-				_id: new ObjectId(),
-				email: 'foo@bar.com',
-			} as unknown) as HackerDbObject;
-			await models.Hackers.insertOne(testHacker);
-
 			expect(query({ email: 'foo@bar.com' }, models.Hackers)).resolves.toEqual(testHacker);
-
-			await models.Hackers.drop();
 		});
 	});
 
@@ -109,47 +114,23 @@ describe('Test resolver helpers', () => {
 		});
 
 		it('retrieves an object from the database by id', async () => {
-			const newId = new ObjectId();
-			const testOrganizer = ({
-				_id: newId,
-				email: 'foo@bar.com',
-			} as unknown) as OrganizerDbObject;
-			await models.Organizers.insertOne(testOrganizer);
-
-			expect(queryById(newId.toHexString(), models.Organizers)).resolves.toEqual(testOrganizer);
-
-			await models.Organizers.drop();
+			expect(queryById(testOrganizerId.toHexString(), models.Organizers)).resolves.toEqual(
+				testOrganizer
+			);
 		});
 	});
 
 	describe('fetchUser', () => {
 		it('retrieves a hacker from the Hackers collection', async () => {
-			const testHacker = ({
-				_id: new ObjectId(),
-				email: 'foo@bar.com',
-			} as unknown) as HackerDbObject;
-			await models.Hackers.insertOne(testHacker);
-
 			expect(
 				fetchUser({ email: 'foo@bar.com', userType: UserType.Hacker }, models)
 			).resolves.toEqual(testHacker);
-
-			await models.Hackers.drop();
 		});
 
 		it('retrieves an organizer from the organizers collection', async () => {
-			const newId = new ObjectId();
-			const testOrganizer = ({
-				_id: newId,
-				email: 'foo@bar.com',
-			} as unknown) as OrganizerDbObject;
-			await models.Organizers.insertOne(testOrganizer);
-
 			expect(
 				fetchUser({ email: 'foo@bar.com', userType: UserType.Organizer }, models)
 			).resolves.toEqual(testOrganizer);
-
-			await models.Organizers.drop();
 		});
 
 		it('is not implemented for mentors, sponsors, or superadmins', async () => {
@@ -163,26 +144,12 @@ describe('Test resolver helpers', () => {
 
 	describe('updateUser', () => {
 		it('returns full object it updated containing the updated fields', async () => {
-			const testHacker = ({
-				_id: new ObjectId(),
-				email: 'foo@bar.com',
-			} as unknown) as HackerDbObject;
-			await models.Hackers.insertOne(testHacker);
-
 			expect(
 				updateUser({ email: 'foo@bar.com', userType: UserType.Hacker }, { lastName: 'baz' }, models)
 			).resolves.toMatchObject({ ...testHacker, lastName: 'baz' });
-
-			await models.Hackers.drop();
 		});
 
 		it('updates the organizers collection for an organizer', async () => {
-			const testOrganizer = ({
-				_id: new ObjectId(),
-				email: 'foo@bar.com',
-			} as unknown) as OrganizerDbObject;
-			await models.Organizers.insertOne(testOrganizer);
-
 			expect(
 				updateUser(
 					{ email: 'foo@bar.com', userType: UserType.Organizer },
@@ -190,17 +157,9 @@ describe('Test resolver helpers', () => {
 					models
 				)
 			).resolves.toMatchObject({ ...testOrganizer, lastName: 'bin' });
-
-			await models.Organizers.drop();
 		});
 
 		it('performs enum validation for dietaryRestrictions', async () => {
-			const testHacker = ({
-				_id: new ObjectId(),
-				email: 'foo@bar.com',
-			} as unknown) as HackerDbObject;
-			await models.Hackers.insertOne(testHacker);
-
 			expect(
 				updateUser(
 					{ email: 'foo@bar.com', userType: UserType.Hacker },
@@ -219,17 +178,9 @@ describe('Test resolver helpers', () => {
 					models
 				)
 			).resolves.toMatchObject({ ...testHacker, dietaryRestrictions: ['HALAL', 'KOSHER'] });
-
-			await models.Hackers.drop();
 		});
 
 		it('performs enum validation for dietaryRestrictions', async () => {
-			const testHacker = ({
-				_id: new ObjectId(),
-				email: 'foo@bar.com',
-			} as unknown) as HackerDbObject;
-			await models.Hackers.insertOne(testHacker);
-
 			expect(
 				updateUser({ email: 'foo@bar.com', userType: UserType.Hacker }, { gender: 'baz' }, models)
 			).rejects.toThrow(
@@ -243,17 +194,9 @@ describe('Test resolver helpers', () => {
 					models
 				)
 			).resolves.toMatchObject({ ...testHacker, gender: 'FEMALE' });
-
-			await models.Hackers.drop();
 		});
 
 		it('performs enum validation for shirtSize', async () => {
-			const testHacker = ({
-				_id: new ObjectId(),
-				email: 'foo@bar.com',
-			} as unknown) as HackerDbObject;
-			await models.Hackers.insertOne(testHacker);
-
 			expect(
 				updateUser(
 					{ email: 'foo@bar.com', userType: UserType.Hacker },
@@ -265,8 +208,6 @@ describe('Test resolver helpers', () => {
 			expect(
 				updateUser({ email: 'foo@bar.com', userType: UserType.Hacker }, { shirtSize: 'XS' }, models)
 			).resolves.toMatchObject({ ...testHacker, shirtSize: 'XS' });
-
-			await models.Hackers.drop();
 		});
 
 		it('throws an error if the object to be updated does not exit', async () => {

@@ -110,7 +110,7 @@ export async function updateUser(
  * @param models Object containing all the models in the DB.
  */
 export async function fetchUser(
-	{ email, userType }: { email?: string; userType: string },
+	{ email, userType }: { email: string; userType: string },
 	models: Models
 ): Promise<UserDbInterface> {
 	if (userType === UserType.Hacker) {
