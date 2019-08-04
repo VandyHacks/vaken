@@ -27,17 +27,28 @@ export function toEnum<T extends {}>(enumObject: T): (input: string) => T[keyof 
 	};
 }
 
-export async function query<T>(filter: FilterQuery<T>, model: Collection<T>): Promise<T> {
-	const obj = await model.findOne(filter);
-	if (!obj)
+/**
+ * Query `collection` for a document matching the fields in `filter`.
+ * @param filter Object with fields to use to find an object in the DB.
+ * @param collection Collection to search for an object matching `filter`.
+ */
+export async function query<T>(filter: FilterQuery<T>, collection: Collection<T>): Promise<T> {
+	const obj = await collection.findOne(filter);
+	if (!obj) {
 		throw new UserInputError(
 			`obj with filters: "${JSON.stringify(filter)}" not found in collection "${
-				model.collectionName
+				collection.collectionName
 			}"`
 		);
+	}
 	return obj;
 }
 
+/**
+ * Query `collection` for a document with `id`.
+ * @param id ObjectId string to find in `collection`.
+ * @param collection Mongo collection in which to find the object with _id `id`.
+ */
 export async function queryById<T extends { _id: ObjectId }>(
 	id: string,
 	model: Collection<T>
@@ -68,6 +79,16 @@ export async function updateUser_<T>(
 	return value;
 }
 
+/**
+ * Updates the fields explicitly specified in `args` to the user specified by
+ * `user`. The underlying functions will do type-checking of the passed in
+ * fields, but will not verify the legitimacy of data passed in.
+ * @param user Email and `userType` of user to update.
+ * @param args GraphQL argument containing fields to update.
+ * @param models Object containing all the models from the DB.
+ * @throws UserInputError when user input strings that should be enums don't
+ * 		   map to an enum.
+ */
 export async function updateUser(
 	user: { email: string; userType: string },
 	args: UserInput,
@@ -82,8 +103,14 @@ export async function updateUser(
 	throw new ApolloError(`updateUser for userType ${user.userType} not implemented`);
 }
 
+/**
+ * Fetch a user from the DB. This function takes care of choosing the right
+ * model to use based on the userType in the object passed as param0.
+ * @param param0 Email and `userType` of the user to fetch.
+ * @param models Object containing all the models in the DB.
+ */
 export async function fetchUser(
-	{ email, userType }: { email: string; userType: string },
+	{ email, userType }: { email?: string; userType: string },
 	models: Models
 ): Promise<UserDbInterface> {
 	if (userType === UserType.Hacker) {
@@ -92,7 +119,7 @@ export async function fetchUser(
 	if (userType === UserType.Organizer) {
 		return query({ email }, models.Organizers);
 	}
-	throw new ApolloError(`updateUser for userType ${userType} not implemented`);
+	throw new ApolloError(`fetchUser for userType ${userType} not implemented`);
 }
 
 /**
