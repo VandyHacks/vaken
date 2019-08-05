@@ -1,12 +1,12 @@
-import { UserInputError, ApolloError, AuthenticationError } from 'apollo-server-express';
-import { ObjectID, Collection, ObjectId, FilterQuery } from 'mongodb';
+import { ApolloError, AuthenticationError, UserInputError } from 'apollo-server-express';
+import { Collection, FilterQuery, ObjectID, ObjectId } from 'mongodb';
 import {
 	DietaryRestriction,
-	UserType,
+	Gender,
 	ShirtSize,
 	UserDbInterface,
 	UserInput,
-	Gender,
+	UserType,
 } from '../generated/graphql';
 import { Models } from '../models';
 

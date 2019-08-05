@@ -1,12 +1,12 @@
-import { ObjectId, MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { toEnum, checkIsAuthorized, query, queryById, fetchUser, updateUser } from './helpers';
+import { checkIsAuthorized, fetchUser, query, queryById, toEnum, updateUser } from './helpers';
 import {
-	ShirtSize,
-	UserType,
-	UserDbInterface,
 	HackerDbObject,
 	OrganizerDbObject,
+	ShirtSize,
+	UserDbInterface,
+	UserType,
 } from '../generated/graphql';
 import { initDbWithConnStr, Models } from '../models';
 
@@ -93,7 +93,7 @@ describe('Test resolver helpers', () => {
 	});
 
 	describe('query<T>', () => {
-		it('throws an error when the item is not found', () => {
+		it('throws an error when the item is not found', async () => {
 			expect(query({ foo: 'bar' }, models.Hackers)).rejects.toThrow(
 				'obj with filters: "{"foo":"bar"}" not found in collection "Hackers"'
 			);
