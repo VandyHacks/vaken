@@ -8,7 +8,7 @@ import {
 	UserDbInterface,
 	UserType,
 } from '../generated/graphql';
-import { initDbWithConnStr, Models } from '../models';
+import DB, { Models } from '../models';
 
 const hacker: UserDbInterface = {
 	_id: new ObjectId(),
@@ -24,7 +24,7 @@ const hacker: UserDbInterface = {
 };
 
 let mongoServer: MongoMemoryServer;
-let mongoClient: MongoClient;
+let dbClient: DB;
 let models: Models;
 
 const testHackerId = new ObjectId();
@@ -42,7 +42,8 @@ beforeAll(async () => {
 	try {
 		mongoServer = new MongoMemoryServer();
 		const mongoUri = await mongoServer.getConnectionString();
-		models = await initDbWithConnStr(mongoUri);
+		dbClient = new DB(mongoUri);
+		models = await dbClient.collections;
 		await models.Hackers.insertOne(testHacker);
 		await models.Organizers.insertOne(testOrganizer);
 	} catch (err) {
@@ -53,7 +54,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
 	try {
-		if (mongoClient) await mongoClient.close();
+		if (models) await dbClient.disconnect();
 		if (mongoServer) await mongoServer.stop();
 	} catch (err) {
 		// eslint-disable-next-line no-console
