@@ -15,22 +15,6 @@ if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
 
 const app = express();
 
-// Register auth functions
-app.use(session({ secret: SESSION_SECRET }));
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use('github', strategies.github);
-passport.use('google', strategies.google);
-
-registerAuthRoutes(app);
-
-app.use((req, res, next) =>
-	passport.authenticate(['session', 'github', 'google'], (err, user) => {
-		if (err) return void next();
-		return void req.login(user, next);
-	})(req, res, next)
-);
-
 export const schema = makeExecutableSchema({
 	resolverValidationOptions: {
 		requireResolversForAllFields: true,
@@ -43,6 +27,22 @@ export const schema = makeExecutableSchema({
 (async () => {
 	const dbClient = new DB();
 	const models = await dbClient.collections;
+
+	// Register auth functions
+	app.use(session({ secret: SESSION_SECRET }));
+	app.use(passport.initialize());
+	app.use(passport.session());
+	passport.use('github', strategies.github(models));
+	passport.use('google', strategies.google(models));
+
+	registerAuthRoutes(app);
+
+	app.use((req, res, next) =>
+		passport.authenticate(['session', 'github', 'google'], (err, user) => {
+			if (err) return void next();
+			return void req.login(user, next);
+		})(req, res, next)
+	);
 
 	try {
 		const server = new ApolloServer({

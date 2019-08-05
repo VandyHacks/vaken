@@ -2,11 +2,15 @@ import { VerifyCallback } from 'passport-oauth2';
 import { Profile } from 'passport';
 import { ObjectID } from 'mongodb';
 import { UserDbInterface, UserType, ApplicationStatus } from '../generated/graphql';
-import { initDb } from '../models';
+import { Models } from '../models';
 import logger from '../logger';
 
-export async function getUserFromDb(email: string, userType?: string): Promise<UserDbInterface> {
-	const { Hackers, Organizers } = await initDb();
+export async function getUserFromDb(
+	models: Models,
+	email: string,
+	userType?: string
+): Promise<UserDbInterface> {
+	const { Hackers, Organizers } = models;
 
 	let user: UserDbInterface | null = null;
 	switch (userType) {
@@ -27,8 +31,12 @@ export async function getUserFromDb(email: string, userType?: string): Promise<U
 	return user;
 }
 
-export const verifyCallback = async (profile: Profile, done: VerifyCallback): Promise<void> => {
-	const { Logins, Hackers } = await initDb();
+export const verifyCallback = async (
+	models: Models,
+	profile: Profile,
+	done: VerifyCallback
+): Promise<void> => {
+	const { Logins, Hackers } = models;
 	const { userType } = (await Logins.findOne({
 		provider: profile.provider,
 		token: profile.id,
@@ -69,7 +77,7 @@ export const verifyCallback = async (profile: Profile, done: VerifyCallback): Pr
 			});
 		}
 
-		const user = await getUserFromDb(email, userType || UserType.Hacker);
+		const user = await getUserFromDb(models, email, userType || UserType.Hacker);
 		return void done(null, user);
 	} catch (err) {
 		return void done(err);
