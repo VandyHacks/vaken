@@ -54,7 +54,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
 	try {
-		if (models) await dbClient.disconnect();
+		if (dbClient) await dbClient.disconnect();
 		if (mongoServer) await mongoServer.stop();
 	} catch (err) {
 		// eslint-disable-next-line no-console
