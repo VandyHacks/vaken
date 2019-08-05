@@ -94,13 +94,13 @@ describe('Test resolver helpers', () => {
 
 	describe('query<T>', () => {
 		it('throws an error when the item is not found', async () => {
-			expect(query({ foo: 'bar' }, models.Hackers)).rejects.toThrow(
+			await expect(query({ foo: 'bar' }, models.Hackers)).rejects.toThrow(
 				'obj with filters: "{"foo":"bar"}" not found in collection "Hackers"'
 			);
 		});
 
 		it('retrieves an object from the database', async () => {
-			expect(query({ email: 'foo@bar.com' }, models.Hackers)).resolves.toEqual(testHacker);
+			await expect(query({ email: 'foo@bar.com' }, models.Hackers)).resolves.toEqual(testHacker);
 		});
 	});
 
@@ -108,13 +108,13 @@ describe('Test resolver helpers', () => {
 		it('throws an error when the item is not found', async () => {
 			const newId = new ObjectId();
 
-			expect(queryById(newId.toHexString(), models.Hackers)).rejects.toThrow(
+			await expect(queryById(newId.toHexString(), models.Hackers)).rejects.toThrow(
 				`obj with filters: "{"_id":"${newId.toHexString()}"}" not found in collection "Hackers"`
 			);
 		});
 
 		it('retrieves an object from the database by id', async () => {
-			expect(queryById(testOrganizerId.toHexString(), models.Organizers)).resolves.toEqual(
+			await expect(queryById(testOrganizerId.toHexString(), models.Organizers)).resolves.toEqual(
 				testOrganizer
 			);
 		});
@@ -122,35 +122,37 @@ describe('Test resolver helpers', () => {
 
 	describe('fetchUser', () => {
 		it('retrieves a hacker from the Hackers collection', async () => {
-			expect(
+			await expect(
 				fetchUser({ email: 'foo@bar.com', userType: UserType.Hacker }, models)
 			).resolves.toEqual(testHacker);
 		});
 
 		it('retrieves an organizer from the organizers collection', async () => {
-			expect(
+			await expect(
 				fetchUser({ email: 'foo@bar.com', userType: UserType.Organizer }, models)
 			).resolves.toEqual(testOrganizer);
 		});
 
 		it('is not implemented for mentors, sponsors, or superadmins', async () => {
-			[UserType.Mentor, UserType.Sponsor, UserType.SuperAdmin].forEach(userType => {
-				expect(fetchUser({ email: 'foo@bar.com', userType }, models)).rejects.toThrow(
-					`fetchUser for userType ${userType} not implemented`
-				);
-			});
+			await Promise.all(
+				[UserType.Mentor, UserType.Sponsor, UserType.SuperAdmin].map(async userType => {
+					await expect(fetchUser({ email: 'foo@bar.com', userType }, models)).rejects.toThrow(
+						`fetchUser for userType ${userType} not implemented`
+					);
+				})
+			);
 		});
 	});
 
 	describe('updateUser', () => {
 		it('returns full object it updated containing the updated fields', async () => {
-			expect(
+			await expect(
 				updateUser({ email: 'foo@bar.com', userType: UserType.Hacker }, { lastName: 'baz' }, models)
 			).resolves.toMatchObject({ ...testHacker, lastName: 'baz' });
 		});
 
 		it('updates the organizers collection for an organizer', async () => {
-			expect(
+			await expect(
 				updateUser(
 					{ email: 'foo@bar.com', userType: UserType.Organizer },
 					{ lastName: 'bin' },
@@ -160,7 +162,7 @@ describe('Test resolver helpers', () => {
 		});
 
 		it('performs enum validation for dietaryRestrictions', async () => {
-			expect(
+			await expect(
 				updateUser(
 					{ email: 'foo@bar.com', userType: UserType.Hacker },
 					{ dietaryRestrictions: 'baz' },
@@ -171,7 +173,7 @@ describe('Test resolver helpers', () => {
 					'"NUT_ALLERGY","LACTOSE_ALLERGY","GLUTEN_FREE","KOSHER","HALAL"]"'
 			);
 
-			expect(
+			await expect(
 				updateUser(
 					{ email: 'foo@bar.com', userType: UserType.Hacker },
 					{ dietaryRestrictions: 'HALAL|KOSHER' },
@@ -181,13 +183,13 @@ describe('Test resolver helpers', () => {
 		});
 
 		it('performs enum validation for dietaryRestrictions', async () => {
-			expect(
+			await expect(
 				updateUser({ email: 'foo@bar.com', userType: UserType.Hacker }, { gender: 'baz' }, models)
 			).rejects.toThrow(
 				'Invalid enum value: "baz" is not in "["MALE","FEMALE","OTHER","PREFER_NOT_TO_SAY"]"'
 			);
 
-			expect(
+			await expect(
 				updateUser(
 					{ email: 'foo@bar.com', userType: UserType.Hacker },
 					{ gender: 'FEMALE' },
@@ -197,7 +199,7 @@ describe('Test resolver helpers', () => {
 		});
 
 		it('performs enum validation for shirtSize', async () => {
-			expect(
+			await expect(
 				updateUser(
 					{ email: 'foo@bar.com', userType: UserType.Hacker },
 					{ shirtSize: 'baz' },
@@ -205,23 +207,29 @@ describe('Test resolver helpers', () => {
 				)
 			).rejects.toThrow('Invalid enum value: "baz" is not in "["XS","S","M","L","XL","XXL"]"');
 
-			expect(
+			await expect(
 				updateUser({ email: 'foo@bar.com', userType: UserType.Hacker }, { shirtSize: 'XS' }, models)
 			).resolves.toMatchObject({ ...testHacker, shirtSize: 'XS' });
 		});
 
 		it('throws an error if the object to be updated does not exit', async () => {
-			expect(
-				updateUser({ email: 'foo@bar.com', userType: UserType.Hacker }, { lastName: 'baz' }, models)
-			).rejects.toThrow('user foo@bar.com not found');
+			await expect(
+				updateUser(
+					{ email: 'bang@bar.com', userType: UserType.Hacker },
+					{ lastName: 'baz' },
+					models
+				)
+			).rejects.toThrow('user bang@bar.com not found');
 		});
 
 		it('is not implemented for mentors, sponsors, or superadmins', async () => {
-			[UserType.Mentor, UserType.Sponsor, UserType.SuperAdmin].forEach(userType => {
-				expect(updateUser({ email: 'foo@bar.com', userType }, {}, models)).rejects.toThrow(
-					`updateUser for userType ${userType} not implemented`
-				);
-			});
+			await Promise.all(
+				[UserType.Mentor, UserType.Sponsor, UserType.SuperAdmin].map(async userType => {
+					await expect(updateUser({ email: 'foo@bar.com', userType }, {}, models)).rejects.toThrow(
+						`updateUser for userType ${userType} not implemented`
+					);
+				})
+			);
 		});
 	});
 });
