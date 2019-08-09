@@ -1,4 +1,4 @@
-import { MongoClient, ObjectId } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { checkIsAuthorized, fetchUser, query, queryById, toEnum, updateUser } from './helpers';
 import {
