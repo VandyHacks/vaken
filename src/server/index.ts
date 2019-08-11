@@ -5,7 +5,7 @@ import passport from 'passport';
 import session from 'express-session';
 import gqlSchema from '../common/schema.graphql';
 import { resolvers } from './resolvers';
-import modelsPromise from './models';
+import DB from './models';
 import Context from './context';
 import logger from './logger';
 import { strategies, registerAuthRoutes } from './auth';
@@ -14,22 +14,6 @@ const { SESSION_SECRET } = process.env;
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
 
 const app = express();
-
-// Register auth functions
-app.use(session({ secret: SESSION_SECRET }));
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use('github', strategies.github);
-passport.use('google', strategies.google);
-
-registerAuthRoutes(app);
-
-app.use((req, res, next) =>
-	passport.authenticate(['session', 'github', 'google'], (err, user) => {
-		if (err) return void next();
-		return void req.login(user, next);
-	})(req, res, next)
-);
 
 export const schema = makeExecutableSchema({
 	resolverValidationOptions: {
@@ -41,29 +25,48 @@ export const schema = makeExecutableSchema({
 });
 
 (async () => {
-	// creates all models and connects to the database
-	const models = await modelsPromise;
-	// starts apollo GraphQL server
-	const server = new ApolloServer({
-		context: ({ req }): Context => ({
-			models,
-			user: req.user,
-		}),
-		formatError: error => {
-			logger.error(error);
-			return error;
-		},
-		playground: true,
-		schema,
-	});
+	const dbClient = new DB();
+	const models = await dbClient.collections;
 
-	server.applyMiddleware({ app });
+	// Register auth functions
+	app.use(session({ secret: SESSION_SECRET }));
+	app.use(passport.initialize());
+	app.use(passport.session());
+	passport.use('github', strategies.github(models));
+	passport.use('google', strategies.google(models));
 
-	// starts Express web HTTP server
-	app.listen(
-		{ port: 8080 },
-		() => void logger.info(`Server ready at http://localhost:8080${server.graphqlPath}`)
+	registerAuthRoutes(app);
+
+	app.use((req, res, next) =>
+		passport.authenticate(['session', 'github', 'google'], (err, user) => {
+			if (err) return void next();
+			return void req.login(user, next);
+		})(req, res, next)
 	);
+
+	try {
+		const server = new ApolloServer({
+			context: ({ req }): Context => ({
+				models,
+				user: req.user,
+			}),
+			formatError: error => {
+				logger.error(error);
+				return error;
+			},
+			playground: true,
+			schema,
+		});
+
+		server.applyMiddleware({ app });
+
+		app.listen(
+			{ port: 8080 },
+			() => void logger.info(`Server ready at http://localhost:8080${server.graphqlPath}`)
+		);
+	} finally {
+		dbClient.disconnect();
+	}
 })();
 
 // for testing
