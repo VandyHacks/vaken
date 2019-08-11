@@ -103,12 +103,8 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 	useEffect((): (() => void) => {
 		if (setActionButton)
 			setActionButton(
-				<HeaderButton
-					onClick={() => {
-						updateApplication({ variables: { input } });
-					}}
-					width="8em">
-					Submit
+				<HeaderButton width="8em" onClick={async () => updateApplication({ variables: { input } })}>
+					<p>Submit</p>
 				</HeaderButton>
 			);
 
