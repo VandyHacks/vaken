@@ -81,12 +81,10 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 	const [updateApplication] = useUpdateMyApplicationMutation();
 	const { data, error, loading } = useMyApplicationQuery();
 
-	// [{ObjectID: firstName, input: 'hello', changed: false}]
 	// Only update changed QuestionIDs
 	const createOnChangeHandler = (fieldName: string): ((value: string) => void) => value => {
 		void setInput(draft => {
 			const element = draft.find(el => el.question === fieldName);
-			// FIXME: add a changed field to the question
 			if (!element) {
 				draft.push({ answer: value, question: fieldName });
 			} else {

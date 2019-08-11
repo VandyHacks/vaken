@@ -59,7 +59,7 @@ export const resolvers: CustomResolvers<Context> = {
 		...userResolvers,
 		adult: async hacker => (await hacker).adult || null,
 		application: async (hacker, args, { models }: Context) =>
-			models.ApplicationFields.find({ userId: (await hacker)._id }).toArray(),
+			await models.ApplicationFields.find({ userId: (await hacker)._id }).toArray(),
 		gender: async hacker => (await hacker).gender || null,
 		github: async hacker => (await hacker).github || null,
 		gradYear: async hacker => (await hacker).gradYear || null,
@@ -175,7 +175,8 @@ export const resolvers: CustomResolvers<Context> = {
 		updateMyApplication: async (root, args, ctx: Context) => {
 			// Enables a user to update their application
 			if (!ctx.user) throw new AuthenticationError(`cannot update application: user not logged in`);
-			const { _id } = ctx.user;
+			// TODO(leonm1): Figure out why the _id field isn't actually an ObjectID
+			const id = ObjectID.createFromHexString((ctx.user._id as unknown) as string);
 			// update app answers if they exist
 			await Promise.all(
 				args.input.map(async ({ question, answer }) => {
@@ -184,8 +185,8 @@ export const resolvers: CustomResolvers<Context> = {
 						lastErrorObject,
 						ok,
 					} = await ctx.models.ApplicationFields.findOneAndUpdate(
-						{ question, userId: _id },
-						{ $set: { answer, question, userId: _id } },
+						{ question, userId: id },
+						{ $set: { answer, question, userId: id } },
 						{ returnOriginal: false, upsert: true }
 					);
 					if (!value || !ok) {
@@ -198,11 +199,8 @@ export const resolvers: CustomResolvers<Context> = {
 					return value;
 				})
 			);
-			const ret = await ctx.models.Hackers.findOne({
-				// TODO(leonm1): Figure out why the _id field isn't actually an ObjectID
-				_id: ObjectID.createFromHexString((_id as unknown) as string),
-			});
-			if (!ret) throw new AuthenticationError(`hacker not found: ${_id}`);
+			const ret = await ctx.models.Hackers.findOne({ _id: id });
+			if (!ret) throw new AuthenticationError(`hacker not found: ${id.toHexString()}`);
 			return ret;
 		},
 		updateMyProfile: async (root, { input }, { models, user }) => {
