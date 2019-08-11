@@ -8,10 +8,9 @@ export const filterOutSentEmailsAndDuplicates = (
 	allEmails: string[],
 	emailedList: EmailedListDbObject | null
 ): string[] => {
-	if (!emailedList) {
-		return Array.from(new Set(allEmails));
-	}
-	return Array.from(new Set(allEmails)).filter(email => !emailedList.emails.includes(email));
+	return Array.from(new Set(allEmails)).filter(
+		email => !emailedList || !emailedList.emails.includes(email)
+	);
 };
 
 export const updateEmailedList = async (
@@ -63,12 +62,9 @@ export const sendEmailsImpl = async (
 	});
 	const filteredRecipients = filterOutSentEmailsAndDuplicates(recipients, emailedList);
 	filteredRecipients.forEach(async recipient => {
-		const info = await transporter.sendMail(makeMailOptions(emailType, recipient));
-		console.log('Message sent: %s', info.messageId);
-		console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+		// TODO(timliang): Check/Return statuses of each sendMail operation
+		await transporter.sendMail(makeMailOptions(emailType, recipient));
 	});
-
-	// TODO(timliang): Don't assume all emails were successfully sent.
 	await updateEmailedList(emailType, filteredRecipients);
 
 	sendEmailsLock = false;
