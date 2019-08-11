@@ -53,7 +53,7 @@ const SliderContainer = styled.div`
 	}
 `;
 
-export const SliderSansTitleCase: FC<Props> = ({ value, setState, ...props }) => {
+export const SliderSansTitleCase: FC<Props> = ({ value, setState, titleCase, ...props }) => {
 	const onChange: FormEventHandler<HTMLInputElement> = ({ currentTarget: { id } }) =>
 		setState(id === value ? '' : id);
 
@@ -65,7 +65,7 @@ export const SliderSansTitleCase: FC<Props> = ({ value, setState, ...props }) =>
 					(option: string): JSX.Element => (
 						<React.Fragment key={option}>
 							<input checked={value === option} type="radio" id={option} onChange={onChange} />
-							<label htmlFor={option}>{title(option)}</label>
+							<label htmlFor={option}>{titleCase ? title(option) : option}</label>
 						</React.Fragment>
 					)
 				)}
