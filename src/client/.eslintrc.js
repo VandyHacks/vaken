@@ -8,6 +8,7 @@ module.exports = {
 	],
 	plugins: ['react', 'react-hooks'],
 	rules: {
+		'react/prop-types': [0], // Not necessary as we use TypeScript for this
 		'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
 		'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
 		'react/jsx-indent': [2, 'tab', { checkAttributes: true }],
