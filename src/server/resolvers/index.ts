@@ -179,20 +179,29 @@ export const resolvers: CustomResolvers<Context> = {
 			// update app answers if they exist
 			await Promise.all(
 				args.input.map(async ({ question, answer }) => {
-					const { value, lastErrorObject } = await ctx.models.ApplicationFields.findOneAndUpdate(
+					const {
+						value,
+						lastErrorObject,
+						ok,
+					} = await ctx.models.ApplicationFields.findOneAndUpdate(
 						{ question, userId: _id },
 						{ $set: { answer, question, userId: _id } },
 						{ returnOriginal: false, upsert: true }
 					);
-					if (lastErrorObject || !value) {
+					if (!value || !ok) {
 						throw new UserInputError(
-							`error inputting user application input ${JSON.stringify(lastErrorObject)}`
+							`error inputting user application input "${answer}" for question "${question}" ${JSON.stringify(
+								lastErrorObject
+							)}`
 						);
 					}
 					return value;
 				})
 			);
-			const ret = await ctx.models.Hackers.findOne({ _id });
+			const ret = await ctx.models.Hackers.findOne({
+				// TODO(leonm1): Figure out why the _id field isn't actually an ObjectID
+				_id: ObjectID.createFromHexString((_id as unknown) as string),
+			});
 			if (!ret) throw new AuthenticationError(`hacker not found: ${_id}`);
 			return ret;
 		},
