@@ -8,9 +8,10 @@ module.exports = {
 	],
 	plugins: ['react', 'react-hooks'],
 	rules: {
+		'react/prop-types': [0], // Not necessary as we use TypeScript for this
 		'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
 		'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
-		'react/jsx-indent': [2, 'tab', { checkAttributes: true }],
+		'react/jsx-indent': [0], // Conflicts with prettier
 		'react/jsx-indent-props': [2, 'tab'],
 		'react/jsx-closing-bracket-location': [0, 'tag-aligned'], // Handled by prettier
 		'react/jsx-filename-extension': [

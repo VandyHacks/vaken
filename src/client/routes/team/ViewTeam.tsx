@@ -23,7 +23,7 @@ interface Props {
 }
 
 export const ViewTeam: FC<Props> = ({ teamName }: Props): JSX.Element => {
-	const leaveTeam = useLeaveTeamMutation();
+	const [leaveTeam] = useLeaveTeamMutation();
 
 	return (
 		<FlexColumn>

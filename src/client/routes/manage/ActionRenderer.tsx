@@ -1,14 +1,24 @@
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
-
 import 'react-virtualized/styles.css';
 import styled from 'styled-components';
-
+import { MutationFunction } from '@apollo/react-common';
 import { RadioSlider } from '../../components/Buttons/RadioSlider';
 import { TableButton } from '../../components/Buttons/TableButton';
 import { processSliderInput } from './SliderInput';
 import { QueriedHacker } from './HackerTableTypes';
-import { ApplicationStatus, HackerStatusMutationFn } from '../../generated/graphql';
+import {
+	ApplicationStatus,
+	HackerStatusMutation,
+	HackerStatusMutationVariables,
+} from '../../generated/graphql';
+
+// Work around graphql-code-generator not yet working with
+// the separate @apollo/react-common package in 3.0.0.
+export type HackerStatusMutationFn = MutationFunction<
+	HackerStatusMutation,
+	HackerStatusMutationVariables
+>;
 
 interface ActionRendererProps {
 	rowData: QueriedHacker;
@@ -38,10 +48,8 @@ function convertApplicationStatus(status: ApplicationStatus): string {
 }
 
 // action column that contains the actionable buttons
-export default function actionRenderer(
-	updateStatus: HackerStatusMutationFn
-): FC<ActionRendererProps> {
-	return function ActionRenderer({ rowData: { id, status } }: ActionRendererProps) {
+export function actionRenderer(updateStatus: HackerStatusMutationFn): FC<ActionRendererProps> {
+	return function ActionRenderer({ rowData: { id, status } }) {
 		return (
 			<Actions className="ignore-select">
 				<RadioSlider
@@ -55,9 +63,7 @@ export default function actionRenderer(
 					}}
 					disable={!enableApplicationStatusSlider(status)}
 				/>
-				<Link
-					style={{ textDecoration: 'none' }}
-					to={{ pathname: '/manageHackers/hacker', state: { id } }}>
+				<Link style={{ textDecoration: 'none' }} to={{ pathname: `/manage/hackers/detail/${id}` }}>
 					<TableButton>View</TableButton>
 				</Link>
 			</Actions>

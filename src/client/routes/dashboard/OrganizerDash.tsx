@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { Bar, Pie, ChartData } from 'react-chartjs-2';
 import { Link } from 'react-router-dom';
 import { gql } from 'apollo-boost';
-import { useQuery } from 'react-apollo-hooks';
+import { useQuery } from '@apollo/react-hooks';
 import styled from 'styled-components';
 import chartjs, { ChartOptions } from 'chart.js';
 

@@ -16,7 +16,7 @@ export const Profile: React.FunctionComponent<{}> = (): JSX.Element => {
 	const { data, loading, error } = useMyProfileQuery();
 	const [loaded, setLoaded] = useState(false);
 	const [input, setInput] = useImmer<UserInput>({});
-	const updateProfile = useUpdateMyProfileMutation();
+	const [updateProfile] = useUpdateMyProfileMutation();
 
 	const createOnChangeHandler = (
 		fieldName: keyof UserInput

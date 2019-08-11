@@ -43,13 +43,13 @@ const routes = [
 		authLevel: [UserType.Organizer],
 		component: ManageHackers,
 		displayText: 'Manage Hackers',
-		path: '/manageHackers',
+		path: '/manage/hackers',
 	},
 	{
 		authLevel: [UserType.Organizer],
 		component: NotReady,
 		displayText: 'Manage Sponsors',
-		path: '/manageSponsor',
+		path: '/manage/sponsors',
 	},
 	{
 		authLevel: [UserType.Hacker, UserType.Sponsor, UserType.Organizer],

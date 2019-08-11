@@ -1,26 +1,14 @@
-import React from 'react';
-import { gql } from 'apollo-boost';
-import { Query } from 'react-apollo';
+import React, { FC } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
-import { Redirect, RouteComponentProps } from 'react-router-dom';
-import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
+import { title } from 'case';
 import { Spinner } from '../../components/Loading/Spinner';
 import STRINGS from '../../assets/strings.json';
 import { Title } from '../../components/Text/Title';
 import LeftImgButton from '../../components/Buttons/LeftImgButton';
 import back from '../../assets/img/back.svg';
-
-const Header = styled.div`
-	grid-area: header;
-`;
-
-const Profile = styled.div`
-	grid-area: profile;
-`;
-
-const Application = styled.div`
-	grid-area: application;
-`;
+import { useDetailedHackerQuery } from '../../generated/graphql';
+import { profile } from '../profile/ProfileConfig';
 
 const Layout = styled.div`
 	display: grid;
@@ -57,128 +45,103 @@ const Value = styled('td')`
 	color: ${STRINGS.DARK_TEXT_COLOR};
 `;
 
-export const GET_HACKER_DATA = gql`
-	query HackerData($email: String!) {
-		hacker(email: $email) {
-			firstName
-			lastName
-			email
-			school
-			status
-			needsReimbursement
-		}
-	}
-`;
-
-interface RowProps {
-	label: string;
-	value: string;
-}
-
-const Row: React.FunctionComponent<RowProps> = (props: RowProps): JSX.Element => {
+const Row: FC<{ label: string; value: string | string[] }> = props => {
 	const { label, value } = props;
+	const text =
+		value instanceof Array ? (
+			value.map(val => <p key={val}>{title(val)}</p>)
+		) : (
+			<p>{title(value)}</p>
+		);
 
 	return (
 		<tr>
 			<Label>{label}</Label>
-			<Value>{value}</Value>
+			<Value>{text}</Value>
 		</tr>
 	);
 };
 
-export const HackerView: React.FunctionComponent<RouteComponentProps<{}>> = (
-	props: RouteComponentProps<{}>
-): JSX.Element => {
-	const { location } = props;
-	console.log(location.state.email);
-	if (!location || !location.state || !location.state.email) {
-		return <Redirect to="/manageHackers" />;
-	}
+export const HackerView: FC<RouteComponentProps<{ id: string }, {}, {}>> = props => {
+	const { match } = props;
+	const { data, loading, error } = useDetailedHackerQuery({ variables: { id: match.params.id } });
+
+	if (loading) return <Spinner />;
+
+	// Handle missing ID separately from error
+	if (!match.params.id) throw new Error('HackerView rendered with no hacker id provided');
+	if (error) throw error;
+
+	// If an ID was provided, no error was thrown, and it's not loading, then we have a weird problem.
+	if (!data) throw new Error('No error was thrown, but no data was found either :(');
+
+	const { hacker } = data;
+
 	return (
-		// fixed type issues for data, loading, error by pinning @react/types. watch this issue: apollographql/react-apollo#2971
-		<Query query={GET_HACKER_DATA} variables={{ email: location.state.email }}>
-			{({ data, loading, error }) => {
-				if (loading) {
-					return <Spinner />;
-				}
-
-				if (error) {
-					console.log(error);
-					return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
-				}
-
-				console.log(data);
-				console.log(data.getHackerByEmail.teamName);
-				const {
-					firstName,
-					lastName,
-					email,
-					school,
-					status,
-					needsReimbursement,
-				} = data.getHackerByEmail;
-
-				return (
-					<Layout>
-						<Header>
-							<LeftImgButton
-								background={STRINGS.ACCENT_COLOR}
-								color="#ffffff"
-								img={back}
-								imgAlt="left arrow"
-								width="auto"
-								onClick={() => props.history.goBack()}
-								paddingLeft="1.5rem"
-								paddingRight="1.5rem">
-								Back to table
-							</LeftImgButton>
-						</Header>
-						<Profile>
-							<Title
-								margin="0.25rem"
-								fontSize="1.5rem"
-								textAlign="center"
-								color={STRINGS.DARKEST_TEXT_COLOR}>
-								{'Profile'}
-							</Title>
-							<HorizontalLine />
-							<StyledTable>
-								<tbody>
-									<Row label="First Name:" value={firstName} />
-									<Row label="Last Name:" value={lastName} />
-									<Row label="Email:" value={email} />
-									<Row label="School:" value={school} />
-									<Row label="Status:" value={status} />
-								</tbody>
-							</StyledTable>
-						</Profile>
-						<Application>
-							<Title
-								margin="0.25rem"
-								fontSize="1.5rem"
-								textAlign="center"
-								color={STRINGS.DARKEST_TEXT_COLOR}>
-								{'Application'}
-							</Title>
-							<HorizontalLine />
-							<StyledTable>
-								<tbody>
-									<Row label="Needs Reimbursement:" value={needsReimbursement ? 'yes' : 'no'} />
-									<Row
-										label="Essay Response 1:"
-										value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-									/>
-									<Row
-										label="Essay Response 2:"
-										value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-									/>
-								</tbody>
-							</StyledTable>
-						</Application>
-					</Layout>
-				);
-			}}
-		</Query>
+		<Layout>
+			<div style={{ gridArea: 'header' }}>
+				<LeftImgButton
+					background={STRINGS.ACCENT_COLOR}
+					color="#ffffff"
+					img={back}
+					imgAlt="left arrow"
+					width="auto"
+					onClick={() => props.history.goBack()}
+					paddingLeft="1.5rem"
+					paddingRight="1.5rem">
+					Back to table
+				</LeftImgButton>
+			</div>
+			<div style={{ gridArea: 'profile' }}>
+				<Title
+					margin="0.25rem"
+					fontSize="1.5rem"
+					textAlign="center"
+					color={STRINGS.DARKEST_TEXT_COLOR}>
+					{'Profile'}
+				</Title>
+				<HorizontalLine />
+				<StyledTable>
+					<tbody>
+						{profile
+							.sort((a, b) => (a.sortOrder < b.sortOrder ? -1 : 0))
+							.map(({ title: fieldTitle, fieldName }) => (
+								<Row
+									key={fieldName}
+									label={`${fieldTitle}:`}
+									value={
+										(hacker[fieldName as keyof typeof hacker] as string | string[]) ||
+										'Not provided'
+									}
+								/>
+							))}
+					</tbody>
+				</StyledTable>
+			</div>
+			<div style={{ gridArea: 'application' }}>
+				<Title
+					margin="0.25rem"
+					fontSize="1.5rem"
+					textAlign="center"
+					color={STRINGS.DARKEST_TEXT_COLOR}>
+					{'Application'}
+				</Title>
+				<HorizontalLine />
+				<StyledTable>
+					<tbody>
+						{/* TODO: Travel reimbursement */}
+						<Row
+							label="Essay Response 1:"
+							value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+						/>
+						<Row
+							label="Essay Response 2:"
+							value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+						/>
+					</tbody>
+				</StyledTable>
+			</div>
+		</Layout>
 	);
 };
 

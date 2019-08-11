@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { FC } from 'react';
 
+import { MutationFunction } from '@apollo/react-common';
 import { RadioSlider } from '../../components/Buttons/RadioSlider';
 import { QueriedHacker } from './HackerTableTypes';
-import { ApplicationStatus, HackerStatusesMutationFn } from '../../generated/graphql';
+import {
+	ApplicationStatus,
+	HackerStatusesMutation,
+	HackerStatusesMutationVariables,
+} from '../../generated/graphql';
+
+// Work around graphql-code-generator not yet working with
+// the separate @apollo/react-common package in 3.0.0.
+export type HackerStatusesMutationFn = MutationFunction<
+	HackerStatusesMutation,
+	HackerStatusesMutationVariables
+>;
 
 export interface DeselectElement extends HTMLDivElement {
 	context: {
@@ -32,12 +44,12 @@ interface SliderInputProps {
 	updateStatuses: HackerStatusesMutationFn;
 }
 
-export const SliderInput = ({
+export const SliderInput: FC<SliderInputProps> = ({
 	updateStatuses,
 	deselect,
 	selectedRowsIds,
 	sortBy,
-}: SliderInputProps): JSX.Element => {
+}) => {
 	return (
 		<RadioSlider
 			option1="Accept"
