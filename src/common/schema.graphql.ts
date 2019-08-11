@@ -90,7 +90,7 @@ export default gql`
 	type ApplicationField @entity(embedded: true) {
 		id: ID! @column
 		createdAt: Float! @column(overrideType: "Date")
-		question: String! @embedded
+		question: String! @column
 		answer: String @column
 		userId: ID! @column
 	}
