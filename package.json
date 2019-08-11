@@ -68,6 +68,7 @@
 		"@types/faker": "^4.1.5",
 		"apollo-boost": "^0.4.4",
 		"apollo-server-express": "^2.6.6",
+		"case": "^1.6.2",
 		"chart.js": "^2.8.0",
 		"chartjs-plugin-datalabels": "^0.6.0",
 		"csstype": "^2.6.6",

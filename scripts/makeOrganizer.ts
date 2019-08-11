@@ -33,6 +33,7 @@ const makeOrganizer = async (models: Models, constraint: Partial<LoginDbObject>)
 		_id: new ObjectId(),
 		logins: [value],
 		permissions: [],
+		userType: UserType.Organizer,
 	});
 	if (!result.ok) {
 		throw new Error('Error: (Unspecified) while inserting user into organizers collection');
