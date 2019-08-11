@@ -1,14 +1,19 @@
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
-
 import 'react-virtualized/styles.css';
 import styled from 'styled-components';
-
+import { MutationFunction } from '@apollo/react-common';
 import { RadioSlider } from '../../components/Buttons/RadioSlider';
 import { TableButton } from '../../components/Buttons/TableButton';
 import { processSliderInput } from './SliderInput';
 import { QueriedHacker } from './HackerTableTypes';
-import { ApplicationStatus, HackerStatusMutationFn } from '../../generated/graphql';
+import {
+	ApplicationStatus,
+	HackerStatusMutation,
+	HackerStatusMutationVariables,
+} from '../../generated/graphql';
+
+type HackerStatusMutationFn = MutationFunction<HackerStatusMutation, HackerStatusMutationVariables>;
 
 interface ActionRendererProps {
 	rowData: QueriedHacker;

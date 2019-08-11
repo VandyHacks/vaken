@@ -1,6 +1,42 @@
 import { gql } from 'apollo-boost';
 
 export default gql`
+	query detailedHacker($id: ID!) {
+		hacker(id: $id) {
+			id
+			email
+			firstName
+			preferredName
+			lastName
+			shirtSize
+			gender
+			dietaryRestrictions
+			userType
+			phoneNumber
+			race
+			modifiedAt
+			status
+			school
+			gradYear
+			majors
+			adult
+			volunteer
+			github
+			team {
+				id
+				name
+				memberIds
+			}
+			# applicationQuestions {
+			# 	id
+			# 	question {
+			# 		prompt
+			# 	}
+			# 	answer
+			# }
+		}
+	}
+
 	query hackers {
 		hackers {
 			id

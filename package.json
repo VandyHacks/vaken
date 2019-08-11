@@ -59,6 +59,7 @@
 		"check": "concurrently -c bgBlue.bold,bgMagenta.bold,bgGreen.bold \"npm:check:lint\"  \"npm:check:types\" \"npm:check:test\""
 	},
 	"dependencies": {
+		"@apollo/react-common": "^3.0.0",
 		"@apollo/react-hooks": "^3.0.0",
 		"@apollo/react-testing": "^3.0.0",
 		"@graphql-codegen/typescript-mongodb": "^1.4.0",
