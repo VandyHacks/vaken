@@ -1,8 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import ApolloClient from 'apollo-boost';
-import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
-import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider } from '@apollo/react-hooks';
 import Vaken from './app';
 
 const client = new ApolloClient({ uri: '/graphql' });
@@ -12,9 +11,7 @@ describe('Test Vaken', () => {
 		const component = renderer
 			.create(
 				<ApolloProvider client={client}>
-					<ApolloHooksProvider client={client}>
-						<Vaken />
-					</ApolloHooksProvider>
+					<Vaken />
 				</ApolloProvider>
 			)
 			.toJSON();

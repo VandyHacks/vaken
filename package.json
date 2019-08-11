@@ -59,11 +59,13 @@
 		"check": "concurrently -c bgBlue.bold,bgMagenta.bold,bgGreen.bold \"npm:check:lint\"  \"npm:check:types\" \"npm:check:test\""
 	},
 	"dependencies": {
+		"@apollo/react-hooks": "^3.0.0",
+		"@apollo/react-testing": "^3.0.0",
 		"@graphql-codegen/typescript-mongodb": "^1.4.0",
 		"@packtracker/webpack-plugin": "^2.1.0",
 		"@svgr/webpack": "^4.3.2",
 		"@types/faker": "^4.1.5",
-		"apollo-boost": "^0.4.3",
+		"apollo-boost": "^0.4.4",
 		"apollo-server-express": "^2.6.6",
 		"chart.js": "^2.8.0",
 		"chartjs-plugin-datalabels": "^0.6.0",
@@ -82,8 +84,6 @@
 		"passport-oauth2": "^1.5.0",
 		"pino": "^5.12.6",
 		"react": "^16.8.6",
-		"react-apollo": "^2.5.8",
-		"react-apollo-hooks": "^0.4.5",
 		"react-chartjs-2": "^2.7.6",
 		"react-dom": "^16.8.6",
 		"react-router-dom": "^5.0.1",
