@@ -14,10 +14,10 @@ import { Status } from '../../components/Text/Status';
 import { Checkmark } from '../../components/Symbol/Checkmark';
 
 import { Row } from './Row';
-import actionRenderer from './ActionRenderer';
+import { actionRenderer, HackerStatusMutationFn } from './ActionRenderer';
 import { reimbursementHeaderRenderer } from './ReimbursementHeader';
 
-import { ApplicationStatus, HackerStatusMutationFn } from '../../generated/graphql';
+import { ApplicationStatus } from '../../generated/graphql';
 import STRINGS from '../../assets/strings.json';
 import { SortFnProps } from './HackerTableTypes';
 import { TableCtxI } from '../../contexts/TableContext';

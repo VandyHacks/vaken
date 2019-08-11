@@ -200,8 +200,8 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 	const table = useContext(TableContext);
 	const [sortedData, setSortedData] = useState(data);
 	const deselect = useRef<DeselectElement>(null);
-	const updateStatus = useHackerStatusMutation();
-	const updateStatuses = useHackerStatusesMutation();
+	const [updateStatus] = useHackerStatusMutation();
+	const [updateStatuses] = useHackerStatusesMutation();
 
 	const {
 		selectAll,

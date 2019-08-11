@@ -18,9 +18,9 @@ export const ManageHackers: FunctionComponent = (): JSX.Element => {
 		<FloatingPopup borderRadius="1rem" height="100%" backgroundOpacity="1" padding="1.5rem">
 			<TableContext.Provider value={{ state: tableState, update: updateTableState }}>
 				<Switch>
-					<Route path="/manageHackers/hacker" component={HackerView} />
+					<Route path="/manage/hackers/detail/:id" component={HackerView} />
 					<Route
-						path="/manageHackers"
+						path="/manage/hackers"
 						render={() => {
 							if (loading || !data) return <Spinner />;
 							if (error) {
