@@ -16,7 +16,7 @@ const Wrapper = styled.div`
 export const JoinTeam: FC = () => {
 	const [searchValue, setSearchValue] = useState('');
 	const [errorMsg, setErrorMsg] = useState('');
-	const joinTeam = useJoinTeamMutation({ variables: { input: { name: searchValue } } });
+	const [joinTeam] = useJoinTeamMutation({ variables: { input: { name: searchValue } } });
 
 	const onChangeHandler: ChangeEventHandler<HTMLInputElement> = useCallback(
 		({ currentTarget: { value } }) => void setSearchValue(value),

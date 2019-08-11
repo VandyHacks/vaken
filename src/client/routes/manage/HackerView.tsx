@@ -1,13 +1,14 @@
 import React, { FC } from 'react';
-import { gql } from 'apollo-boost';
 import { RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
+import { title } from 'case';
 import { Spinner } from '../../components/Loading/Spinner';
 import STRINGS from '../../assets/strings.json';
 import { Title } from '../../components/Text/Title';
 import LeftImgButton from '../../components/Buttons/LeftImgButton';
 import back from '../../assets/img/back.svg';
 import { useDetailedHackerQuery } from '../../generated/graphql';
+import { profile } from '../profile/ProfileConfig';
 
 const Layout = styled.div`
 	display: grid;
@@ -44,25 +45,31 @@ const Value = styled('td')`
 	color: ${STRINGS.DARK_TEXT_COLOR};
 `;
 
-const Row: FC<{ label: string; value: string }> = props => {
+const Row: FC<{ label: string; value: string | string[] }> = props => {
 	const { label, value } = props;
+	const text =
+		value instanceof Array ? (
+			value.map(val => <p key={val}>{title(val)}</p>)
+		) : (
+			<p>{title(value)}</p>
+		);
 
 	return (
 		<tr>
 			<Label>{label}</Label>
-			<Value>{value}</Value>
+			<Value>{text}</Value>
 		</tr>
 	);
 };
 
-export const HackerView: FC<RouteComponentProps<{}, {}, { id: string }>> = props => {
-	const { location } = props;
-	const { data, loading, error } = useDetailedHackerQuery({ variables: { id: location.state.id } });
+export const HackerView: FC<RouteComponentProps<{ id: string }, {}, {}>> = props => {
+	const { match } = props;
+	const { data, loading, error } = useDetailedHackerQuery({ variables: { id: match.params.id } });
 
 	if (loading) return <Spinner />;
 
 	// Handle missing ID separately from error
-	if (!location.state.id) throw new Error('HackerView called with no hacker id provided');
+	if (!match.params.id) throw new Error('HackerView rendered with no hacker id provided');
 	if (error) throw error;
 
 	// If an ID was provided, no error was thrown, and it's not loading, then we have a weird problem.
@@ -96,11 +103,18 @@ export const HackerView: FC<RouteComponentProps<{}, {}, { id: string }>> = props
 				<HorizontalLine />
 				<StyledTable>
 					<tbody>
-						<Row label="First Name:" value={hacker.firstName} />
-						<Row label="Last Name:" value={hacker.lastName} />
-						<Row label="Email:" value={hacker.email} />
-						<Row label="School:" value={hacker.school || 'Not provided'} />
-						<Row label="Status:" value={hacker.status} />
+						{profile
+							.sort((a, b) => (a.sortOrder < b.sortOrder ? -1 : 0))
+							.map(({ title, fieldName }) => (
+								<Row
+									key={fieldName}
+									label={`${title}:`}
+									value={
+										(hacker[fieldName as keyof typeof hacker] as string | string[]) ||
+										'Not provided'
+									}
+								/>
+							))}
 					</tbody>
 				</StyledTable>
 			</div>
