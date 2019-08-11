@@ -8,9 +8,10 @@ export const filterOutSentEmailsAndDuplicates = (
 	allEmails: string[],
 	emailedList: EmailedListDbObject | null
 ): string[] => {
-	return Array.from(new Set(allEmails)).filter(
-		email => !emailedList || !emailedList.emails.includes(email)
-	);
+	const dedupedEmails = Array.from(new Set(allEmails));
+	return emailedList
+		? dedupedEmails.filter(email => !emailedList.emails.includes(email))
+		: dedupedEmails;
 };
 
 export const updateEmailedList = async (
