@@ -1,3 +1,5 @@
-version: "2"
+version: '2'
 exclude_patterns:
-  - "**/graphql.ts"
+  - '**/graphql.ts'
+  - '**/*.test.ts'
+  - '**/*.test.tsx'
