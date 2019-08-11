@@ -5,6 +5,7 @@ import { InputProps } from './TextInput';
 
 export interface Props extends InputProps {
 	options?: string[];
+	titleCase?: boolean;
 }
 
 const SliderContainer = styled.div`
@@ -52,7 +53,7 @@ const SliderContainer = styled.div`
 	}
 `;
 
-export const SliderSansTitleCase: FC<Props> = ({ value, setState, ...props }: Props) => {
+export const SliderSansTitleCase: FC<Props> = ({ value, setState, ...props }) => {
 	const onChange: FormEventHandler<HTMLInputElement> = ({ currentTarget: { id } }) =>
 		setState(id === value ? '' : id);
 
@@ -64,7 +65,7 @@ export const SliderSansTitleCase: FC<Props> = ({ value, setState, ...props }: Pr
 					(option: string): JSX.Element => (
 						<React.Fragment key={option}>
 							<input checked={value === option} type="radio" id={option} onChange={onChange} />
-							<label htmlFor={option}>{option}</label>
+							<label htmlFor={option}>{title(option)}</label>
 						</React.Fragment>
 					)
 				)}
@@ -74,8 +75,6 @@ export const SliderSansTitleCase: FC<Props> = ({ value, setState, ...props }: Pr
 };
 
 // Default export should use good title case conventions.
-export const Slider: FC<Props> = ({ options = ['default'], ...props }: Props) => (
-	<SliderSansTitleCase options={options.map(op => title(op))} {...props} />
-);
+export const Slider: FC<Props> = props => <SliderSansTitleCase titleCase {...props} />;
 
 export default Slider;
