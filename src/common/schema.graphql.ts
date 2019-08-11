@@ -88,6 +88,7 @@ export default gql`
 	}
 
 	enum EmailType {
+		ACCEPTANCE
 		TEST
 	}
 
