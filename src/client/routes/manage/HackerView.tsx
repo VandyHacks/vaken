@@ -105,10 +105,10 @@ export const HackerView: FC<RouteComponentProps<{ id: string }, {}, {}>> = props
 					<tbody>
 						{profile
 							.sort((a, b) => (a.sortOrder < b.sortOrder ? -1 : 0))
-							.map(({ title, fieldName }) => (
+							.map(({ title: fieldTitle, fieldName }) => (
 								<Row
 									key={fieldName}
-									label={`${title}:`}
+									label={`${fieldTitle}:`}
 									value={
 										(hacker[fieldName as keyof typeof hacker] as string | string[]) ||
 										'Not provided'
