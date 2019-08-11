@@ -1,6 +1,7 @@
 import React, { useContext, FunctionComponent, useState, useEffect, useCallback, FC } from 'react';
 import styled from 'styled-components';
 import { useImmer } from 'use-immer';
+import Spinner from '../../components/Loading/Spinner';
 import config from '../../assets/application';
 import { Collapsible } from '../../components/Containers/Collapsible';
 import { ActionButtonContext } from '../../contexts/ActionButtonContext';
@@ -76,7 +77,8 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 	const { update: setActionButton } = useContext(ActionButtonContext);
 	const [openSection, setOpenSection] = useState('');
 	const [input, setInput] = useImmer<{ answer: string; question: string }[]>([]);
-	const updateApplication = useUpdateMyApplicationMutation();
+	const [loaded, setLoaded] = useState(false);
+	const [updateApplication] = useUpdateMyApplicationMutation();
 	const { data, error, loading } = useMyApplicationQuery();
 
 	// [{ObjectID: firstName, input: 'hello', changed: false}]
@@ -116,20 +118,19 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 	}, [input, setActionButton, updateApplication]);
 
 	useEffect((): void => {
-		if (!loading && data && data.me) {
+		if (!loaded && data && data.me) {
 			const { application } = data.me;
 			setInput(draft => {
-				application.forEach(({ answer, question }) => {
-					const element = draft.find(el => el.question === question);
-					if (element) {
-						element.answer = answer;
-					} else {
-						draft.push({ answer, question });
-					}
-				});
+				draft.length = 0; // Clear the array
+
+				// Omit the `__typename` field.
+				application.forEach(({ question, answer }) =>
+					draft.push({ answer: answer || '', question })
+				);
 			});
+			setLoaded(true);
 		}
-	}, [data, loading, setInput]);
+	}, [data, loaded, setLoaded, setInput]);
 
 	const toggleOpen = useCallback(
 		(e: React.MouseEvent<HTMLButtonElement>): void => {
@@ -145,6 +146,8 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 		console.log(error);
 		return <GraphQLErrorMessage text={JSON.stringify(error)} />;
 	}
+
+	if (loading) return <Spinner />;
 
 	return (
 		<StyledForm>
