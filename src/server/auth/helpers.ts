@@ -1,34 +1,17 @@
 import { VerifyCallback } from 'passport-oauth2';
 import { Profile } from 'passport';
 import { ObjectID } from 'mongodb';
-import { UserDbInterface, UserType, ApplicationStatus } from '../generated/graphql';
-import modelsPromise from '../models';
+import { UserType, ApplicationStatus } from '../generated/graphql';
+import { Models } from '../models';
+import { fetchUser } from '../resolvers/helpers';
 import logger from '../logger';
 
-export async function getUserFromDb(email: string, userType?: string): Promise<UserDbInterface> {
-	const { Hackers, Organizers } = await modelsPromise;
-
-	let user: UserDbInterface | null = null;
-	switch (userType) {
-		case UserType.Hacker:
-			user = await Hackers.findOne({ email });
-			break;
-		case UserType.Organizer:
-			user = await Organizers.findOne({ email });
-			break;
-		default:
-			throw new Error(`invalid userType '${userType}'`);
-	}
-
-	if (!user) {
-		throw new Error(`couldn't find user (${user}) with email ${email}`);
-	}
-
-	return user;
-}
-
-export const verifyCallback = async (profile: Profile, done: VerifyCallback): Promise<void> => {
-	const { Logins, Hackers } = await modelsPromise;
+export const verifyCallback = async (
+	models: Models,
+	profile: Profile,
+	done: VerifyCallback
+): Promise<void> => {
+	const { Logins, Hackers } = models;
 	const { userType } = (await Logins.findOne({
 		provider: profile.provider,
 		token: profile.id,
@@ -69,7 +52,7 @@ export const verifyCallback = async (profile: Profile, done: VerifyCallback): Pr
 			});
 		}
 
-		const user = await getUserFromDb(email, userType || UserType.Hacker);
+		const user = await fetchUser({ email, userType: userType || UserType.Hacker }, models);
 		return void done(null, user);
 	} catch (err) {
 		return void done(err);
@@ -77,6 +60,5 @@ export const verifyCallback = async (profile: Profile, done: VerifyCallback): Pr
 };
 
 export default {
-	getUserFromDb,
 	verifyCallback,
 };

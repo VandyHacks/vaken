@@ -1,94 +1,32 @@
 import React, { useContext, useState, useEffect, useRef, FC } from 'react';
-import {
-	Table,
-	Column,
-	AutoSizer,
-	SortDirection,
-	SortIndicator,
-	TableHeaderProps,
-	TableCellProps,
-	TableRowProps,
-	SortDirectionType,
-	Index,
-} from 'react-virtualized';
+import { AutoSizer, SortDirection } from 'react-virtualized';
 import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import Fuse from 'fuse.js';
 import Select from 'react-select';
 import { ValueType } from 'react-select/src/types';
-import { Link } from 'react-router-dom';
-import { MutationFn } from 'react-apollo';
 import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
-import { TableButton } from '../../components/Buttons/TableButton';
+
 import { ToggleSwitch } from '../../components/Buttons/ToggleSwitch';
-import { RadioSlider } from '../../components/Buttons/RadioSlider';
 import { FloatingButton } from '../../components/Buttons/FloatingButton';
-import { Status } from '../../components/Text/Status';
-import { Checkmark } from '../../components/Symbol/Checkmark';
 import { SearchBox } from '../../components/Input/SearchBox';
-import plane from '../../assets/img/plane.svg';
 import STRINGS from '../../assets/strings.json';
 import { TableCtxI, TableContext, Option } from '../../contexts/TableContext';
 import {
 	useHackerStatusMutation,
-	HackersQuery,
 	ApplicationStatus,
-	HackerStatusMutation,
-	HackerStatusMutationVariables,
 	useHackerStatusesMutation,
 } from '../../generated/graphql';
-import { Row } from './Row';
 
-type ArrayType<T> = T extends (infer U)[] ? U : never;
-type QueriedHacker = ArrayType<HackersQuery['hackers']>;
+import { HackerTableRows } from './HackerTableRows';
+import { DeselectElement, SliderInput } from './SliderInput';
+import { QueriedHacker, SortFnProps } from './HackerTableTypes';
 
 const Float = styled.div`
 	position: fixed;
 	bottom: 3.5rem;
 	right: 11.75rem;
 	margin-right: 1rem;
-`;
-
-// Removes unwanted highlighting, adds alternating row colors
-const StyledTable = styled(Table)`
-	.ReactVirtualized__Table__Grid {
-		:focus {
-			outline: none;
-			border: none;
-		}
-
-		overflow: hidden;
-	}
-
-	.headerRow {
-		font-size: 1rem;
-		text-transform: capitalize;
-		color: ${STRINGS.DARK_TEXT_COLOR};
-	}
-
-	.headerRow,
-	.evenRow,
-	.oddRow {
-		box-sizing: border-box;
-		border-bottom: 0.0625rem solid #e0e0e0;
-	}
-	.oddRow {
-		background-color: #fafafa;
-	}
-
-	.ReactVirtualized__Table__headerColumn {
-		:focus {
-			outline: none;
-		}
-	}
-
-	font-size: 0.8rem;
-	margin-bottom: 5rem;
-	color: ${STRINGS.DARKEST_TEXT_COLOR};
-
-	.selected {
-		background-color: #e5e7fa;
-	}
 `;
 
 const TableLayout = styled('div')`
@@ -158,10 +96,6 @@ const ColumnSelect = styled(Select)`
 	}
 `;
 
-const Actions = styled('div')`
-	display: flex;
-`;
-
 const columnOptions: { label: string; value: keyof QueriedHacker }[] = [
 	{ label: 'First Name', value: 'firstName' },
 	{ label: 'Last Name', value: 'lastName' },
@@ -170,136 +104,6 @@ const columnOptions: { label: string; value: keyof QueriedHacker }[] = [
 	{ label: 'Graduation Year', value: 'gradYear' },
 	{ label: 'Status', value: 'status' },
 ];
-
-interface DeselectElement extends HTMLDivElement {
-	context: {
-		selectable: {
-			clearSelection: () => void;
-		};
-	};
-}
-
-// renders a text label with a clickable sort indicator
-const renderHeaderAsLabel = ({
-	dataKey,
-	sortBy,
-	sortDirection,
-	label,
-}: TableHeaderProps): JSX.Element => {
-	return (
-		<>
-			{label}
-			{sortBy === dataKey && <SortIndicator sortDirection={sortDirection} />}
-		</>
-	);
-};
-
-// renders an svg instead of a text label, will with a clickable sort indicator
-const renderHeaderAsSVG = (
-	{ dataKey, sortBy, sortDirection, label }: TableHeaderProps,
-	svg: string
-): JSX.Element => {
-	return (
-		<>
-			<img alt={String(label)} src={svg} />
-			{sortBy === dataKey && <SortIndicator sortDirection={sortDirection} />}
-		</>
-	);
-};
-
-// renders a solid checkmark if true, else an empty circle
-const checkmarkRenderer = ({ cellData }: TableCellProps): JSX.Element => {
-	return <Checkmark value={cellData} />;
-};
-
-// maps the radio slider labels to the hacker status
-const processSliderInput = (input: string): ApplicationStatus => {
-	switch (input.toLowerCase()) {
-		case 'accept':
-			return ApplicationStatus.Accepted;
-		case 'reject':
-			return ApplicationStatus.Rejected;
-		case 'undecided':
-		default:
-			return ApplicationStatus.Submitted;
-	}
-};
-
-interface ActionRendererProps {
-	rowData: QueriedHacker;
-}
-// action column that contains the actionable buttons
-function actionRenderer(
-	updateStatus: MutationFn<HackerStatusMutation, HackerStatusMutationVariables>
-): (p: ActionRendererProps) => JSX.Element {
-	return function ActionRenderer({ rowData: { id, status } }: ActionRendererProps) {
-		let sliderValue: string;
-		switch (status) {
-			case ApplicationStatus.Accepted:
-				sliderValue = 'Accept';
-				break;
-			case ApplicationStatus.Rejected:
-				sliderValue = 'Reject';
-				break;
-			default:
-				sliderValue = 'Undecided';
-		}
-
-		return (
-			<Actions className="ignore-select">
-				<RadioSlider
-					option1="Accept"
-					option2="Undecided"
-					option3="Reject"
-					value={sliderValue}
-					onChange={(input: string) => {
-						const newStatus = processSliderInput(input);
-						updateStatus({ variables: { input: { id, status: newStatus } } });
-					}}
-					disable={
-						status !== ApplicationStatus.Accepted &&
-						status !== ApplicationStatus.Rejected &&
-						status !== ApplicationStatus.Submitted
-					}
-				/>
-				<Link
-					style={{ textDecoration: 'none' }}
-					to={{ pathname: '/manageHackers/hacker', state: { id } }}>
-					<TableButton>View</TableButton>
-				</Link>
-			</Actions>
-		);
-	};
-}
-// wrapper to use createSelectable() from react-selectable-fast
-const rowRenderer = (
-	props: TableRowProps & { selectableRef: string; selected: boolean; selecting: boolean }
-): JSX.Element => {
-	return <Row {...props} />;
-};
-
-// mapping from status labels to the colored label images
-const statusRenderer = ({ cellData }: TableCellProps): JSX.Element => {
-	const generateColor = (value: ApplicationStatus): string => {
-		switch (value) {
-			case ApplicationStatus.Created:
-				return STRINGS.COLOR_PALETTE[0];
-			case ApplicationStatus.Started:
-				return STRINGS.COLOR_PALETTE[2];
-			case ApplicationStatus.Submitted:
-				return STRINGS.COLOR_PALETTE[3];
-			case ApplicationStatus.Accepted:
-				return STRINGS.COLOR_PALETTE[4];
-			case ApplicationStatus.Confirmed:
-				return STRINGS.COLOR_PALETTE[5];
-			case ApplicationStatus.Rejected:
-				return STRINGS.COLOR_PALETTE[6];
-			default:
-				return STRINGS.ACCENT_COLOR;
-		}
-	};
-	return <Status value={cellData} generateColor={generateColor} />;
-};
 
 // handles basic alphanumeric sorting
 const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
@@ -338,7 +142,7 @@ const onSelectionClear = (ctx: TableCtxI): ((p: boolean) => void) => {
 		ctx.update(draft => {
 			draft.selectAll = false;
 			draft.hasSelection = p;
-			draft.selectedRowsEmails = [];
+			draft.selectedRowsIds = [];
 		});
 };
 
@@ -348,7 +152,7 @@ const onSelectionFinish = (ctx: TableCtxI): ((keys: JSX.Element[]) => void) => {
 		if (keys.length > 0) {
 			ctx.update(draft => {
 				draft.hasSelection = true;
-				draft.selectedRowsEmails = keys.map((key: JSX.Element) => key.props.rowData.email);
+				draft.selectedRowsIds = keys.map((key: JSX.Element) => key.props.rowData.id);
 			});
 		}
 	};
@@ -373,10 +177,6 @@ const onTableColumnSelect = (ctx: TableCtxI): ((s: ValueType<Option>) => void) =
 		});
 };
 
-interface SortFnProps {
-	sortBy?: keyof QueriedHacker;
-	sortDirection?: SortDirectionType;
-}
 const onSortColumnChange = (ctx: TableCtxI): ((p: SortFnProps) => void) => {
 	return ({ sortBy, sortDirection }) => {
 		const { sortBy: prevSortBy, sortDirection: prevSortDirection } = ctx.state;
@@ -396,29 +196,12 @@ interface HackerTableProps {
 	data: QueriedHacker[];
 }
 
-// header renderer for travel reimbursement part of table
-const reimbursementHeaderRenderer = ({
-	dataKey,
-	sortBy,
-	sortDirection,
-	label,
-}: TableHeaderProps): JSX.Element =>
-	renderHeaderAsSVG(
-		{
-			dataKey,
-			label,
-			sortBy,
-			sortDirection,
-		},
-		plane
-	);
-
 const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Element => {
 	const table = useContext(TableContext);
 	const [sortedData, setSortedData] = useState(data);
 	const deselect = useRef<DeselectElement>(null);
-	const updateStatus = useHackerStatusMutation();
-	const updateStatuses = useHackerStatusesMutation();
+	const [updateStatus] = useHackerStatusMutation();
+	const [updateStatuses] = useHackerStatusesMutation();
 
 	const {
 		selectAll,
@@ -428,7 +211,7 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 		selectedColumns,
 		sortBy,
 		sortDirection,
-		selectedRowsEmails,
+		selectedRowsIds,
 	} = table.state;
 
 	useEffect(() => {
@@ -497,10 +280,10 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 		if (index < 0) className = 'headerRow';
 		else {
 			className = index % 2 === 0 ? 'evenRow' : 'oddRow';
-			const { status, email } = sortedData[index];
+			const { status, id } = sortedData[index];
 			if (!isSelectable(status)) {
 				className = className.concat(' ignore-select');
-			} else if (selectAll || selectedRowsEmails.includes(email)) {
+			} else if (selectAll || selectedRowsIds.includes(id)) {
 				className = className.concat(' selected');
 			}
 		}
@@ -550,81 +333,15 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 							onSelectionFinish={onSelectionFinish(table)}
 							ignoreList={['.ignore-select']}
 							resetOnStart>
-							<StyledTable
+							<HackerTableRows
 								width={width}
 								height={height}
-								headerHeight={40}
-								rowHeight={30}
-								rowCount={sortedData.length}
-								rowClassName={generateRowClassName}
-								rowGetter={({ index }: Index) => sortedData[index]}
-								rowRenderer={rowRenderer}
-								headerClassName="ignore-select"
-								sort={onSortColumnChange(table)}
-								{...table.state}>
-								<Column
-									className="column"
-									label="First Name"
-									dataKey="firstName"
-									width={100}
-									headerRenderer={renderHeaderAsLabel}
-								/>
-								<Column
-									className="column"
-									label="Last Name"
-									dataKey="lastName"
-									width={100}
-									headerRenderer={renderHeaderAsLabel}
-								/>
-								<Column
-									className="column"
-									label="Email"
-									dataKey="email"
-									width={200}
-									headerRenderer={renderHeaderAsLabel}
-								/>
-								<Column
-									className="column"
-									label="Grad Year"
-									dataKey="gradYear"
-									width={100}
-									headerRenderer={renderHeaderAsLabel}
-								/>
-								<Column
-									className="column"
-									label="School"
-									dataKey="school"
-									width={175}
-									headerRenderer={renderHeaderAsLabel}
-								/>
-								<Column
-									className="column"
-									label="Status"
-									dataKey="status"
-									width={100}
-									minWidth={90}
-									headerRenderer={renderHeaderAsLabel}
-									cellRenderer={statusRenderer}
-								/>
-								<Column
-									className="column"
-									label="Requires Travel Reimbursement?"
-									dataKey="needsReimbursement"
-									width={30}
-									minWidth={20}
-									headerRenderer={reimbursementHeaderRenderer}
-									cellRenderer={checkmarkRenderer}
-								/>
-								<Column
-									className="column"
-									label="Actions"
-									dataKey="actions"
-									width={275}
-									minWidth={275}
-									headerRenderer={renderHeaderAsLabel}
-									cellRenderer={actionRenderer(updateStatus)}
-								/>
-							</StyledTable>
+								updateStatus={updateStatus}
+								sortedData={sortedData}
+								onSortColumnChange={onSortColumnChange}
+								generateRowClassName={generateRowClassName}
+								table={table}
+							/>
 							{selectAll || hasSelection ? (
 								<DeselectAll ref={deselect}>{SelectAllButton}</DeselectAll>
 							) : (
@@ -632,9 +349,9 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 									onClick={() =>
 										table.update(draft => {
 											draft.hasSelection = true;
-											draft.selectedRowsEmails = sortedData
+											draft.selectedRowsIds = sortedData
 												.filter(row => isSelectable(row.status))
-												.map(row => row.email);
+												.map(row => row.id);
 										})
 									}>
 									{SelectAllButton}
@@ -642,29 +359,11 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 							)}
 							{hasSelection && (
 								<Float className="ignore-select">
-									<RadioSlider
-										option1="Accept"
-										option2="Undecided"
-										option3="Reject"
-										large
-										value="Undecided"
-										onChange={(input: string) => {
-											const newStatus = processSliderInput(input);
-											updateStatuses({
-												variables: { input: { ids: selectedRowsEmails, status: newStatus } },
-											});
-											// to deselect afterwards, react-selectable-fast has no clean way to interface with a clearSelection function
-											// so this is a workaround by simulating a click on the SelectAllButton
-											if (
-												sortBy === 'status' &&
-												deselect &&
-												deselect.current &&
-												deselect.current.context &&
-												deselect.current.context.selectable
-											) {
-												deselect.current.context.selectable.clearSelection();
-											}
-										}}
+									<SliderInput
+										updateStatuses={updateStatuses}
+										deselect={deselect}
+										selectedRowsIds={selectedRowsIds}
+										sortBy={sortBy}
 									/>
 								</Float>
 							)}

@@ -3,7 +3,7 @@ import { gql } from 'apollo-boost';
 export default gql`
 	interface User @abstractEntity(discriminatorField: "userType") {
 		id: ID! @id @column
-		createdAt: Int! @column(overrideType: "Date")
+		createdAt: Float! @column(overrideType: "Date")
 		secondaryIds: [ID!]! @column
 		logins: [Login!]! @embedded
 		email: String! @column
@@ -60,7 +60,7 @@ export default gql`
 
 	enum ApplicationStatus {
 		CREATED
-		EMAIL_VERIFIED
+		VERIFIED
 		STARTED
 		SUBMITTED
 		ACCEPTED
@@ -100,13 +100,13 @@ export default gql`
 
 	type ApplicationField @entity(embedded: true) {
 		id: ID! @column
-		createdAt: Int! @column(overrideType: "Date")
+		createdAt: Float! @column(overrideType: "Date")
 		question: ApplicationQuestion! @embedded
 		answer: String @column
 	}
 
 	type Login @entity(additionalFields: [{ path: "email", type: "string" }]) {
-		createdAt: Int! @column(overrideType: "Date")
+		createdAt: Float! @column(overrideType: "Date")
 		provider: LoginProvider! @column
 		token: ID! @column
 		userType: UserType! @column
@@ -114,7 +114,7 @@ export default gql`
 
 	type Hacker implements User @entity {
 		id: ID!
-		createdAt: Int!
+		createdAt: Float!
 		secondaryIds: [ID!]!
 		logins: [Login!]!
 		email: String!
@@ -127,7 +127,7 @@ export default gql`
 		userType: UserType!
 		phoneNumber: String
 		race: [Race!]! @column
-		modifiedAt: Int! @column
+		modifiedAt: Float! @column
 		status: ApplicationStatus! @column
 		school: String @column
 		gradYear: Int @column
@@ -139,13 +139,13 @@ export default gql`
 	}
 
 	type Shift @entity(embedded: true) {
-		begin: Int! @column(overrideType: "Date")
-		end: Int! @column(overrideType: "Date")
+		begin: Float! @column(overrideType: "Date")
+		end: Float! @column(overrideType: "Date")
 	}
 
 	type Mentor implements User @entity {
 		id: ID!
-		createdAt: Int!
+		createdAt: Float!
 		secondaryIds: [ID!]!
 		logins: [Login!]!
 		email: String!
@@ -163,7 +163,7 @@ export default gql`
 
 	type Team @entity(embedded: true) {
 		id: ID! @id @column
-		createdAt: Int! @column(overrideType: "Date")
+		createdAt: Float! @column(overrideType: "Date")
 		name: String @column
 		memberIds: [ID!]! @column
 		size: Int!
@@ -171,7 +171,7 @@ export default gql`
 
 	type Organizer implements User @entity {
 		id: ID!
-		createdAt: Int!
+		createdAt: Float!
 		secondaryIds: [ID!]!
 		logins: [Login!]!
 		email: String!

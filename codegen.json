@@ -32,7 +32,9 @@
 			"config": {
 				"withHOC": false,
 				"withComponent": false,
-				"withHooks": true
+				"withHooks": true,
+				"hooksImportFrom": "@apollo/react-hooks",
+				"withMutationFn": false
 			}
 		}
 	}
