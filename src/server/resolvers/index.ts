@@ -2,6 +2,7 @@ import { UserInputError, AuthenticationError } from 'apollo-server-express';
 import { ObjectID } from 'mongodb';
 import {
 	DietaryRestriction,
+	EmailType,
 	UserType,
 	Race,
 	ShirtSize,
@@ -58,6 +59,10 @@ export const resolvers: CustomResolvers<Context> = {
 		instruction: async question => (await question).instruction || null,
 		note: async question => (await question).note || null,
 		prompt: async question => (await question).prompt,
+	},
+	EmailedList: {
+		emailType: async list => toEnum(EmailType)((await list).emailType),
+		emails: async list => (await list).emails || [],
 	},
 	Hacker: {
 		...userResolvers,
