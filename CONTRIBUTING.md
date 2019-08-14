@@ -130,3 +130,15 @@ In this repo, Github Actions are used for:
 
 - delete merged PR branches
 - automatically create draft PRs for pushed branches
+
+### Contributing Process
+
+This is a step-by-step guide to how you are able to contribute to Vaken. After you find an issue you would like to work on:
+
+1. `git clone <link to the repository>` into your desired directory
+2. `git checkout -b <descriptive-branch-name>` to create a new branch in which you will be implementing changes. Note that this will branch our of `development` which is the default branch for the project.
+3. Do great work :) and regularly `git add` and `git commit -m "Describe what you've done here"`
+4. `git push -u` to push your code on to GitHub
+5. A Pull Request should have been created automatically for your branch. Go ahead and edit its title, and description so that everyone else knows what it does.
+6. Assign reviewers for the Pull Requests and wait for their feedback.
+
