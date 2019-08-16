@@ -61,11 +61,12 @@ export const resolvers: CustomResolvers<Context> = {
 		prompt: async question => (await question).prompt,
 	},
 	Event: {
+		description: async event => (await event).description || null,
 		end: async event => (await event).end.getTime(),
 		id: async event => (await event)._id.toHexString(),
 		location: async event => (await event).location,
+		name: async event => (await event).name,
 		start: async event => (await event).start.getTime(),
-		summary: async event => (await event).summary,
 		type: async event => {
 			const { type } = await event;
 			return toEnum(EventType)(type);

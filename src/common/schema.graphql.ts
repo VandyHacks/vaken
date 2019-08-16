@@ -116,7 +116,8 @@ export default gql`
 
 	type Event @entity {
 		id: ID! @id @column
-		summary: String! @column
+		name: String! @column
+		description: String @column
 		location: String! @column
 		type: EventType! @column
 		start: Int! @column(overrideType: "Date")
