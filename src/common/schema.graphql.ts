@@ -121,7 +121,7 @@ export default gql`
 		location: String! @column
 		type: EventType! @column
 		start: Int! @column(overrideType: "Date")
-		end: Int! @column(overrideType: "Date")
+		duration: Int! @column
 	}
 
 	type Hacker implements User @entity {
