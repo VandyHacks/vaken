@@ -44,29 +44,25 @@ export const schema = makeExecutableSchema({
 		})(req, res, next)
 	);
 
-	try {
-		const server = new ApolloServer({
-			context: ({ req }): Context => ({
-				models,
-				user: req.user,
-			}),
-			formatError: error => {
-				logger.error(error);
-				return error;
-			},
-			playground: true,
-			schema,
-		});
+	const server = new ApolloServer({
+		context: ({ req }): Context => ({
+			models,
+			user: req.user,
+		}),
+		formatError: error => {
+			logger.error(error);
+			return error;
+		},
+		playground: true,
+		schema,
+	});
 
-		server.applyMiddleware({ app });
+	server.applyMiddleware({ app });
 
-		app.listen(
-			{ port: 8080 },
-			() => void logger.info(`Server ready at http://localhost:8080${server.graphqlPath}`)
-		);
-	} finally {
-		dbClient.disconnect();
-	}
+	app.listen(
+		{ port: 8080 },
+		() => void logger.info(`Server ready at http://localhost:8080${server.graphqlPath}`)
+	);
 })();
 
 // for testing
