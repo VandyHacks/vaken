@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 import { FindAndModifyWriteOpResultObject } from 'mongodb';
-import modelsPromise from '../models';
+import DB, { Models } from '../models';
 import STRINGS from '../../client/assets/strings.json';
 import { ApplicationStatus, EmailType, EmailedListDbObject } from '../generated/graphql';
 
@@ -16,9 +16,10 @@ export const filterOutSentEmailsAndDuplicates = (
 
 export const updateEmailedList = async (
 	emailType: EmailType,
-	newEmails: string[]
+	newEmails: string[],
+	models: Models
 ): Promise<FindAndModifyWriteOpResultObject> => {
-	const { EmailedLists } = await modelsPromise;
+	const { EmailedLists } = await models;
 	return EmailedLists.findOneAndUpdate(
 		{ emailType },
 		{ $push: { emails: { $each: newEmails } } },
@@ -26,8 +27,8 @@ export const updateEmailedList = async (
 	);
 };
 
-export const findRecipientsForAcceptanceMail = async (): Promise<string[]> => {
-	const { Hackers } = await modelsPromise;
+export const findRecipientsForAcceptanceMail = async (models: Models): Promise<string[]> => {
+	const { Hackers } = await models;
 	return Hackers.find({ status: ApplicationStatus.Accepted })
 		.map(hacker => hacker.email)
 		.toArray();
@@ -47,17 +48,18 @@ export const makeMailOptions = (
 
 // TODO(timliang): Maybe implement some type of queue. Probably not worth the edge case, though.
 let sendEmailsLock = false;
-export const sendEmailsImpl = async (
+export const sendEmailsInternal = async (
 	emailType: EmailType,
 	recipients: string[],
-	transporter: nodemailer.Transporter
+	transporter: nodemailer.Transporter,
+	models: Models
 ): Promise<string[]> => {
 	if (sendEmailsLock) {
 		return [];
 	}
 	sendEmailsLock = true;
 
-	const { EmailedLists } = await modelsPromise;
+	const { EmailedLists } = await models;
 	const emailedList = await EmailedLists.findOne({
 		emailType,
 	});
@@ -66,7 +68,7 @@ export const sendEmailsImpl = async (
 		// TODO(timliang): Check/Return statuses of each sendMail operation
 		await transporter.sendMail(makeMailOptions(emailType, recipient));
 	});
-	await updateEmailedList(emailType, filteredRecipients);
+	await updateEmailedList(emailType, filteredRecipients, models);
 
 	sendEmailsLock = false;
 	return filteredRecipients;
@@ -74,9 +76,13 @@ export const sendEmailsImpl = async (
 
 export const sendEmails = async (emailType: EmailType): Promise<void> => {
 	let recipients: string[];
+
+	const dbClient = new DB();
+	const models = await dbClient.collections;
+
 	switch (emailType) {
 		case EmailType.Acceptance:
-			recipients = await findRecipientsForAcceptanceMail();
+			recipients = await findRecipientsForAcceptanceMail(models);
 			break;
 		case EmailType.Test:
 		default:
@@ -95,7 +101,7 @@ export const sendEmails = async (emailType: EmailType): Promise<void> => {
 		secure: false,
 	});
 
-	await sendEmailsImpl(emailType, recipients, transporter);
+	await sendEmailsInternal(emailType, recipients, transporter, models);
 };
 
 export default sendEmails;
