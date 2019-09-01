@@ -125,7 +125,7 @@
 		"@types/passport-google-oauth20": "^2.0.1",
 		"@types/pino": "^5.8.8",
 		"@types/react": "16.8.12",
-		"@types/react-dom": "^16.8.4",
+		"@types/react-dom": "^16.9.0",
 		"@types/react-router": "^5.0.3",
 		"@types/react-router-dom": "^4.3.4",
 		"@types/react-select": "^3.0.0",
