@@ -10,7 +10,6 @@ import {
 	UserDbInterface,
 	UserResolvers,
 	Resolvers,
-	EventType,
 } from '../generated/graphql';
 import Context from '../context';
 import { fetchUser, query, queryById, toEnum, updateUser, checkIsAuthorized } from './helpers';
@@ -62,15 +61,12 @@ export const resolvers: CustomResolvers<Context> = {
 	},
 	Event: {
 		description: async event => (await event).description || null,
-		end: async event => (await event).end.getTime(),
+		duration: async event => (await event).duration,
+		eventType: async event => (await event).eventType,
 		id: async event => (await event)._id.toHexString(),
 		location: async event => (await event).location,
 		name: async event => (await event).name,
 		start: async event => (await event).start.getTime(),
-		type: async event => {
-			const { type } = await event;
-			return toEnum(EventType)(type);
-		},
 	},
 	Hacker: {
 		...userResolvers,
