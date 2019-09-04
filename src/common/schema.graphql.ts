@@ -82,13 +82,6 @@ export default gql`
 		SUPER_ADMIN
 	}
 
-	enum EventType {
-		MAIN
-		SPONSOR
-		FOOD
-		HXP
-	}
-
 	enum SortDirection {
 		ASC
 		DESC
@@ -119,7 +112,7 @@ export default gql`
 		name: String! @column
 		description: String @column
 		location: String! @column
-		type: EventType! @column
+		eventType: String! @column
 		start: Int! @column(overrideType: "Date")
 		duration: Int! @column
 	}
