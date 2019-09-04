@@ -82,13 +82,6 @@ export default gql`
 		SUPER_ADMIN
 	}
 
-	enum EventType {
-		MAIN
-		SPONSOR
-		FOOD
-		HXP
-	}
-
 	enum SortDirection {
 		ASC
 		DESC
