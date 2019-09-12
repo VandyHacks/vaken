@@ -9,7 +9,7 @@ import { fetchUser } from '../resolvers/helpers';
 import logger from '../logger';
 
 export async function getUserFromDb(email: string, userType?: string): Promise<UserDbInterface> {
-	const { Hackers, Organizers, Sponsors } = await DB.collections();
+	const { Hackers, Organizers, Sponsors } = await new DB().collections;
 
 	let user: UserDbInterface | null = null;
 	switch (userType) {
@@ -38,7 +38,7 @@ export const verifyCallback = async (
 	profile: Profile,
 	done: VerifyCallback | GVerifyCallback
 ): Promise<void> => {
-	const { Logins, Hackers } = models;
+	const { Logins, Hackers, Sponsors } = models;
 
 	let { userType } = (await Logins.findOne({
 		provider: profile.provider,
