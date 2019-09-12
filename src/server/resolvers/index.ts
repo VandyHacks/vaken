@@ -107,7 +107,7 @@ export const resolvers: CustomResolvers<Context> = {
 				{ $set: { status } },
 				{ returnOriginal: false }
 			);
-			if (!ok || err || !value)
+			if (!ok || !value)
 				throw new UserInputError(`user ${id} (${value}) error: ${JSON.stringify(err)}`);
 			return value;
 		},
