@@ -12,7 +12,7 @@ export const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 	const [sponsorEmail, setSponsorEmail] = useState('');
 	const [sponsorName, setSponsorName] = useState('');
 	const [createSponsorMsg, setCreateSponsorMsg] = useState('');
-	const createSponsor = useCreateSponsorMutation({
+	const [createSponsor] = useCreateSponsorMutation({
 		variables: { input: { email: sponsorEmail, name: sponsorName } },
 	});
 
