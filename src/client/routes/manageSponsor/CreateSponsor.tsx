@@ -20,8 +20,8 @@ export const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 		// validate the email entered
 		if (EMAIL_REGEX.test(sponsorEmail)) {
 			try {
-				// console.log(sponsorEmail)
-				// console.log(sponsorName)
+				console.log(sponsorEmail);
+				console.log(sponsorName);
 				createSponsor().catch(res => {
 					setCreateSponsorMsg(`Sorry. ${res.graphQLErrors[0].message} Try again :-)`);
 				});

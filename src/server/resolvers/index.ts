@@ -9,6 +9,7 @@ import {
 	UserResolvers,
 	Resolvers,
 	HackerDbObject,
+	SponsorStatus,
 } from '../generated/graphql';
 import Context from '../context';
 import { fetchUser, query, queryById, toEnum, updateUser, checkIsAuthorized } from './helpers';
@@ -137,10 +138,39 @@ export const resolvers: CustomResolvers<Context> = {
 	 * Each may contain authentication checks as well
 	 */
 	Mutation: {
+<<<<<<< HEAD
 		checkInUserToEvent: async (root, { input }, { models, user }) => {
 			checkIsAuthorized(UserType.Organizer, user);
 			const userRet = await checkInUserToEvent(input.user, input.event, models);
 			return userRet;
+=======
+		createSponsor: async (root, { input: { email, name } }, { models, user }: Context) => {
+			if (!user || user.userType !== UserType.Organizer)
+				throw new AuthenticationError(`user '${JSON.stringify(user)}' must be organizer`);
+			const sponsor = await models.Sponsors.findOne({ email });
+			if (!sponsor) {
+				await models.Sponsors.insertOne({
+					_id: new ObjectID(),
+					createdAt: new Date(),
+					dietaryRestrictions: [],
+					email,
+					firstName: name,
+					lastName: '',
+					logins: [],
+					permissions: [],
+					phoneNumber: '',
+					preferredName: '',
+					secondaryIds: [],
+					status: SponsorStatus.Added,
+					userType: UserType.Sponsor,
+				});
+			} else {
+				throw new UserInputError(`sponsor with '${email}' is already added.`);
+			}
+			const sponsorCreated = await models.Sponsors.findOne({ email });
+			if (!sponsorCreated) throw new AuthenticationError(`sponsor not found: ${email}`);
+			return sponsorCreated;
+>>>>>>> 82479b8... Fix lint
 		},
 		confirmMySpot: async (root, _, { models, user }) => {
 			const { _id, status } = checkIsAuthorized(UserType.Hacker, user) as HackerDbObject;
@@ -408,6 +438,12 @@ export const resolvers: CustomResolvers<Context> = {
 	Shift: {
 		begin: async shift => (await shift).begin.getTime(),
 		end: async shift => (await shift).end.getTime(),
+	},
+	Sponsor: {
+		...userResolvers,
+		permissions: async sponsor => (await sponsor).permissions,
+		status: async sponsor => toEnum(SponsorStatus)((await sponsor).status),
+		userType: () => UserType.Sponsor,
 	},
 	Team: {
 		createdAt: async team => (await team).createdAt.getTime(),
