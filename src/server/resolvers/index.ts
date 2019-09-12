@@ -9,6 +9,7 @@ import {
 	UserResolvers,
 	Resolvers,
 	HackerDbObject,
+	SponsorStatus,
 } from '../generated/graphql';
 import Context from '../context';
 import { fetchUser, query, queryById, toEnum, updateUser, checkIsAuthorized } from './helpers';
@@ -337,6 +338,33 @@ export const resolvers: CustomResolvers<Context> = {
 		updateProfile: async () => {
 			throw new UserInputError('Not implemented :(');
 		},
+		createSponsor: async (root, { input: { email, name } }, { models, user }: Context) => {
+			if (!user || user.userType !== UserType.Organizer)
+				throw new AuthenticationError(`user '${JSON.stringify(user)}' must be organizer`);
+			const sponsor = await models.Sponsors.findOne({ email });
+			if (!sponsor) {
+				await models.Sponsors.insertOne({
+					_id: new ObjectID(),
+					createdAt: new Date(),
+					dietaryRestrictions: [],
+					email,
+					firstName: name,
+					lastName: '',
+					logins: [],
+					permissions: [],
+					phoneNumber: '',
+					preferredName: '',
+					secondaryIds: [],
+					status: SponsorStatus.Added,
+					userType: UserType.Sponsor,
+				});
+			} else {
+				throw new UserInputError(`sponsor with '${email}' is already added.`);
+			}
+			const sponsorCreated = await models.Sponsors.findOne({ email });
+			if (!sponsorCreated) throw new AuthenticationError(`sponsor not found: ${email}`);
+			return sponsorCreated;
+		},
 	},
 	Organizer: {
 		...userResolvers,
@@ -377,6 +405,17 @@ export const resolvers: CustomResolvers<Context> = {
 	Shift: {
 		begin: async shift => (await shift).begin.getTime(),
 		end: async shift => (await shift).end.getTime(),
+	},
+	Sponsor: {
+
+		...userResolvers,
+
+		permissions: async sponsor => (await sponsor).permissions,
+
+		status: async sponsor => toSponsorStatusEnum((await sponsor).status),
+
+		userType: () => UserType.Sponsor,
+
 	},
 	Team: {
 		createdAt: async team => (await team).createdAt.getTime(),
