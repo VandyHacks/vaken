@@ -10,7 +10,7 @@ import {
 	UserType,
 	HackerDbObject,
 } from '../src/server/generated/graphql';
-import { initDb } from '../src/server/models';
+import DB from '../src/server/models';
 
 require('dotenv').config();
 
@@ -44,7 +44,8 @@ const generateHacker: () => HackerDbObject = () => {
 };
 
 const addHackers = async (): Promise<void> => {
-	const models = await initDb();
+	const models = await new DB().collections;
+	console.log('Connected to DB');
 	const newHackers: HackerDbObject[] = [];
 	for (let i = 1; i <= NUM_HACKERS; i += 1) {
 		if (i % 100 === 0) console.log(`Creating hacker ${i}`);
