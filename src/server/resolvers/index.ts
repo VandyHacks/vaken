@@ -138,12 +138,11 @@ export const resolvers: CustomResolvers<Context> = {
 	 * Each may contain authentication checks as well
 	 */
 	Mutation: {
-<<<<<<< HEAD
 		checkInUserToEvent: async (root, { input }, { models, user }) => {
 			checkIsAuthorized(UserType.Organizer, user);
 			const userRet = await checkInUserToEvent(input.user, input.event, models);
 			return userRet;
-=======
+		},
 		createSponsor: async (root, { input: { email, name } }, { models, user }: Context) => {
 			if (!user || user.userType !== UserType.Organizer)
 				throw new AuthenticationError(`user '${JSON.stringify(user)}' must be organizer`);
@@ -170,7 +169,6 @@ export const resolvers: CustomResolvers<Context> = {
 			const sponsorCreated = await models.Sponsors.findOne({ email });
 			if (!sponsorCreated) throw new AuthenticationError(`sponsor not found: ${email}`);
 			return sponsorCreated;
->>>>>>> 82479b8... Fix lint
 		},
 		confirmMySpot: async (root, _, { models, user }) => {
 			const { _id, status } = checkIsAuthorized(UserType.Hacker, user) as HackerDbObject;
@@ -382,9 +380,16 @@ export const resolvers: CustomResolvers<Context> = {
 					)}`
 				);
 			}
-
 			if (sendEmail) sendStatusEmail(value, ApplicationStatus.Submitted);
-
+		},
+		sponsorStatus: async (_, { input: { email, status } }, { models }: Context) => {
+			const { ok, value, lastErrorObject: err } = await models.Sponsors.findOneAndUpdate(
+				{ email },
+				{ $set: { status } },
+				{ returnOriginal: false }
+			);
+			if (!ok || err || !value)
+				throw new UserInputError(`user ${email} (${value}) error: ${JSON.stringify(err)}`);
 			return value;
 		},
 		updateMyProfile: async (root, { input }, { models, user }) => {
@@ -432,6 +437,8 @@ export const resolvers: CustomResolvers<Context> = {
 
 			return getSignedReadUrl(input);
 		},
+		sponsor: async (root, { id }, ctx: Context) => queryById(id, ctx.models.Sponsors),
+		sponsors: async (root, args, ctx: Context) => ctx.models.Sponsors.find().toArray(),
 		team: async (root, { id }, ctx) => queryById(id, ctx.models.Teams),
 		teams: async (root, args, ctx) => ctx.models.Teams.find().toArray(),
 	},
