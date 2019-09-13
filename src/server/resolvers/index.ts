@@ -410,11 +410,8 @@ export const resolvers: CustomResolvers<Context> = {
 	},
 	Sponsor: {
 		...userResolvers,
-
 		permissions: async sponsor => (await sponsor).permissions,
-
-		status: async sponsor => toSponsorStatusEnum((await sponsor).status),
-
+		status: async sponsor => toEnum(SponsorStatus)((await sponsor).status),
 		userType: () => UserType.Sponsor,
 	},
 	Team: {
