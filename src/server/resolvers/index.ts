@@ -60,13 +60,16 @@ export const resolvers: CustomResolvers<Context> = {
 		prompt: async question => (await question).prompt,
 	},
 	Event: {
+		attendees: async event => (await event).attendees || [],
+		checkins: async event => (await event).checkins || [],
 		description: async event => (await event).description || null,
 		duration: async event => (await event).duration,
 		eventType: async event => (await event).eventType,
 		id: async event => (await event)._id.toHexString(),
 		location: async event => (await event).location,
 		name: async event => (await event).name,
-		start: async event => (await event).start.getTime(),
+		startTimestamp: async event => (await event).startTimestamp.getTime(),
+		warnRepeatedCheckins: async event => (await event).warnRepeatedCheckins,
 	},
 	Hacker: {
 		...userResolvers,
