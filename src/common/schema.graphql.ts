@@ -110,11 +110,14 @@ export default gql`
 	type Event @entity {
 		id: ID! @id @column
 		name: String! @column
+		startTimestamp: Int! @column(overrideType: "Date")
+		duration: Int! @column
+		attendees: [ID]! @column
+		checkins: [ID]! @column
+		warnRepeatedCheckins: Boolean! @column
 		description: String @column
 		location: String! @column
 		eventType: String! @column
-		start: Int! @column(overrideType: "Date")
-		duration: Int! @column
 	}
 
 	type Hacker implements User @entity {
