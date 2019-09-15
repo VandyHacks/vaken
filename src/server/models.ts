@@ -87,7 +87,7 @@ export default class DB {
 					 */
 					ApplicationFields: db.collection<ApplicationFieldDbObject>('applicationFields'),
 					ApplicationQuestions: db.collection<ApplicationQuestionDbObject>('applicationQuestions'),
-					Events: db.collection<EventDbObject>('events'),
+					Events: db.collection<EventDbObject>('Events'),
 					Hackers: db.collection<HackerDbObject>('Hackers'),
 					Logins: db.collection<LoginDbObject>('logins'),
 					Mentors: db.collection<MentorDbObject>('mentors'),
