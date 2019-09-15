@@ -466,6 +466,8 @@ export const resolvers: CustomResolvers<Context> = {
 					return 'Hacker';
 				case UserType.Organizer:
 					return 'Organizer';
+				case UserType.Sponsor:
+					return 'Sponsor';
 				default:
 					throw new AuthenticationError(`cannot decode UserType "${user.userType}`);
 			}

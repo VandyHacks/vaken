@@ -124,6 +124,9 @@ export async function fetchUser(
 	if (userType === UserType.Organizer) {
 		return query({ email }, models.Organizers);
 	}
+	if (userType === UserType.Sponsor) {
+		return query({ email }, models.Sponsors);
+	}
 	throw new ApolloError(`fetchUser for userType ${userType} not implemented`);
 }
 
