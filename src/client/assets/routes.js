@@ -3,6 +3,9 @@ import { CreateSponsor } from '../routes/manageSponsor/CreateSponsor';
 import { Application } from '../routes/application/Application';
 import { HackerDash } from '../routes/dashboard/HackerDash';
 import { ManageHackers } from '../routes/manage/ManageHackers';
+import { SponsorHackerView } from '../routes/manage/SponsorHackerView';
+import { Team } from '../routes/team/Team';
+import { Profile } from '../routes/profile/Profile';
 import { Help } from '../routes/help/Help';
 import { Nfc } from '../routes/nfc/Nfc';
 import { UserType } from '../generated/graphql';
@@ -15,7 +18,7 @@ const routes = [
 		path: '/dashboard',
 	},
 	{
-		authLevel: [UserType.Hacker, UserType.Sponsor],
+		authLevel: [UserType.Hacker],
 		component: HackerDash,
 		displayText: 'Dashboard',
 		path: '/dashboard',
@@ -43,6 +46,12 @@ const routes = [
 		component: ManageHackers,
 		displayText: 'Manage Hackers',
 		path: '/manage/hackers',
+	},
+	{
+		authLevel: [UserType.Organizer, UserType.Sponsor],
+		component: SponsorHackerView,
+		displayText: 'View Hackers',
+		path: '/view/hackers',
 	},
 	{
 		authLevel: [UserType.Organizer],
