@@ -48,7 +48,7 @@ const routes = [
 		path: '/manage/hackers',
 	},
 	{
-		authLevel: [UserType.Organizer, UserType.Sponsor],
+		authLevel: [UserType.Sponsor],
 		component: SponsorHackerView,
 		displayText: 'View Hackers',
 		path: '/view/hackers',
