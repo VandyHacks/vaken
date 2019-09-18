@@ -17,6 +17,7 @@ import {
 	UserType,
 } from '../generated/graphql';
 import DB, { Models } from '../models';
+import { isNFCUIDAvailable } from '.';
 
 const hacker: UserDbInterface = {
 	_id: new ObjectId(),

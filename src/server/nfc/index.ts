@@ -1,5 +1,5 @@
 import { UserInputError, AuthenticationError } from 'apollo-server-express';
-import { ObjectID, FindAndModifyWriteOpResultObject } from 'mongodb';
+import { ObjectID } from 'mongodb';
 import {
 	HackerDbObject,
 	OrganizerDbObject,
@@ -19,6 +19,7 @@ import {
 	checkIsAuthorized,
 } from '../resolvers/helpers';
 import { Models } from '../models';
+<<<<<<< HEAD
 
 export async function checkIfNFCIDExisted(
 	nfcID: string,
@@ -57,3 +58,5 @@ export async function checkInUserToEvent(nfcID: string, event: string, models: M
 	);
 	return eventReturn;
 }
+=======
+>>>>>>> 2985522ca72e6b4f5e83bb6cb596045bbda744ee
