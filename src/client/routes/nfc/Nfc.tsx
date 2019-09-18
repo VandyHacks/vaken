@@ -1,65 +1,74 @@
 import React, { FunctionComponent, useState } from 'react';
 import Select from 'react-select';
-import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 import { SearchBox } from '../../components/Input/SearchBox';
 import { ToggleSwitch } from '../../components/Buttons/ToggleSwitch';
-// import { updateExpression } from '@babel/types';
+import { ActionButton } from '../../components/Buttons/ActionButton';
 
 const EventSelect = styled(Select)``;
+const CHECK_IN_VALUE = 'check_in'; // TODO
 
 // TODO(timliang/kenny): Connect this to events data
-const EventOptions: { label: string; value: number }[] = [
-	{ label: 'Hackathon Check-in', value: 0 },
-	{ label: 'PlaceholderEvent1', value: 1 },
-	{ label: 'PlaceholderEvent2', value: 2 },
+const EventOptions: { label: string; value: string }[] = [
+	{ label: 'Hackathon Check-in', value: CHECK_IN_VALUE },
+	{ label: 'PlaceholderEvent1', value: 'test_1' },
+	{ label: 'PlaceholderEvent2', value: 'test_2' },
 ];
 
-const [manualMode, setManualMode] = useState(0);
-
 export const Nfc: FunctionComponent = (): JSX.Element => {
+	const [manualMode, setManualMode] = useState(false);
+	const [unadmitMode, setUnadmitMode] = useState(false);
+	const [eventSelected, setEventSelected] = useState(CHECK_IN_VALUE);
 	return (
 		<div>
 			<EventSelect
 				name="colors"
 				defaultValue={[EventOptions[0]]}
-				// value=
 				options={EventOptions}
-				className="basic-multi-select"
+				onChange={(option: { label: string; value: string }) => {
+					setEventSelected(option.value);
+				}}
+				className="basic-select"
 				classNamePrefix="select"
 			/>
-			<SearchBox
-				width="100%"
-				// value={searchValue}
-				placeholder="Scan NFC"
-				// onChange={onSearchBoxEntry(table)}
-				minWidth="15rem"
-				// hasIcon
-				flex
-			/>
-			<SearchBox
-				width="100%"
-				// value={searchValue}
-				placeholder="Manual Search"
-				// onChange={onSearchBoxEntry(table)}
-				minWidth="15rem"
-				hasIcon
-				flex
-			/>
-			<ToggleSwitch
-				label="Manual Mode: "
-				checked={manualMode % 2 === 0}
-				onChange={() => {
-					setManualMode(manualMode + 1);
-				}}
-			/>
+			{!manualMode || eventSelected === CHECK_IN_VALUE ? (
+				<SearchBox
+					width="100%"
+					// value={searchValue} // TODO
+					placeholder="Scan NFC"
+					// onChange={onSearchBoxEntry(table)} // TODO
+					minWidth="15rem"
+					flex
+				/>
+			) : null}
+			{manualMode || eventSelected === CHECK_IN_VALUE ? (
+				<SearchBox
+					width="100%"
+					// value={searchValue} // TODO
+					placeholder="Manual Search"
+					// onChange={onSearchBoxEntry(table)} // TODO
+					minWidth="15rem"
+					hasIcon
+					flex
+				/>
+			) : null}
+			{eventSelected !== CHECK_IN_VALUE ? (
+				<ToggleSwitch
+					label="Manual Mode: "
+					checked={manualMode}
+					onChange={() => {
+						setManualMode(!manualMode);
+					}}
+				/>
+			) : null}
 			<ToggleSwitch
 				label="Unadmit Mode: "
-				checked={false}
+				checked={unadmitMode}
 				onChange={() => {
-					// unadmitMode = !unadmitMode;
+					setUnadmitMode(!unadmitMode);
 				}}
 			/>
+			<ActionButton>Submit</ActionButton>
 		</div>
 	);
 };
