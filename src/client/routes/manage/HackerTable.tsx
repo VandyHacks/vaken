@@ -393,7 +393,9 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 											draft.selectedRowsIds = sortedData
 												.filter(row => isSelectable(row.status))
 												.map(row => row.id);
+											console.log(draft.selectedRowsIds);
 										})
+
 									}>
 									{SelectAllButton}
 								</SelectAll>
