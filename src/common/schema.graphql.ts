@@ -112,12 +112,17 @@ export default gql`
 		name: String! @column
 		startTimestamp: Int! @column(overrideType: "Date")
 		duration: Int! @column
-		attendees: [ID]! @column
-		checkins: [ID]! @column
+		attendees: [EventCheckIn]! @column
+		checkins: [EventCheckIn]! @column
 		warnRepeatedCheckins: Boolean! @column
 		description: String @column
 		location: String! @column
 		eventType: String! @column
+	}
+
+	type EventCheckIn @entity {
+		id: ID! @id @column
+		timestamp: Float! @column(overrideType: "Date")
 	}
 
 	type Hacker implements User @entity {
@@ -233,6 +238,11 @@ export default gql`
 		status: ApplicationStatus!
 	}
 
+	input EventCheckInInput {
+		nfcID: ID!
+		event: ID!
+	}
+
 	type Mutation {
 		updateMyProfile(input: UserInput!): User!
 		updateProfile(id: ID!, input: UserInput!): User!
@@ -240,5 +250,6 @@ export default gql`
 		leaveTeam: Hacker!
 		hackerStatus(input: HackerStatusInput!): Hacker!
 		hackerStatuses(input: HackerStatusesInput!): [Hacker!]!
+		checkInUserToEvent(input: EventCheckInInput!): Event!
 	}
 `;

@@ -9,6 +9,7 @@ import {
 	OrganizerDbObject,
 	ShiftDbObject,
 	TeamDbObject,
+	EventCheckInDbObject,
 } from './generated/graphql';
 
 export interface UserTeamIndexDbObject {
@@ -19,6 +20,7 @@ export interface UserTeamIndexDbObject {
 export interface Models {
 	ApplicationFields: Collection<ApplicationFieldDbObject>;
 	ApplicationQuestions: Collection<ApplicationQuestionDbObject>;
+	EventCheckIns: Collection<EventCheckInDbObject>;
 	Events: Collection<EventDbObject>;
 	Hackers: Collection<HackerDbObject>;
 	Logins: Collection<LoginDbObject>;
@@ -87,6 +89,7 @@ export default class DB {
 					 */
 					ApplicationFields: db.collection<ApplicationFieldDbObject>('applicationFields'),
 					ApplicationQuestions: db.collection<ApplicationQuestionDbObject>('applicationQuestions'),
+					EventCheckIns: db.collection<EventCheckInDbObject>('EventCheckIns'),
 					Events: db.collection<EventDbObject>('Events'),
 					Hackers: db.collection<HackerDbObject>('Hackers'),
 					Logins: db.collection<LoginDbObject>('logins'),
