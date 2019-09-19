@@ -1,9 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Test Nfc renders correctly 1`] = `
-<div>
+<div
+  className="sc-ifAKCX sc-EHOje sc-htoDjs sc-kGXeez blfinp"
+>
   <div
-    className="basic-select sc-EHOje jvzENE css-2b097c-container"
+    className="basic-select sc-kpOJdX kAzjOl css-2b097c-container"
     onKeyDown={[Function]}
   >
     <div
@@ -135,9 +137,18 @@ exports[`Test Nfc renders correctly 1`] = `
     </div>
   </label>
   <button
-    className="sc-ifAKCX hxhgnm"
+    className="sc-jzJRlG sc-chPdSV cYGTvH"
+    height="auto"
+    onClick={[Function]}
+    width="auto"
   >
-    Submit
+    <div
+      className="sc-gqjmRU icIvbZ"
+      color="white"
+      fontSize="1.4rem"
+    >
+      Submit
+    </div>
   </button>
 </div>
 `;
