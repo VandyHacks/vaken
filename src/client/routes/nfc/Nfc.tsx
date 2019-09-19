@@ -3,7 +3,8 @@ import Select from 'react-select';
 import styled from 'styled-components';
 import { SearchBox } from '../../components/Input/SearchBox';
 import { ToggleSwitch } from '../../components/Buttons/ToggleSwitch';
-import { ActionButton } from '../../components/Buttons/ActionButton';
+import { HeaderButton } from '../../components/Buttons/HeaderButton';
+import FloatingPopup from '../../components/Containers/FloatingPopup';
 
 const EventSelect = styled(Select)``;
 const CHECK_IN_VALUE = 'check_in'; // TODO
@@ -20,7 +21,7 @@ export const Nfc: FunctionComponent = (): JSX.Element => {
 	const [unadmitMode, setUnadmitMode] = useState(false);
 	const [eventSelected, setEventSelected] = useState(CHECK_IN_VALUE);
 	return (
-		<div>
+		<FloatingPopup>
 			<EventSelect
 				name="colors"
 				defaultValue={[EventOptions[0]]}
@@ -68,8 +69,8 @@ export const Nfc: FunctionComponent = (): JSX.Element => {
 					setUnadmitMode(!unadmitMode);
 				}}
 			/>
-			<ActionButton>Submit</ActionButton>
-		</div>
+			<HeaderButton onClick={() => {}}>Submit</HeaderButton>
+		</FloatingPopup>
 	);
 };
 
