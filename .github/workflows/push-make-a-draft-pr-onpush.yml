@@ -5,10 +5,10 @@ jobs:
     name: make draft pr
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - name: make draft pr
-      uses: vsoch/pull-request-action@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        PULL_REQUEST_BRANCH: dev
-        PULL_REQUEST_DRAFT: "true"
+      - uses: actions/checkout@master
+      - name: make draft pr
+        uses: vsoch/pull-request-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PULL_REQUEST_BRANCH: dev
+          PULL_REQUEST_DRAFT: 'true'

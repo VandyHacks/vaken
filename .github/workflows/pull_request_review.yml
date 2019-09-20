@@ -5,10 +5,10 @@ jobs:
     name: Label when approved
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - name: Label when approved
-      uses: pullreminders/label-when-approved-action@master
-      env:
-        APPROVALS: "1"
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        LABEL_NAME: approved
+      - uses: actions/checkout@master
+      - name: Label when approved
+        uses: pullreminders/label-when-approved-action@master
+        env:
+          APPROVALS: '1'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LABEL_NAME: approved
