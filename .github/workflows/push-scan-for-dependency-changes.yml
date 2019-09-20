@@ -1,0 +1,23 @@
+on: push
+name: Scan for dependency changes
+jobs:
+  checkIsDefaultBranch:
+    name: check is default branch
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: check is default branch
+      uses: actions/bin/filter@master
+      with:
+        args: branch dev
+    - name: detect dependency changes
+      uses: bencooper222/check-for-node-dep-changes@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: post slack message
+      uses: pullreminders/slack-github-action@master
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      with:
+        args: '{"channel": "CJ67S2CSK", "text": "One or more dependencies of Vaken
+          in the default branch have been changed; `npm i` is recommended."}}'
