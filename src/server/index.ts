@@ -10,9 +10,9 @@ import Context from './context';
 import logger from './logger';
 import { strategies, registerAuthRoutes } from './auth';
 
-const { SESSION_SECRET, SERVER_PORT } = process.env;
+const { SESSION_SECRET, PORT } = process.env;
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
-if (!SERVER_PORT) throw new Error(`SERVER_PORT not set`);
+if (!PORT) throw new Error(`PORT not set`);
 
 const app = express();
 
@@ -66,7 +66,7 @@ export const schema = makeExecutableSchema({
 	server.applyMiddleware({ app });
 
 	app.listen(
-		{ port: SERVER_PORT },
+		{ port: PORT },
 		() => void logger.info(`Server ready at http://localhost:8080${server.graphqlPath}`)
 	);
 })();
