@@ -4,6 +4,7 @@ import {
 	HackerDbObject,
 	OrganizerDbObject,
 	EventDbObject,
+	EventCheckInDbObject,
 	ShirtSize,
 	UserDbInterface,
 	UserInput,
@@ -20,7 +21,9 @@ import {
 } from '../resolvers/helpers';
 import { Models } from '../models';
 
-export async function checkIfNFCIDExisted(
+// TODO: (kenli/timliang) Expand functions for Organizers, Mentors collections
+
+export async function checkIfNFCUIDExisted(
 	nfcID: string,
 	models: Models
 ): Promise<HackerDbObject | null> {
@@ -30,30 +33,127 @@ export async function checkIfNFCIDExisted(
 	return hacker;
 }
 
-export async function getUserIDfromActiveNFCID(
-	nfcID: string,
-	models: Models
-): Promise<UserDbInterface | null> {
-	const user = models.Hackers.findOne({
-		$match: nfcID,
-		secondaryIds: { $slice: -1 },
+export async function getUser(nfcID: string, models: Models): Promise<HackerDbObject | null> {
+	const user = await models.Hackers.findOne({
+		'secondaryIds.0': nfcID,
 	});
 	return user;
 }
 
-export async function checkInUserToEvent(nfcID: string, event: string, models: Models) {
-	const hackerObj = getUserIDfromActiveNFCID(nfcID, models);
-	const eventObj = models.Events.findOne({ event });
-	const eventReturn = await new Promise(() =>
-		models.Events.findOneAndUpdate(
-			{ id: event },
-			{ $addToSet: { attendees: { id: hackerObj, timestamp: Date.now() } } }
-		)
-	).then(() =>
-		models.Events.findOneAndUpdate(
-			{ id: event },
-			{ $push: { checkins: { id: hackerObj, timestamp: Date.now() } } }
-		)
+export async function isNFCUIDAvailable(nfcID: string, models: Models): Promise<boolean> {
+	return (await getUser(nfcID, models)) == null;
+}
+
+export async function registerNFCUIDWithUser(
+	nfcID: string,
+	userID: string,
+	models: Models
+): Promise<string | null> {
+	if (await isNFCUIDAvailable(nfcID, models)) {
+		const ret = await models.Hackers.findOneAndUpdate(
+			{ _id: new ObjectID(userID) },
+			{
+				$push: {
+					secondaryIds: {
+						$each: [nfcID],
+						$position: 0,
+					},
+				},
+			}
+		);
+		if (ret.value !== undefined) return userID;
+	}
+	return null;
+}
+
+export async function removeUserFromEvent(
+	userID: string,
+	eventID: string,
+	models: Models
+): Promise<string | null> {
+	const user = await models.Hackers.findOne({ _id: new ObjectID(userID) });
+	if (user) {
+		const nfcUID = user.secondaryIds[0];
+		const event = await models.Events.findOne({ attendees: nfcUID });
+		if (event) {
+			const ret = await models.Events.updateOne(
+				{ _id: new ObjectID(eventID) },
+				{
+					$pull: {
+						attendees: nfcUID,
+					},
+				}
+			);
+			if (ret.result.ok) return userID;
+		}
+	}
+	return null;
+}
+
+export async function checkInUserToEvent(
+	userID: string,
+	eventID: string,
+	models: Models
+): Promise<string | null> {
+	const user = await models.Hackers.findOne({ _id: new ObjectID(userID) });
+	if (user) {
+		const eventCheckInObj = {
+			id: ObjectID.createFromTime(Date.now()),
+			timestamp: Date.now(),
+			user: userID,
+		};
+		const retEvent = await models.Events.findOneAndUpdate(
+			{ _id: new ObjectID(eventID) },
+			{ $addToSet: { attendees: userID } }
+		);
+		await models.Events.findOneAndUpdate(
+			{ _id: new ObjectID(eventID) },
+			{ $push: { checkins: eventCheckInObj } }
+		);
+		const retUsr = await models.Hackers.findOneAndUpdate(
+			{ _id: new ObjectID(userID) },
+			{
+				$addToSet: {
+					eventsAttended: eventID,
+				},
+			}
+		);
+		if (retEvent.ok && retUsr.ok) return userID;
+	}
+	return null;
+}
+
+export async function userIsAttendingEvent(
+	userID: string,
+	eventID: string,
+	models: Models
+): Promise<boolean> {
+	const user = await models.Hackers.findOne({ _id: new ObjectID(userID) });
+	if (user) {
+		const nfcUID = user.secondaryIds[0];
+		const event = await models.Events.findOne({ _id: new ObjectID(eventID), attendees: nfcUID });
+		if (event) return true;
+	}
+	return false;
+}
+
+export async function shouldWarnRepeatedCheckIn(
+	userID: string,
+	eventID: string,
+	models: Models
+): Promise<boolean> {
+	const event = await models.Events.findOne({ _id: new ObjectID(eventID) });
+	return (
+		userIsAttendingEvent(userID, eventID, models) && event != null && event.warnRepeatedCheckins
 	);
-	return eventReturn;
+}
+
+export async function getEventsAttended(userID: string, models: Models): Promise<string[]> {
+	const user = await models.Hackers.findOne({ _id: new ObjectID(userID) });
+	return user != null ? user.eventsAttended : [];
+}
+
+export async function getAttendees(eventID: string, models: Models): Promise<string[]> {
+	const event = await models.Events.findOne({ _id: new ObjectID(eventID) });
+	return event != null ? event.attendees : [];
 }

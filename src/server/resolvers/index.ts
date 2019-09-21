@@ -13,6 +13,7 @@ import {
 } from '../generated/graphql';
 import Context from '../context';
 import { fetchUser, query, queryById, toEnum, updateUser, checkIsAuthorized } from './helpers';
+import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser } from '../nfc';
 
 /**
  * Used to define a __resolveType function on the User resolver that doesn't take in a promise. This is important as it
@@ -30,6 +31,7 @@ const userResolvers: Omit<UserResolvers, '__resolveType' | 'userType'> = {
 		return dietaryRestrictions.map(toEnum(DietaryRestriction));
 	},
 	email: async user => (await user).email,
+	eventsAttended: async user => (await user).eventsAttended || [],
 	firstName: async user => (await user).firstName,
 	gender: async user => (await user).gender || null,
 	id: async user => (await user)._id.toHexString(),
@@ -70,6 +72,11 @@ export const resolvers: CustomResolvers<Context> = {
 		name: async event => (await event).name,
 		startTimestamp: async event => (await event).startTimestamp.getTime(),
 		warnRepeatedCheckins: async event => (await event).warnRepeatedCheckins,
+	},
+	EventCheckIn: {
+		id: async eventCheckIn => (await eventCheckIn)._id.toHexString(),
+		timestamp: async eventCheckIn => (await eventCheckIn).timestamp.getTime(),
+		user: async eventCheckIn => (await eventCheckIn).user,
 	},
 	Hacker: {
 		...userResolvers,
@@ -112,6 +119,11 @@ export const resolvers: CustomResolvers<Context> = {
 	 * Each may contain authentication checks as well
 	 */
 	Mutation: {
+		checkInUserToEvent: async (root, { input }, { models, user }) => {
+			checkIsAuthorized(UserType.Organizer, user);
+			const userRet = await checkInUserToEvent(input.user, input.event, models);
+			return userRet;
+		},
 		hackerStatus: async (_, { input: { id, status } }, { user, models }) => {
 			checkIsAuthorized(UserType.Organizer, user);
 			const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
@@ -186,6 +198,16 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ret) throw new AuthenticationError(`hacker not found: ${hacker.email}`);
 			return ret;
 		},
+		registerNFCUIDWithUser: async (root, { input }, { models, user }) => {
+			checkIsAuthorized(UserType.Organizer, user);
+			const userRet = await registerNFCUIDWithUser(input.nfcid, input.user, models);
+			return userRet;
+		},
+		removeUserFromEvent: async (root, { input }, { models, user }) => {
+			checkIsAuthorized(UserType.Organizer, user);
+			const userRet = await removeUserFromEvent(input.user, input.event, models);
+			return userRet;
+		},
 		updateMyProfile: async (root, { input }, { models, user }) => {
 			// Enables a user to update their own profile
 			if (!user) throw new AuthenticationError(`cannot update profile: user not logged in`);
@@ -205,6 +227,8 @@ export const resolvers: CustomResolvers<Context> = {
 	},
 	Query: {
 		event: async (root, { id }, ctx) => queryById(id, ctx.models.Events),
+		eventCheckIn: async (root, { id }, ctx) => queryById(id, ctx.models.EventCheckIns),
+		eventCheckIns: async (root, args, ctx) => ctx.models.EventCheckIns.find().toArray(),
 		events: async (root, args, ctx) => ctx.models.Events.find().toArray(),
 		hacker: async (root, { id }, ctx) => queryById(id, ctx.models.Hackers),
 		hackers: async (root, args, ctx) => ctx.models.Hackers.find().toArray(),

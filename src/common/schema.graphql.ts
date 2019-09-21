@@ -15,6 +15,7 @@ export default gql`
 		dietaryRestrictions: [DietaryRestriction!]! @column
 		userType: UserType! @column
 		phoneNumber: String @column
+		eventsAttended: [ID!]! @column
 	}
 
 	enum AuthLevel {
@@ -112,17 +113,18 @@ export default gql`
 		name: String! @column
 		startTimestamp: Int! @column(overrideType: "Date")
 		duration: Int! @column
-		attendees: [EventCheckIn]! @column
-		checkins: [EventCheckIn]! @column
+		attendees: [ID!]! @column
+		checkins: [EventCheckIn!]! @embedded
 		warnRepeatedCheckins: Boolean! @column
 		description: String @column
 		location: String! @column
 		eventType: String! @column
 	}
 
-	type EventCheckIn @entity {
+	type EventCheckIn @entity(embedded: true) {
 		id: ID! @id @column
-		timestamp: Float! @column(overrideType: "Date")
+		user: String! @column
+		timestamp: Int! @column(overrideType: "Date")
 	}
 
 	type Hacker implements User @entity {
@@ -149,6 +151,7 @@ export default gql`
 		volunteer: Boolean @column
 		github: String @column
 		team: Team @embedded
+		eventsAttended: [ID!]! @column
 	}
 
 	type Shift @entity(embedded: true) {
@@ -172,6 +175,7 @@ export default gql`
 		phoneNumber: String
 		shifts: [Shift!]! @embedded
 		skills: [String!]! @column
+		eventsAttended: [ID!]! @column
 	}
 
 	type Team @entity(embedded: true) {
@@ -197,6 +201,7 @@ export default gql`
 		userType: UserType!
 		phoneNumber: String
 		permissions: [String]! @column
+		eventsAttended: [ID!]! @column
 	}
 
 	type Query {
@@ -205,6 +210,8 @@ export default gql`
 		hackers(sortDirection: SortDirection): [Hacker!]!
 		event(id: ID!): Event!
 		events(sortDirection: SortDirection): [Event!]!
+		eventCheckIn(id: ID!): EventCheckIn!
+		eventCheckIns(sortDirection: SortDirection): [EventCheckIn!]!
 		organizer(id: ID!): Organizer!
 		organizers(sortDirection: SortDirection): [Organizer!]!
 		mentor(id: ID!): Mentor!
@@ -239,8 +246,13 @@ export default gql`
 	}
 
 	input EventCheckInInput {
-		nfcID: ID!
+		user: ID!
 		event: ID!
+	}
+
+	input NFCRegisterInput {
+		nfcid: ID!
+		user: ID!
 	}
 
 	type Mutation {
@@ -250,6 +262,8 @@ export default gql`
 		leaveTeam: Hacker!
 		hackerStatus(input: HackerStatusInput!): Hacker!
 		hackerStatuses(input: HackerStatusesInput!): [Hacker!]!
-		checkInUserToEvent(input: EventCheckInInput!): Event!
+		checkInUserToEvent(input: EventCheckInInput!): ID
+		removeUserFromEvent(input: EventCheckInInput!): ID
+		registerNFCUIDWithUser(input: NFCRegisterInput!): ID
 	}
 `;
