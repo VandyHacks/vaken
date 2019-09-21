@@ -63,7 +63,7 @@
 		"@apollo/react-common": "^3.0.0",
 		"@apollo/react-hooks": "^3.0.0",
 		"@apollo/react-testing": "^3.0.0",
-		"@graphql-codegen/typescript-mongodb": "^1.4.0",
+		"@graphql-codegen/typescript-mongodb": "^1.7.0",
 		"@packtracker/webpack-plugin": "^2.1.0",
 		"@svgr/webpack": "^4.3.2",
 		"@types/faker": "^4.1.5",
