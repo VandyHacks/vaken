@@ -45,6 +45,11 @@ export const schema = makeExecutableSchema({
 		})(req, res, next)
 	);
 
+	if (process.env.NODE_ENV === 'production') {
+		// Serve front-end asset files in prod.
+		app.use(express.static('dist/server/app'));
+	}
+
 	const server = new ApolloServer({
 		context: ({ req }): Context => ({
 			models,
