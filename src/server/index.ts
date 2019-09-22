@@ -3,6 +3,7 @@ import { DIRECTIVES } from '@graphql-codegen/typescript-mongodb';
 import express from 'express';
 import passport from 'passport';
 import session from 'express-session';
+import MongoStore, { MongoUrlOptions } from 'connect-mongo';
 import gqlSchema from '../common/schema.graphql';
 import { resolvers } from './resolvers';
 import DB from './models';
@@ -30,7 +31,14 @@ export const schema = makeExecutableSchema({
 	const models = await dbClient.collections;
 
 	// Register auth functions
-	app.use(session({ secret: SESSION_SECRET }));
+	app.use(
+		session({
+			secret: SESSION_SECRET,
+			store: new (MongoStore(session))(({
+				clientPromise: dbClient.client,
+			} as unknown) as MongoUrlOptions),
+		})
+	);
 	app.use(passport.initialize());
 	app.use(passport.session());
 	passport.use('github', strategies.github(models));
