@@ -10,7 +10,7 @@ if (!GITHUB_CLIENT_ID) {
 if (!GITHUB_CLIENT_SECRET) {
 	throw new Error('GITHUB_CLIENT_SECRET not set');
 }
-if (!GITHUB_CLIENT_SECRET) {
+if (!GITHUB_CALLBACK_URL) {
 	throw new Error('GITHUB_CALLBACK_URL not set');
 }
 
