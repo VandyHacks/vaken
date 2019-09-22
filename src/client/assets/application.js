@@ -1,6 +1,7 @@
 import institutions from './data/institutions.json';
 import AutoComplete from '../components/Input/AutoCompleteTextInput';
 import TextInput from '../components/Input/TextInput';
+import { FileInput } from '../components/Input/FileInput';
 import { Checkbox } from '../components/Input/Checkbox';
 import { Slider } from '../components/Input/Slider';
 import { Boolean } from '../components/Input/Boolean';
@@ -60,6 +61,12 @@ const questions = [
 					'Other',
 				],
 				title: 'Race',
+			},
+			{
+				Component: FileInput,
+				fieldName: 'resume',
+				propmpt: 'Upload your resume here',
+				title: 'Resume',
 			},
 		],
 		title: 'Demographic',
