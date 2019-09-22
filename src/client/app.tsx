@@ -9,7 +9,6 @@ import { useMeQuery } from './generated/graphql';
 
 const GlobalStyle = createGlobalStyle`
 	body {
-		@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,500|Roboto:300,400,500,700');
 		font-family: 'Roboto', sans-serif;
 
 		${reset}
