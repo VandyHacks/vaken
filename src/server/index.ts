@@ -53,11 +53,6 @@ export const schema = makeExecutableSchema({
 		})(req, res, next)
 	);
 
-	if (process.env.NODE_ENV === 'production') {
-		// Serve front-end asset files in prod.
-		app.use(express.static('dist/server/app'));
-	}
-
 	const server = new ApolloServer({
 		context: ({ req }): Context => ({
 			models,
@@ -72,6 +67,13 @@ export const schema = makeExecutableSchema({
 	});
 
 	server.applyMiddleware({ app });
+
+	if (process.env.NODE_ENV === 'production') {
+		// Serve front-end asset files in prod.
+		app.use(express.static('dist/server/app'));
+		// MUST BE LAST AS THIS WILL REROUTE ALL REMAINING TRAFFIC TO THE FRONTEND!
+		app.use((req, res) => res.sendFile('index.html', { root: 'dist/server/app' }));
+	}
 
 	app.listen(
 		{ port: PORT },
