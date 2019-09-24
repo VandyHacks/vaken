@@ -4,10 +4,22 @@ Guide for contributors
 
 ### Setup
 
-You will need [npm](https://github.com/npm/cli) as a package manager and build runner.
+> TODO: put all this in an install.sh
 
-Run `./scripts/install.sh` from the top level of the Vaken repository. Note that the variables in
-the new `.env` file will need to be changed to valid values.
+Copying over environment variables:
+
+```bash
+cp .env.template .env # copy over to .env file
+```
+
+Then change the variables in the `.env` file to the correct values.
+
+Installing dependencies:
+
+```bash
+npm i # install local dependencies
+npm i -g nodemon webpack webpack-cli typescript ts-node # install global dependencies
+```
 
 **Installing MongoDB:**
 
@@ -53,6 +65,17 @@ NOTE: there are multiple eslint files. The rules are cascaded with the rule in t
 npm run check:lint # runs the linter
 npm run check:lint:fix # runs the linter with autofix
 ```
+
+### Useful GraphQL queries
+
+This query will create a sponsor and associate with a company
+
+mutation {
+  createSponsor(input: {
+    name: "name", email: "email", companyId: "insert company id here"
+  })
+  {id}
+}
 
 ### Folder Structure
 
