@@ -1,5 +1,9 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useContext } from 'react';
+import { AuthContext } from '../../contexts/AuthContext';
+
 
 export const SponsorDash: FunctionComponent = (): JSX.Element => {
-	return <div>Placeholder sponsor dash</div>;
+	const currentUser = useContext(AuthContext);
+	console.log(currentUser);
+	return <div>{currentUser.firstName}</div>;
 };

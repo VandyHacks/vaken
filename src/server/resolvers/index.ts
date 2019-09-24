@@ -95,6 +95,10 @@ export const resolvers: CustomResolvers<Context> = {
 		timestamp: async eventCheckIn => (await eventCheckIn).timestamp.getTime(),
 		user: async eventCheckIn => (await eventCheckIn).user,
 	},
+	Company: {
+		tier: async comp => (await comp).tier,
+		name: async comp => (await comp).name
+	},
 	Hacker: {
 		...userResolvers,
 		adult: async hacker => (await hacker).adult || null,
@@ -143,13 +147,15 @@ export const resolvers: CustomResolvers<Context> = {
 			const userRet = await checkInUserToEvent(input.user, input.event, models);
 			return userRet;
 		},
-		createSponsor: async (root, { input: { email, name } }, { models, user }: Context) => {
+		createSponsor: async (root, { input: { email, name, companyId } }, { models, user }: Context) => {
 			if (!user || user.userType !== UserType.Organizer)
 				throw new AuthenticationError(`user '${JSON.stringify(user)}' must be organizer`);
 			const sponsor = await models.Sponsors.findOne({ email });
+			const company = await models.Companies.findOne({ _id: new ObjectID(companyId) });
 			if (!sponsor) {
 				await models.Sponsors.insertOne({
 					_id: new ObjectID(),
+					company,
 					createdAt: new Date(),
 					dietaryRestrictions: [],
 					email,
@@ -420,6 +426,7 @@ export const resolvers: CustomResolvers<Context> = {
 		permissions: async sponsor => (await sponsor).permissions,
 		status: async sponsor => toEnum(SponsorStatus)((await sponsor).status),
 		userType: () => UserType.Sponsor,
+		company: async sponsor => (await sponsor).company,
 	},
 	Team: {
 		createdAt: async team => (await team).createdAt.getTime(),

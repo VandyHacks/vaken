@@ -2,6 +2,7 @@ import React from 'react';
 import { CreateSponsor } from '../routes/manageSponsor/CreateSponsor';
 import { Application } from '../routes/application/Application';
 import { HackerDash } from '../routes/dashboard/HackerDash';
+import { SponsorDash } from '../routes/dashboard/SponsorDash';
 import { ManageHackers } from '../routes/manage/ManageHackers';
 import { SponsorHackerView } from '../routes/manage/SponsorHackerView';
 import { Team } from '../routes/team/Team';
@@ -29,6 +30,18 @@ const routes = [
 	// 	displayText: 'Profile',
 	// 	path: '/profile',
 	// },
+	{
+		authLevel: [UserType.Sponsor],
+		component: SponsorDash,
+		displayText: 'Dashboard',
+		path: '/dashboard',
+	},
+	{
+		authLevel: [UserType.Hacker, UserType.Sponsor, UserType.Organizer],
+		component: Profile,
+		displayText: 'Profile',
+		path: '/profile',
+	},
 	{
 		authLevel: [UserType.Hacker],
 		component: Application,
