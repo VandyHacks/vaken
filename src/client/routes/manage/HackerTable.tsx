@@ -7,6 +7,7 @@ import Select from 'react-select';
 import { ValueType } from 'react-select/src/types';
 import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
 
+import ActionButton from '../../components/Buttons/ActionButton';
 import { ToggleSwitch } from '../../components/Buttons/ToggleSwitch';
 import { FloatingButton } from '../../components/Buttons/FloatingButton';
 import { SearchBox } from '../../components/Input/SearchBox';
@@ -244,6 +245,7 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 					? newData.filter(hacker => regex.test(`${hacker[selectedColumns[0].value]}`))
 					: [];
 		}
+		console.log(newData);
 
 		// Sort data based on props and context
 		if (sortBy && sortDirection) {
@@ -290,6 +292,11 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 		return className;
 	};
 
+	const exportData = (): void => {
+		console.log("Exporting data...");
+		console.log(sortedData);
+	}
+
 	return (
 		<TableLayout>
 			<TableOptions>
@@ -319,6 +326,7 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 					checked={fuzzySearch}
 					onChange={onRegexToggle(table)}
 				/>
+				<ActionButton onClick={exportData}>Export</ActionButton>
 			</TableOptions>
 			<TableData>
 				<AutoSizer>
@@ -345,20 +353,20 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 							{selectAll || hasSelection ? (
 								<DeselectAll ref={deselect}>{SelectAllButton}</DeselectAll>
 							) : (
-								<SelectAll
-									onClick={() =>
-										table.update(draft => {
-											draft.hasSelection = true;
-											draft.selectedRowsIds = sortedData
-												.filter(row => isSelectable(row.status))
-												.map(row => row.id);
-											console.log(draft.selectedRowsIds);
-										})
+									<SelectAll
+										onClick={() =>
+											table.update(draft => {
+												draft.hasSelection = true;
+												draft.selectedRowsIds = sortedData
+													.filter(row => isSelectable(row.status))
+													.map(row => row.id);
+												console.log(draft.selectedRowsIds);
+											})
 
-									}>
-									{SelectAllButton}
-								</SelectAll>
-							)}
+										}>
+										{SelectAllButton}
+									</SelectAll>
+								)}
 							{hasSelection && (
 								<Float className="ignore-select">
 									<SliderInput
