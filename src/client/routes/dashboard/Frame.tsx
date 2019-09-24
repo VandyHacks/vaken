@@ -14,6 +14,7 @@ import { HackerDash } from './HackerDash';
 export const OrganizerDash = React.lazy(() => import('./OrganizerDash'));
 
 const Layout = styled.div`
+	position: fixed;
 	height: 100vh;
 	width: 100vw;
 	display: grid;
@@ -29,7 +30,6 @@ const Layout = styled.div`
 
 	.content {
 		grid-area: content;
-		overflow: auto;
 		max-height: 100%;
 		/* border-radius: 2rem; */
 		overflow: auto;

@@ -13,7 +13,7 @@ import {
 } from '../generated/graphql';
 import Context from '../context';
 import { fetchUser, query, queryById, toEnum, updateUser, checkIsAuthorized } from './helpers';
-import { getSignedUploadUrl } from '../storage/gcp';
+import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
 
 /**
  * Used to define a __resolveType function on the User resolver that doesn't take in a promise. This is important as it
@@ -60,7 +60,7 @@ export const resolvers: CustomResolvers<Context> = {
 		...userResolvers,
 		adult: async hacker => (await hacker).adult || null,
 		application: async (hacker, args, { models }: Context) =>
-			await models.ApplicationFields.find({ userId: (await hacker)._id }).toArray(),
+			models.ApplicationFields.find({ userId: (await hacker)._id }).toArray(),
 		gender: async hacker => (await hacker).gender || null,
 		github: async hacker => (await hacker).github || null,
 		gradYear: async hacker => (await hacker).gradYear || null,
@@ -176,9 +176,7 @@ export const resolvers: CustomResolvers<Context> = {
 		signedUploadUrl: async (_, { input }, { user }) => {
 			// Enables a user to update their application
 			if (!user) throw new AuthenticationError(`cannot update application: user not logged in`);
-			return getSignedUploadUrl(
-				`${user.lastName}, ${user.firstName}-${user._id} Resume.${input.split('.').pop()}`
-			);
+			return getSignedUploadUrl(`${user._id}`);
 		},
 		updateMyApplication: async (root, args, ctx) => {
 			// Enables a user to update their application
@@ -239,6 +237,19 @@ export const resolvers: CustomResolvers<Context> = {
 		mentors: async (root, args, ctx) => ctx.models.Mentors.find().toArray(),
 		organizer: async (root, { id }, ctx) => queryById(id, ctx.models.Organizers),
 		organizers: async (root, args, ctx) => ctx.models.Organizers.find().toArray(),
+		signedReadUrl: async (_, { input }, { user, models }) => {
+			// Enables a user to update their application
+			if (!user) throw new AuthenticationError(`cannot get read url: user not logged in`);
+
+			// No file to get :)
+			if (!input) return '';
+
+			// Hackers may get their own files; organizers may get any file
+			if (!input.includes((user._id as unknown) as string))
+				checkIsAuthorized(UserType.Organizer, user);
+
+			return getSignedReadUrl(input);
+		},
 		team: async (root, { id }, ctx) => queryById(id, ctx.models.Teams),
 		teams: async (root, args, ctx) => ctx.models.Teams.find().toArray(),
 	},

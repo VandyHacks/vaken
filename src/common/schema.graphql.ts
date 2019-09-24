@@ -185,6 +185,7 @@ export default gql`
 		organizers(sortDirection: SortDirection): [Organizer!]!
 		mentor(id: ID!): Mentor!
 		mentors(sortDirection: SortDirection): [Mentor!]!
+		signedReadUrl(input: ID!): String!
 		team(id: ID!): Team!
 		teams(sortDirection: SortDirection): [Team!]!
 	}
@@ -227,6 +228,6 @@ export default gql`
 		leaveTeam: Hacker!
 		hackerStatus(input: HackerStatusInput!): Hacker!
 		hackerStatuses(input: HackerStatusesInput!): [Hacker!]!
-		signedUploadUrl(input: String!): String!
+		signedUploadUrl(input: ID!): String!
 	}
 `;

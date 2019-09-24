@@ -4,6 +4,7 @@ import { useImmer } from 'use-immer';
 import Spinner from '../../components/Loading/Spinner';
 import config from '../../assets/application';
 import { Collapsible } from '../../components/Containers/Collapsible';
+import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { ActionButtonContext } from '../../contexts/ActionButtonContext';
 import { HeaderButton } from '../../components/Buttons/HeaderButton';
 import { InputProps } from '../../components/Input/TextInput';
@@ -32,8 +33,10 @@ export interface ConfigField {
 }
 
 export const StyledForm = styled.form`
-	display: flex;
-	flex-flow: column nowrap;
+	display: grid;
+	grid-auto-flow: row;
+	grid-gap: 1.4rem;
+	align-items: flex-start;
 
 	fieldset {
 		margin-top: 0.4rem;
@@ -73,6 +76,10 @@ export const FieldTitle = styled.span`
 	line-height: 140%;
 `;
 
+const disableEnter = (e: React.KeyboardEvent<HTMLFormElement>) => {
+	if (e.key === 'Enter') e.preventDefault();
+};
+
 export const Application: FunctionComponent<{}> = (): JSX.Element => {
 	const { update: setActionButton } = useContext(ActionButtonContext);
 	const [openSection, setOpenSection] = useState('');
@@ -101,7 +108,10 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 	useEffect((): (() => void) => {
 		if (setActionButton)
 			setActionButton(
-				<HeaderButton width="8em" onClick={async () => updateApplication({ variables: { input } })}>
+				<HeaderButton
+					// tabIndex={1}
+					width="8em"
+					onClick={async () => updateApplication({ variables: { input } })}>
 					<p>Submit</p>
 				</HeaderButton>
 			);
@@ -122,6 +132,7 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 					draft.push({ answer: answer || '', question })
 				);
 			});
+			setOpenSection(config[0].title);
 			setLoaded(true);
 		}
 	}, [data, loaded, setLoaded, setInput]);
@@ -144,27 +155,36 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 	if (loading) return <Spinner />;
 
 	return (
-		<StyledForm>
-			{config.map(({ fields, title }: ConfigSection) => (
-				<Collapsible onClick={toggleOpen} open={openSection === title} title={title} key={title}>
-					{fields.map(field => (
-						<StyledQuestion key={field.title} htmlFor={field.title}>
-							<StyledQuestionPadContainer>
-								{field.title}
-								{field.note ? <FieldNote>{` - ${field.note}`}</FieldNote> : null}
-							</StyledQuestionPadContainer>
-							{field.prompt ? <FieldPrompt>{field.prompt}</FieldPrompt> : null}
-							<field.Component
-								setState={createOnChangeHandler(field.title)}
-								value={valueHandler(field.title)}
-								{...field}
-								id={field.title}
-							/>
-						</StyledQuestion>
-					))}
-				</Collapsible>
-			))}
-		</StyledForm>
+		<FloatingPopup
+			borderRadius="1rem"
+			// height="100%"
+			width="100%"
+			backgroundOpacity="1"
+			justifyContent="flex-start"
+			alignItems="flex-start"
+			padding="1.5rem">
+			<StyledForm onKeyPress={disableEnter}>
+				{config.map(({ fields, title }: ConfigSection) => (
+					<Collapsible onClick={toggleOpen} open={openSection === title} title={title} key={title}>
+						{fields.map(field => (
+							<StyledQuestion key={field.title} htmlFor={field.title}>
+								<StyledQuestionPadContainer>
+									{field.title}
+									{field.note ? <FieldNote>{` - ${field.note}`}</FieldNote> : null}
+								</StyledQuestionPadContainer>
+								{field.prompt ? <FieldPrompt>{field.prompt}</FieldPrompt> : null}
+								<field.Component
+									setState={createOnChangeHandler(field.title)}
+									value={valueHandler(field.title)}
+									{...field}
+									id={field.title}
+								/>
+							</StyledQuestion>
+						))}
+					</Collapsible>
+				))}
+			</StyledForm>
+		</FloatingPopup>
 	);
 };
 

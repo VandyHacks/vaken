@@ -1,8 +1,10 @@
-import React, { FC, useState, ChangeEvent, useEffect } from 'react';
+import React, { FC, useState, ChangeEvent, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { InputProps } from './TextInput';
-import { useSignedUploadUrlMutation } from '../../generated/graphql';
+import { AuthContext } from '../../contexts/AuthContext';
+import { useSignedUploadUrlMutation, useSignedReadUrlQuery } from '../../generated/graphql';
 import STRINGS from '../../assets/strings.json';
+import { HeaderButton } from '../Buttons/HeaderButton';
 
 let globalCounter = 0;
 
@@ -16,24 +18,6 @@ const FileInputEl = styled.input`
 	z-index: -1;
 `;
 
-/*
-marginTop="0"
-			marginBottom="0"
-			marginRight="0.1rem"
-			width={width || 'auto'}
-			paddingLeft="2rem"
-			paddingRight="2rem"
-			paddingTop="0.6rem"
-			paddingBottom="0.6rem"
-			height="auto"
-			color="white"
-			fontSize="1.4rem"
-			background={STRINGS.ACCENT_COLOR}
-			glowColor="rgba(0, 0, 255, 0.67)"
-			onClick={clickHandler}>
-			{inAction ? <Spinner color="white" /> : children}
-*/
-
 const FileLabelEl = styled.label`
 	cursor: pointer;
 	font-size: 1.2rem;
@@ -41,31 +25,42 @@ const FileLabelEl = styled.label`
 	background: ${STRINGS.ACCENT_COLOR};
 	width: fit-content;
 	color: white;
-	border-radius: 6px;
+	border-radius: 1rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-right: 1rem;
 
 	&:hover,
 	&:focus,
-	&:active {
+	&:active,
+	input:focus + & {
 		box-shadow: 0px 0px 20px 0px rgba(0, 0, 255, 0.67);
 	}
+`;
+
+const Container = styled.div`
+	display: flex;
 `;
 
 export const FileInput: FC<InputProps> = props => {
 	const [file, setFile] = useState<File>();
 	const [getSignedUploadUrl] = useSignedUploadUrlMutation();
-	const { setState } = props;
+	const { value, setState } = props;
 	const [counter, setCounter] = useState(0);
+	const fileReadUrlQuery = useSignedReadUrlQuery({ variables: { input: value } });
+	const { data: { signedReadUrl = '' } = {} } = fileReadUrlQuery || {};
+	const user = useContext(AuthContext);
 
 	const onChange = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
 		if (!e.target.files) throw new Error('Files was null');
 		setFile(e.target.files[0]);
-		// Create the filename
 	};
 
 	useEffect(() => {
-		if (!file) return;
+		if (!file || !user.id) return;
 
-		getSignedUploadUrl({ variables: { input: file.name } })
+		getSignedUploadUrl({ variables: { input: user.id } })
 			.then(uploadUrl => {
 				if (!uploadUrl || !uploadUrl.data)
 					throw new Error('Server did not return signed upload url');
@@ -77,12 +72,14 @@ export const FileInput: FC<InputProps> = props => {
 					method: 'PUT',
 				});
 			})
-			.then(res => res.json())
-			.then(json => setState(json.url))
+			.then(res => {
+				if (res.ok) return setState(user.id);
+				throw new Error('Failed in upload to cloud storage');
+			})
 			.catch(err => {
 				throw new Error(err);
 			});
-	}, [file, getSignedUploadUrl, setState]);
+	}, [file, getSignedUploadUrl, setState, user]);
 
 	// Generate UID
 	useEffect(() => {
@@ -90,12 +87,21 @@ export const FileInput: FC<InputProps> = props => {
 	}, []);
 
 	return (
-		<>
-			<FileInputEl className="input" name={`file-${counter}`} type="file" onChange={onChange} />
+		<Container>
+			<FileInputEl className="input" id={`file-${counter}`} type="file" onChange={onChange} />
 			<FileLabelEl className="label" htmlFor={`file-${counter}`}>
-				Upload a file
+				{/* eslint-disable-next-line react/jsx-one-expression-per-line */}
+				Upload {signedReadUrl ? 'new' : 'a'} resume
 			</FileLabelEl>
-		</>
+			{signedReadUrl ? (
+				<HeaderButton
+					width="fit-content"
+					fontSize="1.2rem"
+					onClick={() => void window.open(signedReadUrl, '_blank', 'noopener')}>
+					View uploaded resume
+				</HeaderButton>
+			) : null}
+		</Container>
 	);
 };
 

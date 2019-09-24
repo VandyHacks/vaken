@@ -1,7 +1,9 @@
-import React, { FC, FormEventHandler } from 'react';
+import React, { FC, FormEventHandler, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { title } from 'case';
 import { InputProps } from './TextInput';
+
+let globalCounter = 0;
 
 export interface Props extends InputProps {
 	options?: string[];
@@ -51,11 +53,22 @@ const SliderContainer = styled.div`
 		/* Color for keyboard users */
 		box-shadow: inset 0 0 2px 2px #6979f8;
 	}
+
+	input:checked:focus + label {
+		/* Color for keyboard users */
+		box-shadow: inset 0 0 2px 2px #ffffff;
+	}
 `;
 
 export const SliderSansTitleCase: FC<Props> = ({ value, setState, titleCase, ...props }) => {
+	const [counter, setCounter] = useState(0);
 	const onChange: FormEventHandler<HTMLInputElement> = ({ currentTarget: { id } }) =>
-		setState(id === value ? '' : id);
+		setState(id.split('-')[0] === value ? '' : id.split('-')[0]);
+
+	// Generate UID
+	useEffect(() => {
+		setCounter((globalCounter += 1));
+	}, []);
 
 	const { options = ['default'], className } = props;
 	return (
@@ -64,8 +77,15 @@ export const SliderSansTitleCase: FC<Props> = ({ value, setState, titleCase, ...
 				{options.map(
 					(option: string): JSX.Element => (
 						<React.Fragment key={option}>
-							<input checked={value === option} type="radio" id={option} onChange={onChange} />
-							<label htmlFor={option}>{titleCase ? title(option) : option}</label>
+							<input
+								// tabIndex={0}
+								checked={value === option}
+								type="radio"
+								id={`${option}-${counter}`}
+								name={`${option}-${counter}`}
+								onChange={onChange}
+							/>
+							<label htmlFor={`${option}-${counter}`}>{titleCase ? title(option) : option}</label>
 						</React.Fragment>
 					)
 				)}
