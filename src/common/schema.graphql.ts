@@ -93,13 +93,12 @@ export default gql`
 		ASC
 		DESC
 	}
-	
+
 	type Company @entity {
 		id: ID! @column
 		name: String! @column
 		tier: String! @column
 	}
-	
 
 	type ApplicationField @entity(embedded: true) {
 		id: ID! @column
