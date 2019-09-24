@@ -93,6 +93,13 @@ export default gql`
 		ASC
 		DESC
 	}
+	
+	type Company @entity {
+		id: ID! @column
+		name: String! @column
+		tier: String! @column
+	}
+	
 
 	type ApplicationField @entity(embedded: true) {
 		id: ID! @column
@@ -205,6 +212,7 @@ export default gql`
 		dietaryRestrictions: [DietaryRestriction!]!
 		userType: UserType!
 		phoneNumber: String
+		company: Company!
 		permissions: [String]! @column
 	}
 
@@ -298,6 +306,7 @@ export default gql`
 	input createSponsorInput {
 		email: String!
 		name: String!
+		companyId: ID!
 	}
 
 	input SponsorStatusInput {
