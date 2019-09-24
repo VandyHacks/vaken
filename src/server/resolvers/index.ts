@@ -96,8 +96,8 @@ export const resolvers: CustomResolvers<Context> = {
 		user: async eventCheckIn => (await eventCheckIn).user,
 	},
 	Company: {
+		name: async comp => (await comp).name,
 		tier: async comp => (await comp).tier,
-		name: async comp => (await comp).name
 	},
 	Hacker: {
 		...userResolvers,

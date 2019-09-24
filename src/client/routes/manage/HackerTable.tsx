@@ -7,7 +7,6 @@ import { ValueType } from 'react-select/src/types';
 import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
 import { CSVLink } from 'react-csv';
 
-import ActionButton from '../../components/Buttons/ActionButton';
 import { ToggleSwitch } from '../../components/Buttons/ToggleSwitch';
 import { FloatingButton } from '../../components/Buttons/FloatingButton';
 import { SearchBox } from '../../components/Input/SearchBox';
@@ -302,10 +301,6 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 		}
 		return className;
 	};
-	const exportData = (): void => {
-		console.log("Exporting data...");
-		console.log(sortedData);
-	}
 
 	return (
 		<TableLayout>
@@ -366,9 +361,10 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 						</>
 					) : null}
 				</Count>
-				<ActionButton onClick={exportData}>Export</ActionButton>
 				{/* <ActionButton onClick={exportData}>Export</ActionButton> */}
-				<CSVLink data={sortedData} filename={"exportedData.csv"}>Export</CSVLink>
+				<CSVLink data={sortedData} filename="exportedData.csv">
+					Export
+				</CSVLink>
 			</TableOptions>
 			<TableData>
 				<AutoSizer>
