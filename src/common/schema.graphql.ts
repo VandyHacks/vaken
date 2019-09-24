@@ -227,5 +227,6 @@ export default gql`
 		leaveTeam: Hacker!
 		hackerStatus(input: HackerStatusInput!): Hacker!
 		hackerStatuses(input: HackerStatusesInput!): [Hacker!]!
+		signedUploadUrl(input: String!): String!
 	}
 `;

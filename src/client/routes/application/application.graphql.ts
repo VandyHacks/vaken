@@ -1,6 +1,10 @@
 import { gql } from 'apollo-boost';
 
 export default gql`
+	mutation signedUploadUrl($input: String!) {
+		signedUploadUrl(input: $input)
+	}
+
 	mutation updateMyApplication($input: [ApplicationInput!]!) {
 		updateMyApplication(input: $input) {
 			id
@@ -12,6 +16,7 @@ export default gql`
 			}
 		}
 	}
+
 	query myApplication {
 		me {
 			id

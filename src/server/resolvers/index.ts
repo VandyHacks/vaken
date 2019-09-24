@@ -13,6 +13,7 @@ import {
 } from '../generated/graphql';
 import Context from '../context';
 import { fetchUser, query, queryById, toEnum, updateUser, checkIsAuthorized } from './helpers';
+import { getSignedUploadUrl } from '../storage/gcp';
 
 /**
  * Used to define a __resolveType function on the User resolver that doesn't take in a promise. This is important as it
@@ -172,7 +173,14 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ret) throw new AuthenticationError(`hacker not found: ${hacker.email}`);
 			return ret;
 		},
-		updateMyApplication: async (root, args, ctx: Context) => {
+		signedUploadUrl: async (_, { input }, { user }) => {
+			// Enables a user to update their application
+			if (!user) throw new AuthenticationError(`cannot update application: user not logged in`);
+			return getSignedUploadUrl(
+				`${user.lastName}, ${user.firstName}-${user._id} Resume.${input.split('.').pop()}`
+			);
+		},
+		updateMyApplication: async (root, args, ctx) => {
 			// Enables a user to update their application
 			if (!ctx.user) throw new AuthenticationError(`cannot update application: user not logged in`);
 			// TODO(leonm1): Figure out why the _id field isn't actually an ObjectID

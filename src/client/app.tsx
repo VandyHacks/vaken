@@ -8,16 +8,16 @@ import { AuthContext } from './contexts/AuthContext';
 import { useMeQuery } from './generated/graphql';
 
 const GlobalStyle = createGlobalStyle`
-	body {
-		font-family: 'Roboto', sans-serif;
+	${reset}
 
-		${reset}
-		user-select: none;
+	html, body {
 		margin: 0;
 		padding: 0;
 		width: 100vw;
 		height: 100vh;
 		font-size: 12px;
+		font-family: 'Roboto', sans-serif;
+		user-select: none;
 	}
 `;
 
