@@ -15,7 +15,7 @@ export default gql`
 		dietaryRestrictions: [DietaryRestriction!]! @column
 		userType: UserType! @column
 		phoneNumber: String @column
-		eventsAttended: [ID!]! @column
+		eventsAttended: [ID!] @column
 	}
 
 	enum AuthLevel {

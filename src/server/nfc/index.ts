@@ -71,16 +71,16 @@ export async function removeUserFromEvent(
 	eventID: string,
 	models: Models
 ): Promise<string | null> {
-	const user = await models.Hackers.findOne({ _id: new ObjectID(userID) });
+	const userObjectID = new ObjectID(userID);
+	const user = await models.Hackers.findOne({ _id: userObjectID });
 	if (user) {
-		const nfcUID = user.secondaryIds[0];
-		const event = await models.Events.findOne({ attendees: nfcUID });
+		const event = await models.Events.findOne({ attendees: userObjectID });
 		if (event) {
 			const ret = await models.Events.updateOne(
 				{ _id: new ObjectID(eventID) },
 				{
 					$pull: {
-						attendees: nfcUID,
+						attendees: userObjectID,
 					},
 				}
 			);
@@ -95,7 +95,9 @@ export async function checkInUserToEvent(
 	eventID: string,
 	models: Models
 ): Promise<string | null> {
-	const user = await models.Hackers.findOne({ _id: new ObjectID(userID) });
+	const userObjectID = new ObjectID(userID);
+	const eventObjectID = new ObjectID(eventID);
+	const user = await models.Hackers.findOne({ _id: userObjectID });
 	if (user) {
 		const eventCheckInObj = {
 			id: ObjectID.createFromTime(Date.now()),
@@ -103,18 +105,18 @@ export async function checkInUserToEvent(
 			user: userID,
 		};
 		const retEvent = await models.Events.findOneAndUpdate(
-			{ _id: new ObjectID(eventID) },
-			{ $addToSet: { attendees: userID } }
+			{ _id: eventObjectID },
+			{ $addToSet: { attendees: userObjectID } }
 		);
 		await models.Events.findOneAndUpdate(
-			{ _id: new ObjectID(eventID) },
+			{ _id: eventObjectID },
 			{ $push: { checkins: eventCheckInObj } }
 		);
 		const retUsr = await models.Hackers.findOneAndUpdate(
-			{ _id: new ObjectID(userID) },
+			{ _id: userObjectID },
 			{
 				$addToSet: {
-					eventsAttended: eventID,
+					eventsAttended: eventObjectID,
 				},
 			}
 		);
@@ -128,10 +130,13 @@ export async function userIsAttendingEvent(
 	eventID: string,
 	models: Models
 ): Promise<boolean> {
-	const user = await models.Hackers.findOne({ _id: new ObjectID(userID) });
+	const userObjectID = new ObjectID(userID);
+	const user = await models.Hackers.findOne({ _id: userObjectID });
 	if (user) {
-		const nfcUID = user.secondaryIds[0];
-		const event = await models.Events.findOne({ _id: new ObjectID(eventID), attendees: nfcUID });
+		const event = await models.Events.findOne({
+			_id: new ObjectID(eventID),
+			attendees: userObjectID,
+		});
 		if (event) return true;
 	}
 	return false;

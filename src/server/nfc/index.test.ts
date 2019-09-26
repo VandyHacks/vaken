@@ -79,6 +79,7 @@ beforeAll(async () => {
 		dbClient = new DB(mongoUri);
 		models = await dbClient.collections;
 		await models.Hackers.insertOne(testHacker);
+		await models.Hackers.insertOne(testHacker2);
 		await models.Organizers.insertOne(testOrganizer);
 		await models.Events.insertOne(testEvent);
 		await models.Events.insertOne(event);
@@ -173,14 +174,13 @@ describe('Test event model', () => {
 		});
 	});
 	describe('removeUserFromEvent', () => {
-		const testAttendee = testHacker.secondaryIds[0];
 		beforeEach(async () => {
 			try {
 				const ret = await models.Events.findOneAndUpdate(
 					{ _id: testEventId },
 					{
 						$push: {
-							attendees: testAttendee,
+							attendees: testHackerId,
 						},
 					}
 				);
@@ -220,7 +220,7 @@ describe('Test event model', () => {
 				removeUserFromEvent(testHackerId2.toHexString(), testEventId.toHexString(), models)
 			).resolves.toEqual(null);
 			const eventAfter = await models.Events.findOne({ _id: testEventId });
-			if (eventAfter != null) await expect(eventAfter.attendees).toEqual(['ACTIVE_NFC_ID_TEST']);
+			if (eventAfter != null) await expect(eventAfter.attendees).toEqual([testHackerId]);
 			else throw new MongoError('Could not find event');
 		});
 	});
@@ -259,20 +259,25 @@ describe('Test event model', () => {
 			const eventAfter = await models.Events.findOne({ _id: testEventId });
 			const userAfter = await models.Hackers.findOne({ _id: testHackerId });
 			if (eventAfter != null && userAfter != null) {
-				await expect(eventAfter.attendees).toEqual([testHackerId.toHexString()]);
-				await expect(userAfter.eventsAttended).toEqual([testEventId.toHexString()]);
+				await expect(eventAfter.attendees).toEqual([testHackerId]);
+				await expect(userAfter.eventsAttended).toEqual([testEventId]);
 			} else throw new MongoError('Could not find event');
 		});
 
 		describe('checkInUserToEventHelper', () => {
+			const testCheckIn = {
+				id: ObjectId.createFromTime(Date.now()),
+				timestamp: Date.now(),
+				user: testHackerId.toHexString(),
+			};
 			beforeEach(async () => {
 				try {
 					const ret = await models.Events.findOneAndUpdate(
 						{ _id: testEventId },
 						{
 							$set: {
-								attendees: [testHackerId.toHexString()],
-								checkins: [testHackerId.toHexString()],
+								attendees: [testHackerId],
+								checkins: [testCheckIn],
 							},
 						}
 					);
@@ -281,7 +286,7 @@ describe('Test event model', () => {
 						{ _id: testHackerId },
 						{
 							$set: {
-								eventsAttended: [testEventId.toHexString()],
+								eventsAttended: [testEventId],
 							},
 						}
 					);
@@ -298,7 +303,7 @@ describe('Test event model', () => {
 				const eventAfter = await models.Events.findOne({ _id: testEventId });
 				const userAfter = await models.Hackers.findOne({ _id: testHackerId });
 				if (eventAfter != null && userAfter != null) {
-					await expect(eventAfter.attendees).toEqual([testHackerId.toHexString()]);
+					await expect(eventAfter.attendees).toEqual([testHackerId]);
 					await expect(eventAfter.checkins.length).toEqual(2);
 					await console.log('Event Check ins: ', eventAfter.checkins);
 					await expect(userAfter.eventsAttended.length).toEqual(1);
@@ -307,14 +312,13 @@ describe('Test event model', () => {
 		});
 	});
 	describe('userIsAttendingEvent', () => {
-		const testAttendee = testHacker.secondaryIds[0];
 		beforeEach(async () => {
 			try {
 				const ret = await models.Events.findOneAndUpdate(
 					{ _id: testEventId },
 					{
 						$push: {
-							attendees: testAttendee,
+							attendees: testHackerId,
 						},
 					}
 				);
@@ -474,6 +478,105 @@ describe('Test event model', () => {
 			await expect(getAttendees(testEventId.toHexString(), models)).resolves.toEqual(
 				testAttendeesArray
 			);
+		});
+	});
+	describe('AddandRemoveAttendeeIntegTest', () => {
+		afterAll(async () => {
+			try {
+				const ret = await models.Events.findOneAndUpdate(
+					{ _id: testEventId },
+					{
+						$set: {
+							attendees: [],
+							checkins: [],
+						},
+					}
+				);
+				if (!ret.value) throw new MongoError("Can't set attendees array to empty");
+				const retusr = await models.Hackers.findOneAndUpdate(
+					{ _id: testHackerId },
+					{
+						$set: {
+							eventsAttended: [],
+						},
+					}
+				);
+				if (!retusr.value) throw new MongoError("Can't set eventsAttended to empty");
+			} catch (err) {
+				// eslint-disable-next-line no-console
+				console.error(err);
+			}
+		});
+
+		it('Add users', async () => {
+			await expect(
+				checkInUserToEvent(testHackerId.toHexString(), testEventId.toHexString(), models)
+			).resolves.toEqual(testHackerId.toHexString());
+			await expect(
+				checkInUserToEvent(testHackerId2.toHexString(), testEventId.toHexString(), models)
+			).resolves.toEqual(testHackerId2.toHexString());
+			const eventAfter = await models.Events.findOne({ _id: testEventId });
+			const userAfter1 = await models.Hackers.findOne({ _id: testHackerId });
+			const userAfter2 = await models.Hackers.findOne({ _id: testHackerId2 });
+			if (eventAfter != null && userAfter1 != null && userAfter2 != null) {
+				await expect(eventAfter.attendees).toEqual([testHackerId, testHackerId2]);
+				await expect(eventAfter.checkins[0].user).toEqual(testHackerId.toHexString());
+				await expect(eventAfter.checkins[1].user).toEqual(testHackerId2.toHexString());
+				await expect(userAfter1.eventsAttended).toEqual([testEventId]);
+				await expect(userAfter2.eventsAttended).toEqual([testEventId]);
+			} else throw new MongoError('Could not find event or users');
+		});
+
+		describe('Check attendance helper', () => {
+			it('Check users are in attendance', async () => {
+				await expect(
+					userIsAttendingEvent(testHackerId.toHexString(), testEventId.toHexString(), models)
+				).resolves.toEqual(true);
+				await expect(
+					userIsAttendingEvent(testHackerId2.toHexString(), testEventId.toHexString(), models)
+				).resolves.toEqual(true);
+				const eventAfter = await models.Events.findOne({ _id: testEventId });
+				if (eventAfter != null)
+					await expect(getAttendees(testEventId.toHexString(), models)).resolves.toEqual([
+						testHackerId,
+						testHackerId2,
+					]);
+				else throw new MongoError('Could not find event');
+			});
+
+			describe('Remove users wrapper', () => {
+				it('Remove attendees', async () => {
+					await expect(
+						removeUserFromEvent(testHackerId.toHexString(), testEventId.toHexString(), models)
+					).resolves.toEqual(testHackerId.toHexString());
+					await expect(
+						userIsAttendingEvent(testHackerId2.toHexString(), testEventId.toHexString(), models)
+					).resolves.toEqual(true);
+					await expect(
+						removeUserFromEvent(testHackerId2.toHexString(), testEventId.toHexString(), models)
+					).resolves.toEqual(testHackerId2.toHexString());
+
+					const eventAfter = await models.Events.findOne({ _id: testEventId });
+					const userAfter1 = await models.Hackers.findOne({ _id: testHackerId });
+					const userAfter2 = await models.Hackers.findOne({ _id: testHackerId2 });
+					if (eventAfter != null && userAfter1 != null && userAfter2 != null) {
+						// Check attendance again
+						await expect(
+							userIsAttendingEvent(testHackerId.toHexString(), testEventId.toHexString(), models)
+						).resolves.toEqual(false);
+						await expect(
+							userIsAttendingEvent(testHackerId2.toHexString(), testEventId.toHexString(), models)
+						).resolves.toEqual(false);
+
+						await expect(eventAfter.attendees).toEqual([]);
+						await expect(eventAfter.checkins.length).toEqual(2);
+
+						// Check eventsAttended aren't altered
+						await expect(userAfter1.eventsAttended).toEqual([testEventId]);
+						await expect(userAfter2.eventsAttended).toEqual([testEventId]);
+					} else throw new MongoError('Could not find event');
+				});
+			});
 		});
 	});
 });
