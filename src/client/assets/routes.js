@@ -6,7 +6,6 @@ import { ManageHackers } from '../routes/manage/ManageHackers';
 import { Team } from '../routes/team/Team';
 import { Profile } from '../routes/profile/Profile';
 import { Help } from '../routes/help/Help';
-import { Nfc } from '../routes/nfc/Nfc';
 import { UserType } from '../generated/graphql';
 
 const routes = [
@@ -57,12 +56,6 @@ const routes = [
 		component: Help,
 		displayText: 'Help',
 		path: '/help',
-	},
-	{
-		authLevel: [UserType.Organizer, UserType.Sponsor],
-		component: Nfc,
-		displayText: 'Scan NFC',
-		path: '/nfc',
 	},
 ];
 
