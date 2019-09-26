@@ -38,6 +38,7 @@ export const verifyCallback = async (
 				createdAt: new Date(),
 				dietaryRestrictions: [],
 				email,
+				eventsAttended: [],
 				firstName: 'New',
 				lastName: 'User',
 				logins: [],
