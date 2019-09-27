@@ -120,7 +120,7 @@
 		"@types/express-session": "^1.15.13",
 		"@types/graphql": "^14.2.2",
 		"@types/jest": "^24.0.15",
-		"@types/mongodb": "^3.1.28",
+		"@types/mongodb": "~3.1.28",
 		"@types/node": "^12.0.12",
 		"@types/passport-github2": "^1.2.4",
 		"@types/passport-google-oauth20": "^2.0.1",
