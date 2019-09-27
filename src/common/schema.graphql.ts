@@ -151,7 +151,7 @@ export default gql`
 		volunteer: Boolean @column
 		github: String @column
 		team: Team @embedded
-		eventsAttended: [ID!]! @column
+		eventsAttended: [ID!] @column
 	}
 
 	type Shift @entity(embedded: true) {
@@ -175,7 +175,7 @@ export default gql`
 		phoneNumber: String
 		shifts: [Shift!]! @embedded
 		skills: [String!]! @column
-		eventsAttended: [ID!]! @column
+		eventsAttended: [ID!] @column
 	}
 
 	type Team @entity(embedded: true) {
@@ -201,7 +201,7 @@ export default gql`
 		userType: UserType!
 		phoneNumber: String
 		permissions: [String]! @column
-		eventsAttended: [ID!]! @column
+		eventsAttended: [ID!] @column
 	}
 
 	type Query {

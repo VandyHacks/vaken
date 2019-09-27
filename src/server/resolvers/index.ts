@@ -31,7 +31,7 @@ const userResolvers: Omit<UserResolvers, '__resolveType' | 'userType'> = {
 		return dietaryRestrictions.map(toEnum(DietaryRestriction));
 	},
 	email: async user => (await user).email,
-	eventsAttended: async user => (await user).eventsAttended,
+	eventsAttended: async user => (await user).eventsAttended || null,
 	firstName: async user => (await user).firstName,
 	gender: async user => (await user).gender || null,
 	id: async user => (await user)._id.toHexString(),
