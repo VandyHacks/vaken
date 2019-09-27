@@ -99,6 +99,10 @@ export const resolvers: CustomResolvers<Context> = {
 		name: async comp => (await comp).name,
 		tier: async comp => (await comp).tier,
 	},
+	Tier: {
+		name: async tier => (await tier).name,
+		permissions: async tier => (await tier).permissions,
+	},
 	Hacker: {
 		...userResolvers,
 		adult: async hacker => (await hacker).adult || null,
@@ -162,7 +166,6 @@ export const resolvers: CustomResolvers<Context> = {
 					firstName: name,
 					lastName: '',
 					logins: [],
-					permissions: [],
 					phoneNumber: '',
 					preferredName: '',
 					secondaryIds: [],
@@ -175,6 +178,41 @@ export const resolvers: CustomResolvers<Context> = {
 			const sponsorCreated = await models.Sponsors.findOne({ email });
 			if (!sponsorCreated) throw new AuthenticationError(`sponsor not found: ${email}`);
 			return sponsorCreated;
+		},
+		createTier: async (
+			root,
+			{ input: { name, permissions } },
+			{ models, user }: Context
+		) => {
+			if (!user || user.userType !== UserType.Organizer)
+				throw new AuthenticationError(`user '${JSON.stringify(user)}' must be organizer`);
+				if (!permissions) permissions = [];
+				await models.Tiers.insertOne({
+					_id: new ObjectID(),
+					name,
+					permissions
+				});
+			const tierCreated = await models.Tiers.findOne({ name });
+			if (!tierCreated) throw new AuthenticationError(`tier not found: ${name}`);
+			return tierCreated;
+		},
+		createCompany: async (
+			root,
+			{ input: { name, tierId } },
+			{ models, user }: Context
+		) => {
+			if (!user || user.userType !== UserType.Organizer)
+				throw new AuthenticationError(`user '${JSON.stringify(user)}' must be organizer`);
+
+			const tier = await models.Tiers.findOne({ _id: new ObjectID(tierId) });
+			await models.Companies.insertOne({
+				_id: new ObjectID(),
+				name,
+				tier
+			});
+			const companyCreated = await models.Companies.findOne({ name });
+			if (!companyCreated) throw new AuthenticationError(`company not found: ${name}`);
+			return companyCreated;
 		},
 		hackerStatus: async (_, { input: { id, status } }, { user, models }) => {
 			checkIsAuthorized(UserType.Organizer, user);
@@ -423,7 +461,6 @@ export const resolvers: CustomResolvers<Context> = {
 	},
 	Sponsor: {
 		...userResolvers,
-		permissions: async sponsor => (await sponsor).permissions,
 		status: async sponsor => toEnum(SponsorStatus)((await sponsor).status),
 		userType: () => UserType.Sponsor,
 		company: async sponsor => (await sponsor).company,

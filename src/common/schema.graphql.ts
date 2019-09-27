@@ -99,6 +99,12 @@ export default gql`
 		name: String! @column
 		tier: String! @column
 	}
+	
+	type ApplicationQuestion @entity {
+		prompt: String! @column
+		instruction: String @column
+		note: String @column
+	}
 
 	type ApplicationField @entity(embedded: true) {
 		id: ID! @column
@@ -106,6 +112,18 @@ export default gql`
 		question: String! @column
 		answer: String @column
 		userId: ID! @column
+	}
+	
+	type Company @entity {
+		id: ID! @column
+		name: String! @column
+		tier: Tier! @column @embedded
+	}
+	
+	type Tier @entity {
+		id: ID! @column
+		name: String! @column
+		permissions: [String]! @column
 	}
 
 	type Login @entity(additionalFields: [{ path: "email", type: "string" }]) {
@@ -212,7 +230,6 @@ export default gql`
 		userType: UserType!
 		phoneNumber: String
 		company: Company! @embedded
-		permissions: [String]! @column
 	}
 
 	type Organizer implements User @entity {
@@ -302,7 +319,7 @@ export default gql`
 		updateMyApplication(input: UpdateMyAppInput!): User!
 	}
 	
-	input createSponsorInput {
+	input SponsorInput {
 		email: String!
 		name: String!
 		companyId: ID!
@@ -312,9 +329,21 @@ export default gql`
 		email: String!
 		status: SponsorStatus!
 	}
+	
+	input TierInput {
+		name: String!
+		permissions: [String!]
+	}
+	
+	input CompanyInput {
+		name: String!
+		tierId: ID!
+	}
 
 	type Mutation {
-		createSponsor(input: createSponsorInput!): Sponsor!
+		createCompany(input: CompanyInput!): Company!
+		createTier(input: TierInput!): Tier!
+		createSponsor(input: SponsorInput!): Sponsor!
 		updateMyProfile(input: UserInput!): User!
 		updateProfile(id: ID!, input: UserInput!): User!
 		joinTeam(input: TeamInput!): Hacker!

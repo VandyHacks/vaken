@@ -24,6 +24,7 @@
 					"Organizer": "OrganizerDbObject",
 					"Shift": "ShiftDbObject",
 					"Team": "TeamDbObject",
+				  	"Tier": "TierDbObject",
 					"User": "UserDbInterface"
 				},
 				"skipTypenames": false

@@ -15,7 +15,7 @@ export default gql`
 		}
 	}
 
-	mutation createSponsor($input: createSponsorInput!) {
+	mutation createSponsor($input: SponsorInput!) {
 		createSponsor(input: $input) {
 			id
 			email
