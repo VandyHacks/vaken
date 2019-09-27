@@ -211,7 +211,7 @@ export default gql`
 		dietaryRestrictions: [DietaryRestriction!]!
 		userType: UserType!
 		phoneNumber: String
-		company: Company!
+		company: Company! @embedded
 		permissions: [String]! @column
 	}
 
