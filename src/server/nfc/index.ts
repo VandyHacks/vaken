@@ -155,7 +155,7 @@ export async function shouldWarnRepeatedCheckIn(
 
 export async function getEventsAttended(userID: string, models: Models): Promise<string[]> {
 	const user = await models.Hackers.findOne({ _id: new ObjectID(userID) });
-	return user != null ? user.eventsAttended : [];
+	return user != null && user.eventsAttended != null ? user.eventsAttended : [];
 }
 
 export async function getAttendees(eventID: string, models: Models): Promise<string[]> {

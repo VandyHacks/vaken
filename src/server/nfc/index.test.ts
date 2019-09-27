@@ -302,7 +302,7 @@ describe('Test event model', () => {
 				).resolves.toEqual(testHackerId.toHexString());
 				const eventAfter = await models.Events.findOne({ _id: testEventId });
 				const userAfter = await models.Hackers.findOne({ _id: testHackerId });
-				if (eventAfter != null && userAfter != null) {
+				if (eventAfter != null && userAfter != null && userAfter.eventsAttended != null) {
 					await expect(eventAfter.attendees).toEqual([testHackerId]);
 					await expect(eventAfter.checkins.length).toEqual(2);
 					await console.log('Event Check ins: ', eventAfter.checkins);
