@@ -12,6 +12,7 @@ import {
 	ShiftDbObject,
 	TeamDbObject,
 	EventCheckInDbObject,
+	TierDbObject,
 } from './generated/graphql';
 
 export interface UserTeamIndexDbObject {
@@ -32,6 +33,7 @@ export interface Models {
 	Shifts: Collection<ShiftDbObject>;
 	Sponsors: Collection<SponsorDbObject>;
 	Teams: Collection<TeamDbObject>;
+	Tiers: Collection<TierDbObject>;
 	UserTeamIndicies: Collection<UserTeamIndexDbObject>;
 }
 
@@ -112,6 +114,7 @@ export default class DB {
 					Shifts: db.collection<ShiftDbObject>('shifts'),
 					Sponsors: db.collection<SponsorDbObject>('sponsors'),
 					Teams: db.collection<TeamDbObject>('teams'),
+					Tiers: db.collection<TierDbObject>('tiers'),
 					UserTeamIndicies: db.collection<UserTeamIndexDbObject>('userTeams'),
 				};
 			}
