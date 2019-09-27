@@ -11,10 +11,13 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
 export const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 	const [sponsorEmail, setSponsorEmail] = useState('');
 	const [sponsorName, setSponsorName] = useState('');
+	const [companyId, setCompanyId] = useState('');
 	const [createSponsorMsg, setCreateSponsorMsg] = useState('');
 	const [createSponsor] = useCreateSponsorMutation({
-		variables: { input: { email: sponsorEmail, name: sponsorName } },
+		variables: { input: { companyId, email: sponsorEmail, name: sponsorName } },
 	});
+
+	// TODO: fetch all companies
 
 	const onCreateSponsorEmail = async (): Promise<void> => {
 		// validate the email entered
@@ -62,6 +65,15 @@ export const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 					value={sponsorName}
 					placeholder="Sponsor's Name"
 					onChange={e => setSponsorName(e.target.value)}
+					minWidth="15em"
+				/>
+				<SearchBox
+					// fontSize="1.2rem"
+					width="100%"
+					// flex-flow="row nowrap"
+					value={companyId}
+					placeholder="Company ID"
+					onChange={e => setCompanyId(e.target.value)}
 					minWidth="15em"
 				/>
 				<HeaderButton width="7em" style={{ display: 'inline' }} onClick={onCreateSponsorEmail}>

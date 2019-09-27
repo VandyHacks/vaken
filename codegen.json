@@ -16,6 +16,7 @@
 					"ApplicationQuestion": "ApplicationQuestionDbObject",
 					"Event": "EventDbObject",
 					"EventCheckIn": "EventCheckInDbObject",
+					"Company": "CompanyDbObject",
 					"Hacker": "HackerDbObject",
 					"Sponsor": "SponsorDbObject",
 					"Login": "LoginDbObject",
