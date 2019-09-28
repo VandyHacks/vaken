@@ -53,9 +53,8 @@ export async function queryById<T extends { _id: ObjectId }>(
 	id: string,
 	model: Collection<T>
 ): Promise<T> {
-	const filter: FilterQuery<T> = {};
-	filter._id = ObjectID.createFromHexString(id);
-	return query<T>(filter, model);
+	const filter = { _id: ObjectID.createFromHexString(id) };
+	return query<T>(filter as FilterQuery<T>, model);
 }
 
 export async function updateUser_<T extends { email: string }>(
@@ -72,10 +71,9 @@ export async function updateUser_<T extends { email: string }>(
 		modifiedAt: new Date().getTime(),
 		shirtSize: args.shirtSize ? toEnum(ShirtSize)(args.shirtSize) : undefined,
 	};
-	const filter: FilterQuery<T> = {};
-	filter.email = user.email;
+	const filter = { email: user.email };
 	const { value } = await collection.findOneAndUpdate(
-		filter,
+		filter as FilterQuery<T>,
 		{ $set: newValues },
 		{ returnOriginal: false }
 	);
