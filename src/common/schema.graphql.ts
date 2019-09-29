@@ -88,17 +88,12 @@ export default gql`
 		DESC
 	}
 
-	type ApplicationQuestion @entity {
-		prompt: String! @column
-		instruction: String @column
-		note: String @column
-	}
-
 	type ApplicationField @entity(embedded: true) {
 		id: ID! @column
 		createdAt: Float! @column(overrideType: "Date")
-		question: ApplicationQuestion! @embedded
+		question: String! @column
 		answer: String @column
+		userId: ID! @column
 	}
 
 	type Login @entity(additionalFields: [{ path: "email", type: "string" }]) {
@@ -152,6 +147,7 @@ export default gql`
 		github: String @column
 		team: Team @embedded
 		eventsAttended: [ID!] @column
+		application: [ApplicationField!]! @embedded
 	}
 
 	type Shift @entity(embedded: true) {
@@ -216,6 +212,7 @@ export default gql`
 		organizers(sortDirection: SortDirection): [Organizer!]!
 		mentor(id: ID!): Mentor!
 		mentors(sortDirection: SortDirection): [Mentor!]!
+		signedReadUrl(input: ID!): String!
 		team(id: ID!): Team!
 		teams(sortDirection: SortDirection): [Team!]!
 	}
@@ -245,6 +242,7 @@ export default gql`
 		status: ApplicationStatus!
 	}
 
+
 	input EventCheckInInput {
 		user: ID!
 		event: ID!
@@ -253,9 +251,15 @@ export default gql`
 	input NFCRegisterInput {
 		nfcid: ID!
 		user: ID!
+
+	input ApplicationInput {
+		question: String!
+		answer: String!
+
 	}
 
 	type Mutation {
+		updateMyApplication(input: [ApplicationInput!]!): User!
 		updateMyProfile(input: UserInput!): User!
 		updateProfile(id: ID!, input: UserInput!): User!
 		joinTeam(input: TeamInput!): Hacker!
@@ -265,5 +269,6 @@ export default gql`
 		checkInUserToEvent(input: EventCheckInInput!): ID
 		removeUserFromEvent(input: EventCheckInInput!): ID
 		registerNFCUIDWithUser(input: NFCRegisterInput!): ID
+		signedUploadUrl(input: ID!): String!
 	}
 `;

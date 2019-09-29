@@ -21,24 +21,24 @@ const routes = [
 		displayText: 'Dashboard',
 		path: '/dashboard',
 	},
-	{
-		authLevel: [UserType.Hacker, UserType.Sponsor, UserType.Organizer],
-		component: Profile,
-		displayText: 'Profile',
-		path: '/profile',
-	},
+	// {
+	// 	authLevel: [UserType.Hacker, UserType.Sponsor, UserType.Organizer],
+	// 	component: Profile,
+	// 	displayText: 'Profile',
+	// 	path: '/profile',
+	// },
 	{
 		authLevel: [UserType.Hacker],
 		component: Application,
 		displayText: 'Application',
 		path: '/application',
 	},
-	{
-		authLevel: [UserType.Hacker],
-		component: Team,
-		displayText: 'Team',
-		path: '/team',
-	},
+	// {
+	// 	authLevel: [UserType.Hacker],
+	// 	component: Team,
+	// 	displayText: 'Team',
+	// 	path: '/team',
+	// },
 	{
 		authLevel: [UserType.Organizer],
 		component: ManageHackers,

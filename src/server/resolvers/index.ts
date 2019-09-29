@@ -14,7 +14,22 @@ import {
 import Context from '../context';
 import { fetchUser, query, queryById, toEnum, updateUser, checkIsAuthorized } from './helpers';
 import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser } from '../nfc';
-
+import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
+// import { requiredFields } from '../../client/assets/application';
+export const requiredFields = [
+	'firstName',
+	'lastName',
+	'shirtSize',
+	'phoneNumber',
+	'dateOfBirth',
+	'school',
+	'major',
+	'graduationYear',
+	'race',
+	'essay1',
+	'volunteer',
+	'consent',
+];
 /**
  * Used to define a __resolveType function on the User resolver that doesn't take in a promise. This is important as it
  */
@@ -51,15 +66,11 @@ export const resolvers: CustomResolvers<Context> = {
 	 * These resolvers are for querying fields
 	 */
 	ApplicationField: {
-		answer: async field => (await field).answer || null,
+		answer: async field => (await field).answer || '',
 		createdAt: async field => (await field).createdAt.getTime(),
 		id: async field => (await field).id,
 		question: async field => (await field).question,
-	},
-	ApplicationQuestion: {
-		instruction: async question => (await question).instruction || null,
-		note: async question => (await question).note || null,
-		prompt: async question => (await question).prompt,
+		userId: async field => (await field).userId,
 	},
 	Event: {
 		attendees: async event => (await event).attendees || [],
@@ -81,6 +92,8 @@ export const resolvers: CustomResolvers<Context> = {
 	Hacker: {
 		...userResolvers,
 		adult: async hacker => (await hacker).adult || null,
+		application: async (hacker, args, { models }: Context) =>
+			models.ApplicationFields.find({ userId: (await hacker)._id }).toArray(),
 		gender: async hacker => (await hacker).gender || null,
 		github: async hacker => (await hacker).github || null,
 		gradYear: async hacker => (await hacker).gradYear || null,
@@ -207,6 +220,64 @@ export const resolvers: CustomResolvers<Context> = {
 			checkIsAuthorized(UserType.Organizer, user);
 			const userRet = await removeUserFromEvent(input.user, input.event, models);
 			return userRet;
+		signedUploadUrl: async (_, { input }, { user }) => {
+			// Enables a user to update their application
+			if (!user) throw new AuthenticationError(`cannot update application: user not logged in`);
+			return getSignedUploadUrl(`${user._id}`);
+		},
+		updateMyApplication: async (root, args, ctx) => {
+			// Enables a user to update their application
+			if (!ctx.user) throw new AuthenticationError(`cannot update application: user not logged in`);
+			// TODO(leonm1): Figure out why the _id field isn't actually an ObjectID
+			const id = ObjectID.createFromHexString((ctx.user._id as unknown) as string);
+			// update app answers if they exist
+			const { result } = await ctx.models.ApplicationFields.bulkWrite(
+				args.input.map(({ question, answer }) => ({
+					updateOne: {
+						filter: { question, userId: id },
+						update: { $set: { answer, question, userId: id } },
+						upsert: true,
+					},
+				}))
+			);
+
+			// TODO: Update this to set the hacker's profile fields (name, school, gender, etc.) with application data.
+			if (!result.ok) {
+				throw new UserInputError(
+					`error inputting user application input for user "${id}" ${JSON.stringify(result)}`
+				);
+			}
+
+			const ret = await ctx.models.Hackers.findOne({ _id: id });
+			if (!ret) throw new AuthenticationError(`hacker not found: ${id.toHexString()}`);
+
+			const appFinished = requiredFields.every(q =>
+				args.input.some(answer => answer.question === q)
+			);
+
+			if (
+				appFinished &&
+				[ApplicationStatus.Started, ApplicationStatus.Verified, ApplicationStatus.Created].includes(
+					ret.status as ApplicationStatus
+				)
+			) {
+				const { value, ok, lastErrorObject } = await ctx.models.Hackers.findOneAndUpdate(
+					{ _id: id },
+					{ $set: { status: ApplicationStatus.Submitted } }
+				);
+
+				if (!ok || !value) {
+					throw new UserInputError(
+						`error inputting user status "SUBMITTED" for user "${id}" ${JSON.stringify(
+							lastErrorObject
+						)}`
+					);
+				}
+
+				return value;
+			}
+
+			return ret;
 		},
 		updateMyProfile: async (root, { input }, { models, user }) => {
 			// Enables a user to update their own profile
@@ -240,6 +311,19 @@ export const resolvers: CustomResolvers<Context> = {
 		mentors: async (root, args, ctx) => ctx.models.Mentors.find().toArray(),
 		organizer: async (root, { id }, ctx) => queryById(id, ctx.models.Organizers),
 		organizers: async (root, args, ctx) => ctx.models.Organizers.find().toArray(),
+		signedReadUrl: async (_, { input }, { user }) => {
+			// Enables a user to update their application
+			if (!user) throw new AuthenticationError(`cannot get read url: user not logged in`);
+
+			// No file to get :)
+			if (!input) return '';
+
+			// Hackers may get their own files; organizers may get any file
+			if (!input.includes((user._id as unknown) as string))
+				checkIsAuthorized(UserType.Organizer, user);
+
+			return getSignedReadUrl(input);
+		},
 		team: async (root, { id }, ctx) => queryById(id, ctx.models.Teams),
 		teams: async (root, args, ctx) => ctx.models.Teams.find().toArray(),
 	},

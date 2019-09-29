@@ -15,7 +15,12 @@ export const ManageHackers: FunctionComponent = (): JSX.Element => {
 	const [tableState, updateTableState] = useImmer(defaultTableState);
 
 	return (
-		<FloatingPopup borderRadius="1rem" height="100%" backgroundOpacity="1" padding="1.5rem">
+		<FloatingPopup
+			borderRadius="1rem"
+			height="100%"
+			backgroundOpacity="1"
+			padding="1.5rem"
+			style={{ overflow: 'hidden' }}>
 			<TableContext.Provider value={{ state: tableState, update: updateTableState }}>
 				<Switch>
 					<Route path="/manage/hackers/detail/:id" component={HackerView} />

@@ -70,5 +70,5 @@ export const SpaceBetweenColumn = styled(FlexColumn)`
 export const OverflowContainer = styled.div`
 	max-height: 100%;
 	max-width: 100%;
-	overflow: auto;
+	overflow: scroll;
 `;

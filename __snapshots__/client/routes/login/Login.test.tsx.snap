@@ -10,7 +10,7 @@ exports[`Login renders properly 1`] = `
     width="27rem"
   >
     <h1
-      className="sc-cSHVUG cCZQiR"
+      className="sc-cSHVUG bxzAjH"
       color="#3f3356"
     >
       VandyHacks
@@ -38,7 +38,7 @@ exports[`Login renders properly 1`] = `
           />
         </div>
         <div
-          className="sc-htoDjs kcuBgu"
+          className="sc-htoDjs eEqYMT"
         >
           Sign in with Google
         </div>
@@ -67,7 +67,7 @@ exports[`Login renders properly 1`] = `
           />
         </div>
         <div
-          className="sc-htoDjs kcuBgu"
+          className="sc-htoDjs eEqYMT"
         >
           Sign in with GitHub
         </div>

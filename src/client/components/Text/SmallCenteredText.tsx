@@ -13,7 +13,7 @@ export const SmallCenteredText = styled.h1`
 	font-weight: ${({ fontWeight = '300' }: Props): string => fontWeight};
 	font-size: ${({ fontSize = '1.5rem' }: Props): string => fontSize};
 	color: ${({ color = 'white' }: Props): string => color};
-	margin: ${({ margin = '0' }: Props): string => margin};
+	margin: ${({ margin = '0' }: Props): string => margin} 0;
 `;
 
 export default SmallCenteredText;

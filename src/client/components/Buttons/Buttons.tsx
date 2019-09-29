@@ -4,7 +4,8 @@ import { ButtonHTMLAttributes } from 'react';
 import { displayFlex } from '../Containers/FlexContainers';
 
 export type LeftButtonTextProps = Pick<CSS.Properties, 'color' | 'fontSize'>;
-export type CenterButtonTextProps = LeftButtonTextProps & Pick<CSS.Properties, 'fontWeight'>;
+export type CenterButtonTextProps = LeftButtonTextProps &
+	Pick<CSS.Properties, 'fontWeight' | 'paddingLeft' | 'paddingRight'>;
 export type ButtonProps = CenterButtonTextProps &
 	Pick<
 		CSS.Properties,
@@ -17,8 +18,6 @@ export type ButtonProps = CenterButtonTextProps &
 		| 'marginTop'
 		| 'padding'
 		| 'paddingBottom'
-		| 'paddingLeft'
-		| 'paddingRight'
 		| 'paddingTop'
 		| 'width'
 	> &
@@ -35,6 +34,8 @@ export const CenterButtonText = styled.div`
 	font-size: ${({ fontSize }: CenterButtonTextProps) => fontSize || '1.4rem'};
 	font-weight: ${({ fontWeight }: CenterButtonTextProps) => fontWeight || 'normal'};
 	color: ${({ color }: CenterButtonTextProps) => color || 'black'};
+	padding-left: ${({ paddingLeft }) => paddingLeft || 'unset'};
+	padding-right: ${({ paddingRight }) => paddingRight || 'unset'};
 `;
 
 export const LeftButtonText = styled(CenterButtonText)`

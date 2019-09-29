@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+import React, { useContext, FC, useCallback } from 'react';
 import styled from 'styled-components';
-import { NavLink as UglyNavLink, withRouter } from 'react-router-dom';
+import { NavLink as UglyNavLink } from 'react-router-dom';
 import SqLogo from '../../assets/img/square_hackathon_logo.svg';
 import STRINGS from '../../assets/strings.json';
 import NavButton from '../Buttons/NavButton';
@@ -35,6 +35,7 @@ const HorizontalLine = styled.hr`
 	width: calc(100% - 4rem);
 	border: 0.03125rem solid white;
 	margin-bottom: 2rem;
+	float: left;
 `;
 
 const HorizontalLineLogout = styled(HorizontalLine)`
@@ -46,7 +47,7 @@ const NavButtonWhiteText = styled(NavButton)`
 	color: white;
 	font-weight: 100;
 	font-size: 28pt;
-	padding-left: 1.33rem;
+	/* padding-left: 1.33rem; */
 `;
 
 const ALink = styled.a`
@@ -96,6 +97,14 @@ const ColumnWithSeparators = styled.ul`
 		display: block;
 	}
 
+	${NavButtonWhiteText} {
+		padding: 0.33rem 0 0.33rem 1.33rem;
+	}
+
+	li a button {
+		height: max-content;
+	}
+
 	.active {
 		${NavButtonWhiteText} {
 			font-weight: 400;
@@ -107,12 +116,13 @@ const ColumnWithSeparators = styled.ul`
 	}
 `;
 
-const Sidebar = withRouter(
+const Sidebar: FC<{ setMenuOpen?: React.Dispatch<React.SetStateAction<boolean>> }> =
 	// Removed props for eslint, no-unused-vars
-	(): JSX.Element => {
+	({ setMenuOpen }) => {
 		const currentUser = useContext(AuthContext);
+		const closeSidebar = useCallback(() => setMenuOpen && setMenuOpen(false), [setMenuOpen]);
 		return (
-			<Layout>
+			<Layout className="sidebar">
 				<Background>
 					<Logo>
 						<img src={SqLogo} alt="VH graphic" />
@@ -123,7 +133,7 @@ const Sidebar = withRouter(
 							{routes.map((route: Route) => {
 								return route.authLevel.includes(currentUser.userType) ? (
 									<li key={route.path}>
-										<NavLink to={route.path} activeClassName="active">
+										<NavLink onClick={closeSidebar} to={route.path} activeClassName="active">
 											<NavButtonWhiteText>{route.displayText}</NavButtonWhiteText>
 										</NavLink>
 									</li>
@@ -141,7 +151,6 @@ const Sidebar = withRouter(
 				</Background>
 			</Layout>
 		);
-	}
-);
+	};
 
 export default Sidebar;
