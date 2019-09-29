@@ -1,16 +1,7 @@
-import React, { FC, FormEventHandler, InputHTMLAttributes, ChangeEventHandler } from 'react';
+import React, { FC, ChangeEventHandler } from 'react';
 import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
-
-export interface StyleProps extends InputHTMLAttributes<HTMLInputElement> {
-	background?: string;
-	fontSize?: string;
-}
-
-export interface InputProps extends StyleProps {
-	setState: (value: string) => void;
-	value: string;
-}
+import { StyleProps, InputProps } from './TextInput';
 
 export const RawInput = styled.textarea`
 	background: white;
@@ -32,19 +23,13 @@ export const RawInput = styled.textarea`
 	}
 `;
 
-export const Input: FC<InputProps> = ({ setState, ...rest }) => {
-	const onChange: ChangeEventHandler<HTMLTextAreaElement> = ({ currentTarget: { value } }) =>
-		setState(value);
+export const Input: FC<InputProps> = ({ setState, value, ...rest }) => {
+	const onChange: ChangeEventHandler<HTMLTextAreaElement> = ({ currentTarget }) =>
+		setState(currentTarget.value);
 
-	return (
-		<RawInput
-			{...rest}
-			onChange={
-				(onChange as unknown) as (((event: React.ChangeEvent<HTMLTextAreaElement>) => void) &
-					((event: React.ChangeEvent<HTMLInputElement>) => void))
-			}
-		/>
-	);
+	// TODO: Remove any.
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	return <RawInput {...(rest as any)} value={value} onChange={onChange as any} />;
 };
 
 export default Input;

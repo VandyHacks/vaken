@@ -1,7 +1,7 @@
 import React, { useContext, FunctionComponent, useState, useEffect, useCallback, FC } from 'react';
 import styled from 'styled-components';
 import { useImmer } from 'use-immer';
-import Spinner from '../../components/Loading/Spinner';
+import { Spinner } from '../../components/Loading/Spinner';
 import config from '../../assets/application';
 import { Collapsible } from '../../components/Containers/Collapsible';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
@@ -37,6 +37,7 @@ export const StyledForm = styled.form`
 	grid-auto-flow: row;
 	grid-gap: 1.4rem;
 	align-items: flex-start;
+	max-width: 100%;
 
 	fieldset {
 		margin-top: 0.4rem;
@@ -76,7 +77,7 @@ export const FieldTitle = styled.span`
 	line-height: 140%;
 `;
 
-const disableEnter = (e: React.KeyboardEvent<HTMLFormElement>) => {
+const disableEnter = (e: React.KeyboardEvent<HTMLFormElement>): void => {
 	if (e.key === 'Enter') e.preventDefault();
 };
 

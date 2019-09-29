@@ -23,7 +23,7 @@ const CollapsibleHeader = styled.button`
 	border: none;
 	text-align: left;
 	outline: none;
-	font-size: 3em;
+	font-size: 2em;
 	font-weight: bolder;
 	display: flex;
 	flex-flow: row nowrap;
@@ -55,6 +55,7 @@ const CollapsibleBody = styled.div`
 	display: grid;
 	grid-auto-flow: row;
 	grid-gap: 1.4rem;
+	max-width: 100%;
 
 	&.active {
 		padding: 1.5rem;

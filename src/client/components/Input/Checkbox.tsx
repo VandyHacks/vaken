@@ -34,7 +34,7 @@ const CheckboxContainer = styled.div`
 		display: flex;
 		flex-flow: row nowrap;
 		justify-content: flex-start;
-		align-items: center;
+		align-items: flex-start;
 		line-height: 140%;
 		text-align: left;
 		font-size: 1.1rem;

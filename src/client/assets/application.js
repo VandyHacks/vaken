@@ -9,7 +9,7 @@ import Calendar from '../components/Input/Calendar';
 import { Gender, ShirtSize, DietaryRestriction } from '../generated/graphql';
 import { Boolean } from '../components/Input/Boolean';
 
-const questions = [
+export const questions = [
 	{
 		category: 'demographicInfo',
 		fields: [

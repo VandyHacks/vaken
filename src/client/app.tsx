@@ -10,7 +10,7 @@ import { useMeQuery } from './generated/graphql';
 const GlobalStyle = createGlobalStyle`
 	${reset}
 
-	html, body {
+	html, body, #App {
 		margin: 0;
 		padding: 0;
 		width: 100vw;
