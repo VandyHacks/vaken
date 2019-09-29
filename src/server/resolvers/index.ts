@@ -220,6 +220,7 @@ export const resolvers: CustomResolvers<Context> = {
 			checkIsAuthorized(UserType.Organizer, user);
 			const userRet = await removeUserFromEvent(input.user, input.event, models);
 			return userRet;
+		},
 		signedUploadUrl: async (_, { input }, { user }) => {
 			// Enables a user to update their application
 			if (!user) throw new AuthenticationError(`cannot update application: user not logged in`);

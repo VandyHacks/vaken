@@ -242,7 +242,6 @@ export default gql`
 		status: ApplicationStatus!
 	}
 
-
 	input EventCheckInInput {
 		user: ID!
 		event: ID!
@@ -251,11 +250,11 @@ export default gql`
 	input NFCRegisterInput {
 		nfcid: ID!
 		user: ID!
+	}
 
 	input ApplicationInput {
 		question: String!
 		answer: String!
-
 	}
 
 	type Mutation {
