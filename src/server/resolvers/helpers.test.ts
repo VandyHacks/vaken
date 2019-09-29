@@ -15,6 +15,7 @@ const hacker: UserDbInterface = {
 	createdAt: new Date(),
 	dietaryRestrictions: [],
 	email: 'foo@bar.baz',
+	eventsAttended: [],
 	firstName: 'Foo',
 	lastName: 'Bar',
 	logins: [],

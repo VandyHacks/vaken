@@ -13,6 +13,7 @@ import {
 } from '../generated/graphql';
 import Context from '../context';
 import { fetchUser, query, queryById, toEnum, updateUser, checkIsAuthorized } from './helpers';
+import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser } from '../nfc';
 import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
 // import { requiredFields } from '../../client/assets/application';
 export const requiredFields = [
@@ -45,6 +46,7 @@ const userResolvers: Omit<UserResolvers, '__resolveType' | 'userType'> = {
 		return dietaryRestrictions.map(toEnum(DietaryRestriction));
 	},
 	email: async user => (await user).email,
+	eventsAttended: async user => (await user).eventsAttended || null,
 	firstName: async user => (await user).firstName,
 	gender: async user => (await user).gender || null,
 	id: async user => (await user)._id.toHexString(),
@@ -69,6 +71,23 @@ export const resolvers: CustomResolvers<Context> = {
 		id: async field => (await field).id,
 		question: async field => (await field).question,
 		userId: async field => (await field).userId,
+	},
+	Event: {
+		attendees: async event => (await event).attendees || [],
+		checkins: async event => (await event).checkins || [],
+		description: async event => (await event).description || null,
+		duration: async event => (await event).duration,
+		eventType: async event => (await event).eventType,
+		id: async event => (await event)._id.toHexString(),
+		location: async event => (await event).location,
+		name: async event => (await event).name,
+		startTimestamp: async event => (await event).startTimestamp.getTime(),
+		warnRepeatedCheckins: async event => (await event).warnRepeatedCheckins,
+	},
+	EventCheckIn: {
+		id: async eventCheckIn => (await eventCheckIn)._id.toHexString(),
+		timestamp: async eventCheckIn => (await eventCheckIn).timestamp.getTime(),
+		user: async eventCheckIn => (await eventCheckIn).user,
 	},
 	Hacker: {
 		...userResolvers,
@@ -113,6 +132,11 @@ export const resolvers: CustomResolvers<Context> = {
 	 * Each may contain authentication checks as well
 	 */
 	Mutation: {
+		checkInUserToEvent: async (root, { input }, { models, user }) => {
+			checkIsAuthorized(UserType.Organizer, user);
+			const userRet = await checkInUserToEvent(input.user, input.event, models);
+			return userRet;
+		},
 		hackerStatus: async (_, { input: { id, status } }, { user, models }) => {
 			checkIsAuthorized(UserType.Organizer, user);
 			const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
@@ -186,6 +210,16 @@ export const resolvers: CustomResolvers<Context> = {
 			const ret = await models.Hackers.findOne({ email: hacker.email });
 			if (!ret) throw new AuthenticationError(`hacker not found: ${hacker.email}`);
 			return ret;
+		},
+		registerNFCUIDWithUser: async (root, { input }, { models, user }) => {
+			checkIsAuthorized(UserType.Organizer, user);
+			const userRet = await registerNFCUIDWithUser(input.nfcid, input.user, models);
+			return userRet;
+		},
+		removeUserFromEvent: async (root, { input }, { models, user }) => {
+			checkIsAuthorized(UserType.Organizer, user);
+			const userRet = await removeUserFromEvent(input.user, input.event, models);
+			return userRet;
 		},
 		signedUploadUrl: async (_, { input }, { user }) => {
 			// Enables a user to update their application
@@ -264,6 +298,10 @@ export const resolvers: CustomResolvers<Context> = {
 		userType: () => UserType.Organizer,
 	},
 	Query: {
+		event: async (root, { id }, ctx) => queryById(id, ctx.models.Events),
+		eventCheckIn: async (root, { id }, ctx) => queryById(id, ctx.models.EventCheckIns),
+		eventCheckIns: async (root, args, ctx) => ctx.models.EventCheckIns.find().toArray(),
+		events: async (root, args, ctx) => ctx.models.Events.find().toArray(),
 		hacker: async (root, { id }, ctx) => queryById(id, ctx.models.Hackers),
 		hackers: async (root, args, ctx) => ctx.models.Hackers.find().toArray(),
 		me: async (root, args, ctx) => {

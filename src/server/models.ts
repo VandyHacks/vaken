@@ -1,12 +1,14 @@
 import { Collection, MongoClient } from 'mongodb';
 import {
 	ApplicationFieldDbObject,
+	EventDbObject,
 	HackerDbObject,
 	LoginDbObject,
 	MentorDbObject,
 	OrganizerDbObject,
 	ShiftDbObject,
 	TeamDbObject,
+	EventCheckInDbObject,
 } from './generated/graphql';
 
 export interface UserTeamIndexDbObject {
@@ -16,6 +18,8 @@ export interface UserTeamIndexDbObject {
 
 export interface Models {
 	ApplicationFields: Collection<ApplicationFieldDbObject>;
+	EventCheckIns: Collection<EventCheckInDbObject>;
+	Events: Collection<EventDbObject>;
 	Hackers: Collection<HackerDbObject>;
 	Logins: Collection<LoginDbObject>;
 	Mentors: Collection<MentorDbObject>;
@@ -91,6 +95,8 @@ export default class DB {
 					 * NOTE: these will not show up initially in MongoDB Atlas UI until they're no longer empty collections
 					 */
 					ApplicationFields: db.collection<ApplicationFieldDbObject>('applicationFields'),
+					EventCheckIns: db.collection<EventCheckInDbObject>('EventCheckIns'),
+					Events: db.collection<EventDbObject>('Events'),
 					Hackers: db.collection<HackerDbObject>('Hackers'),
 					Logins: db.collection<LoginDbObject>('logins'),
 					Mentors: db.collection<MentorDbObject>('mentors'),
