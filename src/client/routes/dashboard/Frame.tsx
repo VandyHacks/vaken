@@ -58,7 +58,7 @@ const Layout = styled.div`
 			'sidebar . . .' 1.5rem
 			'sidebar . content .' 1fr
 			'sidebar . . .' 1.5rem
-			/ ${({ sidebar }: { sidebar: boolean }) => (sidebar ? '100% 0 0 0' : '0px 2rem 1fr 2rem')};
+			/ ${({ sidebar }: { sidebar: boolean }) => (sidebar ? '100% 0 0 0' : '0 2rem 1fr 2rem')};
 
 		${({ sidebar }: { sidebar: boolean }) => (sidebar ? '' : '.sidebar { display: none; }')}
 	}

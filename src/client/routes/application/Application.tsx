@@ -33,14 +33,17 @@ export interface ConfigField {
 }
 
 export const StyledForm = styled.form`
-	display: grid;
-	grid-auto-flow: row;
-	grid-gap: 1.4rem;
-	align-items: flex-start;
+	display: flex;
+	max-width: 100%;
+	flex-direction: column;
 	max-width: 100%;
 
 	fieldset {
 		margin-top: 0.4rem;
+	}
+
+	& > div:not(:first-of-type) {
+		margin-top: 1.4rem;
 	}
 `;
 
@@ -175,8 +178,8 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 								</StyledQuestionPadContainer>
 								{field.prompt ? <FieldPrompt>{field.prompt}</FieldPrompt> : null}
 								<field.Component
-									setState={createOnChangeHandler(field.title)}
-									value={valueHandler(field.title)}
+									setState={createOnChangeHandler(field.fieldName)}
+									value={valueHandler(field.fieldName)}
 									{...field}
 									id={field.title}
 								/>
