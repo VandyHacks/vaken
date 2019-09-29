@@ -135,6 +135,11 @@ export const questions = [
 				title: 'What do you find beautiful?',
 			},
 			{
+				Component: Boolean,
+				fieldName: 'volunteer',
+				title: 'Would you like to be contacted about volunteering at the event?',
+			},
+			{
 				Component: FileInput,
 				fieldName: 'resume',
 				note: 'Your resume will be shared with sponsors',
@@ -144,8 +149,8 @@ export const questions = [
 				Component: CheckboxSansTitleCase,
 				fieldName: 'consent',
 				options: [
-					'I have read and agree to the MLH Code of Conduct',
-					'I authorize you to share my application/registration information for event administration, ranking, MLH administration, pre- and post-event informational emails, and occasional emails about hackathons in-line with the MLH Privacy Policy. I further agree to the terms of both the MLH Contest Terms and Conditions and the MLH Privacy Policy.',
+					'I have read and agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>',
+					'I authorize you to share my application/registration information for event administration, ranking, MLH administration, pre- and post-event informational emails, and occasional emails about hackathons in-line with the MLH Privacy Policy. I further agree to the terms of both the <a href="https://github.com/MLH/mlh-policies/tree/master/prize-terms-and-conditions">MLH Contest Terms and Conditions</a> and the <a href="https://mlh.io/privacy">MLH Privacy Policy</a>.',
 				],
 				title: 'Consent',
 			},
@@ -183,6 +188,21 @@ export const questions = [
 		],
 		title: 'Travel Reimbursement',
 	},
+];
+
+export const requiredFields = [
+	'firstName',
+	'lastName',
+	'shirtSize',
+	'phoneNumber',
+	'dateOfBirth',
+	'school',
+	'major',
+	'graduationYear',
+	'race',
+	'essay1',
+	'volunteer',
+	'consent',
 ];
 
 export default questions;

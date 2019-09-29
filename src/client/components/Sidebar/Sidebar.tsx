@@ -47,7 +47,7 @@ const NavButtonWhiteText = styled(NavButton)`
 	color: white;
 	font-weight: 100;
 	font-size: 28pt;
-	padding-left: 1.33rem;
+	/* padding-left: 1.33rem; */
 `;
 
 const ALink = styled.a`

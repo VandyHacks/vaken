@@ -91,7 +91,8 @@ export const CheckboxSansTitleCase: FC<Props> = ({
 									) : (
 										<img src={UncheckedSvg} alt="unchecked" width="24px" height="24px" />
 									)}
-									<p>{option}</p>
+									{/* eslint-disable-next-line react/no-danger */}
+									<p dangerouslySetInnerHTML={{ __html: option }} />
 								</label>
 							</div>
 						);

@@ -41,6 +41,12 @@ const FileLabelEl = styled.label`
 
 const Container = styled.div`
 	display: flex;
+	flex-flow: row wrap;
+
+	& > label,
+	& > button {
+		margin-top: 0.5rem;
+	}
 `;
 
 export const FileInput: FC<InputProps> = props => {

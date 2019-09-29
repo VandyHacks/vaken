@@ -6,6 +6,7 @@ interface Props {
 	fontSize?: string;
 	fontWeight?: string;
 	margin?: string;
+	marginBottom?: string;
 	textAlign?: string;
 }
 
@@ -20,7 +21,7 @@ export const Title = styled.h1`
 	font-size: ${(props: Props) => props.fontSize || '2.5rem'};
 	color: ${(props: Props) => props.color || 'black'};
 	margin: ${(props: Props) => props.margin || '1.5rem'};
-	margin-top: 0;
+	margin-bottom: ${(props: Props) => props.marginBottom || '1.5rem'};
 	${(props: Props) => (props.textAlign ? `text-align: ${props.textAlign};` : null)};
 `;
 

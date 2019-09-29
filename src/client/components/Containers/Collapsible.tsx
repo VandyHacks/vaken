@@ -45,6 +45,7 @@ const BGDiv = styled.div`
 		${({ backgroundOpacity = '1' }: PopupProps): string => backgroundOpacity}
 	);
 	border-radius: 1rem;
+	max-width: 100%;
 `;
 
 const CollapsibleBody = styled.div`

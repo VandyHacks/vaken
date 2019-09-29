@@ -9,10 +9,9 @@ if (GCP_STORAGE_SERVICE_ACCOUNT == null) {
 	throw new Error('GCP_STORAGE_SERVICE_ACCOUNT not set');
 }
 
-const credentials = JSON.parse(GCP_STORAGE_SERVICE_ACCOUNT);
-
 // These options will allow temporary read access to the file
 export const getSignedUploadUrl = async (filename: string): Promise<string> => {
+	const credentials = JSON.parse(GCP_STORAGE_SERVICE_ACCOUNT);
 	const storage = new Storage({ credentials });
 
 	const options = {
@@ -30,6 +29,7 @@ export const getSignedUploadUrl = async (filename: string): Promise<string> => {
 };
 
 export const getSignedReadUrl = async (filename: string): Promise<string> => {
+	const credentials = JSON.parse(GCP_STORAGE_SERVICE_ACCOUNT);
 	const storage = new Storage({ credentials });
 
 	const options = {

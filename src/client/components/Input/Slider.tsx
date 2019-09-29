@@ -12,12 +12,9 @@ export interface Props extends InputProps {
 
 const SliderContainer = styled.div`
 	font-size: 0;
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(6rem));
-	justify-content: flex-start;
+	display: flex;
+	flex-flow: row wrap;
 	border-radius: 6px;
-	/* width: min-content; */
-	height: min-content;
 
 	input {
 		width: 0;
@@ -40,7 +37,7 @@ const SliderContainer = styled.div`
 		font-size: 1rem;
 		transition: color 0.2s ease-out, background-color 0.15s ease-out, box-shadow 0.15s ease-out;
 		white-space: nowrap;
-		flex: 1 1 0px;
+		flex: 0 1 auto;
 	}
 
 	input:checked + label {

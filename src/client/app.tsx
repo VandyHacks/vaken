@@ -15,7 +15,7 @@ const GlobalStyle = createGlobalStyle`
 		padding: 0;
 		width: 100vw;
 		height: 100vh;
-		font-size: 12px;
+		font-size: 14px;
 		font-family: 'Roboto', sans-serif;
 		user-select: none;
 		overflow: hidden;

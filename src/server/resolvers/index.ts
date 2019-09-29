@@ -14,7 +14,21 @@ import {
 import Context from '../context';
 import { fetchUser, query, queryById, toEnum, updateUser, checkIsAuthorized } from './helpers';
 import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
-
+// import { requiredFields } from '../../client/assets/application';
+export const requiredFields = [
+	'firstName',
+	'lastName',
+	'shirtSize',
+	'phoneNumber',
+	'dateOfBirth',
+	'school',
+	'major',
+	'graduationYear',
+	'race',
+	'essay1',
+	'volunteer',
+	'consent',
+];
 /**
  * Used to define a __resolveType function on the User resolver that doesn't take in a promise. This is important as it
  */
@@ -184,29 +198,52 @@ export const resolvers: CustomResolvers<Context> = {
 			// TODO(leonm1): Figure out why the _id field isn't actually an ObjectID
 			const id = ObjectID.createFromHexString((ctx.user._id as unknown) as string);
 			// update app answers if they exist
-			await Promise.all(
-				args.input.map(async ({ question, answer }) => {
-					const {
-						value,
-						lastErrorObject,
-						ok,
-					} = await ctx.models.ApplicationFields.findOneAndUpdate(
-						{ question, userId: id },
-						{ $set: { answer, question, userId: id } },
-						{ returnOriginal: false, upsert: true }
-					);
-					if (!value || !ok) {
-						throw new UserInputError(
-							`error inputting user application input "${answer}" for question "${question}" ${JSON.stringify(
-								lastErrorObject
-							)}`
-						);
-					}
-					return value;
-				})
+			const { result } = await ctx.models.ApplicationFields.bulkWrite(
+				args.input.map(({ question, answer }) => ({
+					updateOne: {
+						filter: { question, userId: id },
+						update: { $set: { answer, question, userId: id } },
+						upsert: true,
+					},
+				}))
 			);
+
+			// TODO: Update this to set the hacker's profile fields (name, school, gender, etc.) with application data.
+			if (!result.ok) {
+				throw new UserInputError(
+					`error inputting user application input for user "${id}" ${JSON.stringify(result)}`
+				);
+			}
+
 			const ret = await ctx.models.Hackers.findOne({ _id: id });
 			if (!ret) throw new AuthenticationError(`hacker not found: ${id.toHexString()}`);
+
+			const appFinished = requiredFields.every(q =>
+				args.input.some(answer => answer.question === q)
+			);
+
+			if (
+				appFinished &&
+				[ApplicationStatus.Started, ApplicationStatus.Verified, ApplicationStatus.Created].includes(
+					ret.status as ApplicationStatus
+				)
+			) {
+				const { value, ok, lastErrorObject } = await ctx.models.Hackers.findOneAndUpdate(
+					{ _id: id },
+					{ $set: { status: ApplicationStatus.Submitted } }
+				);
+
+				if (!ok || !value) {
+					throw new UserInputError(
+						`error inputting user status "SUBMITTED" for user "${id}" ${JSON.stringify(
+							lastErrorObject
+						)}`
+					);
+				}
+
+				return value;
+			}
+
 			return ret;
 		},
 		updateMyProfile: async (root, { input }, { models, user }) => {
@@ -237,7 +274,7 @@ export const resolvers: CustomResolvers<Context> = {
 		mentors: async (root, args, ctx) => ctx.models.Mentors.find().toArray(),
 		organizer: async (root, { id }, ctx) => queryById(id, ctx.models.Organizers),
 		organizers: async (root, args, ctx) => ctx.models.Organizers.find().toArray(),
-		signedReadUrl: async (_, { input }, { user, models }) => {
+		signedReadUrl: async (_, { input }, { user }) => {
 			// Enables a user to update their application
 			if (!user) throw new AuthenticationError(`cannot get read url: user not logged in`);
 
