@@ -1,7 +1,6 @@
 import { Collection, MongoClient } from 'mongodb';
 import {
 	ApplicationFieldDbObject,
-	ApplicationQuestionDbObject,
 	EventDbObject,
 	HackerDbObject,
 	LoginDbObject,
@@ -19,7 +18,6 @@ export interface UserTeamIndexDbObject {
 
 export interface Models {
 	ApplicationFields: Collection<ApplicationFieldDbObject>;
-	ApplicationQuestions: Collection<ApplicationQuestionDbObject>;
 	EventCheckIns: Collection<EventCheckInDbObject>;
 	Events: Collection<EventDbObject>;
 	Hackers: Collection<HackerDbObject>;
@@ -97,7 +95,6 @@ export default class DB {
 					 * NOTE: these will not show up initially in MongoDB Atlas UI until they're no longer empty collections
 					 */
 					ApplicationFields: db.collection<ApplicationFieldDbObject>('applicationFields'),
-					ApplicationQuestions: db.collection<ApplicationQuestionDbObject>('applicationQuestions'),
 					EventCheckIns: db.collection<EventCheckInDbObject>('EventCheckIns'),
 					Events: db.collection<EventDbObject>('Events'),
 					Hackers: db.collection<HackerDbObject>('Hackers'),
