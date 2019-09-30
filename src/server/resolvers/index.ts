@@ -1,9 +1,7 @@
 import { UserInputError, AuthenticationError } from 'apollo-server-express';
 import { ObjectID } from 'mongodb';
 import {
-	DietaryRestriction,
 	UserType,
-	Race,
 	ShirtSize,
 	LoginProvider,
 	ApplicationStatus,
@@ -42,6 +40,7 @@ export type CustomResolvers<T> = Omit<Resolvers<T>, 'User'> & {
 
 const userResolvers: Omit<UserResolvers, '__resolveType' | 'userType'> = {
 	createdAt: async field => (await field).createdAt.getTime(),
+	// TODO: Add input validation for dietaryRestrictions. toEnum(DietaryRestriction)()
 	dietaryRestrictions: async user => (await user).dietaryRestrictions,
 	email: async user => (await user).email,
 	eventsAttended: async user => (await user).eventsAttended || null,

@@ -59,11 +59,12 @@ const CheckboxContainer = styled.div`
 	}
 `;
 
-export const CheckboxSansTitleCase: FC<Props> = ({
+const CheckboxRaw: FC<Props & { titleCase?: boolean }> = ({
 	value,
 	options = ['default'],
 	setState,
-}: Props) => {
+	titleCase,
+}) => {
 	const selected = value.length ? new Set(value.split(SEPARATOR)) : new Set();
 	const onChange = ({ currentTarget: { id } }: React.FormEvent<HTMLInputElement>): void => {
 		if (selected.has(id)) selected.delete(id);
@@ -92,7 +93,7 @@ export const CheckboxSansTitleCase: FC<Props> = ({
 										<img src={UncheckedSvg} alt="unchecked" width="24px" height="24px" />
 									)}
 									{/* eslint-disable-next-line react/no-danger */}
-									<p dangerouslySetInnerHTML={{ __html: option }} />
+									<p dangerouslySetInnerHTML={{ __html: titleCase ? title(option) : option }} />
 								</label>
 							</div>
 						);
@@ -103,9 +104,7 @@ export const CheckboxSansTitleCase: FC<Props> = ({
 	);
 };
 
-export const Checkbox: FC<Props> = props => {
-	const { options, ...rest } = props;
-	return <CheckboxSansTitleCase options={(options || []).map(title)} {...rest} />;
-};
+export const CheckboxSansTitleCase: FC<Props> = (props: Props) => <CheckboxRaw {...props} />;
+export const Checkbox: FC<Props> = props => <CheckboxRaw {...props} titleCase />;
 
 export default Checkbox;
