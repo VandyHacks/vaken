@@ -71,7 +71,7 @@ const statusConfig = {
 		status: 'Denied',
 		statusBG: '#FBE4E8',
 		statusColor: '#FF647C',
-		text: "Confirm your spot to let us know you'll be coming",
+		text: '',
 	},
 };
 
