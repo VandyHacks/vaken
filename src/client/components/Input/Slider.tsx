@@ -2,6 +2,7 @@ import React, { FC, FormEventHandler, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { title } from 'case';
 import { InputProps } from './TextInput';
+import STRINGS from '../../assets/strings.json';
 
 let globalCounter = 0;
 
@@ -41,7 +42,7 @@ const SliderContainer = styled.div`
 	}
 
 	input:checked + label {
-		background-color: #6979f8;
+		background-color: ${STRINGS.ACCENT_COLOR};
 		color: #ffffff;
 		/* border-color: #6979f8; */
 		z-index: 1;
@@ -49,7 +50,7 @@ const SliderContainer = styled.div`
 
 	input:not(:checked):focus + label {
 		/* Color for keyboard users */
-		box-shadow: inset 0 0 2px 2px #6979f8;
+		box-shadow: inset 0 0 2px 2px ${STRINGS.ACCENT_COLOR};
 	}
 
 	input:checked:focus + label {

@@ -14,7 +14,12 @@ const Layout = styled.div`
 `;
 
 const Background = styled.div`
-	background: linear-gradient(254.59deg, #bd7ae3 0%, #8461c9 100%);
+	background: linear-gradient(
+		254.59deg,
+		${STRINGS.ACCENT_COLOR} 0%,
+		${STRINGS.BASE_ACCENT_BLENDED} 70%,
+		${STRINGS.BASE_COLOR} 100%
+	);
 	width: 100%;
 	height: 100vh;
 
