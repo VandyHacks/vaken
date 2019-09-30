@@ -10,6 +10,7 @@ import {
 	UserDbInterface,
 	UserResolvers,
 	Resolvers,
+	HackerDbObject,
 } from '../generated/graphql';
 import Context from '../context';
 import { fetchUser, query, queryById, toEnum, updateUser, checkIsAuthorized } from './helpers';
@@ -249,36 +250,57 @@ export const resolvers: CustomResolvers<Context> = {
 				);
 			}
 
-			const ret = await ctx.models.Hackers.findOne({ _id: id });
-			if (!ret) throw new AuthenticationError(`hacker not found: ${id.toHexString()}`);
+			const hacker = await ctx.models.Hackers.findOne({ _id: id });
+			if (!hacker) throw new AuthenticationError(`hacker not found: ${id.toHexString()}`);
 
 			const appFinished = requiredFields.every(q =>
 				args.input.some(answer => answer.question === q)
 			);
 
-			if (
+			// Update the fields of the hacker object with application data.
+			// TODO: Improve the quality of this resolver by removing this hack.
+			const changedFields = [
+				'firstName',
+				'preferredName',
+				'lastName',
+				'shirtSize',
+				'gender',
+				'dietaryRestrictions',
+				'phoneNumber',
+				'race',
+				'school',
+				'gradYear',
+				'volunteer',
+			].reduce(
+				(acc, reqField) => {
+					const field = args.input.find(input => input.question === reqField);
+					return field ? { ...acc, [reqField]: field.answer } : acc;
+				},
+				{} as Partial<HackerDbObject> // eslint-disable-line @typescript-eslint/no-object-literal-type-assertion
+			);
+
+			const appStatus =
 				appFinished &&
 				[ApplicationStatus.Started, ApplicationStatus.Verified, ApplicationStatus.Created].includes(
-					ret.status as ApplicationStatus
+					hacker.status as ApplicationStatus
 				)
-			) {
-				const { value, ok, lastErrorObject } = await ctx.models.Hackers.findOneAndUpdate(
-					{ _id: id },
-					{ $set: { status: ApplicationStatus.Submitted } }
+					? ApplicationStatus.Submitted
+					: hacker.status;
+
+			const { value, ok, lastErrorObject } = await ctx.models.Hackers.findOneAndUpdate(
+				{ _id: id },
+				{ $set: { status: appStatus, ...changedFields } }
+			);
+
+			if (!ok || !value) {
+				throw new UserInputError(
+					`error inputting user status "SUBMITTED" for user "${id}" ${JSON.stringify(
+						lastErrorObject
+					)}`
 				);
-
-				if (!ok || !value) {
-					throw new UserInputError(
-						`error inputting user status "SUBMITTED" for user "${id}" ${JSON.stringify(
-							lastErrorObject
-						)}`
-					);
-				}
-
-				return value;
 			}
 
-			return ret;
+			return value;
 		},
 		updateMyProfile: async (root, { input }, { models, user }) => {
 			// Enables a user to update their own profile
