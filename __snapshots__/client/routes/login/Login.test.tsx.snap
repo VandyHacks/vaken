@@ -13,7 +13,7 @@ exports[`Login renders properly 1`] = `
       className="sc-cSHVUG bxzAjH"
       color="#3f3356"
     >
-      VandyHacks
+      VandyHacks VI
     </h1>
     <a
       href="/api/auth/google"

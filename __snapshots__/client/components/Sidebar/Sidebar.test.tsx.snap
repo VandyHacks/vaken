@@ -5,7 +5,7 @@ exports[`Test Sidebar Sidebar renders correctly 1`] = `
   className="sidebar sc-hEsumM ijizDO"
 >
   <div
-    className="sc-ktHwxA hYUPEe"
+    className="sc-ktHwxA dpyDoS"
   >
     <div
       className="sc-cIShpX zwruU"
@@ -104,7 +104,7 @@ exports[`Test Sidebar Sidebar renders correctly 1`] = `
         <h1
           className="sc-jzJRlG hdnVAr"
         >
-          VandyHacks 2019
+          VandyHacks VI
         </h1>
       </div>
     </div>
