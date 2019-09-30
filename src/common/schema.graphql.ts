@@ -143,7 +143,7 @@ export default gql`
 		gradYear: Int @column
 		majors: [String!]! @column
 		adult: Boolean @column
-		volunteer: Boolean @column
+		volunteer: String @column
 		github: String @column
 		team: Team @embedded
 		eventsAttended: [ID!] @column
