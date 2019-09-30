@@ -23,7 +23,7 @@ export const requiredFields = [
 	'dateOfBirth',
 	'school',
 	'major',
-	'graduationYear',
+	'gradYear',
 	'race',
 	'essay1',
 	'volunteer',
@@ -269,19 +269,29 @@ export const resolvers: CustomResolvers<Context> = {
 				'volunteer',
 			].reduce(
 				(acc, reqField) => {
+					// TODO: Add input validation for these fields.
 					const field = args.input.find(input => input.question === reqField);
 					return field ? { ...acc, [reqField]: field.answer } : acc;
 				},
 				{} as Partial<HackerDbObject> // eslint-disable-line @typescript-eslint/no-object-literal-type-assertion
 			);
 
-			const appStatus =
+			// Update application status to reflect new input.
+			let appStatus: ApplicationStatus = hacker.status as ApplicationStatus;
+			if (
 				appFinished &&
 				[ApplicationStatus.Started, ApplicationStatus.Verified, ApplicationStatus.Created].includes(
 					hacker.status as ApplicationStatus
 				)
-					? ApplicationStatus.Submitted
-					: hacker.status;
+			) {
+				appStatus = ApplicationStatus.Submitted;
+			} else if (
+				[ApplicationStatus.Created, ApplicationStatus.Verified].includes(
+					hacker.status as ApplicationStatus
+				)
+			) {
+				appStatus = ApplicationStatus.Started;
+			}
 
 			const { value, ok, lastErrorObject } = await ctx.models.Hackers.findOneAndUpdate(
 				{ _id: id },
