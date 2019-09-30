@@ -12,7 +12,7 @@ export default gql`
 		lastName: String! @column
 		shirtSize: ShirtSize @column
 		gender: String @column
-		dietaryRestrictions: [DietaryRestriction!]! @column
+		dietaryRestrictions: String! @column
 		userType: UserType! @column
 		phoneNumber: String @column
 		eventsAttended: [ID!] @column
@@ -133,10 +133,10 @@ export default gql`
 		lastName: String!
 		shirtSize: ShirtSize
 		gender: String
-		dietaryRestrictions: [DietaryRestriction!]!
+		dietaryRestrictions: String!
 		userType: UserType!
 		phoneNumber: String
-		race: [Race!]! @column
+		race: String! @column
 		modifiedAt: Float! @column
 		status: ApplicationStatus! @column
 		school: String @column
@@ -166,7 +166,7 @@ export default gql`
 		lastName: String!
 		shirtSize: ShirtSize
 		gender: String
-		dietaryRestrictions: [DietaryRestriction!]!
+		dietaryRestrictions: String!
 		userType: UserType!
 		phoneNumber: String
 		shifts: [Shift!]! @embedded
@@ -193,7 +193,7 @@ export default gql`
 		lastName: String!
 		shirtSize: ShirtSize
 		gender: String
-		dietaryRestrictions: [DietaryRestriction!]!
+		dietaryRestrictions: String!
 		userType: UserType!
 		phoneNumber: String
 		permissions: [String]! @column

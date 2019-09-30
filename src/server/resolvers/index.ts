@@ -42,10 +42,7 @@ export type CustomResolvers<T> = Omit<Resolvers<T>, 'User'> & {
 
 const userResolvers: Omit<UserResolvers, '__resolveType' | 'userType'> = {
 	createdAt: async field => (await field).createdAt.getTime(),
-	dietaryRestrictions: async user => {
-		const { dietaryRestrictions = [] } = await user;
-		return dietaryRestrictions.map(toEnum(DietaryRestriction));
-	},
+	dietaryRestrictions: async user => (await user).dietaryRestrictions,
 	email: async user => (await user).email,
 	eventsAttended: async user => (await user).eventsAttended || null,
 	firstName: async user => (await user).firstName,
@@ -100,7 +97,7 @@ export const resolvers: CustomResolvers<Context> = {
 		gradYear: async hacker => (await hacker).gradYear || null,
 		majors: async hacker => (await hacker).majors || [],
 		modifiedAt: async hacker => (await hacker).modifiedAt,
-		race: async hacker => (await hacker).race.map(toEnum(Race)) || null,
+		race: async hacker => (await hacker).race || '',
 		school: async hacker => (await hacker).school || null,
 		status: async hacker => toEnum(ApplicationStatus)((await hacker).status),
 		team: async (hacker, args, { models }) => {
