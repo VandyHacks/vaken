@@ -84,6 +84,8 @@ const disableEnter = (e: React.KeyboardEvent<HTMLFormElement>): void => {
 	if (e.key === 'Enter') e.preventDefault();
 };
 
+let autosaveTimeout: NodeJS.Timeout;
+
 export const Application: FunctionComponent<{}> = (): JSX.Element => {
 	const { update: setActionButton } = useContext(ActionButtonContext);
 	const [openSection, setOpenSection] = useState('');
@@ -140,6 +142,14 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 			setLoaded(true);
 		}
 	}, [data, loaded, setLoaded, setInput]);
+
+	useEffect(() => {
+		// Auto-save application input after five seconds of inactivity.
+		autosaveTimeout = setTimeout(() => updateApplication({ variables: { input } }), 5000);
+
+		// Cleanup
+		return () => clearTimeout(autosaveTimeout);
+	}, [input, updateApplication]);
 
 	const toggleOpen = useCallback(
 		(e: React.MouseEvent<HTMLButtonElement>): void => {
