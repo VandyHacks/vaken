@@ -1,4 +1,3 @@
-import institutions from './data/institutions.json';
 import AutoComplete from '../components/Input/AutoCompleteTextInput';
 import TextInput from '../components/Input/TextInput';
 import { FileInput } from '../components/Input/FileInput';
@@ -85,12 +84,13 @@ export const questions = [
 				Component: AutoComplete,
 				fieldName: 'school',
 				note: 'If not found, please type the name.',
-				options: institutions,
+				options: import('./data/institutions.json'),
 				title: 'School',
 			},
 			{
-				Component: TextInput,
+				Component: AutoComplete,
 				fieldName: 'major',
+				options: import('./data/majors.json'),
 				placeholder: 'If not found, please type the name.',
 				title: 'What is your major area of study?',
 			},

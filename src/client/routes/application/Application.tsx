@@ -28,7 +28,7 @@ export interface ConfigField {
 	fieldName: string;
 	note?: string;
 	optional?: boolean;
-	options?: string[];
+	options?: Promise<{ data: string[] }> | string[];
 	other?: boolean;
 	placeholder?: string;
 	prompt?: string;

@@ -60,6 +60,7 @@ const SliderContainer = styled.div`
 `;
 
 export const SliderSansTitleCase: FC<Props> = ({ value, setState, titleCase, ...props }) => {
+	const { options = ['default'], className } = props;
 	const [counter, setCounter] = useState(0);
 	const onChange: FormEventHandler<HTMLInputElement> = ({ currentTarget: { id } }) =>
 		setState(id.split('-')[0] === value ? '' : id.split('-')[0]);
@@ -69,11 +70,21 @@ export const SliderSansTitleCase: FC<Props> = ({ value, setState, titleCase, ...
 		setCounter((globalCounter += 1));
 	}, []);
 
-	const { options = ['default'], className } = props;
+	const [awaitedOptions, setAwaitedOptions] = useState(['Loading...']);
+
+	// Async support for options
+	useEffect(() => {
+		if (options instanceof Promise) {
+			options.then(module => setAwaitedOptions(module.data)).catch(() => setAwaitedOptions([]));
+		} else {
+			setAwaitedOptions(options);
+		}
+	}, [options]);
+
 	return (
 		<fieldset>
 			<SliderContainer className={className}>
-				{options.map(
+				{awaitedOptions.map(
 					(option: string): JSX.Element => (
 						<React.Fragment key={option}>
 							<input

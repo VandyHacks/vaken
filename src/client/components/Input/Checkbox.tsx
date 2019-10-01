@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { title } from 'case';
 import UncheckedSvg from '../../assets/img/unchecked_box.svg';
@@ -73,10 +73,21 @@ const CheckboxRaw: FC<Props & { titleCase?: boolean }> = ({
 		setState(Array.from(selected).join(SEPARATOR));
 	};
 
+	const [awaitedOptions, setAwaitedOptions] = useState(['Loading...']);
+
+	// Async support for options
+	useEffect(() => {
+		if (options instanceof Promise) {
+			options.then(module => setAwaitedOptions(module.data)).catch(() => setAwaitedOptions([]));
+		} else {
+			setAwaitedOptions(options);
+		}
+	}, [options]);
+
 	return (
 		<fieldset>
 			<CheckboxContainer>
-				{options.map(
+				{awaitedOptions.map(
 					(option: string): JSX.Element => {
 						return (
 							<div key={option}>
