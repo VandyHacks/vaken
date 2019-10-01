@@ -12,7 +12,7 @@ exports[`Test Sidebar Sidebar renders correctly 1`] = `
     >
       <img
         alt="VH graphic"
-        src="icon-mock"
+        src="IconMock"
       />
     </div>
     <hr

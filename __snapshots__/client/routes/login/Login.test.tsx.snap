@@ -2,7 +2,7 @@
 
 exports[`Login renders properly 1`] = `
 <div
-  className="sc-fjdhpX ebOgGV"
+  className="sc-fjdhpX dmItWC"
 >
   <div
     className="sc-bdVaJa sc-bwzfXH sc-ifAKCX sc-jzJRlG hPKjIj"
@@ -34,7 +34,7 @@ exports[`Login renders properly 1`] = `
           <img
             alt="Google logo"
             className="sc-iwsKbI kXBzef"
-            src={[Function]}
+            src="IconMock"
           />
         </div>
         <div
@@ -63,7 +63,7 @@ exports[`Login renders properly 1`] = `
           <img
             alt="GitHub logo"
             className="sc-iwsKbI kXBzef"
-            src={[Function]}
+            src="IconMock"
           />
         </div>
         <div

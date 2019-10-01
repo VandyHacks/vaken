@@ -14,8 +14,27 @@ import Context from '../context';
 import { fetchUser, query, queryById, toEnum, updateUser, checkIsAuthorized } from './helpers';
 import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser } from '../nfc';
 import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
-import appConfig from '../../client/assets/application';
-import { ConfigField } from '../../client/routes/application/Application';
+
+// TODO: Cannot import frontend files so this is ugly workaround. Fix this.
+const requiredFields = [
+	'firstName',
+	'lastName',
+	'shirtSize',
+	'gender',
+	'phoneNumber',
+	'dateOfBirth',
+	'school',
+	'major',
+	'gradYear',
+	'race',
+	'favArtPiece',
+	'essay1',
+	'volunteer',
+	'resume',
+	'codeOfConduct',
+	'infoSharingConsent',
+];
+
 /**
  * Used to define a __resolveType function on the User resolver that doesn't take in a promise. This is important as it
  */
@@ -240,12 +259,9 @@ export const resolvers: CustomResolvers<Context> = {
 			 * Finds the first element that is required (not optional) but does not have any input.
 			 * If this element exists, the application is not finished.
 			 */
-			const appFinished = !appConfig
-				.flatMap(section => section.fields as ConfigField[])
-				.some(
-					field =>
-						!field.optional && !args.input.find(el => el.question === field.fieldName && el.answer)
-				);
+			const appFinished = !requiredFields.some(
+				field => !args.input.find(el => el.question === field && el.answer)
+			);
 
 			// Update the fields of the hacker object with application data.
 			// TODO: Improve the quality of this resolver by removing this hack.

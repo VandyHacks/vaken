@@ -21,12 +21,11 @@ module.exports = {
 			testEnvironment: 'jsdom',
 			snapshotResolver: './__mocks__/snapshotResolver',
 			moduleNameMapper: {
-				'../../assets/img/square_hackathon_logo.svg': '<rootDir>/__mocks__/svgrMock.js',
-				'../../assets/img/unchecked_box.svg': '<rootDir>/__mocks__/svgrMock.js',
-				'../../assets/img/checked_box.svg': '<rootDir>/__mocks__/svgrMock.js',
-				'.+\\.svg?.+$': '@svgr/webpack', // see https://github.com/smooth-code/svgr/issues/83
+				// '../../assets/img/square_hackathon_logo.svg': '<rootDir>/__mocks__/svgrMock.js',
+				// '../../assets/img/unchecked_box.svg': '<rootDir>/__mocks__/svgrMock.js',
+				// '../../assets/img/checked_box.svg': '<rootDir>/__mocks__/svgrMock.js',
+				'\\.svg': '<rootDir>/__mocks__/svgrMock.js', // see https://github.com/smooth-code/svgr/issues/83
 				'\\.(css|less)$': 'jest-transform-css',
-
 				'\\.(jpg|jpeg|png|gif)$': '<rootDir>/__mocks__/svgrMock.js',
 			},
 			transform: {
