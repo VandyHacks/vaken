@@ -48,7 +48,7 @@ const Vaken: React.FunctionComponent = (): JSX.Element => {
 		return data && data.me ? (
 			<AuthContext.Provider value={data.me}>
 				<Frame />
-				<ToastContainer toastClassName="french-toast" autoClose={false} />
+				<ToastContainer toastClassName="french-toast" autoClose={5000} />
 			</AuthContext.Provider>
 		) : (
 			<LoginPage />
