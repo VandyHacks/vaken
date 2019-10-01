@@ -72,6 +72,7 @@ export const questions = [
 				placeholder: '(615) 555-1234',
 				sortOrder: 3,
 				title: 'Phone Number',
+				type: 'tel',
 				validation: '^(\\(?\\+?[0-9]*\\)?)?[0-9_\\- \\(\\)]*$',
 			},
 			{
@@ -120,6 +121,12 @@ export const questions = [
 				],
 				title: 'What is your race/ethnicity?',
 			},
+		],
+		title: 'Demographic Information',
+	},
+	{
+		category: 'application',
+		fields: [
 			{
 				Component: TextInput,
 				fieldName: 'favArtPiece',
@@ -147,15 +154,22 @@ export const questions = [
 			},
 			{
 				Component: CheckboxSansTitleCase,
-				fieldName: 'consent',
+				fieldName: 'codeOfConduct',
 				options: [
 					'I have read and agree to the <a href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>',
+				],
+				title: 'Code of Conduct',
+			},
+			{
+				Component: CheckboxSansTitleCase,
+				fieldName: 'infoSharingConsent',
+				options: [
 					'I authorize you to share my application/registration information for event administration, ranking, MLH administration, pre- and post-event informational emails, and occasional emails about hackathons in-line with the MLH Privacy Policy. I further agree to the terms of both the <a href="https://github.com/MLH/mlh-policies/tree/master/prize-terms-and-conditions">MLH Contest Terms and Conditions</a> and the <a href="https://mlh.io/privacy">MLH Privacy Policy</a>.',
 				],
-				title: 'Consent',
+				title: 'Information sharing consent',
 			},
 		],
-		title: 'Demographic Information',
+		title: 'Hacker Application',
 	},
 	{
 		category: 'travel',
@@ -164,17 +178,20 @@ export const questions = [
 				Component: Boolean,
 				fieldName: 'reimbursementRequired',
 				note: "Answering 'Yes' here does not guarantee any reimbursement",
+				optional: true,
 				title: 'Do you require travel reimbursement to get to VandyHacks?',
 			},
 			{
 				Component: Boolean,
 				fieldName: 'travelInfoSharingConsent',
 				note: 'Information will be shared to facilitate carpooling',
+				optional: true,
 				title: 'May we share your name and email with others coming from your school/city?',
 			},
 			{
 				Component: Slider,
 				fieldName: 'transportationMode',
+				optional: true,
 				options: ['Car', 'Bus', 'Plane', 'Blimp'],
 				title: 'How do you plan on getting to VandyHacks?',
 			},
@@ -182,6 +199,7 @@ export const questions = [
 				Component: Boolean,
 				fieldName: 'travelAdmissionConsent',
 				note: "Please aknowledge this by clicking 'Yes'",
+				optional: true,
 				title:
 					'In order to receive guaranteed admission to VandyHacks, please email a request for admission along with the receipt for your travel to info@vandyhacks.org',
 			},

@@ -56,7 +56,7 @@ exports[`Test Sidebar Sidebar renders correctly 1`] = `
               <div
                 className="sc-htoDjs sc-iELTvK cFSFuT sc-dnqmqq caLfPx"
               >
-                Application
+                Apply
               </div>
             </button>
           </a>

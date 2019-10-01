@@ -8,6 +8,7 @@ export const RawInput = styled.textarea`
 	padding: 0.75rem;
 	width: 100%;
 	border: none;
+	font-family: 'Roboto', sans-serif;
 	font-size: ${({ fontSize = '1em' }: StyleProps): string => fontSize};
 	color: ${STRINGS.DARK_TEXT_COLOR};
 	::placeholder {

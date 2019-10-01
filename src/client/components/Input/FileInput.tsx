@@ -4,7 +4,6 @@ import { InputProps } from './TextInput';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useSignedUploadUrlMutation, useSignedReadUrlQuery } from '../../generated/graphql';
 import STRINGS from '../../assets/strings.json';
-import { HeaderButton } from '../Buttons/HeaderButton';
 
 let globalCounter = 0;
 
@@ -43,9 +42,12 @@ const Container = styled.div`
 	display: flex;
 	flex-flow: row wrap;
 
-	& > label,
-	& > button {
+	& label {
 		margin-top: 0.5rem;
+	}
+
+	& a {
+		cursor: pointer;
 	}
 `;
 
@@ -106,15 +108,9 @@ export const FileInput: FC<InputProps> = props => {
 				Upload {signedReadUrl ? 'new' : 'a'} resume
 			</FileLabelEl>
 			{signedReadUrl ? (
-				<HeaderButton
-					width="fit-content"
-					fontSize="1.2rem"
-					onClick={() => {
-						window.open(signedReadUrl, '_blank', 'noopener');
-						return Promise.resolve(false);
-					}}>
-					View uploaded resume
-				</HeaderButton>
+				<a href={signedReadUrl} target="_blank" rel="noopener noreferrer">
+					<FileLabelEl>View uploaded resume</FileLabelEl>
+				</a>
 			) : null}
 		</Container>
 	);

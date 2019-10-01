@@ -30,7 +30,7 @@ const routes = [
 	{
 		authLevel: [UserType.Hacker],
 		component: Application,
-		displayText: 'Application',
+		displayText: 'Apply',
 		path: '/application',
 	},
 	// {

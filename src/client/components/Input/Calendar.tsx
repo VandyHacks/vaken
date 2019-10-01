@@ -8,6 +8,7 @@ export const StyledCalInput = styled.input`
 	width: 17rem;
 	border: none;
 	font-size: 1em;
+	font-family: 'Roboto', sans-serif;
 	border-bottom: 2px solid transparent;
 	color: ${STRINGS.DARK_TEXT_COLOR};
 	::placeholder {

@@ -9,6 +9,7 @@ import LeftImgButton from '../../components/Buttons/LeftImgButton';
 import back from '../../assets/img/back.svg';
 import { useDetailedHackerQuery } from '../../generated/graphql';
 import appConfig from '../../assets/application';
+import { ConfigField } from '../application/Application';
 
 const Layout = styled.div`
 	display: flex;
@@ -128,7 +129,7 @@ export const HackerView: FC<RouteComponentProps<{ id: string }, {}, {}>> = props
 			<StyledTable>
 				<tbody>
 					{appConfig
-						.flatMap(el => el.fields)
+						.flatMap(el => el.fields as ConfigField[])
 						.map(({ fieldName, title: fieldTitle }) => {
 							const value =
 								(hacker.application.find(el => el.question === fieldName) || { answer: '' })

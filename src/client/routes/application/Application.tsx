@@ -1,6 +1,7 @@
 import React, { useContext, FunctionComponent, useState, useEffect, useCallback, FC } from 'react';
 import styled from 'styled-components';
 import { useImmer } from 'use-immer';
+import { toast } from 'react-toastify';
 import { Spinner } from '../../components/Loading/Spinner';
 import config from '../../assets/application';
 import { Collapsible } from '../../components/Containers/Collapsible';
@@ -8,7 +9,11 @@ import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { ActionButtonContext } from '../../contexts/ActionButtonContext';
 import { HeaderButton } from '../../components/Buttons/HeaderButton';
 import { InputProps } from '../../components/Input/TextInput';
-import { useUpdateMyApplicationMutation, useMyApplicationQuery } from '../../generated/graphql';
+import {
+	useUpdateMyApplicationMutation,
+	useMyApplicationQuery,
+	ApplicationInput,
+} from '../../generated/graphql';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 
 export interface ConfigSection {
@@ -28,7 +33,7 @@ export interface ConfigField {
 	placeholder?: string;
 	prompt?: string;
 	required?: boolean;
-	title: string;
+	title?: string;
 	validation?: string;
 }
 
@@ -86,6 +91,20 @@ const disableEnter = (e: React.KeyboardEvent<HTMLFormElement>): void => {
 
 let autosaveTimeout: NodeJS.Timeout;
 
+/**
+ * Finds the first element that is required (not optional) but does not have any input.
+ * It should only be run on form submit because it is quite heavy.
+ * @param input List of application inputs
+ */
+const findRequiredUnfilled = (input: ApplicationInput[]): string => {
+	const requiredQuestion = config
+		.flatMap(section => section.fields as ConfigField[])
+		.find(
+			field => !field.optional && !input.find(el => el.question === field.fieldName && el.answer)
+		);
+	return requiredQuestion ? `[${requiredQuestion.title}] is required` : '';
+};
+
 export const Application: FunctionComponent<{}> = (): JSX.Element => {
 	const { update: setActionButton } = useContext(ActionButtonContext);
 	const [openSection, setOpenSection] = useState('');
@@ -117,7 +136,19 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 				<HeaderButton
 					// tabIndex={1}
 					width="8em"
-					onClick={async () => updateApplication({ variables: { input } })}>
+					onClick={async () => {
+						const firstRequiredUnfilledToast = findRequiredUnfilled(input);
+						toast.dismiss();
+						if (firstRequiredUnfilledToast)
+							toast.error(firstRequiredUnfilledToast, {
+								position: 'bottom-right',
+							});
+						else
+							return updateApplication({ variables: { input } }).then(() =>
+								toast.success('Application submitted successfully!', { position: 'bottom-right' })
+							);
+						return Promise.resolve();
+					}}>
 					<p>Submit</p>
 				</HeaderButton>
 			);
@@ -178,20 +209,22 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 			alignItems="flex-start"
 			padding="1.5rem">
 			<StyledForm onKeyPress={disableEnter}>
-				{config.map(({ fields, title }: ConfigSection) => (
+				{config.map(({ fields, title = '' }: ConfigSection) => (
 					<Collapsible onClick={toggleOpen} open={openSection === title} title={title} key={title}>
 						{fields.map(field => (
-							<StyledQuestion key={field.title} htmlFor={field.title}>
-								<StyledQuestionPadContainer>
-									{field.title}
-									{field.note ? <FieldNote>{` - ${field.note}`}</FieldNote> : null}
-								</StyledQuestionPadContainer>
+							<StyledQuestion key={field.fieldName} htmlFor={field.fieldName}>
+								{field.title ? (
+									<StyledQuestionPadContainer>
+										{field.title}
+										{field.note ? <FieldNote>{` - ${field.note}`}</FieldNote> : null}
+									</StyledQuestionPadContainer>
+								) : null}
 								{field.prompt ? <FieldPrompt>{field.prompt}</FieldPrompt> : null}
 								<field.Component
 									setState={createOnChangeHandler(field.fieldName)}
 									value={valueHandler(field.fieldName)}
 									{...field}
-									id={field.title}
+									id={field.fieldName}
 								/>
 							</StyledQuestion>
 						))}

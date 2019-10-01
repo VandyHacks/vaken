@@ -92,7 +92,7 @@ exports[`Test Frame Frame renders correctly 1`] = `
                 <div
                   className="sc-htoDjs sc-iELTvK cFSFuT sc-dnqmqq caLfPx"
                 >
-                  Application
+                  Apply
                 </div>
               </button>
             </a>
@@ -153,7 +153,7 @@ exports[`Test Frame Frame renders correctly 1`] = `
       className="sc-bdVaJa sc-bwzfXH sc-ifAKCX kHHPcv"
     >
       <div
-        className="sc-bdVaJa sc-bwzfXH sc-ifAKCX sc-hMqMXs sc-iRbamj kIgsJB"
+        className="sc-bdVaJa sc-bwzfXH sc-ifAKCX sc-eNQAEJ sc-iRbamj gQtKCV"
       >
         <div
           className="sc-bdVaJa sc-bwzfXH dgnCwc"
@@ -174,7 +174,7 @@ exports[`Test Frame Frame renders correctly 1`] = `
             }
           >
             <button
-              className="sc-gqjmRU sc-chPdSV kCOupK"
+              className="sc-gqjmRU sc-iAyFgw dhSyGE"
             >
               <div
                 className="sc-htoDjs Dufyp"
