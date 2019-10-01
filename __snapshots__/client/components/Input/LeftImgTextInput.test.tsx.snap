@@ -11,6 +11,7 @@ exports[`Test LeftImgTextInput LeftImgTextInput renders correctly 1`] = `
   />
   <input
     className="sc-fjdhpX hNpcum"
+    maxLength={100}
     onChange={[Function]}
     value="c"
   />
