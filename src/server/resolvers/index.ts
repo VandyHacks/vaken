@@ -187,11 +187,11 @@ export const resolvers: CustomResolvers<Context> = {
 		) => {
 			if (!user || user.userType !== UserType.Organizer)
 				throw new AuthenticationError(`user '${JSON.stringify(user)}' must be organizer`);
-				if (!permissions) permissions = [];
-				await models.Tiers.insertOne({
-					name,
-					permissions
-				});
+			if (!permissions) permissions = [];
+			await models.Tiers.insertOne({
+				name,
+				permissions
+			});
 			const tierCreated = await models.Tiers.findOne({ name });
 			if (!tierCreated) throw new AuthenticationError(`tier not found: ${name}`);
 			return tierCreated;

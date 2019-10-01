@@ -114,12 +114,12 @@ export default gql`
 		userId: ID! @column
 	}
 	
-	type Company @entity {
+	type Company @entity(embedded: true) {
 		name: String! @column
 		tier: Tier! @embedded
 	}
 	
-	type Tier @entity {
+	type Tier @entity(embedded: true) {
 		name: String! @column
 		permissions: [String]! @column
 	}
