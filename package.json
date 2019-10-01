@@ -170,7 +170,7 @@
 		"jest": "^24.8.0",
 		"jest-transform-css": "^2.0.0",
 		"mongodb-memory-server": "^5.1.10",
-		"nodemon": "^1.19.1",
+		"nodemon": "^1.19.3",
 		"pino-pretty": "^3.2.0",
 		"prettier": "^1.18.2",
 		"react-test-renderer": "^16.8.6",
