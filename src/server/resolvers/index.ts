@@ -305,7 +305,8 @@ export const resolvers: CustomResolvers<Context> = {
 
 			const { value, ok, lastErrorObject } = await ctx.models.Hackers.findOneAndUpdate(
 				{ _id: id },
-				{ $set: { status: appStatus, ...changedFields } }
+				{ $set: { status: appStatus, ...changedFields } },
+				{ returnOriginal: false }
 			);
 
 			if (!ok || !value) {
