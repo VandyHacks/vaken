@@ -32,7 +32,9 @@ export default gql`
 	mutation createCompany($input: CompanyInput!) {
 		createCompany(input: $input) {
 			name
-			tierId
+			tier {
+				name
+			}
 		}
 	}
 `;
