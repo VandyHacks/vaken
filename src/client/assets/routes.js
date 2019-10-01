@@ -1,5 +1,5 @@
 import React from 'react';
-import { CreateSponsor } from '../routes/manageSponsor/CreateSponsor';
+import { SponsorPage } from '../routes/manageSponsor/CreateSponsor';
 import { Application } from '../routes/application/Application';
 import { HackerDash } from '../routes/dashboard/HackerDash';
 import { SponsorDash } from '../routes/dashboard/SponsorDash';
@@ -68,7 +68,7 @@ const routes = [
 	},
 	{
 		authLevel: [UserType.Organizer],
-		component: CreateSponsor,
+		component: SponsorPage,
 		displayText: 'Manage Sponsors',
 		path: '/manage/sponsors',
 	},

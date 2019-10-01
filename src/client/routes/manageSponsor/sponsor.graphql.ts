@@ -21,4 +21,18 @@ export default gql`
 			email
 		}
 	}
+	
+	mutation createTier($input: TierInput!) {
+		createTier(input: $input) {
+			name
+			permissions
+		}
+	}
+	
+	mutation createCompany($input: CompanyInput!) {
+		createCompany(input: $input) {
+			name
+			tierId
+		}
+	}
 `;

@@ -116,7 +116,7 @@ export default gql`
 	
 	type Company @entity {
 		name: String! @column
-		tier: Tier! @column @embedded
+		tier: Tier! @embedded
 	}
 	
 	type Tier @entity {

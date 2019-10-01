@@ -159,6 +159,7 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!company) throw new UserInputError(`Company with '${companyId}' doesn't exist.`);
 			if (!sponsor) {
 				await models.Sponsors.insertOne({
+					_id: new ObjectID(),
 					company,
 					createdAt: new Date(),
 					dietaryRestrictions: [],
@@ -172,7 +173,7 @@ export const resolvers: CustomResolvers<Context> = {
 					status: SponsorStatus.Added,
 					userType: UserType.Sponsor,
 				});
-			} else {t
+			} else {
 				throw new UserInputError(`sponsor with '${email}' is already added.`);
 			}
 			const sponsorCreated = await models.Sponsors.findOne({ email });
