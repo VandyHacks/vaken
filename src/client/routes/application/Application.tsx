@@ -144,9 +144,12 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 								position: 'bottom-right',
 							});
 						else
-							return updateApplication({ variables: { input } }).then(() =>
-								toast.success('Application submitted successfully!', { position: 'bottom-right' })
-							);
+							return updateApplication({ variables: { input } }).then(() => {
+								toast.dismiss();
+								return toast.success('Application submitted successfully!', {
+									position: 'bottom-right',
+								});
+							});
 						return Promise.resolve();
 					}}>
 					<p>Submit</p>
