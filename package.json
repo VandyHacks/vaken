@@ -136,7 +136,7 @@
 		"@types/react-router-dom": "^4.3.4",
 		"@types/react-select": "^3.0.0",
 		"@types/react-test-renderer": "^16.8.2",
-		"@types/react-virtualized": "^9.21.2",
+		"@types/react-virtualized": "^9.21.4",
 		"@types/styled-components": "4.1.8",
 		"@types/supertest": "^2.0.8",
 		"@types/yup": "^0.26.20",
