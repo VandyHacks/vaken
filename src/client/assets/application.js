@@ -98,7 +98,7 @@ export const questions = [
 				default: '2019',
 				fieldName: 'gradYear',
 				optional: true,
-				options: ['2020', '2021', '2022', '2023', 'Other'],
+				options: ['2019', '2020', '2021', '2022', '2023', 'Other'],
 				other: true,
 				title: 'Graduation Year',
 				type: 'number',

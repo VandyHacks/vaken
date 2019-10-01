@@ -29,7 +29,14 @@ export const Input: FC<InputProps> = ({ setState, value, ...rest }) => {
 
 	// TODO: Remove any.
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	return <RawInput {...(rest as any)} value={value} onChange={onChange as any} />;
+	return (
+		<RawInput
+			maxLength={STRINGS.TEXT_AREA_MAX_LENGTH}
+			{...(rest as any)}
+			value={value}
+			onChange={onChange as any}
+		/>
+	);
 };
 
 export default Input;

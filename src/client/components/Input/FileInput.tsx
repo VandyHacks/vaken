@@ -103,7 +103,10 @@ export const FileInput: FC<InputProps> = props => {
 				<HeaderButton
 					width="fit-content"
 					fontSize="1.2rem"
-					onClick={() => void window.open(signedReadUrl, '_blank', 'noopener')}>
+					onClick={() => {
+						window.open(signedReadUrl, '_blank', 'noopener');
+						return Promise.resolve(false);
+					}}>
 					View uploaded resume
 				</HeaderButton>
 			) : null}
