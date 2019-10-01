@@ -161,7 +161,7 @@
 		"eslint-plugin-react-hooks": "^1.6.1",
 		"eslint-plugin-sort-keys-fix": "^1.0.1",
 		"eslint-plugin-typescript": "^0.14.0",
-		"eslint-plugin-typescript-sort-keys": "^0.2.0",
+		"eslint-plugin-typescript-sort-keys": "^0.4.0",
 		"eslint_d": "^8.0.0",
 		"file-loader": "^4.0.0",
 		"fork-ts-checker-webpack-plugin": "^1.3.7",
