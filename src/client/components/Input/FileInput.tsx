@@ -94,7 +94,13 @@ export const FileInput: FC<InputProps> = props => {
 
 	return (
 		<Container>
-			<FileInputEl className="input" id={`file-${counter}`} type="file" onChange={onChange} />
+			<FileInputEl
+				className="input"
+				accept=".pdf"
+				id={`file-${counter}`}
+				type="file"
+				onChange={onChange}
+			/>
 			<FileLabelEl className="label" htmlFor={`file-${counter}`}>
 				{/* eslint-disable-next-line react/jsx-one-expression-per-line */}
 				Upload {signedReadUrl ? 'new' : 'a'} resume

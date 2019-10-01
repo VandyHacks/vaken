@@ -1,4 +1,4 @@
-import { Storage } from '@google-cloud/storage';
+import { Storage, GetSignedUrlConfig } from '@google-cloud/storage';
 
 const { BUCKET_NAME, GCP_STORAGE_SERVICE_ACCOUNT } = process.env;
 
@@ -14,8 +14,9 @@ export const getSignedUploadUrl = async (filename: string): Promise<string> => {
 	const credentials = JSON.parse(GCP_STORAGE_SERVICE_ACCOUNT);
 	const storage = new Storage({ credentials });
 
-	const options = {
+	const options: GetSignedUrlConfig = {
 		action: 'write' as 'write',
+		contentType: 'application/pdf',
 		expires: Date.now() + 15 * 60 * 1000, // 15 minutes
 		version: 'v4' as 'v4',
 	};
@@ -32,7 +33,7 @@ export const getSignedReadUrl = async (filename: string): Promise<string> => {
 	const credentials = JSON.parse(GCP_STORAGE_SERVICE_ACCOUNT);
 	const storage = new Storage({ credentials });
 
-	const options = {
+	const options: GetSignedUrlConfig = {
 		action: 'read' as 'read',
 		expires: Date.now() + 24 * 60 * 60 * 1000, // 7 days
 		version: 'v4' as 'v4',
