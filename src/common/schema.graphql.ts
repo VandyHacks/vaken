@@ -140,7 +140,7 @@ export default gql`
 		modifiedAt: Float! @column
 		status: ApplicationStatus! @column
 		school: String @column
-		gradYear: Int @column
+		gradYear: String @column
 		majors: [String!]! @column
 		adult: Boolean @column
 		volunteer: String @column
