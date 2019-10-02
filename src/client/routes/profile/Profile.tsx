@@ -43,8 +43,6 @@ export const Profile: React.FunctionComponent<{}> = (): JSX.Element => {
 			setInput(draft => {
 				Object.assign(draft, {
 					...loadedFields,
-					dietaryRestrictions:
-						data.me && data.me.dietaryRestrictions ? data.me.dietaryRestrictions.join('|') : '',
 				});
 			});
 			setLoaded(true);

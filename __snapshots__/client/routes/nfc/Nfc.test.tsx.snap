@@ -113,12 +113,12 @@ exports[`Test Nfc renders correctly 1`] = `
     />
   </div>
   <input
-    className="sc-bdVaJa dgBcoL"
+    className="sc-bdVaJa iZAWJG"
     placeholder="Scan NFC"
     width="100%"
   />
   <input
-    className="sc-bdVaJa jodxDo"
+    className="sc-bdVaJa ivguAE"
     placeholder="Manual Search"
     width="100%"
   />
@@ -137,13 +137,13 @@ exports[`Test Nfc renders correctly 1`] = `
     </div>
   </label>
   <button
-    className="sc-jzJRlG sc-chPdSV cYGTvH"
+    className="sc-jzJRlG sc-chPdSV dHZyMI"
     height="auto"
     onClick={[Function]}
     width="auto"
   >
     <div
-      className="sc-gqjmRU icIvbZ"
+      className="sc-gqjmRU IqLtN"
       color="white"
       fontSize="1.4rem"
     >

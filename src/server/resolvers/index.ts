@@ -1,18 +1,39 @@
 import { UserInputError, AuthenticationError } from 'apollo-server-express';
 import { ObjectID } from 'mongodb';
 import {
-	DietaryRestriction,
 	UserType,
-	Race,
 	ShirtSize,
 	LoginProvider,
 	ApplicationStatus,
 	UserDbInterface,
 	UserResolvers,
 	Resolvers,
+	HackerDbObject,
 } from '../generated/graphql';
 import Context from '../context';
 import { fetchUser, query, queryById, toEnum, updateUser, checkIsAuthorized } from './helpers';
+import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser } from '../nfc';
+import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
+
+// TODO: Cannot import frontend files so this is ugly workaround. Fix this.
+const requiredFields = [
+	'firstName',
+	'lastName',
+	'shirtSize',
+	'gender',
+	'phoneNumber',
+	'dateOfBirth',
+	'school',
+	'major',
+	'gradYear',
+	'race',
+	'favArtPiece',
+	'essay1',
+	'volunteer',
+	'resume',
+	'codeOfConduct',
+	'infoSharingConsent',
+];
 
 /**
  * Used to define a __resolveType function on the User resolver that doesn't take in a promise. This is important as it
@@ -25,11 +46,10 @@ export type CustomResolvers<T> = Omit<Resolvers<T>, 'User'> & {
 
 const userResolvers: Omit<UserResolvers, '__resolveType' | 'userType'> = {
 	createdAt: async field => (await field).createdAt.getTime(),
-	dietaryRestrictions: async user => {
-		const { dietaryRestrictions = [] } = await user;
-		return dietaryRestrictions.map(toEnum(DietaryRestriction));
-	},
+	// TODO: Add input validation for dietaryRestrictions. toEnum(DietaryRestriction)()
+	dietaryRestrictions: async user => (await user).dietaryRestrictions,
 	email: async user => (await user).email,
+	eventsAttended: async user => (await user).eventsAttended || null,
 	firstName: async user => (await user).firstName,
 	gender: async user => (await user).gender || null,
 	id: async user => (await user)._id.toHexString(),
@@ -49,25 +69,40 @@ export const resolvers: CustomResolvers<Context> = {
 	 * These resolvers are for querying fields
 	 */
 	ApplicationField: {
-		answer: async field => (await field).answer || null,
+		answer: async field => (await field).answer || '',
 		createdAt: async field => (await field).createdAt.getTime(),
 		id: async field => (await field).id,
 		question: async field => (await field).question,
+		userId: async field => (await field).userId,
 	},
-	ApplicationQuestion: {
-		instruction: async question => (await question).instruction || null,
-		note: async question => (await question).note || null,
-		prompt: async question => (await question).prompt,
+	Event: {
+		attendees: async event => (await event).attendees || [],
+		checkins: async event => (await event).checkins || [],
+		description: async event => (await event).description || null,
+		duration: async event => (await event).duration,
+		eventType: async event => (await event).eventType,
+		id: async event => (await event)._id.toHexString(),
+		location: async event => (await event).location,
+		name: async event => (await event).name,
+		startTimestamp: async event => (await event).startTimestamp.getTime(),
+		warnRepeatedCheckins: async event => (await event).warnRepeatedCheckins,
+	},
+	EventCheckIn: {
+		id: async eventCheckIn => (await eventCheckIn)._id.toHexString(),
+		timestamp: async eventCheckIn => (await eventCheckIn).timestamp.getTime(),
+		user: async eventCheckIn => (await eventCheckIn).user,
 	},
 	Hacker: {
 		...userResolvers,
 		adult: async hacker => (await hacker).adult || null,
+		application: async (hacker, args, { models }: Context) =>
+			models.ApplicationFields.find({ userId: (await hacker)._id }).toArray(),
 		gender: async hacker => (await hacker).gender || null,
 		github: async hacker => (await hacker).github || null,
 		gradYear: async hacker => (await hacker).gradYear || null,
 		majors: async hacker => (await hacker).majors || [],
 		modifiedAt: async hacker => (await hacker).modifiedAt,
-		race: async hacker => (await hacker).race.map(toEnum(Race)) || null,
+		race: async hacker => (await hacker).race || '',
 		school: async hacker => (await hacker).school || null,
 		status: async hacker => toEnum(ApplicationStatus)((await hacker).status),
 		team: async (hacker, args, { models }) => {
@@ -100,6 +135,11 @@ export const resolvers: CustomResolvers<Context> = {
 	 * Each may contain authentication checks as well
 	 */
 	Mutation: {
+		checkInUserToEvent: async (root, { input }, { models, user }) => {
+			checkIsAuthorized(UserType.Organizer, user);
+			const userRet = await checkInUserToEvent(input.user, input.event, models);
+			return userRet;
+		},
 		hackerStatus: async (_, { input: { id, status } }, { user, models }) => {
 			checkIsAuthorized(UserType.Organizer, user);
 			const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
@@ -174,6 +214,111 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ret) throw new AuthenticationError(`hacker not found: ${hacker.email}`);
 			return ret;
 		},
+		registerNFCUIDWithUser: async (root, { input }, { models, user }) => {
+			checkIsAuthorized(UserType.Organizer, user);
+			const userRet = await registerNFCUIDWithUser(input.nfcid, input.user, models);
+			return userRet;
+		},
+		removeUserFromEvent: async (root, { input }, { models, user }) => {
+			checkIsAuthorized(UserType.Organizer, user);
+			const userRet = await removeUserFromEvent(input.user, input.event, models);
+			return userRet;
+		},
+		signedUploadUrl: async (_, { input }, { user }) => {
+			// Enables a user to update their application
+			if (!user) throw new AuthenticationError(`cannot update application: user not logged in`);
+			return getSignedUploadUrl(`${user._id}`);
+		},
+		updateMyApplication: async (root, args, ctx) => {
+			// Enables a user to update their application
+			if (!ctx.user) throw new AuthenticationError(`cannot update application: user not logged in`);
+			// TODO(leonm1): Figure out why the _id field isn't actually an ObjectID
+			const id = ObjectID.createFromHexString((ctx.user._id as unknown) as string);
+			// update app answers if they exist
+			const { result } = await ctx.models.ApplicationFields.bulkWrite(
+				args.input.map(({ question, answer }) => ({
+					updateOne: {
+						filter: { question, userId: id },
+						update: { $set: { answer, question, userId: id } },
+						upsert: true,
+					},
+				}))
+			);
+
+			// TODO: Update this to set the hacker's profile fields (name, school, gender, etc.) with application data.
+			if (!result.ok) {
+				throw new UserInputError(
+					`error inputting user application input for user "${id}" ${JSON.stringify(result)}`
+				);
+			}
+
+			const hacker = await ctx.models.Hackers.findOne({ _id: id });
+			if (!hacker) throw new AuthenticationError(`hacker not found: ${id.toHexString()}`);
+
+			/**
+			 * Finds the first element that is required (not optional) but does not have any input.
+			 * If this element exists, the application is not finished.
+			 */
+			const appFinished = !requiredFields.some(
+				field => !args.input.find(el => el.question === field && el.answer)
+			);
+
+			// Update the fields of the hacker object with application data.
+			// TODO: Improve the quality of this resolver by removing this hack.
+			const changedFields = [
+				'firstName',
+				'preferredName',
+				'lastName',
+				'shirtSize',
+				'gender',
+				'dietaryRestrictions',
+				'phoneNumber',
+				'race',
+				'school',
+				'gradYear',
+				'volunteer',
+			].reduce(
+				(acc, reqField) => {
+					// TODO: Add input validation for these fields.
+					const field = args.input.find(input => input.question === reqField);
+					return field ? { ...acc, [reqField]: field.answer } : acc;
+				},
+				{} as Partial<HackerDbObject> // eslint-disable-line @typescript-eslint/no-object-literal-type-assertion
+			);
+
+			// Update application status to reflect new input.
+			let appStatus: ApplicationStatus = hacker.status as ApplicationStatus;
+			if (
+				appFinished &&
+				[ApplicationStatus.Started, ApplicationStatus.Verified, ApplicationStatus.Created].includes(
+					hacker.status as ApplicationStatus
+				)
+			) {
+				appStatus = ApplicationStatus.Submitted;
+			} else if (
+				[ApplicationStatus.Created, ApplicationStatus.Verified].includes(
+					hacker.status as ApplicationStatus
+				)
+			) {
+				appStatus = ApplicationStatus.Started;
+			}
+
+			const { value, ok, lastErrorObject } = await ctx.models.Hackers.findOneAndUpdate(
+				{ _id: id },
+				{ $set: { status: appStatus, ...changedFields } },
+				{ returnOriginal: false }
+			);
+
+			if (!ok || !value) {
+				throw new UserInputError(
+					`error inputting user status "SUBMITTED" for user "${id}" ${JSON.stringify(
+						lastErrorObject
+					)}`
+				);
+			}
+
+			return value;
+		},
 		updateMyProfile: async (root, { input }, { models, user }) => {
 			// Enables a user to update their own profile
 			if (!user) throw new AuthenticationError(`cannot update profile: user not logged in`);
@@ -192,6 +337,10 @@ export const resolvers: CustomResolvers<Context> = {
 		userType: () => UserType.Organizer,
 	},
 	Query: {
+		event: async (root, { id }, ctx) => queryById(id, ctx.models.Events),
+		eventCheckIn: async (root, { id }, ctx) => queryById(id, ctx.models.EventCheckIns),
+		eventCheckIns: async (root, args, ctx) => ctx.models.EventCheckIns.find().toArray(),
+		events: async (root, args, ctx) => ctx.models.Events.find().toArray(),
 		hacker: async (root, { id }, ctx) => queryById(id, ctx.models.Hackers),
 		hackers: async (root, args, ctx) => ctx.models.Hackers.find().toArray(),
 		me: async (root, args, ctx) => {
@@ -202,6 +351,19 @@ export const resolvers: CustomResolvers<Context> = {
 		mentors: async (root, args, ctx) => ctx.models.Mentors.find().toArray(),
 		organizer: async (root, { id }, ctx) => queryById(id, ctx.models.Organizers),
 		organizers: async (root, args, ctx) => ctx.models.Organizers.find().toArray(),
+		signedReadUrl: async (_, { input }, { user }) => {
+			// Enables a user to update their application
+			if (!user) throw new AuthenticationError(`cannot get read url: user not logged in`);
+
+			// No file to get :)
+			if (!input) return '';
+
+			// Hackers may get their own files; organizers may get any file
+			if (!input.includes((user._id as unknown) as string))
+				checkIsAuthorized(UserType.Organizer, user);
+
+			return getSignedReadUrl(input);
+		},
 		team: async (root, { id }, ctx) => queryById(id, ctx.models.Teams),
 		teams: async (root, args, ctx) => ctx.models.Teams.find().toArray(),
 	},

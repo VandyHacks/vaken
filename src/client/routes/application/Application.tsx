@@ -1,10 +1,20 @@
 import React, { useContext, FunctionComponent, useState, useEffect, useCallback, FC } from 'react';
 import styled from 'styled-components';
+import { useImmer } from 'use-immer';
+import { toast } from 'react-toastify';
+import { Spinner } from '../../components/Loading/Spinner';
 import config from '../../assets/application';
 import { Collapsible } from '../../components/Containers/Collapsible';
+import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { ActionButtonContext } from '../../contexts/ActionButtonContext';
 import { HeaderButton } from '../../components/Buttons/HeaderButton';
 import { InputProps } from '../../components/Input/TextInput';
+import {
+	useUpdateMyApplicationMutation,
+	useMyApplicationQuery,
+	ApplicationInput,
+} from '../../generated/graphql';
+import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 
 export interface ConfigSection {
 	category: string;
@@ -18,21 +28,27 @@ export interface ConfigField {
 	fieldName: string;
 	note?: string;
 	optional?: boolean;
-	options?: string[];
+	options?: Promise<{ data: string[] }> | string[];
 	other?: boolean;
 	placeholder?: string;
 	prompt?: string;
 	required?: boolean;
-	title: string;
+	title?: string;
 	validation?: string;
 }
 
 export const StyledForm = styled.form`
 	display: flex;
-	flex-flow: column nowrap;
+	max-width: 100%;
+	flex-direction: column;
+	max-width: 100%;
 
 	fieldset {
 		margin-top: 0.4rem;
+	}
+
+	& > div:not(:first-of-type) {
+		margin-top: 1.4rem;
 	}
 `;
 
@@ -69,22 +85,105 @@ export const FieldTitle = styled.span`
 	line-height: 140%;
 `;
 
+const disableEnter = (e: React.KeyboardEvent<HTMLFormElement>): void => {
+	if (e.key === 'Enter') e.preventDefault();
+};
+
+let autosaveTimeout: NodeJS.Timeout;
+
+/**
+ * Finds the first element that is required (not optional) but does not have any input.
+ * It should only be run on form submit because it is quite heavy.
+ * @param input List of application inputs
+ */
+const findRequiredUnfilled = (input: ApplicationInput[]): string => {
+	const requiredQuestion = config
+		.flatMap(section => section.fields as ConfigField[])
+		.find(
+			field => !field.optional && !input.find(el => el.question === field.fieldName && el.answer)
+		);
+	return requiredQuestion ? `[${requiredQuestion.title}] is required` : '';
+};
+
 export const Application: FunctionComponent<{}> = (): JSX.Element => {
 	const { update: setActionButton } = useContext(ActionButtonContext);
 	const [openSection, setOpenSection] = useState('');
+	const [input, setInput] = useImmer<{ answer: string; question: string }[]>([]);
+	const [loaded, setLoaded] = useState(false);
+	const [updateApplication] = useUpdateMyApplicationMutation();
+	const { data, error, loading } = useMyApplicationQuery();
+
+	// Only update changed QuestionIDs
+	const createOnChangeHandler = (fieldName: string): ((value: string) => void) => value => {
+		void setInput(draft => {
+			const element = draft.find(el => el.question === fieldName);
+			if (!element) {
+				draft.push({ answer: value, question: fieldName });
+			} else {
+				element.answer = value;
+			}
+		});
+	};
+
+	const valueHandler = (fieldName: string): string => {
+		const element = input.find(el => el.question === fieldName);
+		return element ? element.answer : '';
+	};
 
 	useEffect((): (() => void) => {
 		if (setActionButton)
 			setActionButton(
-				<HeaderButton onClick={() => {}} width="8em">
-					Submit
+				<HeaderButton
+					// tabIndex={1}
+					width="8em"
+					onClick={async () => {
+						const firstRequiredUnfilledToast = findRequiredUnfilled(input);
+						toast.dismiss();
+						if (firstRequiredUnfilledToast)
+							toast.error(firstRequiredUnfilledToast, {
+								position: 'bottom-right',
+							});
+						else
+							return updateApplication({ variables: { input } }).then(() => {
+								toast.dismiss();
+								return toast.success('Application submitted successfully!', {
+									position: 'bottom-right',
+								});
+							});
+						return Promise.resolve();
+					}}>
+					<p>Submit</p>
 				</HeaderButton>
 			);
 
 		return () => {
 			if (setActionButton) setActionButton(undefined);
 		};
-	}, [setActionButton]);
+	}, [input, setActionButton, updateApplication]);
+
+	useEffect((): void => {
+		if (!loaded && data && data.me) {
+			const { application } = data.me;
+			setInput(draft => {
+				draft.length = 0; // Clear the array
+
+				// Omit the `__typename` field.
+				application.forEach(({ question, answer }) =>
+					draft.push({ answer: answer || '', question })
+				);
+			});
+			setOpenSection(config[0].title);
+			setLoaded(true);
+		}
+	}, [data, loaded, setLoaded, setInput]);
+
+	useEffect(() => {
+		// Auto-save application input after five seconds of inactivity.
+		autosaveTimeout = setTimeout(() => updateApplication({ variables: { input } }), 5000);
+
+		// Cleanup
+		return () => clearTimeout(autosaveTimeout);
+	}, [input, updateApplication]);
 
 	const toggleOpen = useCallback(
 		(e: React.MouseEvent<HTMLButtonElement>): void => {
@@ -95,28 +194,47 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 		[openSection]
 	);
 
+	// if error getting application input
+	if (error) {
+		console.log(error);
+		return <GraphQLErrorMessage text={JSON.stringify(error)} />;
+	}
+
+	if (loading) return <Spinner />;
+
 	return (
-		<StyledForm>
-			{config.map(({ fields, title }: ConfigSection) => (
-				<Collapsible onClick={toggleOpen} open={openSection === title} title={title} key={title}>
-					{fields.map(field => (
-						<StyledQuestion key={field.title} htmlFor={field.title}>
-							<StyledQuestionPadContainer>
-								{field.title}
-								{field.note ? <FieldNote>{` - ${field.note}`}</FieldNote> : null}
-							</StyledQuestionPadContainer>
-							{field.prompt ? <FieldPrompt>{field.prompt}</FieldPrompt> : null}
-							<field.Component
-								setState={(value: string) => void value}
-								value=""
-								{...field}
-								id={field.title}
-							/>
-						</StyledQuestion>
-					))}
-				</Collapsible>
-			))}
-		</StyledForm>
+		<FloatingPopup
+			borderRadius="1rem"
+			// height="100%"
+			width="100%"
+			backgroundOpacity="1"
+			justifyContent="flex-start"
+			alignItems="flex-start"
+			padding="1.5rem">
+			<StyledForm onKeyPress={disableEnter}>
+				{config.map(({ fields, title = '' }: ConfigSection) => (
+					<Collapsible onClick={toggleOpen} open={openSection === title} title={title} key={title}>
+						{fields.map(field => (
+							<StyledQuestion key={field.fieldName} htmlFor={field.fieldName}>
+								{field.title ? (
+									<StyledQuestionPadContainer>
+										{field.title}
+										{field.note ? <FieldNote>{` - ${field.note}`}</FieldNote> : null}
+									</StyledQuestionPadContainer>
+								) : null}
+								{field.prompt ? <FieldPrompt>{field.prompt}</FieldPrompt> : null}
+								<field.Component
+									setState={createOnChangeHandler(field.fieldName)}
+									value={valueHandler(field.fieldName)}
+									{...field}
+									id={field.fieldName}
+								/>
+							</StyledQuestion>
+						))}
+					</Collapsible>
+				))}
+			</StyledForm>
+		</FloatingPopup>
 	);
 };
 

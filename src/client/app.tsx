@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import { createGlobalStyle } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
 import reset from 'styled-reset';
@@ -6,21 +7,37 @@ import LoginPage from './routes/login/Login';
 import Frame from './routes/dashboard/Frame';
 import { AuthContext } from './contexts/AuthContext';
 import { useMeQuery } from './generated/graphql';
+import 'react-toastify/dist/ReactToastify.css';
 
 const GlobalStyle = createGlobalStyle`
-	body {
-		@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,500|Roboto:300,400,500,700');
-		font-family: 'Roboto', sans-serif;
+	${reset}
 
-		${reset}
-		user-select: none;
+	html, body, #App {
 		margin: 0;
 		padding: 0;
 		width: 100vw;
 		height: 100vh;
-		font-size: 12px;
+		font-size: 14px;
+		font-family: 'Roboto', sans-serif;
+		user-select: none;
+		overflow: hidden;
+	}
+
+	a {
+		text-decoration: none;
+	}
+
+	/* Styling for the toast messages. The toast library overrides
+		 these values so !important is required. */
+	.french-toast {
+		padding: 20px !important;
+		border-radius: 6px !important;
+		font-family: 'Roboto', sans-serif !important;
+		font-size: 1.1em !important;
 	}
 `;
+
+toast.configure();
 
 const Vaken: React.FunctionComponent = (): JSX.Element => {
 	const [ready, setReady] = useState();
@@ -31,6 +48,7 @@ const Vaken: React.FunctionComponent = (): JSX.Element => {
 		return data && data.me ? (
 			<AuthContext.Provider value={data.me}>
 				<Frame />
+				<ToastContainer toastClassName="french-toast" autoClose={5000} />
 			</AuthContext.Provider>
 		) : (
 			<LoginPage />

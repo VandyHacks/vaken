@@ -36,7 +36,7 @@ export const Input: FC<InputProps> = ({ setState, ...rest }: InputProps) => {
 	const onChange: FormEventHandler<HTMLInputElement> = ({ currentTarget: { value } }) =>
 		setState(value);
 
-	return <RawInput {...rest} onChange={onChange} />;
+	return <RawInput maxLength={STRINGS.INPUT_MAX_LENGTH} {...rest} onChange={onChange} />;
 };
 
 export default Input;

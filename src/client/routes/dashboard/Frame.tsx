@@ -1,4 +1,12 @@
-import React, { useState, Suspense, FunctionComponent, useContext } from 'react';
+import React, {
+	useState,
+	Suspense,
+	FunctionComponent,
+	useContext,
+	FC,
+	SetStateAction,
+	useCallback,
+} from 'react';
 import styled from 'styled-components';
 import { Switch, Redirect, Route } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar/Sidebar';
@@ -14,6 +22,7 @@ import { HackerDash } from './HackerDash';
 export const OrganizerDash = React.lazy(() => import('./OrganizerDash'));
 
 const Layout = styled.div`
+	position: fixed;
 	height: 100vh;
 	width: 100vw;
 	display: grid;
@@ -29,7 +38,6 @@ const Layout = styled.div`
 
 	.content {
 		grid-area: content;
-		overflow: auto;
 		max-height: 100%;
 		/* border-radius: 2rem; */
 		overflow: auto;
@@ -38,26 +46,90 @@ const Layout = styled.div`
 	.header {
 		grid-area: header;
 	}
+
+	.sidebar {
+		grid-area: sidebar;
+	}
+
+	@media only screen and (max-width: 456px) {
+		grid:
+			'sidebar . . .' 1.5rem
+			'sidebar . header .' auto
+			'sidebar . . .' 1.5rem
+			'sidebar . content .' 1fr
+			'sidebar . . .' 1.5rem
+			/ ${({ sidebar }: { sidebar: boolean }) => (sidebar ? '100% 0 0 0' : '0 2rem 1fr 2rem')};
+
+		${({ sidebar }: { sidebar: boolean }) => (sidebar ? '' : '.sidebar { display: none; }')}
+	}
 `;
 
 const Rectangle = styled.div`
 	height: 0.4rem;
 	width: 7.5rem;
 	background: ${STRINGS.ACCENT_COLOR};
+
+	@media screen and (max-width: 456px) {
+		display: none;
+	}
 `;
+
+const MenuIcon: FC<{ open: boolean; setOpen: React.Dispatch<SetStateAction<boolean>> }> = ({
+	open,
+	setOpen,
+}) => {
+	const Button = styled.button`
+		background-color: rgba(247, 245, 249, 1);
+		border-radius: 6px;
+		z-index: 1;
+		cursor: pointer;
+		border: none;
+		padding: 3px 6px;
+
+		& div {
+			width: 35px;
+			height: 5px;
+			background-color: ${STRINGS.ACCENT_COLOR};
+			margin: 6px 0;
+		}
+		transform: scale(0.9);
+
+		@media screen and (min-width: 457px) {
+			display: none;
+		}
+	`;
+
+	return (
+		<Button type="button" onClick={() => setOpen(!open)}>
+			<div className={`bar1${open ? ' change' : ''}`} />
+			<div className={`bar2${open ? ' change' : ''}`} />
+			<div className={`bar3${open ? ' change' : ''}`} />
+		</Button>
+	);
+};
 
 const Frame: FunctionComponent = (): JSX.Element => {
 	const currentUser = useContext(AuthContext);
 	const [ActionButton, setActionButton] = useState<React.ReactNode>(null);
+	const [menuOpen, setMenuOpen] = useState(false);
+
+	const resetScroll: React.FocusEventHandler<HTMLDivElement> = useCallback(({ currentTarget }) => {
+		// eslint-disable-next-line no-param-reassign
+		currentTarget.scrollTop = 0;
+		// eslint-disable-next-line no-param-reassign
+		currentTarget.scrollTop = 0;
+	}, []);
+
 	if (window.location.pathname.startsWith('/login')) {
 		return <Redirect to="/dashboard" />;
 	}
 
 	return (
 		<ActionButtonContext.Provider value={{ ActionButton, update: setActionButton }}>
-			<Layout>
+			<Layout onFocus={resetScroll} sidebar={menuOpen}>
 				<div className="header">
 					<SpaceBetweenRow>
+						<MenuIcon open={menuOpen} setOpen={setMenuOpen} />
 						<Title color={STRINGS.ACCENT_COLOR} margin="1.5rem 0rem 0rem">
 							<Switch>
 								{routes.map(route => {
@@ -72,7 +144,7 @@ const Frame: FunctionComponent = (): JSX.Element => {
 					</SpaceBetweenRow>
 					<Rectangle />
 				</div>
-				<Sidebar />
+				<Sidebar setMenuOpen={setMenuOpen} />
 				<OverflowContainer className="content">
 					<Suspense fallback={<div>Loading...</div>}>
 						<Switch>

@@ -1,24 +1,34 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { Input, InputProps } from './TextInput';
 
 interface Props extends InputProps {
-	options?: string[];
+	options?: Promise<{ data: string[] }> | string[];
 }
 
-const AutoComplete: FunctionComponent<Props> = (props: Props) => {
+const AutoComplete: FC<Props> = props => {
 	const { options = ['default'], value } = props;
-	const [listID = 'list'] = options;
+	const [awaitedOptions, setAwaitedOptions] = useState(['Loading...']);
 
+	// Async support for options
+	useEffect(() => {
+		if (options instanceof Promise) {
+			options.then(module => setAwaitedOptions(module.data)).catch(() => setAwaitedOptions([]));
+		} else {
+			setAwaitedOptions(options);
+		}
+	}, [options]);
+
+	const [listID = 'list'] = awaitedOptions;
 	return (
 		<>
 			<Input type="text" list={listID} {...props} />
 			<datalist id={listID}>
-				{options.map(
+				{awaitedOptions.map(
 					(item): JSX.Element => {
 						return <option key={item} value={item} />;
 					}
 				)}
-				{options.includes(value) ? null : <option value={value} />}
+				{awaitedOptions.includes(value) ? null : <option value={value} />}
 			</datalist>
 		</>
 	);

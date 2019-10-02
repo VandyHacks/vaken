@@ -12,9 +12,10 @@ export default gql`
 		lastName: String! @column
 		shirtSize: ShirtSize @column
 		gender: String @column
-		dietaryRestrictions: [DietaryRestriction!]! @column
+		dietaryRestrictions: String! @column
 		userType: UserType! @column
 		phoneNumber: String @column
+		eventsAttended: [ID!] @column
 	}
 
 	enum AuthLevel {
@@ -87,17 +88,12 @@ export default gql`
 		DESC
 	}
 
-	type ApplicationQuestion @entity {
-		prompt: String! @column
-		instruction: String @column
-		note: String @column
-	}
-
 	type ApplicationField @entity(embedded: true) {
 		id: ID! @column
 		createdAt: Float! @column(overrideType: "Date")
-		question: ApplicationQuestion! @embedded
+		question: String! @column
 		answer: String @column
+		userId: ID! @column
 	}
 
 	type Login @entity(additionalFields: [{ path: "email", type: "string" }]) {
@@ -105,6 +101,25 @@ export default gql`
 		provider: LoginProvider! @column
 		token: ID! @column
 		userType: UserType! @column
+	}
+
+	type Event @entity {
+		id: ID! @id @column
+		name: String! @column
+		startTimestamp: Int! @column(overrideType: "Date")
+		duration: Int! @column
+		attendees: [ID!]! @column
+		checkins: [EventCheckIn!]! @embedded
+		warnRepeatedCheckins: Boolean! @column
+		description: String @column
+		location: String! @column
+		eventType: String! @column
+	}
+
+	type EventCheckIn @entity(embedded: true) {
+		id: ID! @id @column
+		user: String! @column
+		timestamp: Int! @column(overrideType: "Date")
 	}
 
 	type Hacker implements User @entity {
@@ -118,19 +133,21 @@ export default gql`
 		lastName: String!
 		shirtSize: ShirtSize
 		gender: String
-		dietaryRestrictions: [DietaryRestriction!]!
+		dietaryRestrictions: String!
 		userType: UserType!
 		phoneNumber: String
-		race: [Race!]! @column
+		race: String! @column
 		modifiedAt: Float! @column
 		status: ApplicationStatus! @column
 		school: String @column
 		gradYear: Int @column
 		majors: [String!]! @column
 		adult: Boolean @column
-		volunteer: Boolean @column
+		volunteer: String @column
 		github: String @column
 		team: Team @embedded
+		eventsAttended: [ID!] @column
+		application: [ApplicationField!]! @embedded
 	}
 
 	type Shift @entity(embedded: true) {
@@ -149,11 +166,12 @@ export default gql`
 		lastName: String!
 		shirtSize: ShirtSize
 		gender: String
-		dietaryRestrictions: [DietaryRestriction!]!
+		dietaryRestrictions: String!
 		userType: UserType!
 		phoneNumber: String
 		shifts: [Shift!]! @embedded
 		skills: [String!]! @column
+		eventsAttended: [ID!] @column
 	}
 
 	type Team @entity(embedded: true) {
@@ -175,20 +193,26 @@ export default gql`
 		lastName: String!
 		shirtSize: ShirtSize
 		gender: String
-		dietaryRestrictions: [DietaryRestriction!]!
+		dietaryRestrictions: String!
 		userType: UserType!
 		phoneNumber: String
 		permissions: [String]! @column
+		eventsAttended: [ID!] @column
 	}
 
 	type Query {
 		me: User # May be used when not logged in.
 		hacker(id: ID!): Hacker!
 		hackers(sortDirection: SortDirection): [Hacker!]!
+		event(id: ID!): Event!
+		events(sortDirection: SortDirection): [Event!]!
+		eventCheckIn(id: ID!): EventCheckIn!
+		eventCheckIns(sortDirection: SortDirection): [EventCheckIn!]!
 		organizer(id: ID!): Organizer!
 		organizers(sortDirection: SortDirection): [Organizer!]!
 		mentor(id: ID!): Mentor!
 		mentors(sortDirection: SortDirection): [Mentor!]!
+		signedReadUrl(input: ID!): String!
 		team(id: ID!): Team!
 		teams(sortDirection: SortDirection): [Team!]!
 	}
@@ -218,12 +242,32 @@ export default gql`
 		status: ApplicationStatus!
 	}
 
+	input EventCheckInInput {
+		user: ID!
+		event: ID!
+	}
+
+	input NFCRegisterInput {
+		nfcid: ID!
+		user: ID!
+	}
+
+	input ApplicationInput {
+		question: String!
+		answer: String!
+	}
+
 	type Mutation {
+		updateMyApplication(input: [ApplicationInput!]!): User!
 		updateMyProfile(input: UserInput!): User!
 		updateProfile(id: ID!, input: UserInput!): User!
 		joinTeam(input: TeamInput!): Hacker!
 		leaveTeam: Hacker!
 		hackerStatus(input: HackerStatusInput!): Hacker!
 		hackerStatuses(input: HackerStatusesInput!): [Hacker!]!
+		checkInUserToEvent(input: EventCheckInInput!): ID
+		removeUserFromEvent(input: EventCheckInInput!): ID
+		registerNFCUIDWithUser(input: NFCRegisterInput!): ID
+		signedUploadUrl(input: ID!): String!
 	}
 `;
