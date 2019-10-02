@@ -197,10 +197,10 @@ export const questions = [
 			{
 				Component: Boolean,
 				fieldName: 'travelAdmissionConsent',
-				note: "Please aknowledge this by clicking 'Yes'",
+				note: "Please acknowledge this by clicking 'Yes'",
 				optional: true,
 				title:
-					'In order to receive guaranteed admission to VandyHacks, please email a request for admission along with the receipt for your travel to info@vandyhacks.org',
+					'If you are purchasing a non-refundable ticket for long distance travel, we can offer guaranteed admission if you email info@vandyhacks.org along with a request and a receipt for your travel.',
 			},
 		],
 		title: 'Travel Reimbursement',
