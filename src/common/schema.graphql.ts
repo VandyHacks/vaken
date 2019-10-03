@@ -94,12 +94,6 @@ export default gql`
 		DESC
 	}
 
-	type Company @entity {
-		id: ID! @column
-		name: String! @column
-		tier: String! @column
-	}
-	
 	type ApplicationQuestion @entity {
 		prompt: String! @column
 		instruction: String @column
