@@ -12,7 +12,15 @@ import {
 	SponsorStatus,
 } from '../generated/graphql';
 import Context from '../context';
-import { fetchUser, query, queryById, toEnum, updateUser, checkIsAuthorized } from './helpers';
+import {
+	fetchUser,
+	query,
+	queryById,
+	toEnum,
+	updateUser,
+	checkIsAuthorized,
+	replaceResumeFieldWithLink,
+} from './helpers';
 import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser } from '../nfc';
 import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
 import { sendStatusEmail } from '../mail/aws';
@@ -109,7 +117,9 @@ export const resolvers: CustomResolvers<Context> = {
 		...userResolvers,
 		adult: async hacker => (await hacker).adult || null,
 		application: async (hacker, args, { models }: Context) =>
-			models.ApplicationFields.find({ userId: (await hacker)._id }).toArray(),
+			replaceResumeFieldWithLink(
+				models.ApplicationFields.find({ userId: (await hacker)._id }).toArray()
+			),
 		gender: async hacker => (await hacker).gender || null,
 		github: async hacker => (await hacker).github || null,
 		gradYear: async hacker => (await hacker).gradYear || null,
@@ -153,23 +163,29 @@ export const resolvers: CustomResolvers<Context> = {
 			const userRet = await checkInUserToEvent(input.user, input.event, models);
 			return userRet;
 		},
-		createSponsor: async (root, { input: { email, name, companyId } }, { models, user }: Context) => {
+		createSponsor: async (
+			root,
+			{ input: { email, name, companyId } },
+			{ models, user }: Context
+		) => {
 			if (!user || user.userType !== UserType.Organizer)
 				throw new AuthenticationError(`user '${JSON.stringify(user)}' must be organizer`);
 			const sponsor = await models.Sponsors.findOne({ email });
-			let company = await models.Companies.findOne({ _id: new ObjectID(companyId) });
+			const company = await models.Companies.findOne({ _id: new ObjectID(companyId) });
 			if (!company) throw new UserInputError(`Company with '${companyId}' doesn't exist.`);
 			if (!sponsor) {
 				await models.Sponsors.insertOne({
 					_id: new ObjectID(),
 					company,
 					createdAt: new Date(),
-					dietaryRestrictions: [],
 					email,
 					firstName: name,
 					lastName: '',
 					logins: [],
 					phoneNumber: '',
+					dietaryRestrictions: '',
+					emailUnsubscribed: false,
+					eventsAttended: [],
 					preferredName: '',
 					secondaryIds: [],
 					status: SponsorStatus.Added,
@@ -192,7 +208,7 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ok || !value)
 				throw new UserInputError(
 					`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
-					'(Likely the user was already confirmed if no value returned)'
+						'(Likely the user was already confirmed if no value returned)'
 				);
 
 			// `confirmMySpot` is an identity function if user is already confirmed and is a
@@ -201,28 +217,19 @@ export const resolvers: CustomResolvers<Context> = {
 
 			return value;
 		},
-		createTier: async (
-			root,
-			{ input: { name, permissions } },
-			{ models, user }: Context
-		) => {
+		createTier: async (root, { input: { name, permissions } }, { models, user }: Context) => {
 			if (!user || user.userType !== UserType.Organizer)
 				throw new AuthenticationError(`user '${JSON.stringify(user)}' must be organizer`);
-			if (!permissions) permissions = [];
 			await models.Tiers.insertOne({
 				_id: new ObjectID(),
 				name,
-				permissions
+				permissions: permissions || [],
 			});
 			const tierCreated = await models.Tiers.findOne({ name });
 			if (!tierCreated) throw new AuthenticationError(`tier not found: ${name}`);
 			return tierCreated;
 		},
-		createCompany: async (
-			root,
-			{ input: { name, tierId } },
-			{ models, user }: Context
-		) => {
+		createCompany: async (root, { input: { name, tierId } }, { models, user }: Context) => {
 			if (!user || user.userType !== UserType.Organizer)
 				throw new AuthenticationError(`user '${JSON.stringify(user)}' must be organizer`);
 
@@ -231,7 +238,7 @@ export const resolvers: CustomResolvers<Context> = {
 			await models.Companies.insertOne({
 				_id: new ObjectID(),
 				name,
-				tier
+				tier,
 			});
 			const companyCreated = await models.Companies.findOne({ name });
 			if (!companyCreated) throw new AuthenticationError(`company not found: ${name}`);
@@ -429,6 +436,7 @@ export const resolvers: CustomResolvers<Context> = {
 				);
 			}
 			if (sendEmail) sendStatusEmail(value, ApplicationStatus.Submitted);
+			return value;
 		},
 		sponsorStatus: async (_, { input: { email, status } }, { models }: Context) => {
 			const { ok, value, lastErrorObject: err } = await models.Sponsors.findOneAndUpdate(

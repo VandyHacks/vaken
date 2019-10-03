@@ -94,12 +94,6 @@ export default gql`
 		DESC
 	}
 
-	type Company @entity {
-		id: ID! @column
-		name: String! @column
-		tier: String! @column
-	}
-	
 	type ApplicationQuestion @entity {
 		prompt: String! @column
 		instruction: String @column
@@ -113,13 +107,13 @@ export default gql`
 		answer: String @column
 		userId: Hacker! @link @column
 	}
-	
+
 	type Company @entity(embedded: true) {
 		id: ID! @id @column
 		name: String! @column
 		tier: Tier! @embedded
 	}
-	
+
 	type Tier @entity(embedded: true) {
 		id: ID! @id @column
 		name: String! @column
@@ -220,16 +214,18 @@ export default gql`
 		secondaryIds: [ID!]!
 		logins: [Login!]!
 		email: String!
+		emailUnsubscribed: Boolean! @column
 		firstName: String!
 		preferredName: String!
 		lastName: String!
 		shirtSize: ShirtSize
 		status: SponsorStatus! @column
 		gender: String
-		dietaryRestrictions: [DietaryRestriction!]!
+		dietaryRestrictions: String!
 		userType: UserType!
 		phoneNumber: String
 		company: Company! @embedded
+		eventsAttended: [ID!]! @column
 	}
 
 	type Organizer implements User @entity {
@@ -319,10 +315,6 @@ export default gql`
 		submit: Boolean
 	}
 
-	type Mutation {
-		updateMyApplication(input: UpdateMyAppInput!): User!
-	}
-	
 	input SponsorInput {
 		email: String!
 		name: String!
@@ -333,12 +325,12 @@ export default gql`
 		email: String!
 		status: SponsorStatus!
 	}
-	
+
 	input TierInput {
 		name: String!
 		permissions: [String!]
 	}
-	
+
 	input CompanyInput {
 		name: String!
 		tierId: ID!
@@ -350,6 +342,7 @@ export default gql`
 		createSponsor(input: SponsorInput!): Sponsor!
 		updateMyProfile(input: UserInput!): User!
 		updateProfile(id: ID!, input: UserInput!): User!
+		updateMyApplication(input: UpdateMyAppInput!): User!
 		joinTeam(input: TeamInput!): Hacker!
 		leaveTeam: Hacker!
 		hackerStatus(input: HackerStatusInput!): Hacker!

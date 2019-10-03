@@ -2,7 +2,7 @@ import React, { FC, useState, ButtonHTMLAttributes } from 'react';
 import CSS from 'csstype';
 import TextButton from './TextButton';
 import STRINGS from '../../assets/strings.json';
-import { Spinner } from '../Loading/Spinner';
+import Spinner from '../Loading/Spinner';
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 	children: React.ReactNode;

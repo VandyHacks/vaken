@@ -3,8 +3,8 @@ import { VerifyCallback as GVerifyCallback } from 'passport-google-oauth20';
 import { Profile } from 'passport';
 import { ObjectID } from 'mongodb';
 import { IProfile } from 'passport-azure-ad';
-import { UserDbInterface, UserType, ApplicationStatus } from '../generated/graphql';
-import { Models } from '../models';
+import { UserDbInterface, UserType, ApplicationStatus, SponsorStatus } from '../generated/graphql';
+import DB, { Models } from '../models';
 import { fetchUser } from '../resolvers/helpers';
 import logger from '../logger';
 

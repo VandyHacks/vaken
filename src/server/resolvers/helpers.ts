@@ -1,7 +1,13 @@
 import { ApolloError, AuthenticationError, UserInputError } from 'apollo-server-express';
 import { Collection, FilterQuery, ObjectID, ObjectId, MatchKeysAndValues } from 'mongodb';
-import { UserDbInterface, UserInput, UserType } from '../generated/graphql';
+import {
+	UserDbInterface,
+	UserInput,
+	UserType,
+	ApplicationFieldDbObject,
+} from '../generated/graphql';
 import { Models } from '../models';
+import { getSignedReadUrl } from '../storage/gcp';
 
 /**
  * Returns a copy of obj with all null fields removed.
@@ -145,4 +151,27 @@ export function checkIsAuthorized<T extends UserDbInterface>(requiredType: UserT
 	}
 
 	return user;
+}
+/**
+ * Replaces the resume field with a signed URL
+ * @param appFields Fields to search for a resume field to replace
+ */
+export async function replaceResumeFieldWithLink(
+	appFields: Promise<ApplicationFieldDbObject[]>
+): Promise<ApplicationFieldDbObject[]> {
+	return Promise.all(
+		(await appFields).map(async field => {
+			const newField = field;
+			if (field.question === 'resume') {
+				newField.answer = field.answer
+					? `<a href="${await getSignedReadUrl(
+							field.answer
+					  )}" target="_blank" rel="noopener noreferrer">Resume</a>`
+					: field.answer;
+				return newField;
+			}
+
+			return field;
+		})
+	);
 }

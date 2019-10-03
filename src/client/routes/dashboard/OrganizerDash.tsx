@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import styled from 'styled-components';
 import chartjs, { ChartOptions } from 'chart.js';
 
-import { Spinner } from '../../components/Loading/Spinner';
+import Spinner from '../../components/Loading/Spinner';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import TextButton from '../../components/Buttons/TextButton';

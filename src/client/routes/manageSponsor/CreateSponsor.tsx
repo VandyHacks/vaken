@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import { HeaderButton } from '../../components/Buttons/HeaderButton';
 import { SearchBox } from '../../components/Input/SearchBox';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { SmallCenteredText } from '../../components/Text/SmallCenteredText';
 import { FlexRow } from '../../components/Containers/FlexContainers';
-import { useCreateSponsorMutation, useCreateTierMutation, useCreateCompanyMutation, useCompaniesQuery, useTiersQuery } from '../../generated/graphql';
-import styled from 'styled-components';
-import Spinner from '../../components/Loading/Spinner'
+import {
+	useCreateSponsorMutation,
+	useCreateTierMutation,
+	useCreateCompanyMutation,
+	useCompaniesQuery,
+	useTiersQuery,
+} from '../../generated/graphql';
+import Spinner from '../../components/Loading/Spinner';
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -18,7 +24,7 @@ const StyledSelect = styled.select`
 	font-size: 1rem;
 	box-sizing: border-box;
 	border: 0.0625rem solid '#ecebed';
-	min-width: 10rem
+	min-width: 10rem;
 `;
 
 const StyledOption = styled.option`
@@ -29,10 +35,10 @@ const StyledOption = styled.option`
 	font-size: 1rem;
 	box-sizing: border-box;
 	border: 0.0625rem solid '#ecebed';
-	min-width: 10rem
+	min-width: 10rem;
 `;
 
-const CreateCompany:  React.FunctionComponent = (): JSX.Element => {
+const CreateCompany: React.FunctionComponent = (): JSX.Element => {
 	const [companyName, setCompanyName] = useState('');
 	const [tierId, setTierId] = useState('');
 	const [createCompanyMsg, setCreateCompanyMsg] = useState('');
@@ -41,13 +47,14 @@ const CreateCompany:  React.FunctionComponent = (): JSX.Element => {
 		variables: { input: { name: companyName, tierId } },
 	});
 
-	let {loading, error, data} = useTiersQuery();
+	const { loading, error, data } = useTiersQuery();
+	if (error) console.error(error);
 
 	const onCreateCompany = async (): Promise<void> => {
 		try {
 			createCompany().catch(res => {
 				setCreateCompanyMsg(`Sorry. ${res.graphQLErrors[0].message} Try again :-)`);
-			})
+			});
 		} catch (err) {
 			console.error(err);
 			setCreateCompanyMsg(`Sorry. Something bad happens.`);
@@ -55,7 +62,7 @@ const CreateCompany:  React.FunctionComponent = (): JSX.Element => {
 	};
 
 	return (
-		<React.Fragment>
+		<>
 			<FlexRow justifyContent="flex-start">
 				<SearchBox
 					width="100%"
@@ -64,14 +71,20 @@ const CreateCompany:  React.FunctionComponent = (): JSX.Element => {
 					onChange={e => setCompanyName(e.target.value)}
 					minWidth="15em"
 				/>
-				{(loading || !data) ? <Spinner/> :
+				{loading || !data ? (
+					<Spinner />
+				) : (
 					<StyledSelect onChange={e => setTierId(e.target.value)}>
-						<StyledOption value="" disabled selected>Select Tier</StyledOption>
+						<StyledOption value="" disabled selected>
+							Select Tier
+						</StyledOption>
 						{data.tiers.map(t => (
-							<StyledOption key={t.id} value={t.id.toString()}>{t.name}</StyledOption>
+							<StyledOption key={t.id} value={t.id.toString()}>
+								{t.name}
+							</StyledOption>
 						))}
 					</StyledSelect>
-				}
+				)}
 				<HeaderButton width="7em" style={{ display: 'inline' }} onClick={onCreateCompany}>
 					<p style={{ fontSize: '1.2rem' }}>Create</p>
 				</HeaderButton>
@@ -79,24 +92,24 @@ const CreateCompany:  React.FunctionComponent = (): JSX.Element => {
 			<SmallCenteredText color="#3F3356" fontSize="1rem" margin="0.8em">
 				<span style={{ fontWeight: 'lighter' }}>{createCompanyMsg}</span>
 			</SmallCenteredText>
-		</React.Fragment>
+		</>
 	);
 };
 
-const CreateTier:  React.FunctionComponent = (): JSX.Element => {
+const CreateTier: React.FunctionComponent = (): JSX.Element => {
 	const [tierName, setTierName] = useState('');
 	const [permissions, setPermissions] = useState(['']);
 	const [createTierMsg, setCreateTierMsg] = useState('');
 
 	const [createTier] = useCreateTierMutation({
-		variables: { input: { name: tierName, permissions: permissions } },
+		variables: { input: { name: tierName, permissions } },
 	});
 
 	const onCreateTier = async (): Promise<void> => {
 		try {
 			createTier().catch(res => {
 				setCreateTierMsg(`Sorry. ${res.graphQLErrors[0].message} Try again :-)`);
-			})
+			});
 		} catch (err) {
 			console.error(err);
 			setCreateTierMsg(`Sorry. Something bad happens.`);
@@ -104,7 +117,7 @@ const CreateTier:  React.FunctionComponent = (): JSX.Element => {
 	};
 
 	return (
-		<React.Fragment>
+		<>
 			<FlexRow justifyContent="flex-start">
 				<SearchBox
 					width="100%"
@@ -127,7 +140,7 @@ const CreateTier:  React.FunctionComponent = (): JSX.Element => {
 			<SmallCenteredText color="#3F3356" fontSize="1rem" margin="0.8em">
 				<span style={{ fontWeight: 'lighter' }}>{createTierMsg}</span>
 			</SmallCenteredText>
-		</React.Fragment>
+		</>
 	);
 };
 
@@ -136,7 +149,7 @@ const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 	const [sponsorName, setSponsorName] = useState('');
 	const [companyId, setCompanyId] = useState('');
 	const [createSponsorMsg, setCreateSponsorMsg] = useState('');
-	let {loading, error, data} = useCompaniesQuery();
+	const { loading, error, data } = useCompaniesQuery();
 	console.log(loading, error, data);
 
 	const [createSponsor] = useCreateSponsorMutation({
@@ -164,7 +177,7 @@ const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 	};
 
 	return (
-		<React.Fragment>
+		<>
 			<FlexRow justifyContent="flex-start">
 				<SearchBox
 					width="100%"
@@ -180,14 +193,20 @@ const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 					onChange={e => setSponsorName(e.target.value)}
 					minWidth="15em"
 				/>
-				{(loading || !data) ? <Spinner/> :
-				<StyledSelect onChange={e => setCompanyId(e.target.value)}>
-					<StyledOption value="" disabled selected>Select Company</StyledOption>
-					{data.companies.map(c => (
-						<StyledOption key={c.id} value={c.id.toString()}>{c.name}</StyledOption>
-					))}
-				</StyledSelect>
-				}
+				{loading || !data ? (
+					<Spinner />
+				) : (
+					<StyledSelect onChange={e => setCompanyId(e.target.value)}>
+						<StyledOption value="" disabled selected>
+							Select Company
+						</StyledOption>
+						{data.companies.map(c => (
+							<StyledOption key={c.id} value={c.id.toString()}>
+								{c.name}
+							</StyledOption>
+						))}
+					</StyledSelect>
+				)}
 				<HeaderButton width="7em" style={{ display: 'inline' }} onClick={onCreateSponsorEmail}>
 					<p style={{ fontSize: '1.2rem' }}>Create</p>
 				</HeaderButton>
@@ -195,7 +214,7 @@ const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 			<SmallCenteredText color="#3F3356" fontSize="1rem" margin="0.8em">
 				<span style={{ fontWeight: 'lighter' }}>{createSponsorMsg}</span>
 			</SmallCenteredText>
-		</React.Fragment>
+		</>
 	);
 };
 
@@ -209,12 +228,11 @@ export const SponsorPage: React.FunctionComponent = (): JSX.Element => {
 			justifyContent="flex-start"
 			alignItems="flex-start"
 			padding="1.5rem">
-
-			<CreateTier/>
-			<CreateCompany/>
-			<CreateSponsor/>
+			<CreateTier />
+			<CreateCompany />
+			<CreateSponsor />
 		</FloatingPopup>
-	)
+	);
 };
 
 export default SponsorPage;

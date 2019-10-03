@@ -59,7 +59,7 @@ const Wrapper = styled.div`
 	}
 `;
 
-export const Spinner: FC<StyleProps> = (props: StyleProps): JSX.Element => {
+const Spinner: FC<StyleProps> = (props: StyleProps): JSX.Element => {
 	return (
 		<Wrapper {...props}>
 			<div className="bounce1" />

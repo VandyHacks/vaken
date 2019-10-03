@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 
 export default gql`
 	query sponsor {
@@ -7,7 +7,7 @@ export default gql`
 			email
 		}
 	}
-	
+
 	query tiers {
 		tiers {
 			id
@@ -15,7 +15,7 @@ export default gql`
 			permissions
 		}
 	}
-	
+
 	query companies {
 		companies {
 			id
@@ -41,14 +41,14 @@ export default gql`
 			email
 		}
 	}
-	
+
 	mutation createTier($input: TierInput!) {
 		createTier(input: $input) {
 			name
 			permissions
 		}
 	}
-	
+
 	mutation createCompany($input: CompanyInput!) {
 		createCompany(input: $input) {
 			name

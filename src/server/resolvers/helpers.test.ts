@@ -136,9 +136,9 @@ describe('Test resolver helpers', () => {
 			).resolves.toEqual(testOrganizer);
 		});
 
-		it('is not implemented for mentors, sponsors, or superadmins', async () => {
+		it('is not implemented for mentors, or superadmins', async () => {
 			await Promise.all(
-				[UserType.Mentor, UserType.Sponsor, UserType.SuperAdmin].map(async userType => {
+				[UserType.Mentor, UserType.SuperAdmin].map(async userType => {
 					await expect(fetchUser({ email: 'foo@bar.com', userType }, models)).rejects.toThrow(
 						`fetchUser for userType ${userType} not implemented`
 					);

@@ -4,7 +4,7 @@ import FloatingPopup from '../../components/Containers/FloatingPopup';
 import config from './ProfileConfig';
 import { ActionButtonContext } from '../../contexts/ActionButtonContext';
 import { StyledQuestion, StyledQuestionPadContainer } from '../application/Application';
-import { Spinner } from '../../components/Loading/Spinner';
+import Spinner from '../../components/Loading/Spinner';
 import { HeaderButton } from '../../components/Buttons/HeaderButton';
 import { GridColumn } from '../../components/Containers/GridContainers';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';

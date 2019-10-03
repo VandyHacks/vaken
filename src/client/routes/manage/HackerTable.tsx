@@ -307,6 +307,7 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 			<TableOptions>
 				<FlexColumn>
 					{searchCriteria.map((criterion, index) => (
+						// eslint-disable-next-line
 						<FlexRow key={index}>
 							<ColumnSelect
 								isMulti={criterion.fuzzySearch}
@@ -346,8 +347,8 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 									onClick={onRemoveSearchCriterion(table, index)}
 								/>
 							) : (
-									<div style={{ width: 'calc(10px + 2rem)' }} />
-								)}
+								<div style={{ width: 'calc(10px + 2rem)' }} />
+							)}
 						</FlexRow>
 					))}
 				</FlexColumn>
@@ -361,8 +362,7 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 						</>
 					) : null}
 				</Count>
-				{/* <ActionButton onClick={exportData}>Export</ActionButton> */}
-				<CSVLink data={sortedData} filename="exportedData.csv">
+				<CSVLink style={{ margin: '20px' }} data={sortedData} filename="exportedData.csv">
 					Export
 				</CSVLink>
 			</TableOptions>
@@ -391,20 +391,19 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 							{selectAll || hasSelection ? (
 								<DeselectAll ref={deselect}>{SelectAllButton}</DeselectAll>
 							) : (
-									<SelectAll
-										onClick={() =>
-											table.update(draft => {
-												draft.hasSelection = true;
-												draft.selectedRowsIds = sortedData
-													.filter(row => isSelectable(row.status))
-													.map(row => row.id);
-												console.log(draft.selectedRowsIds);
-											})
-
-										}>
-										{SelectAllButton}
-									</SelectAll>
-								)}
+								<SelectAll
+									onClick={() =>
+										table.update(draft => {
+											draft.hasSelection = true;
+											draft.selectedRowsIds = sortedData
+												.filter(row => isSelectable(row.status))
+												.map(row => row.id);
+											console.log(draft.selectedRowsIds);
+										})
+									}>
+									{SelectAllButton}
+								</SelectAll>
+							)}
 							{hasSelection && (
 								<Float className="ignore-select">
 									<SliderInput
