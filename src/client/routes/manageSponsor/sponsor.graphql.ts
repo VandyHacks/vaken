@@ -7,6 +7,26 @@ export default gql`
 			email
 		}
 	}
+	
+	query tiers {
+		tiers {
+			id
+			name
+			permissions
+		}
+	}
+	
+	query companies {
+		companies {
+			id
+			name
+			tier {
+				id
+				name
+				permissions
+			}
+		}
+	}
 
 	mutation sponsorStatus($input: SponsorStatusInput!) {
 		sponsorStatus(input: $input) {

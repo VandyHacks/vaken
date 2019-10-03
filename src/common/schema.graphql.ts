@@ -115,11 +115,13 @@ export default gql`
 	}
 	
 	type Company @entity(embedded: true) {
+		id: ID! @id @column
 		name: String! @column
 		tier: Tier! @embedded
 	}
 	
 	type Tier @entity(embedded: true) {
+		id: ID! @id @column
 		name: String! @column
 		permissions: [String]! @column
 	}
@@ -250,6 +252,8 @@ export default gql`
 	}
 
 	type Query {
+		company(id: ID!): Company!
+		companies(sortDirection: SortDirection): [Company!]!
 		me: User # May be used when not logged in.
 		hacker(id: ID!): Hacker!
 		hackers(sortDirection: SortDirection): [Hacker!]!
@@ -266,6 +270,8 @@ export default gql`
 		signedReadUrl(input: ID!): String!
 		team(id: ID!): Team!
 		teams(sortDirection: SortDirection): [Team!]!
+		tier(id: ID!): Tier!
+		tiers(sortDirection: SortDirection): [Tier!]!
 	}
 
 	input UserInput {

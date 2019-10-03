@@ -96,10 +96,12 @@ export const resolvers: CustomResolvers<Context> = {
 		user: async eventCheckIn => (await eventCheckIn).user,
 	},
 	Company: {
+		id: async comp => (await comp)._id.toHexString(),
 		name: async comp => (await comp).name,
 		tier: async comp => (await comp).tier,
 	},
 	Tier: {
+		id: async tier => (await tier)._id.toHexString(),
 		name: async tier => (await tier).name,
 		permissions: async tier => (await tier).permissions,
 	},
@@ -189,6 +191,7 @@ export const resolvers: CustomResolvers<Context> = {
 				throw new AuthenticationError(`user '${JSON.stringify(user)}' must be organizer`);
 			if (!permissions) permissions = [];
 			await models.Tiers.insertOne({
+				_id: new ObjectID(),
 				name,
 				permissions
 			});
@@ -207,6 +210,7 @@ export const resolvers: CustomResolvers<Context> = {
 			const tier = await models.Tiers.findOne({ _id: new ObjectID(tierId) });
 			if (!tier) throw new UserInputError(`Tier with id ${tierId}' doesn't exist.`);
 			await models.Companies.insertOne({
+				_id: new ObjectID(),
 				name,
 				tier
 			});
@@ -427,6 +431,8 @@ export const resolvers: CustomResolvers<Context> = {
 		eventCheckIn: async (root, { id }, ctx) => queryById(id, ctx.models.EventCheckIns),
 		eventCheckIns: async (root, args, ctx) => ctx.models.EventCheckIns.find().toArray(),
 		events: async (root, args, ctx) => ctx.models.Events.find().toArray(),
+		company: async (root, { id }, ctx) => queryById(id, ctx.models.Companies),
+		companies: async (root, args, ctx) => ctx.models.Companies.find().toArray(),
 		hacker: async (root, { id }, ctx) => queryById(id, ctx.models.Hackers),
 		hackers: async (root, args, ctx) => ctx.models.Hackers.find().toArray(),
 		me: async (root, args, ctx) => {
@@ -454,6 +460,8 @@ export const resolvers: CustomResolvers<Context> = {
 		sponsors: async (root, args, ctx: Context) => ctx.models.Sponsors.find().toArray(),
 		team: async (root, { id }, ctx) => queryById(id, ctx.models.Teams),
 		teams: async (root, args, ctx) => ctx.models.Teams.find().toArray(),
+		tier: async (root, { id }, ctx) => queryById(id, ctx.models.Tiers),
+		tiers: async (root, args, ctx) => ctx.models.Tiers.find().toArray(),
 	},
 	Shift: {
 		begin: async shift => (await shift).begin.getTime(),
