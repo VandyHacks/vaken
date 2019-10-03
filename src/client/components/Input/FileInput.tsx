@@ -54,6 +54,7 @@ const Container = styled.div`
 export const FileInput: FC<InputProps> = props => {
 	const [file, setFile] = useState<File>();
 	const [getSignedUploadUrl] = useSignedUploadUrlMutation();
+	const [uploaded, setUploaded] = useState(false);
 	const { value, setState } = props;
 	const [counter, setCounter] = useState(0);
 	const fileReadUrlQuery = useSignedReadUrlQuery({ variables: { input: value } });
@@ -63,11 +64,13 @@ export const FileInput: FC<InputProps> = props => {
 	const onChange = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
 		if (!e.target.files) throw new Error('Files was null');
 		setFile(e.target.files[0]);
+		setUploaded(false);
 	};
 
 	useEffect(() => {
-		if (!file || !user.id) return;
+		if (!file || !user.id || uploaded) return;
 
+		setUploaded(true);
 		getSignedUploadUrl({ variables: { input: user.id } })
 			.then(uploadUrl => {
 				if (!uploadUrl || !uploadUrl.data)
@@ -80,14 +83,14 @@ export const FileInput: FC<InputProps> = props => {
 					method: 'PUT',
 				});
 			})
-			.then(res => {
+			.then(async res => {
 				if (res.ok) return setState(user.id);
-				throw new Error('Failed in upload to cloud storage');
+				throw new Error(`Failed in upload to cloud storage: ${await res.text()}`);
 			})
 			.catch(err => {
 				throw new Error(err);
 			});
-	}, [file, getSignedUploadUrl, setState, user]);
+	}, [file, getSignedUploadUrl, setState, user, uploaded]);
 
 	// Generate UID
 	useEffect(() => {
