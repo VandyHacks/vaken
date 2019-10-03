@@ -220,7 +220,7 @@ export default gql`
 		shirtSize: ShirtSize
 		status: SponsorStatus! @column
 		gender: String
-		dietaryRestrictions: [DietaryRestriction!]!
+		dietaryRestrictions: String!
 		userType: UserType!
 		phoneNumber: String
 		company: Company! @embedded
