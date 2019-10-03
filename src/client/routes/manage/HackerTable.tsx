@@ -114,8 +114,8 @@ const fuseOpts = {
 	distance: 100,
 	findAllMatches: true,
 	location: 0,
-	shouldSort: false,
-	threshold: 0.5,
+	shouldSort: true,
+	threshold: 0.3,
 	tokenize: true,
 };
 

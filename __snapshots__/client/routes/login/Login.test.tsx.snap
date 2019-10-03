@@ -2,7 +2,7 @@
 
 exports[`Login renders properly 1`] = `
 <div
-  className="sc-fjdhpX ebOgGV"
+  className="sc-fjdhpX dmItWC"
 >
   <div
     className="sc-bdVaJa sc-bwzfXH sc-ifAKCX sc-jzJRlG hPKjIj"
@@ -10,10 +10,10 @@ exports[`Login renders properly 1`] = `
     width="27rem"
   >
     <h1
-      className="sc-cSHVUG cCZQiR"
+      className="sc-cSHVUG bxzAjH"
       color="#3f3356"
     >
-      VandyHacks
+      VandyHacks VI
     </h1>
     <a
       href="/api/auth/google"
@@ -34,11 +34,11 @@ exports[`Login renders properly 1`] = `
           <img
             alt="Google logo"
             className="sc-iwsKbI kXBzef"
-            src={[Function]}
+            src="IconMock"
           />
         </div>
         <div
-          className="sc-htoDjs kcuBgu"
+          className="sc-htoDjs eEqYMT"
         >
           Sign in with Google
         </div>
@@ -63,11 +63,11 @@ exports[`Login renders properly 1`] = `
           <img
             alt="GitHub logo"
             className="sc-iwsKbI kXBzef"
-            src={[Function]}
+            src="IconMock"
           />
         </div>
         <div
-          className="sc-htoDjs kcuBgu"
+          className="sc-htoDjs eEqYMT"
         >
           Sign in with GitHub
         </div>

@@ -3,6 +3,7 @@ import { DIRECTIVES } from '@graphql-codegen/typescript-mongodb';
 import express from 'express';
 import passport from 'passport';
 import session from 'express-session';
+import MongoStore, { MongoUrlOptions } from 'connect-mongo';
 import gqlSchema from '../common/schema.graphql';
 import { resolvers } from './resolvers';
 import DB from './models';
@@ -10,8 +11,9 @@ import Context from './context';
 import logger from './logger';
 import { strategies, registerAuthRoutes } from './auth';
 
-const { SESSION_SECRET } = process.env;
+const { SESSION_SECRET, PORT } = process.env;
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
+if (!PORT) throw new Error(`PORT not set`);
 
 const app = express();
 
@@ -29,7 +31,14 @@ export const schema = makeExecutableSchema({
 	const models = await dbClient.collections;
 
 	// Register auth functions
-	app.use(session({ secret: SESSION_SECRET }));
+	app.use(
+		session({
+			secret: SESSION_SECRET,
+			store: new (MongoStore(session))(({
+				clientPromise: dbClient.client,
+			} as unknown) as MongoUrlOptions),
+		})
+	);
 	app.use(passport.initialize());
 	app.use(passport.session());
 	passport.use('github', strategies.github(models));
@@ -59,8 +68,15 @@ export const schema = makeExecutableSchema({
 
 	server.applyMiddleware({ app });
 
+	if (process.env.NODE_ENV === 'production') {
+		// Serve front-end asset files in prod.
+		app.use(express.static('dist/server/app'));
+		// MUST BE LAST AS THIS WILL REROUTE ALL REMAINING TRAFFIC TO THE FRONTEND!
+		app.use((req, res) => res.sendFile('index.html', { root: 'dist/server/app' }));
+	}
+
 	app.listen(
-		{ port: 8080 },
+		{ port: PORT },
 		() => void logger.info(`Server ready at http://localhost:8080${server.graphqlPath}`)
 	);
 })();

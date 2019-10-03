@@ -2,7 +2,8 @@
 
 exports[`Test Frame Frame renders correctly 1`] = `
 <div
-  className="sc-feJyhm eUWLat"
+  className="sc-bYSBpT kbnJqm"
+  onFocus={[Function]}
 >
   <div
     className="header"
@@ -10,53 +11,68 @@ exports[`Test Frame Frame renders correctly 1`] = `
     <div
       className="sc-bdVaJa sc-bwzfXH sc-htpNat sc-bxivhb efNTZh"
     >
+      <button
+        className="sc-jtRfpW jGXxNl"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="bar1"
+        />
+        <div
+          className="bar2"
+        />
+        <div
+          className="bar3"
+        />
+      </button>
       <h1
-        className="sc-jWBwVP gEoWbI"
-        color="#6979f8"
+        className="sc-gPEVay kvwAEA"
+        color="#3148A1"
       >
         Dashboard
       </h1>
     </div>
     <div
-      className="sc-iELTvK eWxlEo"
+      className="sc-elJkPf giXaGz"
     />
   </div>
   <div
-    className="sc-bbmXgH lcKoOp"
+    className="sidebar sc-ktHwxA cHPkpP"
   >
     <div
-      className="sc-gGBfsJ wPaZw"
+      className="sc-cIShpX eYghyc"
     >
       <div
-        className="sc-jnlKLf bZwZwY"
+        className="sc-kafWEX jVWPXo"
       >
         <img
           alt="VH graphic"
-          src="icon-mock"
+          src="IconMock"
         />
       </div>
       <hr
-        className="sc-fYxtnH UCBme"
+        className="sc-feJyhm dNbusE"
       />
       <div
         className="sc-bdVaJa sc-bwzfXH sc-bZQynM jxTPlc"
         height="calc(100% - calc(8rem + 160px))"
       >
         <ul
-          className="sc-kafWEX kGeCrc"
+          className="sc-lhVmIH nunxn"
         >
           <li>
             <a
               aria-current={null}
-              className="sc-cIShpX glRFxe"
+              className="sc-btzYZH dvpwSc"
               href="/dashboard"
               onClick={[Function]}
             >
               <button
-                className="sc-gqjmRU sc-hEsumM iHvMZW sc-fjdhpX cVvOdu"
+                className="sc-gqjmRU sc-cmTdod hNugsv sc-fjdhpX cVvOdu"
               >
                 <div
-                  className="sc-htoDjs sc-hEsumM iHvMZW sc-dnqmqq graBnM"
+                  className="sc-htoDjs sc-cmTdod hNugsv sc-dnqmqq caLfPx"
                 >
                   Dashboard
                 </div>
@@ -66,35 +82,17 @@ exports[`Test Frame Frame renders correctly 1`] = `
           <li>
             <a
               aria-current={null}
-              className="sc-cIShpX glRFxe"
-              href="/profile"
-              onClick={[Function]}
-            >
-              <button
-                className="sc-gqjmRU sc-hEsumM iHvMZW sc-fjdhpX cVvOdu"
-              >
-                <div
-                  className="sc-htoDjs sc-hEsumM iHvMZW sc-dnqmqq graBnM"
-                >
-                  Profile
-                </div>
-              </button>
-            </a>
-          </li>
-          <li>
-            <a
-              aria-current={null}
-              className="sc-cIShpX glRFxe"
+              className="sc-btzYZH dvpwSc"
               href="/application"
               onClick={[Function]}
             >
               <button
-                className="sc-gqjmRU sc-hEsumM iHvMZW sc-fjdhpX cVvOdu"
+                className="sc-gqjmRU sc-cmTdod hNugsv sc-fjdhpX cVvOdu"
               >
                 <div
-                  className="sc-htoDjs sc-hEsumM iHvMZW sc-dnqmqq graBnM"
+                  className="sc-htoDjs sc-cmTdod hNugsv sc-dnqmqq caLfPx"
                 >
-                  Application
+                  Apply
                 </div>
               </button>
             </a>
@@ -102,33 +100,15 @@ exports[`Test Frame Frame renders correctly 1`] = `
           <li>
             <a
               aria-current={null}
-              className="sc-cIShpX glRFxe"
-              href="/team"
-              onClick={[Function]}
-            >
-              <button
-                className="sc-gqjmRU sc-hEsumM iHvMZW sc-fjdhpX cVvOdu"
-              >
-                <div
-                  className="sc-htoDjs sc-hEsumM iHvMZW sc-dnqmqq graBnM"
-                >
-                  Team
-                </div>
-              </button>
-            </a>
-          </li>
-          <li>
-            <a
-              aria-current={null}
-              className="sc-cIShpX glRFxe"
+              className="sc-btzYZH dvpwSc"
               href="/help"
               onClick={[Function]}
             >
               <button
-                className="sc-gqjmRU sc-hEsumM iHvMZW sc-fjdhpX cVvOdu"
+                className="sc-gqjmRU sc-cmTdod hNugsv sc-fjdhpX cVvOdu"
               >
                 <div
-                  className="sc-htoDjs sc-hEsumM iHvMZW sc-dnqmqq graBnM"
+                  className="sc-htoDjs sc-cmTdod hNugsv sc-dnqmqq caLfPx"
                 >
                   Help
                 </div>
@@ -141,83 +121,48 @@ exports[`Test Frame Frame renders correctly 1`] = `
           height="min-content"
         >
           <a
-            className="sc-ktHwxA gLDjTq"
+            className="sc-jwKygS cqXzzM"
             href="/api/logout"
           >
             <button
-              className="sc-gqjmRU sc-hEsumM iHvMZW sc-fjdhpX cVvOdu"
+              className="sc-gqjmRU sc-cmTdod hNugsv sc-fjdhpX cVvOdu"
             >
               <div
-                className="sc-htoDjs sc-hEsumM iHvMZW sc-dnqmqq graBnM"
+                className="sc-htoDjs sc-cmTdod hNugsv sc-dnqmqq caLfPx"
               >
                 Logout
               </div>
             </button>
           </a>
           <hr
-            className="sc-fYxtnH sc-tilXH guCrhR"
+            className="sc-feJyhm sc-iELTvK dErdEa"
           />
           <h1
-            className="sc-jzJRlG cRPkSq"
+            className="sc-jzJRlG hdnVAr"
           >
-            VandyHacks 2019
+            VandyHacks VI
           </h1>
         </div>
       </div>
     </div>
   </div>
   <div
-    className="content sc-gzVnrw jfMsJw"
+    className="content sc-gzVnrw dkqizV"
   >
     <div
       className="sc-bdVaJa sc-bwzfXH sc-ifAKCX kHHPcv"
     >
       <div
-        className="sc-bdVaJa sc-bwzfXH sc-ifAKCX sc-kpOJdX kpxAxA"
-        height="min-content"
-        width="36rem"
+        className="sc-bdVaJa sc-bwzfXH sc-ifAKCX sc-eNQAEJ sc-iRbamj gQtKCV"
       >
         <div
           className="sc-bdVaJa sc-bwzfXH dgnCwc"
         >
           <h1
-            className="sc-jWBwVP hKGawI"
-            fontSize="1.8rem"
+            className="sc-gPEVay kfqQNb"
+            fontSize="1.75rem"
           >
-            Your application status is:
-          </h1>
-          <div
-            className="sc-VigVT sc-jTzLTM bHJZvB"
-          >
-            <div
-              className="sc-htoDjs ewDcVm"
-              color="#FF647C"
-              fontSize="1.8rem"
-              fontWeight="bold"
-            >
-              INCOMPLETE
-            </div>
-          </div>
-          <img
-            alt="Man wearing hoodie at holographic computer"
-            src={[Function]}
-          />
-          <h1
-            className="sc-jzJRlG koJNxc"
-            color="#3F3356"
-            fontSize="1rem"
-          >
-            <span
-              style={
-                Object {
-                  "fontWeight": "bold",
-                }
-              }
-            >
-              You still need to finish your application.
-            </span>
-            <br />
-            The deadline is January 1, 2020 at 11:59 pm (EST).
+            Your application status:
           </h1>
           <a
             href="/application"
@@ -229,10 +174,10 @@ exports[`Test Frame Frame renders correctly 1`] = `
             }
           >
             <button
-              className="sc-gqjmRU sc-eNQAEJ fvHoVz"
+              className="sc-gqjmRU sc-iAyFgw dhSyGE"
             >
               <div
-                className="sc-htoDjs kSfDbb"
+                className="sc-htoDjs Dufyp"
                 color="white"
                 fontSize="1.4em"
               >
