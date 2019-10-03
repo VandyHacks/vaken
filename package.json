@@ -178,7 +178,7 @@
 		"supertest": "^4.0.2",
 		"svg-inline-loader": "^0.8.0",
 		"thread-loader": "^2.1.2",
-		"ts-jest": "^24.0.2",
+		"ts-jest": "^24.1.0",
 		"ts-node-dev": "^1.0.0-pre.40",
 		"typedoc": "^0.15.0",
 		"typescript": "^3.5.3",
