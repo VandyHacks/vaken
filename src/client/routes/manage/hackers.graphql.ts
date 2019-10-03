@@ -27,13 +27,10 @@ export default gql`
 				name
 				memberIds
 			}
-			# applicationQuestions {
-			# 	id
-			# 	question {
-			# 		prompt
-			# 	}
-			# 	answer
-			# }
+			application {
+				question
+				answer
+			}
 		}
 	}
 

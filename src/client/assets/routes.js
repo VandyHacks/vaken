@@ -6,6 +6,7 @@ import { ManageHackers } from '../routes/manage/ManageHackers';
 import { Team } from '../routes/team/Team';
 import { Profile } from '../routes/profile/Profile';
 import { Help } from '../routes/help/Help';
+import { Nfc } from '../routes/nfc/Nfc';
 import { UserType } from '../generated/graphql';
 
 const routes = [
@@ -21,24 +22,24 @@ const routes = [
 		displayText: 'Dashboard',
 		path: '/dashboard',
 	},
-	{
-		authLevel: [UserType.Hacker, UserType.Sponsor, UserType.Organizer],
-		component: Profile,
-		displayText: 'Profile',
-		path: '/profile',
-	},
+	// {
+	// 	authLevel: [UserType.Hacker, UserType.Sponsor, UserType.Organizer],
+	// 	component: Profile,
+	// 	displayText: 'Profile',
+	// 	path: '/profile',
+	// },
 	{
 		authLevel: [UserType.Hacker],
 		component: Application,
-		displayText: 'Application',
+		displayText: 'Apply',
 		path: '/application',
 	},
-	{
-		authLevel: [UserType.Hacker],
-		component: Team,
-		displayText: 'Team',
-		path: '/team',
-	},
+	// {
+	// 	authLevel: [UserType.Hacker],
+	// 	component: Team,
+	// 	displayText: 'Team',
+	// 	path: '/team',
+	// },
 	{
 		authLevel: [UserType.Organizer],
 		component: ManageHackers,
@@ -56,6 +57,12 @@ const routes = [
 		component: Help,
 		displayText: 'Help',
 		path: '/help',
+	},
+	{
+		authLevel: [UserType.Organizer, UserType.Sponsor],
+		component: Nfc,
+		displayText: 'Scan NFC',
+		path: '/nfc',
 	},
 ];
 

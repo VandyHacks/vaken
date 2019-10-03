@@ -6,7 +6,7 @@ const common = require('./webpack.common.js');
 
 module.exports = merge.smart(common, {
 	mode: 'development',
-	devtool: 'eval-source-map',
+	devtool: 'source-map',
 	devServer: {
 		hot: true, // Enable hot module replacement
 		open: false, // Do not open browser on 'npm start'

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import React, { FC } from 'react';
 import { hexToRGB, Props as PopupProps } from './FloatingPopup';
-import DownArrow from '../../assets/img/down_arrow.svg';
 import UpArrow from '../../assets/img/up_arrow.svg';
+import STRINGS from '../../assets/strings.json';
 
 /*
 export const useMeasure = (): any => {
@@ -16,19 +16,26 @@ export const useMeasure = (): any => {
 const CollapsibleHeader = styled.button`
 	border-radius: 1rem;
 	background-color: #ecebed;
-	color: #6979f8;
+	color: ${STRINGS.ACCENT_COLOR};
 	cursor: pointer;
 	padding: 14px 1.4rem;
 	width: 100%;
 	border: none;
 	text-align: left;
 	outline: none;
-	font-size: 3em;
+	font-size: 2em;
 	font-weight: bolder;
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: space-between;
 	align-items: center;
+
+	img {
+		transition: 0.5s all;
+	}
+	img.open {
+		transform: rotate(-180deg);
+	}
 `;
 
 const BGDiv = styled.div`
@@ -38,6 +45,7 @@ const BGDiv = styled.div`
 		${({ backgroundOpacity = '1' }: PopupProps): string => backgroundOpacity}
 	);
 	border-radius: 1rem;
+	max-width: 100%;
 `;
 
 const CollapsibleBody = styled.div`
@@ -48,6 +56,7 @@ const CollapsibleBody = styled.div`
 	display: grid;
 	grid-auto-flow: row;
 	grid-gap: 1.4rem;
+	max-width: 100%;
 
 	&.active {
 		padding: 1.5rem;
@@ -70,7 +79,7 @@ export const Collapsible: FC<Props> = (props: Props) => {
 		<BGDiv>
 			<CollapsibleHeader id={title} {...rest}>
 				{title}
-				<img src={open ? UpArrow : DownArrow} alt="arrow" />
+				<img src={UpArrow} className={open ? 'open' : ''} alt="arrow" />
 			</CollapsibleHeader>
 			<CollapsibleBody className={open ? 'active' : ''}>{children}</CollapsibleBody>
 		</BGDiv>

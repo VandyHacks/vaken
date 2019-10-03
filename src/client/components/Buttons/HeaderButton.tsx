@@ -10,7 +10,12 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 	width?: CSS.WidthProperty<0>;
 }
 
-export const HeaderButton: FC<Props> = ({ children, onClick, width }: Props) => {
+export const HeaderButton: FC<Props & { fontSize?: string }> = ({
+	children,
+	onClick,
+	width,
+	fontSize,
+}) => {
 	const [inAction, setInAction] = useState(false);
 	const clickHandler: () => void = () => {
 		const result = onClick();
@@ -38,7 +43,7 @@ export const HeaderButton: FC<Props> = ({ children, onClick, width }: Props) => 
 			paddingBottom="0.6rem"
 			height="auto"
 			color="white"
-			fontSize="1.4rem"
+			fontSize={fontSize || '1.4rem'}
 			background={STRINGS.ACCENT_COLOR}
 			glowColor="rgba(0, 0, 255, 0.67)"
 			onClick={clickHandler}>

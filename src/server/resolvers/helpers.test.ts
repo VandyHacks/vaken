@@ -13,8 +13,9 @@ import DB, { Models } from '../models';
 const hacker: UserDbInterface = {
 	_id: new ObjectId(),
 	createdAt: new Date(),
-	dietaryRestrictions: [],
+	dietaryRestrictions: '',
 	email: 'foo@bar.baz',
+	eventsAttended: [],
 	firstName: 'Foo',
 	lastName: 'Bar',
 	logins: [],

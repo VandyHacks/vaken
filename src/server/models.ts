@@ -1,13 +1,14 @@
 import { Collection, MongoClient } from 'mongodb';
 import {
 	ApplicationFieldDbObject,
-	ApplicationQuestionDbObject,
+	EventDbObject,
 	HackerDbObject,
 	LoginDbObject,
 	MentorDbObject,
 	OrganizerDbObject,
 	ShiftDbObject,
 	TeamDbObject,
+	EventCheckInDbObject,
 } from './generated/graphql';
 
 export interface UserTeamIndexDbObject {
@@ -17,7 +18,8 @@ export interface UserTeamIndexDbObject {
 
 export interface Models {
 	ApplicationFields: Collection<ApplicationFieldDbObject>;
-	ApplicationQuestions: Collection<ApplicationQuestionDbObject>;
+	EventCheckIns: Collection<EventCheckInDbObject>;
+	Events: Collection<EventDbObject>;
 	Hackers: Collection<HackerDbObject>;
 	Logins: Collection<LoginDbObject>;
 	Mentors: Collection<MentorDbObject>;
@@ -28,7 +30,7 @@ export interface Models {
 }
 
 export default class DB {
-	private client?: MongoClient;
+	private client_?: MongoClient;
 
 	/**
 	 * Mongo connection URI set in the constructor.
@@ -53,8 +55,8 @@ export default class DB {
 	 * This method will throw if connection was unsuccessful.
 	 */
 	public async connect(): Promise<void> {
-		this.client = await MongoClient.connect(this.uri, { useNewUrlParser: true });
-		if (!this.client) throw new Error('MongoClient not connected');
+		this.client_ = await MongoClient.connect(this.uri, { useNewUrlParser: true });
+		if (!this.client_) throw new Error('MongoClient not connected');
 	}
 
 	/**
@@ -62,8 +64,18 @@ export default class DB {
 	 * stopping the application.
 	 */
 	public async disconnect(): Promise<void> {
-		if (this.client) await this.client.close();
+		if (this.client_) await this.client_.close();
 		this.collections_ = undefined;
+	}
+
+	/**
+	 * Retrieves a reference to the underlying MongoClient used by this class.
+	 */
+	public get client(): Promise<MongoClient> {
+		return (async () => {
+			if (!this.client_) await this.connect();
+			return this.client_ as MongoClient;
+		})();
 	}
 
 	/**
@@ -76,15 +88,15 @@ export default class DB {
 		// promise where we _can_ use async.
 		return new Promise(async resolve => {
 			if (!this.collections_) {
-				if (!this.client) await this.connect();
-				const db = (this.client as MongoClient).db('vaken');
+				const db = (await this.client).db('vaken');
 				this.collections_ = {
 					/**
 					 * creates the collections the first time it's called if it doesn't exist
 					 * NOTE: these will not show up initially in MongoDB Atlas UI until they're no longer empty collections
 					 */
 					ApplicationFields: db.collection<ApplicationFieldDbObject>('applicationFields'),
-					ApplicationQuestions: db.collection<ApplicationQuestionDbObject>('applicationQuestions'),
+					EventCheckIns: db.collection<EventCheckInDbObject>('EventCheckIns'),
+					Events: db.collection<EventDbObject>('Events'),
 					Hackers: db.collection<HackerDbObject>('Hackers'),
 					Logins: db.collection<LoginDbObject>('logins'),
 					Mentors: db.collection<MentorDbObject>('mentors'),

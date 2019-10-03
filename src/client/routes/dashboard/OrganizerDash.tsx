@@ -244,9 +244,13 @@ export const SchoolTable: FunctionComponent<Props> = (props: Props): JSX.Element
 };
 
 export const OrganizerDash: FunctionComponent = (): JSX.Element => {
-	const { loading, error, data } = useQuery(GET_STATISTICS, {
-		variables: { number: 5.0 },
-	});
+	// TODO(leonm1/tangck): Fix queries to show real data. Should also clean up imports when done.
+	// Currently the { loading: true } will stop this component from causing errors in prod.
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const { loading, error, data } = { data: {} as any, error: 'Not Implemented', loading: true };
+	// const { loading, error, data } = useQuery(GET_STATISTICS, {
+	// 	variables: { number: 5.0 },
+	// });
 
 	if (loading) return <Spinner />;
 	if (error) {
