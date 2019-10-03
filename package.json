@@ -97,7 +97,7 @@
 		"react": "^16.8.6",
 		"react-chartjs-2": "^2.7.6",
 		"react-dom": "^16.8.6",
-		"react-router-dom": "^5.0.1",
+		"react-router-dom": "^5.1.2",
 		"react-select": "^3.0.4",
 		"react-selectable-fast": "^2.3.0",
 		"react-toastify": "^5.4.0",
