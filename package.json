@@ -117,7 +117,7 @@
 		"@babel/plugin-syntax-dynamic-import": "^7.2.0",
 		"@babel/preset-env": "^7.5.0",
 		"@babel/preset-react": "^7.0.0",
-		"@babel/preset-typescript": "^7.3.3",
+		"@babel/preset-typescript": "^7.6.0",
 		"@types/chart.js": "^2.8.5",
 		"@types/connect-mongo": "0.0.43",
 		"@types/dotenv": "^6.1.1",
