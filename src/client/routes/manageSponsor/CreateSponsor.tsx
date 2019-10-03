@@ -4,9 +4,33 @@ import { SearchBox } from '../../components/Input/SearchBox';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { SmallCenteredText } from '../../components/Text/SmallCenteredText';
 import { FlexRow } from '../../components/Containers/FlexContainers';
-import { useCreateSponsorMutation, useCreateTierMutation, useCreateCompanyMutation } from '../../generated/graphql';
+import { useCreateSponsorMutation, useCreateTierMutation, useCreateCompanyMutation, useCompaniesQuery, useTiersQuery } from '../../generated/graphql';
+import styled from 'styled-components';
+import Spinner from '../../components/Loading/Spinner'
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+const StyledSelect = styled.select`
+	margin: 0.25rem 1rem 0.25rem 0rem;
+	padding: 0.75rem;
+	box-shadow: 0rem 0.5rem 4rem rgba(0, 0, 0, 0.07);
+	border-radius: 0.375rem;
+	font-size: 1rem;
+	box-sizing: border-box;
+	border: 0.0625rem solid '#ecebed';
+	min-width: 10rem
+`;
+
+const StyledOption = styled.option`
+	margin: 0.25rem 1rem 0.25rem 0rem;
+	padding: 0.75rem;
+	box-shadow: 0rem 0.5rem 4rem rgba(0, 0, 0, 0.07);
+	border-radius: 0.375rem;
+	font-size: 1rem;
+	box-sizing: border-box;
+	border: 0.0625rem solid '#ecebed';
+	min-width: 10rem
+`;
 
 const CreateCompany:  React.FunctionComponent = (): JSX.Element => {
 	const [companyName, setCompanyName] = useState('');
@@ -16,6 +40,8 @@ const CreateCompany:  React.FunctionComponent = (): JSX.Element => {
 	const [createCompany] = useCreateCompanyMutation({
 		variables: { input: { name: companyName, tierId } },
 	});
+
+	let {loading, error, data} = useTiersQuery();
 
 	const onCreateCompany = async (): Promise<void> => {
 		try {
@@ -38,13 +64,14 @@ const CreateCompany:  React.FunctionComponent = (): JSX.Element => {
 					onChange={e => setCompanyName(e.target.value)}
 					minWidth="15em"
 				/>
-				<SearchBox
-					width="100%"
-					value={tierId}
-					placeholder="Tier ID"
-					onChange={e => setTierId(e.target.value)}
-					minWidth="15em"
-				/>
+				{(loading || !data) ? <Spinner/> :
+					<StyledSelect onChange={e => setTierId(e.target.value)}>
+						<StyledOption value="" disabled selected>Select Tier</StyledOption>
+						{data.tiers.map(t => (
+							<StyledOption key={t.id} value={t.id.toString()}>{t.name}</StyledOption>
+						))}
+					</StyledSelect>
+				}
 				<HeaderButton width="7em" style={{ display: 'inline' }} onClick={onCreateCompany}>
 					<p style={{ fontSize: '1.2rem' }}>Create</p>
 				</HeaderButton>
@@ -109,6 +136,8 @@ const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 	const [sponsorName, setSponsorName] = useState('');
 	const [companyId, setCompanyId] = useState('');
 	const [createSponsorMsg, setCreateSponsorMsg] = useState('');
+	let {loading, error, data} = useCompaniesQuery();
+	console.log(loading, error, data);
 
 	const [createSponsor] = useCreateSponsorMutation({
 		variables: { input: { companyId, email: sponsorEmail, name: sponsorName } },
@@ -151,13 +180,14 @@ const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 					onChange={e => setSponsorName(e.target.value)}
 					minWidth="15em"
 				/>
-				<SearchBox
-					width="100%"
-					value={companyId}
-					placeholder="Company ID"
-					onChange={e => setCompanyId(e.target.value)}
-					minWidth="15em"
-				/>
+				{(loading || !data) ? <Spinner/> :
+				<StyledSelect onChange={e => setCompanyId(e.target.value)}>
+					<StyledOption value="" disabled selected>Select Company</StyledOption>
+					{data.companies.map(c => (
+						<StyledOption key={c.id} value={c.id.toString()}>{c.name}</StyledOption>
+					))}
+				</StyledSelect>
+				}
 				<HeaderButton width="7em" style={{ display: 'inline' }} onClick={onCreateSponsorEmail}>
 					<p style={{ fontSize: '1.2rem' }}>Create</p>
 				</HeaderButton>
