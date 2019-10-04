@@ -2,7 +2,7 @@
 
 exports[`Test Nfc renders correctly 1`] = `
 <div
-  className="sc-ifAKCX sc-EHOje sc-htoDjs sc-kGXeez blfinp"
+  className="sc-ifAKCX sc-EHOje sc-htoDjs sc-kGXeez colIYD"
 >
   <div
     className="basic-select sc-kpOJdX kAzjOl css-2b097c-container"
@@ -113,12 +113,12 @@ exports[`Test Nfc renders correctly 1`] = `
     />
   </div>
   <input
-    className="sc-bdVaJa iZAWJG"
+    className="sc-bdVaJa fBCzSi"
     placeholder="Scan NFC"
     width="100%"
   />
   <input
-    className="sc-bdVaJa ivguAE"
+    className="sc-bdVaJa kmhdzs"
     placeholder="Manual Search"
     width="100%"
   />
@@ -137,7 +137,7 @@ exports[`Test Nfc renders correctly 1`] = `
     </div>
   </label>
   <button
-    className="sc-jzJRlG sc-chPdSV dHZyMI"
+    className="sc-jzJRlG sc-chPdSV cQiqBW"
     height="auto"
     onClick={[Function]}
     width="auto"

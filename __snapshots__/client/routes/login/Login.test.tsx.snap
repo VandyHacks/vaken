@@ -5,7 +5,7 @@ exports[`Login renders properly 1`] = `
   className="sc-fjdhpX dmItWC"
 >
   <div
-    className="sc-bdVaJa sc-bwzfXH sc-ifAKCX sc-jzJRlG hPKjIj"
+    className="sc-bdVaJa sc-bwzfXH sc-ifAKCX sc-jzJRlG cRbDmn"
     height="25"
     width="27rem"
   >
@@ -24,7 +24,7 @@ exports[`Login renders properly 1`] = `
       }
     >
       <button
-        className="sc-gqjmRU iicoRd"
+        className="sc-gqjmRU hxBurY"
       >
         <div
           className="sc-bdVaJa sc-bwzfXH sc-htpNat dyMbAR"
@@ -53,7 +53,7 @@ exports[`Login renders properly 1`] = `
       }
     >
       <button
-        className="sc-gqjmRU iicoRd"
+        className="sc-gqjmRU hxBurY"
       >
         <div
           className="sc-bdVaJa sc-bwzfXH sc-htpNat dyMbAR"

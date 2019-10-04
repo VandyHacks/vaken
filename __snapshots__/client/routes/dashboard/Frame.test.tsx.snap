@@ -2,7 +2,7 @@
 
 exports[`Test Frame Frame renders correctly 1`] = `
 <div
-  className="sc-bYSBpT kbnJqm"
+  className="sc-bYSBpT fWfTni"
   onFocus={[Function]}
 >
   <div
@@ -12,7 +12,7 @@ exports[`Test Frame Frame renders correctly 1`] = `
       className="sc-bdVaJa sc-bwzfXH sc-htpNat sc-bxivhb efNTZh"
     >
       <button
-        className="sc-jtRfpW jGXxNl"
+        className="sc-jtRfpW dsOjVh"
         onClick={[Function]}
         type="button"
       >
@@ -69,7 +69,7 @@ exports[`Test Frame Frame renders correctly 1`] = `
               onClick={[Function]}
             >
               <button
-                className="sc-gqjmRU sc-cmTdod hNugsv sc-fjdhpX cVvOdu"
+                className="sc-gqjmRU sc-cmTdod hNugsv sc-fjdhpX goWjNZ"
               >
                 <div
                   className="sc-htoDjs sc-cmTdod hNugsv sc-dnqmqq caLfPx"
@@ -87,7 +87,7 @@ exports[`Test Frame Frame renders correctly 1`] = `
               onClick={[Function]}
             >
               <button
-                className="sc-gqjmRU sc-cmTdod hNugsv sc-fjdhpX cVvOdu"
+                className="sc-gqjmRU sc-cmTdod hNugsv sc-fjdhpX goWjNZ"
               >
                 <div
                   className="sc-htoDjs sc-cmTdod hNugsv sc-dnqmqq caLfPx"
@@ -101,11 +101,29 @@ exports[`Test Frame Frame renders correctly 1`] = `
             <a
               aria-current={null}
               className="sc-btzYZH dvpwSc"
+              href="/team"
+              onClick={[Function]}
+            >
+              <button
+                className="sc-gqjmRU sc-cmTdod hNugsv sc-fjdhpX goWjNZ"
+              >
+                <div
+                  className="sc-htoDjs sc-cmTdod hNugsv sc-dnqmqq caLfPx"
+                >
+                  Team
+                </div>
+              </button>
+            </a>
+          </li>
+          <li>
+            <a
+              aria-current={null}
+              className="sc-btzYZH dvpwSc"
               href="/help"
               onClick={[Function]}
             >
               <button
-                className="sc-gqjmRU sc-cmTdod hNugsv sc-fjdhpX cVvOdu"
+                className="sc-gqjmRU sc-cmTdod hNugsv sc-fjdhpX goWjNZ"
               >
                 <div
                   className="sc-htoDjs sc-cmTdod hNugsv sc-dnqmqq caLfPx"
@@ -125,7 +143,7 @@ exports[`Test Frame Frame renders correctly 1`] = `
             href="/api/logout"
           >
             <button
-              className="sc-gqjmRU sc-cmTdod hNugsv sc-fjdhpX cVvOdu"
+              className="sc-gqjmRU sc-cmTdod hNugsv sc-fjdhpX goWjNZ"
             >
               <div
                 className="sc-htoDjs sc-cmTdod hNugsv sc-dnqmqq caLfPx"
@@ -153,7 +171,7 @@ exports[`Test Frame Frame renders correctly 1`] = `
       className="sc-bdVaJa sc-bwzfXH sc-ifAKCX kHHPcv"
     >
       <div
-        className="sc-bdVaJa sc-bwzfXH sc-ifAKCX sc-eNQAEJ sc-iRbamj gQtKCV"
+        className="sc-bdVaJa sc-bwzfXH sc-ifAKCX sc-eNQAEJ sc-iRbamj bezmAo"
       >
         <div
           className="sc-bdVaJa sc-bwzfXH dgnCwc"
@@ -174,7 +192,7 @@ exports[`Test Frame Frame renders correctly 1`] = `
             }
           >
             <button
-              className="sc-gqjmRU sc-iAyFgw dhSyGE"
+              className="sc-gqjmRU sc-iAyFgw RwqKb"
             >
               <div
                 className="sc-htoDjs Dufyp"
