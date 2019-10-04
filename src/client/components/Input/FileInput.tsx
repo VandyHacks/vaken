@@ -24,7 +24,7 @@ const FileLabelEl = styled.label`
 	background: ${STRINGS.ACCENT_COLOR};
 	width: fit-content;
 	color: white;
-	border-radius: 1rem;
+	border-radius: 4px;
 	display: flex;
 	align-items: center;
 	justify-content: center;

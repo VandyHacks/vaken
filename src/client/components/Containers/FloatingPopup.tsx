@@ -21,7 +21,7 @@ const FloatingPopup = styled(FlexStartColumn)`
 			backgroundColor ? hexToRGB(backgroundColor) : '247, 245, 249'},
 		${({ backgroundOpacity = '1' }: Props): string => backgroundOpacity}
 	);
-	border-radius: ${({ borderRadius = '2rem' }: Props) => borderRadius};
+	border-radius: ${({ borderRadius = '8px' }: Props) => borderRadius};
 	padding: ${({ padding = '1.5rem' }: Props) => padding};
 	margin-bottom: ${({ marginBottom = '0' }: Props) => marginBottom};
 	height: ${({ height = 'min-content' }: Props) => height};

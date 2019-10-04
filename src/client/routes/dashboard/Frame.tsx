@@ -39,7 +39,7 @@ const Layout = styled.div`
 	.content {
 		grid-area: content;
 		max-height: 100%;
-		/* border-radius: 2rem; */
+		border-radius: 8px;
 		overflow: auto;
 	}
 
@@ -80,7 +80,7 @@ const MenuIcon: FC<{ open: boolean; setOpen: React.Dispatch<SetStateAction<boole
 }) => {
 	const Button = styled.button`
 		background-color: rgba(247, 245, 249, 1);
-		border-radius: 6px;
+		border-radius: 4px;
 		z-index: 1;
 		cursor: pointer;
 		border: none;

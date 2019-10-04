@@ -58,7 +58,7 @@ export const StyledQuestion = styled.label`
 	font-size: 1rem;
 
 	& > input {
-		border-radius: 6px;
+		border-radius: 4px;
 		background: white;
 	}
 `;
@@ -207,7 +207,6 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 
 	return (
 		<FloatingPopup
-			borderRadius="1rem"
 			// height="100%"
 			width="100%"
 			backgroundOpacity="1"

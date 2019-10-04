@@ -71,7 +71,7 @@ export const Button = styled.button`
 	margin-left: ${({ marginLeft }: ButtonProps) => marginLeft || 0};
 	margin-right: ${({ marginRight }: ButtonProps) => marginRight || 0};
 	background: ${({ background = 'rgba(255, 255, 255, 1)' }: ButtonProps) => background};
-	border-radius: 1rem;
+	border-radius: 4px;
 	cursor: pointer;
 	border: none;
 

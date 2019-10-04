@@ -14,7 +14,7 @@ export const useMeasure = (): any => {
 }; */
 
 const CollapsibleHeader = styled.button`
-	border-radius: 1rem;
+	border-radius: 8px;
 	background-color: #ecebed;
 	color: ${STRINGS.ACCENT_COLOR};
 	cursor: pointer;
@@ -44,7 +44,7 @@ const BGDiv = styled.div`
 			backgroundColor ? hexToRGB(backgroundColor) : '247, 245, 249'},
 		${({ backgroundOpacity = '1' }: PopupProps): string => backgroundOpacity}
 	);
-	border-radius: 1rem;
+	border-radius: 8px;
 	max-width: 100%;
 `;
 

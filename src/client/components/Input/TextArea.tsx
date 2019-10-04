@@ -24,15 +24,20 @@ export const RawInput = styled.textarea`
 	}
 `;
 
-export const Input: FC<InputProps> = ({ setState, value, ...rest }) => {
+export const Input: FC<InputProps & { maxLength?: number }> = ({
+	setState,
+	value,
+	maxLength,
+	...rest
+}) => {
 	const onChange: ChangeEventHandler<HTMLTextAreaElement> = ({ currentTarget }) =>
 		setState(currentTarget.value);
 
 	// TODO: Remove any.
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	/* eslint-disable @typescript-eslint/no-explicit-any */
 	return (
 		<RawInput
-			maxLength={STRINGS.TEXT_AREA_MAX_LENGTH}
+			maxLength={maxLength || STRINGS.TEXT_AREA_MAX_LENGTH}
 			{...(rest as any)}
 			value={value}
 			onChange={onChange as any}

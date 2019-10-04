@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
     <g filter="url(#filter0_d)">
-        <rect width="24" height="24" x="0" y="0" fill="white" rx="6"/>
-        <rect width="23" height="23" x="0.5" y="0.5" stroke="#ECEBED" rx="5.5"/>
+        <rect width="24" height="24" x="0" y="0" fill="white" rx="4"/>
+        <rect width="23" height="23" x="0.5" y="0.5" stroke="#ECEBED" rx="3.5"/>
     </g>
     <defs>
         <filter id="filter0_d" width="24" height="24" x="0" y="0" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">

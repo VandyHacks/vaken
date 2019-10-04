@@ -6,7 +6,7 @@ export const ActionButton = styled.button`
 	color: #ffffff;
 	font-size: 1rem;
 	padding: 0.75rem 1.5rem;
-	border-radius: 1.5rem;
+	border-radius: 4px;
 	text-align: center;
 	box-sizing: border-box;
 	border: none;

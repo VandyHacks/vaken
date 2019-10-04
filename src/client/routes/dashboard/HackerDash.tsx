@@ -76,7 +76,7 @@ const statusConfig = {
 };
 
 const HackerDashBG = styled(FloatingPopup)`
-	border-radius: 1rem;
+	border-radius: 8px;
 	height: min-content;
 	width: 36rem;
 	background: rgba(247, 245, 249, 1);
@@ -123,7 +123,11 @@ export const HackerDash: FunctionComponent = (): JSX.Element => {
 										{statusInfo.status}
 									</CenterButtonText>
 								</ButtonOutline>
-								<img src={statusInfo.img} alt="Man wearing hoodie at holographic computer" />
+								<img
+									src={statusInfo.img}
+									height="200px"
+									alt="Man wearing hoodie at holographic computer"
+								/>
 								<SmallCenteredText color="#3F3356" fontSize="1rem" margin="1.4rem">
 									<span style={{ fontWeight: 'bold' }}>{statusInfo.boldText}</span>
 									<br />

@@ -7,7 +7,7 @@ import TextButton from '../Buttons/TextButton';
 
 const Rectangle = styled.div`
 	border: 0.1rem solid ${STRINGS.WARNING_COLOR};
-	border-radius: 1rem;
+	border-radius: 8px;
 	display: inline-block;
 	text-align: center;
 	color: ${STRINGS.WARNING_COLOR};

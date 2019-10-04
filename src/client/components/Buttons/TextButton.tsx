@@ -4,7 +4,7 @@ import { Button, CenterButtonText, ButtonProps } from './Buttons';
 
 export const StyledLoginBtn = styled(Button)`
 	background: ${({ background }: ButtonProps) => background || 'white'};
-	color: ${({ background }: ButtonProps) => background || 'black'};
+	color: ${({ color }: ButtonProps) => color || 'black'};
 	flex-shrink: 0;
 	font-family: 'Roboto';
 	font-size: 1rem;

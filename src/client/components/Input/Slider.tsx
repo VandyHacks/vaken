@@ -15,7 +15,7 @@ const SliderContainer = styled.div`
 	font-size: 0;
 	display: flex;
 	flex-flow: row wrap;
-	border-radius: 6px;
+	border-radius: 4px;
 
 	input {
 		width: 0;
@@ -31,7 +31,7 @@ const SliderContainer = styled.div`
 		box-sizing: border-box;
 		display: inline-block;
 		background: #ffffff;
-		border-radius: 6px;
+		border-radius: 4px;
 		background-color: #fff;
 		line-height: 140%;
 		text-align: center;
@@ -46,6 +46,10 @@ const SliderContainer = styled.div`
 		color: #ffffff;
 		/* border-color: #6979f8; */
 		z-index: 1;
+
+		svg path {
+			fill: ${STRINGS.ACCENT_COLOR};
+		}
 	}
 
 	input:not(:checked):focus + label {
