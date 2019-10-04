@@ -179,7 +179,10 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 
 	useEffect(() => {
 		// Auto-save application input after five seconds of inactivity.
-		autosaveTimeout = setTimeout(() => updateApplication({ variables: { input } }), 5000);
+		autosaveTimeout = setTimeout(
+			() => input.length && updateApplication({ variables: { input } }),
+			5000
+		);
 
 		// Cleanup
 		return () => clearTimeout(autosaveTimeout);
