@@ -18,9 +18,12 @@ export const verifyCallback = async (
 	})) || { userType: null };
 
 	try {
-		const { emails: [{ value: email }] = [{ value: null }] } = profile;
+		let { emails: [{ value: email }] = [{ value: null }] } = profile;
 		if (email == null) {
-			throw new Error(`Email not provided by provider ${JSON.stringify(profile)}`);
+			// microsoft is fucking stupid, I can't even.
+			email = profile._json.email; // eslint-disable-line
+			if (email == null)
+				throw new Error(`Email not provided by provider ${JSON.stringify(profile)}`);
 		}
 		let user: UserDbInterface | undefined;
 
