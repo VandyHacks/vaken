@@ -65,24 +65,6 @@ exports[`Test Sidebar Sidebar renders correctly 1`] = `
           <a
             aria-current={null}
             className="sc-btzYZH dvpwSc"
-            href="/team"
-            onClick={[Function]}
-          >
-            <button
-              className="sc-gqjmRU sc-cmTdod hNugsv sc-fjdhpX goWjNZ"
-            >
-              <div
-                className="sc-htoDjs sc-cmTdod hNugsv sc-dnqmqq caLfPx"
-              >
-                Team
-              </div>
-            </button>
-          </a>
-        </li>
-        <li>
-          <a
-            aria-current={null}
-            className="sc-btzYZH dvpwSc"
             href="/help"
             onClick={[Function]}
           >
