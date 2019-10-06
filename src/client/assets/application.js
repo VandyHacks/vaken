@@ -148,7 +148,7 @@ export const questions = [
 			{
 				Component: Boolean,
 				fieldName: 'lightningTalk',
-				title: 'Would you like to present a lightning talk at the event?',
+				title: 'Have something you\'d really like to share at our event? Give a short five-minute talk!',
 			},
 			{
 				Component: FileInput,
