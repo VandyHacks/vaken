@@ -1,5 +1,6 @@
 import { OIDCStrategy as Strategy, IProfile } from 'passport-azure-ad';
-import { verifyCallback } from './helpers';
+import { VerifyCallback } from 'passport-oauth2';
+import { verifyMicrosoftCallback } from './helpers';
 import { Models } from '../models';
 
 const { MSFT_CLIENT_ID, MSFT_CLIENT_SECRET, MSFT_REDIRECT_URL, MSFT_TENANT_NAME } = process.env;
@@ -19,14 +20,14 @@ export const strategy = (models: Models): Strategy =>
 			clientID: MSFT_CLIENT_ID,
 			clientSecret: MSFT_CLIENT_SECRET,
 			identityMetadata: MSFT_TENANT_NAME,
-			loggingLevel: 'info',
+			loggingLevel: 'error',
 			passReqToCallback: false,
 			redirectUrl: `http://localhost:8081${MSFT_REDIRECT_URL}`, // TODO: FIX
 			responseMode: 'query',
 			responseType: 'code',
 			scope: ['email'],
 		},
-		(profile: IProfile, done: VerifyCallback) => void verifyCallback(models, profile, done)
+		(profile: IProfile, done: VerifyCallback) => void verifyMicrosoftCallback(models, profile, done)
 	);
 
 export default {
