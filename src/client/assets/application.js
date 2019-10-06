@@ -146,6 +146,11 @@ export const questions = [
 				title: 'Would you like to be contacted about volunteering at the event?',
 			},
 			{
+				Component: Boolean,
+				fieldName: 'lightningTalk',
+				title: 'Would you like to present a lightning talk at the event?',
+			},
+			{
 				Component: FileInput,
 				fieldName: 'resume',
 				note: 'Your resume will be shared with sponsors',
