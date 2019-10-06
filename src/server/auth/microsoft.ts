@@ -19,10 +19,10 @@ export const strategy = (models: Models): Strategy =>
 			allowHttpForRedirectUrl: true,
 			clientID: MSFT_CLIENT_ID,
 			clientSecret: MSFT_CLIENT_SECRET,
-			identityMetadata: MSFT_TENANT_NAME,
+			identityMetadata: `https://login.microsoftonline.com/${MSFT_TENANT_NAME}/v2.0/.well-known/openid-configuration`,
 			loggingLevel: 'error',
 			passReqToCallback: false,
-			redirectUrl: `http://localhost:8081${MSFT_REDIRECT_URL}`, // TODO: FIX
+			redirectUrl: MSFT_REDIRECT_URL,
 			responseMode: 'query',
 			responseType: 'code',
 			scope: ['email'],
