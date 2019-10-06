@@ -19,7 +19,7 @@ export const verifyCallback = async (
 	})) || { userType: null };
 
 	try {
-		let { emails: [{ value: email }] = [{ value: null }] } = profile;
+		const { emails: [{ value: email }] = [{ value: null }] } = profile;
 		if (email == null) throw new Error(`Email not provided by provider ${JSON.stringify(profile)}`);
 
 		let user: UserDbInterface | undefined;
