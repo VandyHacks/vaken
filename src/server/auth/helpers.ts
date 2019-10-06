@@ -20,7 +20,7 @@ export const verifyCallback = async (
 	try {
 		const { emails: [{ value: email }] = [{ value: null }] } = profile;
 		if (email == null) {
-			throw new Error(`Email not provided by provider ${profile}`);
+			throw new Error(`Email not provided by provider ${JSON.stringify(profile)}`);
 		}
 		let user: UserDbInterface | undefined;
 
