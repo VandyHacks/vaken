@@ -5,33 +5,48 @@ import { SearchBox } from '../../components/Input/SearchBox';
 import { ToggleSwitch } from '../../components/Buttons/ToggleSwitch';
 import { HeaderButton } from '../../components/Buttons/HeaderButton';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
+import { useEventsNamesQuery } from '../../generated/graphql';
+import Spinner from '../../components/Loading/Spinner';
 
-const EventSelect = styled(Select)``;
+const EventSelect = styled.select`
+	width: 50%;
+`;
+
+const StyledOption = styled.option`
+	width: 50%;
+`;
+
 const CHECK_IN_VALUE = 'check_in'; // TODO
-
-// TODO(timliang/kenny): Connect this to events data
-const EventOptions: { label: string; value: string }[] = [
-	{ label: 'Hackathon Check-in', value: CHECK_IN_VALUE },
-	{ label: 'PlaceholderEvent1', value: 'test_1' },
-	{ label: 'PlaceholderEvent2', value: 'test_2' },
-];
 
 export const Nfc: FunctionComponent = (): JSX.Element => {
 	const [manualMode, setManualMode] = useState(false);
 	const [unadmitMode, setUnadmitMode] = useState(false);
 	const [eventSelected, setEventSelected] = useState(CHECK_IN_VALUE);
+	const { data, loading, error } = useEventsNamesQuery();
+
+	const EventOptionsPlaceholder: { label: string; value: string }[] = [
+		{ label: 'Hackathon Check-in', value: CHECK_IN_VALUE },
+		{ label: 'PlaceholderEvent1', value: 'test_1' },
+		{ label: 'PlaceholderEvent2', value: 'test_2' },
+	];
+
 	return (
 		<FloatingPopup>
-			<EventSelect
-				name="colors"
-				defaultValue={[EventOptions[0]]}
-				options={EventOptions}
-				onChange={(option: { label: string; value: string }) => {
-					setEventSelected(option.value);
-				}}
-				className="basic-select"
-				classNamePrefix="select"
-			/>
+			{loading || !data ? (
+				<Spinner />
+			) : (
+				<EventSelect onChange={e => setEventSelected(e.target.value)}>
+					<StyledOption value="" disabled selected>
+						Select Event
+					</StyledOption>
+					{data.events.map(e => (
+						<StyledOption key={e.id} value={e.id.toString()}>
+							{e.name}
+						</StyledOption>
+					))}
+				</EventSelect>
+			)}
+
 			{!manualMode || eventSelected === CHECK_IN_VALUE ? (
 				<SearchBox
 					width="100%"
