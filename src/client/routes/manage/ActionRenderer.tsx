@@ -59,10 +59,11 @@ export function actionRenderer(updateStatus: HackerStatusMutationFn): FC<ActionR
 							updateStatus({ variables: { input: { id, status: newStatus } } });
 						}}
 						disable={!enableApplicationStatusSlider(status)}
-					/> : <div></div>}
-				<Link style={{ textDecoration: 'none', float: 'right' }} to={{ pathname: `/manage/hackers/detail/${id}` }}>
-					<TableButton>View</TableButton>
-				</Link>
+					/> : <React.Fragment></React.Fragment>}
+				{(status && status !== ApplicationStatus.Created && status !== ApplicationStatus.Verified) ?
+					<Link style={{ textDecoration: 'none', float: 'right' }} to={{ pathname: `/manage/hackers/detail/${id}` }}>
+						<TableButton>View</TableButton>
+					</Link> : <React.Fragment></React.Fragment>}
 			</Actions>
 		);
 	};
