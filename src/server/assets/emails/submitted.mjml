@@ -1,0 +1,80 @@
+<mjml>
+  <mj-head>
+    <mj-title>We've Received Your Application!</mj-title>
+    <mj-attributes>
+      <mj-all font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"></mj-all>
+      <mj-text font-weight="400" font-size="16px" color="#000000" line-height="24px" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"></mj-text>
+    </mj-attributes>
+    <mj-style inline="inline">
+      .body-section { -webkit-box-shadow: 1px 4px 11px 0px rgba(0, 0, 0, 0.15); -moz-box-shadow: 1px 4px 11px 0px rgba(0, 0, 0, 0.15); box-shadow: 1px 4px 11px 0px rgba(0, 0, 0, 0.15); }
+    </mj-style>
+    <mj-style inline="inline">
+      .text-link { color: #5e6ebf }
+    </mj-style>
+    <mj-style inline="inline">
+      .footer-link { color: #888888 }
+    </mj-style>
+
+  </mj-head>
+  <mj-body background-color="#E7E7E7" width="600px">
+    <mj-section></mj-section>
+    <mj-wrapper border-radius="8px" background-color="#fff" css-class="body-section">
+      <mj-section padding-left="40px" padding-right="40px" background-color="#ffffff">
+        <mj-column>
+          <mj-image src="https://vh6assets.vandyhacks.org/bigLogo.svg" width="600px" alt="" padding="0" href="https://google.com" />
+        </mj-column>
+      </mj-section>
+      <mj-section border-radius="8px" background-color="#ffffff" padding-left="15px" padding-right="15px">
+        <mj-column width="100%">
+          <mj-text color="#212b35" font-weight="bold" font-size="20px">
+            Thank you for applying!
+          </mj-text>
+          <mj-text color="#637381" font-size="16px">
+            Hey {{FIRST_NAME}},
+          </mj-text>
+          <mj-text color="#637381" font-size="16px">
+            We've received your application for VandyHacks VI: Art Edition! We'll be accepting applications on a rolling basis, so keep your eyes out for another email from us for your application decision.
+          </mj-text>
+          <mj-text color="#637381" font-size="16px">
+            In the meantime, you can hype up by following us on <a class="text-link" href="https://facebook.com/VandyHacks">Facebook</a>, <a class="text-link" href="https://twitter.com/@VandyHacks">Twitter</a>, and <a class="text-link" href="https://instagram.com/VandyHacks">Instagram</a>,
+            as well as update your application at any point up to your decision.
+          </mj-text>
+          <mj-text color="#637381" font-size="16px">
+            If you have any questions, please don't hesitate to reach out to <a href="mailto:info@vandyhacks.org" class="text-link">info@vandyhacks.org</a>
+          </mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-wrapper>
+
+    <mj-wrapper full-width="full-width">
+      <mj-section>
+        <mj-column width="100%" padding="0">
+          <mj-social font-size="15px" icon-size="30px" mode="horizontal" padding="0" align="center">
+            <mj-social-element name="facebook" href="https://mjml.io/" background-color="#A1A0A0">
+            </mj-social-element>
+            <mj-social-element name="google" href="https://mjml.io/" background-color="#A1A0A0">
+            </mj-social-element>
+            <mj-social-element name="twitter" href="https://mjml.io/" background-color="#A1A0A0">
+            </mj-social-element>
+          </mj-social>
+          <mj-text color="#445566" font-size="11px" align="center" line-height="16px">
+            You are receiving this application update because you applied at <a href="apply.vandyhacks.org" class="text-link">apply.vandyhacks.org</a>. If you would like to opt-out of any future emails pertaining to VandyHacks VI applications, please
+            click <a href="https://apply.vandyhacks.org/api/unsubscribe?user={{USER_ID}}" class="text-link">here</a>
+          </mj-text>
+          <mj-text color="#445566" font-size="11px" align="center" line-height="16px">
+            &copy; 2019 VandyHacks, All Rights Reserved.
+          </mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-section padding-top="0">
+        <mj-group>
+          <mj-column width="100%" padding-right="0">
+            <mj-text color="#445566" font-size="11px" align="center" line-height="16px" font-weight="bold"><a class="footer-link" href="https://www.google.com">Unsubscribe</a>
+            </mj-text>
+          </mj-column>
+        </mj-group>
+      </mj-section>
+    </mj-wrapper>
+
+  </mj-body>
+</mjml>

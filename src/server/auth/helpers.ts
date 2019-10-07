@@ -118,6 +118,7 @@ export const verifyMicrosoftCallback = async (
 					createdAt: new Date(),
 					dietaryRestrictions: '',
 					email,
+					emailUnsubscribed: false,
 					eventsAttended: [],
 					firstName: '',
 					lastName: '',
