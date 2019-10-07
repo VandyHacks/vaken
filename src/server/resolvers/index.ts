@@ -14,6 +14,7 @@ import Context from '../context';
 import { fetchUser, query, queryById, toEnum, updateUser, checkIsAuthorized } from './helpers';
 import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser } from '../nfc';
 import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
+import { sendStatusEmail } from '../mail/aws';
 
 // TODO: Cannot import frontend files so this is ugly workaround. Fix this.
 const requiredFields = [
@@ -49,6 +50,7 @@ const userResolvers: Omit<UserResolvers, '__resolveType' | 'userType'> = {
 	// TODO: Add input validation for dietaryRestrictions. toEnum(DietaryRestriction)()
 	dietaryRestrictions: async user => (await user).dietaryRestrictions,
 	email: async user => (await user).email,
+	emailUnsubscribed: async hacker => (await hacker).emailUnsubscribed || false,
 	eventsAttended: async user => (await user).eventsAttended || null,
 	firstName: async user => (await user).firstName,
 	gender: async user => (await user).gender || null,
@@ -229,14 +231,14 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!user) throw new AuthenticationError(`cannot update application: user not logged in`);
 			return getSignedUploadUrl(`${user._id}`);
 		},
-		updateMyApplication: async (root, args, ctx) => {
+		updateMyApplication: async (root, { input }, { user, models }) => {
 			// Enables a user to update their application
-			if (!ctx.user) throw new AuthenticationError(`cannot update application: user not logged in`);
+			if (!user) throw new AuthenticationError(`cannot update application: user not logged in`);
 			// TODO(leonm1): Figure out why the _id field isn't actually an ObjectID
-			const id = ObjectID.createFromHexString((ctx.user._id as unknown) as string);
+			const id = ObjectID.createFromHexString((user._id as unknown) as string);
 			// update app answers if they exist
-			const { result } = await ctx.models.ApplicationFields.bulkWrite(
-				args.input.map(({ question, answer }) => ({
+			const { result } = await models.ApplicationFields.bulkWrite(
+				input.fields.map(({ question, answer }) => ({
 					updateOne: {
 						filter: { question, userId: id },
 						update: { $set: { answer, question, userId: id } },
@@ -252,7 +254,7 @@ export const resolvers: CustomResolvers<Context> = {
 				);
 			}
 
-			const hacker = await ctx.models.Hackers.findOne({ _id: id });
+			const hacker = await models.Hackers.findOne({ _id: id });
 			if (!hacker) throw new AuthenticationError(`hacker not found: ${id.toHexString()}`);
 
 			/**
@@ -260,7 +262,7 @@ export const resolvers: CustomResolvers<Context> = {
 			 * If this element exists, the application is not finished.
 			 */
 			const appFinished = !requiredFields.some(
-				field => !args.input.find(el => el.question === field && el.answer)
+				field => !input.fields.find(el => el.question === field && el.answer)
 			);
 
 			// Update the fields of the hacker object with application data.
@@ -280,30 +282,36 @@ export const resolvers: CustomResolvers<Context> = {
 			].reduce(
 				(acc, reqField) => {
 					// TODO: Add input validation for these fields.
-					const field = args.input.find(input => input.question === reqField);
-					return field ? { ...acc, [reqField]: field.answer } : acc;
+					const missingField = input.fields.find(field => field.question === reqField);
+					return missingField ? { ...acc, [reqField]: missingField.answer } : acc;
 				},
 				{} as Partial<HackerDbObject> // eslint-disable-line @typescript-eslint/no-object-literal-type-assertion
 			);
 
 			// Update application status to reflect new input.
 			let appStatus: ApplicationStatus = hacker.status as ApplicationStatus;
-			if (
-				appFinished &&
-				[ApplicationStatus.Started, ApplicationStatus.Verified, ApplicationStatus.Created].includes(
-					hacker.status as ApplicationStatus
-				)
-			) {
-				appStatus = ApplicationStatus.Submitted;
-			} else if (
-				[ApplicationStatus.Created, ApplicationStatus.Verified].includes(
-					hacker.status as ApplicationStatus
-				)
-			) {
-				appStatus = ApplicationStatus.Started;
+			let sendEmail = false;
+			if (input.submit) {
+				if (
+					appFinished &&
+					[
+						ApplicationStatus.Started,
+						ApplicationStatus.Verified,
+						ApplicationStatus.Created,
+					].includes(hacker.status as ApplicationStatus)
+				) {
+					appStatus = ApplicationStatus.Submitted;
+					sendEmail = true;
+				} else if (
+					[ApplicationStatus.Created, ApplicationStatus.Verified].includes(
+						hacker.status as ApplicationStatus
+					)
+				) {
+					appStatus = ApplicationStatus.Started;
+				}
 			}
 
-			const { value, ok, lastErrorObject } = await ctx.models.Hackers.findOneAndUpdate(
+			const { value, ok, lastErrorObject } = await models.Hackers.findOneAndUpdate(
 				{ _id: id },
 				{ $set: { status: appStatus, ...changedFields } },
 				{ returnOriginal: false }
@@ -316,6 +324,8 @@ export const resolvers: CustomResolvers<Context> = {
 					)}`
 				);
 			}
+
+			if (sendEmail) sendStatusEmail(value, ApplicationStatus.Submitted);
 
 			return value;
 		},

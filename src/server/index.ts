@@ -10,6 +10,7 @@ import DB from './models';
 import Context from './context';
 import logger from './logger';
 import { strategies, registerAuthRoutes } from './auth';
+import { UnsubscribeHandler } from './mail/handlers';
 
 const { SESSION_SECRET, PORT } = process.env;
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
@@ -29,6 +30,9 @@ export const schema = makeExecutableSchema({
 (async () => {
 	const dbClient = new DB();
 	const models = await dbClient.collections;
+
+	// Email unsubscribe link
+	app.use('/api/unsubscribe', UnsubscribeHandler(models));
 
 	// Register auth functions
 	app.use(

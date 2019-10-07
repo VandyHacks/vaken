@@ -1,5 +1,6 @@
 import React, { FC, useState, ChangeEvent, useEffect, useContext } from 'react';
 import styled from 'styled-components';
+import { toast } from 'react-toastify';
 import { InputProps } from './TextInput';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useSignedUploadUrlMutation, useSignedReadUrlQuery } from '../../generated/graphql';
@@ -88,6 +89,7 @@ export const FileInput: FC<InputProps> = props => {
 				throw new Error(`Failed in upload to cloud storage: ${await res.text()}`);
 			})
 			.catch(err => {
+				toast.error('File upload failed', { position: 'bottom-right' });
 				throw new Error(err);
 			});
 	}, [file, getSignedUploadUrl, setState, user, uploaded]);

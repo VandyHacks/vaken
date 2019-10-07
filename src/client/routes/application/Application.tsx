@@ -144,7 +144,9 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 								position: 'bottom-right',
 							});
 						else
-							return updateApplication({ variables: { input } }).then(() => {
+							return updateApplication({
+								variables: { input: { fields: input, submit: true } },
+							}).then(() => {
 								toast.dismiss();
 								return toast.success('Application submitted successfully!', {
 									position: 'bottom-right',
@@ -180,7 +182,9 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 	useEffect(() => {
 		// Auto-save application input after five seconds of inactivity.
 		autosaveTimeout = setTimeout(
-			() => input.length && updateApplication({ variables: { input } }),
+			() =>
+				input.length &&
+				updateApplication({ variables: { input: { fields: input, submit: false } } }),
 			5000
 		);
 
