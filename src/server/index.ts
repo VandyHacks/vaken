@@ -45,13 +45,15 @@ export const schema = makeExecutableSchema({
 	);
 	app.use(passport.initialize());
 	app.use(passport.session());
+
 	passport.use('github', strategies.github(models));
 	passport.use('google', strategies.google(models));
+	passport.use('microsoft', strategies.microsoft(models));
 
 	registerAuthRoutes(app);
 
 	app.use((req, res, next) =>
-		passport.authenticate(['session', 'github', 'google'], (err, user) => {
+		passport.authenticate(['session', 'github', 'google', 'microsoft'], (err, user) => {
 			if (err) return void next();
 			return void req.login(user, next);
 		})(req, res, next)
