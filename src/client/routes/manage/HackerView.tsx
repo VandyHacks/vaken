@@ -78,8 +78,8 @@ const Row: FC<{ label: string; value: string }> = props => {
 	const text = value.includes('|') ? (
 		value.split('|').map(val => <p key={val}>{val}</p>)
 	) : (
-		<p>{value}</p>
-	);
+			<p>{value}</p>
+		);
 
 	return (
 		<TableRow>
@@ -111,7 +111,7 @@ export const HackerView: FC<RouteComponentProps<{ id: string }, {}, {}>> = props
 				color="#ffffff"
 				img={back}
 				imgAlt="left arrow"
-				width="auto"
+				width="30em"
 				onClick={() => props.history.goBack()}
 				paddingLeft="1.5rem"
 				paddingRight="1.5rem">

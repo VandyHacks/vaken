@@ -48,18 +48,19 @@ export function actionRenderer(updateStatus: HackerStatusMutationFn): FC<ActionR
 	return function ActionRenderer({ rowData: { id, status } }) {
 		return (
 			<Actions className="ignore-select">
-				<RadioSlider
-					option1="Accept"
-					option2="Undecided"
-					option3="Reject"
-					value={convertApplicationStatus(status)}
-					onChange={(input: string) => {
-						const newStatus = processSliderInput(input);
-						updateStatus({ variables: { input: { id, status: newStatus } } });
-					}}
-					disable={!enableApplicationStatusSlider(status)}
-				/>
-				<Link style={{ textDecoration: 'none' }} to={{ pathname: `/manage/hackers/detail/${id}` }}>
+				{(status && status !== ApplicationStatus.Created && status !== ApplicationStatus.Verified && status !== ApplicationStatus.Started) ?
+					<RadioSlider
+						option1="Accept"
+						option2="Undecided"
+						option3="Reject"
+						value={convertApplicationStatus(status)}
+						onChange={(input: string) => {
+							const newStatus = processSliderInput(input);
+							updateStatus({ variables: { input: { id, status: newStatus } } });
+						}}
+						disable={!enableApplicationStatusSlider(status)}
+					/> : <div></div>}
+				<Link style={{ textDecoration: 'none', float: 'right' }} to={{ pathname: `/manage/hackers/detail/${id}` }}>
 					<TableButton>View</TableButton>
 				</Link>
 			</Actions>
