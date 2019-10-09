@@ -231,14 +231,14 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!user) throw new AuthenticationError(`cannot update application: user not logged in`);
 			return getSignedUploadUrl(`${user._id}`);
 		},
-		updateMyApplication: async (root, args, { user, models }) => {
+		updateMyApplication: async (root, { input }, { user, models }) => {
 			// Enables a user to update their application
 			if (!user) throw new AuthenticationError(`cannot update application: user not logged in`);
 			// TODO(leonm1): Figure out why the _id field isn't actually an ObjectID
 			const id = ObjectID.createFromHexString((user._id as unknown) as string);
 			// update app answers if they exist
 			const { result } = await models.ApplicationFields.bulkWrite(
-				args.input.map(({ question, answer }) => ({
+				input.fields.map(({ question, answer }) => ({
 					updateOne: {
 						filter: { question, userId: id },
 						update: { $set: { answer, question, userId: id } },
@@ -262,7 +262,7 @@ export const resolvers: CustomResolvers<Context> = {
 			 * If this element exists, the application is not finished.
 			 */
 			const appFinished = !requiredFields.some(
-				field => !args.input.find(el => el.question === field && el.answer)
+				field => !input.fields.find(el => el.question === field && el.answer)
 			);
 
 			// Update the fields of the hacker object with application data.
@@ -282,8 +282,8 @@ export const resolvers: CustomResolvers<Context> = {
 			].reduce(
 				(acc, reqField) => {
 					// TODO: Add input validation for these fields.
-					const field = args.input.find(input => input.question === reqField);
-					return field ? { ...acc, [reqField]: field.answer } : acc;
+					const missingField = input.fields.find(field => field.question === reqField);
+					return missingField ? { ...acc, [reqField]: missingField.answer } : acc;
 				},
 				{} as Partial<HackerDbObject> // eslint-disable-line @typescript-eslint/no-object-literal-type-assertion
 			);
@@ -291,20 +291,24 @@ export const resolvers: CustomResolvers<Context> = {
 			// Update application status to reflect new input.
 			let appStatus: ApplicationStatus = hacker.status as ApplicationStatus;
 			let sendEmail = false;
-			if (
-				appFinished &&
-				[ApplicationStatus.Started, ApplicationStatus.Verified, ApplicationStatus.Created].includes(
-					hacker.status as ApplicationStatus
-				)
-			) {
-				appStatus = ApplicationStatus.Submitted;
-				sendEmail = true;
-			} else if (
-				[ApplicationStatus.Created, ApplicationStatus.Verified].includes(
-					hacker.status as ApplicationStatus
-				)
-			) {
-				appStatus = ApplicationStatus.Started;
+			if (input.submit) {
+				if (
+					appFinished &&
+					[
+						ApplicationStatus.Started,
+						ApplicationStatus.Verified,
+						ApplicationStatus.Created,
+					].includes(hacker.status as ApplicationStatus)
+				) {
+					appStatus = ApplicationStatus.Submitted;
+					sendEmail = true;
+				} else if (
+					[ApplicationStatus.Created, ApplicationStatus.Verified].includes(
+						hacker.status as ApplicationStatus
+					)
+				) {
+					appStatus = ApplicationStatus.Started;
+				}
 			}
 
 			const { value, ok, lastErrorObject } = await models.Hackers.findOneAndUpdate(

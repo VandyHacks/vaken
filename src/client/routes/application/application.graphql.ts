@@ -9,7 +9,7 @@ export default gql`
 		signedReadUrl(input: $input)
 	}
 
-	mutation updateMyApplication($input: [ApplicationInput!]!) {
+	mutation updateMyApplication($input: UpdateMyAppInput!) {
 		updateMyApplication(input: $input) {
 			id
 			... on Hacker {

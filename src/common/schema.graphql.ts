@@ -261,8 +261,13 @@ export default gql`
 		answer: String!
 	}
 
+	input UpdateMyAppInput {
+		fields: [ApplicationInput!]!
+		submit: Boolean
+	}
+
 	type Mutation {
-		updateMyApplication(input: [ApplicationInput!]!): User!
+		updateMyApplication(input: UpdateMyAppInput!): User!
 		updateMyProfile(input: UserInput!): User!
 		updateProfile(id: ID!, input: UserInput!): User!
 		joinTeam(input: TeamInput!): Hacker!
