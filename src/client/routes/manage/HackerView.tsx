@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
-import { title } from 'case';
 import { Spinner } from '../../components/Loading/Spinner';
 import STRINGS from '../../assets/strings.json';
 import { Title } from '../../components/Text/Title';
@@ -123,7 +122,7 @@ export const HackerView: FC<RouteComponentProps<{ id: string }, {}, {}>> = props
 				fontSize="1.5rem"
 				textAlign="center"
 				color={STRINGS.DARKEST_TEXT_COLOR}>
-				{'Application'}
+				Application
 			</Title>
 			<HorizontalLine />
 			<StyledTable>

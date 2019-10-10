@@ -14,6 +14,8 @@ module.exports = {
 		'react/jsx-indent': [0], // Conflicts with prettier
 		'react/jsx-indent-props': [2, 'tab'],
 		'react/jsx-closing-bracket-location': [0, 'tag-aligned'], // Handled by prettier
+		'react/jsx-props-no-spreading': [0],
+		'react/jsx-curly-newline': [0], // Handled by prettier
 		'react/jsx-filename-extension': [
 			2,
 			{

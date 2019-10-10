@@ -164,7 +164,7 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 	}, [input, setActionButton, updateApplication]);
 
 	useEffect((): void => {
-		if (!loaded && data && data.me) {
+		if (!loaded && data && data.me && data.me.__typename === 'Hacker') {
 			const { application } = data.me;
 			setInput(draft => {
 				draft.length = 0; // Clear the array

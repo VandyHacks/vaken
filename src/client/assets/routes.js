@@ -3,8 +3,6 @@ import { NotReady } from '../routes/dashboard/NotReady';
 import { Application } from '../routes/application/Application';
 import { HackerDash } from '../routes/dashboard/HackerDash';
 import { ManageHackers } from '../routes/manage/ManageHackers';
-import { Team } from '../routes/team/Team';
-import { Profile } from '../routes/profile/Profile';
 import { Help } from '../routes/help/Help';
 import { Nfc } from '../routes/nfc/Nfc';
 import { UserType } from '../generated/graphql';

@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { MeQuery, UserType, ApplicationStatus } from '../generated/graphql';
+import { MeQuery, UserType } from '../generated/graphql';
 
 export const AuthContext = createContext<NonNullable<MeQuery['me']>>({
 	email: '',

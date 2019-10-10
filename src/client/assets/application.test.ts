@@ -1,4 +1,4 @@
-import questions from './application';
+import { questions } from './application';
 
 describe('Test assets/application', () => {
 	it('Initializes', async () => {

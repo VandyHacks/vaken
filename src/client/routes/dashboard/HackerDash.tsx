@@ -10,7 +10,6 @@ import { ButtonOutline, CenterButtonText } from '../../components/Buttons/Button
 import applicationIncompleteSVG from '../../assets/img/application_incomplete.svg';
 import { SmallCenteredText } from '../../components/Text/SmallCenteredText';
 import { ApplicationStatus, useMyStatusQuery } from '../../generated/graphql';
-import Application from '../application/Application';
 
 const statusConfig = {
 	[ApplicationStatus.Created]: {
@@ -99,7 +98,7 @@ export const HackerDash: FunctionComponent = (): JSX.Element => {
 	const [statusInfo, setStatusInfo] = useState(statusConfig[ApplicationStatus.Created]);
 
 	useEffect((): void => {
-		if (data && data.me) {
+		if (data && data.me && data.me.__typename === 'Hacker') {
 			console.log(data.me.status);
 			setStatusInfo(statusConfig[data.me.status as keyof typeof statusConfig]);
 		}

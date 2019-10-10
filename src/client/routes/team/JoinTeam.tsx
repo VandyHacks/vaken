@@ -44,7 +44,7 @@ export const JoinTeam: FC = () => {
 								setErrorMsg(res.graphQLErrors[0].message);
 							})
 						}>
-						{'Join'}
+						Join
 					</ActionButton>
 				</Layout>
 			)}

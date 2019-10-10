@@ -11,6 +11,7 @@ import Context from './context';
 import logger from './logger';
 import { strategies, registerAuthRoutes } from './auth';
 import { UnsubscribeHandler } from './mail/handlers';
+import { UserDbInterface } from './generated/graphql';
 
 const { SESSION_SECRET, PORT } = process.env;
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
@@ -62,7 +63,7 @@ export const schema = makeExecutableSchema({
 	const server = new ApolloServer({
 		context: ({ req }): Context => ({
 			models,
-			user: req.user,
+			user: req.user as UserDbInterface | undefined,
 		}),
 		formatError: error => {
 			logger.error(error);

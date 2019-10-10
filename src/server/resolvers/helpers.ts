@@ -1,14 +1,26 @@
 import { ApolloError, AuthenticationError, UserInputError } from 'apollo-server-express';
-import { Collection, FilterQuery, ObjectID, ObjectId } from 'mongodb';
-import {
-	DietaryRestriction,
-	Gender,
-	ShirtSize,
-	UserDbInterface,
-	UserInput,
-	UserType,
-} from '../generated/graphql';
+import { Collection, FilterQuery, ObjectID, ObjectId, MatchKeysAndValues } from 'mongodb';
+import { UserDbInterface, UserInput, UserType } from '../generated/graphql';
 import { Models } from '../models';
+
+/**
+ * Returns a copy of obj with all null fields removed.
+ */
+export function removeNulls<T>(obj: T): Partial<{ [K in keyof T]: NonNullable<T[K]> }> {
+	return (
+		(Object.keys(obj)
+			// Filter out keys that lead to null values
+			.filter(k => obj[k as keyof T] !== null) as (keyof T)[])
+			// Reconstruct object with only non-null keys
+			.reduce(
+				(acc: Partial<{ [K in keyof T]: NonNullable<T[K]> }>, k: keyof T) => ({
+					...acc,
+					[k]: obj[k as keyof T],
+				}),
+				{}
+			)
+	);
+}
 
 /**
  * Higher-order function creating a verification function for an enum. When
@@ -57,24 +69,15 @@ export async function queryById<T extends { _id: ObjectId }>(
 	return query<T>(filter as FilterQuery<T>, model);
 }
 
-export async function updateUser_<T extends { email: string }>(
+export async function updateUser_<T>(
 	user: { email: string },
-	args: UserInput,
+	args: MatchKeysAndValues<T>,
 	collection: Collection<T>
 ): Promise<T> {
-	const newValues = {
-		...args,
-		dietaryRestrictions: args.dietaryRestrictions
-			? args.dietaryRestrictions.split('|').map(toEnum(DietaryRestriction))
-			: undefined,
-		gender: args.gender ? toEnum(Gender)(args.gender) : undefined,
-		modifiedAt: new Date().getTime(),
-		shirtSize: args.shirtSize ? toEnum(ShirtSize)(args.shirtSize) : undefined,
-	};
 	const filter = { email: user.email };
 	const { value } = await collection.findOneAndUpdate(
 		filter as FilterQuery<T>,
-		{ $set: newValues },
+		{ $set: args },
 		{ returnOriginal: false }
 	);
 	if (!value) throw new UserInputError(`user ${user.email} not found`);
@@ -97,10 +100,10 @@ export async function updateUser(
 	models: Models
 ): Promise<UserDbInterface> {
 	if (user.userType === UserType.Hacker) {
-		return updateUser_(user, args, models.Hackers);
+		return updateUser_(user, removeNulls(args), models.Hackers);
 	}
 	if (user.userType === UserType.Organizer) {
-		return updateUser_(user, args, models.Organizers);
+		return updateUser_(user, removeNulls(args), models.Organizers);
 	}
 	throw new ApolloError(`updateUser for userType ${user.userType} not implemented`);
 }
