@@ -1,21 +1,7 @@
 import { ObjectId, MongoError } from 'mongodb';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import {
-	checkIsAuthorized,
-	fetchUser,
-	query,
-	queryById,
-	toEnum,
-	updateUser,
-} from '../resolvers/helpers';
-import {
-	HackerDbObject,
-	OrganizerDbObject,
-	EventDbObject,
-	ShirtSize,
-	UserDbInterface,
-	UserType,
-} from '../generated/graphql';
+import { query } from '../resolvers/helpers';
+import { HackerDbObject, OrganizerDbObject, EventDbObject } from '../generated/graphql';
 import DB, { Models } from '../models';
 import {
 	checkIfNFCUIDExisted,
@@ -180,7 +166,7 @@ describe('Test event model', () => {
 					{ _id: testEventId },
 					{
 						$push: {
-							attendees: testHackerId,
+							attendees: testHackerId.toHexString(),
 						},
 					}
 				);
@@ -220,7 +206,8 @@ describe('Test event model', () => {
 				removeUserFromEvent(testHackerId2.toHexString(), testEventId.toHexString(), models)
 			).resolves.toEqual(null);
 			const eventAfter = await models.Events.findOne({ _id: testEventId });
-			if (eventAfter != null) await expect(eventAfter.attendees).toEqual([testHackerId]);
+			if (eventAfter != null)
+				await expect(eventAfter.attendees).toEqual([testHackerId.toHexString()]);
 			else throw new MongoError('Could not find event');
 		});
 	});
@@ -259,15 +246,15 @@ describe('Test event model', () => {
 			const eventAfter = await models.Events.findOne({ _id: testEventId });
 			const userAfter = await models.Hackers.findOne({ _id: testHackerId });
 			if (eventAfter != null && userAfter != null) {
-				await expect(eventAfter.attendees).toEqual([testHackerId]);
-				await expect(userAfter.eventsAttended).toEqual([testEventId]);
+				await expect(eventAfter.attendees).toEqual([testHackerId.toHexString()]);
+				await expect(userAfter.eventsAttended).toEqual([testEventId.toHexString()]);
 			} else throw new MongoError('Could not find event');
 		});
 
 		describe('checkInUserToEventHelper', () => {
 			const testCheckIn = {
-				id: ObjectId.createFromTime(Date.now()),
-				timestamp: Date.now(),
+				_id: ObjectId.createFromTime(Date.now()),
+				timestamp: new Date(),
 				user: testHackerId.toHexString(),
 			};
 			beforeEach(async () => {
@@ -276,7 +263,7 @@ describe('Test event model', () => {
 						{ _id: testEventId },
 						{
 							$set: {
-								attendees: [testHackerId],
+								attendees: [testHackerId.toHexString()],
 								checkins: [testCheckIn],
 							},
 						}
@@ -286,7 +273,7 @@ describe('Test event model', () => {
 						{ _id: testHackerId },
 						{
 							$set: {
-								eventsAttended: [testEventId],
+								eventsAttended: [testEventId.toHexString()],
 							},
 						}
 					);
@@ -303,9 +290,8 @@ describe('Test event model', () => {
 				const eventAfter = await models.Events.findOne({ _id: testEventId });
 				const userAfter = await models.Hackers.findOne({ _id: testHackerId });
 				if (eventAfter != null && userAfter != null && userAfter.eventsAttended != null) {
-					await expect(eventAfter.attendees).toEqual([testHackerId]);
+					await expect(eventAfter.attendees).toEqual([testHackerId.toHexString()]);
 					await expect(eventAfter.checkins.length).toEqual(2);
-					await console.log('Event Check ins: ', eventAfter.checkins);
 					await expect(userAfter.eventsAttended.length).toEqual(1);
 				} else throw new MongoError('Could not find event');
 			});
@@ -318,7 +304,7 @@ describe('Test event model', () => {
 					{ _id: testEventId },
 					{
 						$push: {
-							attendees: testHackerId,
+							attendees: testHackerId.toHexString(),
 						},
 					}
 				);
@@ -334,7 +320,7 @@ describe('Test event model', () => {
 					{ _id: testEventId },
 					{
 						$push: {
-							attendees: [],
+							attendees: '',
 						},
 					}
 				);
@@ -379,7 +365,7 @@ describe('Test event model', () => {
 					{ _id: testEventId },
 					{
 						$push: {
-							attendees: [],
+							attendees: '',
 						},
 					}
 				);
@@ -519,11 +505,14 @@ describe('Test event model', () => {
 			const userAfter1 = await models.Hackers.findOne({ _id: testHackerId });
 			const userAfter2 = await models.Hackers.findOne({ _id: testHackerId2 });
 			if (eventAfter != null && userAfter1 != null && userAfter2 != null) {
-				await expect(eventAfter.attendees).toEqual([testHackerId, testHackerId2]);
+				await expect(eventAfter.attendees).toEqual([
+					testHackerId.toHexString(),
+					testHackerId2.toHexString(),
+				]);
 				await expect(eventAfter.checkins[0].user).toEqual(testHackerId.toHexString());
 				await expect(eventAfter.checkins[1].user).toEqual(testHackerId2.toHexString());
-				await expect(userAfter1.eventsAttended).toEqual([testEventId]);
-				await expect(userAfter2.eventsAttended).toEqual([testEventId]);
+				await expect(userAfter1.eventsAttended).toEqual([testEventId.toHexString()]);
+				await expect(userAfter2.eventsAttended).toEqual([testEventId.toHexString()]);
 			} else throw new MongoError('Could not find event or users');
 		});
 
@@ -538,8 +527,8 @@ describe('Test event model', () => {
 				const eventAfter = await models.Events.findOne({ _id: testEventId });
 				if (eventAfter != null)
 					await expect(getAttendees(testEventId.toHexString(), models)).resolves.toEqual([
-						testHackerId,
-						testHackerId2,
+						testHackerId.toHexString(),
+						testHackerId2.toHexString(),
 					]);
 				else throw new MongoError('Could not find event');
 			});
@@ -572,8 +561,8 @@ describe('Test event model', () => {
 						await expect(eventAfter.checkins.length).toEqual(2);
 
 						// Check eventsAttended aren't altered
-						await expect(userAfter1.eventsAttended).toEqual([testEventId]);
-						await expect(userAfter2.eventsAttended).toEqual([testEventId]);
+						await expect(userAfter1.eventsAttended).toEqual([testEventId.toHexString()]);
+						await expect(userAfter2.eventsAttended).toEqual([testEventId.toHexString()]);
 					} else throw new MongoError('Could not find event');
 				});
 			});

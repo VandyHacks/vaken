@@ -15,7 +15,7 @@ export const Team: FC = () => {
 	if (loading) {
 		return <Spinner />;
 	}
-	if (error || !data || !data.me) {
+	if (error || !data || !data.me || data.me.__typename !== 'Hacker') {
 		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_HACKER_ERROR_MESSAGE} />;
 	}
 

@@ -86,7 +86,7 @@ export default class DB {
 	public get collections(): Promise<Models> {
 		// Async functions are not supported for the getter itself, so return a
 		// promise where we _can_ use async.
-		return new Promise(async resolve => {
+		return (async () => {
 			if (!this.collections_) {
 				const db = (await this.client).db('vaken');
 				this.collections_ = {
@@ -107,7 +107,7 @@ export default class DB {
 				};
 			}
 
-			resolve(this.collections_);
-		});
+			return this.collections_;
+		})();
 	}
 }

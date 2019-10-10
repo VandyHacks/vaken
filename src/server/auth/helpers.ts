@@ -1,4 +1,5 @@
 import { VerifyCallback } from 'passport-oauth2';
+import { VerifyCallback as GVerifyCallback } from 'passport-google-oauth20';
 import { Profile } from 'passport';
 import { ObjectID } from 'mongodb';
 import { IProfile } from 'passport-azure-ad';
@@ -10,7 +11,7 @@ import logger from '../logger';
 export const verifyCallback = async (
 	models: Models,
 	profile: Profile,
-	done: VerifyCallback
+	done: VerifyCallback | GVerifyCallback
 ): Promise<void> => {
 	const { Logins, Hackers } = models;
 	const { userType } = (await Logins.findOne({
@@ -65,7 +66,7 @@ export const verifyCallback = async (
 		}
 
 		if (!user) user = await fetchUser({ email, userType: userType || UserType.Hacker }, models);
-		return void done(null, user);
+		return void done(undefined, user);
 	} catch (err) {
 		return void done(err);
 	}
@@ -90,7 +91,7 @@ export const verifyMicrosoftCallback = async (
 	try {
 		let { emails: [{ value: email }] = [{ value: null }] } = profile;
 		if (email == null) {
-			email = profile._json.email; // eslint-disable-line
+			email = profile._json.email;
 			if (email == null) throw new Error(`Email not provided by provider ${PROVIDER}`);
 		}
 		let user: UserDbInterface | undefined;

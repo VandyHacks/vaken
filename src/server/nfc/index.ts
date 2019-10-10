@@ -1,24 +1,5 @@
-import { UserInputError, AuthenticationError } from 'apollo-server-express';
-import { ObjectID, FindAndModifyWriteOpResultObject } from 'mongodb';
-import {
-	HackerDbObject,
-	OrganizerDbObject,
-	EventDbObject,
-	EventCheckInDbObject,
-	ShirtSize,
-	UserDbInterface,
-	UserInput,
-	UserType,
-} from '../generated/graphql';
-import Context from '../context';
-import {
-	fetchUser,
-	query,
-	queryById,
-	toEnum,
-	updateUser,
-	checkIsAuthorized,
-} from '../resolvers/helpers';
+import { ObjectID } from 'mongodb';
+import { HackerDbObject } from '../generated/graphql';
 import { Models } from '../models';
 
 // TODO: (kenli/timliang) Expand functions for Organizers, Mentors collections
@@ -74,13 +55,13 @@ export async function removeUserFromEvent(
 	const userObjectID = new ObjectID(userID);
 	const user = await models.Hackers.findOne({ _id: userObjectID });
 	if (user) {
-		const event = await models.Events.findOne({ attendees: userObjectID });
+		const event = await models.Events.findOne({ attendees: userObjectID.toHexString() });
 		if (event) {
 			const ret = await models.Events.updateOne(
 				{ _id: new ObjectID(eventID) },
 				{
 					$pull: {
-						attendees: userObjectID,
+						attendees: userObjectID.toHexString(),
 					},
 				}
 			);
@@ -100,13 +81,13 @@ export async function checkInUserToEvent(
 	const user = await models.Hackers.findOne({ _id: userObjectID });
 	if (user) {
 		const eventCheckInObj = {
-			id: ObjectID.createFromTime(Date.now()),
-			timestamp: Date.now(),
+			_id: ObjectID.createFromTime(Date.now()),
+			timestamp: new Date(),
 			user: userID,
 		};
 		const retEvent = await models.Events.findOneAndUpdate(
 			{ _id: eventObjectID },
-			{ $addToSet: { attendees: userObjectID } }
+			{ $addToSet: { attendees: userObjectID.toHexString() } }
 		);
 		await models.Events.findOneAndUpdate(
 			{ _id: eventObjectID },
@@ -116,7 +97,7 @@ export async function checkInUserToEvent(
 			{ _id: userObjectID },
 			{
 				$addToSet: {
-					eventsAttended: eventObjectID,
+					eventsAttended: eventObjectID.toHexString(),
 				},
 			}
 		);
@@ -135,7 +116,7 @@ export async function userIsAttendingEvent(
 	if (user) {
 		const event = await models.Events.findOne({
 			_id: new ObjectID(eventID),
-			attendees: userObjectID,
+			attendees: userObjectID.toHexString(),
 		});
 		if (event) return true;
 	}

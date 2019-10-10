@@ -5,7 +5,7 @@ exports[`Test Nfc renders correctly 1`] = `
   className="sc-ifAKCX sc-EHOje sc-htoDjs sc-kGXeez colIYD"
 >
   <div
-    className="basic-select sc-kpOJdX kAzjOl css-2b097c-container"
+    className="sc-kpOJdX kAzjOl basic-select css-2b097c-container"
     onKeyDown={[Function]}
   >
     <div
@@ -22,7 +22,7 @@ exports[`Test Nfc renders correctly 1`] = `
           Hackathon Check-in
         </div>
         <div
-          className="css-1g6gooi"
+          className="css-w8afj7-Input"
         >
           <div
             className="select__input"
@@ -80,7 +80,7 @@ exports[`Test Nfc renders correctly 1`] = `
         </div>
       </div>
       <div
-        className="select__indicators css-1wy0on6"
+        className="select__indicators css-1g48xl4-IndicatorsContainer"
       >
         <span
           className="select__indicator-separator css-1okebmr-indicatorSeparator"
@@ -93,7 +93,7 @@ exports[`Test Nfc renders correctly 1`] = `
         >
           <svg
             aria-hidden="true"
-            className="css-19bqh2r"
+            className="css-tj5bde-Svg"
             focusable="false"
             height={20}
             viewBox="0 0 20 20"

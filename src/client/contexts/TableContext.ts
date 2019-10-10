@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 import { SortDirectionType } from 'react-virtualized';
-import { Update } from 'use-immer';
+import { Draft } from 'immer';
 import { HackersQuery } from '../generated/graphql';
 
 export interface Option {
@@ -21,7 +21,7 @@ export const defaultTableState = {
 
 export interface TableCtxI {
 	state: typeof defaultTableState;
-	update: Update<typeof defaultTableState>;
+	update: (f: (draft: Draft<typeof defaultTableState>) => void | typeof defaultTableState) => void;
 }
 
 export const TableContext = createContext<TableCtxI>({

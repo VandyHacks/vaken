@@ -28,7 +28,7 @@ export const ViewTeam: FC<Props> = ({ teamName }: Props): JSX.Element => {
 	return (
 		<FlexColumn>
 			<Title fontSize="1.3rem" color={STRINGS.DARK_TEXT_COLOR} margin="0.5rem">
-				{`You have joined:`}
+				You have joined:
 			</Title>
 			<Status background={STRINGS.LIGHT_TEXT_COLOR}>
 				<CenterButtonText color={STRINGS.DARK_TEXT_COLOR} fontWeight="bold" fontSize="1.8rem">

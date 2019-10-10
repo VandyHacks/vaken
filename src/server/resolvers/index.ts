@@ -98,7 +98,7 @@ export const resolvers: CustomResolvers<Context> = {
 		...userResolvers,
 		adult: async hacker => (await hacker).adult || null,
 		application: async (hacker, args, { models }: Context) =>
-			models.ApplicationFields.find({ userId: (await hacker)._id }).toArray(),
+			models.ApplicationFields.find({ userId: (await hacker)._id.toHexString() }).toArray(),
 		gender: async hacker => (await hacker).gender || null,
 		github: async hacker => (await hacker).github || null,
 		gradYear: async hacker => (await hacker).gradYear || null,
@@ -226,7 +226,7 @@ export const resolvers: CustomResolvers<Context> = {
 			const userRet = await removeUserFromEvent(input.user, input.event, models);
 			return userRet;
 		},
-		signedUploadUrl: async (_, { input }, { user }) => {
+		signedUploadUrl: async (_, _2, { user }) => {
 			// Enables a user to update their application
 			if (!user) throw new AuthenticationError(`cannot update application: user not logged in`);
 			return getSignedUploadUrl(`${user._id}`);
@@ -279,14 +279,11 @@ export const resolvers: CustomResolvers<Context> = {
 				'school',
 				'gradYear',
 				'volunteer',
-			].reduce(
-				(acc, reqField) => {
-					// TODO: Add input validation for these fields.
-					const missingField = input.fields.find(field => field.question === reqField);
-					return missingField ? { ...acc, [reqField]: missingField.answer } : acc;
-				},
-				{} as Partial<HackerDbObject> // eslint-disable-line @typescript-eslint/no-object-literal-type-assertion
-			);
+			].reduce((acc: Partial<HackerDbObject>, reqField) => {
+				// TODO: Add input validation for these fields.
+				const missingField = input.fields.find(field => field.question === reqField);
+				return missingField ? { ...acc, [reqField]: missingField.answer } : acc;
+			}, {});
 
 			// Update application status to reflect new input.
 			let appStatus: ApplicationStatus = hacker.status as ApplicationStatus;

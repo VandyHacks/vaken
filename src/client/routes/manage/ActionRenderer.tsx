@@ -35,7 +35,7 @@ function enableApplicationStatusSlider(status: string): boolean {
 	] as string[]).includes(status);
 }
 
-function convertApplicationStatus(status: ApplicationStatus): string {
+export function convertApplicationStatus(status: ApplicationStatus): string {
 	switch (status) {
 		case ApplicationStatus.Confirmed:
 		case ApplicationStatus.Accepted:

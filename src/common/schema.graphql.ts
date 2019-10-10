@@ -16,7 +16,7 @@ export default gql`
 		dietaryRestrictions: String! @column
 		userType: UserType! @column
 		phoneNumber: String @column
-		eventsAttended: [ID!] @column
+		eventsAttended: [ID!]! @column
 	}
 
 	enum AuthLevel {
@@ -147,7 +147,7 @@ export default gql`
 		volunteer: String @column
 		github: String @column
 		team: Team @embedded
-		eventsAttended: [ID!] @column
+		eventsAttended: [ID!]! @column
 		application: [ApplicationField!]! @embedded
 		emailUnsubscribed: Boolean! @column
 	}
@@ -174,7 +174,7 @@ export default gql`
 		phoneNumber: String
 		shifts: [Shift!]! @embedded
 		skills: [String!]! @column
-		eventsAttended: [ID!] @column
+		eventsAttended: [ID!]! @column
 	}
 
 	type Team @entity(embedded: true) {
@@ -201,7 +201,7 @@ export default gql`
 		userType: UserType!
 		phoneNumber: String
 		permissions: [String]! @column
-		eventsAttended: [ID!] @column
+		eventsAttended: [ID!]! @column
 	}
 
 	type Query {
