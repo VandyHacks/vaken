@@ -12,10 +12,10 @@
         </rdf:RDF>
     </metadata>
     <g filter="url(#filter0_d)">
-        <rect width="24" height="24" x="0" y="0" fill="white" rx="6"/>
-        <rect width="23" height="23" x="0.5" y="0.5" stroke="#ECEBED" rx="5.5"/>
+        <rect width="24" height="24" x="0" y="0" fill="white" rx="4"/>
+        <rect width="23" height="23" x="0.5" y="0.5" stroke="#ECEBED" rx="3.5"/>
     </g>
-    <path fill="#6979f8" d="m15.494 8.729c0.3446-0.3445 0.9033-0.3445 1.2479 0 0.3445 0.3446 0.3445 0.9033 0 1.2479l-5.2942 5.2941c-0.3445 0.3446-0.9032 0.3446-1.2478 0l-2.9412-2.9412c-0.3445-0.3446-0.3445-0.9032 0-1.2478 0.3446-0.3446 0.9033-0.3446 1.2479 0l2.3172 2.3172z"/>
+    <path fill="#3148A1" d="m15.494 8.729c0.3446-0.3445 0.9033-0.3445 1.2479 0 0.3445 0.3446 0.3445 0.9033 0 1.2479l-5.2942 5.2941c-0.3445 0.3446-0.9032 0.3446-1.2478 0l-2.9412-2.9412c-0.3445-0.3446-0.3445-0.9032 0-1.2478 0.3446-0.3446 0.9033-0.3446 1.2479 0l2.3172 2.3172z"/>
     <defs>
         <filter id="filter0_d" width="24" height="24" x="0" y="0" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
             <feFlood flood-opacity="0" result="BackgroundImageFix"/>

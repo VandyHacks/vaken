@@ -38,6 +38,23 @@ describe('Test auth/index.ts', () => {
 			).toBeTruthy();
 		});
 
+		it('registers /api/auth/microsoft', async () => {
+			expect(
+				app._router.stack.some(
+					(r: { route: Express.IRoute }) => r.route && r.route.path === '/api/auth/microsoft'
+				)
+			).toBeTruthy();
+		});
+
+		it('registers /api/auth/microsoft/callback', async () => {
+			expect(
+				app._router.stack.some(
+					(r: { route: Express.IRoute }) =>
+						r.route && r.route.path === '/api/auth/microsoft/callback'
+				)
+			).toBeTruthy();
+		});
+
 		it('registers /api/logout', async () => {
 			expect(
 				app._router.stack.some(

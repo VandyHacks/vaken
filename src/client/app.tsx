@@ -31,7 +31,7 @@ const GlobalStyle = createGlobalStyle`
 		 these values so !important is required. */
 	.french-toast {
 		padding: 20px !important;
-		border-radius: 6px !important;
+		border-radius: 4px !important;
 		font-family: 'Roboto', sans-serif !important;
 		font-size: 1.1em !important;
 	}

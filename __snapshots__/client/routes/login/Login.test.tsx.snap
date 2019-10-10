@@ -5,7 +5,7 @@ exports[`Login renders properly 1`] = `
   className="sc-fjdhpX dmItWC"
 >
   <div
-    className="sc-bdVaJa sc-bwzfXH sc-ifAKCX sc-jzJRlG hPKjIj"
+    className="sc-bdVaJa sc-bwzfXH sc-ifAKCX sc-jzJRlG cRbDmn"
     height="25"
     width="27rem"
   >
@@ -16,6 +16,35 @@ exports[`Login renders properly 1`] = `
       VandyHacks VI
     </h1>
     <a
+      href="/api/auth/github"
+      style={
+        Object {
+          "textDecoration": "none",
+        }
+      }
+    >
+      <button
+        className="sc-gqjmRU hxBurY"
+      >
+        <div
+          className="sc-bdVaJa sc-bwzfXH sc-htpNat dyMbAR"
+          height="min-content"
+          width="min-content"
+        >
+          <img
+            alt="GitHub logo"
+            className="sc-iwsKbI kXBzef"
+            src="IconMock"
+          />
+        </div>
+        <div
+          className="sc-htoDjs eEqYMT"
+        >
+          Sign in with GitHub
+        </div>
+      </button>
+    </a>
+    <a
       href="/api/auth/google"
       style={
         Object {
@@ -24,7 +53,7 @@ exports[`Login renders properly 1`] = `
       }
     >
       <button
-        className="sc-gqjmRU iicoRd"
+        className="sc-gqjmRU hxBurY"
       >
         <div
           className="sc-bdVaJa sc-bwzfXH sc-htpNat dyMbAR"
@@ -45,7 +74,7 @@ exports[`Login renders properly 1`] = `
       </button>
     </a>
     <a
-      href="/api/auth/github"
+      href="/api/auth/microsoft"
       style={
         Object {
           "textDecoration": "none",
@@ -53,7 +82,7 @@ exports[`Login renders properly 1`] = `
       }
     >
       <button
-        className="sc-gqjmRU iicoRd"
+        className="sc-gqjmRU hxBurY"
       >
         <div
           className="sc-bdVaJa sc-bwzfXH sc-htpNat dyMbAR"
@@ -61,7 +90,7 @@ exports[`Login renders properly 1`] = `
           width="min-content"
         >
           <img
-            alt="GitHub logo"
+            alt="Microsoft logo"
             className="sc-iwsKbI kXBzef"
             src="IconMock"
           />
@@ -69,7 +98,7 @@ exports[`Login renders properly 1`] = `
         <div
           className="sc-htoDjs eEqYMT"
         >
-          Sign in with GitHub
+          Sign in with Microsoft
         </div>
       </button>
     </a>

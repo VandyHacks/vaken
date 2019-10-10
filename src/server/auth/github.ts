@@ -21,6 +21,7 @@ export const strategy = (models: Models): Strategy =>
 			clientID: GITHUB_CLIENT_ID,
 			clientSecret: GITHUB_CLIENT_SECRET,
 			passReqToCallback: false,
+			scope: ['user:email'], // fetches non-public emails as well
 		},
 		(accessToken, refreshToken, results, profile, verified) =>
 			void verifyCallback(models, profile, verified)

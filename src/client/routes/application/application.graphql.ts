@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 
 export default gql`
 	mutation signedUploadUrl($input: ID!) {
@@ -9,7 +9,7 @@ export default gql`
 		signedReadUrl(input: $input)
 	}
 
-	mutation updateMyApplication($input: [ApplicationInput!]!) {
+	mutation updateMyApplication($input: UpdateMyAppInput!) {
 		updateMyApplication(input: $input) {
 			id
 			... on Hacker {

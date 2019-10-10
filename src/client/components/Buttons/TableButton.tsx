@@ -6,7 +6,7 @@ export const TableButton = styled.button`
 	background-color: white;
 	border-color: ${STRINGS.ACCENT_COLOR};
 	text-align: center;
-	border-radius: 1rem;
+	border-radius: 4px;
 	width: 3rem;
 	border-style: solid;
 	border-width: 0.0625rem;

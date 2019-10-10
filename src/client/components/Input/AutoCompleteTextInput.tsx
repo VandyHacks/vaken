@@ -25,10 +25,10 @@ const AutoComplete: FC<Props> = props => {
 			<datalist id={listID}>
 				{awaitedOptions.map(
 					(item): JSX.Element => {
-						return <option key={item} value={item} />;
+						return <option aria-label={item} key={item} value={item} />;
 					}
 				)}
-				{awaitedOptions.includes(value) ? null : <option value={value} />}
+				{awaitedOptions.includes(value) ? null : <option aria-label={value} value={value} />}
 			</datalist>
 		</>
 	);

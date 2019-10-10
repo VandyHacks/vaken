@@ -10,7 +10,7 @@ export const FloatingButton = styled.button`
 	height: 3.75rem;
 	bottom: 3.25rem;
 	right: 3.75rem;
-	border-radius: 3.125rem;
+	border-radius: 4px;
 	text-align: center;
 	outline: none;
 	border: none;

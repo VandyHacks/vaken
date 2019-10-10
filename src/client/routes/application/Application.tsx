@@ -58,7 +58,7 @@ export const StyledQuestion = styled.label`
 	font-size: 1rem;
 
 	& > input {
-		border-radius: 6px;
+		border-radius: 4px;
 		background: white;
 	}
 `;
@@ -144,7 +144,9 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 								position: 'bottom-right',
 							});
 						else
-							return updateApplication({ variables: { input } }).then(() => {
+							return updateApplication({
+								variables: { input: { fields: input, submit: true } },
+							}).then(() => {
 								toast.dismiss();
 								return toast.success('Application submitted successfully!', {
 									position: 'bottom-right',
@@ -162,7 +164,7 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 	}, [input, setActionButton, updateApplication]);
 
 	useEffect((): void => {
-		if (!loaded && data && data.me) {
+		if (!loaded && data && data.me && data.me.__typename === 'Hacker') {
 			const { application } = data.me;
 			setInput(draft => {
 				draft.length = 0; // Clear the array
@@ -179,7 +181,12 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 
 	useEffect(() => {
 		// Auto-save application input after five seconds of inactivity.
-		autosaveTimeout = setTimeout(() => updateApplication({ variables: { input } }), 5000);
+		autosaveTimeout = setTimeout(
+			() =>
+				input.length &&
+				updateApplication({ variables: { input: { fields: input, submit: false } } }),
+			5000
+		);
 
 		// Cleanup
 		return () => clearTimeout(autosaveTimeout);
@@ -204,7 +211,6 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 
 	return (
 		<FloatingPopup
-			borderRadius="1rem"
 			// height="100%"
 			width="100%"
 			backgroundOpacity="1"

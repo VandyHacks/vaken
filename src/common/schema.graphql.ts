@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 
 export default gql`
 	interface User @abstractEntity(discriminatorField: "userType") {
@@ -7,6 +7,7 @@ export default gql`
 		secondaryIds: [ID!]! @column
 		logins: [Login!]! @embedded
 		email: String! @column
+		emailUnsubscribed: Boolean! @column
 		firstName: String! @column
 		preferredName: String! @column
 		lastName: String! @column
@@ -15,7 +16,7 @@ export default gql`
 		dietaryRestrictions: String! @column
 		userType: UserType! @column
 		phoneNumber: String @column
-		eventsAttended: [ID!] @column
+		eventsAttended: [ID!]! @column
 	}
 
 	enum AuthLevel {
@@ -146,8 +147,9 @@ export default gql`
 		volunteer: String @column
 		github: String @column
 		team: Team @embedded
-		eventsAttended: [ID!] @column
+		eventsAttended: [ID!]! @column
 		application: [ApplicationField!]! @embedded
+		emailUnsubscribed: Boolean! @column
 	}
 
 	type Shift @entity(embedded: true) {
@@ -161,6 +163,7 @@ export default gql`
 		secondaryIds: [ID!]!
 		logins: [Login!]!
 		email: String!
+		emailUnsubscribed: Boolean! @column
 		firstName: String!
 		preferredName: String!
 		lastName: String!
@@ -171,7 +174,7 @@ export default gql`
 		phoneNumber: String
 		shifts: [Shift!]! @embedded
 		skills: [String!]! @column
-		eventsAttended: [ID!] @column
+		eventsAttended: [ID!]! @column
 	}
 
 	type Team @entity(embedded: true) {
@@ -188,6 +191,7 @@ export default gql`
 		secondaryIds: [ID!]!
 		logins: [Login!]!
 		email: String!
+		emailUnsubscribed: Boolean! @column
 		firstName: String!
 		preferredName: String!
 		lastName: String!
@@ -197,7 +201,7 @@ export default gql`
 		userType: UserType!
 		phoneNumber: String
 		permissions: [String]! @column
-		eventsAttended: [ID!] @column
+		eventsAttended: [ID!]! @column
 	}
 
 	type Query {
@@ -257,8 +261,13 @@ export default gql`
 		answer: String!
 	}
 
+	input UpdateMyAppInput {
+		fields: [ApplicationInput!]!
+		submit: Boolean
+	}
+
 	type Mutation {
-		updateMyApplication(input: [ApplicationInput!]!): User!
+		updateMyApplication(input: UpdateMyAppInput!): User!
 		updateMyProfile(input: UserInput!): User!
 		updateProfile(id: ID!, input: UserInput!): User!
 		joinTeam(input: TeamInput!): Hacker!

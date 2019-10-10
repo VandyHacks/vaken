@@ -29,7 +29,7 @@ const StyledDiv = styled('div')`
 	color: ${(props: StyledProps) => props.fontColor || 'white'};
 	background-color: ${(props: StyledProps) => props.backgroundColor || STRINGS.ACCENT_COLOR};
 	text-align: ${(props: StyledProps) => props.textAlign || 'center'};
-	border-radius: ${(props: StyledProps) => props.borderRadius || '1rem'};
+	border-radius: ${(props: StyledProps) => props.borderRadius || '8px'};
 	width: ${(props: StyledProps) => props.width || '5rem'};
 	text-transform: lowercase;
 

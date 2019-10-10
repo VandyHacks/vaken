@@ -10,6 +10,8 @@ import DB from './models';
 import Context from './context';
 import logger from './logger';
 import { strategies, registerAuthRoutes } from './auth';
+import { UnsubscribeHandler } from './mail/handlers';
+import { UserDbInterface } from './generated/graphql';
 
 const { SESSION_SECRET, PORT } = process.env;
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
@@ -30,6 +32,9 @@ export const schema = makeExecutableSchema({
 	const dbClient = new DB();
 	const models = await dbClient.collections;
 
+	// Email unsubscribe link
+	app.use('/api/unsubscribe', UnsubscribeHandler(models));
+
 	// Register auth functions
 	app.use(
 		session({
@@ -41,13 +46,15 @@ export const schema = makeExecutableSchema({
 	);
 	app.use(passport.initialize());
 	app.use(passport.session());
+
 	passport.use('github', strategies.github(models));
 	passport.use('google', strategies.google(models));
+	passport.use('microsoft', strategies.microsoft(models));
 
 	registerAuthRoutes(app);
 
 	app.use((req, res, next) =>
-		passport.authenticate(['session', 'github', 'google'], (err, user) => {
+		passport.authenticate(['session', 'github', 'google', 'microsoft'], (err, user) => {
 			if (err) return void next();
 			return void req.login(user, next);
 		})(req, res, next)
@@ -56,7 +63,7 @@ export const schema = makeExecutableSchema({
 	const server = new ApolloServer({
 		context: ({ req }): Context => ({
 			models,
-			user: req.user,
+			user: req.user as UserDbInterface | undefined,
 		}),
 		formatError: error => {
 			logger.error(error);

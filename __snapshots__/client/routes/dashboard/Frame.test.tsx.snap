@@ -2,7 +2,7 @@
 
 exports[`Test Frame Frame renders correctly 1`] = `
 <div
-  className="sc-bYSBpT kbnJqm"
+  className="sc-cIShpX laCbDC"
   onFocus={[Function]}
 >
   <div
@@ -12,7 +12,7 @@ exports[`Test Frame Frame renders correctly 1`] = `
       className="sc-bdVaJa sc-bwzfXH sc-htpNat sc-bxivhb efNTZh"
     >
       <button
-        className="sc-jtRfpW jGXxNl"
+        className="sc-feJyhm hMTOIz"
         onClick={[Function]}
         type="button"
       >
@@ -34,17 +34,17 @@ exports[`Test Frame Frame renders correctly 1`] = `
       </h1>
     </div>
     <div
-      className="sc-elJkPf giXaGz"
+      className="sc-kafWEX kmlNIu"
     />
   </div>
   <div
-    className="sidebar sc-ktHwxA cHPkpP"
+    className="sc-jqCOkK ecyiyv sidebar"
   >
     <div
-      className="sc-cIShpX eYghyc"
+      className="sc-uJMKN iLKCNh"
     >
       <div
-        className="sc-kafWEX jVWPXo"
+        className="sc-bbmXgH bHqSQc"
       >
         <img
           alt="VH graphic"
@@ -52,27 +52,27 @@ exports[`Test Frame Frame renders correctly 1`] = `
         />
       </div>
       <hr
-        className="sc-feJyhm dNbusE"
+        className="sc-gGBfsJ bchpal"
       />
       <div
         className="sc-bdVaJa sc-bwzfXH sc-bZQynM jxTPlc"
         height="calc(100% - calc(8rem + 160px))"
       >
         <ul
-          className="sc-lhVmIH nunxn"
+          className="sc-ktHwxA cWrlSi"
         >
           <li>
             <a
               aria-current={null}
-              className="sc-btzYZH dvpwSc"
+              className="sc-hEsumM jVYxrJ"
               href="/dashboard"
               onClick={[Function]}
             >
               <button
-                className="sc-gqjmRU sc-cmTdod hNugsv sc-fjdhpX cVvOdu"
+                className="sc-gqjmRU sc-fjdhpX goWjNZ sc-fYxtnH hOiLHe"
               >
                 <div
-                  className="sc-htoDjs sc-cmTdod hNugsv sc-dnqmqq caLfPx"
+                  className="sc-htoDjs sc-dnqmqq caLfPx sc-fYxtnH hOiLHe"
                 >
                   Dashboard
                 </div>
@@ -82,15 +82,15 @@ exports[`Test Frame Frame renders correctly 1`] = `
           <li>
             <a
               aria-current={null}
-              className="sc-btzYZH dvpwSc"
+              className="sc-hEsumM jVYxrJ"
               href="/application"
               onClick={[Function]}
             >
               <button
-                className="sc-gqjmRU sc-cmTdod hNugsv sc-fjdhpX cVvOdu"
+                className="sc-gqjmRU sc-fjdhpX goWjNZ sc-fYxtnH hOiLHe"
               >
                 <div
-                  className="sc-htoDjs sc-cmTdod hNugsv sc-dnqmqq caLfPx"
+                  className="sc-htoDjs sc-dnqmqq caLfPx sc-fYxtnH hOiLHe"
                 >
                   Apply
                 </div>
@@ -100,15 +100,15 @@ exports[`Test Frame Frame renders correctly 1`] = `
           <li>
             <a
               aria-current={null}
-              className="sc-btzYZH dvpwSc"
+              className="sc-hEsumM jVYxrJ"
               href="/help"
               onClick={[Function]}
             >
               <button
-                className="sc-gqjmRU sc-cmTdod hNugsv sc-fjdhpX cVvOdu"
+                className="sc-gqjmRU sc-fjdhpX goWjNZ sc-fYxtnH hOiLHe"
               >
                 <div
-                  className="sc-htoDjs sc-cmTdod hNugsv sc-dnqmqq caLfPx"
+                  className="sc-htoDjs sc-dnqmqq caLfPx sc-fYxtnH hOiLHe"
                 >
                   Help
                 </div>
@@ -121,21 +121,21 @@ exports[`Test Frame Frame renders correctly 1`] = `
           height="min-content"
         >
           <a
-            className="sc-jwKygS cqXzzM"
+            className="sc-tilXH igWBUD"
             href="/api/logout"
           >
             <button
-              className="sc-gqjmRU sc-cmTdod hNugsv sc-fjdhpX cVvOdu"
+              className="sc-gqjmRU sc-fjdhpX goWjNZ sc-fYxtnH hOiLHe"
             >
               <div
-                className="sc-htoDjs sc-cmTdod hNugsv sc-dnqmqq caLfPx"
+                className="sc-htoDjs sc-dnqmqq caLfPx sc-fYxtnH hOiLHe"
               >
                 Logout
               </div>
             </button>
           </a>
           <hr
-            className="sc-feJyhm sc-iELTvK dErdEa"
+            className="sc-gGBfsJ sc-jnlKLf eRrLeK"
           />
           <h1
             className="sc-jzJRlG hdnVAr"
@@ -147,13 +147,13 @@ exports[`Test Frame Frame renders correctly 1`] = `
     </div>
   </div>
   <div
-    className="content sc-gzVnrw dkqizV"
+    className="sc-gzVnrw dkqizV content"
   >
     <div
       className="sc-bdVaJa sc-bwzfXH sc-ifAKCX kHHPcv"
     >
       <div
-        className="sc-bdVaJa sc-bwzfXH sc-ifAKCX sc-eNQAEJ sc-iRbamj gQtKCV"
+        className="sc-bdVaJa sc-bwzfXH sc-ifAKCX sc-eNQAEJ sc-iRbamj bezmAo"
       >
         <div
           className="sc-bdVaJa sc-bwzfXH dgnCwc"
@@ -174,7 +174,7 @@ exports[`Test Frame Frame renders correctly 1`] = `
             }
           >
             <button
-              className="sc-gqjmRU sc-iAyFgw dhSyGE"
+              className="sc-gqjmRU sc-iAyFgw RwqKb"
             >
               <div
                 className="sc-htoDjs Dufyp"

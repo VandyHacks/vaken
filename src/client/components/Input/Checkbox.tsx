@@ -4,6 +4,7 @@ import { title } from 'case';
 import UncheckedSvg from '../../assets/img/unchecked_box.svg';
 import CheckedSvg from '../../assets/img/checked_box.svg';
 import { InputProps } from './TextInput';
+import STRINGS from '../../assets/strings.json';
 
 const SEPARATOR = '|';
 
@@ -16,7 +17,7 @@ const CheckboxContainer = styled.div`
 	display: flex;
 	flex-flow: column nowrap;
 	justify-content: flex-start;
-	border-radius: 6px;
+	border-radius: 4px;
 
 	input {
 		width: 0;
@@ -26,7 +27,7 @@ const CheckboxContainer = styled.div`
 
 		&:focus + label img {
 			/* Color for keyboard users */
-			box-shadow: 0 0 2px 2px #6979f8;
+			box-shadow: 0 0 2px 2px ${STRINGS.ACCENT_COLOR};
 		}
 	}
 
