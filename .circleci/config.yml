@@ -59,7 +59,7 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run:
-          command: 'npm run check:test:ci'
+          command: 'npm run check:test:ci && node scripts/mergeJunit.js'
       - store_test_results:
           path: ~/project/vaken/reports/test
       - codecov/upload:

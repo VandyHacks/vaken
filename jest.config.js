@@ -7,10 +7,7 @@ module.exports = {
 		'!./src/**/*.d.ts',
 		'!**/*.test.ts*',
 	],
-	reporters: [
-		'default',
-		['jest-junit', { outputDirectory: './reports/test/jest', outputName: 'results.xml' }],
-	],
+	reporters: ['default'],
 	testPathIgnorePatterns: ['/node_modules/', '.eslintrc.js'],
 	projects: [
 		{
@@ -28,6 +25,9 @@ module.exports = {
 				'\\.(css|less)$': 'jest-transform-css',
 				'\\.(jpg|jpeg|png|gif)$': '<rootDir>/__mocks__/svgrMock.js',
 			},
+			reporters: [
+				['jest-junit', { outputDirectory: './reports/test/jest', outputName: 'client.xml' }],
+			],
 			transform: {
 				'^.+\\.jsx?$': 'babel-jest',
 				'^.+\\.css$': 'jest-transform-css',
@@ -42,6 +42,9 @@ module.exports = {
 			setupFiles: ['./__mocks__/env.js'],
 			testEnvironment: 'node',
 			snapshotResolver: './__mocks__/snapshotResolver',
+			reporters: [
+				['jest-junit', { outputDirectory: './reports/test/jest', outputName: 'server.xml' }],
+			],
 			transform: {
 				'^.+\\.jsx?$': 'babel-jest',
 			},
@@ -55,6 +58,9 @@ module.exports = {
 			transform: {
 				'^.+\\.jsx?$': 'babel-jest',
 			},
+			reporters: [
+				['jest-junit', { outputDirectory: './reports/test/jest', outputName: 'common.xml' }],
+			],
 			preset: 'ts-jest',
 			testPathIgnorePatterns: ['.eslintrc.js'],
 		},
