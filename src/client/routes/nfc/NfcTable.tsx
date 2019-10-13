@@ -251,20 +251,20 @@ const NfcTable: FC<NfcTableProps> = ({ hackersData, eventsData }: NfcTableProps)
 				</HeaderButton>
 			</TableOptions>
 			<TableData>
-			{manualMode || eventSelected.eventType === CHECK_IN_EVENT_TYPE ? (
-				<AutoSizer>
-					{({ height, width }) => (
-						<NfcTableRows
-							width={width}
-							height={height}
-							sortedData={sortedData}
-							onSortColumnChange={onSortColumnChange}
-							generateRowClassName={generateRowClassName}
-							table={table}
-						/>
-					)}
-				</AutoSizer>
-			) : null}
+				{manualMode || eventSelected.eventType === CHECK_IN_EVENT_TYPE ? (
+					<AutoSizer>
+						{({ height, width }) => (
+							<NfcTableRows
+								width={width}
+								height={height}
+								sortedData={sortedData}
+								onSortColumnChange={onSortColumnChange}
+								generateRowClassName={generateRowClassName}
+								table={table}
+							/>
+						)}
+					</AutoSizer>
+				) : null}
 			</TableData>
 		</TableLayout>
 	);
