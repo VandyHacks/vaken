@@ -21,7 +21,7 @@ import {
 	checkIsAuthorized,
 	replaceResumeFieldWithLink,
 } from './helpers';
-import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser } from '../nfc';
+import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser, getUser } from '../nfc';
 import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
 import { sendStatusEmail } from '../mail/aws';
 
@@ -259,6 +259,15 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!companyCreated) throw new AuthenticationError(`company not found: ${name}`);
 			return companyCreated;
 		},
+		checkInUserToEventByNfc: async (root, { input }, { models, user }) => {
+			checkIsAuthorized(UserType.Organizer, user);
+			const input_user = await getUser(input.nfcId, models);
+			if (input_user) {
+				const userRet = await checkInUserToEvent(input_user._id.toString(), input.event, models);
+				return userRet;
+			}
+			return null;
+		},
 		hackerStatus: async (_, { input: { id, status } }, { user, models }) => {
 			checkIsAuthorized(UserType.Organizer, user);
 			const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
@@ -353,6 +362,15 @@ export const resolvers: CustomResolvers<Context> = {
 			checkIsAuthorized(UserType.Organizer, user);
 			const userRet = await removeUserFromEvent(input.user, input.event, models);
 			return userRet;
+		},
+		removeUserFromEventByNfc: async (root, { input }, { models, user }) => {
+			checkIsAuthorized(UserType.Organizer, user);
+			const input_user = await getUser(input.nfcId, models);
+			if (input_user) {
+				const userRet = await removeUserFromEvent(input_user._id.toString(), input.event, models);
+				return userRet;
+			}
+			return null;
 		},
 		signedUploadUrl: async (_, _2, { user }) => {
 			// Enables a user to update their application
