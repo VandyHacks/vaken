@@ -214,6 +214,7 @@ export default gql`
 		secondaryIds: [ID!]!
 		logins: [Login!]!
 		email: String!
+		emailUnsubscribed: Boolean! @column
 		firstName: String!
 		preferredName: String!
 		lastName: String!
@@ -224,6 +225,7 @@ export default gql`
 		userType: UserType!
 		phoneNumber: String
 		company: Company! @embedded
+		eventsAttended: [ID!]! @column
 	}
 
 	type Organizer implements User @entity {
@@ -313,10 +315,6 @@ export default gql`
 		submit: Boolean
 	}
 
-	type Mutation {
-		updateMyApplication(input: UpdateMyAppInput!): User!
-	}
-	
 	input SponsorInput {
 		email: String!
 		name: String!
@@ -344,6 +342,7 @@ export default gql`
 		createSponsor(input: SponsorInput!): Sponsor!
 		updateMyProfile(input: UserInput!): User!
 		updateProfile(id: ID!, input: UserInput!): User!
+		updateMyApplication(input: UpdateMyAppInput!): User!
 		joinTeam(input: TeamInput!): Hacker!
 		leaveTeam: Hacker!
 		hackerStatus(input: HackerStatusInput!): Hacker!
