@@ -251,6 +251,7 @@ const NfcTable: FC<NfcTableProps> = ({ hackersData, eventsData }: NfcTableProps)
 				</HeaderButton>
 			</TableOptions>
 			<TableData>
+			{manualMode || eventSelected.eventType === CHECK_IN_EVENT_TYPE ? (
 				<AutoSizer>
 					{({ height, width }) => (
 						<NfcTableRows
@@ -263,6 +264,7 @@ const NfcTable: FC<NfcTableProps> = ({ hackersData, eventsData }: NfcTableProps)
 						/>
 					)}
 				</AutoSizer>
+			) : null}
 			</TableData>
 		</TableLayout>
 	);
