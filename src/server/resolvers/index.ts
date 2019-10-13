@@ -261,9 +261,9 @@ export const resolvers: CustomResolvers<Context> = {
 		},
 		checkInUserToEventByNfc: async (root, { input }, { models, user }) => {
 			checkIsAuthorized(UserType.Organizer, user);
-			const input_user = await getUser(input.nfcId, models);
-			if (input_user) {
-				const userRet = await checkInUserToEvent(input_user._id.toString(), input.event, models);
+			const inputUser = await getUser(input.nfcId, models);
+			if (inputUser) {
+				const userRet = await checkInUserToEvent(inputUser._id.toString(), input.event, models);
 				return userRet;
 			}
 			return null;
@@ -365,9 +365,9 @@ export const resolvers: CustomResolvers<Context> = {
 		},
 		removeUserFromEventByNfc: async (root, { input }, { models, user }) => {
 			checkIsAuthorized(UserType.Organizer, user);
-			const input_user = await getUser(input.nfcId, models);
-			if (input_user) {
-				const userRet = await removeUserFromEvent(input_user._id.toString(), input.event, models);
+			const inputUser = await getUser(input.nfcId, models);
+			if (inputUser) {
+				const userRet = await removeUserFromEvent(inputUser._id.toString(), input.event, models);
 				return userRet;
 			}
 			return null;
