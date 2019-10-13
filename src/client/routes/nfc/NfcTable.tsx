@@ -164,8 +164,8 @@ const NfcTable: FC<NfcTableProps> = ({ hackersData, eventsData }: NfcTableProps)
 					defaultValue={[EventOptions[0]]}
 					options={EventOptions}
 					onChange={(option: { label: string; value: string }) => {
-						const event = eventsData.find(event => {
-							return event.id === option.value;
+						const event = eventsData.find(ev => {
+							return ev.id === option.value;
 						});
 						if (event) {
 							setEventSelected(event);

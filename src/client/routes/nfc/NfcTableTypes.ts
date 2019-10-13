@@ -1,5 +1,6 @@
 import { SortDirectionType } from 'react-virtualized';
 
+import { MutationFunction } from '@apollo/react-common';
 import {
 	RegisterNfcuidWithUserMutation,
 	RegisterNfcuidWithUserMutationVariables,
@@ -14,7 +15,6 @@ import {
 	HackersQuery,
 	EventsQuery,
 } from '../../generated/graphql';
-import { MutationFunction } from '@apollo/react-common';
 
 type ArrayType<T> = T extends (infer U)[] ? U : never;
 export type QueriedHacker = ArrayType<HackersQuery['hackers']>;

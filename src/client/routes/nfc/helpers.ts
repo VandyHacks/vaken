@@ -12,19 +12,20 @@ export const CHECK_IN_EVENT_TYPE = 'CHECK_IN';
 export const NFC_CODE_MIN_LENGTH = 5;
 
 export const createMatchCriteria = (searchValue: string) => (hacker: QueriedHacker): boolean => {
-	for (let word of searchValue.split(' ')) {
-		if (!word || word.length === 0) continue;
-
+	let match = true;
+	searchValue.split(' ').forEach(word => {
 		// if no words match, return false
 		if (
+			word.length !== 0 &&
 			!hacker.firstName.toLowerCase().includes(word) &&
 			!hacker.lastName.toLowerCase().includes(word) &&
 			!hacker.email.toLowerCase().includes(word) &&
 			(!hacker.school || !hacker.school.toLowerCase().includes(word))
-		)
-			return false;
-	}
-	return true;
+		) {
+			match = false;
+		}
+	});
+	return match;
 };
 
 // assigns the row names for styling
@@ -45,7 +46,7 @@ export const createSubmitHandler = (
 	removeByNfcFunction: RemoveUserFromEventByNfcMutationFn
 ) => (nfc: string, user: string, event: QueriedEvent, unadmit: boolean): boolean => {
 	console.log([nfc, user, event, unadmit]);
-	if (event.eventType == CHECK_IN_EVENT_TYPE) {
+	if (event.eventType === CHECK_IN_EVENT_TYPE) {
 		if (nfc.length < NFC_CODE_MIN_LENGTH) {
 			return false;
 		}
@@ -54,55 +55,55 @@ export const createSubmitHandler = (
 			variables: {
 				input: {
 					nfcid: nfc,
-					user: user,
+					user,
 				},
 			},
 		});
 		return true;
-	} else {
-		if (user.length) {
-			if (unadmit) {
-				removeFunction({
-					variables: {
-						input: {
-							event: event.id,
-							user: user,
-						},
-					},
-				});
-			} else {
-				markAttendedFunction({
-					variables: {
-						input: {
-							event: event.id,
-							user: user,
-						},
-					},
-				});
-			}
-			return true;
-		} else if (nfc.length > NFC_CODE_MIN_LENGTH) {
-			if (unadmit) {
-				removeByNfcFunction({
-					variables: {
-						input: {
-							event: event.id,
-							nfcId: nfc,
-						},
-					},
-				});
-			} else {
-				markAttendedByNfcFunction({
-					variables: {
-						input: {
-							event: event.id,
-							nfcId: nfc,
-						},
-					},
-				});
-			}
-			return true;
-		}
-		return false;
 	}
+	if (user.length) {
+		if (unadmit) {
+			removeFunction({
+				variables: {
+					input: {
+						event: event.id,
+						user,
+					},
+				},
+			});
+		} else {
+			markAttendedFunction({
+				variables: {
+					input: {
+						event: event.id,
+						user,
+					},
+				},
+			});
+		}
+		return true;
+	}
+	if (nfc.length > NFC_CODE_MIN_LENGTH) {
+		if (unadmit) {
+			removeByNfcFunction({
+				variables: {
+					input: {
+						event: event.id,
+						nfcId: nfc,
+					},
+				},
+			});
+		} else {
+			markAttendedByNfcFunction({
+				variables: {
+					input: {
+						event: event.id,
+						nfcId: nfc,
+					},
+				},
+			});
+		}
+		return true;
+	}
+	return false;
 };
