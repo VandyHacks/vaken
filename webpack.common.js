@@ -40,13 +40,6 @@ module.exports = {
 				test: /\.(ico)$/,
 				loader: 'url-loader',
 			},
-			{
-				test: /\.html$/,
-				loader: "html-loader",
-				options: {
-					attrs: ['img:src', 'link:href']
-				}
-			},
 		],
 	},
 	// optimization: {
