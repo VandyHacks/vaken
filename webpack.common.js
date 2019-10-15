@@ -36,6 +36,17 @@ module.exports = {
 				test: /\.css$/,
 				use: ['style-loader', 'css-loader'],
 			},
+			{
+				test: /\.(ico)$/,
+				loader: 'url-loader',
+			},
+			{
+				test: /\.html$/,
+				loader: "html-loader",
+				options: {
+					attrs: ['img:src', 'link:href']
+				}
+			},
 		],
 	},
 	// optimization: {
@@ -59,6 +70,7 @@ module.exports = {
 		new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }), // Check types asynchronously
 		new HtmlWebpackPlugin({
 			template: './src/client/index.html',
+			favicon: './src/client/assets/img/favicon.ico',
 		}), // For index.html entry point
 	],
 	resolve: {
