@@ -75,7 +75,7 @@ export const resolvers: CustomResolvers<Context> = {
 		createdAt: async field => (await field).createdAt.getTime(),
 		id: async field => (await field).id,
 		question: async field => (await field).question,
-		userId: async field => (await field).userId,
+		userId: async (field, _, { models }) => queryById(`${(await field).userId}`, models.Hackers),
 	},
 	Event: {
 		attendees: async event => (await event).attendees || [],
@@ -98,7 +98,7 @@ export const resolvers: CustomResolvers<Context> = {
 		...userResolvers,
 		adult: async hacker => (await hacker).adult || null,
 		application: async (hacker, args, { models }: Context) =>
-			models.ApplicationFields.find({ userId: (await hacker)._id.toHexString() }).toArray(),
+			models.ApplicationFields.find({ userId: (await hacker)._id }).toArray(),
 		gender: async hacker => (await hacker).gender || null,
 		github: async hacker => (await hacker).github || null,
 		gradYear: async hacker => (await hacker).gradYear || null,
@@ -238,6 +238,7 @@ export const resolvers: CustomResolvers<Context> = {
 			const id = ObjectID.createFromHexString((user._id as unknown) as string);
 			// update app answers if they exist
 			const { result } = await models.ApplicationFields.bulkWrite(
+				// TODO: These are not typechecked currently :/
 				input.fields.map(({ question, answer }) => ({
 					updateOne: {
 						filter: { question, userId: id },

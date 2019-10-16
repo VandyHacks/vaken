@@ -94,7 +94,7 @@ export default gql`
 		createdAt: Float! @column(overrideType: "Date")
 		question: String! @column
 		answer: String @column
-		userId: ID! @column
+		userId: Hacker! @link @column
 	}
 
 	type Login @entity(additionalFields: [{ path: "email", type: "string" }]) {
