@@ -277,7 +277,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> If you applied for a spot on one of our buses or for travel reimbursement, someone from our team will be in touch with you shortly. </div>
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> If you are interested in reserving a spot on one of our buses, please rsvp for the busses by following the instructions in our <a class="text-link" href="https://storage.vandyhacks.org/bus_routes.pdf" style="color: #5e6ebf;">bus guide</a>. </div>
 																			</td>
 																		</tr>
 																		<tr>
@@ -592,7 +592,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 Congratulations! We want you to be a part of VandyHacks VI: Art Edition!
 We were impressed with your application–your experience, motivation, and aspirations inspired us. We would love to invite you to come to VandyHacks VI from November 1st-3rd to code a masterpiece with us!
 Please confirm your attendance at VandyHacks VI: Art Edition by revisiting our application portal before 10/25.
-If you applied for a spot in one of our free buses or for travel reimbursement, someone from the VandyHacks team will be in touch with you shortly.
+If you are interested in reserving a spot on one of our buses, please rsvp for the busses by following the instructions in our bus guide.
 In the meantime, like our page on Facebook, follow us on Instagram, and keep up to date with our Twitter for more details and exciting updates!
 Happy Hacking!
 The VandyHacks Team`,

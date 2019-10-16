@@ -272,7 +272,12 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> In the meantime, we'll be putting all the finishing touches on the weekend, so be sure to like our page on Facebook, follow us on Instagram, and keep up to date with our Twitter for some sneak peeks at the organizers in action! </div>
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> If you are interested in reserving a spot on one of our buses, please rsvp for the busses by following the instructions in our <a class="text-link" href="https://storage.vandyhacks.org/bus_routes.pdf" style="color: #5e6ebf;">bus guide</a>. </div>
+																			</td>
+																		</tr>
+																		<tr>
+																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> In the meantime, we'll be putting all the finishing touches on the weekend, so be sure to like our page on <a class="text-link" href="https://facebook.com/VandyHacks" style="color: #5e6ebf;">Facebook</a>, follow us on <a class="text-link" href="https://instagram.com/VandyHacks" style="color: #5e6ebf;">Instagram</a>, and keep up to date with our <a class="text-link" href="https://twitter.com/@VandyHacks" style="color: #5e6ebf;">Twitter</a> for some sneak peeks at the organizers in action! </div>
 																			</td>
 																		</tr>
 																		<tr>
@@ -581,7 +586,8 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 				Data: `Hey ${escape(user.preferredName || user.firstName)},
 				We're so excited that you'll be joining us for VandyHacks VI: Art Edition!
 				This email is just to confirm you've RSVPed to our event. We'll be in touch soon with more information, but for now you can plan on check-in starting at 5:30pm Nov. 1st and the weekend wrapping up at 3:00pm Sunday, Nov 3rd.
-				In the meantime, we'll be putting all the finishing touches on the weekend, so be sure to like our page on <a class="text-link" href="https://facebook.com/VandyHacks" style="color: #5e6ebf;">Facebook</a>, follow us on <a class="text-link" href="https://instagram.com/VandyHacks" style="color: #5e6ebf;">Instagram</a>, and keep up to date with our <a class="text-link" href="https://twitter.com/@VandyHacks" style="color: #5e6ebf;">Twitter</a> for some sneak peeks at the organizers in action!
+				If you are interested in reserving a spot on one of our buses, please rsvp for the busses by following the instructions in our bus guide.
+				In the meantime, we'll be putting all the finishing touches on the weekend, so be sure to like our page on Facebook, follow us on Instagram, and keep up to date with our Twitter for some sneak peeks at the organizers in action!
 				Happy Hacking!
 				The VandyHacks Team`,
 			},
