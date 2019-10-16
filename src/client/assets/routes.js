@@ -5,6 +5,7 @@ import { HackerDash } from '../routes/dashboard/HackerDash';
 import { ManageHackers } from '../routes/manage/ManageHackers';
 import { Help } from '../routes/help/Help';
 import { Nfc } from '../routes/nfc/Nfc';
+import { Team } from '../routes/team/Team';
 import { UserType } from '../generated/graphql';
 
 const routes = [

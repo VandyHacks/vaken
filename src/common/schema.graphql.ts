@@ -278,5 +278,6 @@ export default gql`
 		removeUserFromEvent(input: EventCheckInInput!): ID
 		registerNFCUIDWithUser(input: NFCRegisterInput!): ID
 		signedUploadUrl(input: ID!): String!
+		confirmMySpot: User!
 	}
 `;

@@ -26,6 +26,7 @@ export default gql`
 		me {
 			id
 			... on Hacker {
+				status
 				application {
 					question
 					answer

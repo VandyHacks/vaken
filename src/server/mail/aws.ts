@@ -1,6 +1,8 @@
 import AWS from 'aws-sdk';
 import { UserDbInterface, ApplicationStatus } from '../generated/graphql';
 import submitted from './templates/submitted';
+import accepted from './templates/accepted';
+import confirmed from './templates/confirmed';
 import logger from '../logger';
 
 const { AWS_REGION } = process.env;
@@ -17,17 +19,27 @@ export function sendStatusEmail(user: UserDbInterface, status: ApplicationStatus
 	if (user.emailUnsubscribed) {
 		logger.info(`Skipping email to unsubscribed user`, user);
 	}
+
+	let email: AWS.SES.SendEmailRequest;
 	switch (status) {
 		case ApplicationStatus.Submitted:
-			ses
-				.sendEmail(submitted(user))
-				.promise()
-				.then(data => logger.info(`email submitted to SES for ${user.email}`, data))
-				.catch(logger.error);
+			email = submitted(user);
+			break;
+		case ApplicationStatus.Accepted:
+			email = accepted(user);
+			break;
+		case ApplicationStatus.Confirmed:
+			email = confirmed(user);
 			break;
 		default:
 			throw new Error(`Unimplemented email for status "${status}" to user "${user.email}`);
 	}
+	
+	ses
+		.sendEmail(email)
+		.promise()
+		.then(data => logger.info(`email submitted to SES for ${user.email}`, data))
+		.catch(logger.error);
 }
 
 export default { sendStatusEmail };

@@ -9,4 +9,13 @@ export default gql`
 			}
 		}
 	}
+
+	mutation confirmMySpot {
+		confirmMySpot {
+			id
+			... on Hacker {
+				status
+			}
+		}
+	}
 `;
