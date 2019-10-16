@@ -184,22 +184,27 @@ export const Application: FunctionComponent<{}> = (): JSX.Element => {
 		// Auto-save application input after five seconds of inactivity.
 		autosaveTimeout = setTimeout(
 			() =>
-				input.length && 
+				input.length &&
 				// Do not auto-save after a hacker has been accepted to workaround:
-				// TODO: Prevent hackers from removing fields and letting auto-save wipe 
+				// TODO: Prevent hackers from removing fields and letting auto-save wipe
 				// them from the DB, then remove this workaround.
-				!(data && data.me && data.me.__typename === 'Hacker' && [
-					ApplicationStatus.Accepted, 
-					ApplicationStatus.Confirmed, 
-					ApplicationStatus.Rejected
-				].includes(data.me.status)) && 
+				!(
+					data &&
+					data.me &&
+					data.me.__typename === 'Hacker' &&
+					[
+						ApplicationStatus.Accepted,
+						ApplicationStatus.Confirmed,
+						ApplicationStatus.Rejected,
+					].includes(data.me.status)
+				) &&
 				updateApplication({ variables: { input: { fields: input, submit: false } } }),
 			5000
 		);
 
 		// Cleanup
 		return () => clearTimeout(autosaveTimeout);
-	}, [input, updateApplication]);
+	}, [data, input, updateApplication]);
 
 	const toggleOpen = useCallback(
 		(e: React.MouseEvent<HTMLButtonElement>): void => {

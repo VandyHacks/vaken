@@ -12,7 +12,6 @@ import { FloatingButton } from '../../components/Buttons/FloatingButton';
 import { SearchBox } from '../../components/Input/SearchBox';
 import STRINGS from '../../assets/strings.json';
 import { TableCtxI, TableContext, Option } from '../../contexts/TableContext';
-import { FlexEndColumn } from '../../components/Containers/FlexContainers'
 import {
 	useHackerStatusMutation,
 	ApplicationStatus,

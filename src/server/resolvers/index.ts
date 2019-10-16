@@ -15,7 +15,6 @@ import { fetchUser, query, queryById, toEnum, updateUser, checkIsAuthorized } fr
 import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser } from '../nfc';
 import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
 import { sendStatusEmail } from '../mail/aws';
-import logger from '../logger';
 
 // TODO: Cannot import frontend files so this is ugly workaround. Fix this.
 const requiredFields = [
@@ -147,15 +146,17 @@ export const resolvers: CustomResolvers<Context> = {
 			const { _id, status } = checkIsAuthorized(UserType.Hacker, user) as HackerDbObject;
 			const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
 				{ _id: new ObjectID(_id) },
-				{ $set: { 
-					status: status === ApplicationStatus.Accepted ? ApplicationStatus.Confirmed : status },
+				{
+					$set: {
+						status: status === ApplicationStatus.Accepted ? ApplicationStatus.Confirmed : status,
+					},
 				},
 				{ returnOriginal: false }
 			);
 			if (!ok || !value)
 				throw new UserInputError(`user ${_id} (${value}) error: ${JSON.stringify(err)}`);
 
-			// `confirmMySpot` is an identity function if user is already confirmed and is a 
+			// `confirmMySpot` is an identity function if user is already confirmed and is a
 			// no-op if user wasn't accepted. If status changed, user is newly confirmed.
 			if (value.status !== status) sendStatusEmail(value, ApplicationStatus.Confirmed);
 
@@ -171,8 +172,8 @@ export const resolvers: CustomResolvers<Context> = {
 
 			if (!ok || !value)
 				throw new UserInputError(`user ${id} (${value}) error: ${JSON.stringify(err)}`);
-			
-			if (status === ApplicationStatus.Accepted) sendStatusEmail(value, ApplicationStatus.Accepted)
+
+			if (status === ApplicationStatus.Accepted) sendStatusEmail(value, ApplicationStatus.Accepted);
 
 			return value;
 		},
@@ -184,13 +185,12 @@ export const resolvers: CustomResolvers<Context> = {
 				{ $set: { status } }
 			);
 
-
 			if (!result.ok) throw new UserInputError(`!ok updating ${JSON.stringify(ids)}}`);
 
 			const updatedHackers = await models.Hackers.find({ _id: { $in: objectIds } }).toArray();
-			
+
 			// AWS Docs say to do each mail request synchronously instead of in bulk.
-			if (status === ApplicationStatus.Accepted) 
+			if (status === ApplicationStatus.Accepted)
 				updatedHackers.forEach(hacker => sendStatusEmail(hacker, ApplicationStatus.Accepted));
 
 			return updatedHackers;

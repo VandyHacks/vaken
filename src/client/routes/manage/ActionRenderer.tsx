@@ -28,10 +28,7 @@ const Actions = styled('div')`
 `;
 
 function enableApplicationStatusSlider(status: string): boolean {
-	return ([
-		ApplicationStatus.Rejected,
-		ApplicationStatus.Submitted,
-	] as string[]).includes(status);
+	return ([ApplicationStatus.Rejected, ApplicationStatus.Submitted] as string[]).includes(status);
 }
 
 export function convertApplicationStatus(status: ApplicationStatus): string {

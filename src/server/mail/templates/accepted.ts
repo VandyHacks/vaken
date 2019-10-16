@@ -1,5 +1,5 @@
-import { UserDbInterface } from '../../generated/graphql';
 import escape from 'escape-html';
+import { UserDbInterface } from '../../generated/graphql';
 
 // TODO: Dedupe these emails. All the HTML is the same, the only difference is in the
 // actual lines presented to the user, which could be parameterized. Rich HTML content

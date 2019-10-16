@@ -34,7 +34,7 @@ export function sendStatusEmail(user: UserDbInterface, status: ApplicationStatus
 		default:
 			throw new Error(`Unimplemented email for status "${status}" to user "${user.email}`);
 	}
-	
+
 	ses
 		.sendEmail(email)
 		.promise()
