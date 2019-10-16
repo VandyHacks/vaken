@@ -581,7 +581,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 				Data: `Hey ${escape(user.preferredName || user.firstName)},
 				We're so excited that you'll be joining us for VandyHacks VI: Art Edition!
 				This email is just to confirm you've RSVPed to our event. We'll be in touch soon with more information, but for now you can plan on check-in starting at 5:30pm Nov. 1st and the weekend wrapping up at 3:00pm Sunday, Nov 3rd.
-				In the meantime, we'll be putting all the finishing touches on the weekend, so be sure to like our page on Facebook, follow us on Instagram, and keep up to date with our Twitter for some sneak peeks at the organizers in action!
+				In the meantime, we'll be putting all the finishing touches on the weekend, so be sure to like our page on <a class="text-link" href="https://facebook.com/VandyHacks" style="color: #5e6ebf;">Facebook</a>, follow us on <a class="text-link" href="https://instagram.com/VandyHacks" style="color: #5e6ebf;">Instagram</a>, and keep up to date with our <a class="text-link" href="https://twitter.com/@VandyHacks" style="color: #5e6ebf;">Twitter</a> for some sneak peeks at the organizers in action!
 				Happy Hacking!
 				The VandyHacks Team`,
 			},
