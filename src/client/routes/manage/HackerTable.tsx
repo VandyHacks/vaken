@@ -12,6 +12,7 @@ import { FloatingButton } from '../../components/Buttons/FloatingButton';
 import { SearchBox } from '../../components/Input/SearchBox';
 import STRINGS from '../../assets/strings.json';
 import { TableCtxI, TableContext, Option } from '../../contexts/TableContext';
+import { FlexEndColumn } from '../../components/Containers/FlexContainers'
 import {
 	useHackerStatusMutation,
 	ApplicationStatus,
@@ -94,6 +95,15 @@ const ColumnSelect = styled(Select)`
 		background-color: #e5e7fa;
 		color: #000000;
 	}
+`;
+
+const Count = styled.div`
+	h3 {
+		font-weight: bold;
+	}
+
+	margin-left: 10px;
+	text-align: right;
 `;
 
 const columnOptions: { label: string; value: keyof QueriedHacker }[] = [
@@ -319,6 +329,10 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 					checked={fuzzySearch}
 					onChange={onRegexToggle(table)}
 				/>
+				<Count>
+					<h3>Num Shown:</h3>
+					<p>{sortedData.length}</p>
+				</Count>
 			</TableOptions>
 			<TableData>
 				<AutoSizer>
