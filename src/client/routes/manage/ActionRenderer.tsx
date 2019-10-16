@@ -29,7 +29,6 @@ const Actions = styled('div')`
 
 function enableApplicationStatusSlider(status: string): boolean {
 	return ([
-		ApplicationStatus.Accepted,
 		ApplicationStatus.Rejected,
 		ApplicationStatus.Submitted,
 	] as string[]).includes(status);
