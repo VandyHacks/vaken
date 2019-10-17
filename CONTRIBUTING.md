@@ -18,7 +18,7 @@ In addition, we recommend getting [MongoDB Compass](https://www.mongodb.com/down
 ### Running the app:
 
 ```bash
-npm start # runs backend + frontend, both reloading on changes
+npm run dev # runs backend + frontend, both reloading on changes
 ```
 
 Now to go `localhost:8081` to see the page.
@@ -117,4 +117,3 @@ We use:
 In this repo, Github Actions are used for:
 
 - delete merged PR branches
-- automatically create draft PRs for pushed branches
