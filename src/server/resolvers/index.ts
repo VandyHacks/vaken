@@ -11,7 +11,7 @@ import {
 	HackerDbObject,
 } from '../generated/graphql';
 import Context from '../context';
-import { fetchUser, query, queryById, toEnum, updateUser, checkIsAuthorized } from './helpers';
+import { fetchUser, query, queryById, toEnum, updateUser, checkIsAuthorized, replaceResumeFieldWithLink } from './helpers';
 import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser } from '../nfc';
 import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
 import { sendStatusEmail } from '../mail/aws';
@@ -98,7 +98,7 @@ export const resolvers: CustomResolvers<Context> = {
 		...userResolvers,
 		adult: async hacker => (await hacker).adult || null,
 		application: async (hacker, args, { models }: Context) =>
-			models.ApplicationFields.find({ userId: (await hacker)._id }).toArray(),
+			replaceResumeFieldWithLink(models.ApplicationFields.find({ userId: (await hacker)._id }).toArray()),
 		gender: async hacker => (await hacker).gender || null,
 		github: async hacker => (await hacker).github || null,
 		gradYear: async hacker => (await hacker).gradYear || null,
