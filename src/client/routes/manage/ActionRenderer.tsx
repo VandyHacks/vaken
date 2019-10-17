@@ -25,7 +25,7 @@ interface ActionRendererProps {
 }
 const Actions = styled('div')`
 	display: flex;
-	float: right;
+	justify-content: flex-end;
 `;
 
 function enableApplicationStatusSlider(status: string): boolean {
