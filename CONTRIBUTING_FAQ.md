@@ -8,9 +8,6 @@ Go to the terminal and, in the vaken directory, run `npm i -D @types/LIBRARY_NAM
 ## Is there a way to login with email + password?
 No, this was disabled with #261.
 
-## How do I test an organizer's account?
-Copy the 
-
 ## Is there a way to add hackers to the DB for testing purposes?
 Yes, run the scripts/populateDB.ts script.
 ```
