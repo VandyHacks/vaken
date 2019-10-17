@@ -332,10 +332,10 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 					<h3>Num Shown:</h3>
 					<p>{sortedData.length}</p>
 					{selectedRowsIds.length > 0 && (
-						<React.Fragment>
+						<>
 							<h3>Num Selected:</h3>
-							<p> {selectedRowsIds.length}</p>
-						</React.Fragment>
+							<p>{selectedRowsIds.length}</p>
+						</>
 					)}
 				</Count>
 			</TableOptions>
@@ -364,18 +364,18 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 							{selectAll || hasSelection ? (
 								<DeselectAll ref={deselect}>{SelectAllButton}</DeselectAll>
 							) : (
-									<SelectAll
-										onClick={() =>
-											table.update(draft => {
-												draft.hasSelection = true;
-												draft.selectedRowsIds = sortedData
-													.filter(row => isSelectable(row.status))
-													.map(row => row.id);
-											})
-										}>
-										{SelectAllButton}
-									</SelectAll>
-								)}
+								<SelectAll
+									onClick={() =>
+										table.update(draft => {
+											draft.hasSelection = true;
+											draft.selectedRowsIds = sortedData
+												.filter(row => isSelectable(row.status))
+												.map(row => row.id);
+										})
+									}>
+									{SelectAllButton}
+								</SelectAll>
+							)}
 							{hasSelection && (
 								<Float className="ignore-select">
 									<SliderInput

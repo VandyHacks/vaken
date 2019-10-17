@@ -49,7 +49,10 @@ export function actionRenderer(updateStatus: HackerStatusMutationFn): FC<ActionR
 	return function ActionRenderer({ rowData: { id, status } }) {
 		return (
 			<Actions className="ignore-select">
-				{(status && status !== ApplicationStatus.Created && status !== ApplicationStatus.Verified && status !== ApplicationStatus.Started) ?
+				{status &&
+				status !== ApplicationStatus.Created &&
+				status !== ApplicationStatus.Verified &&
+				status !== ApplicationStatus.Started ? (
 					<RadioSlider
 						option1="Accept"
 						option2="Undecided"
@@ -60,11 +63,15 @@ export function actionRenderer(updateStatus: HackerStatusMutationFn): FC<ActionR
 							updateStatus({ variables: { input: { id, status: newStatus } } });
 						}}
 						disable={!enableApplicationStatusSlider(status)}
-					/> : <React.Fragment></React.Fragment>}
-				{(status && status !== ApplicationStatus.Created && status !== ApplicationStatus.Verified) ?
+					/>
+				) : (
+					<></>
+				)}
+				{status && status !== ApplicationStatus.Created && status !== ApplicationStatus.Verified && (
 					<Link to={{ pathname: `/manage/hackers/detail/${id}` }}>
 						<TableButton>View</TableButton>
-					</Link> : <React.Fragment></React.Fragment>}
+					</Link>
+				)}
 			</Actions>
 		);
 	};

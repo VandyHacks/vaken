@@ -78,8 +78,8 @@ const Row: FC<{ label: string; value: string }> = props => {
 	const text = value.includes('|') ? (
 		value.split('|').map(val => <p key={val}>{val}</p>)
 	) : (
-			<p>{value}</p>
-		);
+		<p>{value}</p>
+	);
 
 	return (
 		<TableRow>
