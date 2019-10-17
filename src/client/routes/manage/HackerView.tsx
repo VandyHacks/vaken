@@ -6,9 +6,11 @@ import STRINGS from '../../assets/strings.json';
 import { Title } from '../../components/Text/Title';
 import LeftImgButton from '../../components/Buttons/LeftImgButton';
 import back from '../../assets/img/back.svg';
-import { useDetailedHackerQuery } from '../../generated/graphql';
+import { useDetailedHackerQuery, useSignedReadUrlQuery } from '../../generated/graphql';
 import appConfig from '../../assets/application';
 import { ConfigField } from '../application/Application';
+import escape from 'escape-html';
+import { title } from 'case'
 
 const Layout = styled.div`
 	display: flex;
@@ -16,6 +18,7 @@ const Layout = styled.div`
 	width: 100%;
 	max-height: 100%;
 	overflow-y: auto;
+	user-select: auto;
 `;
 
 const StyledTable = styled('table')`
@@ -72,26 +75,34 @@ const TableRow = styled.tr`
 	}
 `;
 
-const Row: FC<{ label: string; value: string }> = props => {
+const DangerousRow: FC<{ label: string; value: string }> = props => {
 	const { label, value } = props;
-	// TODO: Make '|' a constant.
-	const text = value.includes('|') ? (
-		value.split('|').map(val => <p key={val}>{val}</p>)
-	) : (
-		<p>{value}</p>
-	);
 
 	return (
 		<TableRow>
 			<Label>{label}</Label>
-			<Value>{text}</Value>
+			<Value dangerouslySetInnerHTML={{__html: value}} />
 		</TableRow>
 	);
 };
 
+const Row: FC<{ label: string; value: string }> = props => {
+	const { label, value } = props;
+	// TODO: Make '|' a constant.
+	const text = value.includes('|') ? `${(
+		value.split('|').map(val => `<p key="${escape(val)}">${title(escape(val))}</p>`)
+	)}` : (
+		`<p>${escape(value)}</p>`
+	);
+
+	return <DangerousRow label={label} value={text} />
+}
+
 export const HackerView: FC<RouteComponentProps<{ id: string }, {}, {}>> = props => {
 	const { match } = props;
 	const { data, loading, error } = useDetailedHackerQuery({ variables: { id: match.params.id } });
+	const fileReadUrlQuery = useSignedReadUrlQuery({ variables: { input: (data && data.hacker.id) || '' } });
+	const { data: { signedReadUrl = '' } = {} } = fileReadUrlQuery || {};
 
 	if (loading) return <Spinner />;
 
@@ -130,9 +141,18 @@ export const HackerView: FC<RouteComponentProps<{ id: string }, {}, {}>> = props
 					{appConfig
 						.flatMap(el => el.fields as ConfigField[])
 						.map(({ fieldName, title: fieldTitle }) => {
+							if (fieldName === 'resume') {
+								return <DangerousRow key={fieldName} label={`${fieldTitle}:`} value={`<a href="${signedReadUrl}"  target="_blank" rel="noopener noreferrer">Resume Link</a>`} />
+							}
+
 							const value =
 								(hacker.application.find(el => el.question === fieldName) || { answer: '' })
 									.answer || 'Not provided';
+
+									if (['codeOfConduct', 'infoSharingConsent'].includes(fieldName)) {
+										return <Row key={fieldName} label={`${fieldTitle}:`} value={value !== 'Not Provided' ? 'Yes' : 'No'} />
+									}
+							
 							return <Row key={fieldName} label={`${fieldTitle}:`} value={value} />;
 						})}
 				</tbody>
