@@ -47,7 +47,7 @@ export function convertApplicationStatus(status: ApplicationStatus): string {
 export function actionRenderer(updateStatus: HackerStatusMutationFn): FC<ActionRendererProps> {
 	return function ActionRenderer({ rowData: { id, status } }) {
 		return (
-			<Actions className="ignore-select">
+			<Actions style={{ float: 'right' }} className="ignore-select">
 				{(status && status !== ApplicationStatus.Created && status !== ApplicationStatus.Verified && status !== ApplicationStatus.Started) ?
 					<RadioSlider
 						option1="Accept"
@@ -61,7 +61,7 @@ export function actionRenderer(updateStatus: HackerStatusMutationFn): FC<ActionR
 						disable={!enableApplicationStatusSlider(status)}
 					/> : <React.Fragment></React.Fragment>}
 				{(status && status !== ApplicationStatus.Created && status !== ApplicationStatus.Verified) ?
-					<Link style={{ textDecoration: 'none', float: 'right' }} to={{ pathname: `/manage/hackers/detail/${id}` }}>
+					<Link to={{ pathname: `/manage/hackers/detail/${id}` }}>
 						<TableButton>View</TableButton>
 					</Link> : <React.Fragment></React.Fragment>}
 			</Actions>
