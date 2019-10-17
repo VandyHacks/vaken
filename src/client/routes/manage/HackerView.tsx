@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
+import escape from 'escape-html';
+import { title } from 'case';
 import { Spinner } from '../../components/Loading/Spinner';
 import STRINGS from '../../assets/strings.json';
 import { Title } from '../../components/Text/Title';
@@ -9,8 +11,6 @@ import back from '../../assets/img/back.svg';
 import { useDetailedHackerQuery, useSignedReadUrlQuery } from '../../generated/graphql';
 import appConfig from '../../assets/application';
 import { ConfigField } from '../application/Application';
-import escape from 'escape-html';
-import { title } from 'case'
 
 const Layout = styled.div`
 	display: flex;
@@ -81,7 +81,7 @@ const DangerousRow: FC<{ label: string; value: string }> = props => {
 	return (
 		<TableRow>
 			<Label>{label}</Label>
-			<Value dangerouslySetInnerHTML={{__html: value}} />
+			<Value dangerouslySetInnerHTML={{ __html: value }} />
 		</TableRow>
 	);
 };
@@ -89,19 +89,19 @@ const DangerousRow: FC<{ label: string; value: string }> = props => {
 const Row: FC<{ label: string; value: string }> = props => {
 	const { label, value } = props;
 	// TODO: Make '|' a constant.
-	const text = value.includes('|') ? `${(
-		value.split('|').map(val => `<p key="${escape(val)}">${title(escape(val))}</p>`)
-	)}` : (
-		`<p>${escape(value)}</p>`
-	);
+	const text = value.includes('|')
+		? `${value.split('|').map(val => `<p key="${escape(val)}">${title(escape(val))}</p>`)}`
+		: `<p>${escape(value)}</p>`;
 
-	return <DangerousRow label={label} value={text} />
-}
+	return <DangerousRow label={label} value={text} />;
+};
 
 export const HackerView: FC<RouteComponentProps<{ id: string }, {}, {}>> = props => {
 	const { match } = props;
 	const { data, loading, error } = useDetailedHackerQuery({ variables: { id: match.params.id } });
-	const fileReadUrlQuery = useSignedReadUrlQuery({ variables: { input: (data && data.hacker.id) || '' } });
+	const fileReadUrlQuery = useSignedReadUrlQuery({
+		variables: { input: (data && data.hacker.id) || '' },
+	});
 	const { data: { signedReadUrl = '' } = {} } = fileReadUrlQuery || {};
 
 	if (loading) return <Spinner />;
@@ -142,17 +142,29 @@ export const HackerView: FC<RouteComponentProps<{ id: string }, {}, {}>> = props
 						.flatMap(el => el.fields as ConfigField[])
 						.map(({ fieldName, title: fieldTitle }) => {
 							if (fieldName === 'resume') {
-								return <DangerousRow key={fieldName} label={`${fieldTitle}:`} value={`<a href="${signedReadUrl}"  target="_blank" rel="noopener noreferrer">Resume Link</a>`} />
+								return (
+									<DangerousRow
+										key={fieldName}
+										label={`${fieldTitle}:`}
+										value={`<a href="${signedReadUrl}"  target="_blank" rel="noopener noreferrer">Resume Link</a>`}
+									/>
+								);
 							}
 
 							const value =
 								(hacker.application.find(el => el.question === fieldName) || { answer: '' })
 									.answer || 'Not provided';
 
-									if (['codeOfConduct', 'infoSharingConsent'].includes(fieldName)) {
-										return <Row key={fieldName} label={`${fieldTitle}:`} value={value !== 'Not Provided' ? 'Yes' : 'No'} />
-									}
-							
+							if (['codeOfConduct', 'infoSharingConsent'].includes(fieldName)) {
+								return (
+									<Row
+										key={fieldName}
+										label={`${fieldTitle}:`}
+										value={value !== 'Not Provided' ? 'Yes' : 'No'}
+									/>
+								);
+							}
+
 							return <Row key={fieldName} label={`${fieldTitle}:`} value={value} />;
 						})}
 				</tbody>

@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect, useRef, FC } from 'react';
 import { AutoSizer, SortDirection } from 'react-virtualized';
 import 'react-virtualized/styles.css';
 import styled from 'styled-components';
-import Fuse from 'fuse.js';
 import Select from 'react-select';
 import { ValueType } from 'react-select/src/types';
 import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
@@ -10,13 +9,16 @@ import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
 import { ToggleSwitch } from '../../components/Buttons/ToggleSwitch';
 import { FloatingButton } from '../../components/Buttons/FloatingButton';
 import { SearchBox } from '../../components/Input/SearchBox';
+import { FlexRow, FlexColumn } from '../../components/Containers/FlexContainers';
 import STRINGS from '../../assets/strings.json';
-import { TableCtxI, TableContext, Option } from '../../contexts/TableContext';
+import { TableCtxI, TableContext, Option, SearchCriteria } from '../../contexts/TableContext';
 import {
 	useHackerStatusMutation,
 	ApplicationStatus,
 	useHackerStatusesMutation,
 } from '../../generated/graphql';
+import RemoveButton from '../../assets/img/remove_button.svg';
+import AddButton from '../../assets/img/add_button.svg';
 
 import { HackerTableRows } from './HackerTableRows';
 import { DeselectElement, SliderInput } from './SliderInput';
@@ -43,6 +45,12 @@ const TableOptions = styled('div')`
 	align-items: center;
 	justify-content: space-between;
 	margin-bottom: 1rem;
+`;
+
+const AddRemBtn = styled.img`
+	display: inline-block;
+	height: 2rem;
+	margin-left: 10px;
 `;
 
 const TableData = styled('div')`
@@ -117,22 +125,30 @@ const columnOptions: { label: string; value: keyof QueriedHacker }[] = [
 // handles basic alphanumeric sorting
 const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
 
-// define thresholds for fuzzy searching
-const fuseOpts = {
-	caseSensitive: true,
-	distance: 100,
-	findAllMatches: true,
-	location: 0,
-	shouldSort: true,
-	threshold: 0.3,
-	tokenize: true,
+const onRemoveSearchCriterion = (ctx: TableCtxI, indexToRemove: number): (() => void) => {
+	return () => {
+		ctx.update(draft => {
+			draft.searchCriteria = draft.searchCriteria.filter((_, index) => index !== indexToRemove);
+		});
+	};
 };
 
-const onSearchBoxEntry = (ctx: TableCtxI): ((e: React.ChangeEvent<HTMLInputElement>) => void) => {
+const onAddSearchCriterion = (ctx: TableCtxI): (() => void) => {
+	return () => {
+		ctx.update(draft => {
+			draft.searchCriteria.push(SearchCriteria.Create());
+		});
+	};
+};
+
+const onSearchBoxEntry = (
+	ctx: TableCtxI,
+	index: number
+): ((e: React.ChangeEvent<HTMLInputElement>) => void) => {
 	return e => {
 		const { value } = e.target;
 		ctx.update(draft => {
-			draft.searchValue = value;
+			draft.searchCriteria[index].searchValue = value;
 		});
 	};
 };
@@ -167,21 +183,21 @@ const onSelectionFinish = (ctx: TableCtxI): ((keys: JSX.Element[]) => void) => {
 	};
 };
 
-const onRegexToggle = (ctx: TableCtxI): ((p: boolean) => void) => {
+const onRegexToggle = (ctx: TableCtxI, index: number): ((p: boolean) => void) => {
 	return (p: boolean) =>
 		ctx.update(draft => {
-			draft.fuzzySearch = p;
+			draft.searchCriteria[index].fuzzySearch = p;
 		});
 };
 
-const onTableColumnSelect = (ctx: TableCtxI): ((s: ValueType<Option>) => void) => {
+const onTableColumnSelect = (ctx: TableCtxI, index: number): ((s: ValueType<Option>) => void) => {
 	// Dependency injection
 	return (s: ValueType<Option>) =>
 		ctx.update(draft => {
 			if (s == null) {
-				draft.selectedColumns = [];
+				draft.searchCriteria[index].selectedColumns = [];
 			} else {
-				draft.selectedColumns = Array.isArray(s) ? s : [s];
+				draft.searchCriteria[index].selectedColumns = Array.isArray(s) ? s : [s];
 			}
 		});
 };
@@ -215,9 +231,7 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 	const {
 		selectAll,
 		hasSelection,
-		searchValue,
-		fuzzySearch,
-		selectedColumns,
+		searchCriteria,
 		sortBy,
 		sortDirection,
 		selectedRowsIds,
@@ -225,34 +239,22 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 
 	useEffect(() => {
 		// Only search one column in regex mode
-		if (!fuzzySearch && selectedColumns.length > 0) {
-			table.update(draft => {
-				draft.selectedColumns = [selectedColumns[0]];
+		table.update(draft => {
+			draft.searchCriteria.forEach((searchCriterion, index) => {
+				if (!searchCriterion.fuzzySearch && searchCriterion.selectedColumns.length > 1) {
+					draft.searchCriteria[index].selectedColumns = [
+						draft.searchCriteria[index].selectedColumns[0],
+					];
+				}
 			});
-		}
-		// esline wants to auto-fix this to include table and selectedColumns, but this breaks the toggle
+		});
+		// eslint wants to auto-fix this to include table and selectedColumns, but this breaks the toggle
 		// eslint-disable-next-line
-	}, [fuzzySearch]);
+	}, [searchCriteria]);
 
 	useEffect(() => {
 		// filter and sort data
-		let newData = [...data];
-
-		if (searchValue.trim() !== '' && fuzzySearch) {
-			// Fuzzy search selected columns
-			newData = new Fuse(newData, {
-				keys: selectedColumns.map((col: Option) => col.value) as (keyof QueriedHacker)[],
-				...fuseOpts,
-			}).search(searchValue);
-		} else if (searchValue.trim() !== '') {
-			// filter based on regex
-			const regex = new RegExp(searchValue, 'i');
-			// ternary for case when going for empty multi-select to empty single-select
-			newData =
-				selectedColumns.length > 0
-					? newData.filter(hacker => regex.test(`${hacker[selectedColumns[0].value]}`))
-					: [];
-		}
+		const newData = searchCriteria.reduce(SearchCriteria.filter, [...data]);
 
 		// Sort data based on props and context
 		if (sortBy && sortDirection) {
@@ -264,7 +266,7 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 		}
 
 		setSortedData(newData);
-	}, [data, sortBy, sortDirection, selectedColumns, fuzzySearch, searchValue]);
+	}, [data, sortBy, sortDirection, searchCriteria]);
 
 	// handles the text or regex search and sets the sortedData state with the updated row list
 	// floating button that onClick toggles between selecting all or none of the rows
@@ -298,45 +300,65 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 		}
 		return className;
 	};
-
+	/* eslint-disable react/no-array-index-key */
 	return (
 		<TableLayout>
 			<TableOptions>
-				<ColumnSelect
-					isMulti={fuzzySearch}
-					name="colors"
-					defaultValue={[columnOptions[0]]}
-					value={selectedColumns}
-					options={columnOptions}
-					className="basic-multi-select"
-					classNamePrefix="select"
-					onChange={(value: ValueType<Option>) =>
-						onTableColumnSelect(table)(value as ValueType<Option>)
-					}
-				/>
-				<SearchBox
-					width="100%"
-					value={searchValue}
-					placeholder={fuzzySearch ? 'Search by text' : "Search by regex string, e.g. '^[a-b].*'"}
-					onChange={onSearchBoxEntry(table)}
-					minWidth="15rem"
-					hasIcon
-					flex
-				/>
-				<ToggleSwitch
-					label="Fuzzy Search: "
-					checked={fuzzySearch}
-					onChange={onRegexToggle(table)}
-				/>
+				<FlexColumn>
+					{searchCriteria.map((criterion, index) => (
+						<FlexRow key={index}>
+							<ColumnSelect
+								isMulti={criterion.fuzzySearch}
+								name="colors"
+								defaultValue={[columnOptions[0]]}
+								value={criterion.selectedColumns}
+								options={columnOptions}
+								className="basic-multi-select"
+								classNamePrefix="select"
+								onChange={(value: ValueType<Option>) =>
+									onTableColumnSelect(table, index)(value as ValueType<Option>)
+								}
+							/>
+							<SearchBox
+								width="100%"
+								value={criterion.searchValue}
+								placeholder={
+									criterion.fuzzySearch
+										? 'Search by text'
+										: "Search by regex string, e.g. '^[a-b].*'"
+								}
+								onChange={onSearchBoxEntry(table, index)}
+								minWidth="15rem"
+								hasIcon
+								flex
+							/>
+							<ToggleSwitch
+								label="Fuzzy Search: "
+								checked={criterion.fuzzySearch}
+								onChange={onRegexToggle(table, index)}
+							/>
+							<AddRemBtn src={AddButton} alt="add" onClick={onAddSearchCriterion(table)} />
+							{searchCriteria.length > 1 ? (
+								<AddRemBtn
+									src={RemoveButton}
+									alt="remove"
+									onClick={onRemoveSearchCriterion(table, index)}
+								/>
+							) : (
+								<div style={{ width: 'calc(10px + 2rem)' }} />
+							)}
+						</FlexRow>
+					))}
+				</FlexColumn>
 				<Count>
 					<h3>Num Shown:</h3>
 					<p>{sortedData.length}</p>
-					{selectedRowsIds.length > 0 && (
+					{selectedRowsIds.length > 0 ? (
 						<>
 							<h3>Num Selected:</h3>
 							<p>{selectedRowsIds.length}</p>
 						</>
-					)}
+					) : null}
 				</Count>
 			</TableOptions>
 			<TableData>

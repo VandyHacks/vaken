@@ -11,7 +11,7 @@ import {
 	HackerDbObject,
 } from '../generated/graphql';
 import Context from '../context';
-import { fetchUser, query, queryById, toEnum, updateUser, checkIsAuthorized, replaceResumeFieldWithLink } from './helpers';
+import { fetchUser, query, queryById, toEnum, updateUser, checkIsAuthorized } from './helpers';
 import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser } from '../nfc';
 import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
 import { sendStatusEmail } from '../mail/aws';
