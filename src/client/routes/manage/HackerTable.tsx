@@ -331,6 +331,12 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 				<Count>
 					<h3>Num Shown:</h3>
 					<p>{sortedData.length}</p>
+					{selectedRowsIds.length > 0 && (
+						<>
+							<h3>Num Selected:</h3>
+							<p>{selectedRowsIds.length}</p>
+						</>
+					)}
 				</Count>
 			</TableOptions>
 			<TableData>

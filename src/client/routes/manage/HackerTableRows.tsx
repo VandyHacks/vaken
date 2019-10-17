@@ -111,7 +111,7 @@ const statusRenderer = ({ cellData }: TableCellProps): JSX.Element => {
 				return STRINGS.ACCENT_COLOR;
 		}
 	};
-	return <Status value={cellData} generateColor={generateColor} />;
+	return <Status value={cellData} generateColor={generateColor} fontColor="gray" />;
 };
 
 interface HackerTableRowsProps {

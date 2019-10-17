@@ -111,7 +111,7 @@ export const HackerView: FC<RouteComponentProps<{ id: string }, {}, {}>> = props
 				color="#ffffff"
 				img={back}
 				imgAlt="left arrow"
-				width="auto"
+				width="30em"
 				onClick={() => props.history.goBack()}
 				paddingLeft="1.5rem"
 				paddingRight="1.5rem">
