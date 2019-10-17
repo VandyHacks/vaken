@@ -25,6 +25,7 @@ interface ActionRendererProps {
 }
 const Actions = styled('div')`
 	display: flex;
+	float: right;
 `;
 
 function enableApplicationStatusSlider(status: string): boolean {
@@ -47,7 +48,7 @@ export function convertApplicationStatus(status: ApplicationStatus): string {
 export function actionRenderer(updateStatus: HackerStatusMutationFn): FC<ActionRendererProps> {
 	return function ActionRenderer({ rowData: { id, status } }) {
 		return (
-			<Actions style={{ float: 'right' }} className="ignore-select">
+			<Actions className="ignore-select">
 				{(status && status !== ApplicationStatus.Created && status !== ApplicationStatus.Verified && status !== ApplicationStatus.Started) ?
 					<RadioSlider
 						option1="Accept"
