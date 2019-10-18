@@ -70,6 +70,11 @@ export default gql`
 		REJECTED
 	}
 
+	enum SponsorStatus {
+		ADDED
+		CREATED
+	}
+
 	enum LoginProvider {
 		GITHUB
 		GOOGLE
@@ -89,12 +94,30 @@ export default gql`
 		DESC
 	}
 
+	type ApplicationQuestion @entity {
+		prompt: String! @column
+		instruction: String @column
+		note: String @column
+	}
+
 	type ApplicationField @entity(embedded: true) {
 		id: ID! @column
 		createdAt: Float! @column(overrideType: "Date")
 		question: String! @column
 		answer: String @column
 		userId: Hacker! @link @column
+	}
+
+	type Company @entity(embedded: true) {
+		id: ID! @id @column
+		name: String! @column
+		tier: Tier! @embedded
+	}
+
+	type Tier @entity(embedded: true) {
+		id: ID! @id @column
+		name: String! @column
+		permissions: [String]! @column
 	}
 
 	type Login @entity(additionalFields: [{ path: "email", type: "string" }]) {
@@ -185,6 +208,26 @@ export default gql`
 		size: Int!
 	}
 
+	type Sponsor implements User @entity {
+		id: ID!
+		createdAt: Float!
+		secondaryIds: [ID!]!
+		logins: [Login!]!
+		email: String!
+		emailUnsubscribed: Boolean! @column
+		firstName: String!
+		preferredName: String!
+		lastName: String!
+		shirtSize: ShirtSize
+		status: SponsorStatus! @column
+		gender: String
+		dietaryRestrictions: String!
+		userType: UserType!
+		phoneNumber: String
+		company: Company! @embedded
+		eventsAttended: [ID!]! @column
+	}
+
 	type Organizer implements User @entity {
 		id: ID!
 		createdAt: Float!
@@ -205,6 +248,8 @@ export default gql`
 	}
 
 	type Query {
+		company(id: ID!): Company!
+		companies(sortDirection: SortDirection): [Company!]!
 		me: User # May be used when not logged in.
 		hacker(id: ID!): Hacker!
 		hackers(sortDirection: SortDirection): [Hacker!]!
@@ -212,6 +257,8 @@ export default gql`
 		events(sortDirection: SortDirection): [Event!]!
 		eventCheckIn(id: ID!): EventCheckIn!
 		eventCheckIns(sortDirection: SortDirection): [EventCheckIn!]!
+		sponsor(id: ID!): Sponsor!
+		sponsors(sortDirection: SortDirection): [Sponsor!]!
 		organizer(id: ID!): Organizer!
 		organizers(sortDirection: SortDirection): [Organizer!]!
 		mentor(id: ID!): Mentor!
@@ -219,6 +266,8 @@ export default gql`
 		signedReadUrl(input: ID!): String!
 		team(id: ID!): Team!
 		teams(sortDirection: SortDirection): [Team!]!
+		tier(id: ID!): Tier!
+		tiers(sortDirection: SortDirection): [Tier!]!
 	}
 
 	input UserInput {
@@ -266,10 +315,34 @@ export default gql`
 		submit: Boolean
 	}
 
+	input SponsorInput {
+		email: String!
+		name: String!
+		companyId: ID!
+	}
+
+	input SponsorStatusInput {
+		email: String!
+		status: SponsorStatus!
+	}
+
+	input TierInput {
+		name: String!
+		permissions: [String!]
+	}
+
+	input CompanyInput {
+		name: String!
+		tierId: ID!
+	}
+
 	type Mutation {
-		updateMyApplication(input: UpdateMyAppInput!): User!
+		createCompany(input: CompanyInput!): Company!
+		createTier(input: TierInput!): Tier!
+		createSponsor(input: SponsorInput!): Sponsor!
 		updateMyProfile(input: UserInput!): User!
 		updateProfile(id: ID!, input: UserInput!): User!
+		updateMyApplication(input: UpdateMyAppInput!): User!
 		joinTeam(input: TeamInput!): Hacker!
 		leaveTeam: Hacker!
 		hackerStatus(input: HackerStatusInput!): Hacker!
@@ -279,5 +352,6 @@ export default gql`
 		registerNFCUIDWithUser(input: NFCRegisterInput!): ID
 		signedUploadUrl(input: ID!): String!
 		confirmMySpot: User!
+		sponsorStatus(input: SponsorStatusInput!): Sponsor!
 	}
 `;

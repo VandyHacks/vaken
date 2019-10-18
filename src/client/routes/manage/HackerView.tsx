@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 import escape from 'escape-html';
 import { title } from 'case';
-import { Spinner } from '../../components/Loading/Spinner';
+import Spinner from '../../components/Loading/Spinner';
 import STRINGS from '../../assets/strings.json';
 import { Title } from '../../components/Text/Title';
 import LeftImgButton from '../../components/Buttons/LeftImgButton';

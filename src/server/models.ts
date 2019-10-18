@@ -2,13 +2,17 @@ import { Collection, MongoClient } from 'mongodb';
 import {
 	ApplicationFieldDbObject,
 	EventDbObject,
+	ApplicationQuestionDbObject,
+	CompanyDbObject,
 	HackerDbObject,
+	SponsorDbObject,
 	LoginDbObject,
 	MentorDbObject,
 	OrganizerDbObject,
 	ShiftDbObject,
 	TeamDbObject,
 	EventCheckInDbObject,
+	TierDbObject,
 } from './generated/graphql';
 
 export interface UserTeamIndexDbObject {
@@ -20,12 +24,16 @@ export interface Models {
 	ApplicationFields: Collection<ApplicationFieldDbObject>;
 	EventCheckIns: Collection<EventCheckInDbObject>;
 	Events: Collection<EventDbObject>;
+	ApplicationQuestions: Collection<ApplicationQuestionDbObject>;
+	Companies: Collection<CompanyDbObject>;
 	Hackers: Collection<HackerDbObject>;
 	Logins: Collection<LoginDbObject>;
 	Mentors: Collection<MentorDbObject>;
 	Organizers: Collection<OrganizerDbObject>;
 	Shifts: Collection<ShiftDbObject>;
+	Sponsors: Collection<SponsorDbObject>;
 	Teams: Collection<TeamDbObject>;
+	Tiers: Collection<TierDbObject>;
 	UserTeamIndicies: Collection<UserTeamIndexDbObject>;
 }
 
@@ -97,12 +105,16 @@ export default class DB {
 					ApplicationFields: db.collection<ApplicationFieldDbObject>('applicationFields'),
 					EventCheckIns: db.collection<EventCheckInDbObject>('EventCheckIns'),
 					Events: db.collection<EventDbObject>('Events'),
+					ApplicationQuestions: db.collection<ApplicationQuestionDbObject>('applicationQuestions'),
+					Companies: db.collection<CompanyDbObject>('companies'),
 					Hackers: db.collection<HackerDbObject>('Hackers'),
 					Logins: db.collection<LoginDbObject>('logins'),
 					Mentors: db.collection<MentorDbObject>('mentors'),
 					Organizers: db.collection<OrganizerDbObject>('organizers'),
 					Shifts: db.collection<ShiftDbObject>('shifts'),
+					Sponsors: db.collection<SponsorDbObject>('sponsors'),
 					Teams: db.collection<TeamDbObject>('teams'),
+					Tiers: db.collection<TierDbObject>('tiers'),
 					UserTeamIndicies: db.collection<UserTeamIndexDbObject>('userTeams'),
 				};
 			}

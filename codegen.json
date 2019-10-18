@@ -5,19 +5,26 @@
 	"watch": false,
 	"generates": {
 		"src/server/generated/graphql.ts": {
-			"plugins": ["typescript", "typescript-resolvers", "typescript-mongodb"],
+			"plugins": [
+				"typescript",
+				"typescript-resolvers",
+				"typescript-mongodb"
+			],
 			"config": {
 				"mappers": {
 					"ApplicationField": "ApplicationFieldDbObject",
 					"ApplicationQuestion": "ApplicationQuestionDbObject",
 					"Event": "EventDbObject",
 					"EventCheckIn": "EventCheckInDbObject",
+					"Company": "CompanyDbObject",
 					"Hacker": "HackerDbObject",
 					"Login": "LoginDbObject",
 					"Mentor": "MentorDbObject",
 					"Organizer": "OrganizerDbObject",
 					"Shift": "ShiftDbObject",
-					"Team": "TeamDbObject",
+				  	"Sponsor": "SponsorDbObject",
+				  	"Team": "TeamDbObject",
+				  	"Tier": "TierDbObject",
 					"User": "UserDbInterface"
 				},
 				"skipTypenames": false

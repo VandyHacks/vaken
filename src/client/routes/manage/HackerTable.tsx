@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Select from 'react-select';
 import { ValueType } from 'react-select/src/types';
 import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
+import { CSVLink } from 'react-csv';
 
 import { ToggleSwitch } from '../../components/Buttons/ToggleSwitch';
 import { FloatingButton } from '../../components/Buttons/FloatingButton';
@@ -300,12 +301,13 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 		}
 		return className;
 	};
-	/* eslint-disable react/no-array-index-key */
+
 	return (
 		<TableLayout>
 			<TableOptions>
 				<FlexColumn>
 					{searchCriteria.map((criterion, index) => (
+						// eslint-disable-next-line
 						<FlexRow key={index}>
 							<ColumnSelect
 								isMulti={criterion.fuzzySearch}
@@ -360,6 +362,9 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 						</>
 					) : null}
 				</Count>
+				<CSVLink style={{ margin: '20px' }} data={sortedData} filename="exportedData.csv">
+					Export
+				</CSVLink>
 			</TableOptions>
 			<TableData>
 				<AutoSizer>
@@ -393,6 +398,7 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 											draft.selectedRowsIds = sortedData
 												.filter(row => isSelectable(row.status))
 												.map(row => row.id);
+											console.log(draft.selectedRowsIds);
 										})
 									}>
 									{SelectAllButton}

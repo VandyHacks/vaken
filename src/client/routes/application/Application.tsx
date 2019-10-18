@@ -2,7 +2,7 @@ import React, { useContext, FunctionComponent, useState, useEffect, useCallback,
 import styled from 'styled-components';
 import { useImmer } from 'use-immer';
 import { toast } from 'react-toastify';
-import { Spinner } from '../../components/Loading/Spinner';
+import Spinner from '../../components/Loading/Spinner';
 import config from '../../assets/application';
 import { Collapsible } from '../../components/Containers/Collapsible';
 import FloatingPopup from '../../components/Containers/FloatingPopup';

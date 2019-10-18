@@ -1,8 +1,12 @@
 import React from 'react';
-import { NotReady } from '../routes/dashboard/NotReady';
+import { SponsorPage } from '../routes/manageSponsor/CreateSponsor';
 import { Application } from '../routes/application/Application';
 import { HackerDash } from '../routes/dashboard/HackerDash';
+import { SponsorDash } from '../routes/dashboard/SponsorDash';
 import { ManageHackers } from '../routes/manage/ManageHackers';
+import { SponsorHackerView } from '../routes/manage/SponsorHackerView';
+// import { Team } from '../routes/team/Team';
+// import { Profile } from '../routes/profile/Profile';
 import { Help } from '../routes/help/Help';
 import { Nfc } from '../routes/nfc/Nfc';
 import { UserType } from '../generated/graphql';
@@ -15,7 +19,7 @@ const routes = [
 		path: '/dashboard',
 	},
 	{
-		authLevel: [UserType.Hacker, UserType.Sponsor],
+		authLevel: [UserType.Hacker],
 		component: HackerDash,
 		displayText: 'Dashboard',
 		path: '/dashboard',
@@ -26,6 +30,12 @@ const routes = [
 	// 	displayText: 'Profile',
 	// 	path: '/profile',
 	// },
+	{
+		authLevel: [UserType.Sponsor],
+		component: SponsorDash,
+		displayText: 'Dashboard',
+		path: '/dashboard',
+	},
 	{
 		authLevel: [UserType.Hacker],
 		component: Application,
@@ -45,8 +55,14 @@ const routes = [
 		path: '/manage/hackers',
 	},
 	{
+		authLevel: [UserType.Sponsor],
+		component: SponsorHackerView,
+		displayText: 'View Hackers',
+		path: '/view/hackers',
+	},
+	{
 		authLevel: [UserType.Organizer],
-		component: NotReady,
+		component: SponsorPage,
 		displayText: 'Manage Sponsors',
 		path: '/manage/sponsors',
 	},

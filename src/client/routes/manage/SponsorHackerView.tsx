@@ -10,22 +10,17 @@ import HackerTable from './HackerTable';
 import { defaultTableState, TableContext } from '../../contexts/TableContext';
 import { useHackersQuery } from '../../generated/graphql';
 
-export const ManageHackers: FunctionComponent = (): JSX.Element => {
+export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 	const { loading, error, data } = useHackersQuery();
 	const [tableState, updateTableState] = useImmer(defaultTableState);
 
 	return (
-		<FloatingPopup
-			borderRadius="1rem"
-			height="100%"
-			backgroundOpacity="1"
-			padding="1.5rem"
-			style={{ overflow: 'hidden' }}>
+		<FloatingPopup borderRadius="1rem" height="100%" backgroundOpacity="1" padding="1.5rem">
 			<TableContext.Provider value={{ state: tableState, update: updateTableState }}>
 				<Switch>
-					<Route path="/manage/hackers/detail/:id" component={HackerView} />
+					<Route path="/view/hackers/detail/:id" component={HackerView} />
 					<Route
-						path="/manage/hackers"
+						path="/view/hackers"
 						render={() => {
 							if (loading || !data) return <Spinner />;
 							if (error) {
@@ -41,4 +36,4 @@ export const ManageHackers: FunctionComponent = (): JSX.Element => {
 	);
 };
 
-export default ManageHackers;
+export default SponsorHackerView;

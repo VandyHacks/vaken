@@ -24,6 +24,19 @@ npm run dev # runs backend + frontend, both reloading on changes
 Now to go `localhost:8081` to see the page.
 NOTE: you can also go to `localhost:8080/graphql` to see an interactive GraphQL IDE to try out queries and mutations.
 
+
+### Useful GraphQL queries
+
+This query will create a sponsor and associate with a company
+```
+mutation {
+  createSponsor(input: {
+    name: "name", email: "email", companyId: "insert company id here"
+  })
+  {id}
+}
+```
+
 ### Testing
 
 We use Jest for testing. Snapshot testing is mostly for frontend, while mocking is preferable for backend.

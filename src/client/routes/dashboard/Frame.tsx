@@ -18,6 +18,7 @@ import { SpaceBetweenRow, OverflowContainer } from '../../components/Containers/
 import { ActionButtonContext } from '../../contexts/ActionButtonContext';
 import { UserType } from '../../generated/graphql';
 import { HackerDash } from './HackerDash';
+import { SponsorDash } from './SponsorDash';
 
 export const OrganizerDash = React.lazy(() => import('./OrganizerDash'));
 
@@ -154,7 +155,18 @@ const Frame: FunctionComponent = (): JSX.Element => {
 								) : null;
 							})}
 							<Route path="/">
-								{currentUser.userType === UserType.Organizer ? <OrganizerDash /> : <HackerDash />}
+								{() => {
+									switch (currentUser.userType) {
+										case UserType.Organizer:
+											return <OrganizerDash />;
+										case UserType.Sponsor:
+											return <SponsorDash />;
+										case UserType.Hacker:
+											return <HackerDash />;
+										default:
+											return <div>Dash not implemented for this user type.</div>;
+									}
+								}}
 							</Route>
 						</Switch>
 					</Suspense>

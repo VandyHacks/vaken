@@ -9,9 +9,18 @@ import {
 	UserResolvers,
 	Resolvers,
 	HackerDbObject,
+	SponsorStatus,
 } from '../generated/graphql';
 import Context from '../context';
-import { fetchUser, query, queryById, toEnum, updateUser, checkIsAuthorized } from './helpers';
+import {
+	fetchUser,
+	query,
+	queryById,
+	toEnum,
+	updateUser,
+	checkIsAuthorized,
+	replaceResumeFieldWithLink,
+} from './helpers';
 import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser } from '../nfc';
 import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
 import { sendStatusEmail } from '../mail/aws';
@@ -41,7 +50,7 @@ const requiredFields = [
  */
 export type CustomResolvers<T> = Omit<Resolvers<T>, 'User'> & {
 	User: {
-		__resolveType: (user: UserDbInterface) => 'Hacker' | 'Organizer' | 'Mentor';
+		__resolveType: (user: UserDbInterface) => 'Hacker' | 'Mentor' | 'Organizer' | 'Sponsor';
 	};
 };
 
@@ -94,11 +103,23 @@ export const resolvers: CustomResolvers<Context> = {
 		timestamp: async eventCheckIn => (await eventCheckIn).timestamp.getTime(),
 		user: async eventCheckIn => (await eventCheckIn).user,
 	},
+	Company: {
+		id: async comp => (await comp)._id.toHexString(),
+		name: async comp => (await comp).name,
+		tier: async comp => (await comp).tier,
+	},
+	Tier: {
+		id: async tier => (await tier)._id.toHexString(),
+		name: async tier => (await tier).name,
+		permissions: async tier => (await tier).permissions,
+	},
 	Hacker: {
 		...userResolvers,
 		adult: async hacker => (await hacker).adult || null,
 		application: async (hacker, args, { models }: Context) =>
-			models.ApplicationFields.find({ userId: (await hacker)._id }).toArray(),
+			replaceResumeFieldWithLink(
+				models.ApplicationFields.find({ userId: (await hacker)._id }).toArray()
+			),
 		gender: async hacker => (await hacker).gender || null,
 		github: async hacker => (await hacker).github || null,
 		gradYear: async hacker => (await hacker).gradYear || null,
@@ -142,6 +163,41 @@ export const resolvers: CustomResolvers<Context> = {
 			const userRet = await checkInUserToEvent(input.user, input.event, models);
 			return userRet;
 		},
+		createSponsor: async (
+			root,
+			{ input: { email, name, companyId } },
+			{ models, user }: Context
+		) => {
+			if (!user || user.userType !== UserType.Organizer)
+				throw new AuthenticationError(`user '${JSON.stringify(user)}' must be organizer`);
+			const sponsor = await models.Sponsors.findOne({ email });
+			const company = await models.Companies.findOne({ _id: new ObjectID(companyId) });
+			if (!company) throw new UserInputError(`Company with '${companyId}' doesn't exist.`);
+			if (!sponsor) {
+				await models.Sponsors.insertOne({
+					_id: new ObjectID(),
+					company,
+					createdAt: new Date(),
+					email,
+					firstName: name,
+					lastName: '',
+					logins: [],
+					phoneNumber: '',
+					dietaryRestrictions: '',
+					emailUnsubscribed: false,
+					eventsAttended: [],
+					preferredName: '',
+					secondaryIds: [],
+					status: SponsorStatus.Added,
+					userType: UserType.Sponsor,
+				});
+			} else {
+				throw new UserInputError(`sponsor with '${email}' is already added.`);
+			}
+			const sponsorCreated = await models.Sponsors.findOne({ email });
+			if (!sponsorCreated) throw new AuthenticationError(`sponsor not found: ${email}`);
+			return sponsorCreated;
+		},
 		confirmMySpot: async (root, _, { models, user }) => {
 			const { _id, status } = checkIsAuthorized(UserType.Hacker, user) as HackerDbObject;
 			const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
@@ -160,6 +216,33 @@ export const resolvers: CustomResolvers<Context> = {
 			if (value.status !== status) sendStatusEmail(value, ApplicationStatus.Confirmed);
 
 			return value;
+		},
+		createTier: async (root, { input: { name, permissions } }, { models, user }: Context) => {
+			if (!user || user.userType !== UserType.Organizer)
+				throw new AuthenticationError(`user '${JSON.stringify(user)}' must be organizer`);
+			await models.Tiers.insertOne({
+				_id: new ObjectID(),
+				name,
+				permissions: permissions || [],
+			});
+			const tierCreated = await models.Tiers.findOne({ name });
+			if (!tierCreated) throw new AuthenticationError(`tier not found: ${name}`);
+			return tierCreated;
+		},
+		createCompany: async (root, { input: { name, tierId } }, { models, user }: Context) => {
+			if (!user || user.userType !== UserType.Organizer)
+				throw new AuthenticationError(`user '${JSON.stringify(user)}' must be organizer`);
+
+			const tier = await models.Tiers.findOne({ _id: new ObjectID(tierId) });
+			if (!tier) throw new UserInputError(`Tier with id ${tierId}' doesn't exist.`);
+			await models.Companies.insertOne({
+				_id: new ObjectID(),
+				name,
+				tier,
+			});
+			const companyCreated = await models.Companies.findOne({ name });
+			if (!companyCreated) throw new AuthenticationError(`company not found: ${name}`);
+			return companyCreated;
 		},
 		hackerStatus: async (_, { input: { id, status } }, { user, models }) => {
 			checkIsAuthorized(UserType.Organizer, user);
@@ -352,9 +435,17 @@ export const resolvers: CustomResolvers<Context> = {
 					)}`
 				);
 			}
-
 			if (sendEmail) sendStatusEmail(value, ApplicationStatus.Submitted);
-
+			return value;
+		},
+		sponsorStatus: async (_, { input: { email, status } }, { models }: Context) => {
+			const { ok, value, lastErrorObject: err } = await models.Sponsors.findOneAndUpdate(
+				{ email },
+				{ $set: { status } },
+				{ returnOriginal: false }
+			);
+			if (!ok || err || !value)
+				throw new UserInputError(`user ${email} (${value}) error: ${JSON.stringify(err)}`);
 			return value;
 		},
 		updateMyProfile: async (root, { input }, { models, user }) => {
@@ -379,6 +470,8 @@ export const resolvers: CustomResolvers<Context> = {
 		eventCheckIn: async (root, { id }, ctx) => queryById(id, ctx.models.EventCheckIns),
 		eventCheckIns: async (root, args, ctx) => ctx.models.EventCheckIns.find().toArray(),
 		events: async (root, args, ctx) => ctx.models.Events.find().toArray(),
+		company: async (root, { id }, ctx) => queryById(id, ctx.models.Companies),
+		companies: async (root, args, ctx) => ctx.models.Companies.find().toArray(),
 		hacker: async (root, { id }, ctx) => queryById(id, ctx.models.Hackers),
 		hackers: async (root, args, ctx) => ctx.models.Hackers.find().toArray(),
 		me: async (root, args, ctx) => {
@@ -402,12 +495,22 @@ export const resolvers: CustomResolvers<Context> = {
 
 			return getSignedReadUrl(input);
 		},
+		sponsor: async (root, { id }, ctx: Context) => queryById(id, ctx.models.Sponsors),
+		sponsors: async (root, args, ctx: Context) => ctx.models.Sponsors.find().toArray(),
 		team: async (root, { id }, ctx) => queryById(id, ctx.models.Teams),
 		teams: async (root, args, ctx) => ctx.models.Teams.find().toArray(),
+		tier: async (root, { id }, ctx) => queryById(id, ctx.models.Tiers),
+		tiers: async (root, args, ctx) => ctx.models.Tiers.find().toArray(),
 	},
 	Shift: {
 		begin: async shift => (await shift).begin.getTime(),
 		end: async shift => (await shift).end.getTime(),
+	},
+	Sponsor: {
+		...userResolvers,
+		status: async sponsor => toEnum(SponsorStatus)((await sponsor).status),
+		userType: () => UserType.Sponsor,
+		company: async sponsor => (await sponsor).company,
 	},
 	Team: {
 		createdAt: async team => (await team).createdAt.getTime(),
@@ -423,6 +526,8 @@ export const resolvers: CustomResolvers<Context> = {
 					return 'Hacker';
 				case UserType.Organizer:
 					return 'Organizer';
+				case UserType.Sponsor:
+					return 'Sponsor';
 				default:
 					throw new AuthenticationError(`cannot decode UserType "${user.userType}`);
 			}
