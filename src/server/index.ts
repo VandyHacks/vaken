@@ -12,7 +12,11 @@ import logger from './logger';
 import { strategies, registerAuthRoutes } from './auth';
 import { UnsubscribeHandler } from './mail/handlers';
 import { UserDbInterface } from './generated/graphql';
+<<<<<<< HEAD
 import { pullCalendar } from './events';
+=======
+import { getCalendar } from './events/index';
+>>>>>>> Init Manage Events page and api endpoint
 
 const { SESSION_SECRET, PORT } = process.env;
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
