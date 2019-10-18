@@ -91,6 +91,8 @@
 		"express-session": "^1.17.0",
 		"faker": "^4.1.0",
 		"fuse.js": "^3.4.5",
+		"gaxios": "^2.1.0",
+		"googleapis": "^44.0.0",
 		"graphql": "^14.5.8",
 		"graphql-tag": "^2.10.1",
 		"immer": "^4.0.2",
