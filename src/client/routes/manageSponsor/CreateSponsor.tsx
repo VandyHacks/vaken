@@ -38,7 +38,21 @@ const StyledOption = styled.option`
 	min-width: 10rem;
 `;
 
-const CreateCompany: React.FunctionComponent = (): JSX.Element => {
+interface Tiers {
+	tiers: Tier[];
+}
+
+interface Tier {
+	id: string;
+	name: string;
+}
+
+interface CreateCompanyProps {
+	data: Tiers;
+	update: Function;
+}
+
+const CreateCompany: React.FunctionComponent<CreateCompanyProps> = ({ data, update }: CreateCompanyProps): JSX.Element => {
 	const [companyName, setCompanyName] = useState('');
 	const [tierId, setTierId] = useState('');
 	const [createCompanyMsg, setCreateCompanyMsg] = useState('');
@@ -46,9 +60,6 @@ const CreateCompany: React.FunctionComponent = (): JSX.Element => {
 	const [createCompany] = useCreateCompanyMutation({
 		variables: { input: { name: companyName, tierId } },
 	});
-
-	const { loading, error, data } = useTiersQuery();
-	if (error) console.error(error);
 
 	const onCreateCompany = async (): Promise<void> => {
 		try {
@@ -59,6 +70,7 @@ const CreateCompany: React.FunctionComponent = (): JSX.Element => {
 			console.error(err);
 			setCreateCompanyMsg(`Sorry. Something bad happens.`);
 		}
+		update();
 	};
 
 	return (
@@ -71,20 +83,16 @@ const CreateCompany: React.FunctionComponent = (): JSX.Element => {
 					onChange={e => setCompanyName(e.target.value)}
 					minWidth="15em"
 				/>
-				{loading || !data ? (
-					<Spinner />
-				) : (
-					<StyledSelect onChange={e => setTierId(e.target.value)}>
-						<StyledOption value="" disabled selected>
-							Select Tier
+				<StyledSelect onChange={e => setTierId(e.target.value)}>
+					<StyledOption value="" disabled selected>
+						Select Tier
+					</StyledOption>
+					{data.tiers.map(t => (
+						<StyledOption key={t.id} value={t.id.toString()}>
+							{t.name}
 						</StyledOption>
-						{data.tiers.map(t => (
-							<StyledOption key={t.id} value={t.id.toString()}>
-								{t.name}
-							</StyledOption>
-						))}
-					</StyledSelect>
-				)}
+					))}
+				</StyledSelect>
 				<HeaderButton width="7em" style={{ display: 'inline' }} onClick={onCreateCompany}>
 					<p style={{ fontSize: '1.2rem' }}>Create</p>
 				</HeaderButton>
@@ -96,7 +104,11 @@ const CreateCompany: React.FunctionComponent = (): JSX.Element => {
 	);
 };
 
-const CreateTier: React.FunctionComponent = (): JSX.Element => {
+interface CreateTierProps {
+	update: Function;
+}
+
+const CreateTier: React.FunctionComponent<CreateTierProps> = ({ update }: CreateTierProps): JSX.Element => {
 	const [tierName, setTierName] = useState('');
 	const [permissions, setPermissions] = useState(['']);
 	const [createTierMsg, setCreateTierMsg] = useState('');
@@ -114,6 +126,8 @@ const CreateTier: React.FunctionComponent = (): JSX.Element => {
 			console.error(err);
 			setCreateTierMsg(`Sorry. Something bad happens.`);
 		}
+
+		update();
 	};
 
 	return (
@@ -144,13 +158,24 @@ const CreateTier: React.FunctionComponent = (): JSX.Element => {
 	);
 };
 
-const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
+interface Companies {
+	companies: Company[];
+}
+
+interface Company {
+	id: string;
+	name: string;
+}
+
+interface CreateSponsorProps {
+	data: Companies;
+}
+
+const CreateSponsor: React.FunctionComponent<CreateSponsorProps> = ({ data }: CreateSponsorProps): JSX.Element => {
 	const [sponsorEmail, setSponsorEmail] = useState('');
 	const [sponsorName, setSponsorName] = useState('');
 	const [companyId, setCompanyId] = useState('');
 	const [createSponsorMsg, setCreateSponsorMsg] = useState('');
-	const { loading, error, data } = useCompaniesQuery();
-	console.log(loading, error, data);
 
 	const [createSponsor] = useCreateSponsorMutation({
 		variables: { input: { companyId, email: sponsorEmail, name: sponsorName } },
@@ -193,20 +218,16 @@ const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 					onChange={e => setSponsorName(e.target.value)}
 					minWidth="15em"
 				/>
-				{loading || !data ? (
-					<Spinner />
-				) : (
-					<StyledSelect onChange={e => setCompanyId(e.target.value)}>
-						<StyledOption value="" disabled selected>
-							Select Company
+				<StyledSelect onChange={e => setCompanyId(e.target.value)}>
+					<StyledOption value="" disabled selected>
+						Select Company
+					</StyledOption>
+					{data.companies.map(c => (
+						<StyledOption key={c.id} value={c.id.toString()}>
+							{c.name}
 						</StyledOption>
-						{data.companies.map(c => (
-							<StyledOption key={c.id} value={c.id.toString()}>
-								{c.name}
-							</StyledOption>
-						))}
-					</StyledSelect>
-				)}
+					))}
+				</StyledSelect>
 				<HeaderButton width="7em" style={{ display: 'inline' }} onClick={onCreateSponsorEmail}>
 					<p style={{ fontSize: '1.2rem' }}>Create</p>
 				</HeaderButton>
@@ -219,7 +240,23 @@ const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 };
 
 export const SponsorPage: React.FunctionComponent = (): JSX.Element => {
+	let loading = false;
+	let companyData = null;
+	let tierData = null;
+
+	const update = () => {
+		const companiesQueryResult = useCompaniesQuery();
+		loading = companiesQueryResult.loading || loading;
+		companyData = companiesQueryResult.data;
+
+		const tiersQueryResult = useTiersQuery();
+		loading = tiersQueryResult.loading || loading;
+		tierData = tiersQueryResult.data;
+	};
+
+	update();
 	return (
+
 		<FloatingPopup
 			borderRadius="1rem"
 			height="auto"
@@ -228,11 +265,17 @@ export const SponsorPage: React.FunctionComponent = (): JSX.Element => {
 			justifyContent="flex-start"
 			alignItems="flex-start"
 			padding="1.5rem">
-			<CreateTier />
-			<CreateCompany />
-			<CreateSponsor />
+			{loading || !companyData || !tierData ? (
+				<Spinner />
+			) : (
+					<React.Fragment>
+						<CreateTier update={update} />
+						<CreateCompany update={update} data={tierData} />
+						<CreateSponsor data={companyData} />
+					</React.Fragment>
+			)}
 		</FloatingPopup>
-	);
-};
+				);
+			};
 
 export default SponsorPage;

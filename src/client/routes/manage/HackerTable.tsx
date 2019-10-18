@@ -17,6 +17,7 @@ import {
 	useHackerStatusMutation,
 	ApplicationStatus,
 	useHackerStatusesMutation,
+	useEventsQuery
 } from '../../generated/graphql';
 import RemoveButton from '../../assets/img/remove_button.svg';
 import AddButton from '../../assets/img/add_button.svg';
@@ -112,6 +113,28 @@ const Count = styled.div`
 
 	margin-left: 10px;
 	text-align: right;
+`;
+
+const StyledSelect = styled.select`
+	margin: 0.25rem 1rem 0.25rem 0rem;
+	padding: 0.75rem;
+	box-shadow: 0rem 0.5rem 4rem rgba(0, 0, 0, 0.07);
+	border-radius: 0.375rem;
+	font-size: 1rem;
+	box-sizing: border-box;
+	border: 0.0625rem solid '#ecebed';
+	min-width: 10rem;
+`;
+
+const StyledOption = styled.option`
+	margin: 0.25rem 1rem 0.25rem 0rem;
+	padding: 0.75rem;
+	box-shadow: 0rem 0.5rem 4rem rgba(0, 0, 0, 0.07);
+	border-radius: 0.375rem;
+	font-size: 1rem;
+	box-sizing: border-box;
+	border: 0.0625rem solid '#ecebed';
+	min-width: 10rem;
 `;
 
 const columnOptions: { label: string; value: keyof QueriedHacker }[] = [
@@ -220,9 +243,10 @@ const onSortColumnChange = (ctx: TableCtxI): ((p: SortFnProps) => void) => {
 
 interface HackerTableProps {
 	data: QueriedHacker[];
+	isOrganizer?: boolean;
 }
 
-const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Element => {
+const HackerTable: FC<HackerTableProps> = ({ isOrganizer, data }: HackerTableProps): JSX.Element => {
 	const table = useContext(TableContext);
 	const [sortedData, setSortedData] = useState(data);
 	const deselect = useRef<DeselectElement>(null);
@@ -302,10 +326,26 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 		return className;
 	};
 
+	const getEventData = () => {
+		const { loading, error, data } = useEventsQuery();
+		if (error) console.error(error);
+		console.log(data);
+		return data;
+	};
+
+	const eventData = getEventData();
+
 	return (
 		<TableLayout>
 			<TableOptions>
 				<FlexColumn>
+					{!isOrganizer &&
+					<StyledSelect>
+						<StyledOption value="" disabled selected>
+							Select Tier
+						</StyledOption>
+					</StyledSelect>
+					}
 					{searchCriteria.map((criterion, index) => (
 						// eslint-disable-next-line
 						<FlexRow key={index}>

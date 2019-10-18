@@ -138,6 +138,7 @@ export default gql`
 		description: String @column
 		location: String! @column
 		eventType: String! @column
+		owner: Company
 	}
 
 	type EventCheckIn @entity(embedded: true) {
