@@ -44,6 +44,7 @@ export default gql`
 
 	mutation createTier($input: TierInput!) {
 		createTier(input: $input) {
+			id
 			name
 			permissions
 		}
@@ -51,8 +52,10 @@ export default gql`
 
 	mutation createCompany($input: CompanyInput!) {
 		createCompany(input: $input) {
+			id
 			name
 			tier {
+				id
 				name
 			}
 		}

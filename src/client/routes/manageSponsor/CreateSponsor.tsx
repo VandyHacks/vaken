@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo, FC } from 'react';
 import styled from 'styled-components';
 import { HeaderButton } from '../../components/Buttons/HeaderButton';
 import { SearchBox } from '../../components/Input/SearchBox';
@@ -9,8 +9,12 @@ import {
 	useCreateSponsorMutation,
 	useCreateTierMutation,
 	useCreateCompanyMutation,
-	useCompaniesQuery,
-	useTiersQuery,
+	// useCompaniesQuery,
+	// useTiersQuery,
+	useTiersLazyQuery,
+	useCompaniesLazyQuery,
+	TiersQuery,
+	CompaniesQuery
 } from '../../generated/graphql';
 import Spinner from '../../components/Loading/Spinner';
 
@@ -38,40 +42,25 @@ const StyledOption = styled.option`
 	min-width: 10rem;
 `;
 
-interface Tiers {
-	tiers: Tier[];
-}
-
-interface Tier {
-	id: string;
-	name: string;
-}
-
-interface CreateCompanyProps {
-	data: Tiers;
-	update: Function;
-}
-
-const CreateCompany: React.FunctionComponent<CreateCompanyProps> = ({ data, update }: CreateCompanyProps): JSX.Element => {
+const CreateCompany: FC<{ data: TiersQuery }> = ({ data }) => {
 	const [companyName, setCompanyName] = useState('');
 	const [tierId, setTierId] = useState('');
 	const [createCompanyMsg, setCreateCompanyMsg] = useState('');
 
-	const [createCompany] = useCreateCompanyMutation({
-		variables: { input: { name: companyName, tierId } },
-	});
+	const [createCompany] = useCreateCompanyMutation({ refetchQueries: ['companies'] });
 
-	const onCreateCompany = async (): Promise<void> => {
+	const onCreateCompany = useMemo(() => async (): Promise<void> => {
 		try {
-			createCompany().catch(res => {
+			createCompany({
+				variables: { input: { name: companyName, tierId } },
+			}).catch(res => {
 				setCreateCompanyMsg(`Sorry. ${res.graphQLErrors[0].message} Try again :-)`);
 			});
 		} catch (err) {
 			console.error(err);
 			setCreateCompanyMsg(`Sorry. Something bad happens.`);
 		}
-		update();
-	};
+	}, [createCompany, companyName, tierId]);
 
 	return (
 		<>
@@ -104,31 +93,27 @@ const CreateCompany: React.FunctionComponent<CreateCompanyProps> = ({ data, upda
 	);
 };
 
-interface CreateTierProps {
-	update: Function;
-}
-
-const CreateTier: React.FunctionComponent<CreateTierProps> = ({ update }: CreateTierProps): JSX.Element => {
+const CreateTier: FC = () => {
 	const [tierName, setTierName] = useState('');
 	const [permissions, setPermissions] = useState(['']);
 	const [createTierMsg, setCreateTierMsg] = useState('');
 
 	const [createTier] = useCreateTierMutation({
-		variables: { input: { name: tierName, permissions } },
+		refetchQueries: ['tiers']
 	});
 
-	const onCreateTier = async (): Promise<void> => {
+	const onCreateTier = useMemo(() => async (): Promise<void> => {
 		try {
-			createTier().catch(res => {
+			createTier({
+				variables: { input: { name: tierName, permissions } },
+			}).catch(res => {
 				setCreateTierMsg(`Sorry. ${res.graphQLErrors[0].message} Try again :-)`);
 			});
 		} catch (err) {
 			console.error(err);
 			setCreateTierMsg(`Sorry. Something bad happens.`);
 		}
-
-		update();
-	};
+	}, [tierName, createTier, permissions]);
 
 	return (
 		<>
@@ -158,20 +143,7 @@ const CreateTier: React.FunctionComponent<CreateTierProps> = ({ update }: Create
 	);
 };
 
-interface Companies {
-	companies: Company[];
-}
-
-interface Company {
-	id: string;
-	name: string;
-}
-
-interface CreateSponsorProps {
-	data: Companies;
-}
-
-const CreateSponsor: React.FunctionComponent<CreateSponsorProps> = ({ data }: CreateSponsorProps): JSX.Element => {
+const CreateSponsor: FC<{ data: CompaniesQuery }> = ({ data }) => {
 	const [sponsorEmail, setSponsorEmail] = useState('');
 	const [sponsorName, setSponsorName] = useState('');
 	const [companyId, setCompanyId] = useState('');
@@ -181,7 +153,7 @@ const CreateSponsor: React.FunctionComponent<CreateSponsorProps> = ({ data }: Cr
 		variables: { input: { companyId, email: sponsorEmail, name: sponsorName } },
 	});
 
-	const onCreateSponsorEmail = async (): Promise<void> => {
+	const onCreateSponsorEmail = useMemo(() => async (): Promise<void> => {
 		// validate the email entered
 		if (EMAIL_REGEX.test(sponsorEmail)) {
 			try {
@@ -199,7 +171,7 @@ const CreateSponsor: React.FunctionComponent<CreateSponsorProps> = ({ data }: Cr
 		} else {
 			setCreateSponsorMsg(`Email '${sponsorEmail}' is not valid when creating sponsor`);
 		}
-	};
+	});
 
 	return (
 		<>
@@ -240,21 +212,46 @@ const CreateSponsor: React.FunctionComponent<CreateSponsorProps> = ({ data }: Cr
 };
 
 export const SponsorPage: React.FunctionComponent = (): JSX.Element => {
-	let loading = false;
-	let companyData = null;
-	let tierData = null;
 
-	const update = () => {
-		const companiesQueryResult = useCompaniesQuery();
-		loading = companiesQueryResult.loading || loading;
-		companyData = companiesQueryResult.data;
+	const [dirty, setDirty] = useState(true);
+	const [isLoading, setIsLoading] = useState(false);
+	const [companyData, setCompanyData] = useState<CompaniesQuery>()
+	const [tierData, setTierData] = useState<TiersQuery>()
 
-		const tiersQueryResult = useTiersQuery();
-		loading = tiersQueryResult.loading || loading;
-		tierData = tiersQueryResult.data;
-	};
+	// {
+	// 	let [loadCompanies, { data, error, loading }] = useCompaniesLazyQuery();
+	// 	useEffect(() => {
+	// 		if (!loading)
+	// 			setCompanyData(data);
+	// 	}, [loading, data, setCompanyData, isDirty])
 
-	update();
+
+	// 	if (!loading)
+	// 		setCompanyData(data);
+	// 	else if (!isLoading) // if is loading, but component state is not
+	// 		setIsLoading(loading);
+
+	// 	if (dirty) {
+	// 		loadCompanies()
+	// 		setDirty(false)
+	// 	}
+	// }
+	// {
+
+	// 	const [loadTiers, { data, error, loading }] = useTiersLazyQuery();
+	// 	if (!loading)
+	// 		setTierData(data);
+	// 	else if (!isLoading)
+	// 		setIsLoading(loading);
+
+	// 	if (dirty) {
+	// 		loadTiers()
+	// 		setDirty(false)
+	// 	}
+	// }
+
+	const makeDirty = useMemo(() => () => setDirty(true), [setDirty]);
+
 	return (
 
 		<FloatingPopup
@@ -265,17 +262,17 @@ export const SponsorPage: React.FunctionComponent = (): JSX.Element => {
 			justifyContent="flex-start"
 			alignItems="flex-start"
 			padding="1.5rem">
-			{loading || !companyData || !tierData ? (
+			{isLoading || !companyData || !tierData ? (
 				<Spinner />
 			) : (
 					<React.Fragment>
-						<CreateTier update={update} />
-						<CreateCompany update={update} data={tierData} />
+						<CreateTier update={makeDirty} />
+						<CreateCompany update={makeDirty} data={tierData} />
 						<CreateSponsor data={companyData} />
 					</React.Fragment>
-			)}
+				)}
 		</FloatingPopup>
-				);
-			};
+	);
+};
 
 export default SponsorPage;
