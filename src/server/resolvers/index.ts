@@ -402,24 +402,23 @@ export const resolvers: CustomResolvers<Context> = {
 			// Update application status to reflect new input.
 			let appStatus: ApplicationStatus = hacker.status as ApplicationStatus;
 			let sendEmail = false;
-			if (input.submit) {
-				if (
-					appFinished &&
-					[
-						ApplicationStatus.Started,
-						ApplicationStatus.Verified,
-						ApplicationStatus.Created,
-					].includes(hacker.status as ApplicationStatus)
-				) {
+
+			if (
+				appFinished &&
+				[ApplicationStatus.Started, ApplicationStatus.Verified, ApplicationStatus.Created].includes(
+					hacker.status as ApplicationStatus
+				)
+			) {
+				if (input.submit) {
 					appStatus = ApplicationStatus.Submitted;
 					sendEmail = true;
-				} else if (
-					[ApplicationStatus.Created, ApplicationStatus.Verified].includes(
-						hacker.status as ApplicationStatus
-					)
-				) {
-					appStatus = ApplicationStatus.Started;
 				}
+			} else if (
+				[ApplicationStatus.Created, ApplicationStatus.Verified].includes(
+					hacker.status as ApplicationStatus
+				)
+			) {
+				appStatus = ApplicationStatus.Started;
 			}
 
 			const { value, ok, lastErrorObject } = await models.Hackers.findOneAndUpdate(
