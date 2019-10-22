@@ -14,7 +14,7 @@ import { UnsubscribeHandler } from './mail/handlers';
 import { UserDbInterface } from './generated/graphql';
 import { pullCalendar } from './events';
 
-const { SESSION_SECRET, PORT } = process.env;
+const { SESSION_SECRET, PORT, CALENDARID } = process.env;
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
 if (!PORT) throw new Error(`PORT not set`);
 
@@ -63,7 +63,7 @@ export const schema = makeExecutableSchema({
 
 	// Events auth callback
 	app.use('/api/manage/events/pull', async (req, res) => {
-		const calendar = await pullCalendar();
+		const calendar = await pullCalendar(CALENDARID);
 		res.send(calendar);
 	});
 

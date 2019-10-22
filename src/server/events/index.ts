@@ -5,41 +5,54 @@ import { EventUpdateInput, EventDbObject } from '../generated/graphql';
 import { Models } from '../models';
 import { EventUpdate } from '../../client/routes/events/ManageEventTypes';
 
-const { CALENDARID } = process.env;
-const url = `https://www.google.com/calendar/ical/${CALENDARID}/public/basic.ics`;
-
-const filterByCalType = (objNames: string[], cal: Record<string, any>, type: string) => {
+const filterByCalType = (objNames: string[], cal: Record<string, any>, type: string): string[] => {
 	return objNames.filter(obj => cal[obj].type === type);
 };
 
-const filterCalByObjectNames = (objNames: string[], cal: Record<string, any>) => {
+const filterCalByObjectNames = (
+	objNames: string[],
+	cal: Record<string, any>
+): Record<string, any> => {
 	return objNames.map(key => cal[key]);
 };
 
-export async function pullCalendar(): Promise<EventUpdate[] | null> {
-	const cal = await ical.fromURL(url);
-	if (!cal) return null;
-	const calObjects = Object.keys(cal);
-	const events = filterByCalType(calObjects, cal, 'VEVENT');
-	const eventsListRaw = filterCalByObjectNames(events, cal);
-	if (eventsListRaw.length === 0) return null;
-	const eventsTransformed = eventsListRaw.map(event => {
-		const parsedStart = new Date(event.start);
-		const parsedEnd = new Date(event.end);
-		const parsedType = /\[(.*?)\]/.exec(event.summary);
-		return {
-			name: event.summary,
-			startTimestamp: event.start,
-			duration: Math.floor((parsedEnd.getTime() - parsedStart.getTime()) / (1000 * 60)),
-			description: event.description,
-			location: event.location,
-			eventType: parsedType != null ? parsedType[1] : '',
-		} as EventUpdate;
-	});
-	return eventsTransformed;
+export const transformCalEventToDBUpdate = (event: Record<string, any>): EventUpdate => {
+	if (!event.start || !event.end)
+		throw new AuthenticationError('Calendar event did not contain start or end timestamp');
+	const parsedStart = new Date(event.start);
+	const parsedEnd = new Date(event.end);
+	const parsedType = /\[(.*?)\]/.exec(event.summary); // Looks for a **single** [Event Type] tag in name
+	return {
+		name: event.summary.replace(/\s*\[(.*?)\]\s*/, ''),
+		startTimestamp: event.start,
+		duration: Math.floor((parsedEnd.getTime() - parsedStart.getTime()) / (1000 * 60)),
+		description: event.description,
+		location: event.location,
+		eventType: parsedType != null ? parsedType[1] : '',
+	} as EventUpdate;
+};
+
+export async function pullCalendar(calendarID: string | undefined): Promise<EventUpdate[] | null> {
+	if (calendarID) {
+		const url = `https://www.google.com/calendar/ical/${calendarID}/public/basic.ics`;
+		const cal = await ical.fromURL(url).catch(err => {
+			console.log('Calendar Fetch Error: ', err);
+			return null;
+		});
+		if (!cal) return null;
+		const calKeys = Object.keys(cal);
+		const eventsKeys = filterByCalType(calKeys, cal, 'VEVENT');
+		const eventsObjects = filterCalByObjectNames(eventsKeys, cal);
+		if (eventsObjects.length === 0) return null;
+		const eventsTransformed = eventsObjects.map((event: Record<string, any>) =>
+			transformCalEventToDBUpdate(event)
+		);
+		return eventsTransformed;
+	}
+	return null;
 }
 
-export async function checkEventExists(
+export async function checkEventExistsByName(
 	eventName: string,
 	models: Models
 ): Promise<EventDbObject | null> {
@@ -84,7 +97,6 @@ export async function addOrUpdateEvent(
 		},
 		{ upsert: true }
 	);
-	const eventCreated = await checkEventExists(eventInput.name, models);
-	if (!eventCreated) throw new AuthenticationError('Event not updated or created');
-	return eventCreated.name;
+	const eventCreated = await checkEventExistsByName(eventInput.name, models);
+	return eventCreated ? eventCreated.name : null;
 }

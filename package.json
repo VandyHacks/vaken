@@ -73,6 +73,7 @@
     "@packtracker/webpack-plugin": "^2.2.0",
     "@sentry/browser": "^5.7.1",
     "@svgr/webpack": "^4.3.3",
+    "@types/request": "^2.48.3",
     "apollo-cache-inmemory": "^1.6.3",
     "apollo-client": "^2.6.4",
     "apollo-link": "^1.2.13",

@@ -5,16 +5,15 @@ export function updateEventsHandler(
 	addOrUpdateEventFunction: AddOrUpdateEventMutationFn
 ): string[] {
 	if (events) {
-		events.forEach(event => {
+		events.map(event =>
 			addOrUpdateEventFunction({
 				variables: {
 					input: {
 						...event,
 					},
 				},
-			});
-		});
-		return events.map(event => event.name);
+			})
+		);
 	}
 	return [];
 }
