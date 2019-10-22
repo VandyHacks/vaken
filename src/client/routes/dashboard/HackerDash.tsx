@@ -61,12 +61,7 @@ const statusConfig = {
 		text: "You may update your responses at any time by re-visiting the application.'",
 	},
 	[ApplicationStatus.Confirmed]: {
-		actions: [
-			{
-				action: () => void undefined,
-				actionText: '',
-			},
-		],
+		actions: [],
 		boldText: "Whoo hoo! We'll see you Nov. 1st!",
 		img: applicationIncompleteSVG,
 		status: 'Confirmed',
@@ -102,12 +97,7 @@ const statusConfig = {
 		text: ' Changed your mind? Email info@vandyhacks.org',
 	},
 	[ApplicationStatus.Rejected]: {
-		actions: [
-			{
-				action: () => void undefined,
-				actionText: '',
-			},
-		],
+		actions: [],
 		boldText: "Unfortunately, we couldn't offer you a spot this year :(",
 		img: applicationIncompleteSVG,
 		status: 'Denied',
