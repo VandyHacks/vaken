@@ -12,14 +12,19 @@ import {
 	ApplicationStatus,
 	useMyStatusQuery,
 	useConfirmMySpotMutation,
+	useDeclineMySpotMutation
 } from '../../generated/graphql';
 
 const Confetti = React.lazy(() => import('react-confetti'));
 
 const statusConfig = {
 	[ApplicationStatus.Created]: {
-		action: () => void (window.location.href = '/application'),
-		actionText: 'Complete your application',
+		actions: [
+			{
+				action: () => void (window.location.href = '/application'),
+				actionText: 'Complete your application',
+			},
+		],
 		boldText: "You haven't started your application yet.",
 		img: applicationIncompleteSVG,
 		status: 'Not Started',
@@ -28,8 +33,12 @@ const statusConfig = {
 		text: `The deadline is ${STRINGS.DEADLINE}`,
 	},
 	[ApplicationStatus.Started]: {
-		action: () => void (window.location.href = '/application'),
-		actionText: 'Complete your application',
+		actions: [
+			{
+				action: () => void (window.location.href = '/application'),
+				actionText: 'Complete your application',
+			},
+		],
 		boldText: 'You still need to finish your application.',
 		img: applicationIncompleteSVG,
 		status: 'Incomplete',
@@ -38,8 +47,12 @@ const statusConfig = {
 		text: `The deadline is ${STRINGS.DEADLINE}`,
 	},
 	[ApplicationStatus.Submitted]: {
-		action: () => void (window.location.href = '/application'),
-		actionText: 'Update your application',
+		actions: [
+			{
+				action: () => void (window.location.href = '/application'),
+				actionText: 'Update your application',
+			},
+		],
 		boldText: "Thanks for applying! We'll get back to you with a decision shortly.",
 		img: applicationIncompleteSVG,
 		status: 'Submitted',
@@ -48,8 +61,12 @@ const statusConfig = {
 		text: "You may update your responses at any time by re-visiting the application.'",
 	},
 	[ApplicationStatus.Confirmed]: {
-		action: () => void undefined,
-		actionText: '',
+		actions: [
+			{
+				action: () => void undefined,
+				actionText: '',
+			},
+		],
 		boldText: "Whoo hoo! We'll see you Nov. 1st!",
 		img: applicationIncompleteSVG,
 		status: 'Confirmed',
@@ -58,8 +75,16 @@ const statusConfig = {
 		text: "If you don't have a team, you can form one when you get here!",
 	},
 	[ApplicationStatus.Accepted]: {
-		action: () => void undefined, // Overridden in HackerDash component
-		actionText: 'Confirm your spot',
+		actions: [
+			{
+				action: () => void undefined, // Overridden in HackerDash component
+				actionText: 'Confirm your spot',
+			},
+			{
+				action: () => void undefined, // Overridden in HackerDash component
+				actionText: "Can't go :(",
+			},
+		],
 		boldText: "You've been accepted!",
 		img: applicationIncompleteSVG,
 		status: 'Accepted',
@@ -67,9 +92,22 @@ const statusConfig = {
 		statusColor: 'hsl(163.4,52.7%,35%)',
 		text: "Confirm your spot to let us know you'll be coming",
 	},
+	[ApplicationStatus.Declined]: {
+		actions: [],
+		boldText: "You've declined. We're sorry to see you go!",
+		img: applicationIncompleteSVG,
+		status: 'Declined',
+		statusBG: '#9C9C9C',
+		statusColor: 'hsl(163.4,52.7%,35%)',
+		text: '',
+	},
 	[ApplicationStatus.Rejected]: {
-		action: () => void undefined,
-		actionText: '',
+		actions: [
+			{
+				action: () => void undefined,
+				actionText: '',
+			},
+		],
 		boldText: "Unfortunately, we couldn't offer you a spot this year :(",
 		img: applicationIncompleteSVG,
 		status: 'Denied',
@@ -102,6 +140,7 @@ export const HackerDash: FunctionComponent = (): JSX.Element => {
 	const { data, loading } = useMyStatusQuery();
 	const [statusInfo, setStatusInfo] = useState(statusConfig[ApplicationStatus.Created]);
 	const [confirmMySpot] = useConfirmMySpotMutation();
+	const [declineMySpot] = useDeclineMySpotMutation();
 	const [showConfetti, setShowConfetti] = useState(false);
 
 	useEffect((): void => {
@@ -112,15 +151,19 @@ export const HackerDash: FunctionComponent = (): JSX.Element => {
 	}, [data]);
 
 	useEffect((): void => {
-		statusConfig[ApplicationStatus.Accepted].action = () => {
+		statusConfig[ApplicationStatus.Accepted].actions[0].action = () => {
 			confirmMySpot()
 				.then(() => setShowConfetti(true))
-				.catch(err => {
-					console.error(err);
-				});
-			return void undefined;
+				.catch(err => console.error(err));
+			return undefined;
 		};
-	}, [confirmMySpot]);
+		statusConfig[ApplicationStatus.Accepted].actions[1].action = () => {
+			declineMySpot()
+				// no confetti :(
+				.catch(err => console.error(err));
+			return undefined;
+		};
+	}, [confirmMySpot, declineMySpot]);
 
 	return (
 		<>
@@ -159,16 +202,16 @@ export const HackerDash: FunctionComponent = (): JSX.Element => {
 								</SmallCenteredText>
 							</>
 						)}
-						{statusInfo.actionText ? (
+						{statusInfo.actions.map(e => (
 							<TextButton
 								color="white"
 								fontSize="1.4em"
 								background={STRINGS.ACCENT_COLOR}
 								glowColor="rgba(0, 0, 255, 0.67)"
-								onClick={statusInfo.action}>
-								{statusInfo.actionText}
+								onClick={e.action}>
+								{e.actionText}
 							</TextButton>
-						) : null}
+						))}
 					</FlexColumn>
 				</HackerDashBG>
 			</FlexStartColumn>

@@ -208,12 +208,29 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ok || !value)
 				throw new UserInputError(
 					`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
-						'(Likely the user was already confirmed if no value returned)'
+						'(Likely the user already declined/confirmed if no value returned)'
 				);
 
 			// `confirmMySpot` is an identity function if user is already confirmed and is a
 			// no-op if user wasn't accepted. If status changed, user is newly confirmed.
 			if (value.status !== status) sendStatusEmail(value, ApplicationStatus.Confirmed);
+
+			return value;
+		},
+		declineMySpot: async (root, _, { models, user }) => {
+			const { _id, status } = checkIsAuthorized(UserType.Hacker, user) as HackerDbObject;
+			const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
+				{ _id: new ObjectID(_id), status: ApplicationStatus.Accepted },
+				{ $set: { status: ApplicationStatus.Declined } },
+				{ returnOriginal: false }
+			);
+			if (!ok || !value)
+				throw new UserInputError(
+					`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
+						'(Likely the user already declined/confirmed if no value returned)'
+				);
+
+			// no email sent if declined
 
 			return value;
 		},
@@ -405,7 +422,7 @@ export const resolvers: CustomResolvers<Context> = {
 
 			if (
 				appFinished &&
-				[ApplicationStatus.Started, ApplicationStatus.Verified, ApplicationStatus.Created].includes(
+				[ApplicationStatus.Started, ApplicationStatus.Created].includes(
 					hacker.status as ApplicationStatus
 				)
 			) {
@@ -413,11 +430,7 @@ export const resolvers: CustomResolvers<Context> = {
 					appStatus = ApplicationStatus.Submitted;
 					sendEmail = true;
 				}
-			} else if (
-				[ApplicationStatus.Created, ApplicationStatus.Verified].includes(
-					hacker.status as ApplicationStatus
-				)
-			) {
+			} else if ([ApplicationStatus.Created].includes(hacker.status as ApplicationStatus)) {
 				appStatus = ApplicationStatus.Started;
 			}
 

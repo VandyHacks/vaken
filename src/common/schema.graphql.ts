@@ -62,7 +62,7 @@ export default gql`
 
 	enum ApplicationStatus {
 		CREATED
-		VERIFIED
+		DECLINED
 		STARTED
 		SUBMITTED
 		ACCEPTED
@@ -352,6 +352,7 @@ export default gql`
 		registerNFCUIDWithUser(input: NFCRegisterInput!): ID
 		signedUploadUrl(input: ID!): String!
 		confirmMySpot: User!
+		declineMySpot: User!
 		sponsorStatus(input: SponsorStatusInput!): Sponsor!
 	}
 `;

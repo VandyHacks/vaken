@@ -18,4 +18,13 @@ export default gql`
 			}
 		}
 	}
+
+	mutation declineMySpot {
+		declineMySpot {
+			id
+			... on Hacker {
+				status
+			}
+		}
+	}
 `;
