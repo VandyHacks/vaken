@@ -12,7 +12,7 @@ import logger from './logger';
 import { strategies, registerAuthRoutes } from './auth';
 import { UnsubscribeHandler } from './mail/handlers';
 import { UserDbInterface } from './generated/graphql';
-import { getCalendar } from './events/index';
+import { pullCalendar } from './events';
 
 const { SESSION_SECRET, PORT } = process.env;
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
@@ -62,8 +62,9 @@ export const schema = makeExecutableSchema({
 	);
 
 	// Events auth callback
-	app.use('/api/manage/events', (req, res) => {
-		res.send(getCalendar());
+	app.use('/api/manage/events/pull', async (req, res) => {
+		const calendar = await pullCalendar();
+		res.send(calendar);
 	});
 
 	const server = new ApolloServer({

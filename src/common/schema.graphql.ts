@@ -341,7 +341,17 @@ export default gql`
 		tierId: ID!
 	}
 
+	input EventUpdateInput {
+		name: String!
+		startTimestamp: String!
+		duration: Int!
+		description: String!
+		location: String!
+		eventType: String!
+	}
+
 	type Mutation {
+		addOrUpdateEvent(input: EventUpdateInput!): String
 		createCompany(input: CompanyInput!): Company!
 		createTier(input: TierInput!): Tier!
 		createSponsor(input: SponsorInput!): Sponsor!

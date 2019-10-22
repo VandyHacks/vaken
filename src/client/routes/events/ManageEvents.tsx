@@ -8,20 +8,27 @@ import ActionButton from '../../components/Buttons/ActionButton';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import STRINGS from '../../assets/strings.json';
 import { defaultTableState, TableContext } from '../../contexts/TableContext';
+import { useAddOrUpdateEventMutation } from '../../generated/graphql';
+import { updateEventsHandler } from './helpers';
+import { EventUpdate } from './ManageEventTypes';
 
 const ManageEvents: FunctionComponent = (): JSX.Element => {
 	const [output, setOutput] = useState('sdfsdf');
+	const [addOrUpdateEvent] = useAddOrUpdateEventMutation();
 
 	async function getEvents() {
-		const res = await fetch('/api/manage/events');
-		const resObj = await res.json();
-		console.log(resObj);
-		setOutput(JSON.stringify(resObj));
+		const res = await fetch('/api/manage/events/pull');
+		const data = await res.json();
+		const eventsList = (await data) as EventUpdate[];
+		const updatedEvents = updateEventsHandler(eventsList, addOrUpdateEvent);
+		setOutput(JSON.stringify(updatedEvents, null, '\t'));
 	}
 	return (
 		<FloatingPopup>
-			<ActionButton onClick={getEvents}>Sync</ActionButton>
-			<FloatingPopup>{output}</FloatingPopup>
+			<ActionButton onClick={getEvents}>Pull from Calendar</ActionButton>
+			<FloatingPopup>
+				<pre>{output}</pre>
+			</FloatingPopup>
 		</FloatingPopup>
 	);
 };

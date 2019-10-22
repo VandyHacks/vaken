@@ -4,8 +4,6 @@ import { strategy as github } from './github';
 import { strategy as google } from './google';
 import { strategy as microsoft } from './microsoft';
 
-import { CALENDAR_SCOPES } from '../events/index';
-
 export const strategies = { github, google, microsoft };
 
 export const registerAuthRoutes = (app: Express): void => {
@@ -14,7 +12,7 @@ export const registerAuthRoutes = (app: Express): void => {
 
 	app.get(
 		'/api/auth/google',
-		passport.authenticate('google', { scope: ['openid', 'profile', 'email', ...CALENDAR_SCOPES] })
+		passport.authenticate('google', { scope: ['openid', 'profile', 'email'] })
 	);
 	app.get(
 		'/api/auth/google/callback',

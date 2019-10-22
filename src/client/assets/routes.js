@@ -4,7 +4,7 @@ import { Application } from '../routes/application/Application';
 import { HackerDash } from '../routes/dashboard/HackerDash';
 import { SponsorDash } from '../routes/dashboard/SponsorDash';
 import { ManageHackers } from '../routes/manage/ManageHackers';
-import ManageEvents from '../routes/manage/ManageEvents';
+import ManageEvents from '../routes/events/ManageEvents';
 import { SponsorHackerView } from '../routes/manage/SponsorHackerView';
 // import { Team } from '../routes/team/Team';
 // import { Profile } from '../routes/profile/Profile';

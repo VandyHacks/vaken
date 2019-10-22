@@ -10,6 +10,7 @@ import {
 	Resolvers,
 	HackerDbObject,
 	SponsorStatus,
+	EventDbObject,
 } from '../generated/graphql';
 import Context from '../context';
 import {
@@ -22,6 +23,7 @@ import {
 	replaceResumeFieldWithLink,
 } from './helpers';
 import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser, getUser } from '../nfc';
+import { addOrUpdateEvent } from '../events';
 import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
 import { sendStatusEmail } from '../mail/aws';
 
@@ -158,6 +160,11 @@ export const resolvers: CustomResolvers<Context> = {
 	 * Each may contain authentication checks as well
 	 */
 	Mutation: {
+		addOrUpdateEvent: async (root, { input }, { models, user }) => {
+			checkIsAuthorized(UserType.Organizer, user);
+			const eventRet = await addOrUpdateEvent(input, models);
+			return eventRet;
+		},
 		checkInUserToEvent: async (root, { input }, { models, user }) => {
 			checkIsAuthorized(UserType.Organizer, user);
 			const userRet = await checkInUserToEvent(input.user, input.event, models);
