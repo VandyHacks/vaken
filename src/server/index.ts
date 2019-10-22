@@ -61,16 +61,10 @@ export const schema = makeExecutableSchema({
 		})(req, res, next)
 	);
 
-<<<<<<< HEAD
 	// Pull events callback
 	app.use('/api/manage/events/pull', async (req, res) => {
 		const calendar = await pullCalendar(CALENDARID);
 		res.send(calendar);
-=======
-	// Events auth callback
-	app.use('/api/manage/events', (req, res) => {
-		res.send(getCalendar());
->>>>>>> Init Manage Events page and api endpoint
 	});
 
 	const server = new ApolloServer({
