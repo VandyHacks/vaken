@@ -29,6 +29,7 @@ test.skip('Test HackerTable', () => {
 									id: 'foo',
 									lastName: 'a',
 									status: ApplicationStatus.Accepted,
+									eventsAttended: [],
 								},
 							]}
 						/>
