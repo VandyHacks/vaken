@@ -94,12 +94,12 @@ const statusConfig = {
 	},
 	[ApplicationStatus.Declined]: {
 		actions: [],
-		boldText: "You've declined. We're sorry to see you go!",
+		boldText: "You've declined.",
 		img: applicationIncompleteSVG,
 		status: 'Declined',
 		statusBG: '#9C9C9C',
-		statusColor: 'hsl(163.4,52.7%,35%)',
-		text: '',
+		statusColor: '#FFFFFF',
+		text: ' Changed your mind? Email info@vandyhacks.org',
 	},
 	[ApplicationStatus.Rejected]: {
 		actions: [
