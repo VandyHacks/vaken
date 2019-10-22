@@ -74,17 +74,17 @@ const CreateCompany: React.FunctionComponent = (): JSX.Element => {
 				{loading || !data ? (
 					<Spinner />
 				) : (
-					<StyledSelect onChange={e => setTierId(e.target.value)}>
-						<StyledOption value="" disabled selected>
-							Select Tier
+						<StyledSelect onChange={e => setTierId(e.target.value)}>
+							<StyledOption value="" disabled selected>
+								Select Tier
 						</StyledOption>
-						{data.tiers.map(t => (
-							<StyledOption key={t.id} value={t.id.toString()}>
-								{t.name}
-							</StyledOption>
-						))}
-					</StyledSelect>
-				)}
+							{data.tiers.map(t => (
+								<StyledOption key={t.id} value={t.id.toString()}>
+									{t.name}
+								</StyledOption>
+							))}
+						</StyledSelect>
+					)}
 				<HeaderButton width="7em" style={{ display: 'inline' }} onClick={onCreateCompany}>
 					<p style={{ fontSize: '1.2rem' }}>Create</p>
 				</HeaderButton>
@@ -196,6 +196,7 @@ const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 				{loading || !data ? (
 					<Spinner />
 				) : (
+<<<<<<< Updated upstream
 					<StyledSelect onChange={e => setCompanyId(e.target.value)}>
 						<StyledOption value="" disabled selected>
 							Select Company
@@ -207,6 +208,19 @@ const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 						))}
 					</StyledSelect>
 				)}
+=======
+						<StyledSelect onChange={e => setCompanyId(e.target.value)}>
+							<StyledOption value="" disabled selected>
+								Select Company
+						</StyledOption>
+							{data.companies.map(c => (
+								<StyledOption key={c.id} value={c.id.toString()}>
+									{c.name}
+								</StyledOption>
+							))}
+						</StyledSelect>
+					)}
+>>>>>>> Stashed changes
 				<HeaderButton width="7em" style={{ display: 'inline' }} onClick={onCreateSponsorEmail}>
 					<p style={{ fontSize: '1.2rem' }}>Create</p>
 				</HeaderButton>
