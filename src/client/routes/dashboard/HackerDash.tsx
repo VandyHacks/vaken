@@ -77,7 +77,7 @@ const statusConfig = {
 			},
 			{
 				action: () => void undefined, // Overridden in HackerDash component
-				actionText: "Can't go :(",
+				actionText: "Decline your spot",
 			},
 		],
 		boldText: "You've been accepted!",
