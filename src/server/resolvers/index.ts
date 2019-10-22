@@ -231,7 +231,7 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ok || !value)
 				throw new UserInputError(
 					`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
-					'(Likely the user already declined/confirmed if no value returned)'
+						'(Likely the user already declined/confirmed if no value returned)'
 				);
 
 			// `confirmMySpot` is an identity function if user is already confirmed and is a
@@ -250,7 +250,7 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ok || !value)
 				throw new UserInputError(
 					`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
-					'(Likely the user already declined/confirmed if no value returned)'
+						'(Likely the user already declined/confirmed if no value returned)'
 				);
 			// no email sent if declined
 			return value;
@@ -533,7 +533,9 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ctx.user) throw new AuthenticationError(`user is not logged in`);
 
 			if (checkIsAuthorized(UserType.Sponsor, ctx.user)) {
-				return ctx.models.Events.find({ 'owner._id': (ctx.user as SponsorDbObject).company._id }).toArray();
+				return ctx.models.Events.find({
+					'owner._id': (ctx.user as SponsorDbObject).company._id,
+				}).toArray();
 			}
 			if (checkIsAuthorized(UserType.Organizer, ctx.user)) {
 >>>>>>> Add filtering events by company owner in the resolvers
