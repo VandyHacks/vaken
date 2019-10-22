@@ -218,7 +218,7 @@ export const resolvers: CustomResolvers<Context> = {
 			return value;
 		},
 		declineMySpot: async (root, _, { models, user }) => {
-			const { _id, status } = checkIsAuthorized(UserType.Hacker, user) as HackerDbObject;
+			const { _id } = checkIsAuthorized(UserType.Hacker, user) as HackerDbObject;
 			const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
 				{ _id: new ObjectID(_id), status: ApplicationStatus.Accepted },
 				{ $set: { status: ApplicationStatus.Declined } },
@@ -229,9 +229,7 @@ export const resolvers: CustomResolvers<Context> = {
 					`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
 						'(Likely the user already declined/confirmed if no value returned)'
 				);
-
 			// no email sent if declined
-
 			return value;
 		},
 		createTier: async (root, { input: { name, permissions } }, { models, user }: Context) => {

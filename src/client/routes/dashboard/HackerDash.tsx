@@ -12,7 +12,7 @@ import {
 	ApplicationStatus,
 	useMyStatusQuery,
 	useConfirmMySpotMutation,
-	useDeclineMySpotMutation
+	useDeclineMySpotMutation,
 } from '../../generated/graphql';
 
 const Confetti = React.lazy(() => import('react-confetti'));
@@ -77,7 +77,7 @@ const statusConfig = {
 			},
 			{
 				action: () => void undefined, // Overridden in HackerDash component
-				actionText: "Decline your spot",
+				actionText: 'Decline your spot',
 			},
 		],
 		boldText: "You've been accepted!",
