@@ -44,44 +44,38 @@ export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 	}, [data]);
 
 	useEffect(() => {
-		let tmpData = Object.create(data || {});
+		const tmpData = Object.create(data || {});
 		if (tmpData && tmpData.hackers) {
 			if (eventId) {
-				tmpData.hackers = tmpData.hackers.filter((hacker: Hacker) => hacker.eventsAttended.includes(eventId));
+				tmpData.hackers = tmpData.hackers.filter((hacker: Hacker) =>
+					hacker.eventsAttended.includes(eventId)
+				);
 			}
 			setFilteredData(tmpData);
 		}
-	}, [eventId]);
+	}, [data, eventId]);
 
-	const getEventData = () => {
-		const { loading: eventLoading, error: eventError, data: eventData } = useEventsQuery();
-		if (eventError) console.error(eventError);
-		return ({ eventData, eventLoading });
-	};
-	const { eventData, eventLoading } = getEventData();
+	const { data: eventData, loading: eventLoading, error: eventError } = useEventsQuery();
+	if (eventError) console.error(eventError);
 
 	return (
 		<FloatingPopup borderRadius="1rem" height="100%" backgroundOpacity="1" padding="1.5rem">
 			<TableContext.Provider value={{ state: tableState, update: updateTableState }}>
-				{!eventLoading &&
-					(
-						<StyledSelect onChange={e => setEventId(e.target.value)} >
-							<StyledOption value="" disabled>
-								Select Event to Filter By
-							</StyledOption>
-							<StyledOption value="">
-								No filter
-							</StyledOption>
-							{
-								eventData && eventData.events && eventData.events.map(e => (
-									<StyledOption key={e.id} value={e.id.toString()}>
-										{e.name}
-									</StyledOption>
-								))
-							}
-						</StyledSelect>
-					)
-				}
+				{!eventLoading && (
+					<StyledSelect onChange={e => setEventId(e.target.value)}>
+						<StyledOption value="" disabled>
+							Select Event to Filter By
+						</StyledOption>
+						<StyledOption value="">No filter</StyledOption>
+						{eventData &&
+							eventData.events &&
+							eventData.events.map(e => (
+								<StyledOption key={e.id} value={e.id.toString()}>
+									{e.name}
+								</StyledOption>
+							))}
+					</StyledSelect>
+				)}
 				<Switch>
 					<Route path="/view/hackers/detail/:id" component={HackerView} />
 					<Route
@@ -97,7 +91,7 @@ export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 					/>
 				</Switch>
 			</TableContext.Provider>
-		</FloatingPopup >
+		</FloatingPopup>
 	);
 };
 
