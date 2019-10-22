@@ -194,6 +194,7 @@ export const HackerDash: FunctionComponent = (): JSX.Element => {
 						)}
 						{statusInfo.actions.map(e => (
 							<TextButton
+								key={e.actionText}
 								color="white"
 								fontSize="1.4em"
 								background={STRINGS.ACCENT_COLOR}
