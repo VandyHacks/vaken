@@ -196,19 +196,6 @@ const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 				{loading || !data ? (
 					<Spinner />
 				) : (
-<<<<<<< Updated upstream
-					<StyledSelect onChange={e => setCompanyId(e.target.value)}>
-						<StyledOption value="" disabled selected>
-							Select Company
-						</StyledOption>
-						{data.companies.map(c => (
-							<StyledOption key={c.id} value={c.id.toString()}>
-								{c.name}
-							</StyledOption>
-						))}
-					</StyledSelect>
-				)}
-=======
 						<StyledSelect onChange={e => setCompanyId(e.target.value)}>
 							<StyledOption value="" disabled selected>
 								Select Company
@@ -220,7 +207,6 @@ const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 							))}
 						</StyledSelect>
 					)}
->>>>>>> Stashed changes
 				<HeaderButton width="7em" style={{ display: 'inline' }} onClick={onCreateSponsorEmail}>
 					<p style={{ fontSize: '1.2rem' }}>Create</p>
 				</HeaderButton>

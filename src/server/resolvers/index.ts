@@ -9,6 +9,7 @@ import {
 	UserResolvers,
 	Resolvers,
 	HackerDbObject,
+	SponsorDbObject,
 	SponsorStatus,
 	SponsorDbObject,
 } from '../generated/graphql';
@@ -232,7 +233,7 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ok || !value)
 				throw new UserInputError(
 					`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
-						'(Likely the user already declined/confirmed if no value returned)'
+					'(Likely the user already declined/confirmed if no value returned)'
 				);
 
 			// `confirmMySpot` is an identity function if user is already confirmed and is a
@@ -251,7 +252,7 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ok || !value)
 				throw new UserInputError(
 					`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
-						'(Likely the user already declined/confirmed if no value returned)'
+					'(Likely the user already declined/confirmed if no value returned)'
 				);
 			// no email sent if declined
 			return value;
@@ -523,6 +524,7 @@ export const resolvers: CustomResolvers<Context> = {
 		eventCheckIn: async (root, { id }, ctx) => queryById(id, ctx.models.EventCheckIns),
 		eventCheckIns: async (root, args, ctx) => ctx.models.EventCheckIns.find().toArray(),
 		events: async (root, args, ctx) => {
+<<<<<<< HEAD
 			if (!ctx.user) throw new AuthenticationError(`User is not logged in`);
 
 			if (ctx.user.userType === UserType.Sponsor) {
@@ -533,6 +535,14 @@ export const resolvers: CustomResolvers<Context> = {
 			}
 			if (ctx.user.userType === UserType.Organizer) {
 				checkIsAuthorized(UserType.Organizer, ctx.user);
+=======
+			if (!ctx.user) throw new AuthenticationError(`user is not logged in`);
+
+			if (checkIsAuthorized(UserType.Sponsor, ctx.user)) {
+				return ctx.models.Events.find({ 'owner._id': (ctx.user as SponsorDbObject).company._id }).toArray();
+			}
+			if (checkIsAuthorized(UserType.Organizer, ctx.user)) {
+>>>>>>> Add filtering events by company owner in the resolvers
 				return ctx.models.Events.find().toArray();
 			}
 			return ctx.models.Events.find({ owner: null }).toArray();
