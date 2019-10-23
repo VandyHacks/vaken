@@ -146,7 +146,11 @@ export const HackerView: FC<RouteComponentProps<{ id: string }, {}, {}>> = props
 									<DangerousRow
 										key={fieldName}
 										label={`${fieldTitle}:`}
-										value={`<a href="${signedReadUrl}"  target="_blank" rel="noopener noreferrer">Resume Link</a>`}
+										value={
+											signedReadUrl.length > 0
+												? `<a href="${signedReadUrl}"  target="_blank" rel="noopener noreferrer">Resume Link</a>`
+												: 'Not provided'
+										}
 									/>
 								);
 							}
