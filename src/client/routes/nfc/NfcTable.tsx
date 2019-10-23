@@ -39,7 +39,7 @@ const TableLayout = styled('div')`
 
 const TableOptions = styled('div')`
 	display: flex;
-	flex-flow: row nowrap;
+	flex-flow: row wrap;
 	align-items: center;
 	justify-content: space-between;
 	margin-bottom: 1rem;
@@ -51,12 +51,17 @@ const TableData = styled('div')`
 
 const EventSelect = styled(Select)`
 	min-width: 15rem;
+	width: 100%;
 	display: inline-block;
 	font-size: 1rem;
 	margin-right: 1rem;
 `;
-const ToggleWrapper = styled('div')`
-	margin-right: 1rem;
+const UnadmitToggleWrapper = styled('div')`
+	margin: 0.5rem 1rem 0.5rem 0;
+`;
+
+const ManualToggleWrapper = styled('div')`
+	margin: 0.5rem 1rem 0.5rem 0;
 `;
 
 // handles basic alphanumeric sorting
@@ -225,7 +230,7 @@ const NfcTable: FC<NfcTableProps> = ({ hackersData, eventsData }: NfcTableProps)
 					/>
 				) : null}
 				{eventSelected.eventType !== CHECK_IN_EVENT_TYPE ? (
-					<ToggleWrapper>
+					<ManualToggleWrapper>
 						<ToggleSwitch
 							label="Manual Mode: "
 							checked={manualMode}
@@ -233,9 +238,9 @@ const NfcTable: FC<NfcTableProps> = ({ hackersData, eventsData }: NfcTableProps)
 								setManualMode(!manualMode);
 							}}
 						/>
-					</ToggleWrapper>
+					</ManualToggleWrapper>
 				) : null}
-				<ToggleWrapper>
+				<UnadmitToggleWrapper>
 					<ToggleSwitch
 						label="Unadmit Mode: "
 						checked={unadmitMode}
@@ -243,7 +248,7 @@ const NfcTable: FC<NfcTableProps> = ({ hackersData, eventsData }: NfcTableProps)
 							setUnadmitMode(!unadmitMode);
 						}}
 					/>
-				</ToggleWrapper>
+				</UnadmitToggleWrapper>
 				<HeaderButton
 					onClick={() => {
 						const success = handleSubmit(nfcValue, topUserMatch, eventSelected, unadmitMode);
