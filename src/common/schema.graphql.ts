@@ -300,6 +300,11 @@ export default gql`
 		event: ID!
 	}
 
+	input EventCheckInInputByNfc {
+		nfcId: String!
+		event: ID!
+	}
+
 	input NFCRegisterInput {
 		nfcid: ID!
 		user: ID!
@@ -350,6 +355,8 @@ export default gql`
 		checkInUserToEvent(input: EventCheckInInput!): ID
 		removeUserFromEvent(input: EventCheckInInput!): ID
 		registerNFCUIDWithUser(input: NFCRegisterInput!): ID
+		checkInUserToEventByNfc(input: EventCheckInInputByNfc!): ID
+		removeUserFromEventByNfc(input: EventCheckInInputByNfc!): ID
 		signedUploadUrl(input: ID!): String!
 		confirmMySpot: User!
 		declineMySpot: User!

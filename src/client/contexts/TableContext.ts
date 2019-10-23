@@ -68,6 +68,8 @@ export class SearchCriteria {
 export const defaultTableState = {
 	searchCriteria: [SearchCriteria.Create()],
 	hasSelection: false,
+	nfcValue: '',
+	searchValue: '',
 	selectAll: false,
 	selectedRowsIds: [] as string[],
 	sortBy: undefined as keyof HackersQuery['hackers'][0] | undefined,

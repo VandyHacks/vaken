@@ -1,75 +1,42 @@
-import React, { FunctionComponent, useState } from 'react';
-import Select from 'react-select';
-import styled from 'styled-components';
-import { SearchBox } from '../../components/Input/SearchBox';
-import { ToggleSwitch } from '../../components/Buttons/ToggleSwitch';
-import { HeaderButton } from '../../components/Buttons/HeaderButton';
+import React, { FunctionComponent } from 'react';
+import { useImmer } from 'use-immer';
+import NfcTable from './NfcTable';
+import STRINGS from '../../assets/strings.json';
+import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
-
-const EventSelect = styled(Select)``;
-const CHECK_IN_VALUE = 'check_in'; // TODO
-
-// TODO(timliang/kenny): Connect this to events data
-const EventOptions: { label: string; value: string }[] = [
-	{ label: 'Hackathon Check-in', value: CHECK_IN_VALUE },
-	{ label: 'PlaceholderEvent1', value: 'test_1' },
-	{ label: 'PlaceholderEvent2', value: 'test_2' },
-];
+import Spinner from '../../components/Loading/Spinner';
+import { defaultTableState, TableContext } from '../../contexts/TableContext';
+import { useEventsQuery, useHackersQuery } from '../../generated/graphql';
 
 export const Nfc: FunctionComponent = (): JSX.Element => {
-	const [manualMode, setManualMode] = useState(false);
-	const [unadmitMode, setUnadmitMode] = useState(false);
-	const [eventSelected, setEventSelected] = useState(CHECK_IN_VALUE);
+	const hackers = useHackersQuery();
+	const hackersLoading = hackers.loading;
+	const hackersError = hackers.error;
+	const hackersData = hackers.data;
+
+	const events = useEventsQuery();
+	const eventsLoading = events.loading;
+	const eventsError = events.error;
+	const eventsData = events.data;
+
+	const [tableState, updateTableState] = useImmer(defaultTableState);
+
+	if (hackersLoading || !hackersData || eventsLoading || !eventsData) {
+		return <Spinner />;
+	}
+	if (hackersError) {
+		console.log(hackersError);
+		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
+	}
+	if (eventsError) {
+		console.log(eventsError);
+		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
+	}
 	return (
-		<FloatingPopup>
-			<EventSelect
-				name="colors"
-				defaultValue={[EventOptions[0]]}
-				options={EventOptions}
-				onChange={(option: { label: string; value: string }) => {
-					setEventSelected(option.value);
-				}}
-				className="basic-select"
-				classNamePrefix="select"
-			/>
-			{!manualMode || eventSelected === CHECK_IN_VALUE ? (
-				<SearchBox
-					width="100%"
-					// value={searchValue} // TODO
-					placeholder="Scan NFC"
-					// onChange={onSearchBoxEntry(table)} // TODO
-					minWidth="15rem"
-					flex
-				/>
-			) : null}
-			{manualMode || eventSelected === CHECK_IN_VALUE ? (
-				<SearchBox
-					width="100%"
-					// value={searchValue} // TODO
-					placeholder="Manual Search"
-					// onChange={onSearchBoxEntry(table)} // TODO
-					minWidth="15rem"
-					hasIcon
-					flex
-				/>
-			) : null}
-			{eventSelected !== CHECK_IN_VALUE ? (
-				<ToggleSwitch
-					label="Manual Mode: "
-					checked={manualMode}
-					onChange={() => {
-						setManualMode(!manualMode);
-					}}
-				/>
-			) : null}
-			<ToggleSwitch
-				label="Unadmit Mode: "
-				checked={unadmitMode}
-				onChange={() => {
-					setUnadmitMode(!unadmitMode);
-				}}
-			/>
-			<HeaderButton onClick={() => {}}>Submit</HeaderButton>
+		<FloatingPopup borderRadius="1rem" height="100%" backgroundOpacity="1" padding="1.5rem">
+			<TableContext.Provider value={{ state: tableState, update: updateTableState }}>
+				<NfcTable hackersData={hackersData.hackers} eventsData={eventsData.events} />
+			</TableContext.Provider>
 		</FloatingPopup>
 	);
 };
