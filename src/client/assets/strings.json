@@ -21,5 +21,6 @@
 	"COLOR_PALETTE": ["#D0C9D6", "#DBA5F5", "#FFC7A6", "#FFE29D", "#7DDFC3", "#A5AFFB", "#FDAFBB"],
 	"TEXT_AREA_MAX_LENGTH": 1500,
 	"INPUT_MAX_LENGTH": 100,
-	"SENTRY_URL": "https://70347d4c70054bdbafe6cf9a5be5a530@sentry.io/1769889"
+	"SENTRY_URL": "https://70347d4c70054bdbafe6cf9a5be5a530@sentry.io/1769889",
+	"NO_EVENTS_MESSAGE": "There are no current events."
 }
