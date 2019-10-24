@@ -1,7 +1,5 @@
 import { ObjectId, MongoError } from 'mongodb';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { AuthenticationError } from 'apollo-server-core';
-import { query } from '../resolvers/helpers';
 import { HackerDbObject, EventDbObject, EventUpdateInput } from '../generated/graphql';
 import DB, { Models } from '../models';
 import {
@@ -38,13 +36,13 @@ const testEvent = ({
 	warnRepeatedCheckins: true,
 } as unknown) as EventDbObject;
 
-const badEventObj: Record<string, any> = {
-	summary: 'badEvent',
-	start: null,
-	end: null,
+const badEventObj: Record<string, string> = {
+	summary: 'summary',
+	start: '',
+	end: '',
 };
 
-const testEventObj: Record<string, any> = {
+const testEventObj: Record<string, string> = {
 	summary: 'testEvent [testType]',
 	start: '2019-09-06T03:41:33.714+00:00',
 	end: '2019-09-06T07:41:33.714+00:00',

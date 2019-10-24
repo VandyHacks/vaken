@@ -10,7 +10,6 @@ import {
 	Resolvers,
 	HackerDbObject,
 	SponsorStatus,
-	EventDbObject,
 } from '../generated/graphql';
 import Context from '../context';
 import {

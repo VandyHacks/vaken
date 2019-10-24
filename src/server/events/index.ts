@@ -1,4 +1,4 @@
-import ical from 'node-ical';
+import ical, { CalendarResponse, CalendarComponent, VEvent } from 'node-ical';
 import { AuthenticationError, UserInputError } from 'apollo-server-express';
 import { ObjectID } from 'mongodb';
 import { EventUpdateInput, EventDbObject } from '../generated/graphql';
@@ -7,18 +7,26 @@ import { EventUpdate } from '../../client/routes/events/ManageEventTypes';
 
 const EVENTTYPE = 'VEVENT';
 
-const filterByCalType = (objNames: string[], cal: Record<string, any>, type: string): string[] => {
+const filterByCalType = (objNames: string[], cal: CalendarResponse, type: string): string[] => {
 	return objNames.filter(obj => cal[obj].type === type);
 };
 
-const filterCalByObjectNames = (
-	objNames: string[],
-	cal: Record<string, any>
-): Record<string, any> => {
+const filterCalByObjectNames = (objNames: string[], cal: CalendarResponse): CalendarComponent[] => {
 	return objNames.map(key => cal[key]);
 };
 
-export const transformCalEventToDBUpdate = (event: Record<string, any>): EventUpdate => {
+// Helper func to simplify VEvent type because it was overly obtuse and dramatically hindered mocks for testing
+const extractVEventIntoRecord = (event: VEvent): Record<string, string> => {
+	return {
+		summary: event.summary,
+		start: new Date(event.start as Date).toUTCString(),
+		end: new Date(event.end as Date).toUTCString(),
+		location: event.location,
+		description: event.description,
+	};
+};
+
+export const transformCalEventToDBUpdate = (event: Record<string, string>): EventUpdate => {
 	if (!event.start || !event.end)
 		throw new AuthenticationError('Calendar event did not contain start or end timestamp');
 	const parsedStart = new Date(event.start);
@@ -42,10 +50,10 @@ export async function pullCalendar(calendarID: string | undefined): Promise<Even
 		});
 		const calKeys = Object.keys(cal);
 		const eventsKeys = filterByCalType(calKeys, cal, EVENTTYPE);
-		const eventsObjects = filterCalByObjectNames(eventsKeys, cal);
+		const eventsObjects = filterCalByObjectNames(eventsKeys, cal) as VEvent[];
 		if (eventsObjects.length === 0) return null;
-		const eventsTransformed = eventsObjects.map((event: Record<string, any>) =>
-			transformCalEventToDBUpdate(event)
+		const eventsTransformed = eventsObjects.map((event: VEvent) =>
+			transformCalEventToDBUpdate(extractVEventIntoRecord(event))
 		);
 		return eventsTransformed;
 	}
