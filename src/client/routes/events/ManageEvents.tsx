@@ -21,10 +21,12 @@ const ManageEvents: FunctionComponent = (): JSX.Element => {
 	async function getEvents() {
 		const res = await fetch('/api/manage/events/pull');
 		const resData = await res.json();
-		const eventsList = (await resData) as EventUpdate[];
+		const eventsList = resData as EventUpdate[];
 		const updatedEvents = updateEventsHandler(eventsList, addOrUpdateEvent);
 		setOutput(JSON.stringify(updatedEvents, null, '\t'));
 		// setAllEvents(data.events);
+		// Place holder for events table showing all events, and some UI component listing events just pulled
+		// TODO: Add events table and said UI component or just table, with columns being event attributes + time added
 	}
 
 	return (
