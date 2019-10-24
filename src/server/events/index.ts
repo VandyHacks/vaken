@@ -1,9 +1,11 @@
 import ical from 'node-ical';
-import { AuthenticationError } from 'apollo-server-express';
+import { AuthenticationError, UserInputError } from 'apollo-server-express';
 import { ObjectID } from 'mongodb';
 import { EventUpdateInput, EventDbObject } from '../generated/graphql';
 import { Models } from '../models';
 import { EventUpdate } from '../../client/routes/events/ManageEventTypes';
+
+const EVENTTYPE = 'VEVENT';
 
 const filterByCalType = (objNames: string[], cal: Record<string, any>, type: string): string[] => {
 	return objNames.filter(obj => cal[obj].type === type);
@@ -36,12 +38,10 @@ export async function pullCalendar(calendarID: string | undefined): Promise<Even
 	if (calendarID) {
 		const url = `https://www.google.com/calendar/ical/${calendarID}/public/basic.ics`;
 		const cal = await ical.fromURL(url).catch(err => {
-			console.log('Calendar Fetch Error: ', err);
-			return null;
+			throw new Error(`Could not fetch calendar at URL: ${url}; Error: ${err.message}`);
 		});
-		if (!cal) return null;
 		const calKeys = Object.keys(cal);
-		const eventsKeys = filterByCalType(calKeys, cal, 'VEVENT');
+		const eventsKeys = filterByCalType(calKeys, cal, EVENTTYPE);
 		const eventsObjects = filterCalByObjectNames(eventsKeys, cal);
 		if (eventsObjects.length === 0) return null;
 		const eventsTransformed = eventsObjects.map((event: Record<string, any>) =>
@@ -49,7 +49,7 @@ export async function pullCalendar(calendarID: string | undefined): Promise<Even
 		);
 		return eventsTransformed;
 	}
-	return null;
+	throw new UserInputError('Calendar ID undefined or null');
 }
 
 export async function checkEventExistsByName(
@@ -62,6 +62,10 @@ export async function checkEventExistsByName(
 	return event;
 }
 
+/**
+ * @param eventInput Object using EventUpdateInput Input type to define what needs to be updated
+ * @returns Event name in a promise
+ */
 export async function addOrUpdateEvent(
 	eventInput: EventUpdateInput,
 	models: Models

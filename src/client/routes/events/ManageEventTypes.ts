@@ -6,7 +6,7 @@ import {
 
 export interface EventUpdate {
 	name: string;
-	startTimestamp: string;
+	startTimestamp: string; // UTC time in format YYYY-MM-DDTHH:MM:SS.mmm+00:00
 	duration: number;
 	description: string;
 	location: string;

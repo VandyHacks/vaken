@@ -108,8 +108,19 @@ describe('Test events updating', () => {
 		});
 	});
 	describe('pullCalendar', () => {
-		it('returns null on bad calendar ID', async () => {
-			await expect(pullCalendar('foo')).resolves.toEqual(null);
+		it('throws on null calendar ID', async () => {
+			try {
+				await pullCalendar(undefined);
+			} catch (e) {
+				expect(e.message).toEqual('Calendar ID undefined or null');
+			}
+		});
+		it('throws on bad calendar ID', async () => {
+			try {
+				await pullCalendar('foo');
+			} catch (e) {
+				expect(e.message).toContain('400 Bad Request');
+			}
 		});
 		it('returns items on real calendar (must contain at least 1 event)', async () => {
 			const res = await pullCalendar(vhCalendarID);

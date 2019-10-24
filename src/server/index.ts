@@ -61,7 +61,7 @@ export const schema = makeExecutableSchema({
 		})(req, res, next)
 	);
 
-	// Events auth callback
+	// Pull events callback
 	app.use('/api/manage/events/pull', async (req, res) => {
 		const calendar = await pullCalendar(CALENDARID);
 		res.send(calendar);
