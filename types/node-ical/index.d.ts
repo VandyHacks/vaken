@@ -1,3 +1,6 @@
+// Comes from https://github.com/jens-maus/node-ical/blob/master/node-ical.d.ts
+// Last updated 2019-10-26
+
 declare module 'node-ical' {
     import { CoreOptions } from 'request';
 
