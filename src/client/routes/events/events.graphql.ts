@@ -10,6 +10,9 @@ export default gql`
 	}
 
 	mutation addOrUpdateEvent($input: EventUpdateInput!) {
-		addOrUpdateEvent(input: $input)
+		addOrUpdateEvent(input: $input) {
+			id
+			name
+		}
 	}
 `;

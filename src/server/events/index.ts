@@ -84,7 +84,7 @@ export async function checkEventExistsByName(
 export async function addOrUpdateEvent(
 	eventInput: EventUpdateInput,
 	models: Models
-): Promise<string | null> {
+): Promise<EventDbObject> {
 	// Create a temp db object using input to keep param header clean (Can't pass in EventDbObject)
 	const eventDiffObj = {
 		_id: new ObjectID(),
@@ -98,7 +98,8 @@ export async function addOrUpdateEvent(
 		location: eventInput.location,
 		eventType: eventInput.eventType,
 	} as EventDbObject;
-	await models.Events.findOneAndUpdate(
+
+	const { value, lastErrorObject, ok } = await models.Events.findOneAndUpdate(
 		{ name: eventDiffObj.name },
 		{
 			$set: {
@@ -114,8 +115,16 @@ export async function addOrUpdateEvent(
 				warnRepeatedCheckins: true,
 			},
 		},
-		{ upsert: true }
+		{
+			returnOriginal: false,
+			upsert: true,
+		}
 	);
-	const eventCreated = await checkEventExistsByName(eventInput.name, models);
-	return eventCreated ? eventCreated.name : null;
+
+	if (!value || !ok)
+		throw new Error(
+			`Event ${eventInput.name} <${value}> unsuccessful: ${JSON.stringify(lastErrorObject)}`
+		);
+
+	return value;
 }

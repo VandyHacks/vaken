@@ -143,7 +143,7 @@ describe('Test events updating', () => {
 	describe('addOrUpdateEvent', () => {
 		it('successfully adds new event', async () => {
 			const ret = await addOrUpdateEvent(testEventUpdate as EventUpdateInput, models);
-			expect(ret).toEqual(testEventUpdate.name);
+			expect(ret.name).toEqual(testEventUpdate.name);
 			const newEvent = await models.Events.findOne({ name: testEventUpdate.name });
 			if (newEvent) expect(newEvent.name).toEqual(testEventUpdate.name);
 			else throw new MongoError('Could not find new event');
@@ -184,7 +184,7 @@ describe('Test events updating', () => {
 				const addedEvent = await models.Events.findOne({ name: testEventUpdate.name }); // get id
 				const addedEventID = addedEvent ? addedEvent._id : null;
 				const ret = await addOrUpdateEvent(testEventUpdate2 as EventUpdateInput, models);
-				await expect(ret).toEqual(testEventUpdate2.name);
+				await expect(ret.name).toEqual(testEventUpdate2.name);
 				const eventAfter = await models.Events.findOne({ name: testEventUpdate2.name });
 				if (eventAfter != null && addedEventID) {
 					await expect(eventAfter._id).toEqual(addedEventID);

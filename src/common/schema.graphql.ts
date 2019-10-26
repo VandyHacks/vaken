@@ -351,7 +351,7 @@ export default gql`
 	}
 
 	type Mutation {
-		addOrUpdateEvent(input: EventUpdateInput!): String
+		addOrUpdateEvent(input: EventUpdateInput!): Event!
 		createCompany(input: CompanyInput!): Company!
 		createTier(input: TierInput!): Tier!
 		createSponsor(input: SponsorInput!): Sponsor!
