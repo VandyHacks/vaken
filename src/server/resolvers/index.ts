@@ -162,7 +162,6 @@ export const resolvers: CustomResolvers<Context> = {
 		addOrUpdateEvent: async (root, { input }, { models, user }) => {
 			checkIsAuthorized(UserType.Organizer, user);
 			return addOrUpdateEvent(input, models);
-			return eventRet;
 		},
 		checkInUserToEvent: async (root, { input }, { models, user }) => {
 			checkIsAuthorized(UserType.Organizer, user);
