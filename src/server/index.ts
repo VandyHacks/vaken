@@ -17,7 +17,7 @@ import { pullCalendar } from './events';
 const { SESSION_SECRET, PORT, CALENDARID } = process.env;
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
 if (!PORT) throw new Error(`PORT not set`);
-
+if (!CALENDARID) logger.info('CALENDARID not set; skipping ical integration');
 const app = express();
 
 export const schema = makeExecutableSchema({
