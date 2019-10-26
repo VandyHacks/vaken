@@ -11,7 +11,7 @@ const filterByCalType = (objNames: string[], cal: CalendarResponse, type: string
 	return objNames.filter(obj => cal[obj].type === type);
 };
 
-const filterCalByObjectNames = (objNames: string[], cal: CalendarResponse): CalendarComponent[] => {
+const filterCalByObjectNames = (objNames: keyof CalendarResponse[], cal: CalendarResponse): CalendarComponent[] => {
 	return objNames.map(key => cal[key]);
 };
 
