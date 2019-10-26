@@ -37,4 +37,8 @@ module.exports = {
 	env: {
 		browser: true,
 	},
+	parserOptions: {
+		tsConfigRootDir: `${__dirname}/../..`,
+		project: `${__dirname}/../../tsconfig.json`,
+	},
 };
