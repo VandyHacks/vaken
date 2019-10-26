@@ -1,14 +1,6 @@
 import gql from 'graphql-tag';
 
 export default gql`
-	query events {
-		events {
-			id
-			name
-			eventType
-		}
-	}
-
 	mutation registerNFCUIDWithUser($input: NFCRegisterInput!) {
 		registerNFCUIDWithUser(input: $input)
 	}
