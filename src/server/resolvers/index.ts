@@ -161,7 +161,7 @@ export const resolvers: CustomResolvers<Context> = {
 	Mutation: {
 		addOrUpdateEvent: async (root, { input }, { models, user }) => {
 			checkIsAuthorized(UserType.Organizer, user);
-			const eventRet = await addOrUpdateEvent(input, models);
+			return addOrUpdateEvent(input, models);
 			return eventRet;
 		},
 		checkInUserToEvent: async (root, { input }, { models, user }) => {
