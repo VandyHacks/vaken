@@ -5,7 +5,7 @@ export function updateEventsHandler(
 	addOrUpdateEventFunction: AddOrUpdateEventMutationFn
 ): string[] {
 	if (events) {
-		events.map(event =>
+		events.forEach(event =>
 			addOrUpdateEventFunction({
 				variables: {
 					input: {
@@ -14,6 +14,7 @@ export function updateEventsHandler(
 				},
 			})
 		);
+		return events.map(event => event.name);
 	}
 	return [];
 }
