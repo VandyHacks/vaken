@@ -1,7 +1,9 @@
 coverage:
   status:
-		patch: off
+    patch: off
     project:
       default:
         target: auto
         threshold: 1 # allows coverage to drop by up to 1% on a PR. 
+    ignore:
+	"src/server/mail/templates"
