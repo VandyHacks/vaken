@@ -12,6 +12,8 @@ const ManageEvents: FunctionComponent = (): JSX.Element => {
 	// const { loading, error, data } = useEventsQuery();
 
 	async function getEvents(): Promise<void> {
+		// TODO(#473): Use graphql for this fetch to take advantage of
+		// Apollo caching
 		const res = await fetch('/api/manage/events/pull');
 		const resData = await res.json();
 		const eventsList = resData as EventUpdate[];
