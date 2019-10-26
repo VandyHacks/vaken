@@ -26,8 +26,8 @@ module.exports = {
 		},
 	},
 	parserOptions: {
-		tsConfigRootDir: './',
-		project: './tsconfig.json',
+		tsConfigRootDir: __dirname,
+		project: `${__dirname}/tsconfig.json`,
 	},
 	rules: {
 		'no-void': 0,
