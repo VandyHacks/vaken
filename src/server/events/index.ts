@@ -7,11 +7,18 @@ import { EventUpdate } from '../../client/routes/events/ManageEventTypes';
 
 const EVENTTYPE = 'VEVENT';
 
-const filterByCalType = (objNames: keyof CalendarResponse[], cal: CalendarResponse, type: string): string[] => {
-	return objNames.filter(obj => cal[obj].type === type);
+const filterByCalType = (
+	objNames: (keyof CalendarResponse)[],
+	cal: CalendarResponse,
+	type: string
+): string[] => {
+	return objNames.filter(obj => cal[obj].type === type).map(key => `${key}`);
 };
 
-const filterCalByObjectNames = (objNames: keyof CalendarResponse[], cal: CalendarResponse): CalendarComponent[] => {
+const filterCalByObjectNames = (
+	objNames: (keyof CalendarResponse)[],
+	cal: CalendarResponse
+): CalendarComponent[] => {
 	return objNames.map(key => cal[key]);
 };
 
