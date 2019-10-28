@@ -80,7 +80,7 @@ const routes = [
 		path: '/help',
 	},
 	{
-		authLevel: [UserType.Organizer, UserType.Sponsor],
+		authLevel: [UserType.Organizer, UserType.Volunteer, UserType.Sponsor],
 		component: Nfc,
 		displayText: 'Scan NFC',
 		path: '/nfc',

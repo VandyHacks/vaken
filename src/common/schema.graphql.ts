@@ -23,6 +23,7 @@ export default gql`
 		HACKER
 		ORGANIZER
 		SPONSOR
+		VOLUNTEER
 	}
 
 	enum DietaryRestriction {
@@ -87,6 +88,7 @@ export default gql`
 		ORGANIZER
 		SPONSOR
 		SUPER_ADMIN
+		VOLUNTEER
 	}
 
 	enum SortDirection {

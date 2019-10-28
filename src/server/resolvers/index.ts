@@ -164,7 +164,11 @@ export const resolvers: CustomResolvers<Context> = {
 			return addOrUpdateEvent(input, models);
 		},
 		checkInUserToEvent: async (root, { input }, { models, user }) => {
-			checkIsAuthorized(UserType.Organizer, user);
+			try {
+				checkIsAuthorized(UserType.Organizer, user);
+			} catch (e) {
+				checkIsAuthorized(UserType.Volunteer, user);
+			}
 			const userRet = await checkInUserToEvent(input.user, input.event, models);
 			return userRet;
 		},
@@ -265,7 +269,11 @@ export const resolvers: CustomResolvers<Context> = {
 			return companyCreated;
 		},
 		checkInUserToEventByNfc: async (root, { input }, { models, user }) => {
-			checkIsAuthorized(UserType.Organizer, user);
+			try {
+				checkIsAuthorized(UserType.Organizer, user);
+			} catch (e) {
+				checkIsAuthorized(UserType.Volunteer, user);
+			}
 			const inputUser = await getUser(input.nfcId, models);
 			if (inputUser) {
 				const userRet = await checkInUserToEvent(inputUser._id.toString(), input.event, models);
@@ -359,17 +367,29 @@ export const resolvers: CustomResolvers<Context> = {
 			return ret;
 		},
 		registerNFCUIDWithUser: async (root, { input }, { models, user }) => {
-			checkIsAuthorized(UserType.Organizer, user);
+			try {
+				checkIsAuthorized(UserType.Organizer, user);
+			} catch (e) {
+				checkIsAuthorized(UserType.Volunteer, user);
+			}
 			const userRet = await registerNFCUIDWithUser(input.nfcid, input.user, models);
 			return userRet;
 		},
 		removeUserFromEvent: async (root, { input }, { models, user }) => {
-			checkIsAuthorized(UserType.Organizer, user);
+			try {
+				checkIsAuthorized(UserType.Organizer, user);
+			} catch (e) {
+				checkIsAuthorized(UserType.Volunteer, user);
+			}
 			const userRet = await removeUserFromEvent(input.user, input.event, models);
 			return userRet;
 		},
 		removeUserFromEventByNfc: async (root, { input }, { models, user }) => {
-			checkIsAuthorized(UserType.Organizer, user);
+			try {
+				checkIsAuthorized(UserType.Organizer, user);
+			} catch (e) {
+				checkIsAuthorized(UserType.Volunteer, user);
+			}
 			const inputUser = await getUser(input.nfcId, models);
 			if (inputUser) {
 				const userRet = await removeUserFromEvent(inputUser._id.toString(), input.event, models);
