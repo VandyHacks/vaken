@@ -17,7 +17,7 @@ const ManageEvents: FunctionComponent = (): JSX.Element => {
 		const res = await fetch('/api/manage/events/pull');
 		const resData = await res.json();
 		const eventsList = resData as EventUpdate[];
-		const updatedEvents = updateEventsHandler(eventsList, addOrUpdateEvent);
+		const updatedEvents = await updateEventsHandler(eventsList, addOrUpdateEvent);
 		setOutput(JSON.stringify(updatedEvents, null, '\t'));
 		// setAllEvents(data.events);
 		// Place holder for events table showing all events, and some UI component listing events just pulled
