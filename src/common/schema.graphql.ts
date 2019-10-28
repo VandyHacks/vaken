@@ -112,6 +112,7 @@ export default gql`
 		id: ID! @id @column
 		name: String! @column
 		tier: Tier! @embedded
+		eventsOwned: [ID!]! @column
 	}
 
 	type Tier @entity(embedded: true) {
@@ -139,6 +140,7 @@ export default gql`
 		location: String! @column
 		eventType: String! @column
 		gcalID: String @column
+		owner: Company @embedded
 	}
 
 	type EventCheckIn @entity(embedded: true) {

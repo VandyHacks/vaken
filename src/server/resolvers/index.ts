@@ -10,6 +10,7 @@ import {
 	Resolvers,
 	HackerDbObject,
 	SponsorStatus,
+	SponsorDbObject,
 } from '../generated/graphql';
 import Context from '../context';
 import {
@@ -21,7 +22,14 @@ import {
 	checkIsAuthorized,
 	replaceResumeFieldWithLink,
 } from './helpers';
-import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser, getUser } from '../nfc';
+import {
+	checkInUserToEvent,
+	removeUserFromEvent,
+	registerNFCUIDWithUser,
+	getUser,
+	getCompanyEvents,
+	checkIdentityForEvent,
+} from '../nfc';
 import { addOrUpdateEvent } from '../events';
 import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
 import { sendStatusEmail } from '../mail/aws';
@@ -98,6 +106,7 @@ export const resolvers: CustomResolvers<Context> = {
 		name: async event => (await event).name,
 		startTimestamp: async event => (await event).startTimestamp.getTime(),
 		warnRepeatedCheckins: async event => (await event).warnRepeatedCheckins,
+		owner: async event => (await event).owner || null,
 	},
 	EventCheckIn: {
 		id: async eventCheckIn => (await eventCheckIn)._id.toHexString(),
@@ -108,6 +117,7 @@ export const resolvers: CustomResolvers<Context> = {
 		id: async comp => (await comp)._id.toHexString(),
 		name: async comp => (await comp).name,
 		tier: async comp => (await comp).tier,
+		eventsOwned: async comp => (await comp).eventsOwned || [],
 	},
 	Tier: {
 		id: async tier => (await tier)._id.toHexString(),
@@ -259,6 +269,7 @@ export const resolvers: CustomResolvers<Context> = {
 				_id: new ObjectID(),
 				name,
 				tier,
+				eventsOwned: [],
 			});
 			const companyCreated = await models.Companies.findOne({ name });
 			if (!companyCreated) throw new AuthenticationError(`company not found: ${name}`);
@@ -502,7 +513,22 @@ export const resolvers: CustomResolvers<Context> = {
 		event: async (root, { id }, ctx) => queryById(id, ctx.models.Events),
 		eventCheckIn: async (root, { id }, ctx) => queryById(id, ctx.models.EventCheckIns),
 		eventCheckIns: async (root, args, ctx) => ctx.models.EventCheckIns.find().toArray(),
-		events: async (root, args, ctx) => ctx.models.Events.find().toArray(),
+		events: async (root, args, ctx) => {
+			if (!ctx.user) throw new AuthenticationError(`User is not logged in`);
+
+			if (ctx.user.userType === UserType.Sponsor) {
+				checkIsAuthorized(UserType.Sponsor, ctx.user);
+				return getCompanyEvents(
+					(ctx.user as SponsorDbObject).company._id.toHexString(),
+					ctx.models
+				);
+			}
+			if (ctx.user.userType === UserType.Organizer) {
+				checkIsAuthorized(UserType.Organizer, ctx.user);
+				return ctx.models.Events.find().toArray();
+			}
+			return ctx.models.Events.find({ owner: null }).toArray();
+		},
 		company: async (root, { id }, ctx) => queryById(id, ctx.models.Companies),
 		companies: async (root, args, ctx) => ctx.models.Companies.find().toArray(),
 		hacker: async (root, { id }, ctx) => queryById(id, ctx.models.Hackers),

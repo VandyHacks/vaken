@@ -1,5 +1,5 @@
 import { ObjectID } from 'mongodb';
-import { HackerDbObject } from '../generated/graphql';
+import { HackerDbObject, EventDbObject } from '../generated/graphql';
 import { Models } from '../models';
 
 // TODO: (kenli/timliang) Expand functions for Organizers, Mentors collections
@@ -142,4 +142,26 @@ export async function getEventsAttended(userID: string, models: Models): Promise
 export async function getAttendees(eventID: string, models: Models): Promise<string[]> {
 	const event = await models.Events.findOne({ _id: new ObjectID(eventID) });
 	return event != null ? event.attendees : [];
+}
+
+export async function getCompanyEvents(
+	companyID: string,
+	models: Models
+): Promise<EventDbObject[]> {
+	const company = await models.Companies.findOne({ _id: new ObjectID(companyID) });
+	if (company) {
+		const events = await models.Events.find({ owner: company }).toArray();
+		return events;
+	}
+	throw new Error('Company not found in database');
+}
+
+export async function checkIdentityForEvent(
+	eventID: string,
+	companyID: string,
+	models: Models
+): Promise<boolean> {
+	const companyEvents = await getCompanyEvents(companyID, models);
+	const eventIDs = companyEvents.map(event => event._id);
+	return eventIDs.some(id => id.equals(eventID));
 }
