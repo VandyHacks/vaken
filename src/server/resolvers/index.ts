@@ -20,6 +20,7 @@ import {
 	updateUser,
 	checkIsAuthorized,
 	replaceResumeFieldWithLink,
+	checkIsAuthorizedArray,
 } from './helpers';
 import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser, getUser } from '../nfc';
 import { addOrUpdateEvent } from '../events';
@@ -164,11 +165,7 @@ export const resolvers: CustomResolvers<Context> = {
 			return addOrUpdateEvent(input, models);
 		},
 		checkInUserToEvent: async (root, { input }, { models, user }) => {
-			try {
-				checkIsAuthorized(UserType.Organizer, user);
-			} catch (e) {
-				checkIsAuthorized(UserType.Volunteer, user);
-			}
+			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user)
 			const userRet = await checkInUserToEvent(input.user, input.event, models);
 			return userRet;
 		},
@@ -217,7 +214,7 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ok || !value)
 				throw new UserInputError(
 					`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
-						'(Likely the user already declined/confirmed if no value returned)'
+					'(Likely the user already declined/confirmed if no value returned)'
 				);
 
 			// `confirmMySpot` is an identity function if user is already confirmed and is a
@@ -236,7 +233,7 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ok || !value)
 				throw new UserInputError(
 					`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
-						'(Likely the user already declined/confirmed if no value returned)'
+					'(Likely the user already declined/confirmed if no value returned)'
 				);
 			// no email sent if declined
 			return value;
@@ -269,11 +266,7 @@ export const resolvers: CustomResolvers<Context> = {
 			return companyCreated;
 		},
 		checkInUserToEventByNfc: async (root, { input }, { models, user }) => {
-			try {
-				checkIsAuthorized(UserType.Organizer, user);
-			} catch (e) {
-				checkIsAuthorized(UserType.Volunteer, user);
-			}
+			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user)
 			const inputUser = await getUser(input.nfcId, models);
 			if (inputUser) {
 				const userRet = await checkInUserToEvent(inputUser._id.toString(), input.event, models);
@@ -367,29 +360,17 @@ export const resolvers: CustomResolvers<Context> = {
 			return ret;
 		},
 		registerNFCUIDWithUser: async (root, { input }, { models, user }) => {
-			try {
-				checkIsAuthorized(UserType.Organizer, user);
-			} catch (e) {
-				checkIsAuthorized(UserType.Volunteer, user);
-			}
+			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user)
 			const userRet = await registerNFCUIDWithUser(input.nfcid, input.user, models);
 			return userRet;
 		},
 		removeUserFromEvent: async (root, { input }, { models, user }) => {
-			try {
-				checkIsAuthorized(UserType.Organizer, user);
-			} catch (e) {
-				checkIsAuthorized(UserType.Volunteer, user);
-			}
+			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user)
 			const userRet = await removeUserFromEvent(input.user, input.event, models);
 			return userRet;
 		},
 		removeUserFromEventByNfc: async (root, { input }, { models, user }) => {
-			try {
-				checkIsAuthorized(UserType.Organizer, user);
-			} catch (e) {
-				checkIsAuthorized(UserType.Volunteer, user);
-			}
+			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user)
 			const inputUser = await getUser(input.nfcId, models);
 			if (inputUser) {
 				const userRet = await removeUserFromEvent(inputUser._id.toString(), input.event, models);
