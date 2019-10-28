@@ -55,7 +55,7 @@ export async function query<T>(filter: FilterQuery<T>, collection: Collection<T>
 	if (!obj) {
 		throw new UserInputError(
 			`obj with filters: "${JSON.stringify(filter)}" not found in collection "${
-			collection.collectionName
+				collection.collectionName
 			}"`
 		);
 	}
@@ -133,6 +133,10 @@ export async function fetchUser(
 	if (userType === UserType.Sponsor) {
 		return query({ email }, models.Sponsors);
 	}
+	// query hacker db b/c all volunteers are hackers...
+	if (userType === UserType.Volunteer) {
+		return query({ email }, models.Hackers);
+	}
 	throw new ApolloError(`fetchUser for userType ${userType} not implemented`);
 }
 
@@ -160,7 +164,10 @@ export function checkIsAuthorized<T extends UserDbInterface>(requiredType: UserT
  * @param user The user to check against requiredType.
  * @returns The user object, coerced to a non-null type.
  */
-export function checkIsAuthorizedArray<T extends UserDbInterface>(requiredTypes: UserType[], user?: T): T {
+export function checkIsAuthorizedArray<T extends UserDbInterface>(
+	requiredTypes: UserType[],
+	user?: T
+): T {
 	if (!user || requiredTypes.includes(user.userType as UserType)) {
 		throw new AuthenticationError(
 			`user ${user && user.email}: ${JSON.stringify(user)} must be one of "${requiredTypes}"`
@@ -182,8 +189,8 @@ export async function replaceResumeFieldWithLink(
 			if (field.question === 'resume') {
 				newField.answer = field.answer
 					? `<a href="${await getSignedReadUrl(
-						field.answer
-					)}" target="_blank" rel="noopener noreferrer">Resume</a>`
+							field.answer
+					  )}" target="_blank" rel="noopener noreferrer">Resume</a>`
 					: field.answer;
 				return newField;
 			}

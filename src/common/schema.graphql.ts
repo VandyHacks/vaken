@@ -250,6 +250,25 @@ export default gql`
 		eventsAttended: [ID!]! @column
 	}
 
+	type Volunteer implements User @entity {
+		id: ID!
+		createdAt: Float!
+		secondaryIds: [ID!]!
+		logins: [Login!]!
+		email: String!
+		emailUnsubscribed: Boolean! @column
+		firstName: String!
+		preferredName: String!
+		lastName: String!
+		shirtSize: ShirtSize
+		gender: String
+		dietaryRestrictions: String!
+		userType: UserType!
+		phoneNumber: String
+		permissions: [String]! @column
+		eventsAttended: [ID!]! @column
+	}
+
 	type Query {
 		company(id: ID!): Company!
 		companies(sortDirection: SortDirection): [Company!]!
