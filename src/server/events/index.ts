@@ -30,6 +30,7 @@ const extractVEventIntoRecord = (event: VEvent): Record<string, string> => {
 		end: new Date(event.end as Date).toUTCString(),
 		location: event.location,
 		description: event.description,
+		uid: event.uid,
 	};
 };
 
@@ -40,12 +41,13 @@ export const transformCalEventToDBUpdate = (event: Record<string, string>): Even
 	const parsedEnd = new Date(event.end);
 	const parsedType = /\[(.*?)\]/.exec(event.summary); // Looks for a **single** [Event Type] tag in name
 	return {
-		name: event.summary.replace(/\s*\[(.*?)\]\s*/, ''),
+		name: event.summary.replace(/\s*\[(.*?)\]\s*/, ''), // Removes the [Event Type] tag in name
 		startTimestamp: event.start,
 		duration: Math.floor((parsedEnd.getTime() - parsedStart.getTime()) / (1000 * 60)),
 		description: event.description,
 		location: event.location,
 		eventType: parsedType != null ? parsedType[1] : '',
+		gcalID: event.uid,
 	} as EventUpdate;
 };
 
@@ -67,16 +69,6 @@ export async function pullCalendar(calendarID: string | undefined): Promise<Even
 	throw new UserInputError('Calendar ID undefined or null');
 }
 
-export async function checkEventExistsByName(
-	eventName: string,
-	models: Models
-): Promise<EventDbObject | null> {
-	const event = await models.Events.findOne({
-		name: eventName,
-	});
-	return event;
-}
-
 /**
  * @param eventInput Object using EventUpdateInput Input type to define what needs to be updated
  * @returns Event name in a promise
@@ -85,9 +77,11 @@ export async function addOrUpdateEvent(
 	eventInput: EventUpdateInput,
 	models: Models
 ): Promise<EventDbObject> {
+	if (!eventInput.id && !eventInput.gcalID)
+		throw new Error('Event update request must contain either its database ID or GCal uid');
 	// Create a temp db object using input to keep param header clean (Can't pass in EventDbObject)
 	const eventDiffObj = {
-		_id: new ObjectID(),
+		_id: eventInput.id ? new ObjectID(eventInput.id) : new ObjectID(), // Use ID to search if requested update contains it, else assume no ID
 		attendees: [],
 		checkins: [],
 		warnRepeatedCheckins: false,
@@ -97,12 +91,13 @@ export async function addOrUpdateEvent(
 		description: eventInput.description,
 		location: eventInput.location,
 		eventType: eventInput.eventType,
+		gcalID: eventInput.gcalID,
 	} as EventDbObject;
-
 	const { value, lastErrorObject, ok } = await models.Events.findOneAndUpdate(
-		{ name: eventDiffObj.name },
+		eventDiffObj.gcalID ? { gcalID: eventDiffObj.gcalID } : { _id: eventDiffObj._id },
 		{
 			$set: {
+				name: eventDiffObj.name,
 				startTimestamp: eventDiffObj.startTimestamp,
 				duration: eventDiffObj.duration,
 				description: eventDiffObj.description,
@@ -125,6 +120,5 @@ export async function addOrUpdateEvent(
 		throw new Error(
 			`Event ${eventInput.name} <${value}> unsuccessful: ${JSON.stringify(lastErrorObject)}`
 		);
-
 	return value;
 }
