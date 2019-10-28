@@ -2,12 +2,7 @@ import { ObjectId, MongoError } from 'mongodb';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { HackerDbObject, EventDbObject, EventUpdateInput } from '../generated/graphql';
 import DB, { Models } from '../models';
-import {
-	pullCalendar,
-	checkEventExistsByName,
-	transformCalEventToDBUpdate,
-	addOrUpdateEvent,
-} from '.';
+import { pullCalendar, transformCalEventToDBUpdate, addOrUpdateEvent } from '.';
 import { EventUpdate } from '../../client/routes/events/ManageEventTypes';
 
 let mongoServer: MongoMemoryServer;
@@ -48,24 +43,48 @@ const testEventObj: Record<string, string> = {
 	end: '2019-09-06T07:41:33.714+00:00',
 	description: 'testEventdesc',
 	location: 'location',
+	uid: 'testGcalID',
 };
 
-const testEventUpdate: EventUpdate = {
+const testEventUpdateGcal: EventUpdate = {
 	name: 'testEvent',
 	startTimestamp: '2019-09-06T03:41:33.714+00:00',
 	duration: 240,
 	description: 'testEventdesc',
 	location: 'location',
 	eventType: 'testType',
+	gcalID: 'testGcalID',
 };
 
-const testEventUpdate2: EventUpdate = {
-	name: 'testEvent',
+const testEventUpdateGcal2: EventUpdate = {
+	name: 'testEvent2',
 	startTimestamp: '2019-09-08T03:41:33.714+00:00',
 	duration: 60,
 	description: 'testEventdesc2',
 	location: 'location2',
 	eventType: 'testType2',
+	gcalID: 'testGcalID',
+};
+
+const eventID = new ObjectId();
+const testEventUpdateByID: EventUpdate = {
+	name: 'testEventbyID',
+	startTimestamp: '2019-09-06T03:41:33.714+00:00',
+	duration: 240,
+	description: 'testEventdesc',
+	location: 'location',
+	eventType: 'testType',
+	id: eventID.toHexString(),
+};
+
+const testEventUpdateByID2: EventUpdate = {
+	name: 'testEvent2byID',
+	startTimestamp: '2019-09-08T03:41:33.714+00:00',
+	duration: 60,
+	description: 'testEventdesc2',
+	location: 'location2',
+	eventType: 'testType2',
+	id: eventID.toHexString(),
 };
 
 const vhCalendarID = 'vanderbilt.edu_8p58kn7032badn5et22pq1iqjs@group.calendar.google.com';
@@ -95,16 +114,6 @@ afterAll(async () => {
 });
 
 describe('Test events updating', () => {
-	describe('checkEventExistsByName', () => {
-		it('returns null if an event not found by name', async () => {
-			await expect(checkEventExistsByName('Foo', models)).resolves.toEqual(null);
-		});
-		it('returns event name if found', async () => {
-			await expect(checkEventExistsByName('testEventPreexisting', models)).resolves.toEqual(
-				testEvent
-			);
-		});
-	});
 	describe('pullCalendar', () => {
 		it('throws on null calendar ID', async () => {
 			try {
@@ -137,67 +146,133 @@ describe('Test events updating', () => {
 			}
 		});
 		it('returns correct eventupdate', async () => {
-			expect(transformCalEventToDBUpdate(testEventObj)).toEqual(testEventUpdate);
+			expect(transformCalEventToDBUpdate(testEventObj)).toEqual(testEventUpdateGcal);
 		});
 	});
 	describe('addOrUpdateEvent', () => {
-		it('successfully adds new event', async () => {
-			const ret = await addOrUpdateEvent(testEventUpdate as EventUpdateInput, models);
-			expect(ret.name).toEqual(testEventUpdate.name);
-			const newEvent = await models.Events.findOne({ name: testEventUpdate.name });
-			if (newEvent) expect(newEvent.name).toEqual(testEventUpdate.name);
-			else throw new MongoError('Could not find new event');
-		});
-
-		describe('successfully updates event helper', () => {
-			const testCheckIn = {
-				_id: ObjectId.createFromTime(Date.now()),
-				timestamp: new Date(),
-				user: testHackerId.toHexString(),
-			};
-			const attendeesMock = [testHackerId.toHexString()];
-			const checkinsMock = [testCheckIn];
-			beforeAll(async () => {
-				try {
-					const ret = await models.Events.findOneAndUpdate(
-						{ name: testEventUpdate.name },
-						{
-							$set: {
-								attendees: attendeesMock,
-								checkins: checkinsMock,
-							},
-						}
-					);
-					if (!ret.value) throw new MongoError("Can't set attendees array");
-				} catch (err) {
-					// eslint-disable-next-line no-console
-					console.error(err);
-				}
+		describe('test using GCal', () => {
+			it('successfully adds new event using Gcal', async () => {
+				const ret = await addOrUpdateEvent(testEventUpdateGcal as EventUpdateInput, models);
+				await expect(ret.name).toEqual(testEventUpdateGcal.name);
+				const newEvent = await models.Events.findOne({ gcalID: testEventUpdateGcal.gcalID });
+				if (newEvent) expect(newEvent.name).toEqual(testEventUpdateGcal.name);
+				else throw new MongoError('Could not find new event');
 			});
-			afterAll(async () => {
-				await models.Events.deleteOne({
-					name: testEventUpdate.name,
+
+			describe('successfully updates event using Gcal helper', () => {
+				const testCheckIn = {
+					_id: ObjectId.createFromTime(Date.now()),
+					timestamp: new Date(),
+					user: testHackerId.toHexString(),
+				};
+				const attendeesMock = [testHackerId.toHexString()];
+				const checkinsMock = [testCheckIn];
+				beforeAll(async () => {
+					try {
+						const ret = await models.Events.findOneAndUpdate(
+							{ name: testEventUpdateGcal.name },
+							{
+								$set: {
+									attendees: attendeesMock,
+									checkins: checkinsMock,
+								},
+							}
+						);
+						if (!ret.value) throw new MongoError("Can't set attendees array");
+					} catch (err) {
+						// eslint-disable-next-line no-console
+						console.error(err);
+					}
+				});
+				afterAll(async () => {
+					await models.Events.deleteOne({
+						gcalID: testEventUpdateGcal.gcalID,
+					});
+				});
+
+				it('successful event update using Gcal', async () => {
+					const addedEvent = await models.Events.findOne({ name: testEventUpdateGcal.name }); // get id
+					const addedEventID = addedEvent ? addedEvent._id : null;
+					await addOrUpdateEvent(testEventUpdateGcal2 as EventUpdateInput, models);
+					const eventAfter = await models.Events.findOne({ gcalID: testEventUpdateGcal2.gcalID });
+					if (eventAfter != null && addedEventID) {
+						await expect(eventAfter.name).toEqual(testEventUpdateGcal2.name);
+						await expect(eventAfter._id).toEqual(addedEventID);
+						await expect(eventAfter.attendees).toEqual(attendeesMock);
+						await expect(eventAfter.checkins).toEqual(checkinsMock);
+						await expect(eventAfter.description).toEqual(testEventUpdateGcal2.description);
+						await expect(eventAfter.duration).toEqual(testEventUpdateGcal2.duration);
+						await expect(eventAfter.eventType).toEqual(testEventUpdateGcal2.eventType);
+						await expect(eventAfter.startTimestamp).toEqual(
+							new Date(testEventUpdateGcal2.startTimestamp)
+						);
+						await expect(eventAfter.location).toEqual(testEventUpdateGcal2.location);
+					} else throw new MongoError('Could not find new event');
 				});
 			});
+		});
 
-			it('successful event update', async () => {
-				const addedEvent = await models.Events.findOne({ name: testEventUpdate.name }); // get id
-				const addedEventID = addedEvent ? addedEvent._id : null;
-				const ret = await addOrUpdateEvent(testEventUpdate2 as EventUpdateInput, models);
-				await expect(ret.name).toEqual(testEventUpdate2.name);
-				const eventAfter = await models.Events.findOne({ name: testEventUpdate2.name });
-				if (eventAfter != null && addedEventID) {
-					await expect(eventAfter._id).toEqual(addedEventID);
-					await expect(eventAfter.attendees).toEqual(attendeesMock);
-					await expect(eventAfter.checkins).toEqual(checkinsMock);
-					await expect(eventAfter.description).toEqual(testEventUpdate2.description);
-					await expect(eventAfter.duration).toEqual(testEventUpdate2.duration);
-					await expect(eventAfter.eventType).toEqual(testEventUpdate2.eventType);
-					await expect(eventAfter.startTimestamp).toEqual(
-						new Date(testEventUpdate2.startTimestamp)
-					);
-					await expect(eventAfter.location).toEqual(testEventUpdate2.location);
-				} else throw new MongoError('Could not find new event');
+		describe('test using ID', () => {
+			it('successfully adds new event using ID', async () => {
+				const ret = await addOrUpdateEvent(testEventUpdateByID as EventUpdateInput, models);
+				await expect(ret.name).toEqual(testEventUpdateByID.name);
+				const newEvent = await models.Events.findOne({ _id: new ObjectId(testEventUpdateByID.id) });
+				if (newEvent) expect(newEvent.name).toEqual(testEventUpdateByID.name);
+				else throw new MongoError('Could not find new event');
+			});
+
+			describe('successfully updates event using ID helper', () => {
+				const testCheckIn = {
+					_id: ObjectId.createFromTime(Date.now()),
+					timestamp: new Date(),
+					user: testHackerId.toHexString(),
+				};
+				const attendeesMock = [testHackerId.toHexString()];
+				const checkinsMock = [testCheckIn];
+				beforeAll(async () => {
+					try {
+						const ret = await models.Events.findOneAndUpdate(
+							{ _id: new ObjectId(testEventUpdateByID.id) },
+							{
+								$set: {
+									attendees: attendeesMock,
+									checkins: checkinsMock,
+								},
+							}
+						);
+						if (!ret.value) throw new MongoError("Can't set attendees array");
+					} catch (err) {
+						// eslint-disable-next-line no-console
+						console.error(err);
+					}
+				});
+				afterAll(async () => {
+					await models.Events.deleteOne({
+						_id: new ObjectId(testEventUpdateByID.id),
+					});
+				});
+
+				it('successful event update using ID', async () => {
+					const addedEvent = await models.Events.findOne({ name: testEventUpdateByID.name }); // get id
+					const addedEventID = addedEvent ? addedEvent._id : null;
+					await addOrUpdateEvent(testEventUpdateByID2 as EventUpdateInput, models);
+					const eventAfter = await models.Events.findOne({
+						_id: new ObjectId(testEventUpdateByID2.id),
+					});
+					if (eventAfter != null && addedEventID) {
+						await expect(eventAfter.name).toEqual(testEventUpdateByID2.name);
+						await expect(eventAfter._id).toEqual(addedEventID);
+						await expect(eventAfter.attendees).toEqual(attendeesMock);
+						await expect(eventAfter.checkins).toEqual(checkinsMock);
+						await expect(eventAfter.description).toEqual(testEventUpdateByID2.description);
+						await expect(eventAfter.duration).toEqual(testEventUpdateByID2.duration);
+						await expect(eventAfter.eventType).toEqual(testEventUpdateByID2.eventType);
+						await expect(eventAfter.startTimestamp).toEqual(
+							new Date(testEventUpdateByID2.startTimestamp)
+						);
+						await expect(eventAfter.location).toEqual(testEventUpdateByID2.location);
+					} else throw new MongoError('Could not find new event');
+				});
 			});
 		});
 	});

@@ -138,6 +138,7 @@ export default gql`
 		description: String @column
 		location: String! @column
 		eventType: String! @column
+		gcalID: String @column
 	}
 
 	type EventCheckIn @entity(embedded: true) {
@@ -348,6 +349,8 @@ export default gql`
 		description: String!
 		location: String!
 		eventType: String!
+		gcalID: String
+		id: String
 	}
 
 	type Mutation {

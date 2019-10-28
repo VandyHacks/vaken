@@ -11,6 +11,8 @@ export interface EventUpdate {
 	description: string;
 	location: string;
 	eventType: string;
+	gcalID?: string;
+	id?: string;
 }
 
 export type AddOrUpdateEventMutationFn = MutationFunction<
