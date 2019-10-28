@@ -360,7 +360,7 @@ export const resolvers: CustomResolvers<Context> = {
 			return ret;
 		},
 		registerNFCUIDWithUser: async (root, { input }, { models, user }) => {
-			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user)
+			checkIsAuthorized(UserType.Organizer, user)
 			const userRet = await registerNFCUIDWithUser(input.nfcid, input.user, models);
 			return userRet;
 		},
