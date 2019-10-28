@@ -165,3 +165,39 @@ export async function checkIdentityForEvent(
 	const eventIDs = companyEvents.map(event => event._id);
 	return eventIDs.some(id => id.equals(eventID));
 }
+
+export async function assignEventToCompany(
+	eventID: string,
+	companyID: string,
+	models: Models
+): Promise<EventDbObject> {
+	const eventObjID = new ObjectID(eventID);
+	const companyObjID = new ObjectID(companyID);
+	const company = await models.Companies.findOne({ _id: companyObjID });
+	const event = await models.Events.findOne({ _id: eventObjID });
+	if (event && company) {
+		const eventRet = await models.Events.findOneAndUpdate(
+			{ _id: eventObjID },
+			{
+				$set: {
+					owner: company,
+				},
+			},
+			{ returnOriginal: false }
+		);
+		if (!eventRet)
+			throw new Error(`Assigning event ${eventID} to company ${companyID} unsuccessful`);
+		const companyRet = await models.Companies.findOneAndUpdate(
+			{ _id: companyObjID },
+			{
+				$addToSet: {
+					eventsOwned: eventObjID.toHexString(),
+				},
+			},
+			{ returnOriginal: false }
+		);
+		if (!companyRet)
+			throw new Error(`Assigning company ${companyID} with event ${eventID} unsuccessful`);
+	}
+	throw new Error('Company or event not found in database');
+}
