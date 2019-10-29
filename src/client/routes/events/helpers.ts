@@ -1,4 +1,8 @@
-import { EventUpdate, AddOrUpdateEventMutationFn } from './ManageEventTypes';
+import {
+	EventUpdate,
+	AddOrUpdateEventMutationFn,
+	AssignEventToCompanyMutationFn,
+} from './ManageEventTypes';
 
 export async function updateEventsHandler(
 	events: null | EventUpdate[],
@@ -23,4 +27,21 @@ export async function updateEventsHandler(
 		);
 	}
 	return [];
+}
+
+export async function assignEventHandler(
+	eventID: string,
+	companyID: string,
+	assignEventToCompanyFunction: AssignEventToCompanyMutationFn
+): Promise<void> {
+	if (eventID && companyID) {
+		await assignEventToCompanyFunction({
+			variables: {
+				input: {
+					companyId: companyID,
+					eventId: eventID,
+				},
+			},
+		});
+	}
 }

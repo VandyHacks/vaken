@@ -122,3 +122,62 @@ export async function addOrUpdateEvent(
 		);
 	return value;
 }
+
+export async function getCompanyEvents(
+	companyID: string,
+	models: Models
+): Promise<EventDbObject[]> {
+	const company = await models.Companies.findOne({ _id: new ObjectID(companyID) });
+	if (company) {
+		const events = await models.Events.find({ owner: company }).toArray();
+		return events;
+	}
+	throw new Error('Company not found in database');
+}
+
+export async function checkIdentityForEvent(
+	eventID: string,
+	companyID: string,
+	models: Models
+): Promise<boolean> {
+	const companyEvents = await getCompanyEvents(companyID, models);
+	const eventIDs = companyEvents.map(event => event._id);
+	return eventIDs.some(id => id.equals(eventID));
+}
+
+export async function assignEventToCompany(
+	eventID: string,
+	companyID: string,
+	models: Models
+): Promise<EventDbObject> {
+	const eventObjID = new ObjectID(eventID);
+	const companyObjID = new ObjectID(companyID);
+	const company = await models.Companies.findOne({ _id: companyObjID });
+	const event = await models.Events.findOne({ _id: eventObjID });
+	if (event && company) {
+		const eventRet = await models.Events.findOneAndUpdate(
+			{ _id: eventObjID },
+			{
+				$set: {
+					owner: company,
+				},
+			},
+			{ returnOriginal: false }
+		);
+		if (!eventRet.ok || !eventRet.value)
+			throw new Error(`Assigning event ${eventID} to company ${companyID} unsuccessful`);
+		const companyRet = await models.Companies.findOneAndUpdate(
+			{ _id: companyObjID },
+			{
+				$addToSet: {
+					eventsOwned: eventObjID.toHexString(),
+				},
+			},
+			{ returnOriginal: false }
+		);
+		if (!companyRet.ok || !companyRet.value)
+			throw new Error(`Assigning company ${companyID} with event ${eventID} unsuccessful`);
+		return eventRet.value;
+	}
+	throw new Error('Company or event not found in database');
+}

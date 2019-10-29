@@ -1,5 +1,5 @@
 import { ObjectID } from 'mongodb';
-import { HackerDbObject } from '../generated/graphql';
+import { HackerDbObject, EventDbObject } from '../generated/graphql';
 import { Models } from '../models';
 
 // TODO: (kenli/timliang) Expand functions for Organizers, Mentors collections

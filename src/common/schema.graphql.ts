@@ -107,6 +107,7 @@ export default gql`
 		id: ID! @id @column
 		name: String! @column
 		tier: Tier! @embedded
+		eventsOwned: [ID!]! @column
 	}
 
 	type Tier @entity(embedded: true) {
@@ -125,7 +126,7 @@ export default gql`
 	type Event @entity {
 		id: ID! @id @column
 		name: String! @column
-		startTimestamp: Int! @column(overrideType: "Date")
+		startTimestamp: Float! @column(overrideType: "Date")
 		duration: Int! @column
 		attendees: [ID!]! @column
 		checkins: [EventCheckIn!]! @embedded
@@ -134,6 +135,7 @@ export default gql`
 		location: String! @column
 		eventType: String! @column
 		gcalID: String @column
+		owner: Company @embedded
 	}
 
 	type EventCheckIn @entity(embedded: true) {
@@ -377,7 +379,13 @@ export default gql`
 		id: String
 	}
 
+	input AssignSponsorEventInput {
+		companyId: String!
+		eventId: String!
+	}
+
 	type Mutation {
+		assignEventToCompany(input: AssignSponsorEventInput!): Event!
 		addOrUpdateEvent(input: EventUpdateInput!): Event!
 		createCompany(input: CompanyInput!): Company!
 		createTier(input: TierInput!): Tier!
