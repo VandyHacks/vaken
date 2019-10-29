@@ -29,13 +29,16 @@ export const createMatchCriteria = (searchValue: string) => (hacker: QueriedHack
 };
 
 // assigns the row names for styling
-export const generateRowClassName = ({ index }: { index: number }): string => {
-	let className;
-	if (index < 0) className = 'headerRow';
-	else {
-		className = index % 2 === 0 ? 'evenRow' : 'oddRow';
-	}
-	return className;
+export const generateRowClassName = (data: QueriedHacker[], topUserMatch: string) => ({
+	index,
+}: {
+	index: number;
+}) => {
+	if (data[index] && data[index].id === topUserMatch) return 'selected';
+
+	if (index < 0) return 'headerRow';
+
+	return index % 2 === 0 ? 'evenRow' : 'oddRow';
 };
 
 export const createSubmitHandler = (

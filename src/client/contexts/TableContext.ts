@@ -12,13 +12,14 @@ export interface Option {
 
 // define thresholds for fuzzy searching
 export const fuseOpts = {
-	caseSensitive: true,
+	caseSensitive: false,
 	distance: 100,
 	findAllMatches: true,
 	location: 0,
 	shouldSort: true,
-	threshold: 0.3,
+	threshold: 0.1,
 	tokenize: true,
+	matchAllTokens: true,
 };
 
 export interface SearchCriterion {

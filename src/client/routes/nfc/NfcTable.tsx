@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, FC } from 'react';
-import { AutoSizer, SortDirection } from 'react-virtualized';
+import { AutoSizer, SortDirection, RowMouseEventHandlerParams } from 'react-virtualized';
 import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import Select from 'react-select';
@@ -98,6 +98,16 @@ const onSortColumnChange = (ctx: TableCtxI): ((p: SortFnProps) => void) => {
 					? undefined
 					: sortDirection;
 		});
+	};
+};
+
+const onRowClick = (
+	setTopUserMatch: React.Dispatch<React.SetStateAction<string>>
+): ((p: RowMouseEventHandlerParams) => void) => {
+	console.info('generating fn');
+	return ({ rowData }) => {
+		console.info('inside fun');
+		if (rowData && rowData.id) setTopUserMatch(rowData.id);
 	};
 };
 
@@ -277,8 +287,9 @@ const NfcTable: FC<NfcTableProps> = ({ hackersData, eventsData }: NfcTableProps)
 								height={height}
 								sortedData={sortedData}
 								onSortColumnChange={onSortColumnChange}
-								generateRowClassName={generateRowClassName}
+								generateRowClassName={generateRowClassName(sortedData, topUserMatch)}
 								table={table}
+								rowClickFn={onRowClick(settopUserMatch)}
 							/>
 						)}
 					</AutoSizer>
