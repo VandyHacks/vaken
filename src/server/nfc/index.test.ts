@@ -1,4 +1,4 @@
-import { ObjectId, MongoError } from 'mongodb';
+import { ObjectId, MongoError, ObjectID } from 'mongodb';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { query } from '../resolvers/helpers';
 import {
@@ -21,6 +21,7 @@ import {
 	getEventsAttended,
 	getAttendees,
 	checkIdentityForEvent,
+	assignEventToCompany,
 } from '.';
 
 const event: EventDbObject = {
@@ -84,6 +85,7 @@ beforeAll(async () => {
 		await models.Organizers.insertOne(testOrganizer);
 		await models.Events.insertOne(testEvent);
 		await models.Events.insertOne(event);
+		await models.Companies.insertOne(testCompany);
 	} catch (err) {
 		// eslint-disable-next-line no-console
 		console.error(err);
@@ -603,6 +605,14 @@ describe('Test event model', () => {
 		describe('catch error', () => {
 			beforeEach(async () => {
 				try {
+					models.Companies.deleteOne({ _id: testCompanyId });
+				} catch (err) {
+					// eslint-disable-next-line no-console
+					console.error(err);
+				}
+			});
+			afterAll(async () => {
+				try {
 					models.Companies.insertOne(testCompany);
 				} catch (err) {
 					// eslint-disable-next-line no-console
@@ -650,5 +660,20 @@ describe('Test event model', () => {
 				).resolves.toEqual(true);
 			});
 		});
+	});
+	describe('assignEventToCompany', () => {
+		it('Sponsor-event association works in the best case', async () => {
+			await assignEventToCompany(testEventId.toHexString(), testCompanyId.toHexString(), models);
+			const companyAfter = await models.Companies.findOne({ _id: testCompanyId });
+			const eventAfter = await models.Events.findOne({ _id: testEventId });
+			if (companyAfter && eventAfter) {
+				expect(companyAfter.eventsOwned).toContain(testEventId.toHexString());
+				if (eventAfter.owner)
+					expect(eventAfter.owner._id.toHexString()).toEqual(testCompanyId.toHexString());
+				else throw new Error('Event not associated with owner');
+			} else throw new Error('Updated company or event not found');
+		});
+
+		// TODO: Additional testing for error throwing
 	});
 });

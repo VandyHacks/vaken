@@ -170,7 +170,7 @@ export async function assignEventToCompany(
 	eventID: string,
 	companyID: string,
 	models: Models
-): Promise<EventDbObject> {
+): Promise<EventDbObject | undefined> {
 	const eventObjID = new ObjectID(eventID);
 	const companyObjID = new ObjectID(companyID);
 	const company = await models.Companies.findOne({ _id: companyObjID });
@@ -185,7 +185,7 @@ export async function assignEventToCompany(
 			},
 			{ returnOriginal: false }
 		);
-		if (!eventRet)
+		if (!eventRet.ok)
 			throw new Error(`Assigning event ${eventID} to company ${companyID} unsuccessful`);
 		const companyRet = await models.Companies.findOneAndUpdate(
 			{ _id: companyObjID },
@@ -196,8 +196,9 @@ export async function assignEventToCompany(
 			},
 			{ returnOriginal: false }
 		);
-		if (!companyRet)
+		if (!companyRet.ok)
 			throw new Error(`Assigning company ${companyID} with event ${eventID} unsuccessful`);
+		return eventRet.value;
 	}
 	throw new Error('Company or event not found in database');
 }

@@ -106,6 +106,7 @@ export const resolvers: CustomResolvers<Context> = {
 		name: async event => (await event).name,
 		startTimestamp: async event => (await event).startTimestamp.getTime(),
 		warnRepeatedCheckins: async event => (await event).warnRepeatedCheckins,
+		gcalID: async event => (await event).gcalID || null,
 		owner: async event => (await event).owner || null,
 	},
 	EventCheckIn: {
