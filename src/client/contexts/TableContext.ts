@@ -11,7 +11,7 @@ export interface Option {
 }
 
 // define thresholds for fuzzy searching
-const fuseOpts = {
+export const fuseOpts = {
 	caseSensitive: true,
 	distance: 100,
 	findAllMatches: true,
