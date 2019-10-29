@@ -20,6 +20,7 @@ import {
 	updateUser,
 	checkIsAuthorized,
 	replaceResumeFieldWithLink,
+	checkIsAuthorizedArray,
 } from './helpers';
 import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser, getUser } from '../nfc';
 import { addOrUpdateEvent } from '../events';
@@ -51,7 +52,9 @@ const requiredFields = [
  */
 export type CustomResolvers<T> = Omit<Resolvers<T>, 'User'> & {
 	User: {
-		__resolveType: (user: UserDbInterface) => 'Hacker' | 'Mentor' | 'Organizer' | 'Sponsor';
+		__resolveType: (
+			user: UserDbInterface
+		) => 'Hacker' | 'Mentor' | 'Organizer' | 'Sponsor' | 'Volunteer';
 	};
 };
 
@@ -74,6 +77,30 @@ const userResolvers: Omit<UserResolvers, '__resolveType' | 'userType'> = {
 		const { shirtSize } = await user;
 		return shirtSize ? toEnum(ShirtSize)(shirtSize) : null;
 	},
+};
+
+const hackerResolvers: CustomResolvers<Context>['Hacker'] = {
+	...userResolvers,
+	adult: async hacker => (await hacker).adult || null,
+	application: async (hacker, args, { models }: Context) =>
+		replaceResumeFieldWithLink(
+			models.ApplicationFields.find({ userId: (await hacker)._id }).toArray()
+		),
+	gender: async hacker => (await hacker).gender || null,
+	github: async hacker => (await hacker).github || null,
+	gradYear: async hacker => (await hacker).gradYear || null,
+	majors: async hacker => (await hacker).majors || [],
+	modifiedAt: async hacker => (await hacker).modifiedAt,
+	race: async hacker => (await hacker).race || '',
+	school: async hacker => (await hacker).school || null,
+	status: async hacker => toEnum(ApplicationStatus)((await hacker).status),
+	team: async (hacker, args, { models }) => {
+		const team = await models.UserTeamIndicies.findOne({ email: (await hacker).email });
+		if (!team) return { _id: new ObjectID(), createdAt: new Date(0), memberIds: [], name: '' };
+		return query({ name: team.team }, models.Teams);
+	},
+	userType: () => UserType.Hacker,
+	volunteer: async hacker => (await hacker).volunteer || null,
 };
 
 export const resolvers: CustomResolvers<Context> = {
@@ -114,28 +141,10 @@ export const resolvers: CustomResolvers<Context> = {
 		name: async tier => (await tier).name,
 		permissions: async tier => (await tier).permissions,
 	},
-	Hacker: {
-		...userResolvers,
-		adult: async hacker => (await hacker).adult || null,
-		application: async (hacker, args, { models }: Context) =>
-			replaceResumeFieldWithLink(
-				models.ApplicationFields.find({ userId: (await hacker)._id }).toArray()
-			),
-		gender: async hacker => (await hacker).gender || null,
-		github: async hacker => (await hacker).github || null,
-		gradYear: async hacker => (await hacker).gradYear || null,
-		majors: async hacker => (await hacker).majors || [],
-		modifiedAt: async hacker => (await hacker).modifiedAt,
-		race: async hacker => (await hacker).race || '',
-		school: async hacker => (await hacker).school || null,
-		status: async hacker => toEnum(ApplicationStatus)((await hacker).status),
-		team: async (hacker, args, { models }) => {
-			const team = await models.UserTeamIndicies.findOne({ email: (await hacker).email });
-			if (!team) return { _id: new ObjectID(), createdAt: new Date(0), memberIds: [], name: '' };
-			return query({ name: team.team }, models.Teams);
-		},
-		userType: () => UserType.Hacker,
-		volunteer: async hacker => (await hacker).volunteer || null,
+	Hacker: hackerResolvers,
+	Volunteer: {
+		...hackerResolvers,
+		userType: () => UserType.Volunteer,
 	},
 	Login: {
 		createdAt: async login => (await login).createdAt.getTime(),
@@ -164,7 +173,7 @@ export const resolvers: CustomResolvers<Context> = {
 			return addOrUpdateEvent(input, models);
 		},
 		checkInUserToEvent: async (root, { input }, { models, user }) => {
-			checkIsAuthorized(UserType.Organizer, user);
+			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
 			const userRet = await checkInUserToEvent(input.user, input.event, models);
 			return userRet;
 		},
@@ -265,7 +274,7 @@ export const resolvers: CustomResolvers<Context> = {
 			return companyCreated;
 		},
 		checkInUserToEventByNfc: async (root, { input }, { models, user }) => {
-			checkIsAuthorized(UserType.Organizer, user);
+			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
 			const inputUser = await getUser(input.nfcId, models);
 			if (inputUser) {
 				const userRet = await checkInUserToEvent(inputUser._id.toString(), input.event, models);
@@ -364,12 +373,12 @@ export const resolvers: CustomResolvers<Context> = {
 			return userRet;
 		},
 		removeUserFromEvent: async (root, { input }, { models, user }) => {
-			checkIsAuthorized(UserType.Organizer, user);
+			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
 			const userRet = await removeUserFromEvent(input.user, input.event, models);
 			return userRet;
 		},
 		removeUserFromEventByNfc: async (root, { input }, { models, user }) => {
-			checkIsAuthorized(UserType.Organizer, user);
+			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
 			const inputUser = await getUser(input.nfcId, models);
 			if (inputUser) {
 				const userRet = await removeUserFromEvent(inputUser._id.toString(), input.event, models);
@@ -561,6 +570,8 @@ export const resolvers: CustomResolvers<Context> = {
 					return 'Organizer';
 				case UserType.Sponsor:
 					return 'Sponsor';
+				case UserType.Volunteer:
+					return 'Volunteer';
 				default:
 					throw new AuthenticationError(`cannot decode UserType "${user.userType}`);
 			}
