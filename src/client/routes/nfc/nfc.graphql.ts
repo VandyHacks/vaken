@@ -2,22 +2,42 @@ import gql from 'graphql-tag';
 
 export default gql`
 	mutation registerNFCUIDWithUser($input: NFCRegisterInput!) {
-		registerNFCUIDWithUser(input: $input)
+		registerNFCUIDWithUser(input: $input) {
+			id
+			firstName
+			lastName
+		}
 	}
 
 	mutation checkInUserToEvent($input: EventCheckInInput!) {
-		checkInUserToEvent(input: $input)
+		checkInUserToEvent(input: $input) {
+			id
+			firstName
+			lastName
+		}
 	}
 
 	mutation removeUserFromEvent($input: EventCheckInInput!) {
-		removeUserFromEvent(input: $input)
+		removeUserFromEvent(input: $input) {
+			id
+			firstName
+			lastName
+		}
 	}
 
 	mutation checkInUserToEventByNfc($input: EventCheckInInputByNfc!) {
-		checkInUserToEventByNfc(input: $input)
+		checkInUserToEventByNfc(input: $input) {
+			id
+			firstName
+			lastName
+		}
 	}
 
 	mutation removeUserFromEventByNfc($input: EventCheckInInputByNfc!) {
-		removeUserFromEventByNfc(input: $input)
+		removeUserFromEventByNfc(input: $input) {
+			id
+			firstName
+			lastName
+		}
 	}
 `;

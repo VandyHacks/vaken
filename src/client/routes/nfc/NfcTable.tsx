@@ -122,6 +122,8 @@ const NfcTable: FC<NfcTableProps> = ({ hackersData, eventsData }: NfcTableProps)
 	const [unadmitMode, setUnadmitMode] = useState(false);
 	const [eventSelected, setEventSelected] = useState(eventsData[0]);
 
+	const searchBoxRef = React.useRef<HTMLInputElement>(null);
+
 	const [registerNfcUidWithUser] = useRegisterNfcuidWithUserMutation();
 	const [checkInUserToEvent] = useCheckInUserToEventMutation();
 	const [removeUserFromEvent] = useRemoveUserFromEventMutation();
@@ -192,15 +194,15 @@ const NfcTable: FC<NfcTableProps> = ({ hackersData, eventsData }: NfcTableProps)
 						value={searchValue}
 						placeholder="Manual Search"
 						onChange={onSearchBoxEntry(table)}
-						onKeyPress={e => {
+						ref={searchBoxRef}
+						onKeyPress={async e => {
 							if (manualMode && e.key === 'Enter') {
-								const success = handleSubmit(nfcValue, topUserMatch, eventSelected, unadmitMode);
-								if (success) {
-									table.update(draft => {
-										draft.nfcValue = '';
-										draft.searchValue = '';
-									});
-								}
+								await handleSubmit(nfcValue, topUserMatch, eventSelected, unadmitMode);
+								table.update(draft => {
+									draft.nfcValue = '';
+									draft.searchValue = '';
+								});
+								if (searchBoxRef.current) searchBoxRef.current.focus();
 							}
 						}}
 						minWidth="15rem"
@@ -214,15 +216,14 @@ const NfcTable: FC<NfcTableProps> = ({ hackersData, eventsData }: NfcTableProps)
 						value={nfcValue}
 						placeholder="Scan NFC"
 						onChange={onNfcBoxEntry(table)}
-						onKeyPress={e => {
+						onKeyPress={async e => {
 							if (e.key === 'Enter') {
-								const success = handleSubmit(nfcValue, topUserMatch, eventSelected, unadmitMode);
-								if (success) {
-									table.update(draft => {
-										draft.nfcValue = '';
-										draft.searchValue = '';
-									});
-								}
+								await handleSubmit(nfcValue, topUserMatch, eventSelected, unadmitMode);
+								table.update(draft => {
+									draft.nfcValue = '';
+									draft.searchValue = '';
+								});
+								if (searchBoxRef.current) searchBoxRef.current.focus();
 							}
 						}}
 						minWidth="15rem"
@@ -251,13 +252,12 @@ const NfcTable: FC<NfcTableProps> = ({ hackersData, eventsData }: NfcTableProps)
 				</UnadmitToggleWrapper>
 				<HeaderButton
 					onClick={() => {
-						const success = handleSubmit(nfcValue, topUserMatch, eventSelected, unadmitMode);
-						if (success) {
-							table.update(draft => {
-								draft.nfcValue = '';
-								draft.searchValue = '';
-							});
-						}
+						handleSubmit(nfcValue, topUserMatch, eventSelected, unadmitMode);
+						table.update(draft => {
+							draft.nfcValue = '';
+							draft.searchValue = '';
+						});
+						if (searchBoxRef.current) searchBoxRef.current.focus();
 					}}>
 					Submit
 				</HeaderButton>

@@ -389,11 +389,11 @@ export default gql`
 		leaveTeam: Hacker!
 		hackerStatus(input: HackerStatusInput!): Hacker!
 		hackerStatuses(input: HackerStatusesInput!): [Hacker!]!
-		checkInUserToEvent(input: EventCheckInInput!): ID
-		removeUserFromEvent(input: EventCheckInInput!): ID
-		registerNFCUIDWithUser(input: NFCRegisterInput!): ID
-		checkInUserToEventByNfc(input: EventCheckInInputByNfc!): ID
-		removeUserFromEventByNfc(input: EventCheckInInputByNfc!): ID
+		checkInUserToEvent(input: EventCheckInInput!): User!
+		removeUserFromEvent(input: EventCheckInInput!): User!
+		registerNFCUIDWithUser(input: NFCRegisterInput!): User!
+		checkInUserToEventByNfc(input: EventCheckInInputByNfc!): User!
+		removeUserFromEventByNfc(input: EventCheckInInputByNfc!): User!
 		signedUploadUrl(input: ID!): String!
 		confirmMySpot: User!
 		declineMySpot: User!

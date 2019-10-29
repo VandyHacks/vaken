@@ -174,8 +174,7 @@ export const resolvers: CustomResolvers<Context> = {
 		},
 		checkInUserToEvent: async (root, { input }, { models, user }) => {
 			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
-			const userRet = await checkInUserToEvent(input.user, input.event, models);
-			return userRet;
+			return checkInUserToEvent(input.user, input.event, models);
 		},
 		createSponsor: async (
 			root,
@@ -276,11 +275,8 @@ export const resolvers: CustomResolvers<Context> = {
 		checkInUserToEventByNfc: async (root, { input }, { models, user }) => {
 			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
 			const inputUser = await getUser(input.nfcId, models);
-			if (inputUser) {
-				const userRet = await checkInUserToEvent(inputUser._id.toString(), input.event, models);
-				return userRet;
-			}
-			return null;
+			if (!inputUser) throw new UserInputError(`user with nfc id <${input.nfcId}> not found`);
+			return checkInUserToEvent(inputUser._id.toString(), input.event, models);
 		},
 		hackerStatus: async (_, { input: { id, status } }, { user, models }) => {
 			checkIsAuthorized(UserType.Organizer, user);
@@ -369,22 +365,17 @@ export const resolvers: CustomResolvers<Context> = {
 		},
 		registerNFCUIDWithUser: async (root, { input }, { models, user }) => {
 			checkIsAuthorized(UserType.Organizer, user);
-			const userRet = await registerNFCUIDWithUser(input.nfcid, input.user, models);
-			return userRet;
+			return registerNFCUIDWithUser(input.nfcid, input.user, models);
 		},
 		removeUserFromEvent: async (root, { input }, { models, user }) => {
 			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
-			const userRet = await removeUserFromEvent(input.user, input.event, models);
-			return userRet;
+			return removeUserFromEvent(input.user, input.event, models);
 		},
 		removeUserFromEventByNfc: async (root, { input }, { models, user }) => {
 			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
 			const inputUser = await getUser(input.nfcId, models);
-			if (inputUser) {
-				const userRet = await removeUserFromEvent(inputUser._id.toString(), input.event, models);
-				return userRet;
-			}
-			return null;
+			if (!inputUser) throw new UserInputError(`user with nfc Id ${input.nfcId} not found`);
+			return removeUserFromEvent(inputUser._id.toString(), input.event, models);
 		},
 		signedUploadUrl: async (_, _2, { user }) => {
 			// Enables a user to update their application
