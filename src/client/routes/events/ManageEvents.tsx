@@ -8,8 +8,8 @@ import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { ActionButton } from '../../components/Buttons/ActionButton';
 import Spinner from '../../components/Loading/Spinner';
 import { Title } from '../../components/Text/Title';
-import { SmallCenteredText } from '../../components/Text/SmallCenteredText';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
+import { FlexColumn, FlexRow } from '../../components/Containers/FlexContainers';
 import {
 	useAssignEventToCompanyMutation,
 	useAddOrUpdateEventMutation,
@@ -58,15 +58,17 @@ const ManageEvents: FunctionComponent = (): JSX.Element => {
 		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 	}
 
-	const eventRows = eventsData.events.map(e => {
-		return {
-			id: e.id,
-			name: e.name,
-			eventType: e.eventType,
-			startTimestamp: new Date(e.startTimestamp).toString(),
-			owner: e.owner,
-		};
-	});
+	const eventRows = eventsData.events
+		.map(e => {
+			return {
+				id: e.id,
+				name: e.name,
+				eventType: e.eventType,
+				startTimestamp: new Date(e.startTimestamp),
+				owner: e.owner,
+			};
+		})
+		.sort((a, b) => a.startTimestamp.getTime() - b.startTimestamp.getTime());
 
 	const companyOptions: { label: string; value: string }[] = companiesData.companies.map(c => {
 		return {
@@ -103,21 +105,25 @@ const ManageEvents: FunctionComponent = (): JSX.Element => {
 			<FloatingPopup>
 				<Title>Events and Sponsors</Title>
 				{eventRows.map(row => (
-					<div key={row.id}>
-						<p>{row.name}</p>
-						<p>{row.startTimestamp}</p>
-						<br />
-						<SponsorSelect
-							defaultValue={companyOptions.find(c => {
-								if (!row.owner) return null;
-								return c.value === row.owner.id;
-							})}
-							options={companyOptions}
-							onChange={(option: { label: string; value: string }) => {
-								assignSponsorEvent(row.id, option.value);
-							}}
-						/>
-					</div>
+					<FlexRow key={row.id}>
+						<FlexColumn>
+							<p>{row.name}</p>
+							<p>{row.startTimestamp.toString()}</p>
+							<br />
+						</FlexColumn>
+						<FlexColumn>
+							<SponsorSelect
+								defaultValue={companyOptions.find(c => {
+									if (!row.owner) return null;
+									return c.value === row.owner.id;
+								})}
+								options={companyOptions}
+								onChange={(option: { label: string; value: string }) => {
+									assignSponsorEvent(row.id, option.value);
+								}}
+							/>
+						</FlexColumn>
+					</FlexRow>
 				))}
 			</FloatingPopup>
 		</FloatingPopup>
