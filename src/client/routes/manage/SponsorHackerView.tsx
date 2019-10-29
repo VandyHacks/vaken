@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
+import Select from 'react-select';
 import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 import { useImmer } from 'use-immer';
@@ -11,32 +12,10 @@ import HackerTable from './HackerTable';
 import { defaultTableState, TableContext } from '../../contexts/TableContext';
 import { useHackersQuery, useEventsQuery, HackersQuery, Hacker } from '../../generated/graphql';
 
-const StyledSelect = styled.select`
-	margin: 0.25rem 1rem 0.25rem 0rem;
-	padding: 0.75rem;
-	box-shadow: 0rem 0.5rem 4rem rgba(0, 0, 0, 0.07);
-	border-radius: 0.375rem;
-	font-size: 1rem;
-	box-sizing: border-box;
-	border: 0.0625rem solid '#ecebed';
-	min-width: 10rem;
-`;
-
-const StyledOption = styled.option`
-	margin: 0.25rem 1rem 0.25rem 0rem;
-	padding: 0.75rem;
-	box-shadow: 0rem 0.5rem 4rem rgba(0, 0, 0, 0.07);
-	border-radius: 0.375rem;
-	font-size: 1rem;
-	box-sizing: border-box;
-	border: 0.0625rem solid '#ecebed';
-	min-width: 10rem;
-`;
-
 export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 	const { loading, error, data } = useHackersQuery();
 	const [tableState, updateTableState] = useImmer(defaultTableState);
-	const [eventId, setEventId] = useState('');
+	const [eventIds, setEventIds] = useState([] as string[]);
 	const [filteredData, setFilteredData] = useState();
 
 	useEffect(() => {
@@ -44,37 +23,58 @@ export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 	}, [data]);
 
 	useEffect(() => {
-		const tmpData = Object.create(data || {});
+		if (loading || !data) return;
+		const tmpData: { hackers: Partial<Hacker>[] } = { hackers: [...data.hackers] };
+
 		if (tmpData && tmpData.hackers) {
-			if (eventId) {
-				tmpData.hackers = tmpData.hackers.filter((hacker: Hacker) =>
-					hacker.eventsAttended.includes(eventId)
+			if (eventIds && eventIds.length > 0) {
+				tmpData.hackers = tmpData.hackers.filter(
+					(hacker: Partial<Hacker>) =>
+						hacker &&
+						hacker.eventsAttended &&
+						hacker.eventsAttended.some(eventId => eventIds.includes(eventId))
 				);
 			}
 			setFilteredData(tmpData);
 		}
-	}, [data, eventId]);
+	}, [data, eventIds, loading]);
 
 	const { data: eventData, loading: eventLoading, error: eventError } = useEventsQuery();
 	if (eventError) console.error(eventError);
+
+	let options: Record<string, string>[] = [];
+	if (eventData && eventData.events) {
+		options = eventData.events.map(e => ({ label: e.name, value: e.id.toString() }));
+	}
+
+	const customStyles = {
+		option: (provided: any) => ({
+			...provided,
+			padding: 20,
+			backgroundColor: 'white',
+		}),
+		control: () => ({
+			// none of react-select's styles are passed to <Control />
+			width: 200,
+		}),
+	};
 
 	return (
 		<FloatingPopup borderRadius="1rem" height="100%" backgroundOpacity="1" padding="1.5rem">
 			<TableContext.Provider value={{ state: tableState, update: updateTableState }}>
 				{!eventLoading && (
-					<StyledSelect onChange={e => setEventId(e.target.value)}>
-						<StyledOption value="" disabled>
-							Select Event to Filter By
-						</StyledOption>
-						<StyledOption value="">No filter</StyledOption>
-						{eventData &&
-							eventData.events &&
-							eventData.events.map(e => (
-								<StyledOption key={e.id} value={e.id.toString()}>
-									{e.name}
-								</StyledOption>
-							))}
-					</StyledSelect>
+					<Select
+						isMulti
+						styles={customStyles}
+						options={options}
+						onChange={selected => {
+							if (!selected) setEventIds([]);
+							else
+								setEventIds(
+									(selected as Record<string, string>[]).map((s: Record<string, string>) => s.value)
+								);
+						}}
+					/>
 				)}
 				<Switch>
 					<Route path="/view/hackers/detail/:id" component={HackerView} />
