@@ -63,7 +63,7 @@ const ManageEvents: FunctionComponent = (): JSX.Element => {
 			id: e.id,
 			name: e.name,
 			eventType: e.eventType,
-			startTimestamp: new Date(e.startTimestamp).toDateString(),
+			startTimestamp: new Date(e.startTimestamp).toString(),
 			owner: e.owner,
 		};
 	});
