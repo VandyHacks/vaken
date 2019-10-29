@@ -355,7 +355,13 @@ export default gql`
 		id: String
 	}
 
+	input AssignSponsorEventInput {
+		companyId: String!
+		eventId: String!
+	}
+
 	type Mutation {
+		assignEventToCompany(input: AssignSponsorEventInput!): Event!
 		addOrUpdateEvent(input: EventUpdateInput!): Event!
 		createCompany(input: CompanyInput!): Company!
 		createTier(input: TierInput!): Tier!

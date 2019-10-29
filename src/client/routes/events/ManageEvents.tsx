@@ -11,11 +11,12 @@ import { Title } from '../../components/Text/Title';
 import { SmallCenteredText } from '../../components/Text/SmallCenteredText';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import {
+	useAssignEventToCompanyMutation,
 	useAddOrUpdateEventMutation,
 	useEventsQuery,
 	useCompaniesQuery,
 } from '../../generated/graphql';
-import { updateEventsHandler } from './helpers';
+import { updateEventsHandler, assignEventHandler } from './helpers';
 import { EventUpdate } from './ManageEventTypes';
 
 const SponsorSelect = styled(Select)`
@@ -30,6 +31,7 @@ const ManageEvents: FunctionComponent = (): JSX.Element => {
 	const [output, setOutput] = useState('<>');
 	// const [allEvents, setAllEvents] = useState('<all events>');
 	const [addOrUpdateEvent] = useAddOrUpdateEventMutation();
+	const [assignEventToCompany] = useAssignEventToCompanyMutation();
 	// const { loading, error, data } = useEventsQuery();
 
 	const eventsQuery = useEventsQuery();
@@ -86,8 +88,8 @@ const ManageEvents: FunctionComponent = (): JSX.Element => {
 		// TODO: Add events table and said UI component or just table, with columns being event attributes + time added
 	}
 
-	async function assignSponsorEvent(companyID: string, eventID: string): Promise<void> {
-		// call assign sponsor mutation
+	function assignSponsorEvent(eventID: string, companyID: string): void {
+		assignEventHandler(eventID, companyID, assignEventToCompany);
 	}
 
 	return (
@@ -112,7 +114,7 @@ const ManageEvents: FunctionComponent = (): JSX.Element => {
 							})}
 							options={companyOptions}
 							onChange={(option: { label: string; value: string }) => {
-								// call assignSponsorEvent func
+								assignSponsorEvent(row.id, option.value);
 							}}
 						/>
 					</div>

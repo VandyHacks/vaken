@@ -2,6 +2,8 @@ import { MutationFunction } from '@apollo/react-common';
 import {
 	AddOrUpdateEventMutation,
 	AddOrUpdateEventMutationVariables,
+	AssignEventToCompanyMutation,
+	AssignEventToCompanyMutationVariables,
 } from '../../generated/graphql';
 
 export interface EventUpdate {
@@ -18,4 +20,9 @@ export interface EventUpdate {
 export type AddOrUpdateEventMutationFn = MutationFunction<
 	AddOrUpdateEventMutation,
 	AddOrUpdateEventMutationVariables
+>;
+
+export type AssignEventToCompanyMutationFn = MutationFunction<
+	AssignEventToCompanyMutation,
+	AssignEventToCompanyMutationVariables
 >;

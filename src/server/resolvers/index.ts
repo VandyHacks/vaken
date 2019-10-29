@@ -22,15 +22,8 @@ import {
 	checkIsAuthorized,
 	replaceResumeFieldWithLink,
 } from './helpers';
-import {
-	checkInUserToEvent,
-	removeUserFromEvent,
-	registerNFCUIDWithUser,
-	getUser,
-	getCompanyEvents,
-	checkIdentityForEvent,
-} from '../nfc';
-import { addOrUpdateEvent } from '../events';
+import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser, getUser } from '../nfc';
+import { addOrUpdateEvent, getCompanyEvents, assignEventToCompany } from '../events';
 import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
 import { sendStatusEmail } from '../mail/aws';
 
@@ -170,6 +163,10 @@ export const resolvers: CustomResolvers<Context> = {
 	 * Each may contain authentication checks as well
 	 */
 	Mutation: {
+		assignEventToCompany: async (root, { input }, { models, user }) => {
+			checkIsAuthorized(UserType.Organizer, user);
+			return assignEventToCompany(input.eventId, input.companyId, models);
+		},
 		addOrUpdateEvent: async (root, { input }, { models, user }) => {
 			checkIsAuthorized(UserType.Organizer, user);
 			return addOrUpdateEvent(input, models);

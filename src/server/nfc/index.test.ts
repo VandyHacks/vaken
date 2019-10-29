@@ -1,4 +1,4 @@
-import { ObjectId, MongoError, ObjectID } from 'mongodb';
+import { ObjectId, MongoError } from 'mongodb';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { query } from '../resolvers/helpers';
 import { HackerDbObject, OrganizerDbObject, EventDbObject } from '../generated/graphql';

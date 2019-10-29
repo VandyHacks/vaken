@@ -20,4 +20,11 @@ export default gql`
 			name
 		}
 	}
+
+	mutation assignEventToCompany($input: AssignSponsorEventInput!) {
+		assignEventToCompany(input: $input) {
+			id
+			name
+		}
+	}
 `;
