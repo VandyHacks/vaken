@@ -131,7 +131,7 @@ export default gql`
 	type Event @entity {
 		id: ID! @id @column
 		name: String! @column
-		startTimestamp: Int! @column(overrideType: "Date")
+		startTimestamp: Float! @column(overrideType: "Date")
 		duration: Int! @column
 		attendees: [ID!]! @column
 		checkins: [EventCheckIn!]! @embedded
