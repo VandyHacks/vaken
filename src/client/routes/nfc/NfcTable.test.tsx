@@ -33,6 +33,11 @@ test.skip('Test NfcTable', () => {
 									id: '0',
 									name: 'test-event',
 									eventType: 'TEST',
+									startTimestamp: 0,
+									owner: {
+										id: 'companyID',
+										name: 'company',
+									},
 								},
 							]}
 						/>
