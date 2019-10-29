@@ -124,7 +124,7 @@ export async function fetchUser(
 	{ email, userType }: { email: string; userType: string },
 	models: Models
 ): Promise<UserDbInterface> {
-	if (userType === UserType.Hacker) {
+	if (userType === UserType.Hacker || userType === UserType.Volunteer) {
 		return query({ email }, models.Hackers);
 	}
 	if (userType === UserType.Organizer) {
@@ -132,10 +132,6 @@ export async function fetchUser(
 	}
 	if (userType === UserType.Sponsor) {
 		return query({ email }, models.Sponsors);
-	}
-	// query hacker db b/c all volunteers are hackers...
-	if (userType === UserType.Volunteer) {
-		return query({ email }, models.Hackers);
 	}
 	throw new ApolloError(`fetchUser for userType ${userType} not implemented`);
 }

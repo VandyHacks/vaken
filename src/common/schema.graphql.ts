@@ -19,13 +19,6 @@ export default gql`
 		eventsAttended: [ID!]! @column
 	}
 
-	enum AuthLevel {
-		HACKER
-		ORGANIZER
-		SPONSOR
-		VOLUNTEER
-	}
-
 	enum DietaryRestriction {
 		VEGETARIAN
 		VEGAN
@@ -251,12 +244,11 @@ export default gql`
 	}
 
 	type Volunteer implements User @entity {
-		id: ID!
+		id: ID! @id
 		createdAt: Float!
 		secondaryIds: [ID!]!
 		logins: [Login!]!
 		email: String!
-		emailUnsubscribed: Boolean! @column
 		firstName: String!
 		preferredName: String!
 		lastName: String!
@@ -265,8 +257,19 @@ export default gql`
 		dietaryRestrictions: String!
 		userType: UserType!
 		phoneNumber: String
-		permissions: [String]! @column
+		race: String! @column
+		modifiedAt: Float! @column
+		status: ApplicationStatus! @column
+		school: String @column
+		gradYear: String @column
+		majors: [String!]! @column
+		adult: Boolean @column
+		volunteer: String @column
+		github: String @column
+		team: Team @embedded
 		eventsAttended: [ID!]! @column
+		application: [ApplicationField!]! @embedded
+		emailUnsubscribed: Boolean! @column
 	}
 
 	type Query {

@@ -20,7 +20,7 @@ const routes = [
 		path: '/dashboard',
 	},
 	{
-		authLevel: [UserType.Hacker],
+		authLevel: [UserType.Hacker, UserType.Volunteer],
 		component: HackerDash,
 		displayText: 'Dashboard',
 		path: '/dashboard',
@@ -38,7 +38,7 @@ const routes = [
 		path: '/dashboard',
 	},
 	{
-		authLevel: [UserType.Hacker],
+		authLevel: [UserType.Hacker, UserType.Volunteer, UserType.Organizer],
 		component: Application,
 		displayText: 'Apply',
 		path: '/application',
@@ -74,7 +74,7 @@ const routes = [
 		path: '/manage/sponsors',
 	},
 	{
-		authLevel: [UserType.Hacker, UserType.Sponsor, UserType.Organizer],
+		authLevel: [UserType.Hacker, UserType.Sponsor, UserType.Volunteer],
 		component: Help,
 		displayText: 'Help',
 		path: '/help',

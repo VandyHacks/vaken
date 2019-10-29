@@ -79,6 +79,30 @@ const userResolvers: Omit<UserResolvers, '__resolveType' | 'userType'> = {
 	},
 };
 
+const hackerResolvers: CustomResolvers<Context>['Hacker'] = {
+	...userResolvers,
+	adult: async hacker => (await hacker).adult || null,
+	application: async (hacker, args, { models }: Context) =>
+		replaceResumeFieldWithLink(
+			models.ApplicationFields.find({ userId: (await hacker)._id }).toArray()
+		),
+	gender: async hacker => (await hacker).gender || null,
+	github: async hacker => (await hacker).github || null,
+	gradYear: async hacker => (await hacker).gradYear || null,
+	majors: async hacker => (await hacker).majors || [],
+	modifiedAt: async hacker => (await hacker).modifiedAt,
+	race: async hacker => (await hacker).race || '',
+	school: async hacker => (await hacker).school || null,
+	status: async hacker => toEnum(ApplicationStatus)((await hacker).status),
+	team: async (hacker, args, { models }) => {
+		const team = await models.UserTeamIndicies.findOne({ email: (await hacker).email });
+		if (!team) return { _id: new ObjectID(), createdAt: new Date(0), memberIds: [], name: '' };
+		return query({ name: team.team }, models.Teams);
+	},
+	userType: () => UserType.Hacker,
+	volunteer: async hacker => (await hacker).volunteer || null,
+};
+
 export const resolvers: CustomResolvers<Context> = {
 	/**
 	 * These resolvers are for querying fields
@@ -117,28 +141,10 @@ export const resolvers: CustomResolvers<Context> = {
 		name: async tier => (await tier).name,
 		permissions: async tier => (await tier).permissions,
 	},
-	Hacker: {
-		...userResolvers,
-		adult: async hacker => (await hacker).adult || null,
-		application: async (hacker, args, { models }: Context) =>
-			replaceResumeFieldWithLink(
-				models.ApplicationFields.find({ userId: (await hacker)._id }).toArray()
-			),
-		gender: async hacker => (await hacker).gender || null,
-		github: async hacker => (await hacker).github || null,
-		gradYear: async hacker => (await hacker).gradYear || null,
-		majors: async hacker => (await hacker).majors || [],
-		modifiedAt: async hacker => (await hacker).modifiedAt,
-		race: async hacker => (await hacker).race || '',
-		school: async hacker => (await hacker).school || null,
-		status: async hacker => toEnum(ApplicationStatus)((await hacker).status),
-		team: async (hacker, args, { models }) => {
-			const team = await models.UserTeamIndicies.findOne({ email: (await hacker).email });
-			if (!team) return { _id: new ObjectID(), createdAt: new Date(0), memberIds: [], name: '' };
-			return query({ name: team.team }, models.Teams);
-		},
-		userType: () => UserType.Hacker,
-		volunteer: async hacker => (await hacker).volunteer || null,
+	Hacker: hackerResolvers,
+	Volunteer: {
+		...hackerResolvers,
+		userType: () => UserType.Volunteer,
 	},
 	Login: {
 		createdAt: async login => (await login).createdAt.getTime(),
