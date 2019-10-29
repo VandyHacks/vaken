@@ -164,7 +164,7 @@ export function checkIsAuthorizedArray<T extends UserDbInterface>(
 	requiredTypes: UserType[],
 	user?: T
 ): T {
-	if (!user || requiredTypes.includes(user.userType as UserType)) {
+	if (!user || !requiredTypes.includes(user.userType as UserType)) {
 		throw new AuthenticationError(
 			`user ${user && user.email}: ${JSON.stringify(user)} must be one of "${requiredTypes}"`
 		);
