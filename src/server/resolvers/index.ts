@@ -516,10 +516,9 @@ export const resolvers: CustomResolvers<Context> = {
 
 			if (ctx.user.userType === UserType.Sponsor) {
 				checkIsAuthorized(UserType.Sponsor, ctx.user);
-				return getCompanyEvents(
-					(ctx.user as SponsorDbObject).company._id.toHexString(),
-					ctx.models
-				);
+				const { _id } = (ctx.user as SponsorDbObject).company;
+				const events = await ctx.models.Events.find({ 'owner._id': new ObjectID(_id) }).toArray();
+				return events;
 			}
 			if (ctx.user.userType === UserType.Organizer) {
 				checkIsAuthorized(UserType.Organizer, ctx.user);
