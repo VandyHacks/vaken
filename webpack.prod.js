@@ -7,10 +7,10 @@ module.exports = merge.smart(common, {
 	mode: 'production',
 	devtool: 'source-map',
 	plugins: [
-		new SriPlugin({
-			hashFuncNames: ['sha384'],
-			enabled: true,
-		}),
+		// new SriPlugin({
+		// 	hashFuncNames: ['sha384'],
+		// 	enabled: true,
+		// }),
 		new PacktrackerPlugin({
 			project_token: process.env.PACKTRACKER_TOKEN,
 			upload: process.env.CI,
