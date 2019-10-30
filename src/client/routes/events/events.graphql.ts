@@ -7,6 +7,7 @@ export default gql`
 			name
 			eventType
 			startTimestamp
+			duration
 			owner {
 				id
 				name
