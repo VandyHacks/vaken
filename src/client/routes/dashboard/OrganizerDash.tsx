@@ -93,7 +93,6 @@ export const GET_STATISTICS = gql`
 		}
 		getAllHackerStatuses {
 			Created
-			Verified
 			Started
 			Submitted
 			Accepted

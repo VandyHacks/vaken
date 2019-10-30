@@ -26,6 +26,7 @@ test.skip('Test NfcTable', () => {
 									id: 'foo',
 									lastName: 'a',
 									status: ApplicationStatus.Accepted,
+									eventsAttended: [],
 								},
 							]}
 							eventsData={[

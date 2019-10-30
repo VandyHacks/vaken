@@ -124,10 +124,10 @@ export async function addOrUpdateEvent(
 }
 
 export async function getCompanyEvents(
-	companyID: string,
+	companyID: ObjectID,
 	models: Models
 ): Promise<EventDbObject[]> {
-	const company = await models.Companies.findOne({ _id: new ObjectID(companyID) });
+	const company = await models.Companies.findOne({ _id: companyID });
 	if (company) {
 		const events = await models.Events.find({ owner: company }).toArray();
 		return events;
@@ -137,7 +137,7 @@ export async function getCompanyEvents(
 
 export async function checkIdentityForEvent(
 	eventID: string,
-	companyID: string,
+	companyID: ObjectID,
 	models: Models
 ): Promise<boolean> {
 	const companyEvents = await getCompanyEvents(companyID, models);

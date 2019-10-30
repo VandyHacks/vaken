@@ -43,6 +43,7 @@ export default gql`
 			gradYear
 			school
 			status
+			eventsAttended
 		}
 	}
 
