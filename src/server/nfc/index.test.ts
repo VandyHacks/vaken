@@ -36,6 +36,8 @@ let models: Models;
 const testHackerId = new ObjectId();
 const testHacker = ({
 	_id: testHackerId,
+	firstName: 'abc',
+	lastName: 'xyz',
 	email: 'foo@bar.com',
 	eventsAttended: [],
 	secondaryIds: ['ACTIVE_NFC_ID_TEST', 'INACTIVE_NFC_ID_TEST'],
@@ -153,7 +155,7 @@ describe('Test event model', () => {
 			await expect(isNFCUIDAvailable('ACTIVE_NFC_ID_TEST', models)).resolves.toEqual(true);
 			await expect(
 				registerNFCUIDWithUser('ACTIVE_NFC_ID_TEST', testHackerId.toHexString(), models)
-			).resolves.toEqual(testHackerId.toHexString());
+			).rejects.toThrowError(`Associated new NFC ID with user overriding the old NFC ID`);
 			const userAfter = await getUser('ACTIVE_NFC_ID_TEST', models);
 			if (userAfter != null) await expect(userAfter.secondaryIds[0]).toEqual('ACTIVE_NFC_ID_TEST');
 			else throw new MongoError('Could not find user with active nfc id');
@@ -196,15 +198,16 @@ describe('Test event model', () => {
 		it('remove using attendee', async () => {
 			await expect(
 				removeUserFromEvent(testHackerId.toHexString(), testEventId.toHexString(), models)
-			).resolves.toEqual(testHackerId.toHexString());
+			).rejects.toThrowError(`User has not attended this event`);
 			const eventAfter = await models.Events.findOne({ _id: testEventId });
-			if (eventAfter != null) await expect(eventAfter.attendees).toEqual([]);
+			if (eventAfter != null)
+				await expect(eventAfter.attendees).toEqual([testHackerId.toHexString()]);
 			else throw new MongoError('Could not find event');
 		});
 		it('remove using non-attendee', async () => {
 			await expect(
 				removeUserFromEvent(testHackerId2.toHexString(), testEventId.toHexString(), models)
-			).resolves.toEqual(null);
+			).rejects.toThrowError(`User has not attended this event`);
 			const eventAfter = await models.Events.findOne({ _id: testEventId });
 			if (eventAfter != null)
 				await expect(eventAfter.attendees).toEqual([testHackerId.toHexString()]);
@@ -242,7 +245,10 @@ describe('Test event model', () => {
 		it('add a user', async () => {
 			await expect(
 				checkInUserToEvent(testHackerId.toHexString(), testEventId.toHexString(), models)
-			).resolves.toEqual(testHackerId.toHexString());
+			).resolves.toMatchObject({
+				_id: testHackerId,
+				eventsAttended: [testEventId.toHexString()],
+			});
 			const eventAfter = await models.Events.findOne({ _id: testEventId });
 			const userAfter = await models.Hackers.findOne({ _id: testHackerId });
 			if (eventAfter != null && userAfter != null) {
@@ -286,7 +292,9 @@ describe('Test event model', () => {
 			it('add existing user', async () => {
 				await expect(
 					checkInUserToEvent(testHackerId.toHexString(), testEventId.toHexString(), models)
-				).resolves.toEqual(testHackerId.toHexString());
+				).rejects.toThrowError(
+					`${testHacker.firstName} ${testHacker.lastName} is already checked into event`
+				);
 				const eventAfter = await models.Events.findOne({ _id: testEventId });
 				const userAfter = await models.Hackers.findOne({ _id: testHackerId });
 				if (eventAfter != null && userAfter != null && userAfter.eventsAttended != null) {
@@ -295,95 +303,6 @@ describe('Test event model', () => {
 					await expect(userAfter.eventsAttended.length).toEqual(1);
 				} else throw new MongoError('Could not find event');
 			});
-		});
-	});
-	describe('userIsAttendingEvent', () => {
-		beforeEach(async () => {
-			try {
-				const ret = await models.Events.findOneAndUpdate(
-					{ _id: testEventId },
-					{
-						$push: {
-							attendees: testHackerId.toHexString(),
-						},
-					}
-				);
-				if (!ret.value) throw new MongoError("Can't add attendee");
-			} catch (err) {
-				// eslint-disable-next-line no-console
-				console.error(err);
-			}
-		});
-		afterEach(async () => {
-			try {
-				const ret = await models.Events.findOneAndUpdate(
-					{ _id: testEventId },
-					{
-						$push: {
-							attendees: '',
-						},
-					}
-				);
-				if (!ret.value) throw new MongoError("Can't set attendees");
-			} catch (err) {
-				// eslint-disable-next-line no-console
-				console.error(err);
-			}
-		});
-		it('check user in event', async () => {
-			await expect(
-				userIsAttendingEvent(testHackerId.toHexString(), testEventId.toHexString(), models)
-			).resolves.toEqual(true);
-		});
-		it('check user not in event', async () => {
-			await expect(
-				userIsAttendingEvent(testHackerId2.toHexString(), testEventId.toHexString(), models)
-			).resolves.toEqual(false);
-		});
-	});
-	describe('shouldWarnRepeatedCheckIn', () => {
-		const testAttendee = testHacker.secondaryIds[0];
-		beforeAll(async () => {
-			try {
-				const ret = await models.Events.findOneAndUpdate(
-					{ _id: testEventId },
-					{
-						$push: {
-							attendees: testAttendee,
-						},
-					}
-				);
-				if (!ret.value) throw new MongoError("Can't add attendee");
-			} catch (err) {
-				// eslint-disable-next-line no-console
-				console.error(err);
-			}
-		});
-		afterAll(async () => {
-			try {
-				const ret = await models.Events.findOneAndUpdate(
-					{ _id: testEventId },
-					{
-						$push: {
-							attendees: '',
-						},
-					}
-				);
-				if (!ret.value) throw new MongoError("Can't add attendee");
-			} catch (err) {
-				// eslint-disable-next-line no-console
-				console.error(err);
-			}
-		});
-		it('check event should warn', async () => {
-			await expect(
-				shouldWarnRepeatedCheckIn(testHackerId.toHexString(), testEventId.toHexString(), models)
-			).resolves.toEqual(true);
-		});
-		it('check user not in event', async () => {
-			await expect(
-				userIsAttendingEvent(testHackerId2.toHexString(), testEventId.toHexString(), models)
-			).resolves.toEqual(false);
 		});
 	});
 	describe('getEventsAttended', () => {
@@ -497,10 +416,16 @@ describe('Test event model', () => {
 		it('Add users', async () => {
 			await expect(
 				checkInUserToEvent(testHackerId.toHexString(), testEventId.toHexString(), models)
-			).resolves.toEqual(testHackerId.toHexString());
+			).resolves.toMatchObject({
+				_id: testHackerId,
+				eventsAttended: [testEventId.toHexString()],
+			});
 			await expect(
 				checkInUserToEvent(testHackerId2.toHexString(), testEventId.toHexString(), models)
-			).resolves.toEqual(testHackerId2.toHexString());
+			).resolves.toMatchObject({
+				_id: testHackerId2,
+				eventsAttended: [testEventId.toHexString()],
+			});
 			const eventAfter = await models.Events.findOne({ _id: testEventId });
 			const userAfter1 = await models.Hackers.findOne({ _id: testHackerId });
 			const userAfter2 = await models.Hackers.findOne({ _id: testHackerId2 });
@@ -537,13 +462,17 @@ describe('Test event model', () => {
 				it('Remove attendees', async () => {
 					await expect(
 						removeUserFromEvent(testHackerId.toHexString(), testEventId.toHexString(), models)
-					).resolves.toEqual(testHackerId.toHexString());
+					).resolves.toMatchObject({
+						eventsAttended: [testEventId.toHexString()],
+					});
 					await expect(
 						userIsAttendingEvent(testHackerId2.toHexString(), testEventId.toHexString(), models)
 					).resolves.toEqual(true);
 					await expect(
 						removeUserFromEvent(testHackerId2.toHexString(), testEventId.toHexString(), models)
-					).resolves.toEqual(testHackerId2.toHexString());
+					).resolves.toMatchObject({
+						eventsAttended: [testEventId.toHexString()],
+					});
 
 					const eventAfter = await models.Events.findOne({ _id: testEventId });
 					const userAfter1 = await models.Hackers.findOne({ _id: testHackerId });
@@ -560,12 +489,76 @@ describe('Test event model', () => {
 						await expect(eventAfter.attendees).toEqual([]);
 						await expect(eventAfter.checkins.length).toEqual(2);
 
-						// Check eventsAttended aren't altered
-						await expect(userAfter1.eventsAttended).toEqual([testEventId.toHexString()]);
-						await expect(userAfter2.eventsAttended).toEqual([testEventId.toHexString()]);
+						// Check eventsAttended is altered
+						await expect(userAfter1.eventsAttended).toEqual([]);
+						await expect(userAfter2.eventsAttended).toEqual([]);
 					} else throw new MongoError('Could not find event');
 				});
 			});
+		});
+	});
+	describe('userIsAttendingEvent', () => {
+		beforeEach(async () => {
+			try {
+				await expect(
+					checkInUserToEvent(testHackerId.toHexString(), testEventId.toHexString(), models)
+				).resolves.toMatchObject({
+					_id: testHackerId,
+					eventsAttended: [testEventId.toHexString()],
+				});
+			} catch (err) {
+				// eslint-disable-next-line no-console
+				console.error(err);
+			}
+		});
+		afterEach(async () => {
+			await expect(
+				removeUserFromEvent(testHackerId.toHexString(), testEventId.toHexString(), models)
+			).resolves.toMatchObject({
+				eventsAttended: [testEventId.toHexString()],
+			});
+		});
+		it('check user in event', async () => {
+			await expect(
+				userIsAttendingEvent(testHackerId.toHexString(), testEventId.toHexString(), models)
+			).resolves.toEqual(true);
+		});
+		it('check user not in evFent', async () => {
+			await expect(
+				userIsAttendingEvent(testHackerId2.toHexString(), testEventId.toHexString(), models)
+			).resolves.toEqual(false);
+		});
+	});
+	describe('shouldWarnRepeatedCheckIn', () => {
+		beforeEach(async () => {
+			try {
+				await expect(
+					checkInUserToEvent(testHackerId.toHexString(), testEventId.toHexString(), models)
+				).resolves.toMatchObject({
+					_id: testHackerId,
+					eventsAttended: [testEventId.toHexString()],
+				});
+			} catch (err) {
+				// eslint-disable-next-line no-console
+				console.error(err);
+			}
+		});
+		afterEach(async () => {
+			await expect(
+				removeUserFromEvent(testHackerId.toHexString(), testEventId.toHexString(), models)
+			).resolves.toMatchObject({
+				eventsAttended: [testEventId.toHexString()],
+			});
+		});
+		it('check event should warn', async () => {
+			await expect(
+				shouldWarnRepeatedCheckIn(testHackerId.toHexString(), testEventId.toHexString(), models)
+			).resolves.toEqual(true);
+		});
+		it('check user not in event', async () => {
+			await expect(
+				userIsAttendingEvent(testHackerId2.toHexString(), testEventId.toHexString(), models)
+			).resolves.toEqual(false);
 		});
 	});
 });

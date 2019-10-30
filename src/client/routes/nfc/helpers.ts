@@ -1,3 +1,4 @@
+import { toast, cssTransition } from 'react-toastify';
 import {
 	QueriedEvent,
 	QueriedHacker,
@@ -44,66 +45,99 @@ export const createSubmitHandler = (
 	removeFunction: RemoveUserFromEventMutationFn,
 	markAttendedByNfcFunction: CheckInUserToEventByNfcMutationFn,
 	removeByNfcFunction: RemoveUserFromEventByNfcMutationFn
-) => (nfc: string, user: string, event: QueriedEvent, unadmit: boolean): boolean => {
+) => async (nfc: string, user: string, event: QueriedEvent, unadmit: boolean): Promise<boolean> => {
 	console.log([nfc, user, event, unadmit]);
-	if (event.eventType === CHECK_IN_EVENT_TYPE) {
-		if (nfc.length < NFC_CODE_MIN_LENGTH) {
-			return false;
+	let toastMsg = '';
+	try {
+		if (event.eventType === CHECK_IN_EVENT_TYPE) {
+			if (nfc.length < NFC_CODE_MIN_LENGTH) {
+				return false;
+			}
+
+			const { data } = await registerFunction({
+				variables: {
+					input: {
+						nfcid: nfc,
+						user,
+					},
+				},
+			});
+
+			if (data)
+				toastMsg = `${data.registerNFCUIDWithUser.firstName} ${data.registerNFCUIDWithUser.lastName} registered`;
+		} else {
+			if (user.length) {
+				if (unadmit) {
+					const { data } = await removeFunction({
+						variables: {
+							input: {
+								event: event.id,
+								user,
+							},
+						},
+					});
+					if (data)
+						toastMsg = `${data.removeUserFromEvent.firstName} ${data.removeUserFromEvent.lastName} removed`;
+				} else {
+					const { data } = await markAttendedFunction({
+						variables: {
+							input: {
+								event: event.id,
+								user,
+							},
+						},
+					});
+
+					if (data)
+						toastMsg = `${data.checkInUserToEvent.firstName} ${data.checkInUserToEvent.lastName} checked in`;
+				}
+			}
+			if (nfc.length > NFC_CODE_MIN_LENGTH) {
+				if (unadmit) {
+					const { data } = await removeByNfcFunction({
+						variables: {
+							input: {
+								event: event.id,
+								nfcId: nfc,
+							},
+						},
+					});
+					if (data)
+						toastMsg = `${data.removeUserFromEventByNfc.firstName} ${data.removeUserFromEventByNfc.lastName} removed`;
+				} else {
+					const { data } = await markAttendedByNfcFunction({
+						variables: {
+							input: {
+								event: event.id,
+								nfcId: nfc,
+							},
+						},
+					});
+
+					if (data)
+						toastMsg = `${data.checkInUserToEventByNfc.firstName} ${data.checkInUserToEventByNfc.lastName} checked in`;
+				}
+			}
 		}
 
-		registerFunction({
-			variables: {
-				input: {
-					nfcid: nfc,
-					user,
-				},
-			},
+		if (!toastMsg) throw new Error(`No user found`);
+
+		toast.dismiss();
+		toast.success(toastMsg, {
+			autoClose: 2000,
+			hideProgressBar: true,
+			position: 'bottom-center',
+			transition: cssTransition({ enter: 'none', exit: 'none', duration: 0 }),
 		});
 		return true;
+	} catch (err) {
+		toast.dismiss();
+		toast.error(err.message, {
+			autoClose: 3000,
+			position: 'bottom-center',
+			transition: cssTransition({ enter: 'none', exit: 'none', duration: 0 }),
+		});
 	}
-	if (user.length) {
-		if (unadmit) {
-			removeFunction({
-				variables: {
-					input: {
-						event: event.id,
-						user,
-					},
-				},
-			});
-		} else {
-			markAttendedFunction({
-				variables: {
-					input: {
-						event: event.id,
-						user,
-					},
-				},
-			});
-		}
-		return true;
-	}
-	if (nfc.length > NFC_CODE_MIN_LENGTH) {
-		if (unadmit) {
-			removeByNfcFunction({
-				variables: {
-					input: {
-						event: event.id,
-						nfcId: nfc,
-					},
-				},
-			});
-		} else {
-			markAttendedByNfcFunction({
-				variables: {
-					input: {
-						event: event.id,
-						nfcId: nfc,
-					},
-				},
-			});
-		}
-		return true;
-	}
+
 	return false;
 };
