@@ -1,15 +1,9 @@
 import React from 'react';
-import { SponsorPage } from '../routes/manageSponsor/CreateSponsor';
 import { Application } from '../routes/application/Application';
 import { HackerDash } from '../routes/dashboard/HackerDash';
-import { SponsorDash } from '../routes/dashboard/SponsorDash';
-import { ManageHackers } from '../routes/manage/ManageHackers';
-import ManageEvents from '../routes/events/ManageEvents';
-import { SponsorHackerView } from '../routes/manage/SponsorHackerView';
 // import { Team } from '../routes/team/Team';
 // import { Profile } from '../routes/profile/Profile';
 import { Help } from '../routes/help/Help';
-import { Nfc } from '../routes/nfc/Nfc';
 import { UserType } from '../generated/graphql';
 
 const routes = [
@@ -33,7 +27,7 @@ const routes = [
 	// },
 	{
 		authLevel: [UserType.Sponsor],
-		component: SponsorDash,
+		component: React.lazy(() => import('../routes/dashboard/SponsorDash')),
 		displayText: 'Dashboard',
 		path: '/dashboard',
 	},
@@ -51,25 +45,25 @@ const routes = [
 	// },
 	{
 		authLevel: [UserType.Organizer],
-		component: ManageHackers,
+		component: React.lazy(() => import('../routes/manage/ManageHackers')),
 		displayText: 'Manage Hackers',
 		path: '/manage/hackers',
 	},
 	{
 		authLevel: [UserType.Organizer],
-		component: ManageEvents,
+		component: React.lazy(() => import('../routes/events/ManageEvents')),
 		displayText: 'Manage Events',
 		path: '/manage/events',
 	},
 	{
 		authLevel: [UserType.Sponsor],
-		component: SponsorHackerView,
+		component: React.lazy(() => import('../routes/manage/SponsorHackerView')),
 		displayText: 'View Hackers',
 		path: '/view/hackers',
 	},
 	{
 		authLevel: [UserType.Organizer],
-		component: SponsorPage,
+		component: React.lazy(() => import('../routes/manageSponsor/CreateSponsor')),
 		displayText: 'Manage Sponsors',
 		path: '/manage/sponsors',
 	},
@@ -81,7 +75,7 @@ const routes = [
 	},
 	{
 		authLevel: [UserType.Organizer, UserType.Volunteer, UserType.Sponsor],
-		component: Nfc,
+		component: React.lazy(() => import('../routes/nfc/Nfc')),
 		displayText: 'Scan NFC',
 		path: '/nfc',
 	},
