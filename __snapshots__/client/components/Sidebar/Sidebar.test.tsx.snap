@@ -2,13 +2,13 @@
 
 exports[`Test Sidebar Sidebar renders correctly 1`] = `
 <div
-  className="sc-feJyhm hgExDA sidebar"
+  className="sc-iELTvK hWGXaO sidebar"
 >
   <div
-    className="sc-iELTvK dFUhoB"
+    className="sc-cmTdod kSVJoC"
   >
     <div
-      className="sc-cmTdod eJVJDi"
+      className="sc-jwKygS caeNgu"
     >
       <img
         alt="VH graphic"
@@ -16,27 +16,27 @@ exports[`Test Sidebar Sidebar renders correctly 1`] = `
       />
     </div>
     <hr
-      className="sc-jwKygS hHBsfb"
+      className="sc-btzYZH RxxFl"
     />
     <div
       className="sc-bdVaJa sc-bwzfXH sc-bZQynM jxTPlc"
       height="calc(100% - calc(8rem + 160px))"
     >
       <ul
-        className="sc-jtRfpW ewWysQ"
+        className="sc-kTUwUJ iezuKF"
       >
         <li>
           <a
             aria-current={null}
-            className="sc-elJkPf RTwjD"
+            className="sc-jtRfpW ezEpdD"
             href="/dashboard"
             onClick={[Function]}
           >
             <button
-              className="sc-gqjmRU sc-fjdhpX goWjNZ sc-lhVmIH dEeFUB"
+              className="sc-gqjmRU sc-fjdhpX goWjNZ sc-bYSBpT fLMluP"
             >
               <div
-                className="sc-htoDjs sc-dnqmqq caLfPx sc-lhVmIH dEeFUB"
+                className="sc-htoDjs sc-dnqmqq caLfPx sc-bYSBpT fLMluP"
               >
                 Dashboard
               </div>
@@ -46,15 +46,15 @@ exports[`Test Sidebar Sidebar renders correctly 1`] = `
         <li>
           <a
             aria-current={null}
-            className="sc-elJkPf RTwjD"
+            className="sc-jtRfpW ezEpdD"
             href="/application"
             onClick={[Function]}
           >
             <button
-              className="sc-gqjmRU sc-fjdhpX goWjNZ sc-lhVmIH dEeFUB"
+              className="sc-gqjmRU sc-fjdhpX goWjNZ sc-bYSBpT fLMluP"
             >
               <div
-                className="sc-htoDjs sc-dnqmqq caLfPx sc-lhVmIH dEeFUB"
+                className="sc-htoDjs sc-dnqmqq caLfPx sc-bYSBpT fLMluP"
               >
                 Apply
               </div>
@@ -64,15 +64,15 @@ exports[`Test Sidebar Sidebar renders correctly 1`] = `
         <li>
           <a
             aria-current={null}
-            className="sc-elJkPf RTwjD"
+            className="sc-jtRfpW ezEpdD"
             href="/help"
             onClick={[Function]}
           >
             <button
-              className="sc-gqjmRU sc-fjdhpX goWjNZ sc-lhVmIH dEeFUB"
+              className="sc-gqjmRU sc-fjdhpX goWjNZ sc-bYSBpT fLMluP"
             >
               <div
-                className="sc-htoDjs sc-dnqmqq caLfPx sc-lhVmIH dEeFUB"
+                className="sc-htoDjs sc-dnqmqq caLfPx sc-bYSBpT fLMluP"
               >
                 Help
               </div>
@@ -85,21 +85,21 @@ exports[`Test Sidebar Sidebar renders correctly 1`] = `
         height="min-content"
       >
         <a
-          className="sc-bYSBpT cYkqtx"
+          className="sc-elJkPf RTwjD"
           href="/api/logout"
         >
           <button
-            className="sc-gqjmRU sc-fjdhpX goWjNZ sc-lhVmIH dEeFUB"
+            className="sc-gqjmRU sc-fjdhpX goWjNZ sc-bYSBpT fLMluP"
           >
             <div
-              className="sc-htoDjs sc-dnqmqq caLfPx sc-lhVmIH dEeFUB"
+              className="sc-htoDjs sc-dnqmqq caLfPx sc-bYSBpT fLMluP"
             >
               Logout
             </div>
           </button>
         </a>
         <hr
-          className="sc-jwKygS sc-btzYZH cIhNbT"
+          className="sc-btzYZH sc-lhVmIH kOhvul"
         />
         <h1
           className="sc-jzJRlG hdnVAr"

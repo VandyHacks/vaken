@@ -1,8 +1,20 @@
 import { ObjectId, MongoError } from 'mongodb';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { HackerDbObject, EventDbObject, EventUpdateInput } from '../generated/graphql';
+import {
+	HackerDbObject,
+	EventDbObject,
+	EventUpdateInput,
+	CompanyDbObject,
+	TierDbObject,
+} from '../generated/graphql';
 import DB, { Models } from '../models';
-import { pullCalendar, transformCalEventToDBUpdate, addOrUpdateEvent } from '.';
+import {
+	pullCalendar,
+	transformCalEventToDBUpdate,
+	addOrUpdateEvent,
+	checkIdentityForEvent,
+	assignEventToCompany,
+} from '.';
 import { EventUpdate } from '../../client/routes/events/ManageEventTypes';
 
 let mongoServer: MongoMemoryServer;
@@ -30,6 +42,14 @@ const testEvent = ({
 	startTimestamp: new Date('2019-09-06T03:41:33.714+00:00'),
 	warnRepeatedCheckins: true,
 } as unknown) as EventDbObject;
+
+const testCompanyId = new ObjectId();
+const testCompany = ({
+	_id: testCompanyId,
+	name: 'test company',
+	tier: { _id: new ObjectId(), name: 'tier', permissions: ['none'] } as TierDbObject,
+	eventsOwned: [],
+} as unknown) as CompanyDbObject;
 
 const badEventObj: Record<string, string> = {
 	summary: 'summary',
@@ -106,6 +126,7 @@ beforeAll(async () => {
 		models = await dbClient.collections;
 		await models.Hackers.insertOne(testHacker);
 		await models.Events.insertOne(testEvent);
+		await models.Companies.insertOne(testCompany);
 	} catch (err) {
 		// eslint-disable-next-line no-console
 		console.error(err);
@@ -297,5 +318,96 @@ describe('Test events updating', () => {
 				});
 			});
 		});
+	});
+	describe('checkIdentityForEvent', () => {
+		afterAll(async () => {
+			try {
+				const ret = await models.Events.findOneAndUpdate(
+					{ _id: testEventId },
+					{
+						$set: {
+							owner: null,
+						},
+					}
+				);
+				if (!ret.value) throw new MongoError("Can't set attendees");
+			} catch (err) {
+				// eslint-disable-next-line no-console
+				console.error(err);
+			}
+		});
+		describe('catch error', () => {
+			beforeEach(async () => {
+				try {
+					models.Companies.deleteOne({ _id: testCompanyId });
+				} catch (err) {
+					// eslint-disable-next-line no-console
+					console.error(err);
+				}
+			});
+			afterAll(async () => {
+				try {
+					models.Companies.insertOne(testCompany);
+				} catch (err) {
+					// eslint-disable-next-line no-console
+					console.error(err);
+				}
+			});
+			it('Throws error on non-existent company', async () => {
+				try {
+					await checkIdentityForEvent(
+						testEventId.toHexString(),
+						testCompanyId.toHexString(),
+						models
+					);
+				} catch (err) {
+					expect(err.message).toEqual('Company not found in database');
+				}
+			});
+		});
+
+		it('Return false on non-associated event', async () => {
+			await expect(
+				checkIdentityForEvent(testEventId.toHexString(), testCompanyId.toHexString(), models)
+			).resolves.toEqual(false);
+		});
+		describe('check for true helper', () => {
+			beforeEach(async () => {
+				try {
+					const ret = await models.Events.findOneAndUpdate(
+						{ _id: testEventId },
+						{
+							$set: {
+								owner: testCompany,
+							},
+						}
+					);
+					if (!ret.value) throw new MongoError("Can't set attendees");
+				} catch (err) {
+					// eslint-disable-next-line no-console
+					console.error(err);
+				}
+			});
+			it('Returns true on associated event', async () => {
+				await expect(
+					checkIdentityForEvent(testEventId.toHexString(), testCompanyId.toHexString(), models)
+				).resolves.toEqual(true);
+			});
+		});
+	});
+	describe('assignEventToCompany', () => {
+		it('Sponsor-event association works in the best case', async () => {
+			await assignEventToCompany(testEventId.toHexString(), testCompanyId.toHexString(), models);
+			const companyAfter = await models.Companies.findOne({ _id: testCompanyId });
+			const eventAfter = await models.Events.findOne({ _id: testEventId });
+			if (companyAfter && eventAfter) {
+				expect(companyAfter.eventsOwned).toContain(testEventId.toHexString());
+				if (eventAfter.owner)
+					expect(eventAfter.owner._id.toHexString()).toEqual(testCompanyId.toHexString());
+				else throw new Error('Event not associated with owner');
+			} else throw new Error('Updated company or event not found');
+		});
+
+		// TODO: Additional testing for error throwing
 	});
 });
