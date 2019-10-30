@@ -21,8 +21,8 @@ export async function userIsAttendingEvent(
 	models: Models
 ): Promise<boolean> {
 	const userObjectID = new ObjectID(userID);
-	const user = await models.Hackers.findOne({ _id: userObjectID, eventsAttended: eventID });
-	return !!user;
+	const user = await models.Hackers.findOne({ _id: userObjectID });
+	return user !== null && user.eventsAttended && user.eventsAttended.includes(eventID);
 }
 
 export async function shouldWarnRepeatedCheckIn(
