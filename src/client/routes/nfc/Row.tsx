@@ -1,25 +1,14 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import { createSelectable } from 'react-selectable-fast';
-import { TableRowProps } from 'react-virtualized';
+import { TableRowRenderer, defaultTableRowRenderer } from 'react-virtualized';
 
-interface Props extends TableRowProps {
-	selectableRef: string;
-	selected: boolean;
-	selecting: boolean;
-}
+export const Row: TableRowRenderer = (props): React.ReactNode => {
+	const { rowData } = props;
 
-export const Row: FunctionComponent<Props> = (props: Props): JSX.Element => {
-	const { className, columns, style, selectableRef, selected } = props;
-
-	return (
-		<div
-			key={columns[2].props.title}
-			className={`${className} ${selected && 'selected'}`}
-			style={style}
-			ref={selectableRef}>
-			{columns}
-		</div>
-	);
+	return defaultTableRowRenderer({
+		...props,
+		key: rowData.id,
+	});
 };
 
 export default createSelectable(Row);

@@ -1,8 +1,9 @@
 import React, { useContext, useState, useEffect, FC } from 'react';
-import { AutoSizer, SortDirection } from 'react-virtualized';
+import { AutoSizer, SortDirection, RowMouseEventHandlerParams } from 'react-virtualized';
 import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import Select from 'react-select';
+import Fuse from 'fuse.js';
 import { HeaderButton } from '../../components/Buttons/HeaderButton';
 import {
 	generateRowClassName,
@@ -13,7 +14,7 @@ import {
 
 import { ToggleSwitch } from '../../components/Buttons/ToggleSwitch';
 import { SearchBox } from '../../components/Input/SearchBox';
-import { TableCtxI, TableContext } from '../../contexts/TableContext';
+import { TableCtxI, TableContext, fuseOpts } from '../../contexts/TableContext';
 import {
 	useRegisterNfcuidWithUserMutation,
 	useCheckInUserToEventMutation,
@@ -100,6 +101,16 @@ const onSortColumnChange = (ctx: TableCtxI): ((p: SortFnProps) => void) => {
 	};
 };
 
+const onRowClick = (
+	setTopUserMatch: React.Dispatch<React.SetStateAction<string>>
+): ((p: RowMouseEventHandlerParams) => void) => {
+	console.info('generating fn');
+	return ({ rowData }) => {
+		console.info('inside fun');
+		if (rowData && rowData.id) setTopUserMatch(rowData.id);
+	};
+};
+
 interface NfcTableProps {
 	hackersData: QueriedHacker[];
 	eventsData: QueriedEvent[];
@@ -143,7 +154,12 @@ const NfcTable: FC<NfcTableProps> = ({ hackersData, eventsData }: NfcTableProps)
 		let newData = [...hackersData];
 
 		if (searchValue.trim() !== '') {
-			newData = newData.filter(createMatchCriteria(searchValue)).slice(0, 5);
+			newData = new Fuse(newData, {
+				keys: ['email', 'firstName', 'lastName', 'school'] as (keyof QueriedHacker)[],
+				...fuseOpts,
+			})
+				.search(searchValue)
+				.slice(0, 5);
 		}
 
 		// Sort data based on props and context
@@ -271,8 +287,9 @@ const NfcTable: FC<NfcTableProps> = ({ hackersData, eventsData }: NfcTableProps)
 								height={height}
 								sortedData={sortedData}
 								onSortColumnChange={onSortColumnChange}
-								generateRowClassName={generateRowClassName}
+								generateRowClassName={generateRowClassName(sortedData, topUserMatch)}
 								table={table}
+								rowClickFn={onRowClick(settopUserMatch)}
 							/>
 						)}
 					</AutoSizer>

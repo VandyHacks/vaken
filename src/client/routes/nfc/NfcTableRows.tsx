@@ -7,6 +7,7 @@ import {
 	TableHeaderProps,
 	TableRowProps,
 	Index,
+	RowMouseEventHandlerParams,
 } from 'react-virtualized';
 import styled from 'styled-components';
 
@@ -25,6 +26,10 @@ const StyledTable = styled(Table)`
 		}
 
 		overflow: hidden;
+	}
+
+	.ReactVirtualized__Table__row:focus {
+		outline: none;
 	}
 
 	.headerRow {
@@ -73,13 +78,6 @@ const renderHeaderAsLabel = ({
 	);
 };
 
-// wrapper to use createSelectable() from react-selectable-fast
-const rowRenderer = (
-	props: TableRowProps & { selectableRef: string; selected: boolean; selecting: boolean }
-): JSX.Element => {
-	return <Row {...props} />;
-};
-
 interface NfcTableRowsProps {
 	generateRowClassName: Function;
 	height: number;
@@ -87,6 +85,7 @@ interface NfcTableRowsProps {
 	sortedData: unknown[];
 	table: TableCtxI;
 	width: number;
+	rowClickFn: (p: RowMouseEventHandlerParams) => void;
 }
 
 export const NfcTableRows = ({
@@ -96,6 +95,7 @@ export const NfcTableRows = ({
 	onSortColumnChange,
 	generateRowClassName,
 	table,
+	rowClickFn,
 }: NfcTableRowsProps): JSX.Element => (
 	<StyledTable
 		width={width}
@@ -105,7 +105,8 @@ export const NfcTableRows = ({
 		rowCount={sortedData.length}
 		rowClassName={generateRowClassName}
 		rowGetter={({ index }: Index) => sortedData[index]}
-		rowRenderer={rowRenderer}
+		rowRenderer={Row}
+		onRowClick={rowClickFn}
 		headerClassName="ignore-select"
 		sort={onSortColumnChange(table)}
 		{...table.state}>
