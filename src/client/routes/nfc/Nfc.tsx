@@ -32,10 +32,17 @@ export const Nfc: FunctionComponent = (): JSX.Element => {
 		console.log(eventsError);
 		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 	}
+
+	const now = Date.now();
+	const eventsCurrent = eventsData.events.filter(e => {
+		const delta = (now - e.startTimestamp) / (1000 * 60); // Time diff in minutes
+		return delta >= 0 && delta <= e.duration;
+	});
+
 	return (
 		<FloatingPopup borderRadius="1rem" height="100%" backgroundOpacity="1" padding="1.5rem">
 			<TableContext.Provider value={{ state: tableState, update: updateTableState }}>
-				<NfcTable hackersData={hackersData.hackers} eventsData={eventsData.events} />
+				<NfcTable hackersData={hackersData.hackers} eventsData={eventsCurrent} />
 			</TableContext.Provider>
 		</FloatingPopup>
 	);
