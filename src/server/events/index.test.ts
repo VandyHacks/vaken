@@ -355,11 +355,7 @@ describe('Test events updating', () => {
 			});
 			it('Throws error on non-existent company', async () => {
 				try {
-					await checkIdentityForEvent(
-						testEventId.toHexString(),
-						testCompanyId.toHexString(),
-						models
-					);
+					await checkIdentityForEvent(testEventId.toHexString(), testCompanyId, models);
 				} catch (err) {
 					expect(err.message).toEqual('Company not found in database');
 				}
@@ -368,7 +364,7 @@ describe('Test events updating', () => {
 
 		it('Return false on non-associated event', async () => {
 			await expect(
-				checkIdentityForEvent(testEventId.toHexString(), testCompanyId.toHexString(), models)
+				checkIdentityForEvent(testEventId.toHexString(), testCompanyId, models)
 			).resolves.toEqual(false);
 		});
 		describe('check for true helper', () => {
@@ -390,7 +386,7 @@ describe('Test events updating', () => {
 			});
 			it('Returns true on associated event', async () => {
 				await expect(
-					checkIdentityForEvent(testEventId.toHexString(), testCompanyId.toHexString(), models)
+					checkIdentityForEvent(testEventId.toHexString(), testCompanyId, models)
 				).resolves.toEqual(true);
 			});
 		});
