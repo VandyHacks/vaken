@@ -10,13 +10,44 @@ import STRINGS from '../../assets/strings.json';
 import { HackerView } from './HackerView';
 import HackerTable from './HackerTable';
 import { defaultTableState, TableContext } from '../../contexts/TableContext';
-import { useHackersQuery, useEventsQuery, HackersQuery, Hacker } from '../../generated/graphql';
+import {
+	useHackersQuery,
+	useEventsQuery,
+	useMeSponsorQuery,
+	Hacker,
+	Sponsor,
+} from '../../generated/graphql';
 
 export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 	const { loading, error, data } = useHackersQuery();
 	const [tableState, updateTableState] = useImmer(defaultTableState);
 	const [eventIds, setEventIds] = useState([] as string[]);
 	const [filteredData, setFilteredData] = useState();
+	const sponsorMeQueryResult = useMeSponsorQuery();
+	const sponsorLoading = sponsorMeQueryResult.loading;
+	const sponsorError = sponsorMeQueryResult.error;
+	let sponsorData: Sponsor;
+	let viewHackerTable = false;
+	let viewResumes = false;
+
+	if (!sponsorLoading && sponsorMeQueryResult.data && sponsorMeQueryResult.data.me) {
+		sponsorData = sponsorMeQueryResult.data.me as Sponsor;
+
+		if (
+			!sponsorLoading &&
+			sponsorData &&
+			sponsorData.company &&
+			sponsorData.company.tier &&
+			sponsorData.company.tier.permissions
+		) {
+			viewHackerTable = sponsorData.company.tier.permissions.includes(
+				STRINGS.PERMISSIONS_HACKER_TABLE
+			);
+			viewResumes = sponsorData.company.tier.permissions.includes(STRINGS.PERMISSIONS_RESUME);
+		}
+	}
+
+	if (sponsorError) console.log(sponsorError);
 
 	useEffect(() => {
 		setFilteredData(data);
@@ -60,38 +91,49 @@ export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 	};
 
 	return (
-		<FloatingPopup borderRadius="1rem" height="100%" backgroundOpacity="1" padding="1.5rem">
-			<TableContext.Provider value={{ state: tableState, update: updateTableState }}>
-				{!eventLoading && (
-					<Select
-						isMulti
-						styles={customStyles}
-						options={options}
-						onChange={selected => {
-							if (!selected) setEventIds([]);
-							else
-								setEventIds(
-									(selected as Record<string, string>[]).map((s: Record<string, string>) => s.value)
-								);
-						}}
-					/>
-				)}
-				<Switch>
-					<Route path="/view/hackers/detail/:id" component={HackerView} />
-					<Route
-						path="/view/hackers"
-						render={() => {
-							if (loading || !data || !filteredData) return <Spinner />;
-							if (error) {
-								console.log(error);
-								return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
-							}
-							return <HackerTable data={filteredData.hackers} />;
-						}}
-					/>
-				</Switch>
-			</TableContext.Provider>
-		</FloatingPopup>
+		<>
+			{!sponsorLoading && viewHackerTable && (
+				<FloatingPopup borderRadius="1rem" height="100%" backgroundOpacity="1" padding="1.5rem">
+					<TableContext.Provider value={{ state: tableState, update: updateTableState }}>
+						{!eventLoading && (
+							<Select
+								isMulti
+								styles={customStyles}
+								options={options}
+								onChange={selected => {
+									if (!selected) setEventIds([]);
+									else
+										setEventIds(
+											(selected as Record<string, string>[]).map(
+												(s: Record<string, string>) => s.value
+											)
+										);
+								}}
+							/>
+						)}
+						<Switch>
+							<Route path="/view/hackers/detail/:id" component={HackerView} />
+							<Route
+								path="/view/hackers"
+								render={() => {
+									if (loading || !data || !filteredData) return <Spinner />;
+									if (error) {
+										console.log(error);
+										return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
+									}
+									return <HackerTable data={filteredData.hackers} />;
+								}}
+							/>
+						</Switch>
+					</TableContext.Provider>
+				</FloatingPopup>
+			)}
+			{!sponsorLoading && !viewHackerTable && (
+				<div>
+					<p>You dont have permissions to view the table</p>
+				</div>
+			)}
+		</>
 	);
 };
 
