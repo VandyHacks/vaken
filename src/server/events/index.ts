@@ -1,7 +1,7 @@
 import ical, { CalendarResponse, CalendarComponent, VEvent } from 'node-ical';
 import { AuthenticationError, UserInputError } from 'apollo-server-express';
 import { ObjectID } from 'mongodb';
-import { EventUpdateInput, EventDbObject } from '../generated/graphql';
+import { EventUpdateInput, EventDbObject, CompanyDbObject } from '../generated/graphql';
 import { Models } from '../models';
 import { EventUpdate } from '../../client/routes/events/ManageEventTypes';
 
@@ -145,6 +145,27 @@ export async function checkIdentityForEvent(
 	return eventIDs.some(id => id.equals(eventID));
 }
 
+async function unassignEventFromCompany(
+	eventID: string,
+	models: Models
+): Promise<CompanyDbObject | null> {
+	const owningCompany = await models.Companies.findOne({ eventsOwned: eventID });
+	if (owningCompany) {
+		const companyRet = await models.Companies.updateOne(
+			{ _id: owningCompany._id },
+			{
+				$pull: {
+					eventsOwned: eventID,
+				},
+			}
+		);
+		if (!companyRet.result.ok)
+			throw new Error(`Could not remove event from company ${owningCompany._id.toHexString()}`);
+		return owningCompany;
+	}
+	return null;
+}
+
 export async function assignEventToCompany(
 	eventID: string,
 	companyID: string,
@@ -166,6 +187,7 @@ export async function assignEventToCompany(
 		);
 		if (!eventRet.ok || !eventRet.value)
 			throw new Error(`Assigning event ${eventID} to company ${companyID} unsuccessful`);
+		await unassignEventFromCompany(eventID, models);
 		const companyRet = await models.Companies.findOneAndUpdate(
 			{ _id: companyObjID },
 			{
