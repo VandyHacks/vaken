@@ -47,8 +47,6 @@ export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 		}
 	}
 
-	if (sponsorError) console.log(sponsorError);
-
 	useEffect(() => {
 		setFilteredData(data);
 	}, [data]);
@@ -90,49 +88,51 @@ export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 		}),
 	};
 
+	if (sponsorError) {
+		console.log(sponsorError);
+		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
+	}
+
+	if (!sponsorLoading && !viewHackerTable) {
+		return <p>You dont have permissions to view hacker information</p>;
+	}
+
 	return (
 		<>
-			{!sponsorLoading && viewHackerTable && (
-				<FloatingPopup borderRadius="1rem" height="100%" backgroundOpacity="1" padding="1.5rem">
-					<TableContext.Provider value={{ state: tableState, update: updateTableState }}>
-						{!eventLoading && (
-							<Select
-								isMulti
-								styles={customStyles}
-								options={options}
-								onChange={selected => {
-									if (!selected) setEventIds([]);
-									else
-										setEventIds(
-											(selected as Record<string, string>[]).map(
-												(s: Record<string, string>) => s.value
-											)
-										);
-								}}
-							/>
-						)}
-						<Switch>
-							<Route path="/view/hackers/detail/:id" component={HackerView} />
-							<Route
-								path="/view/hackers"
-								render={() => {
-									if (loading || !data || !filteredData) return <Spinner />;
-									if (error) {
-										console.log(error);
-										return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
-									}
-									return <HackerTable data={filteredData.hackers} />;
-								}}
-							/>
-						</Switch>
-					</TableContext.Provider>
-				</FloatingPopup>
-			)}
-			{!sponsorLoading && !viewHackerTable && (
-				<div>
-					<p>You dont have permissions to view the table</p>
-				</div>
-			)}
+			<FloatingPopup borderRadius="1rem" height="100%" backgroundOpacity="1" padding="1.5rem">
+				<TableContext.Provider value={{ state: tableState, update: updateTableState }}>
+					{!eventLoading && (
+						<Select
+							isMulti
+							styles={customStyles}
+							options={options}
+							onChange={selected => {
+								if (!selected) setEventIds([]);
+								else
+									setEventIds(
+										(selected as Record<string, string>[]).map(
+											(s: Record<string, string>) => s.value
+										)
+									);
+							}}
+						/>
+					)}
+					<Switch>
+						<Route path="/view/hackers/detail/:id" component={HackerView} />
+						<Route
+							path="/view/hackers"
+							render={() => {
+								if (loading || !data || !filteredData) return <Spinner />;
+								if (error) {
+									console.log(error);
+									return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
+								}
+								return <HackerTable data={filteredData.hackers} />;
+							}}
+						/>
+					</Switch>
+				</TableContext.Provider>
+			</FloatingPopup>
 		</>
 	);
 };
