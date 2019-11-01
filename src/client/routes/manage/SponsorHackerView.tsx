@@ -1,5 +1,4 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
-import Select from 'react-select';
 import { Route, Switch } from 'react-router-dom';
 import { useImmer } from 'use-immer';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
@@ -9,18 +8,11 @@ import STRINGS from '../../assets/strings.json';
 import { HackerView } from './HackerView';
 import HackerTable from './HackerTable';
 import { defaultTableState, TableContext } from '../../contexts/TableContext';
-import {
-	useHackersQuery,
-	useEventsQuery,
-	useMeSponsorQuery,
-	Hacker,
-	Sponsor,
-} from '../../generated/graphql';
+import { useHackersQuery, useMeSponsorQuery, Sponsor } from '../../generated/graphql';
 
 export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 	const { loading, error, data } = useHackersQuery();
 	const [tableState, updateTableState] = useImmer(defaultTableState);
-	const [eventIds, setEventIds] = useState([] as string[]);
 	const [filteredData, setFilteredData] = useState();
 	const sponsorMeQueryResult = useMeSponsorQuery();
 	const sponsorLoading = sponsorMeQueryResult.loading;
@@ -50,31 +42,6 @@ export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 		setFilteredData(data);
 	}, [data]);
 
-	useEffect(() => {
-		if (loading || !data) return;
-		const tmpData: { hackers: Partial<Hacker>[] } = { hackers: [...data.hackers] };
-
-		if (tmpData && tmpData.hackers) {
-			if (eventIds && eventIds.length > 0) {
-				tmpData.hackers = tmpData.hackers.filter(
-					(hacker: Partial<Hacker>) =>
-						hacker &&
-						hacker.eventsAttended &&
-						hacker.eventsAttended.some(eventId => eventIds.includes(eventId))
-				);
-			}
-			setFilteredData(tmpData);
-		}
-	}, [data, eventIds, loading]);
-
-	const { data: eventData, loading: eventLoading, error: eventError } = useEventsQuery();
-	if (eventError) console.error(eventError);
-
-	let options: Record<string, string>[] = [];
-	if (eventData && eventData.events) {
-		options = eventData.events.map(e => ({ label: e.name, value: e.id.toString() }));
-	}
-
 	if (sponsorError) {
 		console.log(sponsorError);
 		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
@@ -88,24 +55,6 @@ export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 		<>
 			<FloatingPopup borderRadius="1rem" height="100%" backgroundOpacity="1" padding="1.5rem">
 				<TableContext.Provider value={{ state: tableState, update: updateTableState }}>
-					{!eventLoading && (
-						<>
-							<span>Select Events to Filter By</span>
-							<Select
-								isMulti
-								options={options}
-								onChange={selected => {
-									if (!selected) setEventIds([]);
-									else
-										setEventIds(
-											(selected as Record<string, string>[]).map(
-												(s: Record<string, string>) => s.value
-											)
-										);
-								}}
-							/>
-						</>
-					)}
 					<Switch>
 						<Route path="/view/hackers/detail/:id" component={HackerView} />
 						<Route
