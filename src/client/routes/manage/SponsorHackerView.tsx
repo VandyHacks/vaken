@@ -47,7 +47,7 @@ export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 	}
 
-	if (!sponsorLoading && !viewHackerTable) {
+	if (false && !viewHackerTable) { // TODO: FIX
 		return <p>You dont have permissions to view hacker information</p>;
 	}
 
