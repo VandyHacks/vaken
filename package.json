@@ -119,7 +119,7 @@
 		"react-virtualized": "^9.21.1",
 		"styled-components": "^4.4.0",
 		"styled-reset": "^4.0.2",
-		"use-immer": "^0.3.4",
+		"use-immer": "^0.3.5",
 		"webpack-cli": "^3.3.9",
 		"webpack-subresource-integrity": "^1.3.4"
 	},
