@@ -27,7 +27,7 @@ import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser, getUse
 import { addOrUpdateEvent, assignEventToCompany } from '../events';
 import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
 import { sendStatusEmail } from '../mail/aws';
-import CONSTANTS from '../../common/constants.json'
+import CONSTANTS from '../../common/constants.json';
 
 // TODO: Cannot import frontend files so this is ugly workaround. Fix this.
 const requiredFields = [
@@ -230,7 +230,7 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ok || !value)
 				throw new UserInputError(
 					`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
-					'(Likely the user already declined/confirmed if no value returned)'
+						'(Likely the user already declined/confirmed if no value returned)'
 				);
 
 			// `confirmMySpot` is an identity function if user is already confirmed and is a
@@ -249,7 +249,7 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ok || !value)
 				throw new UserInputError(
 					`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
-					'(Likely the user already declined/confirmed if no value returned)'
+						'(Likely the user already declined/confirmed if no value returned)'
 				);
 			// no email sent if declined
 			return value;
@@ -397,7 +397,7 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!user) throw new AuthenticationError(`cannot update application: user not logged in`);
 
 			if (Date.now() > CONSTANTS.DEADLINE)
-				throw new Error(`Deadline to submit application has passed.`)
+				throw new Error(`Deadline to submit application has passed.`);
 
 			// TODO(leonm1): Figure out why the _id field isn't actually an ObjectID
 			const id = ObjectID.createFromHexString((user._id as unknown) as string);

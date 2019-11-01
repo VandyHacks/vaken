@@ -5,12 +5,7 @@ import styled from 'styled-components';
 import Select from 'react-select';
 import Fuse from 'fuse.js';
 import { HeaderButton } from '../../components/Buttons/HeaderButton';
-import {
-	generateRowClassName,
-	createMatchCriteria,
-	createSubmitHandler,
-	CHECK_IN_EVENT_TYPE,
-} from './helpers';
+import { generateRowClassName, createSubmitHandler, CHECK_IN_EVENT_TYPE } from './helpers';
 
 import { ToggleSwitch } from '../../components/Buttons/ToggleSwitch';
 import { SearchBox } from '../../components/Input/SearchBox';
