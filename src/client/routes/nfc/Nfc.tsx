@@ -63,7 +63,7 @@ export const Nfc: FunctionComponent = (): JSX.Element => {
 
 	const now = Date.now();
 	const eventsCurrent = eventsData.events.filter(e => {
-		const TIME_BUFFER = 15; // 15 minutes
+		const TIME_BUFFER = 60; // 60 minutes
 		const delta = (now - e.startTimestamp) / (1000 * 60); // Time diff in minutes
 		return delta >= -1 * TIME_BUFFER && delta <= e.duration + TIME_BUFFER;
 	});
