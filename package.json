@@ -140,7 +140,7 @@
 		"@types/express": "^4.17.1",
 		"@types/express-session": "^1.15.15",
 		"@types/faker": "^4.1.6",
-		"@types/jest": "^24.0.20",
+		"@types/jest": "^24.0.21",
 		"@types/mongodb": "^3.3.6",
 		"@types/node": "^12.11.7",
 		"@types/passport-azure-ad": "^4.0.3",
