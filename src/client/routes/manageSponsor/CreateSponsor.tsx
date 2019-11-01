@@ -130,7 +130,7 @@ const CreateTier: React.FunctionComponent = (): JSX.Element => {
 					width="100%"
 					value={permissions}
 					placeholder="Tier Permissions (nfc, hackertable, resume)"
-					onChange={e => setPermissions([e.target.value])}
+					onChange={e => setPermissions(e.target.value.split(','))}
 					minWidth="15em"
 				/>
 				<HeaderButton width="7em" style={{ display: 'inline' }} onClick={onCreateTier}>
