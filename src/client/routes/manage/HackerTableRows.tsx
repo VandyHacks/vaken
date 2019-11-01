@@ -16,6 +16,7 @@ import { Checkmark } from '../../components/Symbol/Checkmark';
 import { Row } from './Row';
 import { actionRenderer, HackerStatusMutationFn } from './ActionRenderer';
 import { reimbursementHeaderRenderer } from './ReimbursementHeader';
+import { ResumeLink } from './ResumeLink';
 
 import { ApplicationStatus } from '../../generated/graphql';
 import STRINGS from '../../assets/strings.json';
@@ -119,7 +120,7 @@ interface ActionRendererProps {
 }
 function resumeRenderer(updateStatus: HackerStatusMutationFn): FC<ActionRendererProps> {
 	return function ActionRenderer({ rowData: { id, status } }) {
-		return <div>{id}</div>;
+		return <ResumeLink id={id} />;
 	};
 }
 

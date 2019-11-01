@@ -62,8 +62,8 @@ export function actionRenderer(updateStatus: HackerStatusMutationFn): FC<ActionR
 						disable={!enableApplicationStatusSlider(status)}
 					/>
 				) : (
-						<></>
-					)}
+					<></>
+				)}
 				{status && status !== ApplicationStatus.Created && (
 					<Link to={{ pathname: `${window.location.pathname}/detail/${id}` }}>
 						<TableButton>View</TableButton>
