@@ -247,7 +247,6 @@ const HackerTable: FC<HackerTableProps> = ({
 		selectedRowsIds,
 	} = table.state;
 
-
 	const { data: eventData, loading: eventLoading, error: eventError } = useEventsQuery();
 	if (eventError) console.error(eventError);
 
@@ -397,8 +396,8 @@ const HackerTable: FC<HackerTableProps> = ({
 									onClick={onRemoveSearchCriterion(table, index)}
 								/>
 							) : (
-									<div style={{ width: 'calc(10px + 2rem)' }} />
-								)}
+								<div style={{ width: 'calc(10px + 2rem)' }} />
+							)}
 						</FlexRow>
 					))}
 				</FlexColumn>
@@ -443,19 +442,19 @@ const HackerTable: FC<HackerTableProps> = ({
 							{selectAll || hasSelection ? (
 								<DeselectAll ref={deselect}>{SelectAllButton}</DeselectAll>
 							) : (
-									<SelectAll
-										onClick={() =>
-											table.update(draft => {
-												draft.hasSelection = true;
-												draft.selectedRowsIds = sortedData
-													.filter(row => isSelectable(row.status))
-													.map(row => row.id);
-												console.log(draft.selectedRowsIds);
-											})
-										}>
-										{SelectAllButton}
-									</SelectAll>
-								)}
+								<SelectAll
+									onClick={() =>
+										table.update(draft => {
+											draft.hasSelection = true;
+											draft.selectedRowsIds = sortedData
+												.filter(row => isSelectable(row.status))
+												.map(row => row.id);
+											console.log(draft.selectedRowsIds);
+										})
+									}>
+									{SelectAllButton}
+								</SelectAll>
+							)}
 							{hasSelection && (
 								<Float className="ignore-select">
 									<SliderInput
