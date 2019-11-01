@@ -110,7 +110,7 @@
 		"react": "^16.11.0",
 		"react-chartjs-2": "^2.8.0",
 		"react-confetti": "^5.0.1",
-		"react-csv": "^1.1.1",
+		"react-csv": "^1.1.2",
 		"react-dom": "^16.11.0",
 		"react-router-dom": "^5.1.2",
 		"react-select": "^3.0.8",
