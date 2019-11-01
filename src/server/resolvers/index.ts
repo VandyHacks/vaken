@@ -24,7 +24,7 @@ import {
 	checkIsAuthorizedArray,
 } from './helpers';
 import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser, getUser } from '../nfc';
-import { addOrUpdateEvent, assignEventToCompany } from '../events';
+import { addOrUpdateEvent, assignEventToCompany, removeAbsentEvents } from '../events';
 import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
 import { sendStatusEmail } from '../mail/aws';
 import CONSTANTS from '../../common/constants.json';
@@ -376,6 +376,11 @@ export const resolvers: CustomResolvers<Context> = {
 		registerNFCUIDWithUser: async (root, { input }, { models, user }) => {
 			checkIsAuthorized(UserType.Organizer, user);
 			return registerNFCUIDWithUser(input.nfcid, input.user, models);
+		},
+		removeAbsentEvents: async (root, { input }, { models, user }) => {
+			checkIsAuthorized(UserType.Organizer, user);
+			const objectIds = input.ids.map(id => ObjectID.createFromHexString(id));
+			return removeAbsentEvents(objectIds, models);
 		},
 		removeUserFromEvent: async (root, { input }, { models, user }) => {
 			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);

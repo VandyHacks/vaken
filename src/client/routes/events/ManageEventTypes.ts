@@ -4,6 +4,8 @@ import {
 	AddOrUpdateEventMutationVariables,
 	AssignEventToCompanyMutation,
 	AssignEventToCompanyMutationVariables,
+	RemoveAbsentEventsMutation,
+	RemoveAbsentEventsMutationVariables,
 } from '../../generated/graphql';
 
 export interface EventUpdate {
@@ -25,4 +27,9 @@ export type AddOrUpdateEventMutationFn = MutationFunction<
 export type AssignEventToCompanyMutationFn = MutationFunction<
 	AssignEventToCompanyMutation,
 	AssignEventToCompanyMutationVariables
+>;
+
+export type RemoveAbsentEventsMutationFn = MutationFunction<
+	RemoveAbsentEventsMutation,
+	RemoveAbsentEventsMutationVariables
 >;

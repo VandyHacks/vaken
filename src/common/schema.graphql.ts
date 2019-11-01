@@ -384,7 +384,12 @@ export default gql`
 		eventId: String!
 	}
 
+	input IdListInput {
+		ids: [ID!]!
+	}
+
 	type Mutation {
+		removeAbsentEvents(input: IdListInput!): Int!
 		assignEventToCompany(input: AssignSponsorEventInput!): Event!
 		addOrUpdateEvent(input: EventUpdateInput!): Event!
 		createCompany(input: CompanyInput!): Company!

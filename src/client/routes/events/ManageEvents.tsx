@@ -13,6 +13,7 @@ import { FlexColumn, FlexRow } from '../../components/Containers/FlexContainers'
 import {
 	useAssignEventToCompanyMutation,
 	useAddOrUpdateEventMutation,
+	useRemoveAbsentEventsMutation,
 	useEventsQuery,
 	useCompaniesQuery,
 } from '../../generated/graphql';
@@ -31,6 +32,7 @@ const ManageEvents: FunctionComponent = (): JSX.Element => {
 	const [output, setOutput] = useState('<>');
 	// const [allEvents, setAllEvents] = useState('<all events>');
 	const [addOrUpdateEvent] = useAddOrUpdateEventMutation();
+	const [removeAbsentEvents] = useRemoveAbsentEventsMutation();
 	const [assignEventToCompany] = useAssignEventToCompanyMutation();
 	// const { loading, error, data } = useEventsQuery();
 
@@ -83,7 +85,11 @@ const ManageEvents: FunctionComponent = (): JSX.Element => {
 		const res = await fetch('/api/manage/events/pull');
 		const resData = await res.json();
 		const eventsList = resData as EventUpdate[];
-		const updatedEvents = await updateEventsHandler(eventsList, addOrUpdateEvent);
+		const updatedEvents = await updateEventsHandler(
+			eventsList,
+			addOrUpdateEvent,
+			removeAbsentEvents
+		);
 		setOutput(JSON.stringify(updatedEvents, null, '\t'));
 		// setAllEvents(data.events);
 		// Place holder for events table showing all events, and some UI component listing events just pulled

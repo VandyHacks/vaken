@@ -71,7 +71,7 @@ export async function pullCalendar(calendarID: string | undefined): Promise<Even
 
 /**
  * @param eventInput Object using EventUpdateInput Input type to define what needs to be updated
- * @returns Event name in a promise
+ * @returns Event
  */
 export async function addOrUpdateEvent(
 	eventInput: EventUpdateInput,
@@ -121,6 +121,21 @@ export async function addOrUpdateEvent(
 			`Event ${eventInput.name} <${value}> unsuccessful: ${JSON.stringify(lastErrorObject)}`
 		);
 	return value;
+}
+
+/**
+ * Remove all events from DB that are not in param list eventIDS
+ * @param eventIDs list of object event IDs
+ */
+export async function removeAbsentEvents(eventIDs: ObjectID[], models: Models): Promise<number> {
+	const ret = await models.Events.deleteMany({
+		_id: {
+			$nin: eventIDs,
+		},
+	});
+	if (ret.deletedCount === undefined)
+		throw new Error(`Could not remove multiple events: ${eventIDs}}`);
+	return ret.deletedCount;
 }
 
 export async function getCompanyEvents(
