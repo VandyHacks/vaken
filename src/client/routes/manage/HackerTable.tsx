@@ -333,19 +333,22 @@ const HackerTable: FC<HackerTableProps> = ({
 			<TableOptions>
 				<FlexColumn>
 					{!eventLoading && (
-						<Select
-							isMulti
-							options={options}
-							onChange={selected => {
-								if (!selected) setEventIds([]);
-								else
-									setEventIds(
-										(selected as Record<string, string>[]).map(
-											(s: Record<string, string>) => s.value
-										)
-									);
-							}}
-						/>
+						<div style={{ paddingBottom: '5px' }}>
+							<span style={{ paddingRight: '5px' }}>Filter By Events Attended: </span>
+							<ColumnSelect
+								isMulti
+								options={options}
+								onChange={(selected: any) => {
+									if (!selected) setEventIds([]);
+									else
+										setEventIds(
+											(selected as Record<string, string>[]).map(
+												(s: Record<string, string>) => s.value
+											)
+										);
+								}}
+							/>
+						</div>
 					)}
 					{searchCriteria.map((criterion, index) => (
 						// eslint-disable-next-line
