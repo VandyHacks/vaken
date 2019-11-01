@@ -118,8 +118,8 @@ const statusRenderer = ({ cellData }: TableCellProps): JSX.Element => {
 interface ActionRendererProps {
 	rowData: QueriedHacker;
 }
-function resumeRenderer(updateStatus: HackerStatusMutationFn): FC<ActionRendererProps> {
-	return function ActionRenderer({ rowData: { id, status } }) {
+function resumeRenderer(): FC<ActionRendererProps> {
+	return function ActionRenderer({ rowData: { id } }) {
 		return <ResumeLink id={id} />;
 	};
 }
@@ -133,6 +133,7 @@ interface HackerTableRowsProps {
 	updateStatus: HackerStatusMutationFn;
 	width: number;
 	isSponsor: boolean;
+	viewResumes: boolean;
 }
 
 export const HackerTableRows = ({
@@ -144,6 +145,7 @@ export const HackerTableRows = ({
 	generateRowClassName,
 	table,
 	isSponsor = false,
+	viewResumes = false,
 }: HackerTableRowsProps): JSX.Element => (
 	<StyledTable
 		width={width}
@@ -225,7 +227,7 @@ export const HackerTableRows = ({
 				cellRenderer={actionRenderer(updateStatus)}
 			/>
 		)}
-		{isSponsor && (
+		{isSponsor && viewResumes && (
 			<Column
 				className="column"
 				label="Resume"
@@ -233,7 +235,7 @@ export const HackerTableRows = ({
 				width={275}
 				minWidth={275}
 				headerRenderer={renderHeaderAsLabel}
-				cellRenderer={resumeRenderer(updateStatus)}
+				cellRenderer={resumeRenderer()}
 			/>
 		)}
 	</StyledTable>

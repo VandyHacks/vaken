@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import Select from 'react-select';
 import { Route, Switch } from 'react-router-dom';
-import styled from 'styled-components';
 import { useImmer } from 'use-immer';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import Spinner from '../../components/Loading/Spinner';
@@ -127,7 +126,7 @@ export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 									console.log(error);
 									return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 								}
-								return <HackerTable data={filteredData.hackers} isSponsor />;
+								return <HackerTable data={filteredData.hackers} isSponsor viewResumes />;
 							}}
 						/>
 					</Switch>

@@ -129,7 +129,7 @@ const CreateTier: React.FunctionComponent = (): JSX.Element => {
 				<SearchBox
 					width="100%"
 					value={permissions}
-					placeholder="Tier Permissions"
+					placeholder="Tier Permissions (nfc, hackertable, resume)"
 					onChange={e => setPermissions([e.target.value])}
 					minWidth="15em"
 				/>
