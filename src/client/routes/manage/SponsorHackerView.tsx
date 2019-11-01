@@ -66,7 +66,11 @@ export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 									return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 								}
 								return (
-									<HackerTable data={filteredData.hackers} isSponsor viewResumes={viewResumes} />
+									<HackerTable
+										data={filteredData.hackers}
+										isSponsor={true}
+										viewResumes={viewResumes}
+									/>
 								);
 							}}
 						/>
