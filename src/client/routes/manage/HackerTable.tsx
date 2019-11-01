@@ -256,23 +256,6 @@ const HackerTable: FC<HackerTableProps> = ({
 	}
 
 	useEffect(() => {
-		if (!data) return;
-		const tmpData: { hackers: Partial<Hacker>[] } = { hackers: [...data] };
-
-		if (tmpData && tmpData.hackers) {
-			if (eventIds && eventIds.length > 0) {
-				tmpData.hackers = tmpData.hackers.filter(
-					(hacker: Partial<Hacker>) =>
-						hacker &&
-						hacker.eventsAttended &&
-						hacker.eventsAttended.some(eventId => eventIds.includes(eventId))
-				);
-			}
-			setSortedData(tmpData.hackers as Hacker[]);
-		}
-	}, [data, eventIds]);
-
-	useEffect(() => {
 		// Only search one column in regex mode
 		table.update(draft => {
 			draft.searchCriteria.forEach((searchCriterion, index) => {
@@ -290,18 +273,27 @@ const HackerTable: FC<HackerTableProps> = ({
 	useEffect(() => {
 		// filter and sort data
 		const newData = searchCriteria.reduce(SearchCriteria.filter, [...data]);
+		let filteredData = newData;
+		if (eventIds.length > 0) {
+			filteredData = newData.filter(
+				(hacker: Partial<Hacker>) =>
+					hacker &&
+					hacker.eventsAttended &&
+					hacker.eventsAttended.some(eventId => eventIds.includes(eventId))
+			);
+		}
 
 		// Sort data based on props and context
 		if (sortBy && sortDirection) {
-			newData.sort((a, b) =>
+			filteredData.sort((a, b) =>
 				sortDirection === SortDirection.DESC
 					? collator.compare(`${b[sortBy]}`, `${a[sortBy]}`)
 					: collator.compare(`${a[sortBy]}`, `${b[sortBy]}`)
 			);
 		}
 
-		setSortedData(newData);
-	}, [data, sortBy, sortDirection, searchCriteria]);
+		setSortedData(filteredData);
+	}, [data, sortBy, sortDirection, searchCriteria, eventIds]);
 
 	// handles the text or regex search and sets the sortedData state with the updated row list
 	// floating button that onClick toggles between selecting all or none of the rows
