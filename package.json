@@ -151,7 +151,7 @@
 		"@types/react-csv": "^1.1.1",
 		"@types/react-dom": "^16.9.3",
 		"@types/react-router": "^5.1.2",
-		"@types/react-router-dom": "^5.1.0",
+		"@types/react-router-dom": "^5.1.1",
 		"@types/react-select": "^3.0.5",
 		"@types/react-test-renderer": "^16.9.1",
 		"@types/react-virtualized": "^9.21.5",
