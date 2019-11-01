@@ -28,4 +28,8 @@ export default gql`
 			name
 		}
 	}
+
+	mutation removeAbsentEvents($input: IdListInput!) {
+		removeAbsentEvents(input: $input)
+	}
 `;
