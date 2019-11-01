@@ -133,7 +133,7 @@
 		"@babel/preset-env": "^7.6.3",
 		"@babel/preset-react": "^7.6.3",
 		"@babel/preset-typescript": "^7.6.0",
-		"@types/chart.js": "^2.8.9",
+		"@types/chart.js": "^2.8.10",
 		"@types/connect-mongo": "0.0.44",
 		"@types/dotenv": "^6.1.1",
 		"@types/escape-html": "0.0.20",
