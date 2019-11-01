@@ -220,9 +220,15 @@ const onSortColumnChange = (ctx: TableCtxI): ((p: SortFnProps) => void) => {
 
 interface HackerTableProps {
 	data: QueriedHacker[];
+	isSponsor: boolean;
+	viewResumes: boolean;
 }
 
-const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Element => {
+const HackerTable: FC<HackerTableProps> = ({
+	data,
+	isSponsor = false,
+	viewResumes = false,
+}: HackerTableProps): JSX.Element => {
 	const table = useContext(TableContext);
 	const [sortedData, setSortedData] = useState(data);
 	const deselect = useRef<DeselectElement>(null);
@@ -387,6 +393,8 @@ const HackerTable: FC<HackerTableProps> = ({ data }: HackerTableProps): JSX.Elem
 								onSortColumnChange={onSortColumnChange}
 								generateRowClassName={generateRowClassName}
 								table={table}
+								isSponsor={isSponsor}
+								viewResumes={viewResumes}
 							/>
 							{selectAll || hasSelection ? (
 								<DeselectAll ref={deselect}>{SelectAllButton}</DeselectAll>

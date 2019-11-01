@@ -32,6 +32,8 @@ test.skip('Test HackerTable', () => {
 									eventsAttended: [],
 								},
 							]}
+							isSponsor={false}
+							viewResumes
 						/>
 					</MockedProvider>
 				</MemoryRouter>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import {
 	Column,
@@ -16,10 +16,11 @@ import { Checkmark } from '../../components/Symbol/Checkmark';
 import { Row } from './Row';
 import { actionRenderer, HackerStatusMutationFn } from './ActionRenderer';
 import { reimbursementHeaderRenderer } from './ReimbursementHeader';
+import { ResumeLink } from './ResumeLink';
 
 import { ApplicationStatus } from '../../generated/graphql';
 import STRINGS from '../../assets/strings.json';
-import { SortFnProps } from './HackerTableTypes';
+import { SortFnProps, QueriedHacker } from './HackerTableTypes';
 import { TableCtxI } from '../../contexts/TableContext';
 
 // Removes unwanted highlighting, adds alternating row colors
@@ -114,6 +115,15 @@ const statusRenderer = ({ cellData }: TableCellProps): JSX.Element => {
 	return <Status value={cellData} generateColor={generateColor} fontColor="gray" />;
 };
 
+interface ActionRendererProps {
+	rowData: QueriedHacker;
+}
+function resumeRenderer(): FC<ActionRendererProps> {
+	return function ActionRenderer({ rowData: { id } }) {
+		return <ResumeLink id={id} />;
+	};
+}
+
 interface HackerTableRowsProps {
 	generateRowClassName: Function;
 	height: number;
@@ -122,6 +132,8 @@ interface HackerTableRowsProps {
 	table: TableCtxI;
 	updateStatus: HackerStatusMutationFn;
 	width: number;
+	isSponsor: boolean;
+	viewResumes: boolean;
 }
 
 export const HackerTableRows = ({
@@ -132,6 +144,8 @@ export const HackerTableRows = ({
 	onSortColumnChange,
 	generateRowClassName,
 	table,
+	isSponsor = false,
+	viewResumes = false,
 }: HackerTableRowsProps): JSX.Element => (
 	<StyledTable
 		width={width}
@@ -180,33 +194,50 @@ export const HackerTableRows = ({
 			width={175}
 			headerRenderer={renderHeaderAsLabel}
 		/>
-		<Column
-			className="column"
-			label="Status"
-			dataKey="status"
-			width={100}
-			minWidth={90}
-			headerRenderer={renderHeaderAsLabel}
-			cellRenderer={statusRenderer}
-		/>
-		<Column
-			className="column"
-			label="Requires Travel Reimbursement?"
-			dataKey="needsReimbursement"
-			width={30}
-			minWidth={20}
-			headerRenderer={reimbursementHeaderRenderer}
-			cellRenderer={checkmarkRenderer}
-		/>
-		<Column
-			className="column"
-			label="Actions"
-			dataKey="actions"
-			width={275}
-			minWidth={275}
-			headerRenderer={renderHeaderAsLabel}
-			cellRenderer={actionRenderer(updateStatus)}
-		/>
+		{!isSponsor && (
+			<Column
+				className="column"
+				label="Status"
+				dataKey="status"
+				width={100}
+				minWidth={90}
+				headerRenderer={renderHeaderAsLabel}
+				cellRenderer={statusRenderer}
+			/>
+		)}
+		{!isSponsor && (
+			<Column
+				className="column"
+				label="Requires Travel Reimbursement?"
+				dataKey="needsReimbursement"
+				width={30}
+				minWidth={20}
+				headerRenderer={reimbursementHeaderRenderer}
+				cellRenderer={checkmarkRenderer}
+			/>
+		)}
+		{!isSponsor && (
+			<Column
+				className="column"
+				label="Actions"
+				dataKey="actions"
+				width={275}
+				minWidth={275}
+				headerRenderer={renderHeaderAsLabel}
+				cellRenderer={actionRenderer(updateStatus)}
+			/>
+		)}
+		{isSponsor && viewResumes && (
+			<Column
+				className="column"
+				label="Resume"
+				dataKey="resume"
+				width={275}
+				minWidth={275}
+				headerRenderer={renderHeaderAsLabel}
+				cellRenderer={resumeRenderer()}
+			/>
+		)}
 	</StyledTable>
 );
 

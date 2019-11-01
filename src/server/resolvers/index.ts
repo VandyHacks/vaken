@@ -552,7 +552,7 @@ export const resolvers: CustomResolvers<Context> = {
 
 			// Hackers may get their own files; organizers may get any file
 			if (!input.includes((user._id as unknown) as string))
-				checkIsAuthorized(UserType.Organizer, user);
+				checkIsAuthorizedArray([UserType.Organizer, UserType.Sponsor], user);
 
 			return getSignedReadUrl(input);
 		},

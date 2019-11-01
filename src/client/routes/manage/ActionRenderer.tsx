@@ -65,7 +65,7 @@ export function actionRenderer(updateStatus: HackerStatusMutationFn): FC<ActionR
 					<></>
 				)}
 				{status && status !== ApplicationStatus.Created && (
-					<Link to={{ pathname: `/manage/hackers/detail/${id}` }}>
+					<Link to={{ pathname: `${window.location.pathname}/detail/${id}` }}>
 						<TableButton>View</TableButton>
 					</Link>
 				)}
