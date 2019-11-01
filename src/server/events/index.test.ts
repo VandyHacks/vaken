@@ -58,10 +58,10 @@ const badEventObj: Record<string, string> = {
 };
 
 const testEventObj: Record<string, string> = {
-	summary: 'testEvent [testType]',
+	summary: 'testEvent',
 	start: '2019-09-06T03:41:33.714+00:00',
 	end: '2019-09-06T07:41:33.714+00:00',
-	description: 'testEventdesc',
+	description: 'testEventdesc [testType]',
 	location: 'location',
 	uid: 'testGcalID',
 };

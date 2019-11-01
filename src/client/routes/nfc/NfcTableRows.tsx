@@ -5,7 +5,6 @@ import {
 	SortIndicator,
 	Table,
 	TableHeaderProps,
-	TableRowProps,
 	Index,
 	RowMouseEventHandlerParams,
 } from 'react-virtualized';
