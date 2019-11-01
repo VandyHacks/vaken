@@ -18,8 +18,8 @@ export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 	const sponsorLoading = sponsorMeQueryResult.loading;
 	const sponsorError = sponsorMeQueryResult.error;
 	let sponsorData: Sponsor;
-	let viewHackerTable = false;
-	let viewResumes = false;
+	let viewHackerTable = true;
+	let viewResumes = true;
 
 	if (!sponsorLoading && sponsorMeQueryResult.data && sponsorMeQueryResult.data.me) {
 		sponsorData = sponsorMeQueryResult.data.me as Sponsor;
