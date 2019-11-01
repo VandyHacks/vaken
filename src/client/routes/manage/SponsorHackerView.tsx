@@ -75,18 +75,6 @@ export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 		options = eventData.events.map(e => ({ label: e.name, value: e.id.toString() }));
 	}
 
-	const customStyles = {
-		option: (provided: any) => ({
-			...provided,
-			padding: 20,
-			backgroundColor: 'white',
-		}),
-		control: () => ({
-			// none of react-select's styles are passed to <Control />
-			width: 200,
-		}),
-	};
-
 	if (sponsorError) {
 		console.log(sponsorError);
 		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
@@ -101,20 +89,22 @@ export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 			<FloatingPopup borderRadius="1rem" height="100%" backgroundOpacity="1" padding="1.5rem">
 				<TableContext.Provider value={{ state: tableState, update: updateTableState }}>
 					{!eventLoading && (
-						<Select
-							isMulti
-							styles={customStyles}
-							options={options}
-							onChange={selected => {
-								if (!selected) setEventIds([]);
-								else
-									setEventIds(
-										(selected as Record<string, string>[]).map(
-											(s: Record<string, string>) => s.value
-										)
-									);
-							}}
-						/>
+						<>
+							<span>Select Events to Filter By</span>
+							<Select
+								isMulti
+								options={options}
+								onChange={selected => {
+									if (!selected) setEventIds([]);
+									else
+										setEventIds(
+											(selected as Record<string, string>[]).map(
+												(s: Record<string, string>) => s.value
+											)
+										);
+								}}
+							/>
+						</>
 					)}
 					<Switch>
 						<Route path="/view/hackers/detail/:id" component={HackerView} />
@@ -126,7 +116,13 @@ export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 									console.log(error);
 									return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 								}
-								return <HackerTable data={filteredData.hackers} isSponsor viewResumes />;
+								return (
+									<HackerTable
+										data={filteredData.hackers}
+										isSponsor={true}
+										viewResumes={viewResumes}
+									/>
+								);
 							}}
 						/>
 					</Switch>
