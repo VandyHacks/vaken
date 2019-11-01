@@ -14,7 +14,9 @@ import { FlexRow, FlexColumn } from '../../components/Containers/FlexContainers'
 import STRINGS from '../../assets/strings.json';
 import { TableCtxI, TableContext, Option, SearchCriteria } from '../../contexts/TableContext';
 import {
+	Hacker,
 	useHackerStatusMutation,
+	useEventsQuery,
 	ApplicationStatus,
 	useHackerStatusesMutation,
 } from '../../generated/graphql';
@@ -230,6 +232,7 @@ const HackerTable: FC<HackerTableProps> = ({
 	viewResumes = false,
 }: HackerTableProps): JSX.Element => {
 	const table = useContext(TableContext);
+	const [eventIds, setEventIds] = useState([] as string[]);
 	const [sortedData, setSortedData] = useState(data);
 	const deselect = useRef<DeselectElement>(null);
 	const [updateStatus] = useHackerStatusMutation();
@@ -243,6 +246,31 @@ const HackerTable: FC<HackerTableProps> = ({
 		sortDirection,
 		selectedRowsIds,
 	} = table.state;
+
+	const { data: eventData, loading: eventLoading, error: eventError } = useEventsQuery();
+	if (eventError) console.error(eventError);
+
+	let options: Record<string, string>[] = [];
+	if (eventData && eventData.events) {
+		options = eventData.events.map(e => ({ label: e.name, value: e.id.toString() }));
+	}
+
+	useEffect(() => {
+		if (!data) return;
+		const tmpData: { hackers: Partial<Hacker>[] } = { hackers: [...data] };
+
+		if (tmpData && tmpData.hackers) {
+			if (eventIds && eventIds.length > 0) {
+				tmpData.hackers = tmpData.hackers.filter(
+					(hacker: Partial<Hacker>) =>
+						hacker &&
+						hacker.eventsAttended &&
+						hacker.eventsAttended.some(eventId => eventIds.includes(eventId))
+				);
+			}
+			setSortedData(tmpData.hackers as Hacker[]);
+		}
+	}, [data, eventIds]);
 
 	useEffect(() => {
 		// Only search one column in regex mode
@@ -312,6 +340,21 @@ const HackerTable: FC<HackerTableProps> = ({
 		<TableLayout>
 			<TableOptions>
 				<FlexColumn>
+					{!eventLoading && (
+						<Select
+							isMulti
+							options={options}
+							onChange={selected => {
+								if (!selected) setEventIds([]);
+								else
+									setEventIds(
+										(selected as Record<string, string>[]).map(
+											(s: Record<string, string>) => s.value
+										)
+									);
+							}}
+						/>
+					)}
 					{searchCriteria.map((criterion, index) => (
 						// eslint-disable-next-line
 						<FlexRow key={index}>
