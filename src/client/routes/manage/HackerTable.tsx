@@ -14,7 +14,9 @@ import { FlexRow, FlexColumn } from '../../components/Containers/FlexContainers'
 import STRINGS from '../../assets/strings.json';
 import { TableCtxI, TableContext, Option, SearchCriteria } from '../../contexts/TableContext';
 import {
+	Hacker,
 	useHackerStatusMutation,
+	useEventsQuery,
 	ApplicationStatus,
 	useHackerStatusesMutation,
 } from '../../generated/graphql';
@@ -230,6 +232,7 @@ const HackerTable: FC<HackerTableProps> = ({
 	viewResumes = false,
 }: HackerTableProps): JSX.Element => {
 	const table = useContext(TableContext);
+	const [eventIds, setEventIds] = useState([] as string[]);
 	const [sortedData, setSortedData] = useState(data);
 	const deselect = useRef<DeselectElement>(null);
 	const [updateStatus] = useHackerStatusMutation();
@@ -243,6 +246,14 @@ const HackerTable: FC<HackerTableProps> = ({
 		sortDirection,
 		selectedRowsIds,
 	} = table.state;
+
+	const { data: eventData, loading: eventLoading, error: eventError } = useEventsQuery();
+	if (eventError) console.error(eventError);
+
+	let options: Record<string, string>[] = [];
+	if (eventData && eventData.events) {
+		options = eventData.events.map(e => ({ label: e.name, value: e.id.toString() }));
+	}
 
 	useEffect(() => {
 		// Only search one column in regex mode
@@ -262,18 +273,27 @@ const HackerTable: FC<HackerTableProps> = ({
 	useEffect(() => {
 		// filter and sort data
 		const newData = searchCriteria.reduce(SearchCriteria.filter, [...data]);
+		let filteredData = newData;
+		if (eventIds.length > 0) {
+			filteredData = newData.filter(
+				(hacker: Partial<Hacker>) =>
+					hacker &&
+					hacker.eventsAttended &&
+					hacker.eventsAttended.some(eventId => eventIds.includes(eventId))
+			);
+		}
 
 		// Sort data based on props and context
 		if (sortBy && sortDirection) {
-			newData.sort((a, b) =>
+			filteredData.sort((a, b) =>
 				sortDirection === SortDirection.DESC
 					? collator.compare(`${b[sortBy]}`, `${a[sortBy]}`)
 					: collator.compare(`${a[sortBy]}`, `${b[sortBy]}`)
 			);
 		}
 
-		setSortedData(newData);
-	}, [data, sortBy, sortDirection, searchCriteria]);
+		setSortedData(filteredData);
+	}, [data, sortBy, sortDirection, searchCriteria, eventIds]);
 
 	// handles the text or regex search and sets the sortedData state with the updated row list
 	// floating button that onClick toggles between selecting all or none of the rows
@@ -312,6 +332,24 @@ const HackerTable: FC<HackerTableProps> = ({
 		<TableLayout>
 			<TableOptions>
 				<FlexColumn>
+					{!eventLoading && (
+						<div style={{ paddingBottom: '5px' }}>
+							<span style={{ paddingRight: '5px' }}>Filter By Events Attended: </span>
+							<ColumnSelect
+								isMulti
+								options={options}
+								onChange={(selected: any) => {
+									if (!selected) setEventIds([]);
+									else
+										setEventIds(
+											(selected as Record<string, string>[]).map(
+												(s: Record<string, string>) => s.value
+											)
+										);
+								}}
+							/>
+						</div>
+					)}
 					{searchCriteria.map((criterion, index) => (
 						// eslint-disable-next-line
 						<FlexRow key={index}>

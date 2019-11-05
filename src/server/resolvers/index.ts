@@ -29,7 +29,7 @@ import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
 import { sendStatusEmail } from '../mail/aws';
 
 // added here b/c webpack JSON compilation with 'use-strict' is broken (10/31/19)
-const DEADLINE_TS = 1572497940000
+const DEADLINE_TS = 1572497940000;
 
 // TODO: Cannot import frontend files so this is ugly workaround. Fix this.
 const requiredFields = [
@@ -232,7 +232,7 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ok || !value)
 				throw new UserInputError(
 					`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
-					'(Likely the user already declined/confirmed if no value returned)'
+						'(Likely the user already declined/confirmed if no value returned)'
 				);
 
 			// `confirmMySpot` is an identity function if user is already confirmed and is a
@@ -251,7 +251,7 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ok || !value)
 				throw new UserInputError(
 					`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
-					'(Likely the user already declined/confirmed if no value returned)'
+						'(Likely the user already declined/confirmed if no value returned)'
 				);
 			// no email sent if declined
 			return value;
@@ -403,8 +403,7 @@ export const resolvers: CustomResolvers<Context> = {
 			// Enables a user to update their application
 			if (!user) throw new AuthenticationError(`cannot update application: user not logged in`);
 
-			if (Date.now() > DEADLINE_TS)
-				throw new Error(`Deadline to submit application has passed.`);
+			if (Date.now() > DEADLINE_TS) throw new Error(`Deadline to submit application has passed.`);
 
 			// TODO(leonm1): Figure out why the _id field isn't actually an ObjectID
 			const id = ObjectID.createFromHexString((user._id as unknown) as string);
