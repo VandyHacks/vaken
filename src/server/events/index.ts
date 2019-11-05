@@ -129,9 +129,14 @@ export async function addOrUpdateEvent(
  */
 export async function removeAbsentEvents(eventIDs: ObjectID[], models: Models): Promise<number> {
 	const ret = await models.Events.deleteMany({
-		_id: {
-			$nin: eventIDs,
-		},
+		$and: [
+			{
+				_id: {
+					$nin: eventIDs,
+				},
+			},
+			{ eventType: { $ne: 'Booth' } },
+		],
 	});
 	if (ret.deletedCount === undefined)
 		throw new Error(`Could not remove multiple events: ${eventIDs}}`);
