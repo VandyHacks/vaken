@@ -76,7 +76,7 @@ export const schema = makeExecutableSchema({
 			logger.error(error);
 			return error;
 		},
-		playground: true,
+		// playground: process.env.NODE_ENV !== 'production', // by DEFAULT, enabled when not in prod
 		schema,
 	});
 
