@@ -3,7 +3,7 @@ import { DIRECTIVES } from '@graphql-codegen/typescript-mongodb';
 import express from 'express';
 import passport from 'passport';
 import session from 'express-session';
-import cors, { CorsOptions } from 'cors';
+import helmet from 'helmet';
 import MongoStore, { MongoUrlOptions } from 'connect-mongo';
 import gqlSchema from '../common/schema.graphql';
 import { resolvers } from './resolvers';
@@ -15,11 +15,10 @@ import { UnsubscribeHandler } from './mail/handlers';
 import { UserDbInterface } from './generated/graphql';
 import { pullCalendar } from './events';
 
-const { SESSION_SECRET, PORT, CALENDARID, NODE_ENV, PROD_ORIGIN } = process.env;
+const { SESSION_SECRET, PORT, CALENDARID, NODE_ENV } = process.env;
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
 if (!PORT) throw new Error(`PORT not set`);
 if (!CALENDARID) logger.info('CALENDARID not set; skipping ical integration');
-if (!PROD_ORIGIN) throw new Error(`PROD_ORIGIN not set`);
 const IS_PROD = NODE_ENV === 'production';
 logger.info(`Node env: ${NODE_ENV}`);
 
@@ -38,8 +37,7 @@ export const schema = makeExecutableSchema({
 	const dbClient = new DB();
 	const models = await dbClient.collections;
 
-	// Email unsubscribe link
-	app.use('/api/unsubscribe', UnsubscribeHandler(models));
+	app.use(helmet()); // sets good security defaults, see https://helmetjs.github.io/
 
 	// Register auth functions
 	app.use(
@@ -48,6 +46,7 @@ export const schema = makeExecutableSchema({
 			store: new (MongoStore(session))(({
 				clientPromise: dbClient.client,
 			} as unknown) as MongoUrlOptions),
+			cookie: { secure: true },
 		})
 	);
 	app.use(passport.initialize());
@@ -66,6 +65,9 @@ export const schema = makeExecutableSchema({
 		})(req, res, next)
 	);
 
+	// Email unsubscribe link
+	app.use('/api/unsubscribe', UnsubscribeHandler(models));
+
 	// Pull events callback
 	app.use('/api/manage/events/pull', async (req, res) => {
 		const calendar = await pullCalendar(CALENDARID);
@@ -82,43 +84,25 @@ export const schema = makeExecutableSchema({
 			// give friendly error message to frontend, hide internal server details
 			return new Error(error.message);
 		},
-		introspection: true, // OFF by default in prod, needs to be set true to remove compile errors
+		introspection: false, // OFF by default in prod for security reasons
 		// playground: NODE_ENV !== 'production', // by DEFAULT, enabled when not in prod + disabled in prod
 		schema,
 	});
 
-	const allowedOrigin = IS_PROD ? PROD_ORIGIN || '' : '';
-	logger.info(`Allowed origins: ${allowedOrigin}`);
+	server.applyMiddleware({ app });
 
-	const corsOptions: CorsOptions = {
-		origin(requestOrigin, cb) {
-			if (requestOrigin === null || requestOrigin === undefined) {
-				logger.error('Request origin missing, not allowed by CORS');
-				return;
-			}
-			const allowed = !IS_PROD || requestOrigin.endsWith(allowedOrigin);
-
-			logger.info(requestOrigin, allowed);
-			if (!allowed) {
-				logger.error('Not allowed by CORS');
-				return;
-			}
-			cb(null, allowed);
-		},
-	};
-
-	server.applyMiddleware({ app, cors: corsOptions });
-
-	if (IS_PROD) {
+	if (NODE_ENV !== 'development') {
 		// Serve front-end asset files in prod.
 		app.use(express.static('dist/server/app'));
 		// MUST BE LAST AS THIS WILL REROUTE ALL REMAINING TRAFFIC TO THE FRONTEND!
-		app.use((req, res) => res.sendFile('index.html', { root: 'dist/server/app' }));
+		app.use((req, res) => {
+			res.sendFile('index.html', { root: 'dist/server/app' });
+		});
 	}
 
 	app.listen(
 		{ port: PORT },
-		() => void logger.info(`Server ready at http://localhost:8080${server.graphqlPath}`)
+		() => void logger.info(`Server ready at http://localhost:${PORT}${server.graphqlPath}`)
 	);
 })();
 
