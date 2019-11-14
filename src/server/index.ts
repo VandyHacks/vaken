@@ -4,7 +4,6 @@ import express from 'express';
 import passport from 'passport';
 import session from 'express-session';
 import helmet from 'helmet'
-import cors, { CorsOptions } from 'cors';
 import MongoStore, { MongoUrlOptions } from 'connect-mongo';
 import gqlSchema from '../common/schema.graphql';
 import { resolvers } from './resolvers';
@@ -85,14 +84,14 @@ export const schema = makeExecutableSchema({
 			// give friendly error message to frontend, hide internal server details
 			return new Error(error.message);
 		},
-		introspection: true, // OFF by default in prod, needs to be set true to remove compile errors
+		introspection: false, // OFF by default in prod for security reasons
 		// playground: NODE_ENV !== 'production', // by DEFAULT, enabled when not in prod + disabled in prod
 		schema,
 	});
 
 	server.applyMiddleware({ app });
 
-	if (IS_PROD) {
+	if (NODE_ENV !== 'development') {
 		// Serve front-end asset files in prod.
 		app.use(express.static('dist/server/app'));
 		// MUST BE LAST AS THIS WILL REROUTE ALL REMAINING TRAFFIC TO THE FRONTEND!
