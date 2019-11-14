@@ -16,11 +16,10 @@ import { UnsubscribeHandler } from './mail/handlers';
 import { UserDbInterface } from './generated/graphql';
 import { pullCalendar } from './events';
 
-const { SESSION_SECRET, PORT, CALENDARID, NODE_ENV, PROD_ORIGIN } = process.env;
+const { SESSION_SECRET, PORT, CALENDARID, NODE_ENV } = process.env;
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
 if (!PORT) throw new Error(`PORT not set`);
 if (!CALENDARID) logger.info('CALENDARID not set; skipping ical integration');
-if (!PROD_ORIGIN) throw new Error(`PROD_ORIGIN not set`);
 const IS_PROD = NODE_ENV === 'production';
 logger.info(`Node env: ${NODE_ENV}`);
 
@@ -41,14 +40,6 @@ export const schema = makeExecutableSchema({
 
 	app.use(helmet()) // sets good security defaults, see https://helmetjs.github.io/
 
-	// setup CSP
-	app.use(helmet.contentSecurityPolicy({
-		directives: {
-			defaultSrc: ["'self'", PROD_ORIGIN],
-			styleSrc: ["'self'", PROD_ORIGIN]
-		}
-	}))
-
 	// Register auth functions
 	app.use(
 		session({
@@ -56,6 +47,7 @@ export const schema = makeExecutableSchema({
 			store: new (MongoStore(session))(({
 				clientPromise: dbClient.client,
 			} as unknown) as MongoUrlOptions),
+			cookie: { secure: true }
 		})
 	);
 	app.use(passport.initialize());
@@ -97,28 +89,6 @@ export const schema = makeExecutableSchema({
 		// playground: NODE_ENV !== 'production', // by DEFAULT, enabled when not in prod + disabled in prod
 		schema,
 	});
-
-	const allowedOrigin = IS_PROD ? PROD_ORIGIN || '' : '';
-	logger.info(`Allowed origins: ${allowedOrigin}`);
-
-	const corsOptions: CorsOptions = {
-		origin(requestOrigin, cb) {
-			if (requestOrigin === null || requestOrigin === undefined) {
-				logger.error('Request origin missing, not allowed by CORS');
-				return cb(new Error('CORS: not allowed.'));
-			}
-			const allowed = !IS_PROD || requestOrigin.endsWith(allowedOrigin);
-
-			logger.info(requestOrigin, allowed);
-			if (!allowed) {
-				logger.error('Not allowed by CORS');
-				return cb(new Error('CORS: not allowed.'));
-			}
-			cb(null, allowed);
-		},
-		credentials: true // for HTTPS cookies
-	};
-	app.use(cors(corsOptions))
 
 	server.applyMiddleware({ app });
 
