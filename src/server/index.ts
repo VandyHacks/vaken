@@ -3,6 +3,7 @@ import { DIRECTIVES } from '@graphql-codegen/typescript-mongodb';
 import express from 'express';
 import passport from 'passport';
 import session from 'express-session';
+import helmet from 'helmet'
 import cors, { CorsOptions } from 'cors';
 import MongoStore, { MongoUrlOptions } from 'connect-mongo';
 import gqlSchema from '../common/schema.graphql';
@@ -38,8 +39,15 @@ export const schema = makeExecutableSchema({
 	const dbClient = new DB();
 	const models = await dbClient.collections;
 
-	// Email unsubscribe link
-	app.use('/api/unsubscribe', UnsubscribeHandler(models));
+	app.use(helmet()) // sets good security defaults, see https://helmetjs.github.io/
+
+	// setup CSP
+	app.use(helmet.contentSecurityPolicy({
+		directives: {
+			defaultSrc: ["'self'", PROD_ORIGIN],
+			styleSrc: ["'self'", PROD_ORIGIN]
+		}
+	}))
 
 	// Register auth functions
 	app.use(
@@ -65,6 +73,9 @@ export const schema = makeExecutableSchema({
 			return void req.login(user, next);
 		})(req, res, next)
 	);
+
+	// Email unsubscribe link
+	app.use('/api/unsubscribe', UnsubscribeHandler(models));
 
 	// Pull events callback
 	app.use('/api/manage/events/pull', async (req, res) => {
@@ -105,6 +116,7 @@ export const schema = makeExecutableSchema({
 			}
 			cb(null, allowed);
 		},
+		credentials: true // for HTTPS cookies
 	};
 
 	server.applyMiddleware({ app, cors: corsOptions });
@@ -113,12 +125,14 @@ export const schema = makeExecutableSchema({
 		// Serve front-end asset files in prod.
 		app.use(express.static('dist/server/app'));
 		// MUST BE LAST AS THIS WILL REROUTE ALL REMAINING TRAFFIC TO THE FRONTEND!
-		app.use((req, res) => res.sendFile('index.html', { root: 'dist/server/app' }));
+		app.use((req, res) => {
+			res.sendFile('index.html', { root: 'dist/server/app' })
+		});
 	}
 
 	app.listen(
 		{ port: PORT },
-		() => void logger.info(`Server ready at http://localhost:8080${server.graphqlPath}`)
+		() => void logger.info(`Server ready at http://localhost:${PORT}${server.graphqlPath}`)
 	);
 })();
 
