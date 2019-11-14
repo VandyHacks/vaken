@@ -22,20 +22,10 @@ npm run dev # runs backend + frontend, both reloading on changes
 ```
 
 Now to go `localhost:8081` to see the page.
-NOTE: you can also go to `localhost:8080/graphql` to see an interactive GraphQL IDE to try out queries and mutations.
+NOTE: you can also go to `localhost:8080/graphql` to see an interactive GraphQL IDE to try out queries and mutations (disabled in production env by default).
 
+To create a production build, run `npm build`.
 
-### Useful GraphQL queries
-
-This query will create a sponsor and associate with a company
-```
-mutation {
-  createSponsor(input: {
-    name: "name", email: "email", companyId: "insert company id here"
-  })
-  {id}
-}
-```
 
 ### Testing
 
@@ -58,9 +48,8 @@ We use Eslint for linting. The linting tests are cached with the `--cache` optio
 
 NOTE: there are multiple eslint files. The rules are cascaded with the rule in the more specific directory taking priority (see [Eslint cascading hierarchy](https://eslint.org/docs/user-guide/configuring#configuration-cascading-and-hierarchy))
 
-- client config: [./src/client/.eslintrc.js](./src/client/.eslintrc.js)
-- server config: [./src/server/.eslintrc.js](./src/server/.eslintrc.js)
-- general config: [./.eslintrc.js](./.eslintrc.js)
+- client-specific config: [./src/client/.eslintrc.js](./src/client/.eslintrc.js)
+- common (shared between server+client) config: [./.eslintrc.js](./.eslintrc.js)
 
 ```bash
 npm run check:lint # runs the linter
@@ -71,7 +60,8 @@ npm run check:lint:fix # runs the linter with autofix
 
 - `/__mocks__` - mocks for testing
 - `/__snapshots__` - jest snapshots for frontend testing
-- `/.vscode` - contains vscode workspace settings, recommended plugins, and launch debug config
+- `/.vscode` - vscode workspace settings, recommended plugins, and launch debug config
+- `/scripts` - runnable scripts to do certain tasks (install, populate DB, make an organizer, make a volunteer, etc.)
 - `/src`
   - `/client`
     - `/assets` - static assets
@@ -87,6 +77,7 @@ npm run check:lint:fix # runs the linter with autofix
     - `index.ts` - main Express API server and Apollo Server
     - `models.ts` - graphql models
     - `resolvers.ts` - graphql resolvers
+- `/types` - misc. type declaration files
 - `// lots of config files here`
 
 NOTE: We use [dotansimha/graphql-code-generator](https://github.com/dotansimha/graphql-code-generator) for automatic code generation. The mappings for schema models to db models are in [./codegen.json](./codegen.json).
