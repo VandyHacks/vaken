@@ -46,7 +46,11 @@ export const schema = makeExecutableSchema({
 			store: new (MongoStore(session))(({
 				clientPromise: dbClient.client,
 			} as unknown) as MongoUrlOptions),
-			cookie: { secure: true },
+			/*
+			can't use secure cookies b/c only HTTP connection between dyno and Heroku servers, 
+			but don't need it as long as connection as Heroku servers and client are HTTPS
+			*/
+			// cookie: { secure: IS_PROD },
 		})
 	);
 	app.use(passport.initialize());
@@ -92,6 +96,7 @@ export const schema = makeExecutableSchema({
 	server.applyMiddleware({ app });
 
 	if (NODE_ENV !== 'development') {
+		logger.info('Setting routing to prod assets.');
 		// Serve front-end asset files in prod.
 		app.use(express.static('dist/server/app'));
 		// MUST BE LAST AS THIS WILL REROUTE ALL REMAINING TRAFFIC TO THE FRONTEND!
