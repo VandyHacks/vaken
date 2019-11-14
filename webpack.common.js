@@ -1,13 +1,22 @@
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const threadLoader = require('thread-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 const ASSET_PATH = process.env.ASSET_PATH || '/';
 
+threadLoader.warmup({
+	workers: 2
+}, [
+	// modules to load
+	// can be any module, i. e.
+	'babel-loader',
+]);
+
 module.exports = {
 	context: __dirname, // to automagically find tsconfig.json
 	entry: ['./src/client/index'],
-	stats: 'minimal',
+	stats: 'normal',
 	module: {
 		rules: [
 			{
@@ -17,6 +26,9 @@ module.exports = {
 				use: [
 					{
 						loader: 'thread-loader',
+						options: {
+							workers: 2
+						}
 					},
 					{
 						loader: 'babel-loader',
