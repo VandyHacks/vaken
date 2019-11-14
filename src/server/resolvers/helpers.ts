@@ -8,6 +8,7 @@ import {
 } from '../generated/graphql';
 import { Models } from '../models';
 import { getSignedReadUrl } from '../storage/gcp';
+import logger from '../logger';
 
 /**
  * Returns a copy of obj with all null fields removed.
@@ -165,9 +166,12 @@ export function checkIsAuthorizedArray<T extends UserDbInterface>(
 	user?: T
 ): T {
 	if (!user || !requiredTypes.includes(user.userType as UserType)) {
-		throw new AuthenticationError(
-			`user ${user && user.email}: ${JSON.stringify(user)} must be one of "${requiredTypes}"`
+		logger.info(
+			`INSUFFICIENT PERMISSIONS: user ${user && user.email}: ${JSON.stringify(
+				user
+			)} must be one of "${requiredTypes}"`
 		);
+		throw new AuthenticationError('User does not have sufficient permissions to perform action');
 	}
 
 	return user;

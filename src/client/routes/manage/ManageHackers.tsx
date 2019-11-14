@@ -32,7 +32,7 @@ export const ManageHackers: FunctionComponent = (): JSX.Element => {
 								console.log(error);
 								return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 							}
-							return <HackerTable data={data.hackers} isSponsor={false} viewResumes={true} />;
+							return <HackerTable data={data.hackers} isSponsor={false} viewResumes />;
 						}}
 					/>
 				</Switch>

@@ -3,6 +3,7 @@ import { DIRECTIVES } from '@graphql-codegen/typescript-mongodb';
 import express from 'express';
 import passport from 'passport';
 import session from 'express-session';
+import cors, { CorsOptions } from 'cors';
 import MongoStore, { MongoUrlOptions } from 'connect-mongo';
 import gqlSchema from '../common/schema.graphql';
 import { resolvers } from './resolvers';
@@ -14,10 +15,14 @@ import { UnsubscribeHandler } from './mail/handlers';
 import { UserDbInterface } from './generated/graphql';
 import { pullCalendar } from './events';
 
-const { SESSION_SECRET, PORT, CALENDARID } = process.env;
+const { SESSION_SECRET, PORT, CALENDARID, NODE_ENV, PROD_ORIGIN } = process.env;
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
 if (!PORT) throw new Error(`PORT not set`);
 if (!CALENDARID) logger.info('CALENDARID not set; skipping ical integration');
+if (!PROD_ORIGIN) throw new Error(`PROD_ORIGIN not set`);
+const IS_PROD = NODE_ENV === 'production';
+logger.info(`Node env: ${NODE_ENV}`);
+
 const app = express();
 
 export const schema = makeExecutableSchema({
@@ -74,15 +79,37 @@ export const schema = makeExecutableSchema({
 		}),
 		formatError: error => {
 			logger.error(error);
-			return error;
+			// give friendly error message to frontend, hide internal server details
+			return new Error(error.message);
 		},
-		playground: true,
+		introspection: true, // OFF by default in prod, needs to be set true to remove compile errors
+		// playground: NODE_ENV !== 'production', // by DEFAULT, enabled when not in prod + disabled in prod
 		schema,
 	});
 
-	server.applyMiddleware({ app });
+	const allowedOrigin = IS_PROD ? PROD_ORIGIN || '' : '';
+	logger.info(`Allowed origins: ${allowedOrigin}`);
 
-	if (process.env.NODE_ENV === 'production') {
+	const corsOptions: CorsOptions = {
+		origin(requestOrigin, cb) {
+			if (requestOrigin === null || requestOrigin === undefined) {
+				logger.error('Request origin missing, not allowed by CORS');
+				return;
+			}
+			const allowed = !IS_PROD || requestOrigin.endsWith(allowedOrigin);
+
+			logger.info(requestOrigin, allowed);
+			if (!allowed) {
+				logger.error('Not allowed by CORS');
+				return;
+			}
+			cb(null, allowed);
+		},
+	};
+
+	server.applyMiddleware({ app, cors: corsOptions });
+
+	if (IS_PROD) {
 		// Serve front-end asset files in prod.
 		app.use(express.static('dist/server/app'));
 		// MUST BE LAST AS THIS WILL REROUTE ALL REMAINING TRAFFIC TO THE FRONTEND!
