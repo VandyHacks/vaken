@@ -51,7 +51,7 @@ const HorizontalLineLogout = styled(HorizontalLine)`
 const NavButtonWhiteText = styled(NavButton)`
 	color: white;
 	font-weight: 100;
-	font-size: 28pt;
+	font-size: 18pt;
 	/* padding-left: 1.33rem; */
 `;
 
