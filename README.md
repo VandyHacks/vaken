@@ -11,15 +11,19 @@ A next-gen hackathon registration system.
 
 ## Features
 
-
-
-- send emails via AWS SES
-- stores resumes in GCP
-- Google Calendar Integration for events
+- Full hacker view and management system
+- Create and edit sponsors
+- Create and edit events, with Google Calendar integration
+- Supports storing NFC IDs for hackers, compatible with most NFC scanners/wristbands/cards.
+	- Supports tracking event attendance when scanning hackers into events
+- Sends emails via AWS SES for hacker acceptances automatically
+- Stores resumes in GCP
+- [WIP] Dashboard with detailed statistics for organizers
 
 ### User Roles
 - Organizer (Admin)
     - see hacker management view below
+    - can scan NFC
 - Volunteer
     - can scan people into events via NFC or manual search mode
 - Mentor
@@ -68,13 +72,17 @@ A next-gen hackathon registration system.
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md)
+All contributions are welcome. Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for setup and development instructions.
 
 ## Customizing for your event
 - constants: [./src/common/constants.json](./src/common/constants.json)
 - application questions: [./src/client/assets/application.js](./src/client/assets/application.js)
 - strings: [..src/client/assets/strings.json](.src/client/assets/strings.json)
 - email templates: [./src/server/mail/templates](./src/server/mail/templates)
+
+## Questions?
+
+Feel free to reach out to us at `info[at]vandyhacks.org` or `dev[at]vandyhacks.org`!
 
 ## Thanks
 
