@@ -9,9 +9,27 @@
 
 A next-gen hackathon registration system.
 
-## Why
+## Features
 
-We needed a way to manage attendees and we wanted to provide a great developer experience as well.
+
+
+- send emails via AWS SES
+- stores resumes in GCP
+- Google Calendar Integration for events
+
+### User Roles
+- Organizer (Admin)
+    - see hacker management view below
+- Volunteer
+    - can scan people into events via NFC or manual search mode
+- Mentor
+- Hacker
+	- can create and update application
+    - see current application status
+    - can RSVP after acceptance
+- Sponsor
+	- supports permissions based on tier and company
+
 
 ## Tooling
 
@@ -24,13 +42,39 @@ We needed a way to manage attendees and we wanted to provide a great developer e
 - Passport
 - Express
 
-## Screenshots
+# Screenshots
 
-:)
+### Login Page
+![Login Page](./pics/vaken1.png)
+
+    - supports Github, Google, and Microsoft SSO logins
+
+### Detailed Hacker Management for Organizers
+![Organizer Page](./pics/vaken-org.png)
+
+    - view individual hacker applications
+    - fuzzy search + filter by various fields (first name, last name, email, school, grad year)
+        - can have multiple search fields
+    - filter by events attended
+    - accept/reject hacker applications
+    - export filtered hacker data to .csv
+
+### Sponsors Management
+![Sponsor page](./pics/vaken-sponsor.png)
+
+    - create sponsorship tiers, and set permissions
+    - create companies, associate with a tier
+    - create sponsors, associate with a company
 
 ## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md)
+
+## Customizing for your event
+- constants: [./src/common/constants.json](./src/common/constants.json)
+- application questions: [./src/client/assets/application.js](./src/client/assets/application.js)
+- strings: [..src/client/assets/strings.json](.src/client/assets/strings.json)
+- email templates: [./src/server/mail/templates](./src/server/mail/templates)
 
 ## Thanks
 
