@@ -105,21 +105,22 @@ export const schema = makeExecutableSchema({
 		origin(requestOrigin, cb) {
 			if (requestOrigin === null || requestOrigin === undefined) {
 				logger.error('Request origin missing, not allowed by CORS');
-				return;
+				return cb(new Error('CORS: not allowed.'));
 			}
 			const allowed = !IS_PROD || requestOrigin.endsWith(allowedOrigin);
 
 			logger.info(requestOrigin, allowed);
 			if (!allowed) {
 				logger.error('Not allowed by CORS');
-				return;
+				return cb(new Error('CORS: not allowed.'));
 			}
 			cb(null, allowed);
 		},
 		credentials: true // for HTTPS cookies
 	};
+	app.use(cors(corsOptions))
 
-	server.applyMiddleware({ app, cors: corsOptions });
+	server.applyMiddleware({ app });
 
 	if (IS_PROD) {
 		// Serve front-end asset files in prod.
