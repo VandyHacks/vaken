@@ -8,6 +8,7 @@ import {
 } from '../generated/graphql';
 import { Models } from '../models';
 import { getSignedReadUrl } from '../storage/gcp';
+import logger from '../logger';
 
 /**
  * Returns a copy of obj with all null fields removed.
@@ -55,7 +56,7 @@ export async function query<T>(filter: FilterQuery<T>, collection: Collection<T>
 	if (!obj) {
 		throw new UserInputError(
 			`obj with filters: "${JSON.stringify(filter)}" not found in collection "${
-			collection.collectionName
+				collection.collectionName
 			}"`
 		);
 	}
@@ -165,8 +166,10 @@ export function checkIsAuthorizedArray<T extends UserDbInterface>(
 	user?: T
 ): T {
 	if (!user || !requiredTypes.includes(user.userType as UserType)) {
-		console.log(
-			`INSUFFICIENT PERMISSIONS: user ${user && user.email}: ${JSON.stringify(user)} must be one of "${requiredTypes}"`
+		logger.info(
+			`INSUFFICIENT PERMISSIONS: user ${user && user.email}: ${JSON.stringify(
+				user
+			)} must be one of "${requiredTypes}"`
 		);
 		throw new AuthenticationError('User does not have sufficient permissions to perform action');
 	}
@@ -186,8 +189,8 @@ export async function replaceResumeFieldWithLink(
 			if (field.question === 'resume') {
 				newField.answer = field.answer
 					? `<a href="${await getSignedReadUrl(
-						field.answer
-					)}" target="_blank" rel="noopener noreferrer">Resume</a>`
+							field.answer
+					  )}" target="_blank" rel="noopener noreferrer">Resume</a>`
 					: field.answer;
 				return newField;
 			}

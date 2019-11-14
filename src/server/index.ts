@@ -19,9 +19,9 @@ const { SESSION_SECRET, PORT, CALENDARID, NODE_ENV, PROD_ORIGIN } = process.env;
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
 if (!PORT) throw new Error(`PORT not set`);
 if (!CALENDARID) logger.info('CALENDARID not set; skipping ical integration');
-if (!PROD_ORIGIN) throw new Error(`PROD_ORIGIN not set`)
+if (!PROD_ORIGIN) throw new Error(`PROD_ORIGIN not set`);
 const IS_PROD = NODE_ENV === 'production';
-console.log(`Node env: ${NODE_ENV}`)
+logger.info(`Node env: ${NODE_ENV}`);
 
 const app = express();
 
@@ -84,30 +84,27 @@ export const schema = makeExecutableSchema({
 		},
 		introspection: true, // OFF by default in prod, needs to be set true to remove compile errors
 		// playground: NODE_ENV !== 'production', // by DEFAULT, enabled when not in prod + disabled in prod
-		schema
+		schema,
 	});
 
 	const allowedOrigin = IS_PROD ? PROD_ORIGIN || '' : '';
-	console.log(`Allowed origins: ${allowedOrigin}`)
+	logger.info(`Allowed origins: ${allowedOrigin}`);
 
 	const corsOptions: CorsOptions = {
-		origin: function (requestOrigin, cb) {
-			if (!IS_PROD) {
-				requestOrigin = allowedOrigin
-			}
+		origin(requestOrigin, cb) {
 			if (requestOrigin === null || requestOrigin === undefined) {
-				console.error('Request origin missing, not allowed by CORS');
-				return
+				logger.error('Request origin missing, not allowed by CORS');
+				return;
 			}
-			const allowed = requestOrigin.endsWith(allowedOrigin)
+			const allowed = !IS_PROD || requestOrigin.endsWith(allowedOrigin);
 
-			console.log(requestOrigin, allowed)
+			logger.info(requestOrigin, allowed);
 			if (!allowed) {
-				console.error('Not allowed by CORS');
-				return
+				logger.error('Not allowed by CORS');
+				return;
 			}
 			cb(null, allowed);
-		}
+		},
 	};
 
 	server.applyMiddleware({ app, cors: corsOptions });
