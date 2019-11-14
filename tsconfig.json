@@ -23,7 +23,8 @@
 		}
 	},
 	"include": [
-		"src/**/*.ts"
+		"src/**/*.ts",
+		"src/client/**/*.tsx"
 	],
 	"exclude": [
 		"node_modules/**",

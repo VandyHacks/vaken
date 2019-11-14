@@ -3,7 +3,7 @@ import { DIRECTIVES } from '@graphql-codegen/typescript-mongodb';
 import express from 'express';
 import passport from 'passport';
 import session from 'express-session';
-import helmet from 'helmet'
+import helmet from 'helmet';
 import MongoStore, { MongoUrlOptions } from 'connect-mongo';
 import gqlSchema from '../common/schema.graphql';
 import { resolvers } from './resolvers';
@@ -37,7 +37,7 @@ export const schema = makeExecutableSchema({
 	const dbClient = new DB();
 	const models = await dbClient.collections;
 
-	app.use(helmet()) // sets good security defaults, see https://helmetjs.github.io/
+	app.use(helmet()); // sets good security defaults, see https://helmetjs.github.io/
 
 	// Register auth functions
 	app.use(
@@ -46,7 +46,7 @@ export const schema = makeExecutableSchema({
 			store: new (MongoStore(session))(({
 				clientPromise: dbClient.client,
 			} as unknown) as MongoUrlOptions),
-			cookie: { secure: true }
+			cookie: { secure: true },
 		})
 	);
 	app.use(passport.initialize());
@@ -96,7 +96,7 @@ export const schema = makeExecutableSchema({
 		app.use(express.static('dist/server/app'));
 		// MUST BE LAST AS THIS WILL REROUTE ALL REMAINING TRAFFIC TO THE FRONTEND!
 		app.use((req, res) => {
-			res.sendFile('index.html', { root: 'dist/server/app' })
+			res.sendFile('index.html', { root: 'dist/server/app' });
 		});
 	}
 
