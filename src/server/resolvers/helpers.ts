@@ -55,7 +55,7 @@ export async function query<T>(filter: FilterQuery<T>, collection: Collection<T>
 	if (!obj) {
 		throw new UserInputError(
 			`obj with filters: "${JSON.stringify(filter)}" not found in collection "${
-				collection.collectionName
+			collection.collectionName
 			}"`
 		);
 	}
@@ -165,9 +165,10 @@ export function checkIsAuthorizedArray<T extends UserDbInterface>(
 	user?: T
 ): T {
 	if (!user || !requiredTypes.includes(user.userType as UserType)) {
-		throw new AuthenticationError(
-			`user ${user && user.email}: ${JSON.stringify(user)} must be one of "${requiredTypes}"`
+		console.log(
+			`INSUFFICIENT PERMISSIONS: user ${user && user.email}: ${JSON.stringify(user)} must be one of "${requiredTypes}"`
 		);
+		throw new AuthenticationError('User does not have sufficient permissions to perform action');
 	}
 
 	return user;
@@ -185,8 +186,8 @@ export async function replaceResumeFieldWithLink(
 			if (field.question === 'resume') {
 				newField.answer = field.answer
 					? `<a href="${await getSignedReadUrl(
-							field.answer
-					  )}" target="_blank" rel="noopener noreferrer">Resume</a>`
+						field.answer
+					)}" target="_blank" rel="noopener noreferrer">Resume</a>`
 					: field.answer;
 				return newField;
 			}

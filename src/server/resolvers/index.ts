@@ -232,7 +232,7 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ok || !value)
 				throw new UserInputError(
 					`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
-						'(Likely the user already declined/confirmed if no value returned)'
+					'(Likely the user already declined/confirmed if no value returned)'
 				);
 
 			// `confirmMySpot` is an identity function if user is already confirmed and is a
@@ -251,7 +251,7 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ok || !value)
 				throw new UserInputError(
 					`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
-						'(Likely the user already declined/confirmed if no value returned)'
+					'(Likely the user already declined/confirmed if no value returned)'
 				);
 			// no email sent if declined
 			return value;
@@ -521,7 +521,10 @@ export const resolvers: CustomResolvers<Context> = {
 	Query: {
 		event: async (root, { id }, ctx) => queryById(id, ctx.models.Events),
 		eventCheckIn: async (root, { id }, ctx) => queryById(id, ctx.models.EventCheckIns),
-		eventCheckIns: async (root, args, ctx) => ctx.models.EventCheckIns.find().toArray(),
+		eventCheckIns: async (root, args, ctx) => {
+			checkIsAuthorizedArray([UserType.Organizer], ctx.user);
+			return ctx.models.EventCheckIns.find().toArray()
+		},
 		events: async (root, args, ctx) => {
 			if (!ctx.user) throw new AuthenticationError(`User is not logged in`);
 
@@ -538,17 +541,29 @@ export const resolvers: CustomResolvers<Context> = {
 			return ctx.models.Events.find({ owner: null }).toArray();
 		},
 		company: async (root, { id }, ctx) => queryById(id, ctx.models.Companies),
-		companies: async (root, args, ctx) => ctx.models.Companies.find().toArray(),
+		companies: async (root, args, ctx) => {
+			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer], ctx.user);
+			return ctx.models.Companies.find().toArray()
+		},
 		hacker: async (root, { id }, ctx) => queryById(id, ctx.models.Hackers),
-		hackers: async (root, args, ctx) => ctx.models.Hackers.find().toArray(),
+		hackers: async (root, args, ctx) => {
+			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], ctx.user);
+			return ctx.models.Hackers.find().toArray()
+		},
 		me: async (root, args, ctx) => {
 			if (!ctx.user) throw new AuthenticationError(`user is not logged in`);
 			return fetchUser(ctx.user, ctx.models);
 		},
 		mentor: async (root, { id }, ctx) => queryById(id, ctx.models.Mentors),
-		mentors: async (root, args, ctx) => ctx.models.Mentors.find().toArray(),
+		mentors: async (root, args, ctx) => {
+			checkIsAuthorizedArray([UserType.Organizer], ctx.user);
+			return ctx.models.Mentors.find().toArray()
+		},
 		organizer: async (root, { id }, ctx) => queryById(id, ctx.models.Organizers),
-		organizers: async (root, args, ctx) => ctx.models.Organizers.find().toArray(),
+		organizers: async (root, args, ctx) => {
+			checkIsAuthorizedArray([UserType.Organizer], ctx.user);
+			return ctx.models.Organizers.find().toArray()
+		},
 		signedReadUrl: async (_, { input }, { user }) => {
 			// Enables a user to update their application
 			if (!user) throw new AuthenticationError(`cannot get read url: user not logged in`);
@@ -563,11 +578,20 @@ export const resolvers: CustomResolvers<Context> = {
 			return getSignedReadUrl(input);
 		},
 		sponsor: async (root, { id }, ctx: Context) => queryById(id, ctx.models.Sponsors),
-		sponsors: async (root, args, ctx: Context) => ctx.models.Sponsors.find().toArray(),
+		sponsors: async (root, args, ctx: Context) => {
+			checkIsAuthorizedArray([UserType.Organizer], ctx.user);
+			return ctx.models.Sponsors.find().toArray()
+		},
 		team: async (root, { id }, ctx) => queryById(id, ctx.models.Teams),
-		teams: async (root, args, ctx) => ctx.models.Teams.find().toArray(),
+		teams: async (root, args, ctx) => {
+			checkIsAuthorizedArray([UserType.Organizer], ctx.user);
+			return ctx.models.Teams.find().toArray()
+		},
 		tier: async (root, { id }, ctx) => queryById(id, ctx.models.Tiers),
-		tiers: async (root, args, ctx) => ctx.models.Tiers.find().toArray(),
+		tiers: async (root, args, ctx) => {
+			checkIsAuthorizedArray([UserType.Organizer], ctx.user);
+			return ctx.models.Tiers.find().toArray()
+		}
 	},
 	Shift: {
 		begin: async shift => (await shift).begin.getTime(),
