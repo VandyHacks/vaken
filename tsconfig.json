@@ -29,7 +29,6 @@
 	"exclude": [
 		"node_modules/**",
 		"types/**",
-		"src/**/*.test.ts",
 		"src/client/**/*.test.tsx"
 	]
 }
