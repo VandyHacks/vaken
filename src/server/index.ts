@@ -90,7 +90,7 @@ export const schema = makeExecutableSchema({
 		},
 		// introspection: NODE_ENV !== 'production', // OFF by default in prod for security reasons
 		// playground: NODE_ENV !== 'production', // by DEFAULT, enabled when not in prod + disabled in prod
-		schema
+		schema,
 	});
 
 	server.applyMiddleware({ app });

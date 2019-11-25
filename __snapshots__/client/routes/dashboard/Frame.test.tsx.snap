@@ -69,10 +69,10 @@ exports[`Test Frame Frame renders correctly 1`] = `
               onClick={[Function]}
             >
               <button
-                className="sc-gqjmRU sc-fjdhpX goWjNZ sc-jhAzac jzMBlD"
+                className="sc-gqjmRU sc-fjdhpX goWjNZ sc-jhAzac jpVfCn"
               >
                 <div
-                  className="sc-htoDjs sc-dnqmqq caLfPx sc-jhAzac jzMBlD"
+                  className="sc-htoDjs sc-dnqmqq caLfPx sc-jhAzac jpVfCn"
                 >
                   Dashboard
                 </div>
@@ -87,10 +87,10 @@ exports[`Test Frame Frame renders correctly 1`] = `
               onClick={[Function]}
             >
               <button
-                className="sc-gqjmRU sc-fjdhpX goWjNZ sc-jhAzac jzMBlD"
+                className="sc-gqjmRU sc-fjdhpX goWjNZ sc-jhAzac jpVfCn"
               >
                 <div
-                  className="sc-htoDjs sc-dnqmqq caLfPx sc-jhAzac jzMBlD"
+                  className="sc-htoDjs sc-dnqmqq caLfPx sc-jhAzac jpVfCn"
                 >
                   Apply
                 </div>
@@ -105,10 +105,10 @@ exports[`Test Frame Frame renders correctly 1`] = `
               onClick={[Function]}
             >
               <button
-                className="sc-gqjmRU sc-fjdhpX goWjNZ sc-jhAzac jzMBlD"
+                className="sc-gqjmRU sc-fjdhpX goWjNZ sc-jhAzac jpVfCn"
               >
                 <div
-                  className="sc-htoDjs sc-dnqmqq caLfPx sc-jhAzac jzMBlD"
+                  className="sc-htoDjs sc-dnqmqq caLfPx sc-jhAzac jpVfCn"
                 >
                   Help
                 </div>
@@ -125,10 +125,10 @@ exports[`Test Frame Frame renders correctly 1`] = `
             href="/api/logout"
           >
             <button
-              className="sc-gqjmRU sc-fjdhpX goWjNZ sc-jhAzac jzMBlD"
+              className="sc-gqjmRU sc-fjdhpX goWjNZ sc-jhAzac jpVfCn"
             >
               <div
-                className="sc-htoDjs sc-dnqmqq caLfPx sc-jhAzac jzMBlD"
+                className="sc-htoDjs sc-dnqmqq caLfPx sc-jhAzac jpVfCn"
               >
                 Logout
               </div>
