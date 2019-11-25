@@ -86,7 +86,7 @@ describe('Test resolver helpers', () => {
 
 		it('throws an error if the user is undefined', () => {
 			expect(() => void checkIsAuthorized(UserType.Hacker, undefined)).toThrow(
-				'user undefined: undefined must be a "HACKER"'
+				'User is not logged in'
 			);
 		});
 

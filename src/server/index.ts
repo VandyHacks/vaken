@@ -88,7 +88,7 @@ export const schema = makeExecutableSchema({
 			// give friendly error message to frontend, hide internal server details
 			return new Error(error.message);
 		},
-		introspection: false, // OFF by default in prod for security reasons
+		// introspection: NODE_ENV !== 'production', // OFF by default in prod for security reasons
 		// playground: NODE_ENV !== 'production', // by DEFAULT, enabled when not in prod + disabled in prod
 		schema,
 	});

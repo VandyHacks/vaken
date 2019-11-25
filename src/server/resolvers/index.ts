@@ -313,7 +313,8 @@ export const resolvers: CustomResolvers<Context> = {
 				{ $set: { status } }
 			);
 
-			if (!result.ok) throw new UserInputError(`!ok updating ${JSON.stringify(ids)}}`);
+			if (!result.ok)
+				throw new UserInputError(`Error updating hacker statuses for: ${JSON.stringify(ids)}}`);
 
 			const updatedHackers = await models.Hackers.find({ _id: { $in: objectIds } }).toArray();
 
@@ -395,8 +396,7 @@ export const resolvers: CustomResolvers<Context> = {
 			return removeUserFromEvent(inputUser._id.toString(), input.event, models);
 		},
 		signedUploadUrl: async (_, _2, { user }) => {
-			// Enables a user to update their application
-			if (!user) throw new AuthenticationError(`cannot update application: user not logged in`);
+			if (!user) throw new AuthenticationError(`cannot get signed upload url: user not logged in`);
 			return getSignedUploadUrl(`${user._id}`);
 		},
 		updateMyApplication: async (root, { input }, { user, models }) => {
@@ -526,16 +526,13 @@ export const resolvers: CustomResolvers<Context> = {
 			return ctx.models.EventCheckIns.find().toArray();
 		},
 		events: async (root, args, ctx) => {
-			if (!ctx.user) throw new AuthenticationError(`User is not logged in`);
-
-			if (ctx.user.userType === UserType.Sponsor) {
-				checkIsAuthorized(UserType.Sponsor, ctx.user);
-				const { _id } = (ctx.user as SponsorDbObject).company;
+			const user = checkIsAuthorizedArray([UserType.Organizer, UserType.Sponsor], ctx.user);
+			if (user.userType === UserType.Sponsor) {
+				const { _id } = (user as SponsorDbObject).company;
 				const events = await ctx.models.Events.find({ 'owner._id': new ObjectID(_id) }).toArray();
 				return events;
 			}
-			if (ctx.user.userType === UserType.Organizer) {
-				checkIsAuthorized(UserType.Organizer, ctx.user);
+			if (user.userType === UserType.Organizer) {
 				return ctx.models.Events.find().toArray();
 			}
 			return ctx.models.Events.find({ owner: null }).toArray();
@@ -565,7 +562,6 @@ export const resolvers: CustomResolvers<Context> = {
 			return ctx.models.Organizers.find().toArray();
 		},
 		signedReadUrl: async (_, { input }, { user }) => {
-			// Enables a user to update their application
 			if (!user) throw new AuthenticationError(`cannot get read url: user not logged in`);
 
 			// No file to get :)
