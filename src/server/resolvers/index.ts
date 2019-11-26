@@ -192,11 +192,11 @@ export const resolvers: CustomResolvers<Context> = {
 			{ input: { email, name, companyId } },
 			{ models, user }: Context
 		) => {
-			if (!user || user.userType !== UserType.Organizer)
-				throw new AuthenticationError(`user '${JSON.stringify(user)}' must be organizer`);
-			const sponsor = await models.Sponsors.findOne({ email });
+			checkIsAuthorized(UserType.Organizer, user)
 			const company = await models.Companies.findOne({ _id: new ObjectID(companyId) });
-			if (!company) throw new UserInputError(`Company with '${companyId}' doesn't exist.`);
+			if (!company)
+				throw new UserInputError(`Company with '${companyId}' doesn't exist.`);
+			const sponsor = await models.Sponsors.findOne({ email });
 			if (!sponsor) {
 				await models.Sponsors.insertOne({
 					_id: new ObjectID(),
@@ -232,7 +232,7 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ok || !value)
 				throw new UserInputError(
 					`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
-						'(Likely the user already declined/confirmed if no value returned)'
+					'(Likely the user already declined/confirmed if no value returned)'
 				);
 
 			// `confirmMySpot` is an identity function if user is already confirmed and is a
@@ -251,14 +251,13 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ok || !value)
 				throw new UserInputError(
 					`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
-						'(Likely the user already declined/confirmed if no value returned)'
+					'(Likely the user already declined/confirmed if no value returned)'
 				);
 			// no email sent if declined
 			return value;
 		},
 		createTier: async (root, { input: { name, permissions } }, { models, user }: Context) => {
-			if (!user || user.userType !== UserType.Organizer)
-				throw new AuthenticationError(`user '${JSON.stringify(user)}' must be organizer`);
+			checkIsAuthorized(UserType.Organizer, user)
 			await models.Tiers.insertOne({
 				_id: new ObjectID(),
 				name,
@@ -269,9 +268,7 @@ export const resolvers: CustomResolvers<Context> = {
 			return tierCreated;
 		},
 		createCompany: async (root, { input: { name, tierId } }, { models, user }: Context) => {
-			if (!user || user.userType !== UserType.Organizer)
-				throw new AuthenticationError(`user '${JSON.stringify(user)}' must be organizer`);
-
+			checkIsAuthorized(UserType.Organizer, user)
 			const tier = await models.Tiers.findOne({ _id: new ObjectID(tierId) });
 			if (!tier) throw new UserInputError(`Tier with id ${tierId}' doesn't exist.`);
 			await models.Companies.insertOne({
