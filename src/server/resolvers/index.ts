@@ -11,6 +11,8 @@ import {
 	HackerDbObject,
 	SponsorStatus,
 	SponsorDbObject,
+	TierDbObject,
+	CompanyDbObject,
 } from '../generated/graphql';
 import Context from '../context';
 import {
@@ -27,6 +29,7 @@ import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser, getUse
 import { addOrUpdateEvent, assignEventToCompany, removeAbsentEvents } from '../events';
 import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
 import { sendStatusEmail } from '../mail/aws';
+import logger from '../logger';
 
 // added here b/c webpack JSON compilation with 'use-strict' is broken (10/31/19)
 const DEADLINE_TS = 1572497940000;
@@ -191,36 +194,33 @@ export const resolvers: CustomResolvers<Context> = {
 			root,
 			{ input: { email, name, companyId } },
 			{ models, user }: Context
-		) => {
-			checkIsAuthorized(UserType.Organizer, user)
+		): Promise<SponsorDbObject> => {
+			checkIsAuthorized(UserType.Organizer, user);
 			const company = await models.Companies.findOne({ _id: new ObjectID(companyId) });
-			if (!company)
-				throw new UserInputError(`Company with '${companyId}' doesn't exist.`);
+			if (!company) throw new UserInputError(`Company with '${companyId}' doesn't exist.`);
 			const sponsor = await models.Sponsors.findOne({ email });
-			if (!sponsor) {
-				await models.Sponsors.insertOne({
-					_id: new ObjectID(),
-					company,
-					createdAt: new Date(),
-					email,
-					firstName: name,
-					lastName: '',
-					logins: [],
-					phoneNumber: '',
-					dietaryRestrictions: '',
-					emailUnsubscribed: false,
-					eventsAttended: [],
-					preferredName: '',
-					secondaryIds: [],
-					status: SponsorStatus.Added,
-					userType: UserType.Sponsor,
-				});
-			} else {
-				throw new UserInputError(`sponsor with '${email}' is already added.`);
-			}
-			const sponsorCreated = await models.Sponsors.findOne({ email });
-			if (!sponsorCreated) throw new AuthenticationError(`sponsor not found: ${email}`);
-			return sponsorCreated;
+			if (sponsor) throw new UserInputError(`sponsor with '${email}' is already added.`);
+
+			const newSponsor: SponsorDbObject = {
+				_id: new ObjectID(),
+				company,
+				createdAt: new Date(),
+				email,
+				firstName: name,
+				lastName: '',
+				logins: [],
+				phoneNumber: '',
+				dietaryRestrictions: '',
+				emailUnsubscribed: false,
+				eventsAttended: [],
+				preferredName: '',
+				secondaryIds: [],
+				status: SponsorStatus.Added,
+				userType: UserType.Sponsor,
+			};
+			logger.info(`creating new sponsor ${JSON.stringify(newSponsor)}`)
+			await models.Sponsors.insertOne(newSponsor);
+			return newSponsor;
 		},
 		confirmMySpot: async (root, _, { models, user }) => {
 			const { _id, status } = checkIsAuthorized(UserType.Hacker, user) as HackerDbObject;
@@ -256,30 +256,38 @@ export const resolvers: CustomResolvers<Context> = {
 			// no email sent if declined
 			return value;
 		},
-		createTier: async (root, { input: { name, permissions } }, { models, user }: Context) => {
-			checkIsAuthorized(UserType.Organizer, user)
-			await models.Tiers.insertOne({
+		createTier: async (
+			root,
+			{ input: { name, permissions } },
+			{ models, user }: Context
+		): Promise<TierDbObject> => {
+			checkIsAuthorized(UserType.Organizer, user);
+			const newTier: TierDbObject = {
 				_id: new ObjectID(),
 				name,
 				permissions: permissions || [],
-			});
-			const tierCreated = await models.Tiers.findOne({ name });
-			if (!tierCreated) throw new AuthenticationError(`tier not found: ${name}`);
-			return tierCreated;
+			};
+			logger.info(`creating tier ${JSON.stringify(newTier)}`)
+			await models.Tiers.insertOne(newTier);
+			return newTier;
 		},
-		createCompany: async (root, { input: { name, tierId } }, { models, user }: Context) => {
-			checkIsAuthorized(UserType.Organizer, user)
+		createCompany: async (
+			root,
+			{ input: { name, tierId } },
+			{ models, user }: Context
+		): Promise<CompanyDbObject> => {
+			checkIsAuthorized(UserType.Organizer, user);
 			const tier = await models.Tiers.findOne({ _id: new ObjectID(tierId) });
 			if (!tier) throw new UserInputError(`Tier with id ${tierId}' doesn't exist.`);
-			await models.Companies.insertOne({
+			const newCompany: CompanyDbObject = {
 				_id: new ObjectID(),
 				name,
 				tier,
 				eventsOwned: [],
-			});
-			const companyCreated = await models.Companies.findOne({ name });
-			if (!companyCreated) throw new AuthenticationError(`company not found: ${name}`);
-			return companyCreated;
+			};
+			logger.info(`creating company ${JSON.stringify(newCompany)}`)
+			await models.Companies.insertOne(newCompany);
+			return newCompany;
 		},
 		checkInUserToEventByNfc: async (root, { input }, { models, user }) => {
 			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
