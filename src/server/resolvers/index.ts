@@ -262,6 +262,10 @@ export const resolvers: CustomResolvers<Context> = {
 			{ models, user }: Context
 		): Promise<TierDbObject> => {
 			checkIsAuthorized(UserType.Organizer, user);
+			const tier = await models.Tiers.findOne({ name });
+			// currently does not support updating
+			if (tier) throw new UserInputError(`Tier ${name} already exists, no action performed.`);
+
 			const newTier: TierDbObject = {
 				_id: new ObjectID(),
 				name,
@@ -279,6 +283,10 @@ export const resolvers: CustomResolvers<Context> = {
 			checkIsAuthorized(UserType.Organizer, user);
 			const tier = await models.Tiers.findOne({ _id: new ObjectID(tierId) });
 			if (!tier) throw new UserInputError(`Tier with id ${tierId}' doesn't exist.`);
+			// currently does not support updating
+			const comp = await models.Companies.findOne({ name });
+			if (comp) throw new UserInputError(`Company ${name} already exists, no action performed.`);
+
 			const newCompany: CompanyDbObject = {
 				_id: new ObjectID(),
 				name,
