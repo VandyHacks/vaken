@@ -218,7 +218,7 @@ export const resolvers: CustomResolvers<Context> = {
 				status: SponsorStatus.Added,
 				userType: UserType.Sponsor,
 			};
-			logger.info(`creating new sponsor ${JSON.stringify(newSponsor)}`)
+			logger.info(`creating new sponsor ${JSON.stringify(newSponsor)}`);
 			await models.Sponsors.insertOne(newSponsor);
 			return newSponsor;
 		},
@@ -232,7 +232,7 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ok || !value)
 				throw new UserInputError(
 					`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
-					'(Likely the user already declined/confirmed if no value returned)'
+						'(Likely the user already declined/confirmed if no value returned)'
 				);
 
 			// `confirmMySpot` is an identity function if user is already confirmed and is a
@@ -251,7 +251,7 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ok || !value)
 				throw new UserInputError(
 					`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
-					'(Likely the user already declined/confirmed if no value returned)'
+						'(Likely the user already declined/confirmed if no value returned)'
 				);
 			// no email sent if declined
 			return value;
@@ -267,7 +267,7 @@ export const resolvers: CustomResolvers<Context> = {
 				name,
 				permissions: permissions || [],
 			};
-			logger.info(`creating tier ${JSON.stringify(newTier)}`)
+			logger.info(`creating tier ${JSON.stringify(newTier)}`);
 			await models.Tiers.insertOne(newTier);
 			return newTier;
 		},
@@ -285,7 +285,7 @@ export const resolvers: CustomResolvers<Context> = {
 				tier,
 				eventsOwned: [],
 			};
-			logger.info(`creating company ${JSON.stringify(newCompany)}`)
+			logger.info(`creating company ${JSON.stringify(newCompany)}`);
 			await models.Companies.insertOne(newCompany);
 			return newCompany;
 		},

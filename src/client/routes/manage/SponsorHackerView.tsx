@@ -48,7 +48,7 @@ export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 	}
 
 	if (false && !viewHackerTable) {
-		// TODO: FIX
+		// TODO: handle sponsor permissions properly
 		return <p>You dont have permissions to view hacker information</p>;
 	}
 

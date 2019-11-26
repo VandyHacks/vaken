@@ -2,7 +2,7 @@ import { ObjectID } from 'mongodb';
 import { AuthenticationError, UserInputError } from 'apollo-server-express';
 import { HackerDbObject, UserDbInterface } from '../generated/graphql';
 import { Models } from '../models';
-import logger from '../logger'
+import logger from '../logger';
 
 // TODO: (kenli/timliang) Expand functions for Organizers, Mentors collections
 
@@ -69,7 +69,7 @@ export async function registerNFCUIDWithUser(
 		{ returnOriginal: false }
 	);
 
-	logger.info(`registered user ${userID} with NFC id ${nfcID}`)
+	logger.info(`registered user ${userID} with NFC id ${nfcID}`);
 
 	if (ret.value) {
 		if (ret.value.secondaryIds.length > 1) {
@@ -110,7 +110,9 @@ export async function removeUserFromEvent(
 		),
 	]);
 	if (ret[0].result.ok && ret[1].result.ok) {
-		logger.info(`removed user ${userID} (${user.firstName} ${user.lastName}) from event ${eventID}`)
+		logger.info(
+			`removed user ${userID} (${user.firstName} ${user.lastName}) from event ${eventID}`
+		);
 		return user;
 	}
 
@@ -160,7 +162,7 @@ export async function checkInUserToEvent(
 		{ returnOriginal: false }
 	);
 	if (retEvent.ok && retUsr.ok && retUsr.value) {
-		logger.info(`checked in user ${userID} to event ${eventID}`)
+		logger.info(`checked in user ${userID} to event ${eventID}`);
 		return retUsr.value;
 	}
 
