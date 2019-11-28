@@ -46,11 +46,14 @@ export const schema = makeExecutableSchema({
 			store: new (MongoStore(session))(({
 				clientPromise: dbClient.client,
 			} as unknown) as MongoUrlOptions),
-			/*
-			can't use secure cookies b/c only HTTP connection between dyno and Heroku servers, 
-			but don't need it as long as connection as Heroku servers and client are HTTPS
-			*/
-			// cookie: { secure: IS_PROD },
+			cookie: {
+				/*
+					can't use secure cookies b/c only HTTP connection between dyno and Heroku servers, 
+					but don't need it as long as connection as Heroku servers and client are HTTPS
+				*/
+				// secure: IS_PROD,
+				httpOnly: true, // protects against XSS attacks
+			},
 		})
 	);
 	app.use(passport.initialize());
