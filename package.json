@@ -151,7 +151,7 @@
 		"@types/pino": "^5.8.12",
 		"@types/react": "16.9.11",
 		"@types/react-csv": "^1.1.1",
-		"@types/react-dom": "^16.9.3",
+		"@types/react-dom": "^16.9.4",
 		"@types/react-router": "^5.1.2",
 		"@types/react-router-dom": "^5.1.0",
 		"@types/react-select": "^3.0.5",
