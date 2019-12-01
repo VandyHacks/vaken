@@ -80,7 +80,7 @@
 		"apollo-link-error": "^1.1.12",
 		"apollo-link-http": "^1.5.16",
 		"apollo-server-express": "^2.9.7",
-		"aws-sdk": "^2.556.0",
+		"aws-sdk": "^2.580.0",
 		"case": "^1.6.2",
 		"chart.js": "^2.9.1",
 		"chartjs-plugin-datalabels": "^0.7.0",
