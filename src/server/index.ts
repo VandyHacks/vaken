@@ -54,7 +54,7 @@ export const schema = makeExecutableSchema({
 				// secure: IS_PROD,
 				httpOnly: true, // protects against XSS attacks
 				signed: true,
-				sameSite: true
+				sameSite: true,
 			},
 		})
 	);

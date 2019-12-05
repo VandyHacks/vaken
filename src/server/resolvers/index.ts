@@ -432,7 +432,6 @@ export const resolvers: CustomResolvers<Context> = {
 				}))
 			);
 
-			// TODO: Update this to set the hacker's profile fields (name, school, gender, etc.) with application data.
 			if (!result.ok) {
 				throw new UserInputError(
 					`error inputting user application input for user "${id}" ${JSON.stringify(result)}`
