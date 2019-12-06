@@ -3,7 +3,7 @@ import { Bar, Pie, ChartData } from 'react-chartjs-2';
 import { Link } from 'react-router-dom';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
-import chartjs, { ChartOptions } from 'chart.js';
+import { ChartData as OldChartData, ChartOptions } from 'chart.js';
 
 import Spinner from '../../components/Loading/Spinner';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
@@ -111,7 +111,7 @@ const colorPalette = STRINGS.COLOR_PALETTE.slice(1);
 const generateColor = (n: number): string[] =>
 	[...Array(n).keys()].map((i: number) => colorPalette[i % colorPalette.length]);
 
-const barStatusData = (data: { [key: string]: number }): ChartData<chartjs.ChartData> => {
+const barStatusData = (data: { [key: string]: number }): ChartData<OldChartData> => {
 	const statusData = Object.values(data).slice(0, -1);
 	const statusLabels = Object.keys(data).slice(0, -1);
 	return {
@@ -164,7 +164,7 @@ const barStatusOptions: ChartOptions = {
 	},
 };
 
-const pieShirtData = (data: { [key: string]: number }): ChartData<chartjs.ChartData> => {
+const pieShirtData = (data: { [key: string]: number }): ChartData<OldChartData> => {
 	const shirtLabels = Object.keys(data).slice(0, -1);
 	const shirtData = Object.values(data).slice(0, -1);
 
@@ -193,7 +193,7 @@ const pieShirtOptions = {
 	},
 };
 
-const pieGenderData = (data: { [key: string]: number }): ChartData<chartjs.ChartData> => {
+const pieGenderData = (data: { [key: string]: number }): ChartData<OldChartData> => {
 	const genderLabels = Object.keys(data).slice(0, -1);
 	const genderData = Object.values(data).slice(0, -1);
 

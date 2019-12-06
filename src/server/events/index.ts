@@ -1,4 +1,4 @@
-import ical, { CalendarResponse, CalendarComponent, VEvent } from 'node-ical';
+import { fromURL, CalendarResponse, CalendarComponent, VEvent } from 'node-ical';
 import { AuthenticationError, UserInputError } from 'apollo-server-express';
 import { ObjectID } from 'mongodb';
 import { EventUpdateInput, EventDbObject, CompanyDbObject } from '../generated/graphql';
@@ -54,7 +54,7 @@ export const transformCalEventToDBUpdate = (event: Record<string, string>): Even
 export async function pullCalendar(calendarID: string | undefined): Promise<EventUpdate[] | null> {
 	if (calendarID) {
 		const url = `https://www.google.com/calendar/ical/${calendarID}/public/basic.ics`;
-		const cal = await ical.fromURL(url).catch(err => {
+		const cal = await fromURL(url).catch(err => {
 			throw new Error(`Could not fetch calendar at URL: ${url}; Error: ${err.message}`);
 		});
 		const calKeys = Object.keys(cal);

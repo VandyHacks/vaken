@@ -8,30 +8,30 @@ import DB, { Models } from '../models';
 import { fetchUser } from '../resolvers/helpers';
 import logger from '../logger';
 
-export async function getUserFromDb(email: string, userType?: string): Promise<UserDbInterface> {
-	const { Hackers, Organizers, Sponsors } = await new DB().collections;
+// export async function getUserFromDb(email: string, userType?: string): Promise<UserDbInterface> {
+// 	const { Hackers, Organizers, Sponsors } = await new DB().collections;
 
-	let user: UserDbInterface | null = null;
-	switch (userType) {
-		case UserType.Hacker:
-			user = await Hackers.findOne({ email });
-			break;
-		case UserType.Organizer:
-			user = await Organizers.findOne({ email });
-			break;
-		case UserType.Sponsor:
-			user = await Sponsors.findOne({ email });
-			break;
-		default:
-			throw new Error(`invalid userType '${userType}'`);
-	}
+// 	let user: UserDbInterface | null = null;
+// 	switch (userType) {
+// 		case UserType.Hacker:
+// 			user = await Hackers.findOne({ email });
+// 			break;
+// 		case UserType.Organizer:
+// 			user = await Organizers.findOne({ email });
+// 			break;
+// 		case UserType.Sponsor:
+// 			user = await Sponsors.findOne({ email });
+// 			break;
+// 		default:
+// 			throw new Error(`invalid userType '${userType}'`);
+// 	}
 
-	if (!user) {
-		throw new Error(`couldn't find user (${user}) with email ${email}`);
-	}
+// 	if (!user) {
+// 		throw new Error(`couldn't find user (${user}) with email ${email}`);
+// 	}
 
-	return user;
-}
+// 	return user;
+// }
 
 export const verifyCallback = async (
 	models: Models,
