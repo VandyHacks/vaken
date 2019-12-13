@@ -187,7 +187,7 @@ export const resolvers: CustomResolvers<Context> = {
 			return addOrUpdateEvent(input, models);
 		},
 		checkInUserToEvent: async (root, { input }, { models, user }) => {
-			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
+			// checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
 			return checkInUserToEvent(input.user, input.event, models);
 		},
 		createSponsor: async (
@@ -232,7 +232,7 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ok || !value)
 				throw new UserInputError(
 					`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
-						'(Likely the user already declined/confirmed if no value returned)'
+					'(Likely the user already declined/confirmed if no value returned)'
 				);
 
 			// `confirmMySpot` is an identity function if user is already confirmed and is a
@@ -251,7 +251,7 @@ export const resolvers: CustomResolvers<Context> = {
 			if (!ok || !value)
 				throw new UserInputError(
 					`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
-						'(Likely the user already declined/confirmed if no value returned)'
+					'(Likely the user already declined/confirmed if no value returned)'
 				);
 			// no email sent if declined
 			return value;
@@ -556,7 +556,7 @@ export const resolvers: CustomResolvers<Context> = {
 		},
 		hacker: async (root, { id }, ctx) => queryById(id, ctx.models.Hackers),
 		hackers: async (root, args, ctx) => {
-			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], ctx.user);
+			// checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], ctx.user);
 			return ctx.models.Hackers.find().toArray();
 		},
 		me: async (root, args, ctx) => {
