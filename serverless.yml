@@ -1,0 +1,27 @@
+service: sls-vaken-2
+
+frameworkVersion: '>=1.1.0 <2.0.0'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  memorySize: 128
+  environment:
+    MONGODB_BASE_URL: ${env:MONGODB_BASE_URL}
+
+functions:
+  checkin:
+    handler: handler.checkin
+    events:
+      - http:
+          path: events/checkin
+          method: post
+  hackers:
+    handler: handler.hackers
+    events:
+      - http:
+          path: hackers
+          method: get
+
+plugins:
+  - serverless-plugin-typescript

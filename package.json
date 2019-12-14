@@ -190,6 +190,7 @@
 		"pino-pretty": "^3.2.2",
 		"prettier": "^1.18.2",
 		"react-test-renderer": "^16.11.0",
+		"serverless-plugin-typescript": "^1.1.9",
 		"style-loader": "^1.0.0",
 		"supertest": "^4.0.2",
 		"svg-inline-loader": "^0.8.0",
