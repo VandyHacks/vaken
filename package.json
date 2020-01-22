@@ -100,7 +100,7 @@
 		"helmet": "^3.21.2",
 		"immer": "^4.0.2",
 		"jest-junit": "^9.0.0",
-		"mongodb": "^3.3.3",
+		"mongodb": "^3.5.2",
 		"mongodb-memory-server": "^6.0.1",
 		"node-ical": "^0.10.0",
 		"passport": "^0.4.0",
