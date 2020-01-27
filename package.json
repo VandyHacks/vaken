@@ -169,7 +169,7 @@
 		"copy-webpack-plugin": "^5.1.1",
 		"css-loader": "^3.2.0",
 		"error-overlay-webpack-plugin": "^0.4.1",
-		"eslint": "^6.6.0",
+		"eslint": "6.6.0",
 		"eslint-config-airbnb": "^18.0.1",
 		"eslint-config-prettier": "^6.5.0",
 		"eslint-import-resolver-typescript": "^2.0.0",
