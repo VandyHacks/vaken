@@ -6,8 +6,7 @@ Guide for contributors
 
 You will need [npm](https://github.com/npm/cli) as a package manager and build runner.
 
-Run `./scripts/install.sh` from the top level of the Vaken repository. Note that the variables in
-the new `.env` file will need to be changed to valid values.
+Run `./scripts/install.sh` from the top level of the Vaken repository. Note that you'll need to create a valid `.env`. We recommend copying from `.env.template` to get started.
 
 **Installing MongoDB:**
 

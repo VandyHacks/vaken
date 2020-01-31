@@ -4,8 +4,8 @@
 ENVFILE=".env"
 GLOBAL_DEPS=("webpack" "webpack-cli" "typescript" "ts-node")
 
-cp "$ENVFILE.template" "$ENVFILE"
-echo "Please update $ENVFILE with valid environment variables."
+# cp "$ENVFILE.template" "$ENVFILE"
+echo "Please update $ENVFILE with valid environment variables. You can find a template in $ENVFILE.template."
 
 npm install # local dependencies
 npm install -g "${GLOBAL_DEPS[@]}"
