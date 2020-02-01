@@ -2,7 +2,7 @@
 
 exports[`Test Status renders correctly 1`] = `
 <div
-  className="sc-bdVaJa bWPmXI"
+  className="sc-AykKC jcwCmN"
 >
   CONFIRMED
 </div>

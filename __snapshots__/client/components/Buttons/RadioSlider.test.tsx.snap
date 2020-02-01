@@ -2,24 +2,24 @@
 
 exports[`Test RadioSlider RadioSlider renders correctly 1`] = `
 <div
-  className="sc-bdVaJa sKpin"
+  className="sc-AykKC jhrMEt"
 >
   <div
-    className="sc-bwzfXH bOrHqw"
+    className="sc-AykKD jthvSF"
     id="a"
     onClick={[Function]}
   >
     a
   </div>
   <div
-    className="sc-bwzfXH bOrHqw"
+    className="sc-AykKD jthvSF"
     id="b"
     onClick={[Function]}
   >
     b
   </div>
   <div
-    className="sc-bwzfXH bOrHqw"
+    className="sc-AykKD jthvSF"
     id="c"
     onClick={[Function]}
   >
