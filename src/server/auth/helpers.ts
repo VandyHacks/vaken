@@ -4,7 +4,7 @@ import { Profile } from 'passport';
 import { ObjectID } from 'mongodb';
 import { IProfile } from 'passport-azure-ad';
 import { UserDbInterface, UserType, ApplicationStatus, SponsorStatus } from '../generated/graphql';
-import DB, { Models } from '../models';
+import { Models } from '../models';
 import { fetchUser } from '../resolvers/helpers';
 import logger from '../logger';
 

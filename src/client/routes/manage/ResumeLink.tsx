@@ -69,7 +69,7 @@ export const ResumeLink: FC<ResumeLinkProps> = (props: { id: string }) => {
 	});
 	const { data: { signedReadUrl = '' } = {} } = fileReadUrlQuery || {};
 
-	const getLink = () => {
+	const getLink = (): void => {
 		setLinkLoc(
 			signedReadUrl.length > 0
 				? `<a href="${signedReadUrl}"  target="_blank" rel="noopener noreferrer">Resume Link</a>`

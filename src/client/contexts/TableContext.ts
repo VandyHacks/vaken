@@ -84,5 +84,7 @@ export interface TableCtxI {
 
 export const TableContext = createContext<TableCtxI>({
 	state: defaultTableState,
-	update: () => {},
+	update: () => {
+		// Do nothing
+	},
 });

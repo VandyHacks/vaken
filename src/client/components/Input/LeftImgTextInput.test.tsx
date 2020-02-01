@@ -5,7 +5,17 @@ import LeftImgTextInput from './LeftImgTextInput';
 describe('Test LeftImgTextInput', () => {
 	it('LeftImgTextInput renders correctly', async () => {
 		const component = renderer
-			.create(<LeftImgTextInput setState={() => {}} img="a" imgAlt="b" value="c" invalid={false} />)
+			.create(
+				<LeftImgTextInput
+					setState={() => {
+						// Do nothing
+					}}
+					img="a"
+					imgAlt="b"
+					value="c"
+					invalid={false}
+				/>
+			)
 			.toJSON();
 
 		expect(component).toMatchSnapshot();
