@@ -188,7 +188,7 @@
 		"html-webpack-plugin": "^3.2.0",
 		"jest": "^24.9.0",
 		"jest-transform-css": "^2.0.0",
-		"pino-pretty": "^3.2.2",
+		"pino-pretty": "^3.5.0",
 		"prettier": "^1.18.2",
 		"react-test-renderer": "^16.11.0",
 		"style-loader": "^1.0.0",
