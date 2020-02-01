@@ -320,6 +320,14 @@ describe('Test events updating', () => {
 		});
 	});
 	describe('checkIdentityForEvent', () => {
+		beforeEach(async () => {
+			await Promise.all([models.Companies.deleteMany({}), models.Events.deleteMany({})]);
+			await Promise.all([
+				models.Events.insertOne(testEvent),
+				models.Companies.insertOne(testCompany),
+			]);
+		});
+
 		afterAll(async () => {
 			try {
 				const ret = await models.Events.findOneAndUpdate(
