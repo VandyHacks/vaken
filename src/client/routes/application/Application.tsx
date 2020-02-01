@@ -90,7 +90,7 @@ const disableEnter = (e: React.KeyboardEvent<HTMLFormElement>): void => {
 	if (e.key === 'Enter') e.preventDefault();
 };
 
-let autosaveTimeout: number; // setTimeout return value
+let autosaveTimeout: NodeJS.Timeout;
 
 /**
  * Finds the first element that is required (not optional) but does not have any input.
