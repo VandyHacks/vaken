@@ -12,7 +12,7 @@
 		"resolveJsonModule": true,
 		"sourceMap": true,
 		"strict": true,
-		"target": "esnext",
+		"target": "es2019", // ts-jest#1299 todo(2020/03/01): revert to esnext if fixed
 		"outDir": "./dist/",
 		"baseUrl": ".",
 		"paths": {
