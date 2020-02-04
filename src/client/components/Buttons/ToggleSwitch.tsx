@@ -57,7 +57,13 @@ interface Props {
 }
 
 export const ToggleSwitch: FunctionComponent<Props> = (props: Props): JSX.Element => {
-	const { label, checked, onChange = (): void => {} } = props;
+	const {
+		label,
+		checked,
+		onChange = (): void => {
+			/* Do nothing */
+		},
+	} = props;
 	return (
 		<Label>
 			{label}

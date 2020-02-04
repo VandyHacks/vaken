@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ToggleSwitch HeaderButton 1`] = `
+<label
+  className="sc-AykKC jLQsUg"
+>
+  TestButton
+  <div
+    className="sc-AykKD eIPUn"
+    onClick={[Function]}
+  >
+    <div
+      checked={false}
+      className="sc-AykKE fltsFB"
+    />
+  </div>
+</label>
+`;

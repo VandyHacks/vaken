@@ -19,7 +19,6 @@ const { SESSION_SECRET, PORT, CALENDARID, NODE_ENV } = process.env;
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
 if (!PORT) throw new Error(`PORT not set`);
 if (!CALENDARID) logger.info('CALENDARID not set; skipping ical integration');
-const IS_PROD = NODE_ENV === 'production';
 logger.info(`Node env: ${NODE_ENV}`);
 
 const app = express();

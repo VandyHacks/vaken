@@ -2,15 +2,15 @@
 
 exports[`Login renders properly 1`] = `
 <div
-  className="sc-fjdhpX dmItWC"
+  className="sc-fzXfLU iztQUG"
 >
   <div
-    className="sc-bdVaJa sc-bwzfXH sc-ifAKCX sc-jzJRlG cRbDmn"
+    className="sc-AykKC sc-AykKD sc-AykKG sc-fzXfLV dUKzEe"
     height="25"
     width="27rem"
   >
     <h1
-      className="sc-cSHVUG bxzAjH"
+      className="sc-fzXfLW eNkWaH"
       color="#3f3356"
     >
       VandyHacks VI
@@ -24,21 +24,21 @@ exports[`Login renders properly 1`] = `
       }
     >
       <button
-        className="sc-gqjmRU hxBurY"
+        className="sc-fzXfLR imZsMN"
       >
         <div
-          className="sc-bdVaJa sc-bwzfXH sc-htpNat dyMbAR"
+          className="sc-AykKC sc-AykKD sc-AykKE cvRlqV"
           height="min-content"
           width="min-content"
         >
           <img
             alt="GitHub logo"
-            className="sc-iwsKbI kXBzef"
+            className="sc-fzXfLP jXeLxW"
             src="IconMock"
           />
         </div>
         <div
-          className="sc-htoDjs eEqYMT"
+          className="sc-AykKK kJbDaA"
         >
           Sign in with GitHub
         </div>
@@ -53,21 +53,21 @@ exports[`Login renders properly 1`] = `
       }
     >
       <button
-        className="sc-gqjmRU hxBurY"
+        className="sc-fzXfLR imZsMN"
       >
         <div
-          className="sc-bdVaJa sc-bwzfXH sc-htpNat dyMbAR"
+          className="sc-AykKC sc-AykKD sc-AykKE cvRlqV"
           height="min-content"
           width="min-content"
         >
           <img
             alt="Google logo"
-            className="sc-iwsKbI kXBzef"
+            className="sc-fzXfLP jXeLxW"
             src="IconMock"
           />
         </div>
         <div
-          className="sc-htoDjs eEqYMT"
+          className="sc-AykKK kJbDaA"
         >
           Sign in with Google
         </div>
@@ -82,21 +82,21 @@ exports[`Login renders properly 1`] = `
       }
     >
       <button
-        className="sc-gqjmRU hxBurY"
+        className="sc-fzXfLR imZsMN"
       >
         <div
-          className="sc-bdVaJa sc-bwzfXH sc-htpNat dyMbAR"
+          className="sc-AykKC sc-AykKD sc-AykKE cvRlqV"
           height="min-content"
           width="min-content"
         >
           <img
             alt="Microsoft logo"
-            className="sc-iwsKbI kXBzef"
+            className="sc-fzXfLP jXeLxW"
             src="IconMock"
           />
         </div>
         <div
-          className="sc-htoDjs eEqYMT"
+          className="sc-AykKK kJbDaA"
         >
           Sign in with Microsoft
         </div>

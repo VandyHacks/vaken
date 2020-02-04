@@ -5,7 +5,10 @@ import { HeaderButton } from './HeaderButton';
 it('HeaderButton', () => {
 	const component = renderer
 		.create(
-			<HeaderButton onClick={() => {}}>
+			<HeaderButton
+				onClick={() => {
+					/* Do nothing */
+				}}>
 				<div>child</div>
 			</HeaderButton>
 		)

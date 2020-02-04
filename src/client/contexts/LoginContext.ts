@@ -3,6 +3,11 @@ import { createContext } from 'react';
 export const LoginContext = createContext<{
 	state: boolean;
 	update: (b: boolean) => void;
-}>({ state: false, update: () => {} });
+}>({
+	state: false,
+	update: () => {
+		// Do nothing
+	},
+});
 
 export default LoginContext;

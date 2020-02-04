@@ -44,6 +44,17 @@ module.exports = {
 			{ devDependencies: ['**/*.test.tsx', '**/*.test.ts'] },
 		],
 		'import/prefer-default-export': [0],
+		'import/extensions': [
+			'error',
+			'ignorePackages',
+			{
+				js: 'never',
+				mjs: 'never',
+				jsx: 'never',
+				ts: 'never',
+				tsx: 'never',
+			},
+		],
 	},
 	root: true,
 	overrides: [
