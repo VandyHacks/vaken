@@ -10,7 +10,8 @@ import { resolvers } from './resolvers';
 import DB from './models';
 import Context from './context';
 import logger from './logger';
-import { strategies, registerAuthRoutes } from './auth';
+import { registerAuthRoutes, registerAuthRoute } from './auth';
+import config from '../../vaken.config';
 import { UnsubscribeHandler } from './mail/handlers';
 import { UserDbInterface } from './generated/graphql';
 import { pullCalendar } from './events';
@@ -60,14 +61,20 @@ export const schema = makeExecutableSchema({
 	app.use(passport.initialize());
 	app.use(passport.session());
 
-	passport.use('github', strategies.github(models));
-	passport.use('google', strategies.google(models));
-	passport.use('microsoft', strategies.microsoft(models));
-
+	// init basic registration routes
 	registerAuthRoutes(app);
 
+	// FIXME: foreach
+	/* eslint-disable */
+	const authMethods = ['session'];
+	for (const plugin of config) {
+		passport.use(plugin.package.name, plugin.package.strategy(models));
+		authMethods.push(plugin.package.name);
+		registerAuthRoute(app, plugin.package.name);
+	}
+
 	app.use((req, res, next) =>
-		passport.authenticate(['session', 'github', 'google', 'microsoft'], (err, user) => {
+		passport.authenticate(authMethods, (err, user) => {
 			if (err) return void next();
 			return void req.login(user, next);
 		})(req, res, next)

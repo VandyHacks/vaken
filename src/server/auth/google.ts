@@ -21,6 +21,7 @@ export const strategy = (models: Models): Strategy =>
 			clientID: GOOGLE_CLIENT_ID,
 			clientSecret: GOOGLE_CLIENT_SECRET,
 			passReqToCallback: false,
+			scope: ['openid', 'profile', 'email']
 		},
 		(accessToken, refreshToken, profile, done) => void verifyCallback(models, profile, done)
 	);
