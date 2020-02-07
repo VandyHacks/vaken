@@ -64,14 +64,13 @@ export const schema = makeExecutableSchema({
 	// init basic registration routes
 	registerAuthRoutes(app);
 
-	// FIXME: foreach
-	/* eslint-disable */
+	// iterate through imported plugins, adding each plugin to oauth strategies and creating routes
 	const authMethods = ['session'];
-	for (const plugin of config) {
+	config.forEach(plugin => {
 		passport.use(plugin.package.name, plugin.package.strategy(models));
 		authMethods.push(plugin.package.name);
 		registerAuthRoute(app, plugin.package.name);
-	}
+	});
 
 	app.use((req, res, next) =>
 		passport.authenticate(authMethods, (err, user) => {
