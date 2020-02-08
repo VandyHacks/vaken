@@ -1,6 +1,7 @@
 import { OIDCStrategy as Strategy, IProfile } from 'passport-azure-ad';
 import { VerifyCallback } from 'passport-oauth2';
-import { verifyMicrosoftCallback } from './helpers';
+import { Profile } from 'passport';
+import { verifyCallback } from './helpers';
 import { Models } from '../models';
 
 const { MSFT_CLIENT_ID, MSFT_CLIENT_SECRET, MSFT_REDIRECT_URL } = process.env;
@@ -27,7 +28,15 @@ export const strategy = (models: Models): Strategy =>
 			scope: ['email'],
 			validateIssuer: false,
 		},
-		(profile: IProfile, done: VerifyCallback) => void verifyMicrosoftCallback(models, profile, done)
+		(profile: IProfile, done: VerifyCallback) => {
+			const coercedProfile: Profile = {
+				displayName: profile.displayName || '',
+				id: profile.sub || profile._json.sub,
+				provider: 'microsoft',
+				emails: [{ value: profile._json.email }],
+			};
+			void verifyCallback(models, coercedProfile, done);
+		}
 	);
 
 export default {
