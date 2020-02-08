@@ -7,6 +7,7 @@ import { Models } from '../models';
 import { fetchUser } from '../resolvers/helpers';
 import logger from '../logger';
 
+// TODO: make this a thing in ./scripts
 // export async function getUserFromDb(email: string, userType?: string): Promise<UserDbInterface> {
 // 	const { Hackers, Organizers, Sponsors } = await new DB().collections;
 
@@ -35,7 +36,7 @@ import logger from '../logger';
 export const verifyCallback = async (
 	models: Models,
 	profile: Profile,
-	done: VerifyCallback | GVerifyCallback
+	done: VerifyCallback
 ): Promise<void> => {
 	const { Logins, Hackers, Sponsors } = models;
 
