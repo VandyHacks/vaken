@@ -22,9 +22,5 @@ export const strategy = (models: Models): Strategy =>
 			clientSecret: GOOGLE_CLIENT_SECRET,
 			passReqToCallback: false,
 		},
-		(accessToken, refreshToken, profile, done) => void verifyCallback(models, profile, done)
+		(_, __, profile, done) => void verifyCallback(models, profile, done)
 	);
-
-export default {
-	strategy,
-};

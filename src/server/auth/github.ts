@@ -23,10 +23,5 @@ export const strategy = (models: Models): Strategy =>
 			passReqToCallback: false,
 			scope: ['user:email'], // fetches non-public emails as well
 		},
-		(accessToken, refreshToken, results, profile, verified) =>
-			void verifyCallback(models, profile, verified)
+		(_, __, ___, profile, verified) => void verifyCallback(models, profile, verified)
 	);
-
-export default {
-	strategy,
-};

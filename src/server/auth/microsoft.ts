@@ -38,7 +38,3 @@ export const strategy = (models: Models): Strategy =>
 			void verifyCallback(models, coercedProfile, done);
 		}
 	);
-
-export default {
-	strategy,
-};
