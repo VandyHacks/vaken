@@ -1,5 +1,5 @@
 import { Strategy } from 'passport-github2';
-import { verifyCallback } from './helpers';
+import { processOAuthCallback } from './helpers';
 import { Models } from '../models';
 
 const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_CALLBACK_URL } = process.env;
@@ -23,5 +23,5 @@ export const strategy = (models: Models): Strategy =>
 			passReqToCallback: false,
 			scope: ['user:email'], // fetches non-public emails as well
 		},
-		(_, __, ___, profile, verified) => void verifyCallback(models, profile, verified)
+		(_, __, ___, profile, verified) => void processOAuthCallback(models, profile, verified)
 	);

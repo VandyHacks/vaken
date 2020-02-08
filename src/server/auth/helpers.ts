@@ -1,5 +1,4 @@
 import { VerifyCallback } from 'passport-oauth2';
-import { VerifyCallback as GVerifyCallback } from 'passport-google-oauth20';
 import { Profile } from 'passport';
 import { ObjectID } from 'mongodb';
 import { UserDbInterface, UserType, ApplicationStatus, SponsorStatus } from '../generated/graphql';
@@ -7,7 +6,7 @@ import { Models } from '../models';
 import { fetchUser } from '../resolvers/helpers';
 import logger from '../logger';
 
-export const verifyCallback = async (
+export const processOAuthCallback = async (
 	models: Models,
 	profile: Profile,
 	done: VerifyCallback
@@ -92,8 +91,4 @@ export const verifyCallback = async (
 	} catch (err) {
 		return void done(err);
 	}
-};
-
-export default {
-	verifyCallback,
 };
