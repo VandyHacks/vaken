@@ -1,5 +1,5 @@
 import { Strategy } from 'passport-github2';
-import { processOAuthCallback } from './helpers';
+import processOAuthCallback from './processOAuthCallback';
 import { Models } from '../models';
 
 const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_CALLBACK_URL } = process.env;

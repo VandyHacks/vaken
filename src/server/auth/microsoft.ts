@@ -1,7 +1,7 @@
 import { OIDCStrategy as Strategy, IProfile } from 'passport-azure-ad';
 import { VerifyCallback } from 'passport-oauth2';
 import { Profile } from 'passport';
-import { processOAuthCallback } from './helpers';
+import processOAuthCallback from './processOAuthCallback';
 import { Models } from '../models';
 
 const { MSFT_CLIENT_ID, MSFT_CLIENT_SECRET, MSFT_REDIRECT_URL } = process.env;

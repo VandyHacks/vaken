@@ -1,7 +1,7 @@
 import { Strategy } from 'passport-google-oauth20';
-import { processOAuthCallback } from './helpers';
-import { Models } from '../models';
 import { VerifyCallback } from 'passport-oauth2';
+import processOAuthCallback from './processOAuthCallback';
+import { Models } from '../models';
 
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL } = process.env;
 
