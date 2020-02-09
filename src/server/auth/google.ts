@@ -1,5 +1,4 @@
 import { Strategy } from 'passport-google-oauth20';
-import { VerifyCallback } from 'passport-oauth2';
 import processOAuthCallback from './processOAuthCallback';
 import { Models } from '../models';
 
@@ -33,7 +32,7 @@ export const strategy = (models: Models): Strategy =>
 					// the idiomatic one that we use wants Error | null | undefined
 					// Google wants Error | string | undefined because of course it does
 					// see https://www.typescriptlang.org/docs/handbook/advanced-types.html#instanceof-type-guards
-					void done(err instanceof Error ? err : new Error(err as (string | undefined)), user, info)
+					void done(err instanceof Error ? err : new Error(err as string | undefined), user, info)
 			);
 		}
 	);
