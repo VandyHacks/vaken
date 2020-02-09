@@ -1,4 +1,4 @@
-import { Strategy } from 'passport-google-oauth20';
+import { Strategy, VerifyCallback as GVerifyCallback } from 'passport-google-oauth20';
 import processOAuthCallback from './processOAuthCallback';
 import { Models } from '../models';
 
@@ -23,16 +23,20 @@ export const strategy = (models: Models): Strategy =>
 			passReqToCallback: false,
 			scope: ['openid', 'profile', 'email'],
 		},
-		(_, __, profile, done) => {
-			void processOAuthCallback(
-				models,
-				profile,
-				(err, user, info) =>
-					// the Google verifyCallback function has a *slightly* different call signature for the first param
-					// the idiomatic one that we use wants Error | null | undefined
-					// Google wants Error | string | undefined because of course it does
-					// see https://www.typescriptlang.org/docs/handbook/advanced-types.html#instanceof-type-guards
-					void done(err instanceof Error ? err : new Error(err as string | undefined), user, info)
-			);
+		// explicitly typing done to clarify the difference in the two VerifyCallback signatures
+		(_, __, profile, done: GVerifyCallback) => {
+			void processOAuthCallback(models, profile, (err, user, info) => {
+				// the Google verifyCallback function has a *slightly* different call signature for the first param
+				// the way we call this function uses wants Error | null | undefined
+				// Google wants Error | string | undefined because of course it does
+				// we just need to take care of the difference between null/undefined and we're fine
+				// I want to note here that passport and the google passport library are made by the same ****ing person
+				let coercedErr: Error | string | undefined;
+
+				if (err == null) coercedErr = undefined;
+				else coercedErr = err;
+
+				return done(coercedErr, user, info);
+			});
 		}
 	);
