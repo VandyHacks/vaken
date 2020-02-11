@@ -1,12 +1,8 @@
 {
 	"eslint.enable": true,
-	// "eslint.run": "onSave", // do this in your user settings if you want it
 	"eslint.packageManager": "npm",
 	"eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
 	"editor.formatOnSave": true,
-	// "editor.codeActionsOnSave": {
-	// 	"source.fixAll.eslint": true
-	// },
 	"search.exclude": {
 		"**/node_modules": true,
 		"**/bower_components": true
@@ -27,5 +23,6 @@
 	},
 	"[jsonc]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	}
+	},
+	"deepscan.enable": true
 }
