@@ -79,10 +79,7 @@ export const ResumeLink: FC<ResumeLinkProps> = (props: { id: string }) => {
 
 	if (loading) return <Spinner />;
 
-	if (error) {
-		return <></>;
-		throw error;
-	}
+	if (error) return <></>;
 
 	// If an ID was provided, no error was thrown, and it's not loading, then we have a weird problem.
 	if (!data) throw new Error('No error was thrown, but no data was found either :(');

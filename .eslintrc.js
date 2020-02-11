@@ -62,5 +62,9 @@ module.exports = {
 			files: ['**/*.test.js'],
 			env: { 'jest/globals': true },
 		},
+		{
+			files: ['__mocks__/*.js'],
+			parserOptions: { "ecmaVersion": 6 }
+		}
 	],
 };

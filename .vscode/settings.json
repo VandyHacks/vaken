@@ -13,5 +13,14 @@
 		"**/.git/**": true,
 		"**/node_modules/*/**": true
 	},
-	"deepscan.enable": true
+	"deepscan.enable": true,
+	"[typescript]": {
+		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
+	}
 }
