@@ -127,7 +127,7 @@ export async function checkInUserToEvent(
 	const userObjectID = new ObjectID(userID);
 	const eventObjectID = new ObjectID(eventID);
 	const user = await models.Hackers.findOne({ _id: userObjectID });
-	if (!user) if (!user) throw new UserInputError(`user ${userID} not found`);
+	if (!user) throw new UserInputError(`user ${userID} not found`);
 
 	const eventCheckInObj = {
 		_id: ObjectID.createFromTime(Date.now()),
