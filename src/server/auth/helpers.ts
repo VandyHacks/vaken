@@ -156,8 +156,8 @@ export const verifyMicrosoftCallback = async (
 			});
 
 			try {
-				// If user is truthy, then we need to insert a new user.
-				user = await fetchUser({ email, userType: userType || UserType.Hacker }, models);
+				// if usertype is null, just default to making them as a hacker
+				user = await fetchUser({ email, userType: UserType.Hacker }, models);
 			} catch (e) {
 				// This way logging in with different providers uses the same backing hacker object.
 				logger.info(`inserting ${email} (${PROVIDER}) into hacker db`);
