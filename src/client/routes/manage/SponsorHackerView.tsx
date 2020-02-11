@@ -24,8 +24,8 @@ export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 		sponsorData = sponsorMeQueryResult.data.me as Sponsor;
 
 		if (
-			!sponsorLoading &&
-			sponsorData &&
+			// !sponsorLoading &&
+			// sponsorData &&
 			sponsorData.company &&
 			sponsorData.company.tier &&
 			sponsorData.company.tier.permissions
