@@ -104,5 +104,9 @@ module.exports = {
 				'react/require-default-props': [0],
 			},
 		},
+		{
+			files: ['__mocks__/*.js'],
+			parserOptions: { ecmaVersion: 6 },
+		},
 	],
 };
