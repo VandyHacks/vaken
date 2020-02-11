@@ -1,4 +1,3 @@
-import { ObjectId } from 'mongodb';
 import DB, { Models } from '../src/server/models';
 import { LoginDbObject, UserType } from '../src/server/generated/graphql';
 
