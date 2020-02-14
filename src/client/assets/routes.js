@@ -5,6 +5,7 @@ import { HackerDash } from '../routes/dashboard/HackerDash';
 // import { Profile } from '../routes/profile/Profile';
 import { Help } from '../routes/help/Help';
 import { UserType } from '../generated/graphql';
+import config from '../../../vaken.config';
 
 const routes = [
 	{
@@ -80,5 +81,14 @@ const routes = [
 		path: '/nfc',
 	},
 ];
+
+config.forEach(plugin => {
+	routes.push({
+		authLevel: [UserType.Organizer], // TODO(timliang): don't hardcode this
+		component: plugin.package.component, // TODO(timliang): investigate React.lazy on this
+		displayText: plugin.package.displayText,
+		path: plugin.package.path,
+	});
+});
 
 export default routes;
