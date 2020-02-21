@@ -12,22 +12,21 @@ import { Models } from '../models';
 import { fetchUser } from '../resolvers/helpers';
 import logger from '../logger';
 
+// Type of request that will be sent to LoginDbObject
+interface LoginRequest {
+	createdAt: Date;
+	email: string;
+	provider: string;
+	token: string;
+	userType: UserType;
+}
+
 // inserts a login to pass loginModel
 async function insertLogin(
 	loginsModel: Collection<LoginDbObject>,
-	date: Date,
-	email: string,
-	provider: string,
-	id: string,
-	userType: UserType
+	login: LoginRequest
 ): Promise<void> {
-	await loginsModel.insertOne({
-		createdAt: date,
-		email,
-		provider,
-		token: id,
-		userType,
-	});
+	await loginsModel.insertOne(login);
 }
 
 export default async (models: Models, profile: Profile, done: VerifyCallback): Promise<void> => {
@@ -43,6 +42,7 @@ export default async (models: Models, profile: Profile, done: VerifyCallback): P
 		if (email == null) throw new Error(`Email not provided by provider ${JSON.stringify(profile)}`);
 
 		let user: UserDbInterface | undefined;
+		let loginRequest: LoginRequest | undefined;
 
 		if (userType == null) {
 			// Login must not exist.
@@ -51,7 +51,15 @@ export default async (models: Models, profile: Profile, done: VerifyCallback): P
 			const verifySponsor = await Sponsors.findOne({ email });
 			if (verifySponsor != null) {
 				// it is a sponsor and change the status of the sponsor
-				insertLogin(Logins, new Date(), email, profile.provider, profile.id, UserType.Sponsor);
+				loginRequest = {
+					createdAt: new Date(),
+					email,
+					provider: profile.provider,
+					token: profile.id,
+					userType: UserType.Sponsor,
+				};
+
+				await insertLogin(Logins, loginRequest);
 
 				// useSponsorStatusMutation({
 				// 	variables: { input: { email, status: SponsorStatus.Created } }
@@ -63,7 +71,14 @@ export default async (models: Models, profile: Profile, done: VerifyCallback): P
 				);
 				userType = UserType.Sponsor;
 			} else {
-				insertLogin(Logins, new Date(), email, profile.provider, profile.id, UserType.Hacker);
+				loginRequest = {
+					createdAt: new Date(),
+					email,
+					provider: profile.provider,
+					token: profile.id,
+					userType: UserType.Hacker,
+				};
+				await insertLogin(Logins, loginRequest);
 			}
 
 			try {
