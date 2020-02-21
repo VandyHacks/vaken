@@ -1,10 +1,34 @@
 import { VerifyCallback } from 'passport-oauth2';
 import { Profile } from 'passport';
-import { ObjectID } from 'mongodb';
-import { UserDbInterface, UserType, ApplicationStatus, SponsorStatus } from '../generated/graphql';
+import { ObjectID, Collection } from 'mongodb';
+import {
+	UserDbInterface,
+	UserType,
+	ApplicationStatus,
+	SponsorStatus,
+	LoginDbObject,
+} from '../generated/graphql';
 import { Models } from '../models';
 import { fetchUser } from '../resolvers/helpers';
 import logger from '../logger';
+
+// inserts a login to pass loginModel
+async function insertLogin(
+	loginsModel: Collection<LoginDbObject>,
+	date: Date,
+	email: string,
+	provider: string,
+	id: string,
+	userType: UserType
+): Promise<void> {
+	await loginsModel.insertOne({
+		createdAt: date,
+		email,
+		provider,
+		token: id,
+		userType,
+	});
+}
 
 export default async (models: Models, profile: Profile, done: VerifyCallback): Promise<void> => {
 	const { Logins, Hackers, Sponsors } = models;
@@ -27,13 +51,8 @@ export default async (models: Models, profile: Profile, done: VerifyCallback): P
 			const verifySponsor = await Sponsors.findOne({ email });
 			if (verifySponsor != null) {
 				// it is a sponsor and change the status of the sponsor
-				await Logins.insertOne({
-					createdAt: new Date(),
-					email,
-					provider: profile.provider,
-					token: profile.id,
-					userType: UserType.Sponsor,
-				});
+				insertLogin(Logins, new Date(), email, profile.provider, profile.id, UserType.Sponsor);
+
 				// useSponsorStatusMutation({
 				// 	variables: { input: { email, status: SponsorStatus.Created } }
 				// });
@@ -44,13 +63,7 @@ export default async (models: Models, profile: Profile, done: VerifyCallback): P
 				);
 				userType = UserType.Sponsor;
 			} else {
-				await Logins.insertOne({
-					createdAt: new Date(),
-					email,
-					provider: profile.provider,
-					token: profile.id,
-					userType: UserType.Hacker,
-				});
+				insertLogin(Logins, new Date(), email, profile.provider, profile.id, UserType.Hacker);
 			}
 
 			try {
