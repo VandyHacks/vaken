@@ -2,13 +2,13 @@ import gql from 'graphql-tag';
 
 
 export default gql`
-  type __PLUGIN__Event @entity {
+  type _PLUGIN__Event @entity {
     id: ID! @id @column
     name: String! @column
     startTimestamp: Float! @column(overrideType: "Date")
     duration: Int! @column
     attendees: [ID!]! @column
-    checkins: [__PLUGIN__EventCheckIn!]! @embedded
+    checkins: [_PLUGIN__EventCheckIn!]! @embedded
     warnRepeatedCheckins: Boolean! @column
     description: String @column
     location: String! @column
@@ -17,39 +17,39 @@ export default gql`
     owner: Company @embedded
   }
 
-  type __PLUGIN__EventCheckIn @entity(embedded: true) {
+  type _PLUGIN__EventCheckIn @entity(embedded: true) {
     id: ID! @id @column
     user: String! @column
     timestamp: Int! @column(overrideType: "Date")
   }
 
-  type Query {
-    __PLUGIN__event(id: ID!): __PLUGIN__Event!
-		__PLUGIN__events(sortDirection: SortDirection): [__PLUGIN__Event!]!
-		__PLUGIN__eventCheckIn(id: ID!): __PLUGIN__EventCheckIn!
-    __PLUGIN__eventCheckIns(sortDirection: SortDirection): [__PLUGIN__EventCheckIn!]!
+  extend type Query {
+    _PLUGIN__event(id: ID!): _PLUGIN__Event!
+		_PLUGIN__events(sortDirection: SortDirection): [_PLUGIN__Event!]!
+		_PLUGIN__eventCheckIn(id: ID!): _PLUGIN__EventCheckIn!
+    _PLUGIN__eventCheckIns(sortDirection: SortDirection): [_PLUGIN__EventCheckIn!]!
   }
 
-  input __PLUGIN__EventCheckInInput {
+  input _PLUGIN__EventCheckInInput {
     user: ID!
     event: ID!
   }
 
-  input __PLUGIN__EventCheckInInputByNfc {
+  input _PLUGIN__EventCheckInInputByNfc {
     nfcId: String!
     event: ID!
   }
 
-  input __PLUGIN__NFCRegisterInput {
+  input _PLUGIN__NFCRegisterInput {
     nfcid: ID!
     user: ID!
   }
 
-  type Mutation {
-    __PLUGIN__checkInUserToEvent(input: __PLUGIN__EventCheckInInput!): User!
-    __PLUGIN__removeUserFromEvent(input: __PLUGIN__EventCheckInInput!): User!
-    __PLUGIN__registerNFCUIDWithUser(input: __PLUGIN__NFCRegisterInput!): User!
-    __PLUGIN__checkInUserToEventByNfc(input: __PLUGIN__EventCheckInInputByNfc!): User!
-    __PLUGIN__removeUserFromEventByNfc(input: __PLUGIN__EventCheckInInputByNfc!): User!
+  extend type Mutation {
+    _PLUGIN__checkInUserToEvent(input: _PLUGIN__EventCheckInInput!): User!
+    _PLUGIN__removeUserFromEvent(input: _PLUGIN__EventCheckInInput!): User!
+    _PLUGIN__registerNFCUIDWithUser(input: _PLUGIN__NFCRegisterInput!): User!
+    _PLUGIN__checkInUserToEventByNfc(input: _PLUGIN__EventCheckInInputByNfc!): User!
+    _PLUGIN__removeUserFromEventByNfc(input: _PLUGIN__EventCheckInInputByNfc!): User!
   }
 `

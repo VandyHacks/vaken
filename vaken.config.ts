@@ -1,9 +1,9 @@
 /* eslint-disable */
 
-import { NFCFrontend } from './plugins/nfc';
+import { NFCPlugin } from './plugins/nfc';
 
 export default [
 	{
-		package: new (NFCFrontend)
+		package: new (NFCPlugin)
 	},
 ];

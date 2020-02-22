@@ -84,10 +84,10 @@ const routes = [
 
 config.forEach(plugin => {
 	routes.push({
-		authLevel: [UserType.Organizer], // TODO(timliang): don't hardcode this
-		component: plugin.package.component, // TODO(timliang): investigate React.lazy on this
-		displayText: plugin.package.displayText,
-		path: plugin.package.path,
+		authLevel: plugin.package.routeInfo.authLevel,
+		component: React.lazy(async () => await (plugin.package.component())),
+		displayText: plugin.package.routeInfo.displayText,
+		path: plugin.package.routeInfo.path,
 	});
 });
 
