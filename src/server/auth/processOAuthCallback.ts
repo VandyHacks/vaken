@@ -7,6 +7,7 @@ import {
 	ApplicationStatus,
 	SponsorStatus,
 	LoginDbObject,
+	SponsorDbObject,
 } from '../generated/graphql';
 import { Models } from '../models';
 import { fetchUser } from '../resolvers/helpers';
@@ -29,6 +30,35 @@ async function insertLogin(
 	await loginsModel.insertOne(login);
 }
 
+const handleSponsorCreation = async (
+	email: string,
+	profile: Profile,
+	Logins: Collection<LoginDbObject>,
+	Sponsors: Collection<SponsorDbObject>
+): Promise<UserType> => {
+	// it is a sponsor and change the status of the sponsor
+	const loginRequest: LoginRequest = {
+		createdAt: new Date(),
+		email,
+		provider: profile.provider,
+		token: profile.id,
+		userType: UserType.Sponsor,
+	};
+
+	await insertLogin(Logins, loginRequest);
+
+	// useSponsorStatusMutation({
+	// 	variables: { input: { email, status: SponsorStatus.Created } }
+	// });
+	await Sponsors.findOneAndUpdate(
+		{ email },
+		{ $set: { status: SponsorStatus.Created } },
+		{ returnOriginal: false }
+	);
+
+	return UserType.Sponsor;
+};
+
 export default async (models: Models, profile: Profile, done: VerifyCallback): Promise<void> => {
 	const { Logins, Hackers, Sponsors } = models;
 
@@ -42,36 +72,18 @@ export default async (models: Models, profile: Profile, done: VerifyCallback): P
 		if (email == null) throw new Error(`Email not provided by provider ${JSON.stringify(profile)}`);
 
 		let user: UserDbInterface | undefined;
-		let loginRequest: LoginRequest | undefined;
 
+		// Login must not exist, let's create it.
 		if (userType == null) {
-			// Login must not exist.
 			logger.info(`inserting login for ${email} for ${profile.provider}`);
 			// before checking hacker check if it is a whitelist sponsor
 			const verifySponsor = await Sponsors.findOne({ email });
 			if (verifySponsor != null) {
-				// it is a sponsor and change the status of the sponsor
-				loginRequest = {
-					createdAt: new Date(),
-					email,
-					provider: profile.provider,
-					token: profile.id,
-					userType: UserType.Sponsor,
-				};
-
-				await insertLogin(Logins, loginRequest);
-
-				// useSponsorStatusMutation({
-				// 	variables: { input: { email, status: SponsorStatus.Created } }
-				// });
-				await Sponsors.findOneAndUpdate(
-					{ email },
-					{ $set: { status: SponsorStatus.Created } },
-					{ returnOriginal: false }
-				);
-				userType = UserType.Sponsor;
+				// sponsors are handled a bit different because their emails are pre-entered.
+				userType = await handleSponsorCreation(email, profile, Logins, Sponsors);
 			} else {
-				loginRequest = {
+				// create non sponsor users (default to Hacker type - flow for other types is currently different)
+				const loginRequest: LoginRequest = {
 					createdAt: new Date(),
 					email,
 					provider: profile.provider,
