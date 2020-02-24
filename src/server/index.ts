@@ -66,8 +66,10 @@ export const schema = makeExecutableSchema({
 	// passport.use('google', strategies.google(models));
 	// passport.use('microsoft', strategies.microsoft(models));
 
+	// array to hold all oAuth strategies to be used with registering routes and working with passport
 	const oAuthStrategies = ['session'];
-	// iterate through config, pulling out oauth packages
+
+	// iterate through config, pulling out oauth packages and generating their passport configuration
 	vakenConfig
 		.filter(({ scopes }) => scopes.includes('oauth'))
 		.forEach(config => {
