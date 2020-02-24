@@ -15,6 +15,8 @@ import { UnsubscribeHandler } from './mail/handlers';
 import { UserDbInterface } from './generated/graphql';
 import { pullCalendar } from './events';
 
+import vakenConfig from '../../vaken.config';
+
 const { SESSION_SECRET, PORT, CALENDARID, NODE_ENV } = process.env;
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
 if (!PORT) throw new Error(`PORT not set`);
@@ -60,14 +62,25 @@ export const schema = makeExecutableSchema({
 	app.use(passport.initialize());
 	app.use(passport.session());
 
-	passport.use('github', strategies.github(models));
-	passport.use('google', strategies.google(models));
-	passport.use('microsoft', strategies.microsoft(models));
+	// passport.use('github', strategies.github(models));
+	// passport.use('google', strategies.google(models));
+	// passport.use('microsoft', strategies.microsoft(models));
 
-	registerAuthRoutes(app);
+	const oAuthStrategies = ['session'];
+	// iterate through config, pulling out oauth packages
+	vakenConfig
+		.filter(({ scopes }) => scopes.includes('oauth'))
+		.forEach(config => {
+			passport.use(config.name, config.strategy(models));
+			oAuthStrategies.push(config.name);
+			console.error(config);
+		});
+
+	// slice out 'session' from oAuthStrategies array for route registration
+	registerAuthRoutes(app, oAuthStrategies.slice(1));
 
 	app.use((req, res, next) =>
-		passport.authenticate(['session', 'github', 'google', 'microsoft'], (err, user) => {
+		passport.authenticate(oAuthStrategies, (err, user) => {
 			if (err) return void next();
 			return void req.login(user, next);
 		})(req, res, next)
