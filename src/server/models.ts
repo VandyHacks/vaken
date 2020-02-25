@@ -1,6 +1,7 @@
 import { Collection, MongoClient } from 'mongodb';
 import {
 	ApplicationFieldDbObject,
+	_Plugin__EventDbObject,
 	EventDbObject,
 	ApplicationQuestionDbObject,
 	CompanyDbObject,
@@ -23,6 +24,7 @@ export interface UserTeamIndexDbObject {
 export interface Models {
 	ApplicationFields: Collection<ApplicationFieldDbObject>;
 	EventCheckIns: Collection<EventCheckInDbObject>;
+	_PLUGIN__Events: Collection<_Plugin__EventDbObject>;
 	Events: Collection<EventDbObject>;
 	ApplicationQuestions: Collection<ApplicationQuestionDbObject>;
 	Companies: Collection<CompanyDbObject>;
@@ -104,6 +106,7 @@ export default class DB {
 					 */
 					ApplicationFields: db.collection<ApplicationFieldDbObject>('applicationFields'),
 					EventCheckIns: db.collection<EventCheckInDbObject>('EventCheckIns'),
+					_PLUGIN__Events: db.collection<_Plugin__EventDbObject>('_Plugin__Events'),
 					Events: db.collection<EventDbObject>('Events'),
 					ApplicationQuestions: db.collection<ApplicationQuestionDbObject>('applicationQuestions'),
 					Companies: db.collection<CompanyDbObject>('companies'),

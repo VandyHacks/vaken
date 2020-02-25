@@ -14,7 +14,6 @@ export default gql`
     location: String! @column
     eventType: String! @column
     gcalID: String @column
-    owner: Company @embedded
   }
 
   type _PLUGIN__EventCheckIn @entity(embedded: true) {

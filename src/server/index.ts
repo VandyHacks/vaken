@@ -29,7 +29,7 @@ export const schema = makeExecutableSchema({
 		requireResolversForAllFields: true,
 		requireResolversForResolveType: false,
 	},
-	resolvers: resolvers as {},
+	resolvers: [resolvers as {}, config[0].package.resolvers as {}],
 	typeDefs: [DIRECTIVES, gqlSchema, config[0].package.schema],
 });
 
@@ -85,6 +85,7 @@ export const schema = makeExecutableSchema({
 
 	const server = new ApolloServer({
 		context: ({ req }): Context => ({
+			db: dbClient.client,
 			models,
 			user: req.user as UserDbInterface | undefined,
 		}),

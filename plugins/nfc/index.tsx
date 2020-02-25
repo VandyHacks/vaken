@@ -1,10 +1,11 @@
 // import { RoutePlugin, GraphQLSchemaPlugin } from "./plugins"
 import { UserType } from '../../src/client/generated/graphql';
-import schema from './schema.graphql'
+import schema from './nfcSchema.graphql'
 // import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser, getUser } from './server';
 import { checkIsAuthorized, checkIsAuthorizedArray, queryById } from '../../src/server/resolvers/helpers'
 // import { UserInputError } from 'apollo-server-express';
-import { Resolvers } from '../../src/server/generated/graphql';
+import { CustomResolvers } from '../../src/server/resolvers';
+import Context from '../../src/server/context';
 
 export class NFCPlugin {
   get routeInfo() {
@@ -23,13 +24,17 @@ export class NFCPlugin {
     return schema;
   }
 
-  // get resolvers(): Resolvers[""] {
-  //   return {
-  //     Query: {
-  //       _PLUGIN__event: async (root, { id }, ctx) => queryById(id, ctx.models.Events),
-  //     }
-  //   }
-  // }
+  get resolvers() {
+    const query: CustomResolvers<Context>["Query"] = {
+      _PLUGIN__event: async (root, { id }, ctx) => {
+        return queryById(id, ctx.models._PLUGIN__Events)
+      }
+    }
+
+    return {
+      Query: query
+    }
+  }
 }
 
 export default {
