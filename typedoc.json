@@ -1,6 +1,29 @@
 {
-	"out": "./docs",
+	"out": "./typedocs",
 	"ignoreCompilerErrors": true,
-	"mode": "file",
-	"src": "./src"
+	"mode": "modules",
+	"src": "./src",
+	"links": [
+		{
+			"label": "Guides",
+			"url": "https://developers.google.com/actions/extending-the-assistant"
+		},
+		{
+			"label": "Reference",
+			"url": "https://developers.google.com/actions/reference/nodejsv2/overview"
+		}
+	],
+	"outline": [
+		{
+			"Actions SDK": {
+				"Overview": "actionssdk",
+				"api/v2": "actionssdk_api_v2"
+			},
+			"Dialogflow": {
+				"Overview": "dialogflow",
+				"api/v1": "dialogflow_api_v1",
+				"api/v2": "dialogflow_api_v2"
+			}
+		}
+	]
 }

@@ -198,6 +198,7 @@
 		"ts-jest": "^25.1.0",
 		"ts-node-dev": "^1.0.0-pre.44",
 		"typedoc": "^0.16.9",
+		"typedoc-neo-theme": "^1.0.5",
 		"typescript": "^3.7.5",
 		"webpack": "^4.41.5",
 		"webpack-dev-server": "^3.10.3",

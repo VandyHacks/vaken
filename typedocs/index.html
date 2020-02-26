@@ -1,0 +1,712 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>vaken</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">vaken</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1>vaken</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#vaken" id="vaken" style="color: inherit; text-decoration: none;">
+					<h1>Vaken</h1>
+				</a>
+				<p><a href="https://circleci.com/gh/VandyHacks/vaken"><img src="https://img.shields.io/circleci/build/github/VandyHacks/vaken.svg" alt="CircleCI"></a>
+					<a href="https://codecov.io/gh/VandyHacks/vaken"><img src="https://codecov.io/gh/VandyHacks/vaken/branch/staging/graph/badge.svg" alt="codecov"></a>
+					<img src="https://img.shields.io/github/license/vandyhacks/vaken.svg" alt="GitHub">
+					<a href="https://depfu.com/github/VandyHacks/vaken?project_id=7955"><img src="https://badges.depfu.com/badges/cef18db6a35fb2d23a3a917ea9b6d852/overview.svg" alt="Depfu"></a>
+					<a href="https://codeclimate.com/github/VandyHacks/vaken/maintainability"><img src="https://api.codeclimate.com/v1/badges/945dac4210d3058caa78/maintainability" alt="Maintainability"></a>
+				<a href="https://app.netlify.com/sites/vaken-docs/deploys"><img src="https://api.netlify.com/api/v1/badges/cdc95135-f17b-44f4-8bbb-a4da3c5c831c/deploy-status" alt="Netlify Status"></a></p>
+				<p>A next-gen hackathon registration system.</p>
+				<a href="#features" id="features" style="color: inherit; text-decoration: none;">
+					<h2>Features</h2>
+				</a>
+				<ul>
+					<li>Full hacker view and management system</li>
+					<li>Create and edit sponsors</li>
+					<li>Create and edit events, with Google Calendar integration</li>
+					<li>Supports storing NFC IDs for hackers, compatible with most NFC scanners/wristbands/cards.<ul>
+							<li>Supports tracking event attendance when scanning hackers into events</li>
+						</ul>
+					</li>
+					<li>Sends emails via AWS SES for hacker acceptances automatically</li>
+					<li>Stores resumes in GCP</li>
+					<li>[WIP] Dashboard with detailed statistics for organizers</li>
+				</ul>
+				<a href="#user-roles" id="user-roles" style="color: inherit; text-decoration: none;">
+					<h3>User Roles</h3>
+				</a>
+				<ul>
+					<li>Organizer (Admin)<ul>
+							<li>see hacker management view below</li>
+							<li>can scan NFC</li>
+						</ul>
+					</li>
+					<li>Volunteer<ul>
+							<li>can scan people into events via NFC or manual search mode</li>
+						</ul>
+					</li>
+					<li>Mentor</li>
+					<li>Hacker<ul>
+							<li>can create and update application</li>
+							<li>see current application status</li>
+							<li>can RSVP after acceptance</li>
+						</ul>
+					</li>
+					<li>Sponsor<ul>
+							<li>supports permissions based on tier and company</li>
+						</ul>
+					</li>
+				</ul>
+				<a href="#tooling" id="tooling" style="color: inherit; text-decoration: none;">
+					<h2>Tooling</h2>
+				</a>
+				<ul>
+					<li>TypeScript</li>
+					<li>GraphQL via Apollo</li>
+					<li>React</li>
+					<li>React-Router</li>
+					<li>Styled Components</li>
+					<li>Immer</li>
+					<li>Passport</li>
+					<li>Express</li>
+				</ul>
+				<a href="#screenshots" id="screenshots" style="color: inherit; text-decoration: none;">
+					<h1>Screenshots</h1>
+				</a>
+				<a href="#login-page" id="login-page" style="color: inherit; text-decoration: none;">
+					<h3>Login Page</h3>
+				</a>
+				<p><img src="./pics/vaken1.png" alt="Login Page"></p>
+				<pre><code>- supports Github, Google, <span class="hljs-keyword">and </span>Microsoft SSO logins</code></pre>
+				<a href="#detailed-hacker-management-for-organizers" id="detailed-hacker-management-for-organizers" style="color: inherit; text-decoration: none;">
+					<h3>Detailed Hacker Management for Organizers</h3>
+				</a>
+				<p><img src="./pics/vaken-org.png" alt="Organizer Page"></p>
+				<pre><code>- view individual hacker applications
+- fuzzy search +<span class="hljs-built_in"> filter </span>by various fields (first name, last name, email, school, grad year)
+    - can have multiple search fields
+-<span class="hljs-built_in"> filter </span>by events attended
+- accept/reject hacker applications
+- <span class="hljs-builtin-name">export</span> filtered hacker data <span class="hljs-keyword">to</span> .csv</code></pre>
+				<a href="#sponsors-management" id="sponsors-management" style="color: inherit; text-decoration: none;">
+					<h3>Sponsors Management</h3>
+				</a>
+				<p><img src="./pics/vaken-sponsor.png" alt="Sponsor page"></p>
+				<pre><code>- <span class="hljs-keyword">create</span> sponsorship tiers, <span class="hljs-keyword">and</span> <span class="hljs-keyword">set</span> permissions
+- <span class="hljs-keyword">create</span> companies, <span class="hljs-keyword">associate</span> <span class="hljs-keyword">with</span> a <span class="hljs-keyword">tier</span>
+- <span class="hljs-keyword">create</span> sponsors, <span class="hljs-keyword">associate</span> <span class="hljs-keyword">with</span> a company</code></pre>
+				<a href="#contributing" id="contributing" style="color: inherit; text-decoration: none;">
+					<h2>Contributing</h2>
+				</a>
+				<p>All contributions are welcome. Please read <a href="./CONTRIBUTING.md">CONTRIBUTING.md</a> for setup and development instructions.</p>
+				<a href="#customizing-for-your-event" id="customizing-for-your-event" style="color: inherit; text-decoration: none;">
+					<h2>Customizing for your event</h2>
+				</a>
+				<ul>
+					<li>constants: <a href="./src/common/constants.json">./src/common/constants.json</a></li>
+					<li>application questions: <a href="./src/client/assets/application.js">./src/client/assets/application.js</a></li>
+					<li>strings: <a href=".src/client/assets/strings.json">..src/client/assets/strings.json</a></li>
+					<li>email templates: <a href="./src/server/mail/templates">./src/server/mail/templates</a></li>
+				</ul>
+				<a href="#questions" id="questions" style="color: inherit; text-decoration: none;">
+					<h2>Questions?</h2>
+				</a>
+				<p>Feel free to reach out to us at <code>info[at]vandyhacks.org</code> or <code>dev[at]vandyhacks.org</code>!</p>
+				<a href="#thanks" id="thanks" style="color: inherit; text-decoration: none;">
+					<h2>Thanks</h2>
+				</a>
+				<ul>
+					<li>To <a href="https://netlify.com">Netlify</a> for providing us with a free pro plan for this open source project.</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+					<li class="label tsd-is-external">
+						<span>Internals</span>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_app_.html">&quot;vaken/src/client/app&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_app_test_.html">&quot;vaken/src/client/app.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_assets_application_test_.html">&quot;vaken/src/client/assets/application.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_assets_routes_test_.html">&quot;vaken/src/client/assets/routes.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_buttons_actionbutton_.html">&quot;vaken/src/client/components/<wbr>Buttons/<wbr>Action<wbr>Button&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_buttons_actionbutton_test_.html">&quot;vaken/src/client/components/<wbr>Buttons/<wbr>Action<wbr>Button.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_buttons_buttons_.html">&quot;vaken/src/client/components/<wbr>Buttons/<wbr>Buttons&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_buttons_floatingbutton_.html">&quot;vaken/src/client/components/<wbr>Buttons/<wbr>Floating<wbr>Button&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_buttons_headerbutton_.html">&quot;vaken/src/client/components/<wbr>Buttons/<wbr>Header<wbr>Button&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_buttons_headerbutton_test_.html">&quot;vaken/src/client/components/<wbr>Buttons/<wbr>Header<wbr>Button.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_buttons_leftimgbutton_.html">&quot;vaken/src/client/components/<wbr>Buttons/<wbr>Left<wbr>Img<wbr>Button&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_buttons_navbutton_.html">&quot;vaken/src/client/components/<wbr>Buttons/<wbr>Nav<wbr>Button&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_buttons_radioslider_.html">&quot;vaken/src/client/components/<wbr>Buttons/<wbr>Radio<wbr>Slider&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_buttons_radioslider_test_.html">&quot;vaken/src/client/components/<wbr>Buttons/<wbr>Radio<wbr>Slider.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_buttons_tablebutton_.html">&quot;vaken/src/client/components/<wbr>Buttons/<wbr>Table<wbr>Button&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_buttons_textbutton_.html">&quot;vaken/src/client/components/<wbr>Buttons/<wbr>Text<wbr>Button&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_buttons_toggleswitch_.html">&quot;vaken/src/client/components/<wbr>Buttons/<wbr>Toggle<wbr>Switch&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_buttons_toggleswitch_test_.html">&quot;vaken/src/client/components/<wbr>Buttons/<wbr>Toggle<wbr>Switch.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_containers_background_.html">&quot;vaken/src/client/components/<wbr>Containers/<wbr>Background&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_containers_collapsible_.html">&quot;vaken/src/client/components/<wbr>Containers/<wbr>Collapsible&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_containers_flexcontainers_.html">&quot;vaken/src/client/components/<wbr>Containers/<wbr>Flex<wbr>Containers&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_containers_floatingpopup_.html">&quot;vaken/src/client/components/<wbr>Containers/<wbr>Floating<wbr>Popup&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_containers_gridcontainers_.html">&quot;vaken/src/client/components/<wbr>Containers/<wbr>Grid<wbr>Containers&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_input_autocompletetextinput_.html">&quot;vaken/src/client/components/<wbr>Input/<wbr>Auto<wbr>Complete<wbr>Text<wbr>Input&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_input_boolean_.html">&quot;vaken/src/client/components/<wbr>Input/<wbr>Boolean&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_input_calendar_.html">&quot;vaken/src/client/components/<wbr>Input/<wbr>Calendar&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_input_checkbox_.html">&quot;vaken/src/client/components/<wbr>Input/<wbr>Checkbox&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_input_fileinput_.html">&quot;vaken/src/client/components/<wbr>Input/<wbr>File<wbr>Input&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_input_leftimgtextinput_.html">&quot;vaken/src/client/components/<wbr>Input/<wbr>Left<wbr>Img<wbr>Text<wbr>Input&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_input_leftimgtextinput_test_.html">&quot;vaken/src/client/components/<wbr>Input/<wbr>Left<wbr>Img<wbr>Text<wbr>Input.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_input_searchbox_.html">&quot;vaken/src/client/components/<wbr>Input/<wbr>Search<wbr>Box&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_input_slider_.html">&quot;vaken/src/client/components/<wbr>Input/<wbr>Slider&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_input_textarea_.html">&quot;vaken/src/client/components/<wbr>Input/<wbr>Text<wbr>Area&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_input_textinput_.html">&quot;vaken/src/client/components/<wbr>Input/<wbr>Text<wbr>Input&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_input_helperfunctions_.html">&quot;vaken/src/client/components/<wbr>Input/helper<wbr>Functions&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_input_helperfunctions_test_.html">&quot;vaken/src/client/components/<wbr>Input/helper<wbr>Functions.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_loading_spinner_.html">&quot;vaken/src/client/components/<wbr>Loading/<wbr>Spinner&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_sidebar_sidebar_.html">&quot;vaken/src/client/components/<wbr>Sidebar/<wbr>Sidebar&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_sidebar_sidebar_test_.html">&quot;vaken/src/client/components/<wbr>Sidebar/<wbr>Sidebar.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_symbol_checkmark_.html">&quot;vaken/src/client/components/<wbr>Symbol/<wbr>Checkmark&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_text_announcment_.html">&quot;vaken/src/client/components/<wbr>Text/<wbr>Announcment&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_text_errormessage_.html">&quot;vaken/src/client/components/<wbr>Text/<wbr>Error<wbr>Message&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_text_smallcenteredtext_.html">&quot;vaken/src/client/components/<wbr>Text/<wbr>Small<wbr>Centered<wbr>Text&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_text_status_.html">&quot;vaken/src/client/components/<wbr>Text/<wbr>Status&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_text_status_test_.html">&quot;vaken/src/client/components/<wbr>Text/<wbr>Status.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_text_textlink_.html">&quot;vaken/src/client/components/<wbr>Text/<wbr>Text<wbr>Link&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_text_textlink_test_.html">&quot;vaken/src/client/components/<wbr>Text/<wbr>Text<wbr>Link.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_components_text_title_.html">&quot;vaken/src/client/components/<wbr>Text/<wbr>Title&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_contexts_actionbuttoncontext_.html">&quot;vaken/src/client/contexts/<wbr>Action<wbr>Button<wbr>Context&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_contexts_authcontext_.html">&quot;vaken/src/client/contexts/<wbr>Auth<wbr>Context&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_contexts_authcontext_test_.html">&quot;vaken/src/client/contexts/<wbr>Auth<wbr>Context.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_contexts_logincontext_.html">&quot;vaken/src/client/contexts/<wbr>Login<wbr>Context&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_contexts_logincontext_test_.html">&quot;vaken/src/client/contexts/<wbr>Login<wbr>Context.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_contexts_tablecontext_.html">&quot;vaken/src/client/contexts/<wbr>Table<wbr>Context&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_generated_graphql_.html">&quot;vaken/src/client/generated/graphql&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_index_.html">&quot;vaken/src/client/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_me_graphql_.html">&quot;vaken/src/client/me.graphql&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_application_application_.html">&quot;vaken/src/client/routes/application/<wbr>Application&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_application_application_test_.html">&quot;vaken/src/client/routes/application/<wbr>Application.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_application_applicationconfig_.html">&quot;vaken/src/client/routes/application/<wbr>Application<wbr>Config&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_application_application_graphql_.html">&quot;vaken/src/client/routes/application/application.graphql&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_dashboard_frame_.html">&quot;vaken/src/client/routes/dashboard/<wbr>Frame&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_dashboard_frame_test_.html">&quot;vaken/src/client/routes/dashboard/<wbr>Frame.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_dashboard_hackerdash_.html">&quot;vaken/src/client/routes/dashboard/<wbr>Hacker<wbr>Dash&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_dashboard_organizerdash_.html">&quot;vaken/src/client/routes/dashboard/<wbr>Organizer<wbr>Dash&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_dashboard_organizerdash_test_.html">&quot;vaken/src/client/routes/dashboard/<wbr>Organizer<wbr>Dash.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_dashboard_sponsordash_.html">&quot;vaken/src/client/routes/dashboard/<wbr>Sponsor<wbr>Dash&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_dashboard_dashboards_graphql_.html">&quot;vaken/src/client/routes/dashboard/dashboards.graphql&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_events_manageeventtypes_.html">&quot;vaken/src/client/routes/events/<wbr>Manage<wbr>Event<wbr>Types&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_events_manageevents_.html">&quot;vaken/src/client/routes/events/<wbr>Manage<wbr>Events&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_events_events_graphql_.html">&quot;vaken/src/client/routes/events/events.graphql&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_events_helpers_.html">&quot;vaken/src/client/routes/events/helpers&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_help_help_.html">&quot;vaken/src/client/routes/help/<wbr>Help&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_login_createlogin_.html">&quot;vaken/src/client/routes/login/<wbr>Create<wbr>Login&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_login_login_.html">&quot;vaken/src/client/routes/login/<wbr>Login&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_login_login_test_.html">&quot;vaken/src/client/routes/login/<wbr>Login.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_login_oauthlogin_.html">&quot;vaken/src/client/routes/login/OAuth<wbr>Login&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_login_passwordlogin_.html">&quot;vaken/src/client/routes/login/<wbr>Password<wbr>Login&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_manage_actionrenderer_.html">&quot;vaken/src/client/routes/manage/<wbr>Action<wbr>Renderer&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_manage_hackertable_.html">&quot;vaken/src/client/routes/manage/<wbr>Hacker<wbr>Table&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_manage_hackertable_test_.html">&quot;vaken/src/client/routes/manage/<wbr>Hacker<wbr>Table.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_manage_hackertablerows_.html">&quot;vaken/src/client/routes/manage/<wbr>Hacker<wbr>Table<wbr>Rows&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_manage_hackertabletypes_.html">&quot;vaken/src/client/routes/manage/<wbr>Hacker<wbr>Table<wbr>Types&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_manage_hackerview_.html">&quot;vaken/src/client/routes/manage/<wbr>Hacker<wbr>View&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_manage_managehackers_.html">&quot;vaken/src/client/routes/manage/<wbr>Manage<wbr>Hackers&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_manage_reimbursementheader_.html">&quot;vaken/src/client/routes/manage/<wbr>Reimbursement<wbr>Header&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_manage_resumelink_.html">&quot;vaken/src/client/routes/manage/<wbr>Resume<wbr>Link&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_manage_row_.html">&quot;vaken/src/client/routes/manage/<wbr>Row&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_manage_sliderinput_.html">&quot;vaken/src/client/routes/manage/<wbr>Slider<wbr>Input&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_manage_sponsorhackerview_.html">&quot;vaken/src/client/routes/manage/<wbr>Sponsor<wbr>Hacker<wbr>View&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_manage_hackers_graphql_.html">&quot;vaken/src/client/routes/manage/hackers.graphql&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_manage_sponsor_graphql_.html">&quot;vaken/src/client/routes/manage/sponsor.graphql&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_managesponsor_createsponsor_.html">&quot;vaken/src/client/routes/manage<wbr>Sponsor/<wbr>Create<wbr>Sponsor&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_managesponsor_sponsor_graphql_.html">&quot;vaken/src/client/routes/manage<wbr>Sponsor/sponsor.graphql&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_nfc_nfc_.html">&quot;vaken/src/client/routes/nfc/<wbr>Nfc&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_nfc_nfctable_.html">&quot;vaken/src/client/routes/nfc/<wbr>Nfc<wbr>Table&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_nfc_nfctable_test_.html">&quot;vaken/src/client/routes/nfc/<wbr>Nfc<wbr>Table.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_nfc_nfctablerows_.html">&quot;vaken/src/client/routes/nfc/<wbr>Nfc<wbr>Table<wbr>Rows&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_nfc_nfctabletypes_.html">&quot;vaken/src/client/routes/nfc/<wbr>Nfc<wbr>Table<wbr>Types&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_nfc_row_.html">&quot;vaken/src/client/routes/nfc/<wbr>Row&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_nfc_helpers_.html">&quot;vaken/src/client/routes/nfc/helpers&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_nfc_nfc_graphql_.html">&quot;vaken/src/client/routes/nfc/nfc.graphql&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_profile_profile_.html">&quot;vaken/src/client/routes/profile/<wbr>Profile&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_profile_profile_test_.html">&quot;vaken/src/client/routes/profile/<wbr>Profile.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_profile_profileconfig_.html">&quot;vaken/src/client/routes/profile/<wbr>Profile<wbr>Config&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_profile_user_graphql_.html">&quot;vaken/src/client/routes/profile/user.graphql&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_team_jointeam_.html">&quot;vaken/src/client/routes/team/<wbr>Join<wbr>Team&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_team_team_.html">&quot;vaken/src/client/routes/team/<wbr>Team&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_team_viewteam_.html">&quot;vaken/src/client/routes/team/<wbr>View<wbr>Team&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_client_routes_team_teams_graphql_.html">&quot;vaken/src/client/routes/team/teams.graphql&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_common_validationfunctions_.html">&quot;vaken/src/common/<wbr>Validation<wbr>Functions&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_common_schema_graphql_.html">&quot;vaken/src/common/schema.graphql&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_auth_github_.html">&quot;vaken/src/server/auth/github&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_auth_github_test_.html">&quot;vaken/src/server/auth/github.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_auth_google_.html">&quot;vaken/src/server/auth/google&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_auth_google_test_.html">&quot;vaken/src/server/auth/google.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_auth_index_.html">&quot;vaken/src/server/auth/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_auth_index_test_.html">&quot;vaken/src/server/auth/index.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_auth_microsoft_.html">&quot;vaken/src/server/auth/microsoft&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_auth_microsoft_test_.html">&quot;vaken/src/server/auth/microsoft.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_auth_processoauthcallback_.html">&quot;vaken/src/server/auth/processOAuth<wbr>Callback&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_context_.html">&quot;vaken/src/server/context&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_events_index_.html">&quot;vaken/src/server/events/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_events_index_test_.html">&quot;vaken/src/server/events/index.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_generated_graphql_.html">&quot;vaken/src/server/generated/graphql&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_index_.html">&quot;vaken/src/server/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_index_test_.html">&quot;vaken/src/server/index.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_logger_.html">&quot;vaken/src/server/logger&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_mail_aws_.html">&quot;vaken/src/server/mail/aws&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_mail_handlers_.html">&quot;vaken/src/server/mail/handlers&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_mail_templates_accepted_.html">&quot;vaken/src/server/mail/templates/accepted&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_mail_templates_confirmed_.html">&quot;vaken/src/server/mail/templates/confirmed&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_mail_templates_submitted_.html">&quot;vaken/src/server/mail/templates/submitted&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_models_.html">&quot;vaken/src/server/models&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_nfc_index_.html">&quot;vaken/src/server/nfc/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_nfc_index_test_.html">&quot;vaken/src/server/nfc/index.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_resolvers_helpers_.html">&quot;vaken/src/server/resolvers/helpers&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_resolvers_helpers_test_.html">&quot;vaken/src/server/resolvers/helpers.test&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_resolvers_index_.html">&quot;vaken/src/server/resolvers/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_vaken_src_server_storage_gcp_.html">&quot;vaken/src/server/storage/gcp&quot;</a>
+					</li>
+					<li class="label tsd-is-external">
+						<span>Externals</span>
+					</li>
+					<li class=" tsd-kind-external-module tsd-is-external">
+						<a href="modules/_vaken_plugin_google_index_.html">&quot;vaken-<wbr>plugin-<wbr>google/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module tsd-is-external">
+						<a href="modules/_vaken_plugin_google_strategy_.html">&quot;vaken-<wbr>plugin-<wbr>google/strategy&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module tsd-is-external">
+						<a href="modules/_vaken_src_client_assets_application_.html">&quot;vaken/src/client/assets/application&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module tsd-is-external">
+						<a href="modules/_vaken_src_client_assets_data_institutions_.html">&quot;vaken/src/client/assets/data/institutions&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module tsd-is-external">
+						<a href="modules/_vaken_src_client_assets_data_majors_.html">&quot;vaken/src/client/assets/data/majors&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module tsd-is-external">
+						<a href="modules/_vaken_src_client_assets_routes_.html">&quot;vaken/src/client/assets/routes&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module tsd-is-external">
+						<a href="modules/_vaken_src_client_assets_strings_.html">&quot;vaken/src/client/assets/strings&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module tsd-is-external">
+						<a href="modules/_vaken_vaken_config_.html">&quot;vaken/vaken.config&quot;</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
