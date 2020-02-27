@@ -1,91 +1,100 @@
 module.exports = {
-  title: 'My Site',
-  tagline: 'The tagline of my site',
-  url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/',
-  favicon: 'img/favicon.ico',
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
-  themeConfig: {
-    navbar: {
-      title: 'My Site',
-      logo: {
-        alt: 'My Site Logo',
-        src: 'img/logo.svg',
-      },
-      links: [
-        {to: 'docs/doc1', label: 'Docs', position: 'left'},
-        {to: 'blog', label: 'Blog', position: 'left'},
-        {
-          href: 'https://github.com/facebook/docusaurus',
-          label: 'GitHub',
-          position: 'right',
-        },
-      ],
-    },
-    footer: {
-      style: 'dark',
-      links: [
-        {
-          title: 'Docs',
-          items: [
-            {
-              label: 'Style Guide',
-              to: 'docs/doc1',
-            },
-            {
-              label: 'Second Doc',
-              to: 'docs/doc2',
-            },
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-            },
-            {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
-            },
-          ],
-        },
-        {
-          title: 'Social',
-          items: [
-            {
-              label: 'Blog',
-              to: 'blog',
-            },
-            {
-              label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
-            },
-            {
-              label: 'Twitter',
-              href: 'https://twitter.com/docusaurus',
-            },
-          ],
-        },
-      ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
-    },
-  },
-  presets: [
-    [
-      '@docusaurus/preset-classic',
-      {
-        docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
-          editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/',
-        },
-        theme: {
-          customCss: require.resolve('./src/css/custom.css'),
-        },
-      },
-    ],
-  ],
+	title: 'Vaken',
+	tagline: 'Next-generation hackathon registration system.',
+	url: 'https://your-docusaurus-test-site.com',
+	baseUrl: '/',
+	favicon: 'img/favicon.ico',
+	organizationName: 'vandyhacks', // Usually your GitHub org/user name.
+	projectName: 'vaken', // Usually your repo name.
+	themeConfig: {
+		navbar: {
+			title: 'Vaken',
+			logo: {
+				alt: 'VandyHacks Logo',
+				src: 'img/logo.svg',
+			},
+			links: [
+				{ to: 'docs/installation', label: 'Docs', position: 'left' },
+				// { to: 'blog', label: 'Blog', position: 'left' },
+				{
+					href: 'https://github.com/vandyhacks/vaken',
+					label: 'GitHub',
+					position: 'right',
+				},
+			],
+		},
+		footer: {
+			style: 'dark',
+			links: [
+				{
+					title: 'Docs',
+					items: [
+						{
+							label: 'Installation',
+							to: 'docs/installation',
+						},
+						{
+							label: 'Second Doc',
+							to: 'docs/doc2',
+						},
+					],
+				},
+				{
+					title: 'Community',
+					items: [
+						// {
+						// 	label: 'Stack Overflow',
+						// 	href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+						// },
+						{
+							label: 'Slack',
+							href:
+								'https://join.slack.com/t/vanderbiltcsorgs/shared_invite/enQtOTczMjA1OTc0MTUxLTdlM2MzNDk0NWNlNGVhNzEwMjNmZWJlNDZiODk2NjlhOTU3NzVkMGM1ZGRhMGM5MTExZGQ1NWFmNjllODBiZWM',
+						},
+					],
+				},
+				{
+					title: 'Social',
+					items: [
+						{
+							label: 'Blog',
+							to: 'blog',
+						},
+						{
+							label: 'GitHub',
+							href: 'https://github.com/vandyhacks/vaken',
+						},
+						{
+							label: 'Twitter',
+							href: 'https://twitter.com/vandyhacks',
+						},
+						{
+							label: 'Instagram',
+							href: 'https://www.instagram.com/vandyhacks/',
+						},
+					],
+				},
+			],
+			copyright: `Copyright © ${new Date().getFullYear()} VandyHacks. Built with Docusaurus.`,
+		},
+		algolia: {
+			apiKey: process.env.ALGOLIA_API_KEY,
+			indexName: 'index-name',
+			algoliaOptions: {}, // Optional, if provided by Algolia
+		},
+	},
+	presets: [
+		[
+			'@docusaurus/preset-classic',
+			{
+				docs: {
+					sidebarPath: require.resolve('./sidebars.js'),
+					editUrl: 'https://github.com/vandyhacks/vaken/edit/master/website/', // FIXME:needs to get changed on launch
+				},
+				theme: {
+					customCss: require.resolve('./src/css/custom.css'),
+				},
+			},
+		],
+	],
 };
