@@ -14,7 +14,7 @@ import {
 	RemoveUserFromEventByNfcMutationVariables,
 	HackersQuery,
 	EventsQuery,
-} from '../../src/client/generated/graphql';
+} from '../../../src/client/generated/graphql';
 
 type ArrayType<T> = T extends (infer U)[] ? U : never;
 export type QueriedHacker = ArrayType<HackersQuery['hackers']>;

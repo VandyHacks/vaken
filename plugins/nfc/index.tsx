@@ -3,15 +3,11 @@ import { UserType, _Plugin__EventDbObject, _Plugin__EventCheckInDbObject } from 
 import schema from './nfcSchema.graphql'
 // import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser, getUser } from './server';
 import { checkIsAuthorized, checkIsAuthorizedArray, queryById } from '../../src/server/resolvers/helpers'
-// import { UserInputError } from 'apollo-server-express';
-import { CustomResolvers } from '../../src/server/resolvers';
+import { UserInputError } from 'apollo-server-express';
+import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser, getUser } from './server';
+import { Resolvers } from '../../src/server/generated/graphql'
 import Context from '../../src/server/context';
 
-interface test {
-  Query: CustomResolvers<Context>["Query"];
-  _PLUGIN__Event: CustomResolvers<Context>["_PLUGIN__Event"];
-  _PLUGIN__EventCheckIn: CustomResolvers<Context>["_PLUGIN__EventCheckIn"];
-}
 export class NFCPlugin {
   get routeInfo() {
     return {
@@ -22,18 +18,14 @@ export class NFCPlugin {
   }
 
   async component() {
-    return await import('./Nfc')
+    return await import('./components/Nfc')
   }
 
   get schema() {
     return schema;
   }
 
-  addCollectionToModel() {
-
-  }
-
-  get resolvers(): test {
+  get resolvers(): Pick<Resolvers<Context>, "Mutation" | "Query" | "_PLUGIN__Event" | "_PLUGIN__EventCheckIn"> {
     return {
       _PLUGIN__Event: {
         attendees: async event => (await event).attendees || [],
@@ -75,6 +67,32 @@ export class NFCPlugin {
         _PLUGIN__eventCheckIns: async (root, args, ctx) => {
           // checkIsAuthorizedArray([UserType.Organizer], ctx.user);
           return ctx.db.collection<_Plugin__EventCheckInDbObject>('_PLUGIN__eventCheckIns').find().toArray();
+        },
+      },
+      Mutation: {
+        _PLUGIN__checkInUserToEventByNfc: async (root, { input }, { models, user }) => {
+          checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
+          const inputUser = await getUser(input.nfcId, models);
+          if (!inputUser) throw new UserInputError(`user with nfc id <${input.nfcId}> not found`);
+          return checkInUserToEvent(inputUser._id.toString(), input.event, models);
+        },
+        _PLUGIN__removeUserFromEvent: async (root, { input }, { models, user }) => {
+          checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
+          return removeUserFromEvent(input.user, input.event, models);
+        },
+        _PLUGIN__removeUserFromEventByNfc: async (root, { input }, { models, user }) => {
+          checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
+          const inputUser = await getUser(input.nfcId, models);
+          if (!inputUser) throw new UserInputError(`user with nfc Id ${input.nfcId} not found`);
+          return removeUserFromEvent(inputUser._id.toString(), input.event, models);
+        },
+        _PLUGIN__registerNFCUIDWithUser: async (root, { input }, { models, user }) => {
+          checkIsAuthorized(UserType.Organizer, user);
+          return registerNFCUIDWithUser(input.nfcid, input.user, models);
+        },
+        _PLUGIN__checkInUserToEvent: async (root, { input }, { models, user }) => {
+          checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
+          return checkInUserToEvent(input.user, input.event, models);
         },
       }
     }

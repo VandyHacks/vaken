@@ -1,17 +1,17 @@
 import React, { FunctionComponent } from 'react';
 import { useImmer } from 'use-immer';
 import NfcTable from './NfcTable';
-import STRINGS from '../../src/client/assets/strings.json';
-import { GraphQLErrorMessage } from '../../src/client/components/Text/ErrorMessage';
-import FloatingPopup from '../../src/client/components/Containers/FloatingPopup';
-import Spinner from '../../src/client/components/Loading/Spinner';
-import { defaultTableState, TableContext } from '../../src/client/contexts/TableContext';
+import STRINGS from '../../../src/client/assets/strings.json';
+import { GraphQLErrorMessage } from '../../../src/client/components/Text/ErrorMessage';
+import FloatingPopup from '../../../src/client/components/Containers/FloatingPopup';
+import Spinner from '../../../src/client/components/Loading/Spinner';
+import { defaultTableState, TableContext } from '../../../src/client/contexts/TableContext';
 import {
 	useEventsQuery,
 	useHackersQuery,
 	useMeSponsorQuery,
 	Sponsor,
-} from '../../src/client/generated/graphql';
+} from '../../../src/client/generated/graphql';
 
 export const Nfc: FunctionComponent = (): JSX.Element => {
 	const hackers = useHackersQuery();

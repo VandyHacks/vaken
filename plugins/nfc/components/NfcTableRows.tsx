@@ -13,8 +13,8 @@ import styled from 'styled-components';
 import { Row } from './Row';
 import { SortFnProps } from './NfcTableTypes';
 
-import STRINGS from '../../src/client/assets/strings.json';
-import { TableCtxI } from '../../src/client/contexts/TableContext';
+import STRINGS from '../../../src/client/assets/strings.json';
+import { TableCtxI } from '../../../src/client/contexts/TableContext';
 
 // Removes unwanted highlighting, adds alternating row colors
 const StyledTable = styled(Table)`

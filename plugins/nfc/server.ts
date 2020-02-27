@@ -1,8 +1,8 @@
 import { ObjectID } from 'mongodb';
 import { AuthenticationError, UserInputError } from 'apollo-server-express';
-import { HackerDbObject, UserDbInterface } from '../generated/graphql';
-import { Models } from '../models';
-import logger from '../logger';
+import { HackerDbObject, UserDbInterface } from '../../src/server/generated/graphql';
+import { Models } from '../../src/server/models';
+import logger from '../../src/server/logger';
 
 // TODO: (kenli/timliang) Expand functions for Organizers, Mentors collections
 

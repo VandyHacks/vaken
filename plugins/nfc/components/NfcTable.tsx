@@ -4,26 +4,26 @@ import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import Select from 'react-select';
 import Fuse from 'fuse.js';
-import { HeaderButton } from '../../src/client/components/Buttons/HeaderButton';
+import { HeaderButton } from '../../../src/client/components/Buttons/HeaderButton';
 import { generateRowClassName, createSubmitHandler, CHECK_IN_EVENT_TYPE } from './helpers';
 
-import { ToggleSwitch } from '../../src/client/components/Buttons/ToggleSwitch';
-import { SearchBox } from '../../src/client/components/Input/SearchBox';
-import { TableCtxI, TableContext, fuseOpts } from '../../src/client/contexts/TableContext';
+import { ToggleSwitch } from '../../../src/client/components/Buttons/ToggleSwitch';
+import { SearchBox } from '../../../src/client/components/Input/SearchBox';
+import { TableCtxI, TableContext, fuseOpts } from '../../../src/client/contexts/TableContext';
 import {
 	useRegisterNfcuidWithUserMutation,
 	useCheckInUserToEventMutation,
 	useRemoveUserFromEventMutation,
 	useCheckInUserToEventByNfcMutation,
 	useRemoveUserFromEventByNfcMutation,
-} from '../../src/client/generated/graphql';
+} from '../../../src/client/generated/graphql';
 
 import { NfcTableRows } from './NfcTableRows';
 
 import { QueriedEvent, QueriedHacker, SortFnProps } from './NfcTableTypes';
 
-import STRINGS from '../../src/client/assets/strings.json';
-import { SmallCenteredText } from '../../src/client/components/Text/SmallCenteredText';
+import STRINGS from '../../../src/client/assets/strings.json';
+import { SmallCenteredText } from '../../../src/client/components/Text/SmallCenteredText';
 
 const TableLayout = styled('div')`
 	width: 100%;
