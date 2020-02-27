@@ -10,9 +10,6 @@ if (!GOOGLE_CLIENT_ID) {
 if (!GOOGLE_CLIENT_SECRET) {
 	throw new Error('GOOGLE_CLIENT_SECRET not set');
 }
-if (!GOOGLE_CLIENT_SECRET) {
-	throw new Error('GOOGLE_CLIENT_SECRET not set');
-}
 
 export const strategy = (models: Models): Strategy =>
 	new Strategy(

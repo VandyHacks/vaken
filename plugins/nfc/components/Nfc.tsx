@@ -35,8 +35,6 @@ export const Nfc: FunctionComponent = (): JSX.Element => {
 		sponsorData = sponsorMeQueryResult.data.me as Sponsor;
 
 		if (
-			!sponsorLoading &&
-			sponsorData &&
 			sponsorData.userType === 'SPONSOR' &&
 			sponsorData.company &&
 			sponsorData.company.tier &&
