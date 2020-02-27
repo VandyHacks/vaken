@@ -245,7 +245,7 @@ dist
 .env
 
 #ignore documentation
-docs
+# docs
 
 #ignore ci reports
 reports
