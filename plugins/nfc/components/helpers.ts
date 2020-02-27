@@ -2,11 +2,11 @@ import { toast, cssTransition } from 'react-toastify';
 import {
 	QueriedEvent,
 	QueriedHacker,
-	RegisterNfcuidWithUserMutationFn,
-	CheckInUserToEventMutationFn,
-	RemoveUserFromEventMutationFn,
-	CheckInUserToEventByNfcMutationFn,
-	RemoveUserFromEventByNfcMutationFn,
+	_Plugin__RegisterNfcuidWithUserMutationFn,
+	_Plugin__CheckInUserToEventMutationFn,
+	_Plugin__RemoveUserFromEventMutationFn,
+	_Plugin__CheckInUserToEventByNfcMutationFn,
+	_Plugin__RemoveUserFromEventByNfcMutationFn,
 } from './NfcTableTypes';
 
 export const CHECK_IN_EVENT_TYPE = 'CHECK_IN';
@@ -43,11 +43,11 @@ export const generateRowClassName = (data: QueriedHacker[], topUserMatch: string
 };
 
 export const createSubmitHandler = (
-	registerFunction: RegisterNfcuidWithUserMutationFn,
-	markAttendedFunction: CheckInUserToEventMutationFn,
-	removeFunction: RemoveUserFromEventMutationFn,
-	markAttendedByNfcFunction: CheckInUserToEventByNfcMutationFn,
-	removeByNfcFunction: RemoveUserFromEventByNfcMutationFn
+	registerFunction: _Plugin__RegisterNfcuidWithUserMutationFn,
+	markAttendedFunction: _Plugin__CheckInUserToEventMutationFn,
+	removeFunction: _Plugin__RemoveUserFromEventMutationFn,
+	markAttendedByNfcFunction: _Plugin__CheckInUserToEventByNfcMutationFn,
+	removeByNfcFunction: _Plugin__RemoveUserFromEventByNfcMutationFn
 ) => async (nfc: string, user: string, event: QueriedEvent, unadmit: boolean): Promise<boolean> => {
 	console.log([nfc, user, event, unadmit]);
 	let toastMsg = '';
@@ -67,7 +67,7 @@ export const createSubmitHandler = (
 			});
 
 			if (data)
-				toastMsg = `${data.registerNFCUIDWithUser.firstName} ${data.registerNFCUIDWithUser.lastName} registered`;
+				toastMsg = `${data._Plugin__registerNFCUIDWithUser.firstName} ${data._Plugin__registerNFCUIDWithUser.lastName} registered`;
 		} else {
 			if (user.length) {
 				if (unadmit) {
@@ -80,7 +80,7 @@ export const createSubmitHandler = (
 						},
 					});
 					if (data)
-						toastMsg = `${data.removeUserFromEvent.firstName} ${data.removeUserFromEvent.lastName} removed`;
+						toastMsg = `${data._Plugin__removeUserFromEvent.firstName} ${data._Plugin__removeUserFromEvent.lastName} removed`;
 				} else {
 					const { data } = await markAttendedFunction({
 						variables: {
@@ -92,7 +92,7 @@ export const createSubmitHandler = (
 					});
 
 					if (data)
-						toastMsg = `${data.checkInUserToEvent.firstName} ${data.checkInUserToEvent.lastName} checked in`;
+						toastMsg = `${data._Plugin__checkInUserToEvent.firstName} ${data._Plugin__checkInUserToEvent.lastName} checked in`;
 				}
 			}
 			if (nfc.length > NFC_CODE_MIN_LENGTH) {
@@ -106,7 +106,7 @@ export const createSubmitHandler = (
 						},
 					});
 					if (data)
-						toastMsg = `${data.removeUserFromEventByNfc.firstName} ${data.removeUserFromEventByNfc.lastName} removed`;
+						toastMsg = `${data._Plugin__removeUserFromEventByNfc.firstName} ${data._Plugin__removeUserFromEventByNfc.lastName} removed`;
 				} else {
 					const { data } = await markAttendedByNfcFunction({
 						variables: {
@@ -118,7 +118,7 @@ export const createSubmitHandler = (
 					});
 
 					if (data)
-						toastMsg = `${data.checkInUserToEventByNfc.firstName} ${data.checkInUserToEventByNfc.lastName} checked in`;
+						toastMsg = `${data._Plugin__checkInUserToEventByNfc.firstName} ${data._Plugin__checkInUserToEventByNfc.lastName} checked in`;
 				}
 			}
 		}

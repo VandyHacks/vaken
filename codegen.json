@@ -1,9 +1,12 @@
 {
 	"schema": [
 		"./src/common/schema.graphql.ts",
+		"./plugins/**/schema.graphql.ts"
+	],
+	"documents": [
+		"./src/client/**/*.graphql.ts",
 		"./plugins/**/*.graphql.ts"
 	],
-	"documents": "./src/client/**/*.graphql.ts",
 	"overwrite": true,
 	"watch": false,
 	"generates": {
@@ -17,8 +20,8 @@
 				"mappers": {
 					"ApplicationField": "ApplicationFieldDbObject",
 					"ApplicationQuestion": "ApplicationQuestionDbObject",
-					"_PLUGIN__Event": "_Plugin__EventDbObject",
-					"_PLUGIN__EventCheckIn": "_Plugin__EventCheckInDbObject",
+					"_Plugin__Event": "_Plugin__EventDbObject",
+					"_Plugin__EventCheckIn": "_Plugin__EventCheckInDbObject",
 					"Event": "EventDbObject",
 					"EventCheckIn": "EventCheckInDbObject",
 					"Company": "CompanyDbObject",

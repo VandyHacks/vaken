@@ -11,11 +11,11 @@ import { ToggleSwitch } from '../../../src/client/components/Buttons/ToggleSwitc
 import { SearchBox } from '../../../src/client/components/Input/SearchBox';
 import { TableCtxI, TableContext, fuseOpts } from '../../../src/client/contexts/TableContext';
 import {
-	useRegisterNfcuidWithUserMutation,
-	useCheckInUserToEventMutation,
-	useRemoveUserFromEventMutation,
-	useCheckInUserToEventByNfcMutation,
-	useRemoveUserFromEventByNfcMutation,
+	use_Plugin__RegisterNfcuidWithUserMutation,
+	use_Plugin__CheckInUserToEventMutation,
+	use_Plugin__RemoveUserFromEventMutation,
+	use_Plugin__CheckInUserToEventByNfcMutation,
+	use_Plugin__RemoveUserFromEventByNfcMutation,
 } from '../../../src/client/generated/graphql';
 
 import { NfcTableRows } from './NfcTableRows';
@@ -130,11 +130,11 @@ const NfcTable: FC<NfcTableProps> = ({ hackersData, eventsData }: NfcTableProps)
 
 	const searchBoxRef = React.useRef<HTMLInputElement>(null);
 
-	const [registerNfcUidWithUser] = useRegisterNfcuidWithUserMutation();
-	const [checkInUserToEvent] = useCheckInUserToEventMutation();
-	const [removeUserFromEvent] = useRemoveUserFromEventMutation();
-	const [checkInUserToEventByNfc] = useCheckInUserToEventByNfcMutation();
-	const [removeUserFromEventByNfc] = useRemoveUserFromEventByNfcMutation();
+	const [registerNfcUidWithUser] = use_Plugin__RegisterNfcuidWithUserMutation();
+	const [checkInUserToEvent] = use_Plugin__CheckInUserToEventMutation();
+	const [removeUserFromEvent] = use_Plugin__RemoveUserFromEventMutation();
+	const [checkInUserToEventByNfc] = use_Plugin__CheckInUserToEventByNfcMutation();
+	const [removeUserFromEventByNfc] = use_Plugin__RemoveUserFromEventByNfcMutation();
 
 	const handleSubmit = createSubmitHandler(
 		registerNfcUidWithUser,

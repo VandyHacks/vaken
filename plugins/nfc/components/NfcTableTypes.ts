@@ -2,16 +2,16 @@ import { SortDirectionType } from 'react-virtualized';
 
 import { MutationFunction } from '@apollo/react-common';
 import {
-	RegisterNfcuidWithUserMutation,
-	RegisterNfcuidWithUserMutationVariables,
-	CheckInUserToEventMutation,
-	CheckInUserToEventMutationVariables,
-	RemoveUserFromEventMutation,
-	RemoveUserFromEventMutationVariables,
-	CheckInUserToEventByNfcMutation,
-	CheckInUserToEventByNfcMutationVariables,
-	RemoveUserFromEventByNfcMutation,
-	RemoveUserFromEventByNfcMutationVariables,
+	_Plugin__RegisterNfcuidWithUserMutation,
+	_Plugin__RegisterNfcuidWithUserMutationVariables,
+	_Plugin__CheckInUserToEventMutation,
+	_Plugin__CheckInUserToEventMutationVariables,
+	_Plugin__RemoveUserFromEventMutation,
+	_Plugin__RemoveUserFromEventMutationVariables,
+	_Plugin__CheckInUserToEventByNfcMutation,
+	_Plugin__CheckInUserToEventByNfcMutationVariables,
+	_Plugin__RemoveUserFromEventByNfcMutation,
+	_Plugin__RemoveUserFromEventByNfcMutationVariables,
 	HackersQuery,
 	EventsQuery,
 } from '../../../src/client/generated/graphql';
@@ -25,27 +25,27 @@ export interface SortFnProps {
 	sortDirection?: SortDirectionType;
 }
 
-export type RegisterNfcuidWithUserMutationFn = MutationFunction<
-	RegisterNfcuidWithUserMutation,
-	RegisterNfcuidWithUserMutationVariables
+export type _Plugin__RegisterNfcuidWithUserMutationFn = MutationFunction<
+	_Plugin__RegisterNfcuidWithUserMutation,
+	_Plugin__RegisterNfcuidWithUserMutationVariables
 >;
 
-export type CheckInUserToEventMutationFn = MutationFunction<
-	CheckInUserToEventMutation,
-	CheckInUserToEventMutationVariables
+export type _Plugin__CheckInUserToEventMutationFn = MutationFunction<
+	_Plugin__CheckInUserToEventMutation,
+	_Plugin__CheckInUserToEventMutationVariables
 >;
 
-export type RemoveUserFromEventMutationFn = MutationFunction<
-	RemoveUserFromEventMutation,
-	RemoveUserFromEventMutationVariables
+export type _Plugin__RemoveUserFromEventMutationFn = MutationFunction<
+	_Plugin__RemoveUserFromEventMutation,
+	_Plugin__RemoveUserFromEventMutationVariables
 >;
 
-export type CheckInUserToEventByNfcMutationFn = MutationFunction<
-	CheckInUserToEventByNfcMutation,
-	CheckInUserToEventByNfcMutationVariables
+export type _Plugin__CheckInUserToEventByNfcMutationFn = MutationFunction<
+	_Plugin__CheckInUserToEventByNfcMutation,
+	_Plugin__CheckInUserToEventByNfcMutationVariables
 >;
 
-export type RemoveUserFromEventByNfcMutationFn = MutationFunction<
-	RemoveUserFromEventByNfcMutation,
-	RemoveUserFromEventByNfcMutationVariables
+export type _Plugin__RemoveUserFromEventByNfcMutationFn = MutationFunction<
+	_Plugin__RemoveUserFromEventByNfcMutation,
+	_Plugin__RemoveUserFromEventByNfcMutationVariables
 >;

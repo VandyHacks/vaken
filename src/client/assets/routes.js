@@ -5,7 +5,7 @@ import { HackerDash } from '../routes/dashboard/HackerDash';
 // import { Profile } from '../routes/profile/Profile';
 import { Help } from '../routes/help/Help';
 import { UserType } from '../generated/graphql';
-import config from '../generated/plugins';
+import config from '../plugins';
 
 const routes = [
 	{

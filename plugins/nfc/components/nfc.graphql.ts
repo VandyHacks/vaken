@@ -1,40 +1,40 @@
 import gql from 'graphql-tag';
 
 export default gql`
-	mutation __PLUGIN__registerNFCUIDWithUser($input: __PLUGIN__NFCRegisterInput!) {
-		__PLUGIN__registerNFCUIDWithUser(input: $input) {
+	mutation _Plugin__registerNFCUIDWithUser($input: _Plugin__NFCRegisterInput!) {
+		_Plugin__registerNFCUIDWithUser(input: $input) {
 			id
 			firstName
 			lastName
 		}
 	}
 
-	mutation __PLUGIN__checkInUserToEvent($input: __PLUGIN__EventCheckInInput!) {
-		__PLUGIN__checkInUserToEvent(input: $input) {
+	mutation _Plugin__checkInUserToEvent($input: _Plugin__EventCheckInInput!) {
+		_Plugin__checkInUserToEvent(input: $input) {
 			id
 			firstName
 			lastName
 		}
 	}
 
-	mutation __PLUGIN__removeUserFromEvent($input: __PLUGIN__EventCheckInInput!) {
-		__PLUGIN__removeUserFromEvent(input: $input) {
+	mutation _Plugin__removeUserFromEvent($input: _Plugin__EventCheckInInput!) {
+		_Plugin__removeUserFromEvent(input: $input) {
 			id
 			firstName
 			lastName
 		}
 	}
 
-	mutation __PLUGIN__checkInUserToEventByNfc($input: __PLUGIN__EventCheckInInputByNfc!) {
-		__PLUGIN__checkInUserToEventByNfc(input: $input) {
+	mutation _Plugin__checkInUserToEventByNfc($input: _Plugin__EventCheckInInputByNfc!) {
+		_Plugin__checkInUserToEventByNfc(input: $input) {
 			id
 			firstName
 			lastName
 		}
 	}
 
-	mutation __PLUGIN__removeUserFromEventByNfc($input: __PLUGIN__EventCheckInInputByNfc!) {
-		__PLUGIN__removeUserFromEventByNfc(input: $input) {
+	mutation _Plugin__removeUserFromEventByNfc($input: _Plugin__EventCheckInInputByNfc!) {
+		_Plugin__removeUserFromEventByNfc(input: $input) {
 			id
 			firstName
 			lastName
