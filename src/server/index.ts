@@ -10,7 +10,7 @@ import { resolvers } from './resolvers';
 import DB from './models';
 import Context from './context';
 import logger from './logger';
-import { strategies, registerAuthRoutes } from './auth';
+import { registerAuthRoutes, StrategyNameSvgs } from './auth';
 import { UnsubscribeHandler } from './mail/handlers';
 import { UserDbInterface } from './generated/graphql';
 import { pullCalendar } from './events';
@@ -67,22 +67,26 @@ export const schema = makeExecutableSchema({
 	// passport.use('microsoft', strategies.microsoft(models));
 
 	// array to hold all oAuth strategies to be used with registering routes and working with passport
-	const oAuthStrategies = ['session'];
+	const oAuthStrategies: StrategyNameSvgs[] = [];
 
 	// iterate through config, pulling out oauth packages and generating their passport configuration
 	vakenConfig
 		.filter(({ scopes }) => scopes.includes('oauth'))
+		// could use map but map making other changes is less idomatic.
 		.forEach(config => {
 			passport.use(config.name, config.strategy(models));
-			oAuthStrategies.push(config.name);
+			oAuthStrategies.push({
+				name: config.name,
+				svgPath: config.logo,
+				displayName: config.displayName,
+			});
 			console.error(config);
 		});
 
-	// slice out 'session' from oAuthStrategies array for route registration
-	registerAuthRoutes(app, oAuthStrategies.slice(1));
+	registerAuthRoutes(app, oAuthStrategies);
 
 	app.use((req, res, next) =>
-		passport.authenticate(oAuthStrategies, (err, user) => {
+		passport.authenticate(['session', ...oAuthStrategies.map(({ name }) => name)], (err, user) => {
 			if (err) return void next();
 			return void req.login(user, next);
 		})(req, res, next)
