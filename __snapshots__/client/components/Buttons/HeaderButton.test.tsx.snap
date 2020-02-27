@@ -2,13 +2,13 @@
 
 exports[`HeaderButton 1`] = `
 <button
-  className="sc-fzXfLR sc-fzXfLU dKkdZd"
+  className="sc-fzplWN sc-fznZeY hunUVh"
   height="auto"
   onClick={[Function]}
   width="auto"
 >
   <div
-    className="sc-AykKK hUswpc"
+    className="sc-AxmLO iCOngv"
     color="white"
     fontSize="1.4rem"
   >

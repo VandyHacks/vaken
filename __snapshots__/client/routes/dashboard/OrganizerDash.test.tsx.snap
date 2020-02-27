@@ -2,18 +2,18 @@
 
 exports[`Test SchoolTable renders properly 1`] = `
 <ul
-  className="sc-fzXfMy hWszkB"
+  className="sc-fzpjYC igxYiS"
 >
   <li
-    className="sc-fzXfMz lpgYnZ"
+    className="sc-fznxsB cZeEYU"
   >
     <span
-      className="sc-fzXfMw gBtHyU"
+      className="sc-fzoLag fNjFCK"
     >
       mockschool: 
     </span>
     <span
-      className="sc-fzXfMx dofttV"
+      className="sc-fzoXzr jKPuEI"
     >
       1
     </span>

@@ -2,17 +2,17 @@
 
 exports[`Test Frame Frame renders correctly 1`] = `
 <div
-  className="sc-fzXfOs gpSSCD"
+  className="sc-fzoYHE dtOAsL"
   onFocus={[Function]}
 >
   <div
     className="header"
   >
     <div
-      className="sc-AykKC sc-AykKD sc-AykKE sc-AykKF gOhHxk"
+      className="sc-AxjAm sc-AxirZ sc-AxiKw sc-AxhCb fcBnbp"
     >
       <button
-        className="sc-fzXfOu ehbBJy"
+        className="sc-fznAgC dNmGEi"
         onClick={[Function]}
         type="button"
       >
@@ -27,24 +27,24 @@ exports[`Test Frame Frame renders correctly 1`] = `
         />
       </button>
       <h1
-        className="sc-fzXfNJ eNxGnY"
+        className="sc-fzoxKX eOFCTn"
         color="#3148A1"
       >
         Dashboard
       </h1>
     </div>
     <div
-      className="sc-fzXfOt hqmXCy"
+      className="sc-fzpkqZ OWpCS"
     />
   </div>
   <div
-    className="sc-fzXfNM hfhRzw sidebar"
+    className="sc-fzpkJw fyrmec sidebar"
   >
     <div
-      className="sc-fzXfNN cczDgC"
+      className="sc-fznzOf fOhOco"
     >
       <div
-        className="sc-fzXfNO lgelVe"
+        className="sc-fznMnq fxieIy"
       >
         <img
           alt="VH graphic"
@@ -52,27 +52,27 @@ exports[`Test Frame Frame renders correctly 1`] = `
         />
       </div>
       <hr
-        className="sc-fzXfNP gZGmxC"
+        className="sc-fzoant gnrCGl"
       />
       <div
-        className="sc-AykKC sc-AykKD sc-AykKI jezTze"
+        className="sc-AxjAm sc-AxirZ sc-AxheI iCHgIv"
         height="calc(100% - calc(8rem + 160px))"
       >
         <ul
-          className="sc-fzXfOr iA-DOTN"
+          className="sc-fzoJMP dXIWax"
         >
           <li>
             <a
               aria-current={null}
-              className="sc-fzXfOq eTkTzx"
+              className="sc-fzoydu jDXlxx"
               href="/dashboard"
               onClick={[Function]}
             >
               <button
-                className="sc-fzXfLR sc-fzXfLU bpVNSQ sc-fzXfNR bjlXHa"
+                className="sc-fzplWN sc-fznZeY cOyrJe sc-fzqAbL iJSFoz"
               >
                 <div
-                  className="sc-AykKK sc-fzXfLO ACTGs sc-fzXfNR bjlXHa"
+                  className="sc-AxmLO sc-fzozJi cGpCXg sc-fzqAbL iJSFoz"
                 >
                   Dashboard
                 </div>
@@ -82,15 +82,15 @@ exports[`Test Frame Frame renders correctly 1`] = `
           <li>
             <a
               aria-current={null}
-              className="sc-fzXfOq eTkTzx"
+              className="sc-fzoydu jDXlxx"
               href="/application"
               onClick={[Function]}
             >
               <button
-                className="sc-fzXfLR sc-fzXfLU bpVNSQ sc-fzXfNR bjlXHa"
+                className="sc-fzplWN sc-fznZeY cOyrJe sc-fzqAbL iJSFoz"
               >
                 <div
-                  className="sc-AykKK sc-fzXfLO ACTGs sc-fzXfNR bjlXHa"
+                  className="sc-AxmLO sc-fzozJi cGpCXg sc-fzqAbL iJSFoz"
                 >
                   Apply
                 </div>
@@ -100,15 +100,15 @@ exports[`Test Frame Frame renders correctly 1`] = `
           <li>
             <a
               aria-current={null}
-              className="sc-fzXfOq eTkTzx"
+              className="sc-fzoydu jDXlxx"
               href="/help"
               onClick={[Function]}
             >
               <button
-                className="sc-fzXfLR sc-fzXfLU bpVNSQ sc-fzXfNR bjlXHa"
+                className="sc-fzplWN sc-fznZeY cOyrJe sc-fzqAbL iJSFoz"
               >
                 <div
-                  className="sc-AykKK sc-fzXfLO ACTGs sc-fzXfNR bjlXHa"
+                  className="sc-AxmLO sc-fzozJi cGpCXg sc-fzqAbL iJSFoz"
                 >
                   Help
                 </div>
@@ -117,28 +117,28 @@ exports[`Test Frame Frame renders correctly 1`] = `
           </li>
         </ul>
         <div
-          className="sc-AykKC sc-AykKD sc-AykKH iTnpoE"
+          className="sc-AxjAm sc-AxirZ sc-AxgMl ZVNpI"
           height="min-content"
         >
           <a
-            className="sc-fzXfNS iPJFCC"
+            className="sc-fzqMAW bWTDAM"
             href="/api/logout"
           >
             <button
-              className="sc-fzXfLR sc-fzXfLU bpVNSQ sc-fzXfNR bjlXHa"
+              className="sc-fzplWN sc-fznZeY cOyrJe sc-fzqAbL iJSFoz"
             >
               <div
-                className="sc-AykKK sc-fzXfLO ACTGs sc-fzXfNR bjlXHa"
+                className="sc-AxmLO sc-fzozJi cGpCXg sc-fzqAbL iJSFoz"
               >
                 Logout
               </div>
             </button>
           </a>
           <hr
-            className="sc-fzXfNP sc-fzXfNQ jsbztR"
+            className="sc-fzoant sc-fzomME kdLqb"
           />
           <h1
-            className="sc-fzXfLV krPAL"
+            className="sc-fzokOt hNxYVR"
           >
             VandyHacks VI
           </h1>
@@ -147,29 +147,29 @@ exports[`Test Frame Frame renders correctly 1`] = `
     </div>
   </div>
   <div
-    className="sc-AykKJ kWrAUB content"
+    className="sc-Axmtr cExobM content"
   >
     <div
-      className="sc-AykKC sc-AykKD sc-AykKG iuljnE"
+      className="sc-AxjAm sc-AxirZ sc-AxhUy gsmQlJ"
     >
       <div
-        className="sc-AykKC sc-AykKD sc-AykKG sc-fzXfMC sc-fzXfNK cHhPbI"
+        className="sc-AxjAm sc-AxirZ sc-AxhUy sc-fzoiQi sc-fzoKki jteZdl"
       >
         <div
-          className="sc-AykKC sc-AykKD fssDYF"
+          className="sc-AxjAm sc-AxirZ ljxDq"
         >
           <h1
-            className="sc-fzXfNJ VCxtq"
+            className="sc-fzoxKX fDHrfR"
             fontSize="1.75rem"
           >
             Your application status:
           </h1>
           <button
-            className="sc-fzXfLR sc-fzXfNd iiKIVa"
+            className="sc-fzplWN sc-fzoNJl LYdlo"
             onClick={[Function]}
           >
             <div
-              className="sc-AykKK faNDVa"
+              className="sc-AxmLO jPjuVJ"
               color="white"
               fontSize="1.4em"
             >
