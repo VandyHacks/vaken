@@ -17,8 +17,9 @@
 				"mappers": {
 					"ApplicationField": "ApplicationFieldDbObject",
 					"ApplicationQuestion": "ApplicationQuestionDbObject",
-					"Event": "EventDbObject",
 					"_PLUGIN__Event": "_Plugin__EventDbObject",
+					"_PLUGIN__EventCheckIn": "_Plugin__EventCheckInDbObject",
+					"Event": "EventDbObject",
 					"EventCheckIn": "EventCheckInDbObject",
 					"Company": "CompanyDbObject",
 					"Hacker": "HackerDbObject",

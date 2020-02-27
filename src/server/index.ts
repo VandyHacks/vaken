@@ -83,9 +83,11 @@ export const schema = makeExecutableSchema({
 		res.send(calendar);
 	});
 
+	const db = (await dbClient.client).db('vaken');
+
 	const server = new ApolloServer({
 		context: ({ req }): Context => ({
-			db: dbClient.client,
+			db,
 			models,
 			user: req.user as UserDbInterface | undefined,
 		}),

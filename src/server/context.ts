@@ -2,10 +2,10 @@
 
 import { Models } from './models';
 import { UserDbInterface } from './generated/graphql';
-import { MongoClient } from 'mongodb'
+import { MongoClient, Db } from 'mongodb'
 
 export default interface Context {
-	db: Promise<MongoClient>;
+	db: Db;
 	models: Models;
 	user?: UserDbInterface;
 }
