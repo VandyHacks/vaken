@@ -34,8 +34,8 @@ module.exports = {
 							to: 'docs/installation',
 						},
 						{
-							label: 'Second Doc',
-							to: 'docs/doc2',
+							label: 'Core Features',
+							to: 'docs/corefeatures/overview',
 						},
 					],
 				},
