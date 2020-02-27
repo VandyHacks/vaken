@@ -22,3 +22,23 @@
 	margin: 0 calc(-1 * var(--ifm-pre-padding));
 	padding: 0 var(--ifm-pre-padding);
 }
+
+html[data-theme='dark'] {
+	--ifm-color-feedback-background: #f0f8ff;
+}
+
+@media screen and (max-width: 996px) {
+	:root {
+		--ifm-font-size-base: 15px;
+	}
+}
+
+@media screen and (min-width: 997px) {
+	:root {
+		--ifm-font-size-base: 17px;
+	}
+}
+
+html[data-theme='dark'] .docusaurus-highlight-code-line {
+	background-color: rgb(0, 0, 0, 0.3);
+}
