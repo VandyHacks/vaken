@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { NFCPlugin } from './plugins/nfc';
+import { NFCPlugin } from './plugins/nfc/server';
 
 export default [
 	{

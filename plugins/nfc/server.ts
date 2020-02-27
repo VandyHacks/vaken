@@ -1,180 +1,90 @@
-import { ObjectID } from 'mongodb';
-import { AuthenticationError, UserInputError } from 'apollo-server-express';
-import { HackerDbObject, UserDbInterface } from '../../src/server/generated/graphql';
-import { Models } from '../../src/server/models';
-import logger from '../../src/server/logger';
+import { UserType, _Plugin__EventDbObject, _Plugin__EventCheckInDbObject } from '../../src/client/generated/graphql';
+import schema from './schema.graphql'
+import { checkIsAuthorized, checkIsAuthorizedArray, queryById } from '../../src/server/resolvers/helpers'
+import { UserInputError } from 'apollo-server-express';
+import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser, getUser } from './helpers';
+import { Resolvers } from '../../src/server/generated/graphql'
+import Context from '../../src/server/context';
 
-// TODO: (kenli/timliang) Expand functions for Organizers, Mentors collections
+export class NFCPlugin {
+  get schema() {
+    return schema;
+  }
 
-export async function checkIfNFCUIDExisted(
-	nfcID: string,
-	models: Models
-): Promise<HackerDbObject | null> {
-	const hacker = await models.Hackers.findOne({
-		secondaryIds: nfcID,
-	});
-	return hacker;
+  get resolvers(): Pick<Resolvers<Context>, "Mutation" | "Query" | "_PLUGIN__Event" | "_PLUGIN__EventCheckIn"> {
+    return {
+      _PLUGIN__Event: {
+        attendees: async event => (await event).attendees || [],
+        checkins: async event => (await event).checkins || [],
+        description: async event => (await event).description || null,
+        duration: async event => (await event).duration,
+        eventType: async event => (await event).eventType,
+        id: async event => (await event)._id.toHexString(),
+        location: async event => (await event).location,
+        name: async event => (await event).name,
+        startTimestamp: async event => (await event).startTimestamp.getTime(),
+        warnRepeatedCheckins: async event => (await event).warnRepeatedCheckins,
+        gcalID: async event => (await event).gcalID || null,
+        // owner: async event => (await event).owner || null,
+      },
+      _PLUGIN__EventCheckIn: {
+        id: async eventCheckIn => (await eventCheckIn)._id.toHexString(),
+        timestamp: async eventCheckIn => (await eventCheckIn).timestamp.getTime(),
+        user: async eventCheckIn => (await eventCheckIn).user,
+      },
+      Query: {
+        _PLUGIN__event: async (root, { id }, ctx) => {
+          return queryById(id, ctx.db.collection<_Plugin__EventDbObject>('_PLUGIN__events'));
+        },
+        _PLUGIN__events: async (root, args, ctx) => {
+          const user = checkIsAuthorizedArray([UserType.Organizer, UserType.Sponsor], ctx.user);
+          // // if (user.userType === UserType.Sponsor) {
+          // //   // const { _id } = (user as SponsorDbObject).company;
+          // //   const events = await ctx.models.Events.find({ 'owner._id': new ObjectID(_id) }).toArray();
+          // //   return events;
+          // // }
+          if (user.userType === UserType.Organizer) {
+            return ctx.db.collection<_Plugin__EventDbObject>('_PLUGIN__events').find().toArray();
+          }
+          return ctx.db.collection<_Plugin__EventDbObject>('_PLUGIN__events').find({ owner: null }).toArray();
+        },
+        _PLUGIN__eventCheckIn: async (root, { id }, ctx) =>
+          queryById(id, ctx.db.collection<_Plugin__EventCheckInDbObject>('_PLUGIN__eventCheckIns')),
+        _PLUGIN__eventCheckIns: async (root, args, ctx) => {
+          checkIsAuthorizedArray([UserType.Organizer], ctx.user);
+          return ctx.db.collection<_Plugin__EventCheckInDbObject>('_PLUGIN__eventCheckIns').find().toArray();
+        },
+      },
+      Mutation: {
+        _PLUGIN__checkInUserToEventByNfc: async (root, { input }, { models, user }) => {
+          checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
+          const inputUser = await getUser(input.nfcId, models);
+          if (!inputUser) throw new UserInputError(`user with nfc id <${input.nfcId}> not found`);
+          return checkInUserToEvent(inputUser._id.toString(), input.event, models);
+        },
+        _PLUGIN__removeUserFromEvent: async (root, { input }, { models, user }) => {
+          checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
+          return removeUserFromEvent(input.user, input.event, models);
+        },
+        _PLUGIN__removeUserFromEventByNfc: async (root, { input }, { models, user }) => {
+          checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
+          const inputUser = await getUser(input.nfcId, models);
+          if (!inputUser) throw new UserInputError(`user with nfc Id ${input.nfcId} not found`);
+          return removeUserFromEvent(inputUser._id.toString(), input.event, models);
+        },
+        _PLUGIN__registerNFCUIDWithUser: async (root, { input }, { models, user }) => {
+          checkIsAuthorized(UserType.Organizer, user);
+          return registerNFCUIDWithUser(input.nfcid, input.user, models);
+        },
+        _PLUGIN__checkInUserToEvent: async (root, { input }, { models, user }) => {
+          checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
+          return checkInUserToEvent(input.user, input.event, models);
+        },
+      }
+    }
+  }
 }
 
-export async function userIsAttendingEvent(
-	userID: string,
-	eventID: string,
-	models: Models
-): Promise<boolean> {
-	const userObjectID = new ObjectID(userID);
-	const user = await models.Hackers.findOne({ _id: userObjectID });
-	return user !== null && user.eventsAttended && user.eventsAttended.includes(eventID);
-}
-
-export async function shouldWarnRepeatedCheckIn(
-	userID: string,
-	eventID: string,
-	models: Models
-): Promise<boolean> {
-	const event = await models.Events.findOne({ _id: new ObjectID(eventID) });
-	return (
-		event != null && event.warnRepeatedCheckins && userIsAttendingEvent(userID, eventID, models)
-	);
-}
-
-export async function getUser(nfcID: string, models: Models): Promise<HackerDbObject | null> {
-	const user = await models.Hackers.findOne({
-		'secondaryIds.0': nfcID,
-	});
-	return user;
-}
-
-export async function isNFCUIDAvailable(nfcID: string, models: Models): Promise<boolean> {
-	return (await getUser(nfcID, models)) == null;
-}
-
-export async function registerNFCUIDWithUser(
-	nfcID: string,
-	userID: string,
-	models: Models
-): Promise<UserDbInterface> {
-	if (!(await isNFCUIDAvailable(nfcID, models)))
-		throw new AuthenticationError(`NFC ID ${nfcID} not available`);
-
-	const ret = await models.Hackers.findOneAndUpdate(
-		{ _id: new ObjectID(userID) },
-		{
-			$push: {
-				secondaryIds: {
-					$each: [nfcID],
-					$position: 0,
-				},
-			},
-		},
-		{ returnOriginal: false }
-	);
-
-	logger.info(`registered user ${userID} with NFC id ${nfcID}`);
-
-	if (ret.value) {
-		if (ret.value.secondaryIds.length > 1) {
-			throw new Error(`Associated new NFC ID with user overriding the old NFC ID`);
-		}
-		return ret.value;
-	}
-
-	throw new Error(`Unable to associate NFC ID with user: ${userID}. User not found.`);
-}
-
-export async function removeUserFromEvent(
-	userID: string,
-	eventID: string,
-	models: Models
-): Promise<UserDbInterface> {
-	const userObjectID = new ObjectID(userID);
-	const user = await models.Hackers.findOne({ _id: userObjectID, eventsAttended: eventID });
-	if (!user) throw new UserInputError(`User has not attended this event`);
-
-	const ret = await Promise.all([
-		models.Events.updateOne(
-			{ _id: new ObjectID(eventID) },
-			{
-				$pull: {
-					attendees: userObjectID.toHexString(),
-				},
-			},
-			{}
-		),
-		models.Hackers.updateOne(
-			{ _id: userObjectID },
-			{
-				$pull: {
-					eventsAttended: eventID,
-				},
-			}
-		),
-	]);
-	if (ret[0].result.ok && ret[1].result.ok) {
-		logger.info(
-			`removed user ${userID} (${user.firstName} ${user.lastName}) from event ${eventID}`
-		);
-		return user;
-	}
-
-	throw new Error(`failed to remove ${user.firstName} ${user.lastName} from event ${eventID}`);
-}
-
-export async function checkInUserToEvent(
-	userID: string,
-	eventID: string,
-	models: Models
-): Promise<UserDbInterface> {
-	const userObjectID = new ObjectID(userID);
-	const eventObjectID = new ObjectID(eventID);
-	const user = await models.Hackers.findOne({ _id: userObjectID });
-	if (!user) if (!user) throw new UserInputError(`user ${userID} not found`);
-
-	const eventCheckInObj = {
-		_id: ObjectID.createFromTime(Date.now()),
-		timestamp: new Date(),
-		user: userID,
-	};
-	let retEvent = await models.Events.findOneAndUpdate(
-		{ _id: eventObjectID },
-		{
-			$push: { checkins: eventCheckInObj },
-		}
-	);
-
-	// TODO(mattleon): This requires hitting the DB like 5 times rip
-	if (await shouldWarnRepeatedCheckIn(userID, eventID, models)) {
-		throw new Error(`${user.firstName} ${user.lastName} is already checked into event`);
-	}
-	retEvent = await models.Events.findOneAndUpdate(
-		{ _id: eventObjectID },
-		{
-			$addToSet: { attendees: userObjectID.toHexString() },
-		},
-		{ returnOriginal: false }
-	);
-	const retUsr = await models.Hackers.findOneAndUpdate(
-		{ _id: userObjectID },
-		{
-			$addToSet: {
-				eventsAttended: eventObjectID.toHexString(),
-			},
-		},
-		{ returnOriginal: false }
-	);
-	if (retEvent.ok && retUsr.ok && retUsr.value) {
-		logger.info(`checked in user ${userID} to event ${eventID}`);
-		return retUsr.value;
-	}
-
-	throw new Error(`failed checking user <${userID}> into event <${eventID}>`);
-}
-
-export async function getEventsAttended(userID: string, models: Models): Promise<string[]> {
-	const user = await models.Hackers.findOne({ _id: new ObjectID(userID) });
-	return user != null && user.eventsAttended != null ? user.eventsAttended : [];
-}
-
-export async function getAttendees(eventID: string, models: Models): Promise<string[]> {
-	const event = await models.Events.findOne({ _id: new ObjectID(eventID) });
-	return event != null ? event.attendees : [];
+export default {
+  NFCPlugin
 }

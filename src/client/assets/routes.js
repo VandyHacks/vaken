@@ -5,7 +5,7 @@ import { HackerDash } from '../routes/dashboard/HackerDash';
 // import { Profile } from '../routes/profile/Profile';
 import { Help } from '../routes/help/Help';
 import { UserType } from '../generated/graphql';
-// import config from '../../../vaken.config';
+import config from '../generated/plugins';
 
 const routes = [
 	{
@@ -82,13 +82,13 @@ const routes = [
 	},
 ];
 
-// config.forEach(plugin => {
-// 	routes.push({
-// 		authLevel: plugin.package.routeInfo.authLevel,
-// 		component: React.lazy(async () => await (plugin.package.component())),
-// 		displayText: plugin.package.routeInfo.displayText,
-// 		path: plugin.package.routeInfo.path,
-// 	});
-// });
+config.forEach(plugin => {
+	routes.push({
+		authLevel: plugin.package.routeInfo.authLevel,
+		component: React.lazy(async () => await (plugin.package.component())),
+		displayText: plugin.package.routeInfo.displayText,
+		path: plugin.package.routeInfo.path,
+	});
+});
 
 export default routes;
