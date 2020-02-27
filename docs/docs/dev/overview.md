@@ -1,5 +1,5 @@
 ---
 id: overview
-title: File Structure Overview
-sidebar_label: Overview
+title: Introduction to Development
+sidebar_label: Introduction
 ---

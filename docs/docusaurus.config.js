@@ -79,7 +79,7 @@ module.exports = {
 		},
 		algolia: {
 			apiKey: process.env.ALGOLIA_API_KEY,
-			indexName: 'index-name',
+			indexName: 'vaken',
 			algoliaOptions: {}, // Optional, if provided by Algolia
 		},
 	},

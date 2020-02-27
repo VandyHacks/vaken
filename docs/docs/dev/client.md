@@ -1,5 +1,5 @@
 ---
 id: client
-title: Client
-sidebar_label: Client
+title: Client Overview
+sidebar_label: Overview
 ---

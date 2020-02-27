@@ -1,5 +1,5 @@
 ---
 id: server
-title: Server
-sidebar_label: Server
+title: Server Overview
+sidebar_label: Overview
 ---
