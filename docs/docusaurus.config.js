@@ -35,7 +35,7 @@ module.exports = {
 						},
 						{
 							label: 'Core Features',
-							to: 'docs/corefeatures/overview',
+							to: 'docs/core/overview',
 						},
 					],
 				},

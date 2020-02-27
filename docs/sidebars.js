@@ -9,9 +9,22 @@
 
 module.exports = {
 	docs: {
-		'Getting Started': ['installation'],
-		Introduction: ['corefeatures/overview', 'corefeatures/hackertable'],
-		Plugins: [],
+		'Getting Started': ['introduction', 'installation'],
+		Development: ['dev/overview', 'dev/tooling', 'dev/client', 'dev/server'],
+		'Core Features': ['core/overview', 'core/hackertable'],
+		Plugins: [
+			'plugins/overview',
+			{
+				type: 'category',
+				label: 'Existing',
+				items: ['plugins/existing/nfc', 'plugins/existing/oauth'],
+			},
+			{
+				type: 'category',
+				label: 'Development',
+				items: ['plugins/dev/overview'],
+			},
+		],
 		Docusaurus: ['doc1', 'doc2', 'doc3'],
 		Features: ['mdx'],
 	},
