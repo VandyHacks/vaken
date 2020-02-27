@@ -14,7 +14,7 @@ import { strategies, registerAuthRoutes } from './auth';
 import { UnsubscribeHandler } from './mail/handlers';
 import { UserDbInterface } from './generated/graphql';
 import { pullCalendar } from './events';
-import config from './plugins'
+import config from './plugins';
 
 const { SESSION_SECRET, PORT, CALENDARID, NODE_ENV } = process.env;
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);

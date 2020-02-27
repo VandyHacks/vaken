@@ -85,7 +85,7 @@ const routes = [
 config.forEach(plugin => {
 	routes.push({
 		authLevel: plugin.package.routeInfo.authLevel,
-		component: React.lazy(async () => await (plugin.package.component())),
+		component: React.lazy(async () => plugin.package.component()),
 		displayText: plugin.package.routeInfo.displayText,
 		path: plugin.package.routeInfo.path,
 	});
