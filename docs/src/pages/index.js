@@ -9,7 +9,7 @@ import styles from './styles.module.css';
 const features = [
 	{
 		title: <>Made for all</>,
-		imageUrl: 'img/undraw_docusaurus_react.svg',
+		imageUrl: 'img/vaken_login.png',
 		description: (
 			<>
 				We built Vaken to help other hackathon organizers to get started with an advanced
@@ -20,7 +20,7 @@ const features = [
 	},
 	{
 		title: <>Modern Tech Stack</>,
-		imageUrl: 'img/undraw_docusaurus_tree.svg',
+		imageUrl: 'img/vaken_manage.png',
 		description: (
 			<>
 				Vaken is built with React, GraphQL, Express, TypeScript, and MongoDB to ensure sustained
@@ -30,7 +30,7 @@ const features = [
 	},
 	{
 		title: <>Pluggable</>,
-		imageUrl: 'img/undraw_docusaurus_mountain.svg',
+		imageUrl: 'img/vaken_sponsor.png',
 		description: (
 			<>
 				Vaken has been designed with a plugin architecture–either install the plugins you want from
@@ -72,7 +72,7 @@ function Home() {
 								'button button--outline button--secondary button--lg',
 								styles.getStarted
 							)}
-							to={useBaseUrl('docs/installation')}>
+							to={useBaseUrl('docs/introduction')}>
 							Get Started
 						</Link>
 					</div>
