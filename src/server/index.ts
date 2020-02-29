@@ -79,8 +79,8 @@ export const schema = makeExecutableSchema({
 
 	// Pull events callback
 	app.use('/api/manage/events/pull', async (req, res) => {
-		const calendar = await pullCalendar(CALENDARID);
-		res.send(calendar);
+		if (!CALENDARID) res.sendStatus(503).send('Calendar integration not set up');
+		else res.send(await pullCalendar(CALENDARID));
 	});
 
 	const server = new ApolloServer({
