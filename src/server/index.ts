@@ -17,7 +17,7 @@ import { pullCalendar } from './events';
 
 const { SESSION_SECRET, PORT, CALENDARID, NODE_ENV } = process.env;
 if (!SESSION_SECRET) logger.info(`SESSION_SECRET not set; disabling session integration`);
-if (!PORT) throw new Error(`PORT not set`);
+if (!PORT) logger.info(`PORT not set; defaulting to 8080`);
 if (!CALENDARID) logger.info('CALENDARID not set; disabling ical integration');
 logger.info(`Node env: ${NODE_ENV}`);
 
@@ -111,8 +111,8 @@ export const schema = makeExecutableSchema({
 	}
 
 	app.listen(
-		{ port: PORT },
-		() => void logger.info(`Server ready at http://localhost:${PORT}${server.graphqlPath}`)
+		{ port: PORT || 8080 },
+		() => void logger.info(`Server ready at http://localhost:${PORT || 8080}${server.graphqlPath}`)
 	);
 })();
 
