@@ -23,3 +23,5 @@ The AuthContext is utilized in the [index.ts of the client](https://github.com/V
 - Allows user to view the hacker table, check in users via NFC, manage events, and manage sponsors.
 
 ### Sponsor Type
+
+- Allows users to view hacker resumes and check in via NFC to sponsor events.

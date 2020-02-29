@@ -25,7 +25,7 @@ module.exports = {
 			},
 			'dev/auth',
 		],
-		'Core Features': ['core/overview', 'core/hackertable'],
+		'Core Features': ['core/overview', 'core/application', 'core/hackertable'],
 		Plugins: [
 			'plugins/overview',
 			{
