@@ -16,9 +16,9 @@ import { UserDbInterface } from './generated/graphql';
 import { pullCalendar } from './events';
 
 const { SESSION_SECRET, PORT, CALENDARID, NODE_ENV } = process.env;
-if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
+if (!SESSION_SECRET) logger.info(`SESSION_SECRET not set; disabling session integration`);
 if (!PORT) throw new Error(`PORT not set`);
-if (!CALENDARID) logger.info('CALENDARID not set; skipping ical integration');
+if (!CALENDARID) logger.info('CALENDARID not set; disabling ical integration');
 logger.info(`Node env: ${NODE_ENV}`);
 
 const app = express();
@@ -38,27 +38,28 @@ export const schema = makeExecutableSchema({
 
 	app.use(helmet()); // sets good security defaults, see https://helmetjs.github.io/
 
-	// Register auth functions
-	app.use(
-		session({
-			secret: SESSION_SECRET,
-			store: new (MongoStore(session))(({
-				clientPromise: dbClient.client,
-			} as unknown) as MongoUrlOptions),
-			cookie: {
-				/*
+	// Register auth functions (only if SESSION_SECRET is set)
+	if (SESSION_SECRET)
+		app.use(
+			session({
+				secret: SESSION_SECRET,
+				store: new (MongoStore(session))(({
+					clientPromise: dbClient.client,
+				} as unknown) as MongoUrlOptions),
+				cookie: {
+					/*
 					can't use secure cookies b/c only HTTP connection between dyno and Heroku servers, 
 					but don't need it as long as connection as Heroku servers and client are HTTPS
 				*/
-				// secure: IS_PROD,
-				httpOnly: true, // protects against XSS attacks
-				signed: true,
-				sameSite: true,
-			},
-		})
-	);
+					// secure: IS_PROD,
+					httpOnly: true, // protects against XSS attacks
+					signed: true,
+					sameSite: true,
+				},
+			})
+		);
 	app.use(passport.initialize());
-	app.use(passport.session());
+	if (SESSION_SECRET) app.use(passport.session());
 
 	passport.use('github', strategies.github(models));
 	passport.use('google', strategies.google(models));
