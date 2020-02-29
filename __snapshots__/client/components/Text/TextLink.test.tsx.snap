@@ -2,7 +2,7 @@
 
 exports[`Test TextLink renders correctly 1`] = `
 <a
-  className="sc-AykKC gGYpTd"
+  className="sc-AxjAm ibtiau"
   href="/"
   onClick={[Function]}
 />

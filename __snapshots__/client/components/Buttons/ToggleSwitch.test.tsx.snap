@@ -2,16 +2,16 @@
 
 exports[`ToggleSwitch HeaderButton 1`] = `
 <label
-  className="sc-AykKC jLQsUg"
+  className="sc-AxjAm jthvod"
 >
   TestButton
   <div
-    className="sc-AykKD eIPUn"
+    className="sc-AxirZ iGvVhU"
     onClick={[Function]}
   >
     <div
       checked={false}
-      className="sc-AykKE fltsFB"
+      className="sc-AxiKw ckTgpH"
     />
   </div>
 </label>

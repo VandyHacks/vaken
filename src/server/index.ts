@@ -14,6 +14,7 @@ import { strategies, registerAuthRoutes } from './auth';
 import { UnsubscribeHandler } from './mail/handlers';
 import { UserDbInterface } from './generated/graphql';
 import { pullCalendar } from './events';
+import config from './plugins';
 
 const { SESSION_SECRET, PORT, CALENDARID, NODE_ENV } = process.env;
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
@@ -28,8 +29,8 @@ export const schema = makeExecutableSchema({
 		requireResolversForAllFields: true,
 		requireResolversForResolveType: false,
 	},
-	resolvers: resolvers as {},
-	typeDefs: [DIRECTIVES, gqlSchema],
+	resolvers: [resolvers as {}, config[0].package.resolvers as {}],
+	typeDefs: [DIRECTIVES, gqlSchema, config[0].package.schema],
 });
 
 (async () => {
@@ -47,7 +48,7 @@ export const schema = makeExecutableSchema({
 			} as unknown) as MongoUrlOptions),
 			cookie: {
 				/*
-					can't use secure cookies b/c only HTTP connection between dyno and Heroku servers, 
+					can't use secure cookies b/c only HTTP connection between dyno and Heroku servers,
 					but don't need it as long as connection as Heroku servers and client are HTTPS
 				*/
 				// secure: IS_PROD,
@@ -82,8 +83,11 @@ export const schema = makeExecutableSchema({
 		res.send(calendar);
 	});
 
+	const db = (await dbClient.client).db('vaken');
+
 	const server = new ApolloServer({
 		context: ({ req }): Context => ({
+			db,
 			models,
 			user: req.user as UserDbInterface | undefined,
 		}),
