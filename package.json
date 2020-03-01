@@ -68,7 +68,7 @@
 		"@graphql-codegen/typescript": "^1.12.1",
 		"@graphql-codegen/typescript-mongodb": "^1.12.1",
 		"@graphql-codegen/typescript-operations": "^1.12.1",
-		"@graphql-codegen/typescript-react-apollo": "^1.12.1",
+		"@graphql-codegen/typescript-react-apollo": "^1.12.2",
 		"@graphql-codegen/typescript-resolvers": "^1.12.1",
 		"@packtracker/webpack-plugin": "^2.2.0",
 		"@sentry/browser": "^5.11.2",
