@@ -6,7 +6,7 @@ import { FlexColumn, FlexStartColumn } from '../../components/Containers/FlexCon
 import { Title } from '../../components/Text/Title';
 import STRINGS from '../../assets/strings.json';
 import { ButtonOutline, CenterButtonText } from '../../components/Buttons/Buttons';
-import applicationIncompleteSVG from '../../assets/img/application_incomplete.svg';
+import applicationStatusSVG from '../../assets/img/application_status.svg';
 import { SmallCenteredText } from '../../components/Text/SmallCenteredText';
 import {
 	ApplicationStatus,
@@ -26,7 +26,7 @@ const statusConfig = {
 			},
 		],
 		boldText: "You haven't started your application yet.",
-		img: applicationIncompleteSVG,
+		img: applicationStatusSVG,
 		status: 'Not Started',
 		statusBG: STRINGS.APPLICATION_INCOMPLETE_STATUSBG,
 		statusColor: STRINGS.APPLICATION_INCOMPLETE_STATUSCOLOR,
@@ -40,7 +40,7 @@ const statusConfig = {
 			},
 		],
 		boldText: 'You still need to finish your application.',
-		img: applicationIncompleteSVG,
+		img: applicationStatusSVG,
 		status: 'Incomplete',
 		statusBG: STRINGS.APPLICATION_INCOMPLETE_STATUSBG,
 		statusColor: STRINGS.APPLICATION_INCOMPLETE_STATUSCOLOR,
@@ -54,7 +54,7 @@ const statusConfig = {
 			},
 		],
 		boldText: "Thanks for applying! We'll get back to you with a decision shortly.",
-		img: applicationIncompleteSVG,
+		img: applicationStatusSVG,
 		status: 'Submitted',
 		statusBG: STRINGS.APPLICATION_COMPLETE_STATUSBG,
 		statusColor: STRINGS.APPLICATION_COMPLETE_STATUSCOLOR,
@@ -63,7 +63,7 @@ const statusConfig = {
 	[ApplicationStatus.Confirmed]: {
 		actions: [],
 		boldText: `Whoo hoo! We'll see you ${STRINGS.START_DAY}!`,
-		img: applicationIncompleteSVG,
+		img: applicationStatusSVG,
 		status: 'Confirmed',
 		statusBG: STRINGS.APPLICATION_COMPLETE_STATUSBG,
 		statusColor: STRINGS.APPLICATION_COMPLETE_STATUSCOLOR,
@@ -81,7 +81,7 @@ const statusConfig = {
 			},
 		],
 		boldText: "You've been accepted!",
-		img: applicationIncompleteSVG,
+		img: applicationStatusSVG,
 		status: 'Accepted',
 		statusBG: STRINGS.APPLICATION_COMPLETE_STATUSBG,
 		statusColor: STRINGS.APPLICATION_COMPLETE_STATUSCOLOR,
@@ -90,7 +90,7 @@ const statusConfig = {
 	[ApplicationStatus.Declined]: {
 		actions: [],
 		boldText: "You've declined.",
-		img: applicationIncompleteSVG,
+		img: applicationStatusSVG,
 		status: 'Declined',
 		statusBG: STRINGS.APPLICATION_DECLINED_STATUSBG,
 		statusColor: STRINGS.APPLICATION_DECLINED_STATUSCOLOR,
@@ -99,7 +99,7 @@ const statusConfig = {
 	[ApplicationStatus.Rejected]: {
 		actions: [],
 		boldText: "Unfortunately, we couldn't offer you a spot this year :(",
-		img: applicationIncompleteSVG,
+		img: applicationStatusSVG,
 		status: 'Denied',
 		statusBG: STRINGS.APPLICATION_INCOMPLETE_STATUSBG,
 		statusColor: STRINGS.APPLICATION_INCOMPLETE_STATUSCOLOR,
