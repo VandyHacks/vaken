@@ -130,7 +130,7 @@ const Sidebar: FC<{ setMenuOpen?: React.Dispatch<React.SetStateAction<boolean>> 
 			<Layout className="sidebar">
 				<Background>
 					<Logo>
-						<img src={SqLogo} alt="VH graphic" />
+						<img src={SqLogo} alt={`${STRINGS.SHORTENED_HACKATHON_TITLE} graphic`} />
 					</Logo>
 					<HorizontalLine />
 					<SpaceBetweenColumn height="calc(100% - calc(8rem + 160px))">

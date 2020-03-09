@@ -23,7 +23,7 @@ export const Team: FC = () => {
 
 	return (
 		<FlexColumn>
-			<Announcment value={STRINGS.HACKER_TEAMS_ANNOUNCMENT_TEXT} />
+			<Announcment value={STRINGS.HACKER_TEAMS_ANNOUNCEMENT_TEXT} />
 			<FloatingPopup borderRadius="1rem" width="35rem" backgroundOpacity="1" padding="1.5rem">
 				{!team || !team.name ? <JoinTeam /> : <ViewTeam teamName={team.name} />}
 			</FloatingPopup>
