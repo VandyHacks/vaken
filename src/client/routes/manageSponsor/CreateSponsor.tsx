@@ -13,6 +13,7 @@ import {
 	useTiersQuery,
 } from '../../generated/graphql';
 import Spinner from '../../components/Loading/Spinner';
+import STRINGS from '../../assets/strings.json';
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -53,11 +54,11 @@ const CreateCompany: React.FunctionComponent = (): JSX.Element => {
 	const onCreateCompany = async (): Promise<void> => {
 		try {
 			createCompany().catch(res => {
-				setCreateCompanyMsg(`Sorry. ${res.graphQLErrors[0].message} Try again :-)`);
+				setCreateCompanyMsg(`Sorry. ${res.graphQLErrors[0].message} Please try again :-)`);
 			});
 		} catch (err) {
 			console.error(err);
-			setCreateCompanyMsg(`Sorry. Something bad happens.`);
+			setCreateCompanyMsg(STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE);
 		}
 	};
 
@@ -89,7 +90,7 @@ const CreateCompany: React.FunctionComponent = (): JSX.Element => {
 					<p style={{ fontSize: '1.2rem' }}>Create</p>
 				</HeaderButton>
 			</FlexRow>
-			<SmallCenteredText color="#3F3356" fontSize="1rem" margin="0.8em">
+			<SmallCenteredText color={STRINGS.DARK_TEXT_COLOR} fontSize="1rem" margin="0.8em">
 				<span style={{ fontWeight: 'lighter' }}>{createCompanyMsg}</span>
 			</SmallCenteredText>
 		</>
@@ -108,11 +109,11 @@ const CreateTier: React.FunctionComponent = (): JSX.Element => {
 	const onCreateTier = async (): Promise<void> => {
 		try {
 			createTier().catch(res => {
-				setCreateTierMsg(`Sorry. ${res.graphQLErrors[0].message} Try again :-)`);
+				setCreateTierMsg(`Sorry. ${res.graphQLErrors[0].message} Please try again :-)`);
 			});
 		} catch (err) {
 			console.error(err);
-			setCreateTierMsg(`Sorry. Something bad happens.`);
+			setCreateTierMsg(STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE);
 		}
 	};
 
@@ -163,13 +164,13 @@ const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 				console.log(sponsorEmail);
 				console.log(sponsorName);
 				createSponsor().catch(res => {
-					setCreateSponsorMsg(`Sorry. ${res.graphQLErrors[0].message} Try again :-)`);
+					setCreateSponsorMsg(`Sorry. ${res.graphQLErrors[0].message} Please try again :-)`);
 				});
 				// create sponsor in the database
 				// already created or not
 			} catch (err) {
 				console.error(err);
-				setCreateSponsorMsg(`Sorry. Something bad happens.`);
+				setCreateSponsorMsg(STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE);
 			}
 		} else {
 			setCreateSponsorMsg(`Email '${sponsorEmail}' is not valid when creating sponsor`);
