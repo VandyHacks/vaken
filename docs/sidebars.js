@@ -25,6 +25,19 @@ module.exports = {
 			},
 			'dev/auth',
 		],
+		Learning: [
+			'learning/overview',
+			{
+				type: 'category',
+				label: 'Experience with Web-Dev',
+				items: ['learning/webexp/overview'],
+			},
+			{
+				type: 'category',
+				label: 'No Experience with Web-Dev',
+				items: ['learning/non-webexp/overview'],
+			},
+		],
 		'Core Features': ['core/overview', 'core/application', 'core/hackertable'],
 		Plugins: [
 			'plugins/overview',
