@@ -70,7 +70,6 @@
 		"@graphql-codegen/typescript-operations": "^1.12.1",
 		"@graphql-codegen/typescript-react-apollo": "^1.12.1",
 		"@graphql-codegen/typescript-resolvers": "^1.12.1",
-		"@packtracker/webpack-plugin": "^2.2.0",
 		"@sentry/browser": "^5.11.2",
 		"@svgr/webpack": "^5.1.0",
 		"@types/request": "^2.48.4",
