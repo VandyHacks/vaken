@@ -121,3 +121,77 @@ We use:
 In this repo, Github Actions are used for:
 
 - delete merged PR branches
+
+## Asking Questions
+
+Have a Question? Feel free to shoot us an email at [dev@vandyhacks.org](mailto:dev@vandyhacks.org) or open an issue in this repo. 
+
+## Providing Feedback
+
+Your comments and feedback are more than welcome. Feel free to reach us at [dev@vandyhacks.org](mailto:dev@vandyhacks.org).
+
+## Reporting Issues
+
+If you believe you have found a defect in Vaken or its documentation, use the issue tracker to report the problem to us.
+
+## Contributing Fixes
+	
+### Work Branches
+
+Development should be occurring on their own branches. 
+
+If you are fixing an existing bug in Vaken, your branch name should be `fix/{bug_name}`. 
+If your branch is adding a new feature to Vaken, your branch name should be `feat/{feature_name}`. `feature_name` and `bug_name` should be extremely brief. 
+During development, you are free to force push to your own branches to make the commit history more clear. 
+All the commit messages should be clear and concise. 
+
+Some good habits that we request you to follow:
+
+- Commit messages should be imperative
+```
+Fix typo in auth
+```
+over 
+```
+Fixed typo in auth
+```
+
+- Add a body to the commit messages if your subject crosses 50 chars
+```
+Add function
+
+Add a function which does this.
+This should help in this way.
+
+Fixes #6460
+```
+over
+```
+Add function which helps us in this way. Also, fixes #6460.
+```
+
+If the feature is large, consider breaking it into multiple pull requests. 
+For example, if building a new feature that touches all parts of the stack consider separate PRs for:
+
+- Database migration and schema/model changes
+- Back end controller/resolver endpoints
+- Front end views and usage of endpoints
+- Update legacy code
+
+### Pull Requests
+
+Before creating a Pull Request, rebase master onto your branch and push to Github .
+
+In the PR, include clear description of the change and a test plan, if needed.
+
+Always create one pull request per issue and link the issue in the pull request. Never merge multiple requests 
+in one unless they have the same root cause.
+
+Pull requests should contain tests whenever needed.
+
+Delete the branch after the PR has been merged.
+
+# Thank You!
+
+Your contributions make Vaken possible. Thank you for taking the time to contribute.
+
