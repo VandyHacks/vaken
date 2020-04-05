@@ -12,6 +12,7 @@ module.exports = {
 			logo: {
 				alt: 'VandyHacks Logo',
 				src: 'img/logo.svg',
+				srcDark: 'img/logo_dark.svg'
 			},
 			links: [
 				{ to: 'docs/installation', label: 'Docs', position: 'left' },
