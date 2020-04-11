@@ -9,8 +9,8 @@ const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID as string;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET as string;
 const GOOGLE_CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL as string;
 
-const server = [new NFCPlugin()];
-const auth = [
+export const server = [new NFCPlugin()];
+export const auth = [
 	new GoogleOAuth({
 		settings: {
 			GOOGLE_CLIENT_ID,
@@ -21,4 +21,4 @@ const auth = [
 	}),
 ];
 
-export default { server, auth };
+// export default { server, auth };

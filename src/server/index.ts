@@ -17,7 +17,7 @@ import { pullCalendar } from './events';
 
 // import vakenConfig from '../../vaken.config';
 
-import { server } from './plugins.ts';
+import { server, auth } from './plugins';
 
 const { SESSION_SECRET, PORT, CALENDARID, NODE_ENV } = process.env;
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
@@ -32,7 +32,7 @@ const pluginResolvers = server.map(serverPlugin => {
 });
 
 const pluginTypeDefs = server.map(serverPlugin => {
-	return serverPlugin.typeDefs as {};
+	return serverPlugin.schema as {};
 });
 
 export const schema = makeExecutableSchema({

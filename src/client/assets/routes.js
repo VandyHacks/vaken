@@ -5,7 +5,7 @@ import { HackerDash } from '../routes/dashboard/HackerDash';
 // import { Profile } from '../routes/profile/Profile';
 import { Help } from '../routes/help/Help';
 import { UserType } from '../generated/graphql';
-import config from '../plugins';
+import { packages, auth } from '../plugins';
 
 const routes = [
 	{
@@ -82,12 +82,12 @@ const routes = [
 	},
 ];
 
-config.forEach(plugin => {
+packages.forEach(plugin => {
 	routes.push({
-		authLevel: plugin.package.routeInfo.authLevel,
-		component: React.lazy(async () => plugin.package.component()),
-		displayText: plugin.package.routeInfo.displayText,
-		path: plugin.package.routeInfo.path,
+		authLevel: plugin.routeInfo.authLevel,
+		component: React.lazy(async () => plugin.component()),
+		displayText: plugin.routeInfo.displayText,
+		path: plugin.routeInfo.path,
 	});
 });
 
