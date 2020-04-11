@@ -1,17 +1,17 @@
 import { Express } from 'express';
 import passport from 'passport';
-import { strategy as github } from './github';
-import { strategy as google } from './google';
-import { strategy as microsoft } from './microsoft';
 
-export const strategies = { github, google, microsoft };
+export interface StrategyNameSvgs {
+	displayName: string;
+	name: string;
+	svgPath: string;
+}
 
-export const registerAuthRoutes = (app: Express): void => {
+export const registerAuthRoutes = (app: Express, strategies: StrategyNameSvgs[]): void => {
 	passport.serializeUser((user, done) => void done(null, user));
 	passport.deserializeUser((user, done) => void done(null, user));
 
-	const authStrategyNames = Object.keys(strategies);
-	authStrategyNames.forEach(authName => {
+	strategies.forEach(({ name: authName }) => {
 		app.get(`/api/auth/${authName}`, passport.authenticate(authName));
 		app.get(
 			`/api/auth/${authName}/callback`,
@@ -26,9 +26,14 @@ export const registerAuthRoutes = (app: Express): void => {
 		req.logout();
 		res.redirect('/');
 	});
+
+	// register master route that gives all providers
+	// using restful because it's weird for part of auth to not be restful
+	app.get('/api/auth', (_, res) => {
+		res.send(strategies);
+	});
 };
 
 export default {
 	registerAuthRoutes,
-	strategies,
 };

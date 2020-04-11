@@ -10,11 +10,13 @@ import { resolvers } from './resolvers';
 import DB from './models';
 import Context from './context';
 import logger from './logger';
-import { strategies, registerAuthRoutes } from './auth';
+import { registerAuthRoutes, StrategyNameSvgs } from './auth';
 import { UnsubscribeHandler } from './mail/handlers';
 import { UserDbInterface } from './generated/graphql';
 import { pullCalendar } from './events';
 import config from './plugins';
+
+import vakenConfig from '../../vaken.config';
 
 const { SESSION_SECRET, PORT, CALENDARID, NODE_ENV } = process.env;
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
@@ -61,14 +63,31 @@ export const schema = makeExecutableSchema({
 	app.use(passport.initialize());
 	app.use(passport.session());
 
-	passport.use('github', strategies.github(models));
-	passport.use('google', strategies.google(models));
-	passport.use('microsoft', strategies.microsoft(models));
+	// passport.use('github', strategies.github(models));
+	// passport.use('google', strategies.google(models));
+	// passport.use('microsoft', strategies.microsoft(models));
 
-	registerAuthRoutes(app);
+	// array to hold all oAuth strategies to be used with registering routes and working with passport
+	const oAuthStrategies: StrategyNameSvgs[] = [];
+
+	// iterate through config, pulling out oauth packages and generating their passport configuration
+	vakenConfig
+		.filter(({ scopes }) => scopes.includes('oauth'))
+		// could use map but map making other changes is less idomatic.
+		.forEach(config => {
+			passport.use(config.name, config.strategy(models));
+			oAuthStrategies.push({
+				name: config.name,
+				svgPath: config.logo,
+				displayName: config.displayName,
+			});
+			console.error(config);
+		});
+
+	registerAuthRoutes(app, oAuthStrategies);
 
 	app.use((req, res, next) =>
-		passport.authenticate(['session', 'github', 'google', 'microsoft'], (err, user) => {
+		passport.authenticate(['session', ...oAuthStrategies.map(({ name }) => name)], (err, user) => {
 			if (err) return void next();
 			return void req.login(user, next);
 		})(req, res, next)
