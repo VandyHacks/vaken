@@ -8,10 +8,6 @@ sidebar_label: Authentication
 
 Our authentication is centered around OAuth, and `UserTypes` that are associated with certain users. These consist of `Hacker`, `Organizer`, and `Sponsor`. Each of these correspond to the ability to see different pages and have different functionality.
 
-## AuthContext
-
-The AuthContext is utilized in the [index.ts of the client](https://github.com/VandyHacks/vaken/blob/staging/src/client/app.tsx). By default, it will make users the `Hacker` type.
-
 ## User Types
 
 ### Hacker Type
@@ -25,3 +21,9 @@ The AuthContext is utilized in the [index.ts of the client](https://github.com/V
 ### Sponsor Type
 
 - Allows users to view hacker resumes and check in via NFC to sponsor events.
+
+## AuthContext
+
+The AuthContext is utilized in the [index.ts of the client](https://github.com/VandyHacks/vaken/blob/staging/src/client/app.tsx). By default, it will make users the `Hacker` type.
+
+### How does AuthContext work?

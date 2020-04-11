@@ -37,6 +37,7 @@ module.exports = {
 				label: 'No Experience with Web-Dev',
 				items: ['learning/non-webexp/overview'],
 			},
+			'learning/case',
 		],
 		'Core Features': ['core/overview', 'core/application', 'core/hackertable'],
 		Plugins: [
