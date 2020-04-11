@@ -26,6 +26,7 @@ import {
 	checkIsAuthorizedArray,
 } from './helpers';
 import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser, getUser } from '../nfc';
+// import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser, getUser } from '../nfc';
 import { addOrUpdateEvent, assignEventToCompany, removeAbsentEvents } from '../events';
 import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
 import { sendStatusEmail } from '../mail/aws';

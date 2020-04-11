@@ -10,13 +10,14 @@ import { resolvers } from './resolvers';
 import DB from './models';
 import Context from './context';
 import logger from './logger';
-import { registerAuthRoutes, StrategyNameSvgs } from './auth';
+import { registerAuthRoutes } from './auth';
 import { UnsubscribeHandler } from './mail/handlers';
 import { UserDbInterface } from './generated/graphql';
 import { pullCalendar } from './events';
-import config from './plugins';
 
-import vakenConfig from '../../vaken.config';
+// import vakenConfig from '../../vaken.config';
+
+import { server } from './plugins.ts';
 
 const { SESSION_SECRET, PORT, CALENDARID, NODE_ENV } = process.env;
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
@@ -26,13 +27,21 @@ logger.info(`Node env: ${NODE_ENV}`);
 
 const app = express();
 
+const pluginResolvers = server.map(serverPlugin => {
+	return serverPlugin.resolvers as {};
+});
+
+const pluginTypeDefs = server.map(serverPlugin => {
+	return serverPlugin.typeDefs as {};
+});
+
 export const schema = makeExecutableSchema({
 	resolverValidationOptions: {
 		requireResolversForAllFields: true,
 		requireResolversForResolveType: false,
 	},
-	resolvers: [resolvers as {}, config[0].package.resolvers as {}],
-	typeDefs: [DIRECTIVES, gqlSchema, config[0].package.schema],
+	resolvers: [resolvers as {}, ...pluginResolvers],
+	typeDefs: [DIRECTIVES, gqlSchema, ...pluginTypeDefs],
 });
 
 (async () => {
@@ -68,29 +77,47 @@ export const schema = makeExecutableSchema({
 	// passport.use('microsoft', strategies.microsoft(models));
 
 	// array to hold all oAuth strategies to be used with registering routes and working with passport
-	const oAuthStrategies: StrategyNameSvgs[] = [];
+	const oAuthStrategies: any[] = [];
 
 	// iterate through config, pulling out oauth packages and generating their passport configuration
-	vakenConfig
-		.filter(({ scopes }) => scopes.includes('oauth'))
-		// could use map but map making other changes is less idomatic.
-		.forEach(config => {
-			passport.use(config.name, config.strategy(models));
-			oAuthStrategies.push({
-				name: config.name,
-				svgPath: config.logo,
-				displayName: config.displayName,
-			});
-			console.error(config);
+	auth.forEach(config => {
+		passport.use(config.name, config.strategy(models));
+		// Add this strategy to the oAuthStrategies array
+		oAuthStrategies.push({
+			name: config.name,
+			displayName: config.displayName,
 		});
+		console.error(config);
+	});
+
+	// vakenConfig
+	// 	.filter(({ scopes }) => scopes.includes('oauth'))
+	// 	// could use map but map making other changes is less idomatic.
+	// 	.forEach(config => {
+	// 		passport.use(config.name, config.strategy(models));
+	// 		oAuthStrategies.push({
+	// 			name: config.name,
+	// 			svgPath: config.logo,
+	// 			displayName: config.displayName,
+	// 		});
+	// 		console.error(config);
+	// 	});
 
 	registerAuthRoutes(app, oAuthStrategies);
 
 	app.use((req, res, next) =>
-		passport.authenticate(['session', ...oAuthStrategies.map(({ name }) => name)], (err, user) => {
-			if (err) return void next();
-			return void req.login(user, next);
-		})(req, res, next)
+		passport.authenticate(
+			[
+				'session',
+				...oAuthStrategies.map(config => {
+					return config.name;
+				}),
+			],
+			(err, user) => {
+				if (err) return void next();
+				return void req.login(user, next);
+			}
+		)(req, res, next)
 	);
 
 	// Email unsubscribe link
