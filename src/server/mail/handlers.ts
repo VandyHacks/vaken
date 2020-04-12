@@ -2,6 +2,7 @@ import { RequestHandler } from 'express';
 import { ObjectID } from 'mongodb';
 import { Models } from '../models';
 import logger from '../logger';
+import STRINGS from '../../client/assets/strings.json';
 
 export const UnsubscribeHandler = (models: Models): RequestHandler => {
 	return async (req, res) => {
@@ -13,7 +14,7 @@ export const UnsubscribeHandler = (models: Models): RequestHandler => {
 			)
 				.then(response => {
 					logger.info('Unsubscribed user from emails', response);
-					return res.redirect(301, 'https://vandyhacks.org');
+					return res.redirect(301, STRINGS.HACKATHON_WEBSITE);
 				})
 				.catch(logger.error);
 		} else {
