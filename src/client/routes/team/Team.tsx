@@ -3,7 +3,7 @@ import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { JoinTeam } from './JoinTeam';
 import { ViewTeam } from './ViewTeam';
 import { FlexColumn } from '../../components/Containers/FlexContainers';
-import Announcment from '../../components/Text/Announcment';
+import { Announcement } from '../../components/Text/Announcement';
 import STRINGS from '../../assets/strings.json';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import Spinner from '../../components/Loading/Spinner';
@@ -23,7 +23,7 @@ export const Team: FC = () => {
 
 	return (
 		<FlexColumn>
-			<Announcment value={STRINGS.HACKER_TEAMS_ANNOUNCMENT_TEXT} />
+			<Announcement value={STRINGS.HACKER_TEAMS_ANNOUNCEMENT_TEXT} />
 			<FloatingPopup borderRadius="1rem" width="35rem" backgroundOpacity="1" padding="1.5rem">
 				{!team || !team.name ? <JoinTeam /> : <ViewTeam teamName={team.name} />}
 			</FloatingPopup>

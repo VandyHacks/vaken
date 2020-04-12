@@ -6,7 +6,7 @@ import { FlexColumn, FlexStartColumn } from '../../components/Containers/FlexCon
 import { Title } from '../../components/Text/Title';
 import STRINGS from '../../assets/strings.json';
 import { ButtonOutline, CenterButtonText } from '../../components/Buttons/Buttons';
-import applicationIncompleteSVG from '../../assets/img/application_incomplete.svg';
+import applicationStatusSVG from '../../assets/img/application_status.svg';
 import { SmallCenteredText } from '../../components/Text/SmallCenteredText';
 import {
 	ApplicationStatus,
@@ -26,10 +26,10 @@ const statusConfig = {
 			},
 		],
 		boldText: "You haven't started your application yet.",
-		img: applicationIncompleteSVG,
+		img: applicationStatusSVG,
 		status: 'Not Started',
-		statusBG: '#FBE4E8',
-		statusColor: '#FF647C',
+		statusBG: STRINGS.APPLICATION_INCOMPLETE_STATUSBG,
+		statusColor: STRINGS.APPLICATION_INCOMPLETE_STATUSCOLOR,
 		text: `The deadline is ${STRINGS.DEADLINE}`,
 	},
 	[ApplicationStatus.Started]: {
@@ -40,10 +40,10 @@ const statusConfig = {
 			},
 		],
 		boldText: 'You still need to finish your application.',
-		img: applicationIncompleteSVG,
+		img: applicationStatusSVG,
 		status: 'Incomplete',
-		statusBG: '#FBE4E8',
-		statusColor: '#FF647C',
+		statusBG: STRINGS.APPLICATION_INCOMPLETE_STATUSBG,
+		statusColor: STRINGS.APPLICATION_INCOMPLETE_STATUSCOLOR,
 		text: `The deadline is ${STRINGS.DEADLINE}`,
 	},
 	[ApplicationStatus.Submitted]: {
@@ -54,19 +54,19 @@ const statusConfig = {
 			},
 		],
 		boldText: "Thanks for applying! We'll get back to you with a decision shortly.",
-		img: applicationIncompleteSVG,
+		img: applicationStatusSVG,
 		status: 'Submitted',
-		statusBG: '#D5F2EA',
-		statusColor: 'hsl(163.4,52.7%,35%)',
+		statusBG: STRINGS.APPLICATION_COMPLETE_STATUSBG,
+		statusColor: STRINGS.APPLICATION_COMPLETE_STATUSCOLOR,
 		text: "You may update your responses at any time by re-visiting the application.'",
 	},
 	[ApplicationStatus.Confirmed]: {
 		actions: [],
-		boldText: "Whoo hoo! We'll see you Nov. 1st!",
-		img: applicationIncompleteSVG,
+		boldText: `Whoo hoo! We'll see you ${STRINGS.START_DAY}!`,
+		img: applicationStatusSVG,
 		status: 'Confirmed',
-		statusBG: '#D5F2EA',
-		statusColor: 'hsl(163.4,52.7%,35%)',
+		statusBG: STRINGS.APPLICATION_COMPLETE_STATUSBG,
+		statusColor: STRINGS.APPLICATION_COMPLETE_STATUSCOLOR,
 		text: "If you don't have a team, you can form one when you get here!",
 	},
 	[ApplicationStatus.Accepted]: {
@@ -81,28 +81,28 @@ const statusConfig = {
 			},
 		],
 		boldText: "You've been accepted!",
-		img: applicationIncompleteSVG,
+		img: applicationStatusSVG,
 		status: 'Accepted',
-		statusBG: '#D5F2EA',
-		statusColor: 'hsl(163.4,52.7%,35%)',
+		statusBG: STRINGS.APPLICATION_COMPLETE_STATUSBG,
+		statusColor: STRINGS.APPLICATION_COMPLETE_STATUSCOLOR,
 		text: "Confirm your spot to let us know you'll be coming",
 	},
 	[ApplicationStatus.Declined]: {
 		actions: [],
 		boldText: "You've declined.",
-		img: applicationIncompleteSVG,
+		img: applicationStatusSVG,
 		status: 'Declined',
-		statusBG: '#9C9C9C',
-		statusColor: '#FFFFFF',
-		text: ' Changed your mind? Email info@vandyhacks.org',
+		statusBG: STRINGS.APPLICATION_DECLINED_STATUSBG,
+		statusColor: STRINGS.APPLICATION_DECLINED_STATUSCOLOR,
+		text: `Changed your mind? Email ${STRINGS.HELP_EMAIL}`,
 	},
 	[ApplicationStatus.Rejected]: {
 		actions: [],
 		boldText: "Unfortunately, we couldn't offer you a spot this year :(",
-		img: applicationIncompleteSVG,
+		img: applicationStatusSVG,
 		status: 'Denied',
-		statusBG: '#FBE4E8',
-		statusColor: '#FF647C',
+		statusBG: STRINGS.APPLICATION_INCOMPLETE_STATUSBG,
+		statusColor: STRINGS.APPLICATION_INCOMPLETE_STATUSCOLOR,
 		text: '',
 	},
 };
@@ -183,9 +183,12 @@ export const HackerDash: FunctionComponent = (): JSX.Element => {
 								<img
 									src={statusInfo.img}
 									height="200px"
-									alt="Man wearing hoodie at holographic computer"
+									alt={`${STRINGS.APPLICATION_STATUS_SVG_ALT_TEXT}`}
 								/>
-								<SmallCenteredText color="#3F3356" fontSize="1rem" margin="1.4rem">
+								<SmallCenteredText
+									color={`${STRINGS.DARK_TEXT_COLOR}`}
+									fontSize="1rem"
+									margin="1.4rem">
 									<span style={{ fontWeight: 'bold' }}>{statusInfo.boldText}</span>
 									<br />
 									{statusInfo.text}
