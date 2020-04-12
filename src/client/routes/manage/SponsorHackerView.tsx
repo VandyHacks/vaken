@@ -18,22 +18,22 @@ export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 	const sponsorLoading = sponsorMeQueryResult.loading;
 	const sponsorError = sponsorMeQueryResult.error;
 	let sponsorData: Sponsor;
-	let viewHackerTable = true;
+	// let viewHackerTable = true;
 	let viewResumes = true;
 
 	if (!sponsorLoading && sponsorMeQueryResult.data && sponsorMeQueryResult.data.me) {
 		sponsorData = sponsorMeQueryResult.data.me as Sponsor;
 
 		if (
-			!sponsorLoading &&
-			sponsorData &&
+			// !sponsorLoading &&
+			// sponsorData &&
 			sponsorData.company &&
 			sponsorData.company.tier &&
 			sponsorData.company.tier.permissions
 		) {
-			viewHackerTable = sponsorData.company.tier.permissions.includes(
-				STRINGS.PERMISSIONS_HACKER_TABLE
-			);
+			// viewHackerTable = sponsorData.company.tier.permissions.includes(
+			// 	STRINGS.PERMISSIONS_HACKER_TABLE
+			// );
 			viewResumes = sponsorData.company.tier.permissions.includes(STRINGS.PERMISSIONS_RESUME);
 		}
 	}

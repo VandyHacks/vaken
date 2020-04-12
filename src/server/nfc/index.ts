@@ -127,25 +127,13 @@ export async function checkInUserToEvent(
 	const userObjectID = new ObjectID(userID);
 	const eventObjectID = new ObjectID(eventID);
 	const user = await models.Hackers.findOne({ _id: userObjectID });
-	if (!user) if (!user) throw new UserInputError(`user ${userID} not found`);
-
-	const eventCheckInObj = {
-		_id: ObjectID.createFromTime(Date.now()),
-		timestamp: new Date(),
-		user: userID,
-	};
-	let retEvent = await models.Events.findOneAndUpdate(
-		{ _id: eventObjectID },
-		{
-			$push: { checkins: eventCheckInObj },
-		}
-	);
+	if (!user) throw new UserInputError(`user ${userID} not found`);
 
 	// TODO(mattleon): This requires hitting the DB like 5 times rip
 	if (await shouldWarnRepeatedCheckIn(userID, eventID, models)) {
 		throw new Error(`${user.firstName} ${user.lastName} is already checked into event`);
 	}
-	retEvent = await models.Events.findOneAndUpdate(
+	const retEvent = await models.Events.findOneAndUpdate(
 		{ _id: eventObjectID },
 		{
 			$addToSet: { attendees: userObjectID.toHexString() },
