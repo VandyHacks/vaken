@@ -1,13 +1,12 @@
 import { Express } from 'express';
 import passport from 'passport';
 
-export interface StrategyNameSvgs {
+export interface StrategyNames {
 	displayName: string;
 	name: string;
-	svgPath: string;
 }
 
-export const registerAuthRoutes = (app: Express, strategies: StrategyNameSvgs[]): void => {
+export const registerAuthRoutes = (app: Express, strategies: StrategyNames[]): void => {
 	passport.serializeUser((user, done) => void done(null, user));
 	passport.deserializeUser((user, done) => void done(null, user));
 

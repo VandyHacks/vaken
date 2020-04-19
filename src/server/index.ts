@@ -10,7 +10,7 @@ import { resolvers } from './resolvers';
 import DB from './models';
 import Context from './context';
 import logger from './logger';
-import { registerAuthRoutes } from './auth';
+import { StrategyNames, registerAuthRoutes } from './auth';
 import { UnsubscribeHandler } from './mail/handlers';
 import { UserDbInterface } from './generated/graphql';
 import { pullCalendar } from './events';
@@ -77,7 +77,7 @@ export const schema = makeExecutableSchema({
 	// passport.use('microsoft', strategies.microsoft(models));
 
 	// array to hold all oAuth strategies to be used with registering routes and working with passport
-	const oAuthStrategies: any[] = [];
+	const oAuthStrategies: StrategyNames[] = [];
 
 	// iterate through config, pulling out oauth packages and generating their passport configuration
 	authPlugins.forEach(config => {
@@ -87,7 +87,7 @@ export const schema = makeExecutableSchema({
 			name: config.name,
 			displayName: config.displayName,
 		});
-		console.error(config);
+		// console.error(config); // sanity check for auth plugin
 	});
 
 	// vakenConfig

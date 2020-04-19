@@ -75,6 +75,7 @@
 		"@svgr/webpack": "^5.1.0",
 		"@types/request": "^2.48.4",
 		"@types/tmp": "^0.1.0",
+		"@vandyhacks/google-oauth": "^1.0.7",
 		"apollo-cache-inmemory": "^1.6.5",
 		"apollo-client": "^2.6.8",
 		"apollo-link": "^1.2.13",
