@@ -12,7 +12,7 @@ module.exports = {
 			logo: {
 				alt: 'VandyHacks Logo',
 				src: 'img/logo.svg',
-				srcDark: 'img/logo_dark.svg'
+				srcDark: 'img/logo_dark.svg',
 			},
 			links: [
 				{ to: 'docs/installation', label: 'Docs', position: 'left' },
@@ -90,7 +90,7 @@ module.exports = {
 			{
 				docs: {
 					sidebarPath: require.resolve('./sidebars.js'),
-					editUrl: 'https://github.com/vandyhacks/vaken/edit/master/website/', // FIXME:needs to get changed on launch
+					editUrl: 'https://github.com/VandyHacks/vaken/tree/feat/documentation/docs', // FIXME:needs to get changed on launch
 				},
 				theme: {
 					customCss: require.resolve('./src/css/custom.css'),
