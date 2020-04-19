@@ -17,7 +17,7 @@ import { pullCalendar } from './events';
 
 // import vakenConfig from '../../vaken.config';
 
-import { server, auth } from './plugins';
+import { serverPlugins, authPlugins } from './plugins';
 
 const { SESSION_SECRET, PORT, CALENDARID, NODE_ENV } = process.env;
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
@@ -27,11 +27,11 @@ logger.info(`Node env: ${NODE_ENV}`);
 
 const app = express();
 
-const pluginResolvers = server.map(serverPlugin => {
+const pluginResolvers = serverPlugins.map(serverPlugin => {
 	return serverPlugin.resolvers as {};
 });
 
-const pluginTypeDefs = server.map(serverPlugin => {
+const pluginTypeDefs = serverPlugins.map(serverPlugin => {
 	return serverPlugin.schema as {};
 });
 
@@ -80,7 +80,7 @@ export const schema = makeExecutableSchema({
 	const oAuthStrategies: any[] = [];
 
 	// iterate through config, pulling out oauth packages and generating their passport configuration
-	auth.forEach(config => {
+	authPlugins.forEach(config => {
 		passport.use(config.name, config.strategy(models));
 		// Add this strategy to the oAuthStrategies array
 		oAuthStrategies.push({

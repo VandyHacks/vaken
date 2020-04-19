@@ -9,8 +9,11 @@ const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID as string;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET as string;
 const GOOGLE_CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL as string;
 
-export const server = [new NFCPlugin()];
-export const auth = [
+// Add plugins that need to associate GraphQL and MongoDB models here
+export const serverPlugins = [new NFCPlugin()];
+
+// Add plugins that are using the Passport OAuth patterns here
+export const authPlugins = [
 	new GoogleOAuth({
 		settings: {
 			GOOGLE_CLIENT_ID,
