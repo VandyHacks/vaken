@@ -53,7 +53,18 @@ module.exports = {
 				items: ['plugins/dev/overview'],
 			},
 		],
-		Docusaurus: ['doc1', 'doc2', 'doc3'],
-		Features: ['mdx'],
+		'The Documentation': [
+			'documentation/docusaurus',
+			{
+				type: 'category',
+				label: 'Using Docusaurus',
+				items: [
+					'documentation/doc1',
+					'documentation/doc2',
+					'documentation/doc3',
+					'documentation/mdx',
+				],
+			},
+		],
 	},
 };
