@@ -24,6 +24,7 @@ eventsAttended (new): Array of <event_identifier> indicating which events a User
 ## Backend Implementation
 These functions implement the resolvers and are located in `./src/server/nfc/index.ts`
 
+```md
 isNFCUIDAvailable(nfcUID) -> boolean: 
 - Return false IFF nfcId is the active NFC UID for any User.
 
@@ -53,5 +54,6 @@ getEventsAttended(user) -> Array<event_identifier>:
 
 getAttendees(event) -> Array<user_identifier>
 - Return event.attendees
+```
 
 
