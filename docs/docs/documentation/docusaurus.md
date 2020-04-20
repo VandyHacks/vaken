@@ -4,6 +4,19 @@ title: Docusaurus
 sidebar_label: Docusaurus
 ---
 
+## Tl;dr
+1. Create a new markdown file with the following header in the appropriate /docs/* directory.
+```
+---
+id: docusaurus
+title: Docusaurus
+sidebar_label: Docusaurus
+---
+```
+
+2. Add your new page to its appropriate location in `sidebar.js`
+
+
 ## Editing the Documentation
 
 This documentation was built using [Docusaurus](https://docusaurus.io/). Complete documentation on how to use the documentation is there.
