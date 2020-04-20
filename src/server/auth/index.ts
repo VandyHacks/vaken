@@ -4,14 +4,15 @@ import passport from 'passport';
 export interface StrategyNames {
 	displayName: string;
 	name: string;
+	scopes: string[];
 }
 
 export const registerAuthRoutes = (app: Express, strategies: StrategyNames[]): void => {
 	passport.serializeUser((user, done) => void done(null, user));
 	passport.deserializeUser((user, done) => void done(null, user));
 
-	strategies.forEach(({ name: authName }) => {
-		app.get(`/api/auth/${authName}`, passport.authenticate(authName));
+	strategies.forEach(({ name: authName, scopes }) => {
+		app.get(`/api/auth/${authName}`, passport.authenticate(authName, { scope: scopes }));
 		app.get(
 			`/api/auth/${authName}/callback`,
 			passport.authenticate(authName, {

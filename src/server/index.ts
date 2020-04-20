@@ -86,6 +86,7 @@ export const schema = makeExecutableSchema({
 		oAuthStrategies.push({
 			name: config.name,
 			displayName: config.displayName,
+			scopes: config.scopes,
 		});
 		// console.error(config); // sanity check for auth plugin
 	});
