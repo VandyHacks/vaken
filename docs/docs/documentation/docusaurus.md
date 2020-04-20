@@ -16,6 +16,7 @@ sidebar_label: Docusaurus
 
 2. Add your new page to its appropriate location in `sidebar.js`
 
+3. Submit PR
 
 ## Editing the Documentation
 
