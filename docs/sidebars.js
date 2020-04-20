@@ -21,7 +21,7 @@ module.exports = {
 			{
 				type: 'category',
 				label: 'Server',
-				items: ['dev/server', 'dev/routing'],
+				items: ['dev/server', 'dev/routing', 'dev/graphql_and_mongodb'],
 			},
 			'dev/auth',
 			'dev/folder_structure',
