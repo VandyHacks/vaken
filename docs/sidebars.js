@@ -24,6 +24,7 @@ module.exports = {
 				items: ['dev/server', 'dev/routing'],
 			},
 			'dev/auth',
+			'dev/FAQ',
 		],
 		Learning: [
 			'learning/overview',
