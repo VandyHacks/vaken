@@ -1,7 +1,7 @@
 ---
 id: docusaurus
-title: Docusaurus
-sidebar_label: Docusaurus
+title: Docusaurus and Deployment
+sidebar_label: Docusaurus and Deployment
 ---
 
 ## Editing the Documentation

@@ -37,3 +37,9 @@ Don't forget the `.env` file! Otherwise, you will not be able to connect to a da
 Now that you have everything installed and ready to go, run `npm run dev` in your terminal from the root directory. This will concurrently build the client, generate GraphQL types, start the server, and start the client. All of these things will automatically rebuild as you change the application–open a tab at [localhost:8081](localhost:8081) and you're ready to see the app live!
 
 If you would like to use the GraphQL playground to make queries through a UI on your database, you may do so at [localhost:8080](localhost:8080).
+
+## Deployment
+
+In order to deploy the app on a service such as Heroku, please first ensure that you have all the `.env` variables functioning on your local machine–e.g. `npm run dev` works without errors.
+
+Then, you can run `npm run build` to produce an optimized version of the build, and push up the changes to wherever you are deploying Vaken. The application needs to run with `npm start` in order for the app to start running. If there are any errors, please submit an issue on GitHub or contact us at `info [at] vandyhacks.org`.
