@@ -14,9 +14,10 @@ the new `.env` file will need to be changed to valid values
 ### Running the app:
 
 You will need your own instance of MongoDB in order to run Vaken. We recommend using [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) to set up a cluster and
-set the MONGO_CONNECTION_STRING in the env file to your new connection string. In addition, we recommend getting [MongoDB Compass](https://www.mongodb.com/download-center/compass) 
+set the MONGODB_BASE_URL in the env file to your new connection string. In addition, we recommend getting [MongoDB Compass](https://www.mongodb.com/download-center/compass) 
 to view and edit data easily.
 
+To start up the app run:
 ```bash
 npm run dev # runs backend + frontend, both reloading on changes
 ```
