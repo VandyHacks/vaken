@@ -5,6 +5,8 @@ import githubLogo from '../../assets/img/github_logo.svg';
 import msftLogo from '../../assets/img/msft_logo.svg';
 import STRINGS from '../../assets/strings.json';
 
+import { authLogos } from '../../plugins';
+
 const OAuthLogin = (): JSX.Element => {
 	const [providers, setProviders] = useState([]);
 
