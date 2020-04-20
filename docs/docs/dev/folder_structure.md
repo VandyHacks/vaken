@@ -1,5 +1,5 @@
 ---
-id: foldder_structure
+id: folder_structure
 title: Folder Structure
 sidebar_label: Folder Structure
 ---
