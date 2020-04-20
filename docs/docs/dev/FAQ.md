@@ -1,3 +1,9 @@
+---
+id: developer_faq
+title: FAQ
+sidebar_label: FAQ
+---
+
 # CONTRIBUTING FAQ
 
 This is a place to find answers to questions you may have during development.
