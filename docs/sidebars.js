@@ -23,7 +23,6 @@ module.exports = {
 				label: 'Server',
 				items: ['dev/server', 'dev/routing'],
 			},
-			'dev/testing',
 			'dev/auth',
 			'dev/testing_and_linting',
 			'dev/developer_faq',
