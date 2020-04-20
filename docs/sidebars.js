@@ -25,6 +25,7 @@ module.exports = {
 			},
 			'dev/testing',
 			'dev/auth',
+			'dev/testing_and_linting',
 			'dev/developer_faq',
 		],
 		Learning: [
