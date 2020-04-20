@@ -22,7 +22,7 @@ module.exports = {
 			{
 				type: 'category',
 				label: 'Server',
-				items: ['dev/server', 'dev/graphql_and_mongodb'],
+				items: ['dev/server', 'dev/graphql_and_mongodb', 'dev/nfc_and_events'],
 			},
 			'dev/auth',
 			'dev/folder_structure',
