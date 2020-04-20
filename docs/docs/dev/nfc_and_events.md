@@ -25,17 +25,17 @@ eventsAttended (new): Array of <event_identifier> indicating which events a User
 These functions implement the resolvers and are located in `./src/server/nfc/index.ts`
 
 ```md
-isNFCUIDAvailable(nfcUID) -> boolean
+isNFCUIDAvailable(nfcUID) => boolean
 - Return false IFF nfcId is the active NFC UID for any User.
 
 registerNFCUIDWithUser(nfcUID, user)
 - Check nfcUID availability.
 - Push nfcUID onto the end of the user.secondaryIds array.
 
-getNFCUID(user) -> nfcUID
+getNFCUID(user) => nfcUID
 - Return the nfcUID at the end of the user.secondaryIds array or null.
 
-getUser(nfcUID) -> user
+getUser(nfcUID) => user
 - Return a user who has nfcUID as their active one or null.
 
 removeUserFromEvent(user, event)
@@ -46,14 +46,12 @@ checkInUserToEvent(user, event)
 - Checks/Updates event.attendees array to contain user.
 - Checks/Updates user.eventsAttended array to contain event.
 
-shouldWarnRepeatedCheckIn(user, event) -> boolean
+shouldWarnRepeatedCheckIn(user, event) => boolean
 - Return true IFF event.attendees array contains user and event.warnRepeatedCheckIns is true
 
-getEventsAttended(user) -> Array<event_identifier>
+getEventsAttended(user) => Array<event_identifier>
 - Return user.eventsAttended
 
-getAttendees(event) -> Array<user_identifier>
+getAttendees(event) => Array<user_identifier>
 - Return event.attendees
 ```
-
-
