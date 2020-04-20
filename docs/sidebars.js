@@ -12,6 +12,7 @@ module.exports = {
 		'Getting Started': ['introduction', 'installation'],
 		Development: [
 			'dev/overview',
+			'dev/running',
 			'dev/tooling',
 			{
 				type: 'category',
