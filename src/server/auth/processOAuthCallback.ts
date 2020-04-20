@@ -60,7 +60,7 @@ const handleSponsorCreation = async (
 };
 
 export default async (models: Models, profile: Profile, done: VerifyCallback): Promise<void> => {
-	const { Logins, Hackers, Sponsors } = models;
+	const { Logins, Hackers, Sponsors, Organizers } = models;
 
 	let { userType } = (await Logins.findOne({
 		provider: profile.provider,
@@ -89,7 +89,7 @@ export default async (models: Models, profile: Profile, done: VerifyCallback): P
 					email,
 					provider: profile.provider,
 					token: profile.id,
-					userType: UserType.Hacker,
+					userType: UserType.Organizer,
 				};
 
 				logger.info(`inserting login ${JSON.stringify(loginRequest, undefined, 2)}`)
@@ -105,7 +105,7 @@ export default async (models: Models, profile: Profile, done: VerifyCallback): P
 				logger.info(`caught fetchUser exception`)
 				// This way logging in with different providers uses the same backing hacker object.
 				logger.info(`inserting ${email} (${profile.provider}) into hacker db`);
-				await Hackers.insertOne({
+				await Organizers.insertOne({
 					_id: new ObjectID(),
 					application: [],
 					createdAt: new Date(),
