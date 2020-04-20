@@ -75,6 +75,7 @@ export default async (models: Models, profile: Profile, done: VerifyCallback): P
 
 		// Login must not exist, let's create it.
 		if (userType == null) {
+			logger.info('userType is null');
 			logger.info(`inserting login for ${email} for ${profile.provider}`);
 			// before checking hacker check if it is a whitelist sponsor
 			const verifySponsor = await Sponsors.findOne({ email });
@@ -90,13 +91,18 @@ export default async (models: Models, profile: Profile, done: VerifyCallback): P
 					token: profile.id,
 					userType: UserType.Hacker,
 				};
+
+				logger.info(`inserting login ${JSON.stringify(loginRequest, undefined, 2)}`)
 				await insertLogin(Logins, loginRequest);
 			}
 
 			try {
 				// If user is truthy, then we need to insert a new user.
 				user = await fetchUser({ email, userType: userType || UserType.Hacker }, models);
+				logger.info(`initial fetched user ${JSON.stringify(user, undefined, 2)}`)
+
 			} catch (e) {
+				logger.info(`caught fetchUser exception`)
 				// This way logging in with different providers uses the same backing hacker object.
 				logger.info(`inserting ${email} (${profile.provider}) into hacker db`);
 				await Hackers.insertOne({
@@ -120,11 +126,20 @@ export default async (models: Models, profile: Profile, done: VerifyCallback): P
 					userType: UserType.Hacker,
 				});
 			}
+		} else {
+			logger.info(`userType is ${userType}`)
 		}
 
-		if (!user) user = await fetchUser({ email, userType: userType || UserType.Hacker }, models);
+		if (!user) {
+			logger.info('fetching user after creating user')
+			user = await fetchUser({ email, userType: userType || UserType.Hacker }, models);
+		}
+
+		logger.info(`fetched user ${JSON.stringify(user, undefined, 2)}`)
 		return void done(undefined, user);
+
 	} catch (err) {
+		logger.info(`caught error during authentication ${JSON.stringify(err, undefined, 2)}`)
 		return void done(err);
 	}
 };
