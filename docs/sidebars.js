@@ -24,6 +24,7 @@ module.exports = {
 				items: ['dev/server', 'dev/routing'],
 			},
 			'dev/auth',
+			'dev/folder_structure',
 			'dev/testing_and_linting',
 			'dev/developer_faq',
 		],
