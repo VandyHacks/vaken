@@ -152,10 +152,10 @@ export const schema = makeExecutableSchema({
 	if (NODE_ENV !== 'development') {
 		logger.info('Setting routing to prod assets.');
 		// Serve front-end asset files in prod.
-		app.use(express.static('dist/server/app'));
+		app.use(express.static('dist/src/server/app'));
 		// MUST BE LAST AS THIS WILL REROUTE ALL REMAINING TRAFFIC TO THE FRONTEND!
 		app.use((req, res) => {
-			res.sendFile('index.html', { root: 'dist/server/app' });
+			res.sendFile('index.html', { root: 'dist/src/server/app' });
 		});
 	}
 
