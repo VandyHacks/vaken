@@ -4,6 +4,13 @@ title: Running
 sidebar_label: Running
 ---
 
+### Setup
+
+You will need [npm](https://github.com/npm/cli) as a package manager and build runner.
+
+Run `./scripts/install.sh` from the top level of the Vaken repository. Note that the variables in
+the new `.env` file will need to be changed to valid values
+
 ### Running the app:
 
 You will need your own instance of MongoDB in order to run Vaken. We recommend using [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) to set up a cluster and
