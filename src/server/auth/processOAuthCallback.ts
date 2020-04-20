@@ -121,26 +121,6 @@ export default async (models: Models, profile: Profile, done: VerifyCallback): P
 					userType: UserType.Organizer,
 					permissions: [],
 				});
-				await Hackers.insertOne({
-					_id: new ObjectID(),
-					application: [],
-					createdAt: new Date(),
-					dietaryRestrictions: '',
-					email,
-					emailUnsubscribed: false,
-					eventsAttended: [],
-					firstName: '',
-					lastName: '',
-					logins: [],
-					majors: [],
-					modifiedAt: new Date().getTime(),
-					phoneNumber: '',
-					preferredName: '',
-					race: '',
-					secondaryIds: [],
-					status: ApplicationStatus.Created,
-					userType: UserType.Hacker,
-				});
 			}
 		} else {
 			logger.info(`userType is ${userType}`)
