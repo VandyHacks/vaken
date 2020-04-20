@@ -14,7 +14,7 @@ We require a Events collection to store Event documents. Each document represent
 - checkIns: Array of <user_identifier> indicating each Users’ check-in attempts into an Event. May contain duplicates.
 - warnRepeatedCheckIns: Boolean indicating whether an Event should allow the same User to check in multiple times. This is only used to warn the Organizer that a User is in the attendees array and does not prevent the check-in from being recorded in checkIns.
 - description: String indicating description of Event. Optional.
-= location: String indicating location of Events. 
+- location: String indicating location of Events. 
 - eventType: String indicating the type of Event.
 
 ### User Documents
