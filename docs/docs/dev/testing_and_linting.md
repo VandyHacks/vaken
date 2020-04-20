@@ -15,6 +15,7 @@ Jest configs are split using projects into specific backend and frontend configu
 Running tests
 
 ```bash
+npm run generate
 npm run check:test # runs only changed tests
 npm run check:test:ci # runs all tests
 ```
