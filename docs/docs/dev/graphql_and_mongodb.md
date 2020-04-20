@@ -9,7 +9,7 @@ Note: you must have a MongoDB/Atlas instance and the env variable MONGODB_BASE_U
 
 #### Schema
 A schema is how to define the structure of the data for GraphQL. We use an addon to autogenerate Typescript
-types for MongoDB objects. It is important to specify which GraphQL objects are intended to reflect MongoDB documents (usually with the @entity tag) - additional info [https://graphql-code-generator.com/docs/plugins/typescript-mongodb/](here). The schema is found as follows:
+types (and only types!) for MongoDB objects. It is important to specify which GraphQL objects are intended to reflect MongoDB documents (usually with the @entity tag) - additional info [https://graphql-code-generator.com/docs/plugins/typescript-mongodb/](here). The schema is found as follows:
 - [./src/common/schema.graphql.ts](./src/common/schema.graphql.ts) - main schema, shared among server and client
 
 #### Models
@@ -21,7 +21,7 @@ Resolvers produce the appropriate Javascript object/representation of our GraphQ
 - [./src/server/resolvers.ts](./src/server/resolvers.ts)
 
 #### Codegen
-As a reminder, we use Graphql Code Generator to generate Typescript definitions for GraphQL resolvers and their MongoDB objects. In order for GraphQL resolvers to return mongoDB objects instead of their default types, you must change:
+As a reminder, we use Graphql Code Generator to generate Typescript definitions for GraphQL resolvers and their MongoDB objects. In order for GraphQL resolvers to return MongoDB objects instead of their default types, you must change:
  - [./codegen.json](./codegen.json)
 
 #### Example Queries from the Client
