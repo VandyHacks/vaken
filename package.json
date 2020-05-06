@@ -84,6 +84,7 @@
 		"apollo-link-http": "^1.5.16",
 		"apollo-server-express": "^2.9.16",
 		"aws-sdk": "^2.610.0",
+		"babel-plugin-styled-components": "^1.10.7",
 		"case": "^1.6.2",
 		"chart.js": "^2.9.3",
 		"chartjs-plugin-datalabels": "^0.7.0",

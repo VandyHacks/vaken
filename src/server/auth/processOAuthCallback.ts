@@ -89,24 +89,24 @@ export default async (models: Models, profile: Profile, done: VerifyCallback): P
 					email,
 					provider: profile.provider,
 					token: profile.id,
-					userType: UserType.Organizer,
+					userType: UserType.Hacker,
 				};
 
-				logger.info(`inserting login ${JSON.stringify(loginRequest, undefined, 2)}`)
+				logger.info(`inserting login ${JSON.stringify(loginRequest, undefined, 2)}`);
 				await insertLogin(Logins, loginRequest);
 			}
 
 			try {
 				// If user is truthy, then we need to insert a new user.
 				user = await fetchUser({ email, userType: userType || UserType.Hacker }, models);
-				logger.info(`initial fetched user ${JSON.stringify(user, undefined, 2)}`)
-
+				logger.info(`initial fetched user ${JSON.stringify(user, undefined, 2)}`);
 			} catch (e) {
-				logger.info(`caught fetchUser exception`)
+				logger.info(`caught fetchUser exception`);
 				// This way logging in with different providers uses the same backing hacker object.
 				logger.info(`inserting ${email} (${profile.provider}) into hacker db`);
-				await Organizers.insertOne({
+				await Hackers.insertOne({
 					_id: new ObjectID(),
+					application: [],
 					createdAt: new Date(),
 					dietaryRestrictions: '',
 					email,
@@ -115,27 +115,29 @@ export default async (models: Models, profile: Profile, done: VerifyCallback): P
 					firstName: '',
 					lastName: '',
 					logins: [],
+					majors: [],
+					modifiedAt: new Date().getTime(),
 					phoneNumber: '',
 					preferredName: '',
+					race: '',
 					secondaryIds: [],
-					userType: UserType.Organizer,
-					permissions: [],
+					status: ApplicationStatus.Created,
+					userType: UserType.Hacker,
 				});
 			}
 		} else {
-			logger.info(`userType is ${userType}`)
+			logger.info(`userType is ${userType}`);
 		}
 
 		if (!user) {
-			logger.info('fetching user after creating user')
+			logger.info('fetching user after creating user');
 			user = await fetchUser({ email, userType: userType || UserType.Hacker }, models);
 		}
 
-		logger.info(`fetched user ${JSON.stringify(user, undefined, 2)}`)
+		logger.info(`fetched user ${JSON.stringify(user, undefined, 2)}`);
 		return void done(undefined, user);
-
 	} catch (err) {
-		logger.info(`caught error during authentication ${JSON.stringify(err, undefined, 2)}`)
+		logger.info(`caught error during authentication ${JSON.stringify(err, undefined, 2)}`);
 		return void done(err);
 	}
 };
