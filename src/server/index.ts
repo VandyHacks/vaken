@@ -48,7 +48,7 @@ export const schema = makeExecutableSchema({
 	const dbClient = new DB();
 	const models = await dbClient.collections;
 
-	app.use(helmet()); // sets good security defaults, see https://helmetjs.github.io/
+	// app.use(helmet()); // sets good security defaults, see https://helmetjs.github.io/
 
 	// Register auth functions
 	app.use(
