@@ -57,13 +57,16 @@ export const schema = makeExecutableSchema({
 			store: new (MongoStore(session))(({
 				clientPromise: dbClient.client,
 			} as unknown) as MongoUrlOptions),
+			resave: false,
+			saveUninitialized: true,
+			// cookie: { maxAge: 365 * 24 * 60 * 60 * 1000 },
 			cookie: {
 				/*
 					can't use secure cookies b/c only HTTP connection between dyno and Heroku servers,
 					but don't need it as long as connection as Heroku servers and client are HTTPS
 				*/
 				// secure: IS_PROD,
-				httpOnly: true, // protects against XSS attacks
+				// httpOnly: true, // protects against XSS attacks
 				signed: true,
 				sameSite: true,
 			},
