@@ -57,8 +57,8 @@ export const schema = makeExecutableSchema({
 			store: new (MongoStore(session))(({
 				clientPromise: dbClient.client,
 			} as unknown) as MongoUrlOptions),
-			resave: false,
-			saveUninitialized: true,
+			// resave: false,
+			// saveUninitialized: true,
 			// cookie: { maxAge: 365 * 24 * 60 * 60 * 1000 },
 			cookie: {
 				/*
