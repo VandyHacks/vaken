@@ -60,7 +60,7 @@ const handleSponsorCreation = async (
 };
 
 export default async (models: Models, profile: Profile, done: VerifyCallback): Promise<void> => {
-	const { Logins, Hackers, Sponsors } = models;
+	const { Logins, Hackers, Sponsors, Organizers } = models;
 
 	let { userType } = (await Logins.findOne({
 		provider: profile.provider,
@@ -92,17 +92,16 @@ export default async (models: Models, profile: Profile, done: VerifyCallback): P
 					userType: UserType.Hacker,
 				};
 
-				logger.info(`inserting login ${JSON.stringify(loginRequest, undefined, 2)}`)
+				logger.info(`inserting login ${JSON.stringify(loginRequest, undefined, 2)}`);
 				await insertLogin(Logins, loginRequest);
 			}
 
 			try {
 				// If user is truthy, then we need to insert a new user.
 				user = await fetchUser({ email, userType: userType || UserType.Hacker }, models);
-				logger.info(`initial fetched user ${JSON.stringify(user, undefined, 2)}`)
-
+				logger.info(`initial fetched user ${JSON.stringify(user, undefined, 2)}`);
 			} catch (e) {
-				logger.info(`caught fetchUser exception`)
+				logger.info(`caught fetchUser exception`);
 				// This way logging in with different providers uses the same backing hacker object.
 				logger.info(`inserting ${email} (${profile.provider}) into hacker db`);
 				await Hackers.insertOne({
@@ -127,19 +126,18 @@ export default async (models: Models, profile: Profile, done: VerifyCallback): P
 				});
 			}
 		} else {
-			logger.info(`userType is ${userType}`)
+			logger.info(`userType is ${userType}`);
 		}
 
 		if (!user) {
-			logger.info('fetching user after creating user')
+			logger.info('fetching user after creating user');
 			user = await fetchUser({ email, userType: userType || UserType.Hacker }, models);
 		}
 
-		logger.info(`fetched user ${JSON.stringify(user, undefined, 2)}`)
+		logger.info(`fetched user ${JSON.stringify(user, undefined, 2)}`);
 		return void done(undefined, user);
-
 	} catch (err) {
-		logger.info(`caught error during authentication ${JSON.stringify(err, undefined, 2)}`)
+		logger.info(`caught error during authentication ${JSON.stringify(err, undefined, 2)}`);
 		return void done(err);
 	}
 };

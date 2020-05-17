@@ -40,7 +40,7 @@ const GlobalStyle = createGlobalStyle`
 toast.configure();
 
 const Vaken: React.FunctionComponent = (): JSX.Element => {
-	const [ready, setReady] = useState();
+	const [ready, setReady] = useState(false);
 	const { data, error, loading } = useMeQuery();
 
 	const StateMachine: React.FunctionComponent = (): JSX.Element | null => {

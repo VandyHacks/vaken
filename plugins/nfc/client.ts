@@ -3,7 +3,7 @@ import { UserType } from '../../src/client/generated/graphql';
 export class NFCPlugin {
   get routeInfo() {
     return {
-      displayText: "Test Module",
+      displayText: "Scan NFC (Plugin Version)",
       path: "/test_module",
       authLevel: [UserType.Organizer]
     }
