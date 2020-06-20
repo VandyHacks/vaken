@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import { NFCPlugin } from '../../plugins/nfc/server';
 import { GoogleOAuth } from '../../plugins/google-oauth';
 import { GitHubOAuth } from '../../plugins/github-oauth';

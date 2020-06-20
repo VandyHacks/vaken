@@ -31,15 +31,15 @@ export const questions = [
 				placeholder: 'Smith',
 				title: 'Last Name',
 			},
-			{
-				Component: SliderSansTitleCase,
-				fieldName: 'shirtSize',
-				optional: true,
-				options: [ShirtSize.Xs, ShirtSize.S, ShirtSize.M, ShirtSize.L, ShirtSize.Xl, ShirtSize.Xxl],
-				other: true,
-				sortOrder: 4,
-				title: 'T-Shirt Size',
-			},
+			// {
+			// 	Component: SliderSansTitleCase,
+			// 	fieldName: 'shirtSize',
+			// 	optional: true,
+			// 	options: [ShirtSize.Xs, ShirtSize.S, ShirtSize.M, ShirtSize.L, ShirtSize.Xl, ShirtSize.Xxl],
+			// 	other: true,
+			// 	sortOrder: 4,
+			// 	title: 'T-Shirt Size',
+			// },
 			{
 				Component: Slider,
 				fieldName: 'gender',
@@ -126,25 +126,25 @@ export const questions = [
 	{
 		category: 'application',
 		fields: [
-			{
-				Component: TextInput,
-				fieldName: 'favArtPiece',
-				note:
-					"This year's theme revolves around creativity and art. Put in your favorite work of art and you may see it used in our decor!",
-				title: 'Favorite work of art',
-			},
-			{
-				Component: TextArea,
-				fieldName: 'essay1',
-				note:
-					'Please write between 50 and 200 words. Your response will help us find creative, diverse attendees!',
-				title: 'What do you find beautiful?',
-			},
-			{
-				Component: Boolean,
-				fieldName: 'volunteer',
-				title: 'Would you like to be contacted about volunteering at the event?',
-			},
+			// {
+			// 	Component: TextInput,
+			// 	fieldName: 'favArtPiece',
+			// 	note:
+			// 		"This year's theme revolves around creativity and art. Put in your favorite work of art and you may see it used in our decor!",
+			// 	title: 'Favorite work of art',
+			// },
+			// {
+			// 	Component: TextArea,
+			// 	fieldName: 'essay1',
+			// 	note:
+			// 		'Please write between 50 and 200 words. Your response will help us find creative, diverse attendees!',
+			// 	title: 'What do you find beautiful?',
+			// },
+			// {
+			// 	Component: Boolean,
+			// 	fieldName: 'volunteer',
+			// 	title: 'Would you like to be contacted about volunteering at the event?',
+			// },
 			{
 				Component: Boolean,
 				fieldName: 'lightningTalk',
@@ -176,55 +176,55 @@ export const questions = [
 		],
 		title: 'Hacker Application',
 	},
-	{
-		category: 'travel',
-		fields: [
-			{
-				Component: Boolean,
-				fieldName: 'reimbursementRequired',
-				note: "Answering 'Yes' here does not guarantee any reimbursement",
-				optional: true,
-				title: 'Do you require travel reimbursement to get to VandyHacks?',
-			},
-			{
-				Component: Boolean,
-				fieldName: 'travelInfoSharingConsent',
-				note: 'Information will be shared to facilitate carpooling',
-				optional: true,
-				title: 'May we share your name and email with others coming from your school/city?',
-			},
-			{
-				Component: Slider,
-				fieldName: 'transportationMode',
-				optional: true,
-				options: ['Car', 'Bus', 'Plane', 'Blimp'],
-				title: 'How do you plan on getting to VandyHacks?',
-			},
-			{
-				Component: Boolean,
-				fieldName: 'travelAdmissionConsent',
-				note: "Please acknowledge this by clicking 'Yes'",
-				optional: true,
-				title:
-					'If you are purchasing a non-refundable ticket for long distance travel, we can offer guaranteed admission if you email info@vandyhacks.org along with a request and a receipt for your travel.',
-			},
-		],
-		title: 'Travel Reimbursement',
-	},
+	// {
+	// 	category: 'travel',
+	// 	fields: [
+	// 		{
+	// 			Component: Boolean,
+	// 			fieldName: 'reimbursementRequired',
+	// 			note: "Answering 'Yes' here does not guarantee any reimbursement",
+	// 			optional: true,
+	// 			title: 'Do you require travel reimbursement to get to VandyHacks?',
+	// 		},
+	// 		{
+	// 			Component: Boolean,
+	// 			fieldName: 'travelInfoSharingConsent',
+	// 			note: 'Information will be shared to facilitate carpooling',
+	// 			optional: true,
+	// 			title: 'May we share your name and email with others coming from your school/city?',
+	// 		},
+	// 		{
+	// 			Component: Slider,
+	// 			fieldName: 'transportationMode',
+	// 			optional: true,
+	// 			options: ['Car', 'Bus', 'Plane', 'Blimp'],
+	// 			title: 'How do you plan on getting to VandyHacks?',
+	// 		},
+	// 		{
+	// 			Component: Boolean,
+	// 			fieldName: 'travelAdmissionConsent',
+	// 			note: "Please acknowledge this by clicking 'Yes'",
+	// 			optional: true,
+	// 			title:
+	// 				'If you are purchasing a non-refundable ticket for long distance travel, we can offer guaranteed admission if you email info@vandyhacks.org along with a request and a receipt for your travel.',
+	// 		},
+	// 	],
+	// 	title: 'Travel Reimbursement',
+	// },
 ];
 
 export const requiredFields = [
 	'firstName',
 	'lastName',
-	'shirtSize',
+	// 'shirtSize',
 	'phoneNumber',
 	'dateOfBirth',
 	'school',
 	'major',
 	'graduationYear',
 	'race',
-	'essay1',
-	'volunteer',
+	// 'essay1',
+	// 'volunteer',
 	'consent',
 ];
 

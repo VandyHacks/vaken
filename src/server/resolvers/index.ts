@@ -32,8 +32,8 @@ import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
 import { sendStatusEmail } from '../mail/aws';
 import logger from '../logger';
 
-// added here b/c webpack JSON compilation with 'use-strict' is broken (10/31/19)
-const DEADLINE_TS = 1572497940000;
+// added here b/c webpack JSON compilation with 'use-strict' is broken (7/10/19 at 23:59)
+const DEADLINE_TS = 1594443599000;
 
 // TODO: Cannot import frontend files so this is ugly workaround. Fix this.
 const requiredFields = [
