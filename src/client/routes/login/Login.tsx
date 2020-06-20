@@ -10,7 +10,9 @@ const LoginPage: FunctionComponent = (): JSX.Element => (
 	<>
 		<Background img={bg}>
 			<FloatingPopup margin="1.5rem" height="25" width="27rem" backgroundOpacity="0.9">
-				<Title color={STRINGS.DARK_TEXT_COLOR}>{STRINGS.FULL_NAME}</Title>
+				<Title color={STRINGS.DARK_TEXT_COLOR} textAlign="center">
+					{STRINGS.FULL_NAME}
+				</Title>
 				<OAuthLogin />
 			</FloatingPopup>
 		</Background>
