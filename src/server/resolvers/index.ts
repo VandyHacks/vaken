@@ -31,17 +31,15 @@ import { addOrUpdateEvent, assignEventToCompany, removeAbsentEvents } from '../e
 import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
 import { sendStatusEmail } from '../mail/aws';
 import logger from '../logger';
-import { DEADLINE_DATE_FORMAT } from '../../client/assets/strings.json';
 
 // added here b/c webpack JSON compilation with 'use-strict' is broken (7/10/19 at 23:59)
-const deadline = new Date(DEADLINE_DATE_FORMAT);
-const DEADLINE_TS = deadline.getTime();
+const DEADLINE_TS = 1594443599000;
 
 // TODO: Cannot import frontend files so this is ugly workaround. Fix this.
 const requiredFields = [
 	'firstName',
 	'lastName',
-	// 'shirtSize',
+	'shirtSize',
 	'gender',
 	'phoneNumber',
 	'dateOfBirth',
@@ -49,9 +47,9 @@ const requiredFields = [
 	'major',
 	'gradYear',
 	'race',
-	// 'favArtPiece',
-	// 'essay1',
-	// 'volunteer',
+	'favArtPiece',
+	'essay1',
+	'volunteer',
 	'resume',
 	'codeOfConduct',
 	'infoSharingConsent',
@@ -460,7 +458,7 @@ export const resolvers: CustomResolvers<Context> = {
 				'lastName',
 				'shirtSize',
 				'gender',
-				// 'dietaryRestrictions',
+				'dietaryRestrictions',
 				'phoneNumber',
 				'race',
 				'school',
