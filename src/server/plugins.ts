@@ -14,7 +14,7 @@ const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET as string;
 const GITHUB_CALLBACK_URL = process.env.GITHUB_CALLBACK_URL as string;
 
 // Add plugins that need to associate GraphQL and MongoDB models here
-export const serverPlugins = [new NFCPlugin()];
+export const serverPlugins = [new NFCPlugin(), new NotificationPlugin()];
 
 // Add plugins that are using the Passport OAuth patterns here
 export const authPlugins = [
