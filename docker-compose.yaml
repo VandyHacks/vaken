@@ -11,7 +11,7 @@ services:
     stdin_open: true
     restart: on-failure
     volumes:
-      - ./src:/usr/app/src
+      - ./src:/usr/app/src/
       - ./dist:/usr/app/dist
     environment:
       - PORT
