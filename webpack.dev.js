@@ -7,6 +7,7 @@ module.exports = merge(common, {
 	mode: 'development',
 	devtool: 'source-map',
 	devServer: {
+		host: '0.0.0.0',
 		hot: true, // Enable hot module replacement
 		open: false, // Do not open browser on 'npm start'
 		quiet: true, // Pretty console output

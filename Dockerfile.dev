@@ -1,0 +1,11 @@
+# build environment
+FROM node:10-alpine
+RUN mkdir /usr/src/
+WORKDIR /usr/src/
+
+COPY . /usr/src/
+
+RUN npm install
+RUN npm install -g webpack webpack-cli typescript ts-node
+
+CMD ["npm", "run", "dev"]
