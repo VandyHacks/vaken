@@ -75,11 +75,13 @@ exports[`Login renders properly 1`] = `
     </a>
     <a
       href="https://summer.vandyhacks.org"
+      rel="noopener noreferrer"
       style={
         Object {
           "textDecoration": "none",
         }
       }
+      target="_blank"
     >
       <button
         className="sc-fzplWN sc-fzokOt jvWrPW"
