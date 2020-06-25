@@ -15,10 +15,8 @@ const LoginPage: FunctionComponent = (): JSX.Element => (
 					{STRINGS.FULL_NAME}
 				</Title>
 				<OAuthLogin />
-				<a href={`https://summer.vandyhacks.org`} style={{ textDecoration: 'none' }}>
-					<TextButton color={STRINGS.DARK_TEXT_COLOR}>
-						{`Learn more`}
-					</TextButton>
+				<a href="https://summer.vandyhacks.org" style={{ textDecoration: 'none' }}>
+					<TextButton color={STRINGS.DARK_TEXT_COLOR}>Learn more</TextButton>
 				</a>
 			</FloatingPopup>
 		</Background>
