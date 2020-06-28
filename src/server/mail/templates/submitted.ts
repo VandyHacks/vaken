@@ -194,11 +194,11 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																				<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;border-spacing:0px;">
 																					<tbody>
 																						<tr>
-																							<td style="width:520px;"> <a href="https://vandyhacks.org" target="_blank">
+																							<td style="width:520px;"> <center><a href="https://vandyhacks.org" target="_blank">
 									
-							<img alt="" height="auto" src="https://vh6assets.vandyhacks.org/bigLogo.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;" width="520">
+							<img alt="" height="auto" src="https://storage.googleapis.com/vh-summer-assets/VH_dark.svg" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:30%;" width="520">
 						
-								</a> </td>
+								</a> </center></td>
 																						</tr>
 																					</tbody>
 																				</table>
@@ -260,35 +260,44 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> Hey ${escape(
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> Hi ${escape(
 																					user.preferredName || user.firstName
 																				)}, </div>
 																			</td>
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> We've received your application for VandyHacks VI: Art Edition! We'll be accepting applications on a rolling basis, so keep your eyes out for another email from us for your application decision. </div>
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> 
+																					Thanks for taking the time to complete your application! We’re so excited that you’re interested in being a part of <b>VandyHacks: Summer Edition</b>.	
+																				</div>
 																			</td>
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> In the meantime, you can hype up by following us on <a class="text-link" href="https://facebook.com/VandyHacks" style="color: #5e6ebf;">Facebook</a>, <a class="text-link" href="https://twitter.com/@VandyHacks" style="color: #5e6ebf;">Twitter</a>,
-																					and <a class="text-link" href="https://instagram.com/VandyHacks" style="color: #5e6ebf;">Instagram</a>, as well as update your application at any point up to your decision. </div>
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> 
+																					We will be reviewing your submission soon, so be on the lookout for another email regarding your status.
+																				</div>
 																			</td>
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> If you have any questions, please don't hesitate to reach out to <a href="mailto:info@vandyhacks.org" class="text-link" style="color: #5e6ebf;">info@vandyhacks.org</a> </div>
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> 
+																					Until then, stay hyped about VandyHacks! Like our page on <a href="https://www.facebook.com/vandyhacks/">Facebook</a> and follow us on <a href="https://www.instagram.com/vandyhacks/?hl=en">Instagram</a>.
+																				</div>
 																			</td>
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> Happy Hacking! </div>
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> 
+																					Cheers, 
+																				</div>
 																			</td>
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> The VandyHacks Team </div>
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> 
+																					The VandyHacks Team 
+																				</div>
 																			</td>
 																		</tr>
 																	</table>
@@ -445,14 +454,14 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																										<tr>
 																											<td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
 																												<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:11px;font-weight:400;line-height:16px;text-align:center;color:#445566;"> You are receiving this application update because you applied at <a href="https://apply.vandyhacks.org" class="text-link" style="color: #5e6ebf;">apply.vandyhacks.org</a>. If you would like to opt-out of
-																													any future emails pertaining to VandyHacks VI applications, please click <a href="https://apply.vandyhacks.org/api/unsubscribe?id=${
+																													any future emails pertaining to VandyHacks: Summer Edition applications, please click <a href="https://apply.vandyhacks.org/api/unsubscribe?id=${
 																														user._id
 																													}" class="text-link" style="color: #5e6ebf;">here</a> </div>
 																											</td>
 																										</tr>
 																										<tr>
 																											<td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																												<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:11px;font-weight:400;line-height:16px;text-align:center;color:#445566;"> &copy; 2019 VandyHacks, All Rights Reserved. </div>
+																												<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:11px;font-weight:400;line-height:16px;text-align:center;color:#445566;"> &copy; 2020 VandyHacks, All Rights Reserved. </div>
 																											</td>
 																										</tr>
 																									</table>
@@ -585,11 +594,11 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 			Text: {
 				Charset: 'UTF-8',
 				Data: `Thank you for applying!
-				Hey ${escape(user.preferredName || user.firstName)},
-				We've received your application for VandyHacks VI: Art Edition! We'll be accepting applications on a rolling basis, so keep your eyes out for another email from us for your application decision.
-				In the meantime, you can hype up by following us on Facebook, Twitter, and Instagram, as well as update your application at any point up to your decision.
-				If you have any questions, please don't hesitate to reach out to info@vandyhacks.org
-				Happy Hacking!
+				Hi ${escape(user.preferredName || user.firstName)},
+				Thanks for taking the time to complete your application! We’re so excited that you’re interested in being a part of VandyHacks: Summer Edition.
+				We will be reviewing your submission soon, so be on the lookout for another email regarding your status.
+				Until then, stay hyped about VandyHacks! Like our page on Facebook and follow us on Instagram.
+				Cheers,
 				The VandyHacks Team`,
 			},
 		},
