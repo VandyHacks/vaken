@@ -189,11 +189,7 @@ export async function replaceResumeFieldWithLink(
 		(await appFields).map(async field => {
 			const newField = field;
 			if (field.question === 'resume') {
-				newField.answer = field.answer
-					? `<a href="${await getSignedReadUrl(
-							field.answer
-					  )}" target="_blank" rel="noopener noreferrer">Resume</a>`
-					: field.answer;
+				newField.answer = field.answer ? await getSignedReadUrl(field.answer) : field.answer;
 				return newField;
 			}
 
