@@ -234,6 +234,7 @@ export const requiredFields = [
 	// 'essay1',
 	// 'volunteer',
 	'consent',
+	'summerHackathonWaiver',
 ];
 
 export default questions;
