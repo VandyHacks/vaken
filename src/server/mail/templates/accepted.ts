@@ -270,7 +270,8 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
 																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> 
-																					Head over to the application portal <a href="https://apply.vandyhacks.org">here</a> and confirm your attendance by July 10th, 6:00 PM CST. 
+																					Head over to the application portal <a href="https://apply.vandyhacks.org">here</a> and confirm your attendance by July 10th, 6:00 PM CST.
+																					<b>Make sure you’ve also read and checked “agree” to our hackathon waiver</b> under the hacker application. 
 																				</div>
 																			</td>
 																		</tr>
@@ -631,7 +632,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 				Charset: 'UTF-8',
 				Data: `Hey ${escape(user.preferredName || user.firstName)},
 				Congratulations! You’re invited to be a part of VandyHacks: Summer Edition! We enjoyed reading your application and would love to see your ideas come to life during our virtual event on July 10th-12th! 
-				Head over to the application portal here and confirm your attendance by July 10th, 6:00 PM CST. 
+				Head over to the application portal here and confirm your attendance by July 10th, 6:00 PM CST. Make sure you’ve also read and checked “agree” to our hackathon waiver under the hacker application.
 				Finally, please make sure to do the following in preparation for the event:
 				Join our Discord here for communication before, during, and after the hackathon!
 				Review the full hackathon schedule here! 
