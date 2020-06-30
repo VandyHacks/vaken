@@ -104,7 +104,7 @@ exports[`Test Sidebar Sidebar renders correctly 1`] = `
         <h1
           className="sc-fzokOt hNxYVR"
         >
-          VandyHacks VI
+          VandyHacks: Summer Edition
         </h1>
       </div>
     </div>

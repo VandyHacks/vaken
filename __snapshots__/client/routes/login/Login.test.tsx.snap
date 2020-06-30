@@ -5,45 +5,16 @@ exports[`Login renders properly 1`] = `
   className="sc-fznZeY gnTxhM"
 >
   <div
-    className="sc-AxjAm sc-AxirZ sc-AxhUy sc-fzokOt gHrEpW"
+    className="sc-AxjAm sc-AxirZ sc-AxhUy sc-fzqBZW bBqVxb"
     height="25"
     width="27rem"
   >
     <h1
-      className="sc-fzqBZW dSWhvV"
+      className="sc-fzqNJr bMSQyn"
       color="#3f3356"
     >
-      VandyHacks VI
+      VandyHacks: Summer Edition
     </h1>
-    <a
-      href="/api/auth/github"
-      style={
-        Object {
-          "textDecoration": "none",
-        }
-      }
-    >
-      <button
-        className="sc-fzplWN cAaXyv"
-      >
-        <div
-          className="sc-AxjAm sc-AxirZ sc-AxiKw cJZTej"
-          height="min-content"
-          width="min-content"
-        >
-          <img
-            alt="GitHub logo"
-            className="sc-fzoLsD egDCJJ"
-            src="IconMock"
-          />
-        </div>
-        <div
-          className="sc-AxmLO cmpEQv"
-        >
-          Sign in with GitHub
-        </div>
-      </button>
-    </a>
     <a
       href="/api/auth/google"
       style={
@@ -74,7 +45,7 @@ exports[`Login renders properly 1`] = `
       </button>
     </a>
     <a
-      href="/api/auth/microsoft"
+      href="/api/auth/github"
       style={
         Object {
           "textDecoration": "none",
@@ -90,7 +61,7 @@ exports[`Login renders properly 1`] = `
           width="min-content"
         >
           <img
-            alt="Microsoft logo"
+            alt="GitHub logo"
             className="sc-fzoLsD egDCJJ"
             src="IconMock"
           />
@@ -98,7 +69,28 @@ exports[`Login renders properly 1`] = `
         <div
           className="sc-AxmLO cmpEQv"
         >
-          Sign in with Microsoft
+          Sign in with GitHub
+        </div>
+      </button>
+    </a>
+    <a
+      href="https://summer.vandyhacks.org"
+      rel="noopener noreferrer"
+      style={
+        Object {
+          "textDecoration": "none",
+        }
+      }
+      target="_blank"
+    >
+      <button
+        className="sc-fzplWN sc-fzokOt jvWrPW"
+      >
+        <div
+          className="sc-AxmLO iNbFiF"
+          color="#3f3356"
+        >
+          Learn more
         </div>
       </button>
     </a>

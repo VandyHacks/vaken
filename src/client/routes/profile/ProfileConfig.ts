@@ -57,22 +57,22 @@ export const profile = [
 		sortOrder: 5,
 		title: 'Gender',
 	},
-	{
-		Component: Checkbox,
-		fieldName: 'dietaryRestrictions',
-		optional: true,
-		options: [
-			DietaryRestriction.GlutenFree,
-			DietaryRestriction.Vegetarian,
-			DietaryRestriction.Vegan,
-			DietaryRestriction.LactoseAllergy,
-			DietaryRestriction.NutAllergy,
-			DietaryRestriction.Halal,
-			DietaryRestriction.Kosher,
-		],
-		sortOrder: 6,
-		title: 'Dietary Restrictions',
-	},
+	// {
+	// 	Component: Checkbox,
+	// 	fieldName: 'dietaryRestrictions',
+	// 	optional: true,
+	// 	options: [
+	// 		DietaryRestriction.GlutenFree,
+	// 		DietaryRestriction.Vegetarian,
+	// 		DietaryRestriction.Vegan,
+	// 		DietaryRestriction.LactoseAllergy,
+	// 		DietaryRestriction.NutAllergy,
+	// 		DietaryRestriction.Halal,
+	// 		DietaryRestriction.Kosher,
+	// 	],
+	// 	sortOrder: 6,
+	// 	title: 'Dietary Restrictions',
+	// },
 ];
 
 export default profile;

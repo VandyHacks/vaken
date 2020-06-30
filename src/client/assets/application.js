@@ -31,15 +31,15 @@ export const questions = [
 				placeholder: 'Smith',
 				title: 'Last Name',
 			},
-			{
-				Component: SliderSansTitleCase,
-				fieldName: 'shirtSize',
-				optional: true,
-				options: [ShirtSize.Xs, ShirtSize.S, ShirtSize.M, ShirtSize.L, ShirtSize.Xl, ShirtSize.Xxl],
-				other: true,
-				sortOrder: 4,
-				title: 'T-Shirt Size',
-			},
+			// {
+			// 	Component: SliderSansTitleCase,
+			// 	fieldName: 'shirtSize',
+			// 	optional: true,
+			// 	options: [ShirtSize.Xs, ShirtSize.S, ShirtSize.M, ShirtSize.L, ShirtSize.Xl, ShirtSize.Xxl],
+			// 	other: true,
+			// 	sortOrder: 4,
+			// 	title: 'T-Shirt Size',
+			// },
 			{
 				Component: Slider,
 				fieldName: 'gender',
@@ -49,22 +49,22 @@ export const questions = [
 				sortOrder: 5,
 				title: 'Gender',
 			},
-			{
-				Component: Checkbox,
-				fieldName: 'dietaryRestrictions',
-				optional: true,
-				options: [
-					DietaryRestriction.GlutenFree,
-					DietaryRestriction.Vegetarian,
-					DietaryRestriction.Vegan,
-					DietaryRestriction.LactoseAllergy,
-					DietaryRestriction.NutAllergy,
-					DietaryRestriction.Halal,
-					DietaryRestriction.Kosher,
-				],
-				sortOrder: 6,
-				title: 'Dietary Restrictions',
-			},
+			// {
+			// 	Component: Checkbox,
+			// 	fieldName: 'dietaryRestrictions',
+			// 	optional: true,
+			// 	options: [
+			// 		DietaryRestriction.GlutenFree,
+			// 		DietaryRestriction.Vegetarian,
+			// 		DietaryRestriction.Vegan,
+			// 		DietaryRestriction.LactoseAllergy,
+			// 		DietaryRestriction.NutAllergy,
+			// 		DietaryRestriction.Halal,
+			// 		DietaryRestriction.Kosher,
+			// 	],
+			// 	sortOrder: 6,
+			// 	title: 'Dietary Restrictions',
+			// },
 			{
 				Component: TextInput,
 				fieldName: 'phoneNumber',
@@ -98,7 +98,7 @@ export const questions = [
 				Component: Slider,
 				default: '2019',
 				fieldName: 'gradYear',
-				options: ['2019', '2020', '2021', '2022', '2023', 'Other'],
+				options: ['2019', '2020', '2021', '2022', '2023', '2024', 'Other'],
 				other: true,
 				title: 'Graduation Year',
 				type: 'number',
@@ -126,25 +126,25 @@ export const questions = [
 	{
 		category: 'application',
 		fields: [
-			{
-				Component: TextInput,
-				fieldName: 'favArtPiece',
-				note:
-					"This year's theme revolves around creativity and art. Put in your favorite work of art and you may see it used in our decor!",
-				title: 'Favorite work of art',
-			},
-			{
-				Component: TextArea,
-				fieldName: 'essay1',
-				note:
-					'Please write between 50 and 200 words. Your response will help us find creative, diverse attendees!',
-				title: 'What do you find beautiful?',
-			},
-			{
-				Component: Boolean,
-				fieldName: 'volunteer',
-				title: 'Would you like to be contacted about volunteering at the event?',
-			},
+			// {
+			// 	Component: TextInput,
+			// 	fieldName: 'favArtPiece',
+			// 	note:
+			// 		"This year's theme revolves around creativity and art. Put in your favorite work of art and you may see it used in our decor!",
+			// 	title: 'Favorite work of art',
+			// },
+			// {
+			// 	Component: TextArea,
+			// 	fieldName: 'essay1',
+			// 	note:
+			// 		'Please write between 50 and 200 words. Your response will help us find creative, diverse attendees!',
+			// 	title: 'What do you find beautiful?',
+			// },
+			// {
+			// 	Component: Boolean,
+			// 	fieldName: 'volunteer',
+			// 	title: 'Would you like to be contacted about volunteering at the event?',
+			// },
 			{
 				Component: Boolean,
 				fieldName: 'lightningTalk',
@@ -167,6 +167,14 @@ export const questions = [
 			},
 			{
 				Component: CheckboxSansTitleCase,
+				fieldName: 'summerHackathonWaiver',
+				options: [
+					'I have read and agree to the <a target="_blank" rel="noopener noreferrer" href="https://storage.googleapis.com/vh-summer-assets/waiver.pdf"> VandyHacks: Summer Edition Waiver</a>',
+				],
+				title: 'Summer Hackathon Waiver',
+			},
+			{
+				Component: CheckboxSansTitleCase,
 				fieldName: 'infoSharingConsent',
 				options: [
 					'I authorize you to share my application/registration information for event administration, ranking, MLH administration, pre- and post-event informational emails, and occasional emails about hackathons in-line with the MLH Privacy Policy. I further agree to the terms of both the <a target="_blank" rel="noopener noreferrer" href="https://github.com/MLH/mlh-policies/tree/master/prize-terms-and-conditions">MLH Contest Terms and Conditions</a> and the <a target="_blank" rel="noopener noreferrer" href="https://mlh.io/privacy">MLH Privacy Policy</a>.',
@@ -176,56 +184,57 @@ export const questions = [
 		],
 		title: 'Hacker Application',
 	},
-	{
-		category: 'travel',
-		fields: [
-			{
-				Component: Boolean,
-				fieldName: 'reimbursementRequired',
-				note: "Answering 'Yes' here does not guarantee any reimbursement",
-				optional: true,
-				title: 'Do you require travel reimbursement to get to VandyHacks?',
-			},
-			{
-				Component: Boolean,
-				fieldName: 'travelInfoSharingConsent',
-				note: 'Information will be shared to facilitate carpooling',
-				optional: true,
-				title: 'May we share your name and email with others coming from your school/city?',
-			},
-			{
-				Component: Slider,
-				fieldName: 'transportationMode',
-				optional: true,
-				options: ['Car', 'Bus', 'Plane', 'Blimp'],
-				title: 'How do you plan on getting to VandyHacks?',
-			},
-			{
-				Component: Boolean,
-				fieldName: 'travelAdmissionConsent',
-				note: "Please acknowledge this by clicking 'Yes'",
-				optional: true,
-				title:
-					'If you are purchasing a non-refundable ticket for long distance travel, we can offer guaranteed admission if you email info@vandyhacks.org along with a request and a receipt for your travel.',
-			},
-		],
-		title: 'Travel Reimbursement',
-	},
+	// {
+	// 	category: 'travel',
+	// 	fields: [
+	// 		{
+	// 			Component: Boolean,
+	// 			fieldName: 'reimbursementRequired',
+	// 			note: "Answering 'Yes' here does not guarantee any reimbursement",
+	// 			optional: true,
+	// 			title: 'Do you require travel reimbursement to get to VandyHacks?',
+	// 		},
+	// 		{
+	// 			Component: Boolean,
+	// 			fieldName: 'travelInfoSharingConsent',
+	// 			note: 'Information will be shared to facilitate carpooling',
+	// 			optional: true,
+	// 			title: 'May we share your name and email with others coming from your school/city?',
+	// 		},
+	// 		{
+	// 			Component: Slider,
+	// 			fieldName: 'transportationMode',
+	// 			optional: true,
+	// 			options: ['Car', 'Bus', 'Plane', 'Blimp'],
+	// 			title: 'How do you plan on getting to VandyHacks?',
+	// 		},
+	// 		{
+	// 			Component: Boolean,
+	// 			fieldName: 'travelAdmissionConsent',
+	// 			note: "Please acknowledge this by clicking 'Yes'",
+	// 			optional: true,
+	// 			title:
+	// 				'If you are purchasing a non-refundable ticket for long distance travel, we can offer guaranteed admission if you email info@vandyhacks.org along with a request and a receipt for your travel.',
+	// 		},
+	// 	],
+	// 	title: 'Travel Reimbursement',
+	// },
 ];
 
 export const requiredFields = [
 	'firstName',
 	'lastName',
-	'shirtSize',
+	// 'shirtSize',
 	'phoneNumber',
 	'dateOfBirth',
 	'school',
 	'major',
 	'graduationYear',
 	'race',
-	'essay1',
-	'volunteer',
+	// 'essay1',
+	// 'volunteer',
 	'consent',
+	'summerHackathonWaiver',
 ];
 
 export default questions;
