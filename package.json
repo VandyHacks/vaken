@@ -158,7 +158,7 @@
 		"@types/react-select": "^3.0.10",
 		"@types/react-test-renderer": "^16.9.2",
 		"@types/react-virtualized": "^9.21.7",
-		"@types/styled-components": "4.4.2",
+		"@types/styled-components": "5.1.0",
 		"@types/supertest": "^2.0.8",
 		"@types/yup": "^0.26.29",
 		"@typescript-eslint/eslint-plugin": "^2.18.0",
