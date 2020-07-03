@@ -22,7 +22,6 @@ import {
 	toEnum,
 	updateUser,
 	checkIsAuthorized,
-	replaceResumeFieldWithLink,
 	checkIsAuthorizedArray,
 } from './helpers';
 import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser, getUser } from '../nfc';
@@ -91,9 +90,7 @@ const hackerResolvers: CustomResolvers<Context>['Hacker'] = {
 	...userResolvers,
 	adult: async hacker => (await hacker).adult || null,
 	application: async (hacker, args, { models }: Context) =>
-		replaceResumeFieldWithLink(
-			models.ApplicationFields.find({ userId: (await hacker)._id }).toArray()
-		),
+		models.ApplicationFields.find({ userId: (await hacker)._id }).toArray(),
 	gender: async hacker => (await hacker).gender || null,
 	github: async hacker => (await hacker).github || null,
 	gradYear: async hacker => (await hacker).gradYear || null,
