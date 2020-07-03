@@ -10,7 +10,7 @@ import { packages, authLogos } from '../plugins';
 const routes = [
 	{
 		authLevel: [UserType.Organizer],
-		component: React.lazy(() => import('../routes/dashboard/OrganizerDash')),
+		component: HackerDash,
 		displayText: 'Dashboard',
 		path: '/dashboard',
 	},
