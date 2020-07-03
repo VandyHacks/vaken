@@ -178,26 +178,3 @@ export function checkIsAuthorizedArray<T extends UserDbInterface>(
 
 	return user;
 }
-/**
- * Replaces the resume field with a signed URL
- * @param appFields Fields to search for a resume field to replace
- */
-export async function replaceResumeFieldWithLink(
-	appFields: Promise<ApplicationFieldDbObject[]>
-): Promise<ApplicationFieldDbObject[]> {
-	return Promise.all(
-		(await appFields).map(async field => {
-			const newField = field;
-			if (field.question === 'resume') {
-				newField.answer = field.answer
-					? `<a href="${await getSignedReadUrl(
-							field.answer
-					  )}" target="_blank" rel="noopener noreferrer">Resume</a>`
-					: field.answer;
-				return newField;
-			}
-
-			return field;
-		})
-	);
-}
