@@ -62,7 +62,7 @@ const statusConfig = {
 	},
 	[ApplicationStatus.Confirmed]: {
 		actions: [],
-		boldText: `Don't forget to complete the check-in information under "Apply" tab`,
+		boldText: `Don't forget to complete the check-in information under the "Apply" tab to get free swag from MLH!`,
 		img: applicationStatusSVG,
 		status: 'Confirmed',
 		statusBG: STRINGS.APPLICATION_COMPLETE_STATUSBG,
