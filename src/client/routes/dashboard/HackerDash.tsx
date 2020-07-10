@@ -62,7 +62,7 @@ const statusConfig = {
 	},
 	[ApplicationStatus.Confirmed]: {
 		actions: [],
-		boldText: `Whoo hoo! We'll see you ${STRINGS.START_DAY}!`,
+		boldText: `Don't forget to complete the check-in information under "Apply" tab`,
 		img: applicationStatusSVG,
 		status: 'Confirmed',
 		statusBG: STRINGS.APPLICATION_COMPLETE_STATUSBG,
