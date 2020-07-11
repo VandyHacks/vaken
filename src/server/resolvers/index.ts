@@ -32,7 +32,7 @@ import { sendStatusEmail } from '../mail/aws';
 import logger from '../logger';
 
 // added here b/c webpack JSON compilation with 'use-strict' is broken (7/10/19 at 23:59)
-const DEADLINE_TS = 1594486800000;
+const DEADLINE_TS = 1595264400000;
 
 // TODO: Cannot import frontend files so this is ugly workaround. Fix this.
 const requiredFields = [
