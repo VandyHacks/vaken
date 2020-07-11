@@ -22,6 +22,7 @@ export const questions = [
 				Component: TextInput,
 				fieldName: 'address2',
 				title: 'Address Line 2',
+				optional: true,
 				placeholder: '2414 Highland Avenue',
 			},
 			{
