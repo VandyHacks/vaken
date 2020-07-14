@@ -6,6 +6,6 @@ import { NotificationPlugin } from './plugins/notifications/server';
 
 export default [
 	{
-		package: [new (NFCPlugin), new (NotificationPlugin)]
+		package: [new (NFCPlugin), new (NotificationPlugin),]
 	},
 ];
