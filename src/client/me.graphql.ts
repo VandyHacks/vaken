@@ -8,6 +8,11 @@ export default gql`
 			lastName
 			userType
 			email
+			address1
+			address2
+			city
+			state
+			zip
 		}
 	}
 `;
