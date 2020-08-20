@@ -5,6 +5,7 @@ import { HackerDash } from '../routes/dashboard/HackerDash';
 // import { Profile } from '../routes/profile/Profile';
 import { Help } from '../routes/help/Help';
 import { UserType } from '../generated/graphql';
+import { packages, authLogos } from '../plugins';
 
 const routes = [
 	{
@@ -80,5 +81,14 @@ const routes = [
 		path: '/nfc',
 	},
 ];
+
+packages.forEach(plugin => {
+	routes.push({
+		authLevel: plugin.routeInfo.authLevel,
+		component: React.lazy(async () => plugin.component()),
+		displayText: plugin.routeInfo.displayText,
+		path: plugin.routeInfo.path,
+	});
+});
 
 export default routes;

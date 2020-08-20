@@ -2,15 +2,15 @@
 
 exports[`Test LeftImgTextInput LeftImgTextInput renders correctly 1`] = `
 <div
-  className="sc-fzXfLS sc-fzXfLT fxPCWh"
+  className="sc-fznyAO sc-fznKkj eKZtUq"
 >
   <img
     alt="b"
-    className="sc-fzXfLP jXeLxW"
+    className="sc-fzoLsD egDCJJ"
     src="a"
   />
   <input
-    className="sc-fzXfLU dnsIEw"
+    className="sc-fznZeY cnVxGk"
     maxLength={100}
     onChange={[Function]}
     value="c"

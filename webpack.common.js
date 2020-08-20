@@ -51,7 +51,7 @@ module.exports = {
 	// },
 	output: {
 		filename: '[name].[hash].bundle.js',
-		path: path.resolve(__dirname, 'dist/server/app'),
+		path: path.resolve(__dirname, 'dist/src/server/app'),
 		publicPath: ASSET_PATH,
 		crossOriginLoading: 'anonymous',
 	},
