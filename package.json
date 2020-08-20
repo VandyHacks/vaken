@@ -100,7 +100,7 @@
 		"graphql": "^14.6.0",
 		"graphql-tag": "^2.10.1",
 		"helmet": "^3.21.2",
-		"immer": "^5.3.2",
+		"immer": "^7.0.7",
 		"jest-junit": "^10.0.0",
 		"jsdom": "^16.2.1",
 		"mongodb": "^3.5.2",
