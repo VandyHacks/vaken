@@ -194,11 +194,11 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																				<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;border-spacing:0px;">
 																					<tbody>
 																						<tr>
-																							<td style="width:520px;"> <a href="https://vandyhacks.org" target="_blank">
+																							<td style="width:520px;"> <center> <a href="https://vandyhacks.org" target="_blank">
 									
-							<img alt="" height="auto" src="https://vh6assets.vandyhacks.org/bigLogo.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;" width="520">
+							<img alt="" height="auto" src="https://storage.googleapis.com/vh-summer-assets/VH_dark.svg" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:30%;" width="520">
 						
-								</a> </td>
+								</a> </center></td>
 																						</tr>
 																					</tbody>
 																				</table>
@@ -262,32 +262,44 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> We're so excited that you'll be joining us for VandyHacks VI: Art Edition! </div>
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> 
+																					We're so excited that you'll be joining us for <b>VandyHacks: Summer Edition</b>! 
+																				</div>
 																			</td>
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> This email is just to confirm you've RSVPed to our event. We'll be in touch soon with more information, but for now you can plan on check-in starting at 5:30pm Nov. 1st and the weekend wrapping up at 3:00pm Sunday, Nov 3rd. </div>
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> 
+																					This email is just to confirm that you've RSVPed to our event. We'll be in touch again soon with more information on our opening ceremony, but as a reminder, festivities will start at 8:00 PM CST Friday, July 10th, and wrap up by 10:45 AM CST Sunday, July 12th.
+																				</div>
 																			</td>
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> If you are interested in reserving a spot on one of our buses, please rsvp for the buses by following the instructions in our <a class="text-link" href="https://storage.vandyhacks.org/bus_routes.pdf" style="color: #5e6ebf;">bus guide</a>. </div>
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> 
+																					In the meantime, be sure to like our page on <a href="https://www.facebook.com/vandyhacks/">Facebook</a> and follow us on <a href="https://www.instagram.com/vandyhacks/?hl=en">Instagram</a> for some sneak peeks at the organizers in action! 
+																				</div>
 																			</td>
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> In the meantime, we'll be putting all the finishing touches on the weekend, so be sure to like our page on <a class="text-link" href="https://facebook.com/VandyHacks" style="color: #5e6ebf;">Facebook</a>, follow us on <a class="text-link" href="https://instagram.com/VandyHacks" style="color: #5e6ebf;">Instagram</a>, and keep up to date with our <a class="text-link" href="https://twitter.com/@VandyHacks" style="color: #5e6ebf;">Twitter</a> for some sneak peeks at the organizers in action! </div>
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;">
+																					<b>NOTE:</b> If you are no longer able to attend, please indicate this in the <a href="https://apply.vandyhacks.org">portal</a> ASAP so that we can get an accurate attendance count. 
+																				</div>
 																			</td>
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> Happy Hacking! </div>
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> 
+																					See you soon! 
+																				</div>
 																			</td>
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> The VandyHacks Team </div>
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> 
+																					The VandyHacks Team 
+																				</div>
 																			</td>
 																		</tr>
 																	</table>
@@ -444,14 +456,14 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																										<tr>
 																											<td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
 																												<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:11px;font-weight:400;line-height:16px;text-align:center;color:#445566;"> You are receiving this application update because you applied at <a href="https://apply.vandyhacks.org" class="text-link" style="color: #5e6ebf;">apply.vandyhacks.org</a>. If you would like to opt-out of
-																													any future emails pertaining to VandyHacks VI applications, please click <a href="https://apply.vandyhacks.org/api/unsubscribe?id=${
+																													any future emails pertaining to VandyHacks applications, please click <a href="https://apply.vandyhacks.org/api/unsubscribe?id=${
 																														user._id
 																													}" class="text-link" style="color: #5e6ebf;">here</a> </div>
 																											</td>
 																										</tr>
 																										<tr>
 																											<td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																												<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:11px;font-weight:400;line-height:16px;text-align:center;color:#445566;"> &copy; 2019 VandyHacks, All Rights Reserved. </div>
+																												<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:11px;font-weight:400;line-height:16px;text-align:center;color:#445566;"> &copy; 2020 VandyHacks, All Rights Reserved. </div>
 																											</td>
 																										</tr>
 																									</table>
@@ -584,11 +596,11 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 			Text: {
 				Charset: 'UTF-8',
 				Data: `Hey ${escape(user.preferredName || user.firstName)},
-				We're so excited that you'll be joining us for VandyHacks VI: Art Edition!
-				This email is just to confirm you've RSVPed to our event. We'll be in touch soon with more information, but for now you can plan on check-in starting at 5:30pm Nov. 1st and the weekend wrapping up at 3:00pm Sunday, Nov 3rd.
-				If you are interested in reserving a spot on one of our buses, please rsvp for the buses by following the instructions in our bus guide.
-				In the meantime, we'll be putting all the finishing touches on the weekend, so be sure to like our page on Facebook, follow us on Instagram, and keep up to date with our Twitter for some sneak peeks at the organizers in action!
-				Happy Hacking!
+				We're so excited that you'll be joining us for VandyHacks: Summer Edition! 
+				This email is just to confirm that you've RSVPed to our event. We'll be in touch again soon with more information on our opening ceremony, but as a reminder, festivities will start at 8:00 PM CST Friday, July 10th, and wrap up by 10:45 AM CST Sunday, July 12th.
+				In the meantime, be sure to like our page on Facebook and follow us on Instagram for some sneak peeks at the organizers in action! 
+				NOTE: If you are no longer able to attend, please indicate this in the portal ASAP so that we can get an accurate attendance count. 
+				See you soon!
 				The VandyHacks Team`,
 			},
 		},

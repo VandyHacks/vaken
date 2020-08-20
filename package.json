@@ -52,6 +52,7 @@
 		"prod": "npm run build && node ./dist/src/server/index.js",
 		"format": "prettier --config .prettierrc.json --write \"./**/*.ts*(x)\"",
 		"check:test": "jest --onlyChanged",
+		"check:test:snapshot": "jest --updateSnapshot",
 		"check:test:ci": "jest --ci --runInBand",
 		"check:types": "tsc -p tsconfig.json --noEmit",
 		"check:lint": "eslint --cache --report-unused-disable-directives --ext .js,.jsx,.ts,.tsx src/",
