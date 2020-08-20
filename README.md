@@ -51,7 +51,7 @@ A next-gen hackathon registration system.
 ### Login Page
 ![Login Page](./pics/vaken1.png)
 
-    - supports Github, Google, and Microsoft SSO logins
+    - supports GitHub, Google, and Microsoft SSO logins
 
 ### Detailed Hacker Management for Organizers
 ![Organizer Page](./pics/vaken-org.png)

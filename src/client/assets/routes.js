@@ -64,7 +64,7 @@ const routes = [
 	},
 	{
 		authLevel: [UserType.Organizer],
-		component: React.lazy(() => import('../routes/manageSponsor/CreateSponsor')),
+		component: React.lazy(() => import('../routes/manage/CreateSponsor')),
 		displayText: 'Manage Sponsors',
 		path: '/manage/sponsors',
 	},
