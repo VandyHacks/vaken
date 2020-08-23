@@ -1,4 +1,5 @@
 import { ObjectID } from 'mongodb';
+import { UserInputError } from 'apollo-server-express';
 import {
 	HackerDbObject,
 	SponsorDbObject,
@@ -18,21 +19,27 @@ import {
 import { Resolvers } from '../../src/server/generated/graphql';
 import Context from '../../src/server/context';
 import { sendNotificationEmail } from './email/aws';
+import { sendMessageToRole } from './helpers/discord';
 
 export class NotificationPlugin {
 	get schema() {
 		return schema;
 	}
 
-	get resolvers(): Pick<Resolvers<Context>, 'Mutation' | 'Query' | '_Plugin__Notification'> {
+	get resolvers(): Pick<Resolvers<Context>, '_Plugin__Notification' | 'Mutation' | 'Query'> {
 		return {
 			_Plugin__Notification: {
-				deliveryTime: async notification => (await notification).deliveryTime.getTime(),
+				deliveryTime: async notification => {
+					const time = (await notification).deliveryTime;
+					if (time) return time.getTime();
+					return null;
+				},
 				message: async notification => (await notification).message,
 				id: async notification => (await notification)._id.toHexString(),
 				platforms: async notification => (await notification).platforms,
 				userTypes: async notification => (await notification).userTypes,
 				subject: async notification => (await notification).subject,
+				discordRole: async notification => (await notification).discordRole,
 			},
 			Query: {
 				_Plugin__notification: async (root, { id }, ctx) => {
@@ -52,72 +59,79 @@ export class NotificationPlugin {
 			Mutation: {
 				_Plugin__createNotification: async (root, { input }, ctx) => {
 					// checkIsAuthorizedArray([UserType.Organizer], ctx.user);
-
+					let time = new Date();
+					if (input.deliveryTime) {
+						time = new Date(input.deliveryTime);
+					}
 					const notification: _Plugin__NotificationDbObject = {
 						_id: new ObjectID(),
 						message: input.message,
 						userTypes: input.userTypes,
 						platforms: input.platforms,
-						deliveryTime: new Date(input.deliveryTime),
+						deliveryTime: time,
 						subject: input.subject,
+						discordRole: input.discordRole,
 					};
 
 					ctx.db
 						.collection<_Plugin__NotificationDbObject>('_Plugin__notifications')
 						.insertOne(notification);
 
-					let users: any = [];
-					if (input.userTypes.includes(UserType.Hacker)) {
-						users = users.concat(
-							await ctx.db
-								.collection<HackerDbObject>('Hackers')
-								.find()
-								.toArray()
-						);
-					}
-
-					if (notification.userTypes.includes(UserType.Sponsor)) {
-						users.concat(
-							await ctx.db
-								.collection<SponsorDbObject>('sponsors')
-								.find()
-								.toArray()
-						);
-					}
-
-					if (notification.userTypes.includes(UserType.Organizer)) {
-						users = users.concat(
-							await ctx.db
-								.collection<OrganizerDbObject>('organizers')
-								.find()
-								.toArray()
-						);
-					}
-
-					if (notification.userTypes.includes(UserType.Mentor)) {
-						users = users.concat(
-							await ctx.db
-								.collection<MentorDbObject>('mentors')
-								.find()
-								.toArray()
-						);
-					}
-
 					if (notification.platforms.includes(_Plugin__Platform.Email)) {
-						users.forEach((user: any) => {
-							sendNotificationEmail(
-								user as UserDbInterface,
-								notification.message,
-								notification.subject || ''
-							);
-						});
+						if (!notification.userTypes) {
+							throw new UserInputError('Please specify userTypes');
+						} else if (!notification.subject) {
+							throw new UserInputError('Please specify email subject');
+						} else {
+							let users: UserDbInterface[] = [];
+							if (notification.userTypes.includes(UserType.Hacker)) {
+								users = users.concat(
+									await ctx.db
+										.collection<HackerDbObject>('Hackers')
+										.find()
+										.toArray()
+								);
+							}
 
-						// Promise.all(
-						// 	users.map(user => sendNotificationEmail(user.email, input.message, 'Test Subject'))
-						// ).catch(err => {
-						// 	console.log(err);
-						// 	throw err;
-						// });
+							if (notification.userTypes.includes(UserType.Sponsor)) {
+								users.concat(
+									await ctx.db
+										.collection<SponsorDbObject>('sponsors')
+										.find()
+										.toArray()
+								);
+							}
+
+							if (notification.userTypes.includes(UserType.Organizer)) {
+								users = users.concat(
+									await ctx.db
+										.collection<OrganizerDbObject>('organizers')
+										.find()
+										.toArray()
+								);
+							}
+
+							if (notification.userTypes.includes(UserType.Mentor)) {
+								users = users.concat(
+									await ctx.db
+										.collection<MentorDbObject>('mentors')
+										.find()
+										.toArray()
+								);
+							}
+
+							users.forEach((user: UserDbInterface) => {
+								sendNotificationEmail(user, notification.message, notification.subject || '');
+							});
+						}
+					}
+
+					if (notification.platforms.includes(_Plugin__Platform.Discord)) {
+						if (!notification.discordRole) {
+							throw new UserInputError('Please specify the discordRole parameter');
+						} else {
+							await sendMessageToRole(notification.discordRole, notification.message);
+						}
 					}
 
 					return notification;

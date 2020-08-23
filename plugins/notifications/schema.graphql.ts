@@ -4,10 +4,11 @@ export default gql`
 	type _Plugin__Notification @entity {
 		id: ID! @id @column
 		message: String! @column
-		userTypes: [UserType!]! @column
+		userTypes: [UserType!] @column
 		platforms: [_Plugin__Platform!]! @column
-		deliveryTime: Float! @column(overrideType: "Date")
+		deliveryTime: Float @column(overrideType: "Date")
 		subject: String @column
+		discordRole: String @column
 	}
 
 	enum _Plugin__Platform {
@@ -24,10 +25,11 @@ export default gql`
 
 	input _Plugin__NotificationInput {
 		message: String!
-		userTypes: [UserType!]!
+		userTypes: [UserType!]
 		platforms: [_Plugin__Platform!]!
-		deliveryTime: Float!
+		deliveryTime: Float
 		subject: String
+		discordRole: String
 	}
 
 	extend type Mutation {
