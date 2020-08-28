@@ -31,9 +31,11 @@ import { addOrUpdateEvent, assignEventToCompany, removeAbsentEvents } from '../e
 import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
 import { sendStatusEmail } from '../mail/aws';
 import logger from '../logger';
+import { DEADLINE_DATE_FORMAT } from '../../client/assets/strings.json';
 
 // added here b/c webpack JSON compilation with 'use-strict' is broken (7/10/19 at 23:59)
-const DEADLINE_TS = 1594443599000;
+const deadline = new Date(DEADLINE_DATE_FORMAT);
+const DEADLINE_TS = deadline.getTime();
 
 // TODO: Cannot import frontend files so this is ugly workaround. Fix this.
 const requiredFields = [
