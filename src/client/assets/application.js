@@ -10,43 +10,6 @@ import { Boolean } from '../components/Input/Boolean';
 
 export const questions = [
 	{
-		category: 'checkin',
-		fields: [
-			{
-				Component: TextInput,
-				fieldName: 'address1',
-				title: 'Address Line 1',
-				placeholder: `The Wond'ry`,
-			},
-			{
-				Component: TextInput,
-				fieldName: 'address2',
-				title: 'Address Line 2',
-				optional: true,
-				placeholder: '2414 Highland Avenue',
-			},
-			{
-				Component: TextInput,
-				fieldName: 'city',
-				title: 'City',
-				placeholder: 'Nashville',
-			},
-			{
-				Component: TextInput,
-				fieldName: 'state',
-				placeholder: 'Tennessee',
-				title: 'State',
-			},
-			{
-				Component: TextInput,
-				placeholder: '37235',
-				fieldName: 'zip',
-				title: 'Zip',
-			},
-		],
-		title: 'Check-in',
-	},
-	{
 		category: 'demographicInfo',
 		fields: [
 			{
@@ -220,6 +183,44 @@ export const questions = [
 			},
 		],
 		title: 'Hacker Application',
+	},
+	{
+		category: 'Shipping',
+		fields: [
+			{
+				Component: TextInput,
+				fieldName: 'address1',
+				title: 'Address Line 1',
+				note: 'We use your address to ship swag from MLH. This is optional.',
+				placeholder: `The Wond'ry`,
+			},
+			{
+				Component: TextInput,
+				fieldName: 'address2',
+				title: 'Address Line 2',
+				optional: true,
+				placeholder: '2414 Highland Avenue',
+			},
+			{
+				Component: TextInput,
+				fieldName: 'city',
+				title: 'City',
+				placeholder: 'Nashville',
+			},
+			{
+				Component: TextInput,
+				fieldName: 'state',
+				placeholder: 'Tennessee',
+				title: 'State',
+			},
+			{
+				Component: TextInput,
+				placeholder: '37235',
+				fieldName: 'zip',
+				title: 'Zip',
+			},
+		],
+		title: 'Shipping',
 	},
 	// {
 	// 	category: 'travel',
