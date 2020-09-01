@@ -3,6 +3,7 @@ import { UserDbInterface, ApplicationStatus } from '../generated/graphql';
 import submitted from './templates/submitted';
 import accepted from './templates/accepted';
 import confirmed from './templates/confirmed';
+import rejected from './templates/rejected';
 import logger from '../logger';
 
 const { AWS_REGION } = process.env;
@@ -30,6 +31,9 @@ export function sendStatusEmail(user: UserDbInterface, status: ApplicationStatus
 			break;
 		case ApplicationStatus.Confirmed:
 			email = confirmed(user);
+			break;
+		case ApplicationStatus.Rejected:
+			email = rejected(user);
 			break;
 		default:
 			throw new Error(`Unimplemented email for status "${status}" to user "${user.email}`);
