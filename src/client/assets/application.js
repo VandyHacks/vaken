@@ -182,7 +182,7 @@ export const questions = [
 				Component: CheckboxSansTitleCase,
 				fieldName: 'hackathonWaiver',
 				options: [
-					'I have read and agree to the <a target="_blank" rel="noopener noreferrer" href="https://storage.googleapis.com/vh-fall-2020-assets/VHWAIVER.docx"> VandyHacks VII Waiver</a>',
+					'I have read and agree to the <a target="_blank" rel="noopener noreferrer" href="https://storage.googleapis.com/vh-fall-2020-assets/VHWAIVER.pdf"> VandyHacks VII Waiver</a>',
 				],
 				title: 'Hackathon Waiver',
 			},
