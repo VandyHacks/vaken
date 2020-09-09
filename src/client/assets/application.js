@@ -98,7 +98,7 @@ export const questions = [
 				Component: Slider,
 				default: '2019',
 				fieldName: 'gradYear',
-				options: ['2019', '2020', '2021', '2022', '2023', '2024', 'Other'],
+				options: ['2021', '2022', '2023', '2024', 'Other'],
 				other: true,
 				title: 'Graduation Year',
 				type: 'number',
@@ -126,6 +126,19 @@ export const questions = [
 	{
 		category: 'application',
 		fields: [
+			{
+				Component: Slider,
+				default: '',
+				fieldName: 'motivation',
+				options: [
+					'Get an intro to coding',
+					'Create a project',
+					'Have some fun with other people in the tech community',
+					'Internship opportunities',
+					'Other',
+				],
+				title: 'What do you hope to gain from VandyHacks?',
+			},
 			// {
 			// 	Component: TextInput,
 			// 	fieldName: 'favArtPiece',
@@ -167,11 +180,11 @@ export const questions = [
 			},
 			{
 				Component: CheckboxSansTitleCase,
-				fieldName: 'summerHackathonWaiver',
+				fieldName: 'hackathonWaiver',
 				options: [
-					'I have read and agree to the <a target="_blank" rel="noopener noreferrer" href="https://storage.googleapis.com/vh-summer-assets/waiver.pdf"> VandyHacks: Summer Edition Waiver</a>',
+					'I have read and agree to the <a target="_blank" rel="noopener noreferrer" href="https://storage.googleapis.com/vh-fall-2020-assets/VHWAIVER.pdf"> VandyHacks VII Waiver</a>',
 				],
-				title: 'Summer Hackathon Waiver',
+				title: 'Hackathon Waiver',
 			},
 			{
 				Component: CheckboxSansTitleCase,
@@ -272,7 +285,7 @@ export const requiredFields = [
 	// 'essay1',
 	// 'volunteer',
 	'consent',
-	'summerHackathonWaiver',
+	'hackathonWaiver',
 	'address1',
 	'city',
 	'state',
