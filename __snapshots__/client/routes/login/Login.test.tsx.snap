@@ -74,7 +74,7 @@ exports[`Login renders properly 1`] = `
       </button>
     </a>
     <a
-      href="https://summer.vandyhacks.org"
+      href="https://vandyhacks.org"
       rel="noopener noreferrer"
       style={
         Object {
