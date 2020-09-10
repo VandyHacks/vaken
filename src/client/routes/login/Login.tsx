@@ -16,7 +16,7 @@ const LoginPage: FunctionComponent = (): JSX.Element => (
 				</Title>
 				<OAuthLogin />
 				<a
-					href="https://summer.vandyhacks.org"
+					href="https://vandyhacks.org"
 					rel="noopener noreferrer"
 					target="_blank"
 					style={{ textDecoration: 'none' }}>
