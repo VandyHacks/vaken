@@ -11,11 +11,7 @@ import {
 	UserDbInterface,
 } from '../../src/client/generated/graphql';
 import schema from './schema.graphql';
-import {
-	checkIsAuthorized,
-	checkIsAuthorizedArray,
-	queryById,
-} from '../../src/server/resolvers/helpers';
+import { checkIsAuthorizedArray, queryById } from '../../src/server/resolvers/helpers';
 import { Resolvers } from '../../src/server/generated/graphql';
 import Context from '../../src/server/context';
 import { sendNotificationEmail } from './email/aws';
@@ -43,13 +39,14 @@ export class NotificationPlugin {
 			},
 			Query: {
 				_Plugin__notification: async (root, { id }, ctx) => {
+					checkIsAuthorizedArray([UserType.Organizer], ctx.user);
 					return queryById(
 						id,
 						ctx.db.collection<_Plugin__NotificationDbObject>('_Plugin__notifications')
 					);
 				},
 				_Plugin__notifications: async (root, args, ctx) => {
-					// checkIsAuthorizedArray([UserType.Organizer], ctx.user);
+					checkIsAuthorizedArray([UserType.Organizer], ctx.user);
 					return ctx.db
 						.collection<_Plugin__NotificationDbObject>('_Plugin__notifications')
 						.find()
@@ -58,7 +55,7 @@ export class NotificationPlugin {
 			},
 			Mutation: {
 				_Plugin__createNotification: async (root, { input }, ctx) => {
-					// checkIsAuthorizedArray([UserType.Organizer], ctx.user);
+					checkIsAuthorizedArray([UserType.Organizer], ctx.user);
 					let time = new Date();
 					if (input.deliveryTime) {
 						time = new Date(input.deliveryTime);
@@ -128,7 +125,7 @@ export class NotificationPlugin {
 
 					if (notification.platforms.includes(_Plugin__Platform.Discord)) {
 						if (!notification.discordRole) {
-							throw new UserInputError('Please specify the discordRole parameter');
+							throw new UserInputError('Please specify discordRole');
 						} else {
 							await sendMessageToRole(notification.discordRole, notification.message);
 						}

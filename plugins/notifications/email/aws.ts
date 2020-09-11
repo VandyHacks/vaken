@@ -1,5 +1,5 @@
 import AWS from 'aws-sdk';
-import { UserDbInterface, ApplicationStatus } from '../../../src/client/generated/graphql';
+import { UserDbInterface } from '../../../src/client/generated/graphql';
 import notify from './email-notification';
 import logger from '../../../src/server/logger';
 
@@ -22,9 +22,7 @@ export function sendNotificationEmail(
 		logger.info(`Skipping email to unsubscribed user`, user);
 		return;
 	}
-	// logger.info(`sending email to ${user.email}`);
 	const email = notify(user, message, subject);
-	console.log(`sent email to ${user.email}`);
 
 	ses
 		.sendEmail(email)

@@ -1,30 +1,29 @@
 import Discord from 'discord.js';
 
+const { DISCORD_TOKEN } = process.env;
+
 const client = new Discord.Client();
 
 client.on('ready', () => {
 	if (client.user) console.log(`Logged in as ${client.user.tag}!`);
 });
 
-// client.on('message', async (msg: any) => {
-// }
-
-export async function sendMessageToRole(roleName: string, message: string): Promise<void> {
-	console.log('HERE');
+export async function sendMessageToRole(roleNames: string, message: string): Promise<void> {
 	const guild = client.guilds.cache.entries().next().value[1];
 	const members = await guild.members.fetch();
 	const roles = await guild.roles.fetch();
-	let roleId = '';
+	const roleIds = new Set();
+	const roleNamesArr = roleNames.split(',');
 
 	return new Promise(resolve => {
-		roles.cache.forEach((role: any) => {
-			if (role.name === roleName) {
-				roleId = role.id;
+		roles.cache.forEach((role: Discord.Role) => {
+			if (roleNamesArr.includes(role.name)) {
+				roleIds.add(role.id);
 			}
 		});
 
-		members.forEach((member: any) => {
-			if (member._roles.includes(roleId)) {
+		members.forEach((member: Discord.GuildMember) => {
+			if (member.roles.cache.keyArray().filter(r => roleIds.has(r)).length > 0) {
 				member.user.send(message);
 			}
 		});
@@ -32,4 +31,4 @@ export async function sendMessageToRole(roleName: string, message: string): Prom
 	});
 }
 
-client.login('NDczNDkzMDI1NTQ1Mzg4MDQy.XxeiNg.7KuxQp_Dlm0pcACVyP_fUPKu6-Q');
+client.login(DISCORD_TOKEN);
