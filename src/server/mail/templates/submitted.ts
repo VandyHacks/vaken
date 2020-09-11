@@ -599,7 +599,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 				We will be reviewing your submission soon, so be on the lookout for another email regarding your status.
 				Until then, stay hyped about VandyHacks! Like our page on Facebook and follow us on Instagram.
 				Cheers,
-				The VandyHacksTeam`,
+				The VandyHacks Team`,
 			},
 		},
 		Subject: {
