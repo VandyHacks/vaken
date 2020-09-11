@@ -77,7 +77,7 @@ All contributions are welcome. Please read [CONTRIBUTING.md](./CONTRIBUTING.md) 
 ## Customizing for your event
 - constants: [./src/common/constants.json](./src/common/constants.json)
 - application questions: [./src/client/assets/application.js](./src/client/assets/application.js)
-- strings: [..src/client/assets/strings.json](.src/client/assets/strings.json)
+- strings: [../src/client/assets/strings.json](./src/client/assets/strings.json)
 - email templates: [./src/server/mail/templates](./src/server/mail/templates)
 
 ## Questions?
