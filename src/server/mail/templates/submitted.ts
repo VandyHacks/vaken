@@ -196,7 +196,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																						<tr>
 																							<td style="width:520px;"> <center><a href="https://vandyhacks.org" target="_blank">
 									
-							<img alt="" height="auto" src="https://storage.googleapis.com/vh-summer-assets/VH_dark.svg" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:30%;" width="520">
+							<img alt="" height="auto" src="https://storage.googleapis.com/vh-fall-2020-assets/VH%20Pixel%20Logo.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:30%;" width="520">
 						
 								</a> </center></td>
 																						</tr>
@@ -268,7 +268,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
 																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> 
-																					Thanks for taking the time to complete your application! We’re so excited that you’re interested in being a part of <b>VandyHacks: Summer Edition</b>.	
+																					Thanks for taking the time to complete your application! We’re so excited that you’re interested in being a part of <b>VandyHacks VII: Retro Edition</b>.	
 																				</div>
 																			</td>
 																		</tr>
@@ -595,11 +595,11 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 				Charset: 'UTF-8',
 				Data: `Thank you for applying!
 				Hi ${escape(user.preferredName || user.firstName)},
-				Thanks for taking the time to complete your application! We’re so excited that you’re interested in being a part of VandyHacks: Summer Edition.
+				Thanks for taking the time to complete your application! We’re so excited that you’re interested in being a part of VandyHacks VII: Retro Edition.
 				We will be reviewing your submission soon, so be on the lookout for another email regarding your status.
 				Until then, stay hyped about VandyHacks! Like our page on Facebook and follow us on Instagram.
 				Cheers,
-				The VandyHacks Team`,
+				The VandyHacksTeam`,
 			},
 		},
 		Subject: {
