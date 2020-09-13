@@ -32,10 +32,14 @@ export class NotificationPlugin {
 				},
 				message: async notification => (await notification).message,
 				id: async notification => (await notification)._id.toHexString(),
-				platforms: async notification => (await notification).platforms,
-				userTypes: async notification => (await notification).userTypes,
-				subject: async notification => (await notification).subject,
-				discordRole: async notification => (await notification).discordRole,
+				platforms: async notification => (await notification).platforms as _Plugin__Platform[],
+				userTypes: async notification => {
+					const { userTypes } = await notification;
+					if (userTypes) return userTypes as UserType[];
+					return null;
+				},
+				subject: async notification => (await notification).subject || null,
+				discordRole: async notification => (await notification).discordRole || null,
 			},
 			Query: {
 				_Plugin__notification: async (root, { id }, ctx) => {

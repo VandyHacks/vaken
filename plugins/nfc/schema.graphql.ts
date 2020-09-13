@@ -16,7 +16,7 @@ export default gql`
 	}
 
 	type _Plugin__EventCheckIn @entity(embedded: true) {
-		_id: ID! @id @column
+		id: ID! @id @column
 		user: String! @column
 		timestamp: Int! @column(overrideType: "Date")
 	}
