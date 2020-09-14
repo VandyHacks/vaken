@@ -10,10 +10,14 @@ import { resolvers } from './resolvers';
 import DB from './models';
 import Context from './context';
 import logger from './logger';
-import { strategies, registerAuthRoutes } from './auth';
+import { StrategyNames, registerAuthRoutes } from './auth';
 import { UnsubscribeHandler } from './mail/handlers';
 import { UserDbInterface } from './generated/graphql';
 import { pullCalendar } from './events';
+
+// import vakenConfig from '../../vaken.config';
+
+import { serverPlugins, authPlugins } from './plugins';
 
 const { SESSION_SECRET, PORT, CALENDARID, NODE_ENV } = process.env;
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
@@ -23,13 +27,21 @@ logger.info(`Node env: ${NODE_ENV}`);
 
 const app = express();
 
+const pluginResolvers = serverPlugins.map(serverPlugin => {
+	return serverPlugin.resolvers as {};
+});
+
+const pluginTypeDefs = serverPlugins.map(serverPlugin => {
+	return serverPlugin.schema as {};
+});
+
 export const schema = makeExecutableSchema({
 	resolverValidationOptions: {
 		requireResolversForAllFields: true,
 		requireResolversForResolveType: false,
 	},
-	resolvers: resolvers as {},
-	typeDefs: [DIRECTIVES, gqlSchema],
+	resolvers: [resolvers as {}, ...pluginResolvers],
+	typeDefs: [DIRECTIVES, gqlSchema, ...pluginTypeDefs],
 });
 
 (async () => {
@@ -45,32 +57,71 @@ export const schema = makeExecutableSchema({
 			store: new (MongoStore(session))(({
 				clientPromise: dbClient.client,
 			} as unknown) as MongoUrlOptions),
-			cookie: {
-				/*
-					can't use secure cookies b/c only HTTP connection between dyno and Heroku servers, 
-					but don't need it as long as connection as Heroku servers and client are HTTPS
-				*/
-				// secure: IS_PROD,
-				httpOnly: true, // protects against XSS attacks
-				signed: true,
-				sameSite: true,
-			},
+			// resave: false,
+			saveUninitialized: true,
+			cookie: { maxAge: 365 * 24 * 60 * 60 * 1000 },
+			// cookie: {
+			// 	/*
+			// 		can't use secure cookies b/c only HTTP connection between dyno and Heroku servers,
+			// 		but don't need it as long as connection as Heroku servers and client are HTTPS
+			// 	*/
+			// 	// secure: IS_PROD,
+			// 	// httpOnly: true, // protects against XSS attacks
+			// 	signed: true,
+			// 	sameSite: true,
+			// },
 		})
 	);
 	app.use(passport.initialize());
 	app.use(passport.session());
 
-	passport.use('github', strategies.github(models));
-	passport.use('google', strategies.google(models));
-	passport.use('microsoft', strategies.microsoft(models));
+	// passport.use('github', strategies.github(models));
+	// passport.use('google', strategies.google(models));
+	// passport.use('microsoft', strategies.microsoft(models));
 
-	registerAuthRoutes(app);
+	// array to hold all oAuth strategies to be used with registering routes and working with passport
+	const oAuthStrategies: StrategyNames[] = [];
+
+	// iterate through config, pulling out oauth packages and generating their passport configuration
+	authPlugins.forEach(config => {
+		passport.use(config.name, config.strategy(models));
+		// Add this strategy to the oAuthStrategies array
+		oAuthStrategies.push({
+			name: config.name,
+			displayName: config.displayName,
+			scopes: config.scopes,
+		});
+		// console.error(config); // sanity check for auth plugin
+	});
+
+	// vakenConfig
+	// 	.filter(({ scopes }) => scopes.includes('oauth'))
+	// 	// could use map but map making other changes is less idomatic.
+	// 	.forEach(config => {
+	// 		passport.use(config.name, config.strategy(models));
+	// 		oAuthStrategies.push({
+	// 			name: config.name,
+	// 			svgPath: config.logo,
+	// 			displayName: config.displayName,
+	// 		});
+	// 		console.error(config);
+	// 	});
+
+	registerAuthRoutes(app, oAuthStrategies);
 
 	app.use((req, res, next) =>
-		passport.authenticate(['session', 'github', 'google', 'microsoft'], (err, user) => {
-			if (err) return void next();
-			return void req.login(user, next);
-		})(req, res, next)
+		passport.authenticate(
+			[
+				'session',
+				...oAuthStrategies.map(config => {
+					return config.name;
+				}),
+			],
+			(err, user) => {
+				if (err) return void next();
+				return void req.login(user, next);
+			}
+		)(req, res, next)
 	);
 
 	// Email unsubscribe link
@@ -82,8 +133,11 @@ export const schema = makeExecutableSchema({
 		res.send(calendar);
 	});
 
+	const db = (await dbClient.client).db('vaken');
+
 	const server = new ApolloServer({
 		context: ({ req }): Context => ({
+			db,
 			models,
 			user: req.user as UserDbInterface | undefined,
 		}),
@@ -102,10 +156,10 @@ export const schema = makeExecutableSchema({
 	if (NODE_ENV !== 'development') {
 		logger.info('Setting routing to prod assets.');
 		// Serve front-end asset files in prod.
-		app.use(express.static('dist/server/app'));
+		app.use(express.static('dist/src/server/app'));
 		// MUST BE LAST AS THIS WILL REROUTE ALL REMAINING TRAFFIC TO THE FRONTEND!
 		app.use((req, res) => {
-			res.sendFile('index.html', { root: 'dist/server/app' });
+			res.sendFile('index.html', { root: 'dist/src/server/app' });
 		});
 	}
 

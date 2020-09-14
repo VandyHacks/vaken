@@ -22,23 +22,23 @@ import {
 	toEnum,
 	updateUser,
 	checkIsAuthorized,
-	replaceResumeFieldWithLink,
 	checkIsAuthorizedArray,
 } from './helpers';
 import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser, getUser } from '../nfc';
+// import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser, getUser } from '../nfc';
 import { addOrUpdateEvent, assignEventToCompany, removeAbsentEvents } from '../events';
 import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
 import { sendStatusEmail } from '../mail/aws';
 import logger from '../logger';
 
-// added here b/c webpack JSON compilation with 'use-strict' is broken (10/31/19)
-const DEADLINE_TS = 1572497940000;
+// added here b/c webpack JSON compilation with 'use-strict' is broken (7/10/19 at 23:59)
+const DEADLINE_TS = 1601658000000;
 
 // TODO: Cannot import frontend files so this is ugly workaround. Fix this.
 const requiredFields = [
 	'firstName',
 	'lastName',
-	'shirtSize',
+	// 'shirtSize',
 	'gender',
 	'phoneNumber',
 	'dateOfBirth',
@@ -46,9 +46,9 @@ const requiredFields = [
 	'major',
 	'gradYear',
 	'race',
-	'favArtPiece',
-	'essay1',
-	'volunteer',
+	// 'favArtPiece',
+	// 'essay1',
+	// 'volunteer',
 	'resume',
 	'codeOfConduct',
 	'infoSharingConsent',
@@ -90,9 +90,7 @@ const hackerResolvers: CustomResolvers<Context>['Hacker'] = {
 	...userResolvers,
 	adult: async hacker => (await hacker).adult || null,
 	application: async (hacker, args, { models }: Context) =>
-		replaceResumeFieldWithLink(
-			models.ApplicationFields.find({ userId: (await hacker)._id }).toArray()
-		),
+		models.ApplicationFields.find({ userId: (await hacker)._id }).toArray(),
 	gender: async hacker => (await hacker).gender || null,
 	github: async hacker => (await hacker).github || null,
 	gradYear: async hacker => (await hacker).gradYear || null,
@@ -457,7 +455,7 @@ export const resolvers: CustomResolvers<Context> = {
 				'lastName',
 				'shirtSize',
 				'gender',
-				'dietaryRestrictions',
+				// 'dietaryRestrictions',
 				'phoneNumber',
 				'race',
 				'school',

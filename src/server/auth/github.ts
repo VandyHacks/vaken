@@ -1,32 +1,31 @@
 import { Strategy } from 'passport-github2';
-import { verifyCallback } from './helpers';
+import processOAuthCallback from './processOAuthCallback';
 import { Models } from '../models';
 
-const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_CALLBACK_URL } = process.env;
+const {
+	GITHUB_CLIENT_ID: clientID,
+	GITHUB_CLIENT_SECRET: clientSecret,
+	GITHUB_CALLBACK_URL: callbackURL,
+} = process.env;
 
-if (!GITHUB_CLIENT_ID) {
+if (!clientID) {
 	throw new Error('GITHUB_CLIENT_ID not set');
 }
-if (!GITHUB_CLIENT_SECRET) {
+if (!clientSecret) {
 	throw new Error('GITHUB_CLIENT_SECRET not set');
 }
-if (!GITHUB_CALLBACK_URL) {
+if (!callbackURL) {
 	throw new Error('GITHUB_CALLBACK_URL not set');
 }
 
 export const strategy = (models: Models): Strategy =>
 	new Strategy(
 		{
-			callbackURL: GITHUB_CALLBACK_URL,
-			clientID: GITHUB_CLIENT_ID,
-			clientSecret: GITHUB_CLIENT_SECRET,
+			callbackURL,
+			clientID,
+			clientSecret,
 			passReqToCallback: false,
 			scope: ['user:email'], // fetches non-public emails as well
 		},
-		(accessToken, refreshToken, results, profile, verified) =>
-			void verifyCallback(models, profile, verified)
+		(_, __, ___, profile, verified) => void processOAuthCallback(models, profile, verified)
 	);
-
-export default {
-	strategy,
-};

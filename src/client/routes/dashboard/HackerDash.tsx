@@ -62,7 +62,7 @@ const statusConfig = {
 	},
 	[ApplicationStatus.Confirmed]: {
 		actions: [],
-		boldText: `Whoo hoo! We'll see you ${STRINGS.START_DAY}!`,
+		boldText: `Whoo hoo! We'll see you ${STRINGS.START_DAY}! Don't forget to join the Discord at !`,
 		img: applicationStatusSVG,
 		status: 'Confirmed',
 		statusBG: STRINGS.APPLICATION_COMPLETE_STATUSBG,

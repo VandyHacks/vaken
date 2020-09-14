@@ -1,35 +1,46 @@
 import { OIDCStrategy as Strategy, IProfile } from 'passport-azure-ad';
 import { VerifyCallback } from 'passport-oauth2';
-import { verifyMicrosoftCallback } from './helpers';
+import { Profile } from 'passport';
+import processOAuthCallback from './processOAuthCallback';
 import { Models } from '../models';
 
-const { MSFT_CLIENT_ID, MSFT_CLIENT_SECRET, MSFT_REDIRECT_URL } = process.env;
+const {
+	MSFT_CLIENT_ID: clientID,
+	MSFT_CLIENT_SECRET: clientSecret,
+	MSFT_REDIRECT_URL: redirectUrl,
+} = process.env;
 
-if (!MSFT_CLIENT_ID) throw new Error('MSFT_CLIENT_ID not set');
+if (!clientID) throw new Error('MSFT_CLIENT_ID not set');
 
-if (!MSFT_CLIENT_SECRET) throw new Error('MSFT_CLIENT_SECRET not set');
+if (!clientSecret) throw new Error('MSFT_CLIENT_SECRET not set');
 
-if (!MSFT_REDIRECT_URL) throw new Error('MSFT_REDIRECT_URL not set');
+if (!redirectUrl) throw new Error('MSFT_REDIRECT_URL not set');
 
 export const strategy = (models: Models): Strategy =>
 	new Strategy(
 		{
 			allowHttpForRedirectUrl: true,
-			clientID: MSFT_CLIENT_ID,
-			clientSecret: MSFT_CLIENT_SECRET,
+			clientID,
+			clientSecret,
+			// yes, identitymetadata should be set explicitly
+			// it would only have to be changed if you wanted to restrict it to a single org's internal directory
 			identityMetadata:
 				'https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration',
 			loggingLevel: 'error',
 			passReqToCallback: false,
-			redirectUrl: MSFT_REDIRECT_URL,
+			redirectUrl,
 			responseMode: 'query',
 			responseType: 'code',
 			scope: ['email'],
 			validateIssuer: false,
 		},
-		(profile: IProfile, done: VerifyCallback) => void verifyMicrosoftCallback(models, profile, done)
+		(profile: IProfile, done: VerifyCallback) => {
+			const coercedProfile: Profile = {
+				displayName: profile.displayName || '',
+				id: profile.sub || profile._json.sub,
+				provider: 'microsoft',
+				emails: [{ value: profile._json.email }],
+			};
+			void processOAuthCallback(models, coercedProfile, done);
+		}
 	);
-
-export default {
-	strategy,
-};

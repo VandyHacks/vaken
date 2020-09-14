@@ -1,52 +1,39 @@
 import { Express } from 'express';
 import passport from 'passport';
-import { strategy as github } from './github';
-import { strategy as google } from './google';
-import { strategy as microsoft } from './microsoft';
 
-export const strategies = { github, google, microsoft };
+export interface StrategyNames {
+	displayName: string;
+	name: string;
+	scopes: string[];
+}
 
-export const registerAuthRoutes = (app: Express): void => {
+export const registerAuthRoutes = (app: Express, strategies: StrategyNames[]): void => {
 	passport.serializeUser((user, done) => void done(null, user));
 	passport.deserializeUser((user, done) => void done(null, user));
 
-	app.get(
-		'/api/auth/google',
-		passport.authenticate('google', { scope: ['openid', 'profile', 'email'] })
-	);
-	app.get(
-		'/api/auth/google/callback',
-		passport.authenticate('google', {
-			failureRedirect: '/login',
-		}),
-		(req, res) => void res.redirect('/')
-	);
-
-	app.get('/api/auth/github', passport.authenticate('github', { scope: ['user:email'] }));
-	app.get(
-		'/api/auth/github/callback',
-		passport.authenticate('github', {
-			failureRedirect: '/login',
-		}),
-		(req, res) => void res.redirect('/')
-	);
-
-	app.get('/api/auth/microsoft', passport.authenticate('microsoft'));
-	app.get(
-		'/api/auth/microsoft/callback',
-		passport.authenticate('microsoft', {
-			failureRedirect: '/login',
-		}),
-		(req, res) => void res.redirect('/')
-	);
+	strategies.forEach(({ name: authName, scopes }) => {
+		app.get(`/api/auth/${authName}`, passport.authenticate(authName, { scope: scopes }));
+		app.get(
+			`/api/auth/${authName}/callback`,
+			passport.authenticate(authName, {
+				failureRedirect: '/login',
+			}),
+			(_, res) => void res.redirect('/')
+		);
+	});
 
 	app.get('/api/logout', (req, res) => {
 		req.logout();
 		res.redirect('/');
 	});
+
+	// register master route that gives all providers
+	// using restful because it's weird for part of auth to not be restful
+	app.get('/api/auth', (_, res) => {
+		res.send(strategies);
+	});
 };
 
 export default {
 	registerAuthRoutes,
-	strategies,
 };

@@ -1,8 +1,10 @@
 import Express from 'express';
 import { registerAuthRoutes } from './index';
 
+import { authPlugins } from '../plugins';
+
 const app = Express();
-registerAuthRoutes(app);
+registerAuthRoutes(app, authPlugins);
 
 describe('Test auth/index.ts', () => {
 	describe('registerAuthRoutes', () => {
@@ -34,23 +36,6 @@ describe('Test auth/index.ts', () => {
 			expect(
 				app._router.stack.some(
 					(r: { route: Express.IRoute }) => r.route && r.route.path === '/api/auth/github/callback'
-				)
-			).toBeTruthy();
-		});
-
-		it('registers /api/auth/microsoft', async () => {
-			expect(
-				app._router.stack.some(
-					(r: { route: Express.IRoute }) => r.route && r.route.path === '/api/auth/microsoft'
-				)
-			).toBeTruthy();
-		});
-
-		it('registers /api/auth/microsoft/callback', async () => {
-			expect(
-				app._router.stack.some(
-					(r: { route: Express.IRoute }) =>
-						r.route && r.route.path === '/api/auth/microsoft/callback'
 				)
 			).toBeTruthy();
 		});

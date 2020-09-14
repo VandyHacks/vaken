@@ -2,48 +2,19 @@
 
 exports[`Login renders properly 1`] = `
 <div
-  className="sc-fzXfLU iztQUG"
+  className="sc-fznZeY gnTxhM"
 >
   <div
-    className="sc-AykKC sc-AykKD sc-AykKG sc-fzXfLV dUKzEe"
+    className="sc-AxjAm sc-AxirZ sc-AxhUy sc-fzqBZW bBqVxb"
     height="25"
     width="27rem"
   >
     <h1
-      className="sc-fzXfLW eNkWaH"
+      className="sc-fzqNJr bMSQyn"
       color="#3f3356"
     >
-      VandyHacks VI
+      VandyHacks: Summer Edition
     </h1>
-    <a
-      href="/api/auth/github"
-      style={
-        Object {
-          "textDecoration": "none",
-        }
-      }
-    >
-      <button
-        className="sc-fzXfLR imZsMN"
-      >
-        <div
-          className="sc-AykKC sc-AykKD sc-AykKE cvRlqV"
-          height="min-content"
-          width="min-content"
-        >
-          <img
-            alt="GitHub logo"
-            className="sc-fzXfLP jXeLxW"
-            src="IconMock"
-          />
-        </div>
-        <div
-          className="sc-AykKK kJbDaA"
-        >
-          Sign in with GitHub
-        </div>
-      </button>
-    </a>
     <a
       href="/api/auth/google"
       style={
@@ -53,28 +24,28 @@ exports[`Login renders properly 1`] = `
       }
     >
       <button
-        className="sc-fzXfLR imZsMN"
+        className="sc-fzplWN cAaXyv"
       >
         <div
-          className="sc-AykKC sc-AykKD sc-AykKE cvRlqV"
+          className="sc-AxjAm sc-AxirZ sc-AxiKw cJZTej"
           height="min-content"
           width="min-content"
         >
           <img
             alt="Google logo"
-            className="sc-fzXfLP jXeLxW"
+            className="sc-fzoLsD egDCJJ"
             src="IconMock"
           />
         </div>
         <div
-          className="sc-AykKK kJbDaA"
+          className="sc-AxmLO cmpEQv"
         >
           Sign in with Google
         </div>
       </button>
     </a>
     <a
-      href="/api/auth/microsoft"
+      href="/api/auth/github"
       style={
         Object {
           "textDecoration": "none",
@@ -82,23 +53,44 @@ exports[`Login renders properly 1`] = `
       }
     >
       <button
-        className="sc-fzXfLR imZsMN"
+        className="sc-fzplWN cAaXyv"
       >
         <div
-          className="sc-AykKC sc-AykKD sc-AykKE cvRlqV"
+          className="sc-AxjAm sc-AxirZ sc-AxiKw cJZTej"
           height="min-content"
           width="min-content"
         >
           <img
-            alt="Microsoft logo"
-            className="sc-fzXfLP jXeLxW"
+            alt="GitHub logo"
+            className="sc-fzoLsD egDCJJ"
             src="IconMock"
           />
         </div>
         <div
-          className="sc-AykKK kJbDaA"
+          className="sc-AxmLO cmpEQv"
         >
-          Sign in with Microsoft
+          Sign in with GitHub
+        </div>
+      </button>
+    </a>
+    <a
+      href="https://vandyhacks.org"
+      rel="noopener noreferrer"
+      style={
+        Object {
+          "textDecoration": "none",
+        }
+      }
+      target="_blank"
+    >
+      <button
+        className="sc-fzplWN sc-fzokOt jvWrPW"
+      >
+        <div
+          className="sc-AxmLO iNbFiF"
+          color="#3f3356"
+        >
+          Learn more
         </div>
       </button>
     </a>

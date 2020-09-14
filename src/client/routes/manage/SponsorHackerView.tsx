@@ -8,12 +8,12 @@ import STRINGS from '../../assets/strings.json';
 import { HackerView } from './HackerView';
 import HackerTable from './HackerTable';
 import { defaultTableState, TableContext } from '../../contexts/TableContext';
-import { useHackersQuery, useMeSponsorQuery, Sponsor } from '../../generated/graphql';
+import { useHackersQuery, useMeSponsorQuery, Sponsor, HackersQuery } from '../../generated/graphql';
 
 export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 	const { loading, error, data } = useHackersQuery();
 	const [tableState, updateTableState] = useImmer(defaultTableState);
-	const [filteredData, setFilteredData] = useState();
+	const [filteredData, setFilteredData] = useState<HackersQuery | undefined>();
 	const sponsorMeQueryResult = useMeSponsorQuery();
 	const sponsorLoading = sponsorMeQueryResult.loading;
 	const sponsorError = sponsorMeQueryResult.error;
