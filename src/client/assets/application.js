@@ -201,15 +201,6 @@ export const questions = [
 				placeholder: `The Wond'ry`,
 			},
 			{
-				Component: SliderSansTitleCase,
-				fieldName: 'shirtSize',
-				optional: true,
-				options: [ShirtSize.Xs, ShirtSize.S, ShirtSize.M, ShirtSize.L, ShirtSize.Xl, ShirtSize.Xxl],
-				other: true,
-				sortOrder: 4,
-				title: 'T-Shirt Size',
-			},
-			{
 				Component: TextInput,
 				fieldName: 'address2',
 				title: 'Address Line 2',
