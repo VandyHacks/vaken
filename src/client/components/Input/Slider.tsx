@@ -63,6 +63,20 @@ const SliderContainer = styled.div`
 	}
 `;
 
+// Special component to handle shirt sizes in a slider
+export const SliderShirtSizes: FC<Props> = props => {
+	const { options = ['default'] } = props;
+
+	// Will convert enums of *_{SIZE} to Women's ${SIZE}
+	const shirtSizeOptions = options.map(option => {
+		const splitShirts = option.split('_');
+		return splitShirts.length === 1 ? option : `Women's ${splitShirts[1]}`;
+	});
+
+	// Return the sans title case component, with the updated options
+	return <SliderSansTitleCase {...props} options={shirtSizeOptions} />;
+};
+
 export const SliderSansTitleCase: FC<Props> = ({ value, setState, titleCase, ...props }) => {
 	const { options = ['default'], className } = props;
 	const [counter, setCounter] = useState(0);
