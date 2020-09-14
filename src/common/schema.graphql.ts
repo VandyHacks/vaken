@@ -52,6 +52,12 @@ export default gql`
 		L
 		XL
 		XXL
+		WOMENS_XS
+		WOMENS_S
+		WOMENS_M
+		WOMENS_L
+		WOMENS_XL
+		WOMENS_XXL
 	}
 
 	enum ApplicationStatus {
