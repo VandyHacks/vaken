@@ -196,7 +196,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																						<tr>
 																							<td style="width:520px;"> <center><a href="https://vandyhacks.org" target="_blank">
 									
-							<img alt="" height="auto" src="https://storage.googleapis.com/vh-summer-assets/VH_dark.svg" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:30%;" width="520">
+							<img alt="" height="auto" src="https://storage.googleapis.com/vh-fall-2020-assets/VH_Pixel_Logo.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:30%;" width="520">
 						
 								</a> </center></td>
 																						</tr>
@@ -263,15 +263,15 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
 																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> 
-																				Congratulations! You’re invited to be a part of <b>VandyHacks: Summer Edition</b>! We enjoyed reading your application and would love to see your ideas come to life during our virtual event on <b>July 10th-12th</b>! 
+																				Congratulations! You’re invited to be a part of <b>VandyHacks VII: Retro Edition</b>! We enjoyed reading your application and would love to see your ideas come to life during our virtual event on <b>October 2nd-4th</b>! 
 																				</div>
 																			</td>
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
 																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> 
-																					Head over to the application portal <a href="https://apply.vandyhacks.org">here</a> and confirm your attendance by July 10th, 6:00 PM CST.
-																					<b>Please make sure you’ve read and checked “agree” to our hackathon waiver</b> in the “Apply” section. 
+																					Head over to the application portal <a href="https://apply.vandyhacks.org">here</a> and confirm your attendance by October 2nd, 12:00 PM CDT.
+																					<b>Make sure you’ve read and checked “agree” to our hackathon waiver</b> under the hacker application. 
 																				</div>
 																			</td>
 																		</tr>
@@ -289,19 +289,19 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																			<li>
 																				<b
 																					>Join our Discord
-																					<a href="https://discord.gg/zQk6v3t">here</a></b
+																					<a href="https://discord.gg/MbbfBWW">here</a></b
 																				>
 																				for communication before, during, and after the hackathon!
 																			</li>
 																			<li>
 																				<b
 																					>Review the full hackathon schedule
-																					<a href="https://summer.vandyhacks.org">here!</a></b
+																					<a href="https://vandyhacks.org/">here!</a></b
 																				>
 																			</li>
 																			<li style="list-style: none;">
-																				*NOTE: We will be baking actual lemon bars at 10:00 PM CST
-																				on Friday, July 10th, so get your ingredients ready!
+																				*NOTE: We will be baking nutella hand pies at 5:00 PM CDT
+																				on Saturday, October 3rd, so get your <a href="https://docs.google.com/document/d/1hhhk-tC7PL-CA3skxnJJ8b40xb0zECMYAH9AUFad2gE/edit?usp=sharing">ingredients</a> ready!
 																			</li>
 																		</ul>
 																	</div>
@@ -630,16 +630,21 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 			},
 			Text: {
 				Charset: 'UTF-8',
-				Data: `Hey ${escape(user.preferredName || user.firstName)},
-				Congratulations! You’re invited to be a part of VandyHacks: Summer Edition! We enjoyed reading your application and would love to see your ideas come to life during our virtual event on July 10th-12th! 
-				Head over to the application portal here and confirm your attendance by July 10th, 6:00 PM CST. Please make sure you’ve read and checked “agree” to our hackathon waiver in the “Apply” section.
+				Data: `Hi ${escape(user.preferredName || user.firstName)},
+				Congratulations! You’re invited to be a part of VandyHacks VII: Retro Edition! We enjoyed reading your application and would love to see your ideas come to life during our virtual event on October 2nd-4th! 
+
+				Head over to the application portal here and confirm your attendance by October 2nd, 12:00 PM CDT. Make sure you’ve also read and checked “agree” to our hackathon waiver under the hacker application.  
+				
 				Finally, please make sure to do the following in preparation for the event:
 				Join our Discord here for communication before, during, and after the hackathon!
 				Review the full hackathon schedule here! 
-				*NOTE: We will be baking actual lemon bars at 10:00 PM CST on Friday, July 10th, so get your ingredients ready!
+				*NOTE: We will be baking nutella hand pies at 5:00 PM CDT on Saturday, October 3rd, so get your ingredients ready!
+				
 				If you have any questions or concerns, check out our FAQ or reach out to us at info@vandyhacks.org.
+				
 				Cheers,
-				The VandyHacks Team`,
+				The VandyHacks Team
+				`,
 			},
 		},
 		Subject: {

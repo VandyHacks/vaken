@@ -313,6 +313,8 @@ export const resolvers: CustomResolvers<Context> = {
 				throw new UserInputError(`user ${id} (${value}) error: ${JSON.stringify(err)}`);
 
 			if (status === ApplicationStatus.Accepted) sendStatusEmail(value, ApplicationStatus.Accepted);
+			else if (status === ApplicationStatus.Rejected)
+				sendStatusEmail(value, ApplicationStatus.Rejected);
 
 			return value;
 		},
