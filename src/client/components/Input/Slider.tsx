@@ -67,14 +67,59 @@ const SliderContainer = styled.div`
 export const SliderShirtSizes: FC<Props> = props => {
 	const { options = ['default'] } = props;
 
-	// Will convert enums of *_{SIZE} to Women's ${SIZE}
-	const shirtSizeOptions = options.map(option => {
-		const splitShirts = option.split('_');
-		return splitShirts.length === 1 ? option : `Women's ${splitShirts[1]}`;
-	});
+	// FIXME: Quick fix for handling womens' sizes for backend enum types
+	return <ShirtSlider {...props} options={options} />;
+};
 
-	// Return the sans title case component, with the updated options
-	return <SliderSansTitleCase {...props} options={shirtSizeOptions} />;
+export const ShirtSlider: FC<Props> = ({ value, setState, ...props }) => {
+	const { options = ['default'], className } = props;
+	const [counter, setCounter] = useState(0);
+	const onChange: FormEventHandler<HTMLInputElement> = ({ currentTarget: { id } }) =>
+		setState(id.split('-')[0] === value ? '' : id.split('-')[0]);
+
+	// Generate UID
+	useEffect(() => {
+		setCounter((globalCounter += 1));
+	}, []);
+
+	const [awaitedOptions, setAwaitedOptions] = useState(['Loading...']);
+
+	// Async support for options
+	useEffect(() => {
+		if (options instanceof Promise) {
+			options.then(module => setAwaitedOptions(module.data)).catch(() => setAwaitedOptions([]));
+		} else {
+			setAwaitedOptions(options);
+		}
+	}, [options]);
+
+	// Purely change option for the sake of the label
+	const convertShirtSize = (size: string): string => {
+		const splitSize = size.split('_');
+		return splitSize.length === 1 ? size : `Women's ${splitSize[1]}`;
+	};
+
+	return (
+		<fieldset>
+			<SliderContainer className={className}>
+				{awaitedOptions.map(
+					(option: string): JSX.Element => (
+						<React.Fragment key={option}>
+							<input
+								// tabIndex={0}
+								checked={value === option}
+								type="radio"
+								id={`${option}-${counter}`}
+								name={`${option}-${counter}`}
+								onChange={onChange}
+							/>
+							<label htmlFor={`${option}-${counter}`}>{convertShirtSize(option)}</label>
+						</React.Fragment>
+					)
+				)}
+			</SliderContainer>
+		</fieldset>
+	);
 };
 
 export const SliderSansTitleCase: FC<Props> = ({ value, setState, titleCase, ...props }) => {
