@@ -17,7 +17,6 @@ export default gql`
 		userType: UserType! @column
 		phoneNumber: String @column
 		eventsAttended: [ID!]! @column
-		eventScore: Int! @column
 	}
 
 	enum DietaryRestriction {
@@ -176,6 +175,7 @@ export default gql`
 		github: String @column
 		team: Team @embedded
 		eventsAttended: [ID!]! @column
+		eventScore: Int @column
 		application: [ApplicationField!]! @embedded
 		emailUnsubscribed: Boolean! @column
 	}
@@ -277,6 +277,7 @@ export default gql`
 		github: String @column
 		team: Team @embedded
 		eventsAttended: [ID!]! @column
+		eventScore: Int @column
 		application: [ApplicationField!]! @embedded
 		emailUnsubscribed: Boolean! @column
 	}
@@ -332,6 +333,11 @@ export default gql`
 	input EventCheckInInput {
 		user: ID!
 		event: ID!
+	}
+
+	input EventScoreInput {
+		user: ID!
+		eventScore: Int!
 	}
 
 	input EventCheckInInputByNfc {
@@ -409,8 +415,8 @@ export default gql`
 		leaveTeam: Hacker!
 		hackerStatus(input: HackerStatusInput!): Hacker!
 		hackerStatuses(input: HackerStatusesInput!): [Hacker!]!
+		updateEventScore(input: EventScoreInput!): Hacker!
 		checkInUserToEvent(input: EventCheckInInput!): User!
-		updateUserEventScore(user: User!, eventScore: Int!): Int!
 		removeUserFromEvent(input: EventCheckInInput!): User!
 		registerNFCUIDWithUser(input: NFCRegisterInput!): User!
 		checkInUserToEventByNfc(input: EventCheckInInputByNfc!): User!

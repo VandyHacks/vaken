@@ -60,7 +60,7 @@ const routes = [
 		authLevel: [UserType.Hacker],
 		component: React.lazy(() => import('../routes/events/CheckInEvents')),
 		displayText: 'Check-In Events',
-		path: '/manage/events',
+		path: '/checkin',
 	},
 	{
 		authLevel: [UserType.Sponsor],

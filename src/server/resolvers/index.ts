@@ -1,5 +1,6 @@
 import { UserInputError, AuthenticationError } from 'apollo-server-express';
 import { ObjectID } from 'mongodb';
+import { async } from 'node-ical';
 import {
 	UserType,
 	ShirtSize,
@@ -104,6 +105,7 @@ const hackerResolvers: CustomResolvers<Context>['Hacker'] = {
 		if (!team) return { _id: new ObjectID(), createdAt: new Date(0), memberIds: [], name: '' };
 		return query({ name: team.team }, models.Teams);
 	},
+	eventScore: async hacker => (await hacker).eventScore || null,
 	userType: () => UserType.Hacker,
 	volunteer: async hacker => (await hacker).volunteer || null,
 };
@@ -523,6 +525,18 @@ export const resolvers: CustomResolvers<Context> = {
 		},
 		updateProfile: async () => {
 			throw new UserInputError('Not implemented :(');
+		},
+		updateEventScore: async (root, { input }, { models, user }) => {
+			const userObject = checkIsAuthorizedArray([UserType.Hacker, UserType.Volunteer], user);
+			const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
+				{ _id: new ObjectID(userObject._id) },
+				{ $set: { eventScore: (userObject.eventScore || 0) + input.eventScore } },
+				{ returnOriginal: false }
+			);
+			if (!ok || !value)
+				throw new UserInputError(`user ${userObject._id} (${value}) error: ${JSON.stringify(err)}`);
+			// no email sent if declined
+			return value;
 		},
 	},
 	Organizer: {
