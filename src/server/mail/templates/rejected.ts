@@ -584,7 +584,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 			Text: {
 				Charset: 'UTF-8',
 				Data: `Hi ${escape(user.preferredName || user.firstName)},
-                Thank you for your interest in VandyHacks: Summer Edition. Unfortunately, we are unable to offer you a spot at this year's event.
+                Thank you for your interest in VandyHacks VII: Retro Edition. Unfortunately, we are unable to offer you a spot at this year's event.
                 We really appreciate your interest and hope you will apply to another VandyHacks opportunity in the future.
                 Best,
                 The VandyHacks Team`,

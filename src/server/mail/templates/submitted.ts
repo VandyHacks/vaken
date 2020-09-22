@@ -454,7 +454,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																										<tr>
 																											<td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
 																												<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:11px;font-weight:400;line-height:16px;text-align:center;color:#445566;"> You are receiving this application update because you applied at <a href="https://apply.vandyhacks.org" class="text-link" style="color: #5e6ebf;">apply.vandyhacks.org</a>. If you would like to opt-out of
-																													any future emails pertaining to VandyHacks: Summer Edition applications, please click <a href="https://apply.vandyhacks.org/api/unsubscribe?id=${
+																													any future emails pertaining to VandyHacks VII: Retro Edition applications, please click <a href="https://apply.vandyhacks.org/api/unsubscribe?id=${
 																														user._id
 																													}" class="text-link" style="color: #5e6ebf;">here</a> </div>
 																											</td>
