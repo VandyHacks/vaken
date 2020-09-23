@@ -8,7 +8,8 @@ import { Title } from '../../components/Text/Title';
 import STRINGS from '../../assets/strings.json';
 import { ButtonOutline, CenterButtonText } from '../../components/Buttons/Buttons';
 import { SmallCenteredText } from '../../components/Text/SmallCenteredText';
-import { useMyStatusQuery, CheckInUserToEventMutation } from '../../generated/graphql';
+import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
+import { useMeQuery, useCheckInUserToEventMutation, useEventsQuery } from '../../generated/graphql';
 
 const HackerDashBG = styled(FloatingPopup)`
 	border-radius: 8px;
@@ -30,26 +31,27 @@ const HackerDashBG = styled(FloatingPopup)`
 `;
 
 export const CheckInEvent: FunctionComponent = (): JSX.Element => {
-	const { data, loading } = useMyStatusQuery();
+	const { data, loading } = useMeQuery();
+	const eventsQuery = useEventsQuery();
+	const eventsLoading = eventsQuery.loading;
+	const eventsError = eventsQuery.error;
+	const eventsData = eventsQuery.data;
 
-	//
-	const ongoingEvent = {
-		title: 'Welcome',
-	};
+	if (eventsError) {
+		console.log(eventsError);
+		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
+	}
 
-	const [eventAttended, setEventAttended] = useState(false);
-
-	useEffect((): void => {
-		if (data && data.me && data.me.__typename === 'Hacker') {
-			console.log(data.me.status);
-		}
-	}, [data]);
-
-	// check if user already registered
-	// useEffect();
-
-	// fetch the ongoing event
-	// useEffect();
+	const eventRows = eventsData.events
+		.map(e => {
+			return {
+				id: e.id,
+				name: e.name,
+				eventType: e.eventType,
+				startTimestamp: new Date(e.startTimestamp),
+			};
+		})
+		.sort((a, b) => a.startTimestamp.getTime() - b.startTimestamp.getTime());
 
 	return (
 		<>
@@ -59,7 +61,7 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 						<Title fontSize="1.75rem">Ongoing Events:</Title>
 						{loading ? null : (
 							<>
-								<ButtonOutline
+								{/* <ButtonOutline
 									paddingLeft="4rem"
 									paddingRight="4rem"
 									width="auto"
@@ -68,7 +70,7 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 									<CenterButtonText color="#FFFFFF" fontSize="1.8rem">
 										Hello
 									</CenterButtonText>
-								</ButtonOutline>
+								</ButtonOutline> */}
 								<SmallCenteredText
 									color={`${STRINGS.DARK_TEXT_COLOR}`}
 									fontSize="1rem"
@@ -83,34 +85,28 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 									</SmallCenteredText>
 								) : (
 									<TextButton
-										key={ongoingEvent.title}
+										key={event.id}
 										color="white"
 										fontSize="1.4em"
 										background={STRINGS.ACCENT_COLOR}
 										glowColor="rgba(0, 0, 255, 0.67)"
-										onClick={
-											async () => {
+										onClick={async () => {
+											toast.dismiss();
+											// checkinUserToEventUpdateScoreMutation
+											// check if the update went successfully
+											if (false) {
+												toast.error('Check-in failed!', {
+													position: 'bottom-right',
+												});
+											} else {
 												toast.dismiss();
-												// checkinUserToEventUpdateScoreMutation
-												// check if the update went successfully
-												if (false) {
-													toast.error('Check-in failed!', {
-														position: 'bottom-right',
-													});
-												} else {
-													// return updateApplication({
-													// 	variables: { input: { fields: input, submit: true } },
-													// }).then(() => {
-													toast.dismiss();
-													return toast.success('You have been checked in successfully!', {
-														position: 'bottom-right',
-													});
-													// });
-												}
-												return Promise.resolve();
+												return toast.success('You have been checked in successfully!', {
+													position: 'bottom-right',
+												});
+												// });
 											}
-											// console.log(e);
-										}>
+											return Promise.resolve();
+										}}>
 										Check In
 									</TextButton>
 								)}

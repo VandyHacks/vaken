@@ -535,7 +535,6 @@ export const resolvers: CustomResolvers<Context> = {
 			);
 			if (!ok || !value)
 				throw new UserInputError(`user ${userObject._id} (${value}) error: ${JSON.stringify(err)}`);
-			// no email sent if declined
 			return value;
 		},
 	},
