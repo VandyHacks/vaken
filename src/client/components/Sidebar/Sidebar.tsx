@@ -145,7 +145,11 @@ const Sidebar: FC<{ setMenuOpen?: React.Dispatch<React.SetStateAction<boolean>> 
 								<NavButtonWhiteText>Logout</NavButtonWhiteText>
 							</ALink>
 							<HorizontalLineLogout />
-							<SmallCenteredText><ALink href={STRINGS.HACKATHON_WEBSITE}>{STRINGS.HACKATHON_TITLE}</ALink></SmallCenteredText>
+							<SmallCenteredText>
+								<ALink style={{ color: 'white' }} href={STRINGS.HACKATHON_WEBSITE}>
+									{STRINGS.HACKATHON_TITLE}
+								</ALink>
+							</SmallCenteredText>
 						</FlexEndColumn>
 					</SpaceBetweenColumn>
 				</Background>
