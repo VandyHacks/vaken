@@ -127,7 +127,7 @@ export const questions = [
 					'Create a project',
 					'Have some fun with other people in the tech community',
 					'Internship opportunities',
-					'Other',
+					'Other Reason',
 				],
 				title: 'What do you hope to gain from VandyHacks?',
 			},
