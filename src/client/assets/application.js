@@ -118,9 +118,10 @@ export const questions = [
 		category: 'application',
 		fields: [
 			{
-				Component: Slider,
+				Component: Checkbox,
 				default: '',
 				fieldName: 'motivation',
+				note: 'Choose all that apply.',
 				options: [
 					'Get an intro to coding',
 					'Create a project',
