@@ -1,7 +1,7 @@
 import React, { useContext, FC, useCallback } from 'react';
 import styled from 'styled-components';
 import { NavLink as UglyNavLink } from 'react-router-dom';
-import SqLogo from '../../assets/img/VH Pixel Logo.png';
+import SqLogo from '../../assets/img/VH_Pixel_Logo.png';
 import STRINGS from '../../assets/strings.json';
 import NavButton from '../Buttons/NavButton';
 import { SpaceBetweenColumn, FlexEndColumn } from '../Containers/FlexContainers';
