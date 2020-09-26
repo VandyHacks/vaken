@@ -61,13 +61,18 @@ const statusConfig = {
 		text: "You may update your responses at any time by re-visiting the application.'",
 	},
 	[ApplicationStatus.Confirmed]: {
-		actions: [],
-		boldText: `Whoo hoo! We'll see you ${STRINGS.START_DAY}! Don't forget to join the Discord at !`,
+		actions: [
+			{
+				action: () => void window.open('https://discord.gg/MbbfBWW', '_blank'),
+				actionText: 'Join our Discord',
+			},
+		],
+		boldText: `Whoo hoo! We'll see you ${STRINGS.START_DAY}! Don't forget to join the Discord!`,
 		img: applicationStatusSVG,
 		status: 'Confirmed',
 		statusBG: STRINGS.APPLICATION_COMPLETE_STATUSBG,
 		statusColor: STRINGS.APPLICATION_COMPLETE_STATUSCOLOR,
-		text: "If you don't have a team, you can form one when you get here!",
+		text: "If you don't have a team, you can form one when you join the Discord!",
 	},
 	[ApplicationStatus.Accepted]: {
 		actions: [
