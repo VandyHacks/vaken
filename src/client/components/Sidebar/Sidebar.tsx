@@ -1,7 +1,7 @@
 import React, { useContext, FC, useCallback } from 'react';
 import styled from 'styled-components';
 import { NavLink as UglyNavLink } from 'react-router-dom';
-import SqLogo from '../../assets/img/square_hackathon_logo.svg';
+import SqLogo from '../../assets/img/VH_Pixel_Logo.png';
 import STRINGS from '../../assets/strings.json';
 import NavButton from '../Buttons/NavButton';
 import { SpaceBetweenColumn, FlexEndColumn } from '../Containers/FlexContainers';
@@ -14,12 +14,7 @@ const Layout = styled.div`
 `;
 
 const Background = styled.div`
-	background: linear-gradient(
-		254.59deg,
-		${STRINGS.ACCENT_COLOR} 0%,
-		${STRINGS.BASE_ACCENT_BLENDED} 70%,
-		${STRINGS.BASE_COLOR} 100%
-	);
+	background: ${STRINGS.SIDEBAR_COLOR};
 	width: 100%;
 	height: 100vh;
 
@@ -130,7 +125,7 @@ const Sidebar: FC<{ setMenuOpen?: React.Dispatch<React.SetStateAction<boolean>> 
 			<Layout className="sidebar">
 				<Background>
 					<Logo>
-						<img src={SqLogo} alt={`${STRINGS.SHORTENED_HACKATHON_TITLE} graphic`} />
+						<img src={SqLogo} height="158px" alt={`${STRINGS.SHORTENED_HACKATHON_TITLE} graphic`} />
 					</Logo>
 					<HorizontalLine />
 					<SpaceBetweenColumn height="calc(100% - calc(8rem + 160px))">
@@ -150,7 +145,11 @@ const Sidebar: FC<{ setMenuOpen?: React.Dispatch<React.SetStateAction<boolean>> 
 								<NavButtonWhiteText>Logout</NavButtonWhiteText>
 							</ALink>
 							<HorizontalLineLogout />
-							<SmallCenteredText>{STRINGS.HACKATHON_TITLE}</SmallCenteredText>
+							<SmallCenteredText>
+								<ALink style={{ color: 'white' }} href={STRINGS.HACKATHON_WEBSITE}>
+									{STRINGS.HACKATHON_TITLE}
+								</ALink>
+							</SmallCenteredText>
 						</FlexEndColumn>
 					</SpaceBetweenColumn>
 				</Background>
