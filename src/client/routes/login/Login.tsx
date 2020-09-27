@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import STRINGS from '../../assets/strings.json';
-import bg from '../../assets/img/login_bg.jpg';
+import bg from '../../assets/img/mario_bg.jpg';
 import OAuthLogin from './OAuthLogin';
 import Background from '../../components/Containers/Background';
 import TextButton from '../../components/Buttons/TextButton';
