@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect, RefObject } from 'react';
+import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
 import TextButton, { StyledLoginBtn } from '../../components/Buttons/TextButton';
@@ -6,7 +6,6 @@ import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { FlexColumn, FlexStartColumn } from '../../components/Containers/FlexContainers';
 import { Title } from '../../components/Text/Title';
 import STRINGS from '../../assets/strings.json';
-import { ButtonOutline, CenterButtonText } from '../../components/Buttons/Buttons';
 import { SmallCenteredText } from '../../components/Text/SmallCenteredText';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import {
@@ -59,6 +58,7 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 		eventType: string;
 		duration: number;
 		startTimestamp: number;
+		eventScore: number;
 	}
 
 	const eventRows: Event[] = eventsData.events.map(
@@ -69,6 +69,7 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 				eventType: e.eventType,
 				duration: e.duration,
 				startTimestamp: e.startTimestamp,
+				eventScore: e.eventScore ? e.eventScore : 0,
 			};
 		}
 	);
@@ -123,7 +124,7 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 												return updateEventScore({
 													variables: {
 														input: {
-															eventScore: row.duration,
+															eventScore: row.eventScore,
 															user: data.me.id,
 														},
 													},

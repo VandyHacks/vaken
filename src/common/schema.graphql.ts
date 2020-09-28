@@ -143,6 +143,7 @@ export default gql`
 		eventType: String! @column
 		gcalID: String @column
 		owner: Company @embedded
+		eventScore: Int @column
 	}
 
 	type EventCheckIn @entity(embedded: true) {

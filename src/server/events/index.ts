@@ -39,6 +39,7 @@ export const transformCalEventToDBUpdate = (event: Record<string, string>): Even
 		throw new AuthenticationError('Calendar event did not contain start or end timestamp');
 	const parsedStart = new Date(event.start);
 	const parsedEnd = new Date(event.end);
+	const parsedScore = event.description !== '' ? 100 : 0;
 	const parsedType = /\[(.*?)\]/.exec(event.description); // Looks for a **single** [Event Type] tag in name
 	return {
 		name: event.summary,
@@ -47,6 +48,7 @@ export const transformCalEventToDBUpdate = (event: Record<string, string>): Even
 		description: event.description.replace(/\s*\[(.*?)\]\s*/, ''), // Removes the [Event Type] tag in name
 		location: event.location,
 		eventType: parsedType != null ? parsedType[1] : '',
+		eventScore: parsedScore,
 		gcalID: event.uid,
 	} as EventUpdate;
 };

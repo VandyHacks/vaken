@@ -22,14 +22,14 @@ export default gql`
 			eventType
 			startTimestamp
 			duration
+			eventScore
 		}
 	}
 
 	mutation updateEventScore($input: EventScoreInput!) {
 		updateEventScore(input: $input) {
 			id
-			firstName
-			lastName
+			eventScore
 		}
 	}
 
