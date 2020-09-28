@@ -290,6 +290,7 @@ export default gql`
 		hackers(sortDirection: SortDirection): [Hacker!]!
 		event(id: ID!): Event!
 		events(sortDirection: SortDirection): [Event!]!
+		eventsForHackers(sortDirection: SortDirection): [Event!]!
 		eventCheckIn(id: ID!): EventCheckIn!
 		eventCheckIns(sortDirection: SortDirection): [EventCheckIn!]!
 		sponsor(id: ID!): Sponsor!

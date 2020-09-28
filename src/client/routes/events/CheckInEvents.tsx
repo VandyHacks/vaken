@@ -9,7 +9,12 @@ import STRINGS from '../../assets/strings.json';
 import { ButtonOutline, CenterButtonText } from '../../components/Buttons/Buttons';
 import { SmallCenteredText } from '../../components/Text/SmallCenteredText';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
-import { useMeQuery, useCheckInUserToEventMutation, useEventsQuery } from '../../generated/graphql';
+import {
+	useMeQuery,
+	useCheckInUserToEventMutation,
+	useEventsForHackersQuery,
+} from '../../generated/graphql';
+import Spinner from '../../components/Loading/Spinner';
 
 const HackerDashBG = styled(FloatingPopup)`
 	border-radius: 8px;
@@ -29,13 +34,16 @@ const HackerDashBG = styled(FloatingPopup)`
 		}
 	}
 `;
-
 export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 	const { data, loading } = useMeQuery();
-	const eventsQuery = useEventsQuery();
+	const eventsQuery = useEventsForHackersQuery();
 	const eventsLoading = eventsQuery.loading;
 	const eventsError = eventsQuery.error;
 	const eventsData = eventsQuery.data;
+
+	if (eventsLoading || !eventsData) {
+		return <Spinner />;
+	}
 
 	if (eventsError) {
 		console.log(eventsError);
@@ -53,6 +61,21 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 		})
 		.sort((a, b) => a.startTimestamp.getTime() - b.startTimestamp.getTime());
 
+	// This is where we stopped 9/28/20. Not sure why useEffect is not working
+	// trying to get eventsData to render
+	useEffect((): void => {
+		if (eventsData) {
+			console.log(eventsData);
+		}
+	}, [eventsData]);
+
+	const now = Date.now();
+	const eventsCurrent = eventRows.filter(e => {
+		const TIME_BUFFER = 60; // 60 minutes
+		const delta = (now - e.startTimestamp) / (1000 * 60); // Time diff in minutes
+		return delta >= -1 * TIME_BUFFER && delta <= e.duration + TIME_BUFFER;
+	});
+
 	return (
 		<>
 			<FlexStartColumn>
@@ -61,24 +84,17 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 						<Title fontSize="1.75rem">Ongoing Events:</Title>
 						{loading ? null : (
 							<>
-								{/* <ButtonOutline
-									paddingLeft="4rem"
-									paddingRight="4rem"
-									width="auto"
-									background="#FFFFFF"
-									glowColor="null">
-									<CenterButtonText color="#FFFFFF" fontSize="1.8rem">
-										Hello
-									</CenterButtonText>
-								</ButtonOutline> */}
-								<SmallCenteredText
-									color={`${STRINGS.DARK_TEXT_COLOR}`}
-									fontSize="1rem"
-									margin="1.4rem">
-									<span style={{ fontWeight: 'bold' }}>Hello Again</span>
-									<br />
-									Hello x3
-								</SmallCenteredText>
+								{eventRows.map(row => (
+									<SmallCenteredText
+										key={row.gcalID}
+										color={`${STRINGS.DARK_TEXT_COLOR}`}
+										fontSize="1rem"
+										margin="1.4rem">
+										<span style={{ fontWeight: 'bold' }}>Hello Again</span>
+										<br />
+										Hello x3
+									</SmallCenteredText>
+								))}
 								{eventAttended ? (
 									<SmallCenteredText color={`${STRINGS.DARK_TEXT_COLOR}`}>
 										You are already checked in!

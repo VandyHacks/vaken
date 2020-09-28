@@ -15,6 +15,16 @@ export default gql`
 		}
 	}
 
+	query eventsForHackers {
+		events {
+			id
+			name
+			eventType
+			startTimestamp
+			duration
+		}
+	}
+
 	mutation addOrUpdateEvent($input: EventUpdateInput!) {
 		addOrUpdateEvent(input: $input) {
 			id
