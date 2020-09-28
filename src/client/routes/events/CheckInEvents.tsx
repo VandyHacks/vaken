@@ -44,6 +44,10 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 	const eventsError = eventsQuery.error;
 	const eventsData = eventsQuery.data;
 
+	if (loading || !data || !data.me || eventsLoading || !eventsData) {
+		return <Spinner />;
+	}
+
 	if (eventsError) {
 		console.log(eventsError);
 		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
@@ -90,64 +94,58 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 				<HackerDashBG>
 					<FlexColumn>
 						<Title fontSize="1.75rem">Ongoing Events:</Title>
-						{eventsLoading || !eventsData ? (
-							<Spinner />
-						) : (
+						{eventsCurrent.map(row => (
 							<>
-								{eventsCurrent.map(row => (
-									<>
-										<SmallCenteredText
-											key={row.id}
-											color={`${STRINGS.DARK_TEXT_COLOR}`}
-											fontSize="1rem"
-											margin="1.4rem">
-											<span style={{ fontWeight: 'bold' }}>{row.name}</span>
-										</SmallCenteredText>
-										<TextButton
-											key={row.id}
-											color="white"
-											fontSize="1.4em"
-											background={STRINGS.ACCENT_COLOR}
-											glowColor="rgba(0, 0, 255, 0.67)"
-											onClick={async () => {
-												toast.dismiss();
-												return checkInUserToEvent({
+								<SmallCenteredText
+									key={row.id}
+									color={`${STRINGS.DARK_TEXT_COLOR}`}
+									fontSize="1rem"
+									margin="1.4rem">
+									<span style={{ fontWeight: 'bold' }}>{row.name}</span>
+								</SmallCenteredText>
+								<TextButton
+									key={row.id}
+									color="white"
+									fontSize="1.4em"
+									background={STRINGS.ACCENT_COLOR}
+									glowColor="rgba(0, 0, 255, 0.67)"
+									onClick={async () => {
+										toast.dismiss();
+										return checkInUserToEvent({
+											variables: {
+												input: {
+													event: row.id,
+													user: data.me.id,
+												},
+											},
+										})
+											.then(() => {
+												return updateEventScore({
 													variables: {
 														input: {
-															event: row.id,
-															user,
+															eventScore: row.duration,
+															user: data.me.id,
 														},
 													},
-												})
-													.then(() => {
-														updateEventScore({
-															variables: {
-																input: {
-																	eventScore: row.duration,
-																	user,
-																},
-															},
-														});
-													)
-													.then(() => {
-														toast.dismiss();
-														return toast.success('You have been checked in successfully!', {
-															position: 'bottom-right',
-														});
-													})
-													.catch(() => {
-														toast.dismiss();
-														return toast.error('Check-in failed!', {
-															position: 'bottom-right',
-														});
-													});
-											}}>
-											Check In
-										</TextButton>
-									</>
-								))}
+												});
+											})
+											.then(() => {
+												toast.dismiss();
+												return toast.success('You have been checked in successfully!', {
+													position: 'bottom-right',
+												});
+											})
+											.catch(() => {
+												toast.dismiss();
+												return toast.error('Check-in failed!', {
+													position: 'bottom-right',
+												});
+											});
+									}}>
+									Check In
+								</TextButton>
 							</>
-						)}
+						))}
 					</FlexColumn>
 				</HackerDashBG>
 			</FlexStartColumn>

@@ -551,13 +551,16 @@ export const resolvers: CustomResolvers<Context> = {
 			return ctx.models.EventCheckIns.find().toArray();
 		},
 		events: async (root, args, ctx) => {
-			const user = checkIsAuthorizedArray([UserType.Organizer, UserType.Sponsor], ctx.user);
+			const user = checkIsAuthorizedArray(
+				[UserType.Organizer, UserType.Sponsor, UserType.Hacker],
+				ctx.user
+			);
 			if (user.userType === UserType.Sponsor) {
 				const { _id } = (user as SponsorDbObject).company;
 				const events = await ctx.models.Events.find({ 'owner._id': new ObjectID(_id) }).toArray();
 				return events;
 			}
-			if (user.userType === UserType.Organizer) {
+			if (user.userType === UserType.Organizer || user.userType === UserType.Hacker) {
 				return ctx.models.Events.find().toArray();
 			}
 			return ctx.models.Events.find({ owner: null }).toArray();
