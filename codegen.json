@@ -22,7 +22,7 @@
 					"ApplicationQuestion": "ApplicationQuestionDbObject",
 					"_Plugin__Event": "_Plugin__EventDbObject",
 					"_Plugin__EventCheckIn": "_Plugin__EventCheckInDbObject",
-				  	"_Plugin__Notification": "_Plugin__NotificationDbObject",
+				  "_Plugin__Notification": "_Plugin__NotificationDbObject",
 					"Event": "EventDbObject",
 					"EventCheckIn": "EventCheckInDbObject",
 					"Company": "CompanyDbObject",
