@@ -28,19 +28,20 @@ const getResumes = async (models: Models): Promise<void[]> => {
 	})
 		.map(async hacker => {
 			const filename = hacker._id.toHexString();
-			console.log(`Getting resume for ${filename} (${hacker.lastName}, ${hacker.firstName}).pdf`);
-			await storage
-				.bucket(BUCKET_NAME)
-				.file(filename)
-				.download({ destination: `${cwd}/resumes`, decompress: true });
+			console.log(`Downloading "${hacker.lastName}, ${hacker.firstName} (${hacker.school}).pdf" for user with id ${hacker._id}`);
 
-			console.log(
-				`Renaming '${filename}' to '${hacker.lastName}, ${hacker.firstName} (${hacker.school}).pdf'`
-			);
-			return rename(
-				`${cwd}/resumes/${filename}`,
-				`${cwd}/resumes/${hacker.lastName}, ${hacker.firstName} (${hacker.school})`
-			);
+			try {
+				const resume = await storage
+					.bucket(BUCKET_NAME)
+					.file(filename)
+				if (await resume.exists())
+					await resume.download({ destination: `${cwd}/resumes/${hacker.lastName}, ${hacker.firstName} (${hacker.school}).pdf`, decompress: true });
+			} catch (e) {
+				console.group('Error:')
+				console.error(e)
+				console.info(hacker)
+				console.groupEnd();
+			}
 		})
 		.toArray();
 
