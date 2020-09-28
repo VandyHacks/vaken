@@ -17,6 +17,7 @@ export default gql`
 		userType: UserType! @column
 		phoneNumber: String @column
 		eventsAttended: [ID!]! @column
+		eventScore: Int @column
 	}
 
 	enum DietaryRestriction {
@@ -203,6 +204,7 @@ export default gql`
 		shifts: [Shift!]! @embedded
 		skills: [String!]! @column
 		eventsAttended: [ID!]! @column
+		eventScore: Int @column
 	}
 
 	type Team @entity(embedded: true) {
@@ -231,6 +233,7 @@ export default gql`
 		phoneNumber: String
 		company: Company! @embedded
 		eventsAttended: [ID!]! @column
+		eventScore: Int @column
 	}
 
 	type Organizer implements User @entity {
@@ -250,6 +253,7 @@ export default gql`
 		phoneNumber: String
 		permissions: [String]! @column
 		eventsAttended: [ID!]! @column
+		eventScore: Int @column
 	}
 
 	type Volunteer implements User @entity {

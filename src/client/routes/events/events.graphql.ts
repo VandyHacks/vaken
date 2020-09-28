@@ -25,6 +25,14 @@ export default gql`
 		}
 	}
 
+	mutation updateEventScore($input: EventScoreInput!) {
+		updateEventScore(input: $input) {
+			id
+			firstName
+			lastName
+		}
+	}
+
 	mutation addOrUpdateEvent($input: EventUpdateInput!) {
 		addOrUpdateEvent(input: $input) {
 			id
