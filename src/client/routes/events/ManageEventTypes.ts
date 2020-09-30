@@ -15,6 +15,7 @@ export interface EventUpdate {
 	description: string;
 	location: string;
 	eventType: string;
+	eventScore?: number;
 	gcalID?: string;
 	id?: string;
 }

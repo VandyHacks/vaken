@@ -10,8 +10,7 @@ import { SmallCenteredText } from '../../components/Text/SmallCenteredText';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import {
 	useMeQuery,
-	useCheckInUserToEventMutation,
-	useUpdateEventScoreMutation,
+	useCheckInUserToEventAndUpdateEventScoreMutation,
 	useEventsForHackersQuery,
 } from '../../generated/graphql';
 import Spinner from '../../components/Loading/Spinner';
@@ -37,8 +36,7 @@ const HackerDashBG = styled(FloatingPopup)`
 export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 	const { data, loading } = useMeQuery();
 	const eventsQuery = useEventsForHackersQuery();
-	const [checkInUserToEvent] = useCheckInUserToEventMutation();
-	const [updateEventScore] = useUpdateEventScoreMutation();
+	const [checkInUserToEventUpdateEventScore] = useCheckInUserToEventAndUpdateEventScoreMutation();
 	const eventsLoading = eventsQuery.loading;
 	const eventsError = eventsQuery.error;
 	const eventsData = eventsQuery.data;
@@ -73,18 +71,9 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 			};
 		}
 	);
-	// .sort((a: Event, b: Event) => a.startTimestamp.getTime() - b.startTimestamp.getTime());
-
-	// This is where we stopped 9/28/20. Not sure why useEffect is not working
-	// trying to get eventsData to render
-	// useEffect((): void => {
-	// 	if (eventsData) {
-	// 		console.log(eventsData);
-	// 	}
-	// }, [eventsData]);
 
 	const eventsCurrent = eventRows.filter((e: Event) => {
-		const TIME_BUFFER = 60; // 60 minutes
+		const TIME_BUFFER = 5; // 5 minutes
 		const delta = (Date.now() - e.startTimestamp) / (1000 * 60); // Time diff in minutes
 		return delta >= -1 * TIME_BUFFER && delta <= e.duration + TIME_BUFFER;
 	});
@@ -96,11 +85,10 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 					<FlexColumn>
 						<Title fontSize="1.75rem">Ongoing Events:</Title>
 						{eventsCurrent.map(row => (
-							<>
+							<div key={row.id}>
 								<SmallCenteredText
-									key={row.id}
 									color={`${STRINGS.DARK_TEXT_COLOR}`}
-									fontSize="1rem"
+									fontSize="1.3rem"
 									margin="1.4rem">
 									<span style={{ fontWeight: 'bold' }}>{row.name}</span>
 								</SmallCenteredText>
@@ -112,32 +100,28 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 									glowColor="rgba(0, 0, 255, 0.67)"
 									onClick={async () => {
 										toast.dismiss();
-										return checkInUserToEvent({
+										return checkInUserToEventUpdateEventScore({
 											variables: {
 												input: {
 													event: row.id,
 													user: data.me.id,
+													eventScore: row.eventScore,
 												},
 											},
 										})
-											.then(() => {
-												return updateEventScore({
-													variables: {
-														input: {
-															eventScore: row.eventScore,
-															user: data.me.id,
-														},
-													},
-												});
-											})
 											.then(() => {
 												toast.dismiss();
 												return toast.success('You have been checked in successfully!', {
 													position: 'bottom-right',
 												});
 											})
-											.catch(() => {
+											.catch(e => {
 												toast.dismiss();
+												if (e.message.includes('is already checked into event')) {
+													return toast.error('You are already checked in!', {
+														position: 'bottom-right',
+													});
+												}
 												return toast.error('Check-in failed!', {
 													position: 'bottom-right',
 												});
@@ -145,7 +129,7 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 									}}>
 									Check In
 								</TextButton>
-							</>
+							</div>
 						))}
 					</FlexColumn>
 				</HackerDashBG>

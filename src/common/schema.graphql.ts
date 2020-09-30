@@ -143,13 +143,14 @@ export default gql`
 		eventType: String! @column
 		gcalID: String @column
 		owner: Company @embedded
-		eventScore: Int @column
+		eventScore: Int! @column
 	}
 
 	type EventCheckIn @entity(embedded: true) {
 		id: ID! @id @column
 		user: String! @column
 		timestamp: Int! @column(overrideType: "Date")
+		eventScore: Int
 	}
 
 	type Hacker implements User @entity {
@@ -341,8 +342,9 @@ export default gql`
 		event: ID!
 	}
 
-	input EventScoreInput {
+	input EventCheckInUpdateInput {
 		user: ID!
+		event: ID!
 		eventScore: Int!
 	}
 
@@ -396,6 +398,7 @@ export default gql`
 		eventType: String!
 		gcalID: String
 		id: String
+		eventScore: Int
 	}
 
 	input AssignSponsorEventInput {
@@ -421,8 +424,8 @@ export default gql`
 		leaveTeam: Hacker!
 		hackerStatus(input: HackerStatusInput!): Hacker!
 		hackerStatuses(input: HackerStatusesInput!): [Hacker!]!
-		updateEventScore(input: EventScoreInput!): Hacker!
 		checkInUserToEvent(input: EventCheckInInput!): User!
+		checkInUserToEventAndUpdateEventScore(input: EventCheckInUpdateInput!): Hacker!
 		removeUserFromEvent(input: EventCheckInInput!): User!
 		registerNFCUIDWithUser(input: NFCRegisterInput!): User!
 		checkInUserToEventByNfc(input: EventCheckInInputByNfc!): User!

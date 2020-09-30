@@ -190,6 +190,18 @@ export const resolvers: CustomResolvers<Context> = {
 			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
 			return checkInUserToEvent(input.user, input.event, models);
 		},
+		checkInUserToEventAndUpdateEventScore: async (root, { input }, { models, user }) => {
+			const userObject = checkIsAuthorizedArray([UserType.Hacker, UserType.Volunteer], user);
+			checkInUserToEvent(input.user, input.event, models);
+			const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
+				{ _id: new ObjectID(userObject._id) },
+				{ $set: { eventScore: (userObject.eventScore || 0) + input.eventScore } },
+				{ returnOriginal: false }
+			);
+			if (!ok || !value)
+				throw new UserInputError(`user ${userObject._id} (${value}) error: ${JSON.stringify(err)}`);
+			return value;
+		},
 		createSponsor: async (
 			root,
 			{ input: { email, name, companyId } },
@@ -525,17 +537,6 @@ export const resolvers: CustomResolvers<Context> = {
 		},
 		updateProfile: async () => {
 			throw new UserInputError('Not implemented :(');
-		},
-		updateEventScore: async (root, { input }, { models, user }) => {
-			const userObject = checkIsAuthorizedArray([UserType.Hacker, UserType.Volunteer], user);
-			const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
-				{ _id: new ObjectID(userObject._id) },
-				{ $set: { eventScore: (userObject.eventScore || 0) + input.eventScore } },
-				{ returnOriginal: false }
-			);
-			if (!ok || !value)
-				throw new UserInputError(`user ${userObject._id} (${value}) error: ${JSON.stringify(err)}`);
-			return value;
 		},
 	},
 	Organizer: {

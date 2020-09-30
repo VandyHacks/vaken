@@ -37,6 +37,7 @@ const testEvent = ({
 	description: 'testEventdesc',
 	duration: 240,
 	eventType: 'testType',
+	eventScore: 100,
 	location: 'location',
 	name: 'testEventPreexisting',
 	startTimestamp: new Date('2019-09-06T03:41:33.714+00:00'),

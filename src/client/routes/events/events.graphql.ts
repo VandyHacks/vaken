@@ -26,8 +26,8 @@ export default gql`
 		}
 	}
 
-	mutation updateEventScore($input: EventScoreInput!) {
-		updateEventScore(input: $input) {
+	mutation checkInUserToEventAndUpdateEventScore($input: EventCheckInUpdateInput!) {
+		checkInUserToEventAndUpdateEventScore(input: $input) {
 			id
 			eventScore
 		}
