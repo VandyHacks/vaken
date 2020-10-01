@@ -1,6 +1,5 @@
 import { UserInputError, AuthenticationError } from 'apollo-server-express';
 import { ObjectID } from 'mongodb';
-import { async } from 'node-ical';
 import {
 	UserType,
 	ShirtSize,
