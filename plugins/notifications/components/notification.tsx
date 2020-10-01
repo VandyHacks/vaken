@@ -95,7 +95,7 @@ export const notification: FunctionComponent = (): JSX.Element => {
 			try {
 				createNotification()
 					.then(() => setSentNotification(true))
-					.catch((err: GraphQLError[]) => setWarning(err[0].message));
+					.catch((err: GraphQLError) => setWarning(err.message));
 			} catch (err) {
 				setWarning(err);
 			}
