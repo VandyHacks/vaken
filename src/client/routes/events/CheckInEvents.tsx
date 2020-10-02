@@ -41,7 +41,7 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 	const eventsError = eventsQuery.error;
 	const eventsData = eventsQuery.data;
 
-	if (loading || !data || !data.me || eventsLoading || !eventsData) {
+	if (loading || !data || !data.me || !data.me.id || eventsLoading || !eventsData) {
 		return <Spinner />;
 	}
 
@@ -104,7 +104,7 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 											variables: {
 												input: {
 													event: row.id,
-													user: data.me.id,
+													user: data.me ? data.me.id : '',
 													eventScore: row.eventScore,
 												},
 											},

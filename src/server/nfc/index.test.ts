@@ -25,6 +25,7 @@ const event: EventDbObject = {
 	eventType: 'event type',
 	location: 'location',
 	name: 'event',
+	eventScore: 100,
 	startTimestamp: new Date(),
 	warnRepeatedCheckins: true,
 };
