@@ -27,6 +27,5 @@ export function sendNotificationEmail(
 	ses
 		.sendEmail(email)
 		.promise()
-		.then(data => logger.info(`email submitted to SES for ${user.email}`, data))
 		.catch(logger.error);
 }
