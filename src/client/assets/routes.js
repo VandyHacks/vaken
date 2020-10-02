@@ -59,7 +59,7 @@ const routes = [
 	{
 		authLevel: [UserType.Hacker],
 		component: React.lazy(() => import('../routes/events/CheckInEvents')),
-		displayText: 'Check-In Events',
+		displayText: 'Event Check-in',
 		path: '/checkin',
 	},
 	{
