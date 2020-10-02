@@ -104,6 +104,7 @@ const hackerResolvers: CustomResolvers<Context>['Hacker'] = {
 		if (!team) return { _id: new ObjectID(), createdAt: new Date(0), memberIds: [], name: '' };
 		return query({ name: team.team }, models.Teams);
 	},
+	eventScore: async hacker => (await hacker).eventScore || null,
 	userType: () => UserType.Hacker,
 	volunteer: async hacker => (await hacker).volunteer || null,
 };
@@ -187,6 +188,18 @@ export const resolvers: CustomResolvers<Context> = {
 		checkInUserToEvent: async (root, { input }, { models, user }) => {
 			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
 			return checkInUserToEvent(input.user, input.event, models);
+		},
+		checkInUserToEventAndUpdateEventScore: async (root, { input }, { models, user }) => {
+			const userObject = checkIsAuthorizedArray([UserType.Hacker, UserType.Volunteer], user);
+			checkInUserToEvent(input.user, input.event, models);
+			const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
+				{ _id: new ObjectID(userObject._id) },
+				{ $set: { eventScore: (userObject.eventScore || 0) + input.eventScore } },
+				{ returnOriginal: false }
+			);
+			if (!ok || !value)
+				throw new UserInputError(`user ${userObject._id} (${value}) error: ${JSON.stringify(err)}`);
+			return value;
 		},
 		createSponsor: async (
 			root,
@@ -538,16 +551,23 @@ export const resolvers: CustomResolvers<Context> = {
 			return ctx.models.EventCheckIns.find().toArray();
 		},
 		events: async (root, args, ctx) => {
-			const user = checkIsAuthorizedArray([UserType.Organizer, UserType.Sponsor], ctx.user);
+			const user = checkIsAuthorizedArray(
+				[UserType.Organizer, UserType.Sponsor, UserType.Hacker],
+				ctx.user
+			);
 			if (user.userType === UserType.Sponsor) {
 				const { _id } = (user as SponsorDbObject).company;
 				const events = await ctx.models.Events.find({ 'owner._id': new ObjectID(_id) }).toArray();
 				return events;
 			}
-			if (user.userType === UserType.Organizer) {
+			if (user.userType === UserType.Organizer || user.userType === UserType.Hacker) {
 				return ctx.models.Events.find().toArray();
 			}
 			return ctx.models.Events.find({ owner: null }).toArray();
+		},
+		eventsForHackers: async (root, args, ctx) => {
+			const user = checkIsAuthorized(UserType.Hacker, ctx.user);
+			return ctx.models.Events.find().toArray();
 		},
 		company: async (root, { id }, ctx) => queryById(id, ctx.models.Companies),
 		companies: async (root, args, ctx) => {

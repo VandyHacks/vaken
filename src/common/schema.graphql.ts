@@ -17,6 +17,7 @@ export default gql`
 		userType: UserType! @column
 		phoneNumber: String @column
 		eventsAttended: [ID!]! @column
+		eventScore: Int @column
 	}
 
 	enum DietaryRestriction {
@@ -142,12 +143,14 @@ export default gql`
 		eventType: String! @column
 		gcalID: String @column
 		owner: Company @embedded
+		eventScore: Int! @column
 	}
 
 	type EventCheckIn @entity(embedded: true) {
 		id: ID! @id @column
 		user: String! @column
 		timestamp: Int! @column(overrideType: "Date")
+		eventScore: Int
 	}
 
 	type Hacker implements User @entity {
@@ -175,6 +178,7 @@ export default gql`
 		github: String @column
 		team: Team @embedded
 		eventsAttended: [ID!]! @column
+		eventScore: Int @column
 		application: [ApplicationField!]! @embedded
 		emailUnsubscribed: Boolean! @column
 	}
@@ -202,6 +206,7 @@ export default gql`
 		shifts: [Shift!]! @embedded
 		skills: [String!]! @column
 		eventsAttended: [ID!]! @column
+		eventScore: Int @column
 	}
 
 	type Team @entity(embedded: true) {
@@ -230,6 +235,7 @@ export default gql`
 		phoneNumber: String
 		company: Company! @embedded
 		eventsAttended: [ID!]! @column
+		eventScore: Int @column
 	}
 
 	type Organizer implements User @entity {
@@ -249,6 +255,7 @@ export default gql`
 		phoneNumber: String
 		permissions: [String]! @column
 		eventsAttended: [ID!]! @column
+		eventScore: Int @column
 	}
 
 	type Volunteer implements User @entity {
@@ -276,6 +283,7 @@ export default gql`
 		github: String @column
 		team: Team @embedded
 		eventsAttended: [ID!]! @column
+		eventScore: Int @column
 		application: [ApplicationField!]! @embedded
 		emailUnsubscribed: Boolean! @column
 	}
@@ -288,6 +296,7 @@ export default gql`
 		hackers(sortDirection: SortDirection): [Hacker!]!
 		event(id: ID!): Event!
 		events(sortDirection: SortDirection): [Event!]!
+		eventsForHackers(sortDirection: SortDirection): [Event!]!
 		eventCheckIn(id: ID!): EventCheckIn!
 		eventCheckIns(sortDirection: SortDirection): [EventCheckIn!]!
 		sponsor(id: ID!): Sponsor!
@@ -331,6 +340,12 @@ export default gql`
 	input EventCheckInInput {
 		user: ID!
 		event: ID!
+	}
+
+	input EventCheckInUpdateInput {
+		user: ID!
+		event: ID!
+		eventScore: Int!
 	}
 
 	input EventCheckInInputByNfc {
@@ -383,6 +398,7 @@ export default gql`
 		eventType: String!
 		gcalID: String
 		id: String
+		eventScore: Int
 	}
 
 	input AssignSponsorEventInput {
@@ -409,6 +425,7 @@ export default gql`
 		hackerStatus(input: HackerStatusInput!): Hacker!
 		hackerStatuses(input: HackerStatusesInput!): [Hacker!]!
 		checkInUserToEvent(input: EventCheckInInput!): User!
+		checkInUserToEventAndUpdateEventScore(input: EventCheckInUpdateInput!): Hacker!
 		removeUserFromEvent(input: EventCheckInInput!): User!
 		registerNFCUIDWithUser(input: NFCRegisterInput!): User!
 		checkInUserToEventByNfc(input: EventCheckInInputByNfc!): User!

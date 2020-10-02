@@ -39,6 +39,16 @@ export const transformCalEventToDBUpdate = (event: Record<string, string>): Even
 		throw new AuthenticationError('Calendar event did not contain start or end timestamp');
 	const parsedStart = new Date(event.start);
 	const parsedEnd = new Date(event.end);
+	let parsedScore = 0;
+	if (event.description !== '') {
+		const eDes = event.description
+			.split('\n')
+			.map(s => s.trim())
+			.filter(s => s.startsWith('Points:'));
+		if (eDes.length > 0) {
+			parsedScore = parseInt(eDes[0].split(' ')[1], 10);
+		}
+	}
 	const parsedType = /\[(.*?)\]/.exec(event.description); // Looks for a **single** [Event Type] tag in name
 	return {
 		name: event.summary,
@@ -47,6 +57,7 @@ export const transformCalEventToDBUpdate = (event: Record<string, string>): Even
 		description: event.description.replace(/\s*\[(.*?)\]\s*/, ''), // Removes the [Event Type] tag in name
 		location: event.location,
 		eventType: parsedType != null ? parsedType[1] : '',
+		eventScore: parsedScore,
 		gcalID: event.uid,
 	} as EventUpdate;
 };
@@ -90,6 +101,7 @@ export async function addOrUpdateEvent(
 		duration: eventInput.duration,
 		description: eventInput.description,
 		location: eventInput.location,
+		eventScore: eventInput.eventScore,
 		eventType: eventInput.eventType,
 		gcalID: eventInput.gcalID,
 	} as EventDbObject;
@@ -103,6 +115,7 @@ export async function addOrUpdateEvent(
 				description: eventDiffObj.description,
 				location: eventDiffObj.location,
 				eventType: eventDiffObj.eventType,
+				eventScore: eventDiffObj.eventScore,
 			},
 			$setOnInsert: {
 				attendees: [],

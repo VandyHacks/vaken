@@ -15,6 +15,24 @@ export default gql`
 		}
 	}
 
+	query eventsForHackers {
+		events {
+			id
+			name
+			eventType
+			startTimestamp
+			duration
+			eventScore
+		}
+	}
+
+	mutation checkInUserToEventAndUpdateEventScore($input: EventCheckInUpdateInput!) {
+		checkInUserToEventAndUpdateEventScore(input: $input) {
+			id
+			eventScore
+		}
+	}
+
 	mutation addOrUpdateEvent($input: EventUpdateInput!) {
 		addOrUpdateEvent(input: $input) {
 			id
