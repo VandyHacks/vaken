@@ -9,9 +9,9 @@ import STRINGS from '../../assets/strings.json';
 import { SmallCenteredText } from '../../components/Text/SmallCenteredText';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import {
-	useMeQuery,
 	useCheckInUserToEventAndUpdateEventScoreMutation,
 	useEventsForHackersQuery,
+	useMyEventStatusQuery,
 } from '../../generated/graphql';
 import Spinner from '../../components/Loading/Spinner';
 
@@ -34,18 +34,19 @@ const HackerDashBG = styled(FloatingPopup)`
 	}
 `;
 export const CheckInEvent: FunctionComponent = (): JSX.Element => {
-	const { data, loading } = useMeQuery();
-	const eventsQuery = useEventsForHackersQuery();
+	const {
+		loading: eventsLoading,
+		error: eventsError,
+		data: eventsData,
+	} = useEventsForHackersQuery();
+	const { loading: hackerLoading, error: hackerError, data: hackerData } = useMyEventStatusQuery();
 	const [checkInUserToEventUpdateEventScore] = useCheckInUserToEventAndUpdateEventScoreMutation();
-	const eventsLoading = eventsQuery.loading;
-	const eventsError = eventsQuery.error;
-	const eventsData = eventsQuery.data;
 
-	if (loading || !data || !data.me || !data.me.id || eventsLoading || !eventsData) {
+	if (eventsLoading || !eventsData || hackerLoading || !hackerData || !hackerData.me) {
 		return <Spinner />;
 	}
 
-	if (eventsError) {
+	if (eventsError || hackerError) {
 		console.log(eventsError);
 		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 	}
@@ -83,6 +84,10 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 			<FlexStartColumn>
 				<HackerDashBG>
 					<FlexColumn>
+						<Title fontSize="1.75rem">Your Score:</Title>
+						<SmallCenteredText color={`${STRINGS.DARK_TEXT_COLOR}`} fontSize="1.3rem" margin="1rem">
+							<span style={{ fontWeight: 'bold' }}>{hackerData.me.eventScore ?? '0'}</span>
+						</SmallCenteredText>
 						<Title fontSize="1.75rem">Ongoing Events:</Title>
 						{eventsCurrent.map(row => (
 							<FlexColumn key={row.id}>
@@ -98,18 +103,19 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 									fontSize="1.4em"
 									background={STRINGS.ACCENT_COLOR}
 									glowColor="rgba(0, 0, 255, 0.67)"
+									enabled={!hackerData.me?.eventsAttended.includes(row.id)}
 									onClick={async () => {
 										toast.dismiss();
 										return checkInUserToEventUpdateEventScore({
 											variables: {
 												input: {
 													event: row.id,
-													user: data.me ? data.me.id : '',
+													user: hackerData?.me?.id ?? '',
 													eventScore: row.eventScore,
 												},
 											},
 										})
-											.then(() => {
+											.then(result => {
 												toast.dismiss();
 												return toast.success('You have been checked in successfully!', {
 													position: 'bottom-right',
@@ -127,7 +133,7 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 												});
 											});
 									}}>
-									Check In
+									{hackerData.me?.eventsAttended.includes(row.id) ? 'Checked In!' : 'Check In'}
 								</TextButton>
 							</FlexColumn>
 						))}

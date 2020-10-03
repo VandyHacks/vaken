@@ -24,6 +24,7 @@ export type ButtonProps = CenterButtonTextProps &
 	ButtonHTMLAttributes<HTMLButtonElement> & {
 		glowColor?: string;
 		invalid?: boolean;
+		enabled?: boolean;
 	};
 
 export const CenterButtonText = styled.div`

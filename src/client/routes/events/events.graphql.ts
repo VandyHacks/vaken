@@ -18,6 +18,7 @@ export default gql`
 	query eventsForHackers {
 		events {
 			id
+			__typename
 			name
 			eventType
 			startTimestamp
@@ -26,10 +27,20 @@ export default gql`
 		}
 	}
 
+	query myEventStatus {
+		me {
+			id
+			__typename
+			eventsAttended
+			eventScore
+		}
+	}
+
 	mutation checkInUserToEventAndUpdateEventScore($input: EventCheckInUpdateInput!) {
 		checkInUserToEventAndUpdateEventScore(input: $input) {
 			id
 			eventScore
+			eventsAttended
 		}
 	}
 

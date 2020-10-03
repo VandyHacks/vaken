@@ -126,44 +126,51 @@ export async function checkInUserToEvent(
 ): Promise<UserDbInterface> {
 	const userObjectID = new ObjectID(userID);
 	const eventObjectID = new ObjectID(eventID);
-	const user = await models.Hackers.findOne({ _id: userObjectID });
-	if (!user) if (!user) throw new UserInputError(`user ${userID} not found`);
-
-	const eventCheckInObj = {
-		_id: ObjectID.createFromTime(Date.now()),
-		timestamp: new Date(),
-		user: userID,
-	};
-	let retEvent = await models.Events.findOneAndUpdate(
-		{ _id: eventObjectID },
-		{
-			$push: { checkins: eventCheckInObj },
-		}
-	);
-
-	// TODO(mattleon): This requires hitting the DB like 5 times rip
-	if (await shouldWarnRepeatedCheckIn(userID, eventID, models)) {
-		throw new Error(`${user.firstName} ${user.lastName} is already checked into event`);
-	}
-	retEvent = await models.Events.findOneAndUpdate(
-		{ _id: eventObjectID },
-		{
-			$addToSet: { attendees: userObjectID.toHexString() },
-		},
-		{ returnOriginal: false }
-	);
-	const retUsr = await models.Hackers.findOneAndUpdate(
+	const retUserPromise = models.Hackers.findOneAndUpdate(
 		{ _id: userObjectID },
 		{
 			$addToSet: {
-				eventsAttended: eventObjectID.toHexString(),
+				eventsAttended: eventID,
 			},
+		},
+		{ returnOriginal: true }
+	);
+	const eventCheckInObjID = ObjectID.createFromTime(Date.now());
+	const eventCheckInObj = {
+		_id: eventCheckInObjID,
+		timestamp: new Date(),
+		user: userID,
+	};
+	const retEventPromise = models.Events.findOneAndUpdate(
+		{ _id: eventObjectID },
+		{
+			$addToSet: { attendees: userID },
+			$push: { checkins: eventCheckInObj },
 		},
 		{ returnOriginal: false }
 	);
-	if (retEvent.ok && retUsr.ok && retUsr.value) {
+
+	const retUser = await retUserPromise;
+	if (!retUser.value || !retUser.ok) {
+		models.Events.findOneAndUpdate(
+			{ _id: eventObjectID },
+			{
+				$pull: { checkins: { _id: eventCheckInObjID }, attendees: userID },
+			}
+		);
+		throw new UserInputError(`user ${userID} not found`);
+	}
+
+	const retEvent = await retEventPromise;
+	if (retUser.value?.eventsAttended.includes(eventID) && retEvent.value?.warnRepeatedCheckins) {
+		throw new Error(
+			`${retUser.value?.firstName} ${retUser.value?.lastName} (${userID}) is already checked into event`
+		);
+	}
+
+	if (retEvent.ok && retUser.ok && retUser.value) {
 		logger.info(`checked in user ${userID} to event ${eventID}`);
-		return retUsr.value;
+		return retUser.value;
 	}
 
 	throw new Error(`failed checking user <${userID}> into event <${eventID}>`);

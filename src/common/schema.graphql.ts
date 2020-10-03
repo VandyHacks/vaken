@@ -178,7 +178,7 @@ export default gql`
 		github: String @column
 		team: Team @embedded
 		eventsAttended: [ID!]! @column
-		eventScore: Int @column
+		eventScore: Int! @column
 		application: [ApplicationField!]! @embedded
 		emailUnsubscribed: Boolean! @column
 	}
@@ -283,7 +283,7 @@ export default gql`
 		github: String @column
 		team: Team @embedded
 		eventsAttended: [ID!]! @column
-		eventScore: Int @column
+		eventScore: Int! @column
 		application: [ApplicationField!]! @embedded
 		emailUnsubscribed: Boolean! @column
 	}

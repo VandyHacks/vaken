@@ -104,7 +104,7 @@ const hackerResolvers: CustomResolvers<Context>['Hacker'] = {
 		if (!team) return { _id: new ObjectID(), createdAt: new Date(0), memberIds: [], name: '' };
 		return query({ name: team.team }, models.Teams);
 	},
-	eventScore: async hacker => (await hacker).eventScore || null,
+	eventScore: async hacker => (await hacker).eventScore || 0,
 	userType: () => UserType.Hacker,
 	volunteer: async hacker => (await hacker).volunteer || null,
 };
@@ -194,11 +194,18 @@ export const resolvers: CustomResolvers<Context> = {
 			checkInUserToEvent(input.user, input.event, models);
 			const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
 				{ _id: new ObjectID(userObject._id) },
-				{ $set: { eventScore: (userObject.eventScore || 0) + input.eventScore } },
+				{ $inc: { eventScore: input.eventScore } },
 				{ returnOriginal: false }
 			);
 			if (!ok || !value)
 				throw new UserInputError(`user ${userObject._id} (${value}) error: ${JSON.stringify(err)}`);
+			if (user) {
+				// eslint-disable-next-line no-param-reassign
+				user.eventScore = value.eventScore;
+				// eslint-disable-next-line no-param-reassign
+				user.eventsAttended = value.eventsAttended;
+			}
+
 			return value;
 		},
 		createSponsor: async (
