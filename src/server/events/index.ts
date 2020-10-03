@@ -4,8 +4,10 @@ import { ObjectID } from 'mongodb';
 import { EventUpdateInput, EventDbObject, CompanyDbObject } from '../generated/graphql';
 import { Models } from '../models';
 import { EventUpdate } from '../../client/routes/events/ManageEventTypes';
+import logger from '../logger';
 
 const EVENTTYPE = 'VEVENT';
+const POINTS_REGEX = /Points:[\s\n]+?([0-9]*)/;
 
 const filterByCalType = (
 	objNames: (keyof CalendarResponse)[],
@@ -40,13 +42,14 @@ export const transformCalEventToDBUpdate = (event: Record<string, string>): Even
 	const parsedStart = new Date(event.start);
 	const parsedEnd = new Date(event.end);
 	let parsedScore = 0;
-	if (event.description !== '') {
-		const eDes = event.description
-			.split('\n')
-			.map(s => s.trim())
-			.filter(s => s.startsWith('Points:'));
-		if (eDes.length > 0) {
-			parsedScore = parseInt(eDes[0].split(' ')[1], 10);
+	if (POINTS_REGEX.test(event.description)) {
+		const result = POINTS_REGEX.exec(event.description);
+		try {
+			parsedScore = parseInt((result ?? [])[1], 10);
+		} catch (e) {
+			logger.log(
+				`No point value found for event ${event} or could not parse ${(result ?? [])[1]} as int`
+			);
 		}
 	}
 	const parsedType = /\[(.*?)\]/.exec(event.description); // Looks for a **single** [Event Type] tag in name
