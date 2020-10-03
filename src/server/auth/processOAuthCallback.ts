@@ -123,6 +123,7 @@ export default async (models: Models, profile: Profile, done: VerifyCallback): P
 					secondaryIds: [],
 					status: ApplicationStatus.Created,
 					userType: UserType.Hacker,
+					eventScore: 0,
 				});
 			}
 		} else {
