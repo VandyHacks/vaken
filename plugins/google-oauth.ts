@@ -1,3 +1,1 @@
-import { GoogleOAuth } from '@vandyhacks/google-oauth';
-
-export { GoogleOAuth };
+export { GoogleOAuth } from '@vandyhacks/google-oauth';

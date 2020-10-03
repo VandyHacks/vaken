@@ -1,3 +1,1 @@
-import { GitHubOAuth } from '@vandyhacks/github-oauth';
-
-export { GitHubOAuth };
+export { GitHubOAuth } from '@vandyhacks/github-oauth';
