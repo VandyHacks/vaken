@@ -7,7 +7,7 @@ import { EventUpdate } from '../../client/routes/events/ManageEventTypes';
 import logger from '../logger';
 
 const EVENTTYPE = 'VEVENT';
-const POINTS_REGEX = /Points:[\s\n]+?([0-9]*)/;
+const POINTS_REGEX = /Points:?[\s\n]+?([0-9]*)/;
 
 const filterByCalType = (
 	objNames: (keyof CalendarResponse)[],
