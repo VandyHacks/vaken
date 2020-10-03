@@ -85,7 +85,7 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 					<FlexColumn>
 						<Title fontSize="1.75rem">Ongoing Events:</Title>
 						{eventsCurrent.map(row => (
-							<div key={row.id}>
+							<FlexColumn key={row.id}>
 								<SmallCenteredText
 									color={`${STRINGS.DARK_TEXT_COLOR}`}
 									fontSize="1.3rem"
@@ -115,7 +115,7 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 													position: 'bottom-right',
 												});
 											})
-											.catch(e => {
+											.catch((e: Error) => {
 												toast.dismiss();
 												if (e.message.includes('is already checked into event')) {
 													return toast.error('You are already checked in!', {
@@ -129,7 +129,7 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 									}}>
 									Check In
 								</TextButton>
-							</div>
+							</FlexColumn>
 						))}
 					</FlexColumn>
 				</HackerDashBG>
