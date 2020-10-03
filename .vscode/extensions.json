@@ -4,6 +4,7 @@
 		"eg2.vscode-npm-script",
 		"msjsdiag.debugger-for-chrome",
 		"omartawfik.github-actions-vscode",
-		"jock.svg"
+		"jock.svg",
+		"esbenp.prettier-vscode"
 	]
 }
