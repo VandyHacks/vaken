@@ -184,7 +184,8 @@ typings/
 
 # dotenv environment variables file
 .env
-.env.test
+.env.*
+!.env.template
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -253,3 +254,4 @@ reports
 # ignore generated files
 src/server/generated
 src/client/generated
+
