@@ -191,7 +191,7 @@ export const resolvers: CustomResolvers<Context> = {
 		},
 		checkInUserToEventAndUpdateEventScore: async (root, { input }, { models, user }) => {
 			const userObject = checkIsAuthorizedArray([UserType.Hacker, UserType.Volunteer], user);
-			checkInUserToEvent(input.user, input.event, models);
+			await checkInUserToEvent(input.user, input.event, models);
 			const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
 				{ _id: new ObjectID(userObject._id) },
 				{ $inc: { eventScore: input.eventScore } },
