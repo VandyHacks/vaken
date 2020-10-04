@@ -14,14 +14,7 @@ module.exports = {
 				// Include ts, tsx, js, and jsx files.
 				exclude: [/server/, /node_modules/],
 				test: /\.(ts|js)x?$/,
-				use: [
-					{
-						loader: 'thread-loader',
-					},
-					{
-						loader: 'babel-loader',
-					},
-				],
+				use: ['babel-loader'],
 			},
 			{
 				test: /\.(gif|png|jpe?g)$/i,
@@ -38,17 +31,6 @@ module.exports = {
 			},
 		],
 	},
-	// optimization: {
-	// 	splitChunks: {
-	// 		cacheGroups: {
-	// 			commons: {
-	// 				chunks: 'all',
-	// 				name: 'vendors',
-	// 				test: /[\\/]node_modules[\\/]styled-components/,
-	// 			},
-	// 		},
-	// 	},
-	// },
 	output: {
 		filename: '[name].[contenthash].bundle.js',
 		path: path.resolve(__dirname, 'dist/src/server/app'),

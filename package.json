@@ -191,7 +191,6 @@
 		"style-loader": "^2.0.0",
 		"supertest": "^5.0.0",
 		"svg-inline-loader": "^0.8.2",
-		"thread-loader": "^3.0.0",
 		"ts-jest": "^26.4.1",
 		"ts-node-dev": "^1.0.0",
 		"typedoc": "^0.19.2",
