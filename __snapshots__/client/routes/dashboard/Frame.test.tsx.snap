@@ -2,7 +2,7 @@
 
 exports[`Test Frame Frame renders correctly 1`] = `
 <div
-  className="sc-fzoYHE dtOAsL"
+  className="sc-fzoJMP dJfSZY"
   onFocus={[Function]}
 >
   <div
@@ -12,7 +12,7 @@ exports[`Test Frame Frame renders correctly 1`] = `
       className="sc-AxjAm sc-AxirZ sc-AxiKw sc-AxhCb fcBnbp"
     >
       <button
-        className="sc-fznAgC dNmGEi"
+        className="sc-fzpkqZ dKQcgd"
         onClick={[Function]}
         type="button"
       >
@@ -27,52 +27,53 @@ exports[`Test Frame Frame renders correctly 1`] = `
         />
       </button>
       <h1
-        className="sc-fzoxKX eOFCTn"
+        className="sc-fzqPZZ gPwlHW"
         color="#3148A1"
       >
         Dashboard
       </h1>
     </div>
     <div
-      className="sc-fzpkqZ OWpCS"
+      className="sc-fzoYHE CaMlR"
     />
   </div>
   <div
-    className="sc-fzpkJw fyrmec sidebar"
+    className="sc-fzoYkl chglNj sidebar"
   >
     <div
-      className="sc-fznzOf fOhOco"
+      className="sc-fzpkJw kzbrKr"
     >
       <div
-        className="sc-fznMnq fxieIy"
+        className="sc-fznzOf kOlxmb"
       >
         <img
           alt="VH graphic"
+          height="158px"
           src="IconMock"
         />
       </div>
       <hr
-        className="sc-fzoant gnrCGl"
+        className="sc-fznMnq kNkcGJ"
       />
       <div
         className="sc-AxjAm sc-AxirZ sc-AxheI iCHgIv"
         height="calc(100% - calc(8rem + 160px))"
       >
         <ul
-          className="sc-fzoJMP dXIWax"
+          className="sc-fzoydu lddZIW"
         >
           <li>
             <a
               aria-current={null}
-              className="sc-fzoydu jDXlxx"
+              className="sc-fzqMAW bWTDAM"
               href="/dashboard"
               onClick={[Function]}
             >
               <button
-                className="sc-fzplWN sc-fznZeY cOyrJe sc-fzqAbL iJSFoz"
+                className="sc-fzplWN sc-fznZeY cOyrJe sc-fzomME ffNMXb"
               >
                 <div
-                  className="sc-AxmLO sc-fzozJi cGpCXg sc-fzqAbL iJSFoz"
+                  className="sc-AxmLO sc-fzozJi cGpCXg sc-fzomME ffNMXb"
                 >
                   Dashboard
                 </div>
@@ -82,15 +83,15 @@ exports[`Test Frame Frame renders correctly 1`] = `
           <li>
             <a
               aria-current={null}
-              className="sc-fzoydu jDXlxx"
+              className="sc-fzqMAW bWTDAM"
               href="/application"
               onClick={[Function]}
             >
               <button
-                className="sc-fzplWN sc-fznZeY cOyrJe sc-fzqAbL iJSFoz"
+                className="sc-fzplWN sc-fznZeY cOyrJe sc-fzomME ffNMXb"
               >
                 <div
-                  className="sc-AxmLO sc-fzozJi cGpCXg sc-fzqAbL iJSFoz"
+                  className="sc-AxmLO sc-fzozJi cGpCXg sc-fzomME ffNMXb"
                 >
                   Apply
                 </div>
@@ -100,15 +101,33 @@ exports[`Test Frame Frame renders correctly 1`] = `
           <li>
             <a
               aria-current={null}
-              className="sc-fzoydu jDXlxx"
+              className="sc-fzqMAW bWTDAM"
+              href="/checkin"
+              onClick={[Function]}
+            >
+              <button
+                className="sc-fzplWN sc-fznZeY cOyrJe sc-fzomME ffNMXb"
+              >
+                <div
+                  className="sc-AxmLO sc-fzozJi cGpCXg sc-fzomME ffNMXb"
+                >
+                  Event Check-in
+                </div>
+              </button>
+            </a>
+          </li>
+          <li>
+            <a
+              aria-current={null}
+              className="sc-fzqMAW bWTDAM"
               href="/help"
               onClick={[Function]}
             >
               <button
-                className="sc-fzplWN sc-fznZeY cOyrJe sc-fzqAbL iJSFoz"
+                className="sc-fzplWN sc-fznZeY cOyrJe sc-fzomME ffNMXb"
               >
                 <div
-                  className="sc-AxmLO sc-fzozJi cGpCXg sc-fzqAbL iJSFoz"
+                  className="sc-AxmLO sc-fzozJi cGpCXg sc-fzomME ffNMXb"
                 >
                   Help
                 </div>
@@ -121,26 +140,36 @@ exports[`Test Frame Frame renders correctly 1`] = `
           height="min-content"
         >
           <a
-            className="sc-fzqMAW bWTDAM"
+            className="sc-fzqAbL kYyAlo"
             href="/api/logout"
           >
             <button
-              className="sc-fzplWN sc-fznZeY cOyrJe sc-fzqAbL iJSFoz"
+              className="sc-fzplWN sc-fznZeY cOyrJe sc-fzomME ffNMXb"
             >
               <div
-                className="sc-AxmLO sc-fzozJi cGpCXg sc-fzqAbL iJSFoz"
+                className="sc-AxmLO sc-fzozJi cGpCXg sc-fzomME ffNMXb"
               >
                 Logout
               </div>
             </button>
           </a>
           <hr
-            className="sc-fzoant sc-fzomME kdLqb"
+            className="sc-fznMnq sc-fzoant WpBCp"
           />
           <h1
             className="sc-fzokOt hNxYVR"
           >
-            VandyHacks: Summer Edition
+            <a
+              className="sc-fzqAbL kYyAlo"
+              href="https://vandyhacks.org"
+              style={
+                Object {
+                  "color": "white",
+                }
+              }
+            >
+              VandyHacks VII
+            </a>
           </h1>
         </div>
       </div>
@@ -153,19 +182,19 @@ exports[`Test Frame Frame renders correctly 1`] = `
       className="sc-AxjAm sc-AxirZ sc-AxhUy gsmQlJ"
     >
       <div
-        className="sc-AxjAm sc-AxirZ sc-AxhUy sc-fzoiQi sc-fzoKki jteZdl"
+        className="sc-AxjAm sc-AxirZ sc-AxhUy sc-fznWqX sc-fzoxKX kFKqxx"
       >
         <div
           className="sc-AxjAm sc-AxirZ ljxDq"
         >
           <h1
-            className="sc-fzoxKX fDHrfR"
+            className="sc-fzqPZZ dKXPZo"
             fontSize="1.75rem"
           >
             Your application status:
           </h1>
           <button
-            className="sc-fzplWN sc-fzoNJl LYdlo"
+            className="sc-fzplWN sc-fzoyTs cmXxvy"
             onClick={[Function]}
           >
             <div
