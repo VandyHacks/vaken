@@ -62,7 +62,7 @@ const testEventObj: Record<string, string> = {
 	summary: 'testEvent',
 	start: '2019-09-06T03:41:33.714+00:00',
 	end: '2019-09-06T07:41:33.714+00:00',
-	description: 'testEventdesc [testType]',
+	description: 'testEventdesc Points: 40 [testType]',
 	location: 'location',
 	uid: 'testGcalID',
 };
@@ -71,10 +71,11 @@ const testEventUpdateGcal: EventUpdate = {
 	name: 'testEvent',
 	startTimestamp: '2019-09-06T03:41:33.714+00:00',
 	duration: 240,
-	description: 'testEventdesc',
+	description: 'testEventdesc Points: 40',
 	location: 'location',
 	eventType: 'testType',
 	gcalID: 'testGcalID',
+	eventScore: 40,
 };
 
 const testEventUpdateGcal2: EventUpdate = {
@@ -85,6 +86,7 @@ const testEventUpdateGcal2: EventUpdate = {
 	location: 'location2',
 	eventType: 'testType2',
 	gcalID: 'testGcalID',
+	eventScore: 0,
 };
 
 const eventID = new ObjectId();

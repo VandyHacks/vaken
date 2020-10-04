@@ -72,7 +72,7 @@ describe('Test resolver helpers', () => {
 
 		it('throws an error when the item is not in the enum', () => {
 			expect(() => void toEnum(ShirtSize)('WUMBO')).toThrow(
-				`Invalid enum value: "WUMBO" is not in "["XS","S","M","L","XL","XXL"]"`
+				`Invalid enum value: "WUMBO" is not in`
 			);
 		});
 	});
