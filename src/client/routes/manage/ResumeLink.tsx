@@ -45,7 +45,11 @@ const Value = styled('td')`
 	}
 `;
 
-const DangerousRow: FC<{ label: string; value: string; onMouseEnter: any }> = props => {
+const DangerousRow: FC<{
+	label: string;
+	value: string;
+	onMouseEnter: React.MouseEventHandler;
+}> = props => {
 	const { label, value, onMouseEnter } = props;
 
 	return (

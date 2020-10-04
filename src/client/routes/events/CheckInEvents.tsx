@@ -115,7 +115,7 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 												},
 											},
 										})
-											.then(result => {
+											.then(() => {
 												toast.dismiss();
 												return toast.success('You have been checked in successfully!', {
 													position: 'bottom-right',

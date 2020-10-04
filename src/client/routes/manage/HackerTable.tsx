@@ -338,14 +338,9 @@ const HackerTable: FC<HackerTableProps> = ({
 							<ColumnSelect
 								isMulti
 								options={options}
-								onChange={(selected: any) => {
+								onChange={(selected: Record<string, string>[]) => {
 									if (!selected) setEventIds([]);
-									else
-										setEventIds(
-											(selected as Record<string, string>[]).map(
-												(s: Record<string, string>) => s.value
-											)
-										);
+									else setEventIds(selected.map(s => s.value));
 								}}
 							/>
 						</div>

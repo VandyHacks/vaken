@@ -18,7 +18,6 @@ export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 	const sponsorLoading = sponsorMeQueryResult.loading;
 	const sponsorError = sponsorMeQueryResult.error;
 	let sponsorData: Sponsor;
-	let viewHackerTable = true;
 	let viewResumes = true;
 
 	if (!sponsorLoading && sponsorMeQueryResult.data && sponsorMeQueryResult.data.me) {
@@ -31,9 +30,6 @@ export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 			sponsorData.company.tier &&
 			sponsorData.company.tier.permissions
 		) {
-			viewHackerTable = sponsorData.company.tier.permissions.includes(
-				STRINGS.PERMISSIONS_HACKER_TABLE
-			);
 			viewResumes = sponsorData.company.tier.permissions.includes(STRINGS.PERMISSIONS_RESUME);
 		}
 	}
@@ -47,11 +43,8 @@ export const SponsorHackerView: FunctionComponent = (): JSX.Element => {
 		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 	}
 
-	// if (false && !viewHackerTable) {
-	// // TODO: handle sponsor permissions properly
-	// return <p>You dont have permissions to view hacker information</p>;
-	// }
-
+	// TODO: Check permissions of current user's company against
+	// `STRINGS.PERMISSIONS_HACKER_TABLE` and deny access to those without permissions.
 	return (
 		<>
 			<FloatingPopup borderRadius="1rem" height="100%" backgroundOpacity="1" padding="1.5rem">

@@ -60,7 +60,7 @@ const handleSponsorCreation = async (
 };
 
 export default async (models: Models, profile: Profile, done: VerifyCallback): Promise<void> => {
-	const { Logins, Hackers, Sponsors, Organizers } = models;
+	const { Logins, Hackers, Sponsors } = models;
 
 	let { userType } = (await Logins.findOne({
 		provider: profile.provider,

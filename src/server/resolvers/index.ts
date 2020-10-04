@@ -573,7 +573,7 @@ export const resolvers: CustomResolvers<Context> = {
 			return ctx.models.Events.find({ owner: null }).toArray();
 		},
 		eventsForHackers: async (root, args, ctx) => {
-			const user = checkIsAuthorized(UserType.Hacker, ctx.user);
+			checkIsAuthorized(UserType.Hacker, ctx.user);
 			return ctx.models.Events.find().toArray();
 		},
 		company: async (root, { id }, ctx) => queryById(id, ctx.models.Companies),

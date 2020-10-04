@@ -1,11 +1,10 @@
 import AutoComplete from '../components/Input/AutoCompleteTextInput';
 import TextInput from '../components/Input/TextInput';
 import { FileInput } from '../components/Input/FileInput';
-import TextArea from '../components/Input/TextArea';
 import { Checkbox, CheckboxSansTitleCase } from '../components/Input/Checkbox';
 import { Slider, SliderShirtSizes } from '../components/Input/Slider';
 import Calendar from '../components/Input/Calendar';
-import { Gender, ShirtSize, DietaryRestriction } from '../generated/graphql';
+import { Gender, ShirtSize } from '../generated/graphql';
 import { Boolean } from '../components/Input/Boolean';
 
 export const questions = [

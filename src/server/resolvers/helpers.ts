@@ -1,13 +1,7 @@
 import { ApolloError, AuthenticationError, UserInputError } from 'apollo-server-express';
 import { Collection, FilterQuery, ObjectID, ObjectId, MatchKeysAndValues } from 'mongodb';
-import {
-	UserDbInterface,
-	UserInput,
-	UserType,
-	ApplicationFieldDbObject,
-} from '../generated/graphql';
+import { UserDbInterface, UserInput, UserType } from '../generated/graphql';
 import { Models } from '../models';
-import { getSignedReadUrl } from '../storage/gcp';
 import logger from '../logger';
 
 /**
