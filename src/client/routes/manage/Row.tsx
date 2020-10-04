@@ -5,7 +5,6 @@ import { TableRowProps } from 'react-virtualized';
 interface Props extends TableRowProps {
 	selectableRef: string;
 	selected: boolean;
-	selecting: boolean;
 }
 
 export const Row: FunctionComponent<Props> = (props: Props): JSX.Element => {

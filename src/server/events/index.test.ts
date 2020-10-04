@@ -123,8 +123,8 @@ const vhCalendarID = 'vanderbilt.edu_8p58kn7032badn5et22pq1iqjs@group.calendar.g
 
 beforeAll(async () => {
 	try {
-		mongoServer = new MongoMemoryServer();
-		const mongoUri = await mongoServer.getConnectionString();
+		mongoServer = await MongoMemoryServer.create();
+		const mongoUri = await mongoServer.getUri();
 		dbClient = new DB(mongoUri);
 		models = await dbClient.collections;
 		await models.Hackers.insertOne(testHacker);

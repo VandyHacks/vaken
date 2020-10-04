@@ -6,7 +6,7 @@ import STRINGS from '../../client/assets/strings.json';
 
 export const UnsubscribeHandler = (models: Models): RequestHandler => {
 	return async (req, res) => {
-		if (req.query.id) {
+		if (typeof req.query.id === 'string') {
 			logger.info(`Unsubscribing ${req.query.id} from emails...`);
 			models.Hackers.findOneAndUpdate(
 				{ _id: ObjectID.createFromHexString(req.query.id) },

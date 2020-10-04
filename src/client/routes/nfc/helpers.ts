@@ -30,11 +30,10 @@ export const createMatchCriteria = (searchValue: string) => (hacker: QueriedHack
 };
 
 // assigns the row names for styling
-export const generateRowClassName = (data: QueriedHacker[], topUserMatch: string) => ({
-	index,
-}: {
-	index: number;
-}) => {
+export const generateRowClassName: (
+	data: QueriedHacker[],
+	topUserMatch: string
+) => (arg: { index: number }) => string = (data, topUserMatch) => ({ index }) => {
 	if (data[index] && data[index].id === topUserMatch) return 'selected';
 
 	if (index < 0) return 'headerRow';

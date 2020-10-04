@@ -7,7 +7,7 @@ import Spinner from '../Loading/Spinner';
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 	children: React.ReactNode;
 	onClick: () => void | Promise<unknown>;
-	width?: CSS.WidthProperty<0>;
+	width?: CSS.Property.Width;
 }
 
 export const HeaderButton: FC<Props & { fontSize?: string }> = ({

@@ -63,7 +63,10 @@ export default class DB {
 	 * This method will throw if connection was unsuccessful.
 	 */
 	public async connect(): Promise<void> {
-		this.client_ = await MongoClient.connect(this.uri, { useNewUrlParser: true });
+		this.client_ = await MongoClient.connect(this.uri, {
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+		});
 		if (!this.client_) throw new Error('MongoClient not connected');
 	}
 

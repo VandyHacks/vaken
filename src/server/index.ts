@@ -1,4 +1,4 @@
-import { ApolloServer, makeExecutableSchema } from 'apollo-server-express';
+import { ApolloServer, IResolvers, makeExecutableSchema } from 'apollo-server-express';
 import { DIRECTIVES } from '@graphql-codegen/typescript-mongodb';
 import express from 'express';
 import passport from 'passport';
@@ -28,11 +28,11 @@ logger.info(`Node env: ${NODE_ENV}`);
 const app = express();
 
 const pluginResolvers = serverPlugins.map(serverPlugin => {
-	return serverPlugin.resolvers as {};
+	return serverPlugin.resolvers;
 });
 
 const pluginTypeDefs = serverPlugins.map(serverPlugin => {
-	return serverPlugin.schema as {};
+	return serverPlugin.schema;
 });
 
 export const schema = makeExecutableSchema({
@@ -40,7 +40,7 @@ export const schema = makeExecutableSchema({
 		requireResolversForAllFields: true,
 		requireResolversForResolveType: false,
 	},
-	resolvers: [resolvers as {}, ...pluginResolvers],
+	resolvers: [resolvers as IResolvers, ...(pluginResolvers as IResolvers[])],
 	typeDefs: [DIRECTIVES, gqlSchema, ...pluginTypeDefs],
 });
 

@@ -1,10 +1,10 @@
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const webpack = require('webpack');
 const common = require('./webpack.common.js');
 
-module.exports = merge.smart(common, {
+module.exports = merge(common, {
 	mode: 'development',
 	devtool: 'source-map',
 	devServer: {

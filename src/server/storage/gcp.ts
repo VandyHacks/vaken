@@ -15,16 +15,13 @@ export const getSignedUploadUrl = async (filename: string): Promise<string> => {
 	const storage = new Storage({ credentials });
 
 	const options: GetSignedUrlConfig = {
-		action: 'write' as 'write',
+		action: 'write' as const,
 		contentType: 'application/pdf',
 		expires: Date.now() + 15 * 60 * 1000, // 15 minutes
-		version: 'v4' as 'v4',
+		version: 'v4' as const,
 	};
 
-	const [url] = await storage
-		.bucket(BUCKET_NAME)
-		.file(filename)
-		.getSignedUrl(options);
+	const [url] = await storage.bucket(BUCKET_NAME).file(filename).getSignedUrl(options);
 
 	return url;
 };
@@ -34,15 +31,12 @@ export const getSignedReadUrl = async (filename: string): Promise<string> => {
 	const storage = new Storage({ credentials });
 
 	const options: GetSignedUrlConfig = {
-		action: 'read' as 'read',
+		action: 'read' as const,
 		expires: Date.now() + 24 * 60 * 60 * 1000, // 7 days
-		version: 'v4' as 'v4',
+		version: 'v4' as const,
 	};
 
-	const [url] = await storage
-		.bucket(BUCKET_NAME)
-		.file(filename)
-		.getSignedUrl(options);
+	const [url] = await storage.bucket(BUCKET_NAME).file(filename).getSignedUrl(options);
 
 	return url;
 };

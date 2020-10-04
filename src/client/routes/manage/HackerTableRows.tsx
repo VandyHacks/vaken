@@ -125,7 +125,7 @@ function resumeRenderer(): FC<ActionRendererProps> {
 }
 
 interface HackerTableRowsProps {
-	generateRowClassName: Function;
+	generateRowClassName: (arg: { index: number }) => string;
 	height: number;
 	onSortColumnChange: (ctx: TableCtxI) => (p: SortFnProps) => void;
 	sortedData: unknown[];

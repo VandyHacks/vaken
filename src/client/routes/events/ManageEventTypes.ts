@@ -1,4 +1,4 @@
-import { MutationFunction } from '@apollo/react-common';
+import { MutationFunction } from '@apollo/client';
 import {
 	AddOrUpdateEventMutation,
 	AddOrUpdateEventMutationVariables,

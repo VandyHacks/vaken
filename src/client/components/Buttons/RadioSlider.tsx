@@ -60,7 +60,7 @@ const Selector = styled('div')`
 const disabledColor = '#696969';
 
 export const RadioSlider: FC<Props> = (props: Props) => {
-	const { option1, option2, option3, disable } = props;
+	const { option1, option2, option3, disable = false } = props;
 	const [selected, setSelected] = useState(option2);
 	const [width, setWidth] = useState(0);
 	const [left, setLeft] = useState(0);
@@ -130,20 +130,21 @@ export const RadioSlider: FC<Props> = (props: Props) => {
 		}
 	}, [isLoaded, option1Width, option2Width, option3Width, value, toggle]);
 
+	const { onChange = null } = props;
 	const onClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
 		const target = event.target as HTMLDivElement;
-		if (!props.disable) {
+		if (!disable) {
 			toggle(target.id);
-			if (typeof props.onChange === 'function') {
-				props.onChange(target.id);
+			if (typeof onChange === 'function') {
+				onChange(target.id);
 			}
 		}
 	};
 
-	const { large } = props;
+	const { large = false } = props;
 	// Selector's onClick works to allow you to click the middle button if it is already selected by default for the large button
 	return (
-		<Wrapper large={large || false} disable={disable || false}>
+		<Wrapper large={large} disable={disable}>
 			<Switch id={option1} onClick={onClick} ref={option1Ref}>
 				{option1}
 			</Switch>

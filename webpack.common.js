@@ -50,18 +50,26 @@ module.exports = {
 	// 	},
 	// },
 	output: {
-		filename: '[name].[hash].bundle.js',
+		filename: '[name].[contenthash].bundle.js',
 		path: path.resolve(__dirname, 'dist/src/server/app'),
 		publicPath: ASSET_PATH,
 		crossOriginLoading: 'anonymous',
 	},
 	plugins: [
-		new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }), // Check types asynchronously
+		new ForkTsCheckerWebpackPlugin({
+			eslint: { enabled: true, files: ['src/'] },
+			typescript: { enabled: true },
+		}), // Check types asynchronously
 		new HtmlWebpackPlugin({
 			template: './src/client/index.html',
 		}), // For index.html entry point
 	],
 	resolve: {
 		extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+		// alias: {
+		// 	react: 'preact/compat',
+		// 	'react-dom/test-utils': 'preact/test-utils',
+		// 	'react-dom': 'preact/compat',
+		// },
 	},
 };

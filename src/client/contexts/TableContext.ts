@@ -51,7 +51,10 @@ export class SearchCriteria {
 			return new Fuse(fields, {
 				keys: criterion.selectedColumns.map((col: Option) => col.value) as (keyof QueriedHacker)[],
 				...fuseOpts,
-			}).search(criterion.searchValue);
+			})
+				.search(criterion.searchValue)
+				.sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
+				.map(result => result.item);
 		}
 		if (criterion.searchValue.trim() !== '') {
 			// filter based on regex

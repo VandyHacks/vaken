@@ -2,13 +2,13 @@
 
 exports[`Test Sidebar Sidebar renders correctly 1`] = `
 <div
-  className="sc-fzoYkl chglNj sidebar"
+  className="sc-ciSmjq golZiG sidebar"
 >
   <div
-    className="sc-fzpkJw kzbrKr"
+    className="sc-jcwofb iPnNVn"
   >
     <div
-      className="sc-fznzOf kOlxmb"
+      className="sc-carGAA WvIBe"
     >
       <img
         alt="VH graphic"
@@ -17,27 +17,27 @@ exports[`Test Sidebar Sidebar renders correctly 1`] = `
       />
     </div>
     <hr
-      className="sc-fznMnq kNkcGJ"
+      className="sc-iTVIwl fzXqQL"
     />
     <div
-      className="sc-AxjAm sc-AxirZ sc-AxheI iCHgIv"
+      className="sc-bdnylx sc-gtssRu sc-gKAblj fZfYHk dezkIe gEXMCh"
       height="calc(100% - calc(8rem + 160px))"
     >
       <ul
-        className="sc-fzoydu lddZIW"
+        className="sc-dPaNSN pdbzE"
       >
         <li>
           <a
             aria-current={null}
-            className="sc-fzqMAW bWTDAM"
+            className="sc-jNnnWF hsyfMI"
             href="/dashboard"
             onClick={[Function]}
           >
             <button
-              className="sc-fzplWN sc-fznZeY cOyrJe sc-fzomME ffNMXb"
+              className="sc-iqAbSa sc-bqGHjH fAhYJg hMHjap sc-efHXLn byrbTX"
             >
               <div
-                className="sc-AxmLO sc-fzozJi cGpCXg sc-fzomME ffNMXb"
+                className="sc-fujyUd sc-pNWxx hizPi jiaWaO sc-efHXLn byrbTX"
               >
                 Dashboard
               </div>
@@ -47,15 +47,15 @@ exports[`Test Sidebar Sidebar renders correctly 1`] = `
         <li>
           <a
             aria-current={null}
-            className="sc-fzqMAW bWTDAM"
+            className="sc-jNnnWF hsyfMI"
             href="/application"
             onClick={[Function]}
           >
             <button
-              className="sc-fzplWN sc-fznZeY cOyrJe sc-fzomME ffNMXb"
+              className="sc-iqAbSa sc-bqGHjH fAhYJg hMHjap sc-efHXLn byrbTX"
             >
               <div
-                className="sc-AxmLO sc-fzozJi cGpCXg sc-fzomME ffNMXb"
+                className="sc-fujyUd sc-pNWxx hizPi jiaWaO sc-efHXLn byrbTX"
               >
                 Apply
               </div>
@@ -65,15 +65,15 @@ exports[`Test Sidebar Sidebar renders correctly 1`] = `
         <li>
           <a
             aria-current={null}
-            className="sc-fzqMAW bWTDAM"
+            className="sc-jNnnWF hsyfMI"
             href="/checkin"
             onClick={[Function]}
           >
             <button
-              className="sc-fzplWN sc-fznZeY cOyrJe sc-fzomME ffNMXb"
+              className="sc-iqAbSa sc-bqGHjH fAhYJg hMHjap sc-efHXLn byrbTX"
             >
               <div
-                className="sc-AxmLO sc-fzozJi cGpCXg sc-fzomME ffNMXb"
+                className="sc-fujyUd sc-pNWxx hizPi jiaWaO sc-efHXLn byrbTX"
               >
                 Event Check-in
               </div>
@@ -83,15 +83,15 @@ exports[`Test Sidebar Sidebar renders correctly 1`] = `
         <li>
           <a
             aria-current={null}
-            className="sc-fzqMAW bWTDAM"
+            className="sc-jNnnWF hsyfMI"
             href="/help"
             onClick={[Function]}
           >
             <button
-              className="sc-fzplWN sc-fznZeY cOyrJe sc-fzomME ffNMXb"
+              className="sc-iqAbSa sc-bqGHjH fAhYJg hMHjap sc-efHXLn byrbTX"
             >
               <div
-                className="sc-AxmLO sc-fzozJi cGpCXg sc-fzomME ffNMXb"
+                className="sc-fujyUd sc-pNWxx hizPi jiaWaO sc-efHXLn byrbTX"
               >
                 Help
               </div>
@@ -100,31 +100,31 @@ exports[`Test Sidebar Sidebar renders correctly 1`] = `
         </li>
       </ul>
       <div
-        className="sc-AxjAm sc-AxirZ sc-AxgMl ZVNpI"
+        className="sc-bdnylx sc-gtssRu sc-jSFkmK fZfYHk bbzyKM bOPoVl"
         height="min-content"
       >
         <a
-          className="sc-fzqAbL kYyAlo"
+          className="sc-cTJmaU jmBmUd"
           href="/api/logout"
         >
           <button
-            className="sc-fzplWN sc-fznZeY cOyrJe sc-fzomME ffNMXb"
+            className="sc-iqAbSa sc-bqGHjH fAhYJg hMHjap sc-efHXLn byrbTX"
           >
             <div
-              className="sc-AxmLO sc-fzozJi cGpCXg sc-fzomME ffNMXb"
+              className="sc-fujyUd sc-pNWxx hizPi jiaWaO sc-efHXLn byrbTX"
             >
               Logout
             </div>
           </button>
         </a>
         <hr
-          className="sc-fznMnq sc-fzoant WpBCp"
+          className="sc-iTVIwl sc-iBzFoy fzXqQL jkywjx"
         />
         <h1
-          className="sc-fzokOt hNxYVR"
+          className="sc-ksluoS QOjk"
         >
           <a
-            className="sc-fzqAbL kYyAlo"
+            className="sc-cTJmaU jmBmUd"
             href="https://vandyhacks.org"
             style={
               Object {

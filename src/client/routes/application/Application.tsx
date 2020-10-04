@@ -106,7 +106,7 @@ const findRequiredUnfilled = (input: ApplicationInput[]): string => {
 	return requiredQuestion ? `[${requiredQuestion.title}] is required` : '';
 };
 
-export const Application: FunctionComponent<{}> = (): JSX.Element => {
+export const Application: FunctionComponent = (): JSX.Element => {
 	const { update: setActionButton } = useContext(ActionButtonContext);
 	const [openSection, setOpenSection] = useState('');
 	const [input, setInput] = useImmer<{ answer: string; question: string }[]>([]);

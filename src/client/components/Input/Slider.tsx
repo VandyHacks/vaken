@@ -63,14 +63,6 @@ const SliderContainer = styled.div`
 	}
 `;
 
-// Special component to handle shirt sizes in a slider
-export const SliderShirtSizes: FC<Props> = props => {
-	const { options = ['default'] } = props;
-
-	// FIXME: Quick fix for handling womens' sizes for backend enum types
-	return <ShirtSlider {...props} options={options} />;
-};
-
 export const ShirtSlider: FC<Props> = ({ value, setState, ...props }) => {
 	const { options = ['default'], className } = props;
 	const [counter, setCounter] = useState(0);
@@ -120,6 +112,14 @@ export const ShirtSlider: FC<Props> = ({ value, setState, ...props }) => {
 			</SliderContainer>
 		</fieldset>
 	);
+};
+
+// Special component to handle shirt sizes in a slider
+export const SliderShirtSizes: FC<Props> = props => {
+	const { options = ['default'] } = props;
+
+	// FIXME: Quick fix for handling womens' sizes for backend enum types
+	return <ShirtSlider {...props} options={options} />;
 };
 
 export const SliderSansTitleCase: FC<Props> = ({ value, setState, titleCase, ...props }) => {

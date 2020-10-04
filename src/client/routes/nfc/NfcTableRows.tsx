@@ -78,7 +78,7 @@ const renderHeaderAsLabel = ({
 };
 
 interface NfcTableRowsProps {
-	generateRowClassName: Function;
+	generateRowClassName: (arg: { index: number }) => string;
 	height: number;
 	onSortColumnChange: (ctx: TableCtxI) => (p: SortFnProps) => void;
 	sortedData: unknown[];

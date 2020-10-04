@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { MutationFunction } from '@apollo/react-common';
+import { MutationFunction } from '@apollo/client';
 import { RadioSlider } from '../../components/Buttons/RadioSlider';
 import { QueriedHacker } from './HackerTableTypes';
 import {
