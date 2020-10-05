@@ -12,7 +12,7 @@ exports[`Test Frame Frame renders correctly 1`] = `
       className="sc-bdnylx sc-gtssRu sc-dlnjPT sc-hKFyIo fZfYHk fBjTih gtfSVC cIYGjq"
     >
       <button
-        className="sc-ArjOu flfwZh"
+        className="sc-ArjOu elzKSA"
         onClick={[Function]}
         type="button"
       >
@@ -44,11 +44,10 @@ exports[`Test Frame Frame renders correctly 1`] = `
       className="sc-jcwofb iPnNVn"
     >
       <div
-        className="sc-carGAA WvIBe"
+        className="sc-carGAA cYbPuB"
       >
         <img
           alt="VH graphic"
-          height="158px"
           src="IconMock"
         />
       </div>
@@ -182,7 +181,7 @@ exports[`Test Frame Frame renders correctly 1`] = `
       className="sc-bdnylx sc-gtssRu sc-eCApGN fZfYHk fBjTih ebaYXL"
     >
       <div
-        className="sc-bdnylx sc-gtssRu sc-eCApGN sc-kfYqjs sc-gXfWUo fZfYHk fBjTih ebaYXL fTpVEd gGYFUJ"
+        className="sc-bdnylx sc-gtssRu sc-eCApGN sc-kfYqjs sc-gXfWUo fZfYHk fBjTih ebaYXL fTpVEd byLehM"
       >
         <div
           className="sc-bdnylx sc-gtssRu fZfYHk fBjTih"

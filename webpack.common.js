@@ -48,10 +48,10 @@ module.exports = {
 	],
 	resolve: {
 		extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
-		// alias: {
-		// 	react: 'preact/compat',
-		// 	'react-dom/test-utils': 'preact/test-utils',
-		// 	'react-dom': 'preact/compat',
-		// },
+		alias: {
+			react: 'preact/compat',
+			'react-dom/test-utils': 'preact/test-utils',
+			'react-dom': 'preact/compat',
+		},
 	},
 };

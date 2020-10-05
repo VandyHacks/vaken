@@ -129,6 +129,11 @@ const HackerDashBG = styled(FloatingPopup)`
 			width: 100%;
 		}
 	}
+
+	img {
+		display: block;
+		height: 200px;
+	}
 `;
 
 export const HackerDash: FunctionComponent = (): JSX.Element => {
@@ -185,11 +190,7 @@ export const HackerDash: FunctionComponent = (): JSX.Element => {
 										{statusInfo.status}
 									</CenterButtonText>
 								</ButtonOutline>
-								<img
-									src={statusInfo.img}
-									height="200px"
-									alt={`${STRINGS.APPLICATION_STATUS_SVG_ALT_TEXT}`}
-								/>
+								<img src={statusInfo.img} alt={`${STRINGS.APPLICATION_STATUS_SVG_ALT_TEXT}`} />
 								<SmallCenteredText
 									color={`${STRINGS.DARK_TEXT_COLOR}`}
 									fontSize="1rem"

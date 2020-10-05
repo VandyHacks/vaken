@@ -26,8 +26,14 @@ const Background = styled.div`
 
 const Logo = styled.div`
 	margin: 3rem 2rem;
-	width: min-content;
+	width: calc(100% - 4rem);
 	align-self: center;
+
+	img {
+		max-width: 100%;
+		width: 100%;
+		display: block;
+	}
 `;
 
 const HorizontalLine = styled.hr`
@@ -125,7 +131,7 @@ const Sidebar: FC<{ setMenuOpen?: React.Dispatch<React.SetStateAction<boolean>> 
 			<Layout className="sidebar">
 				<Background>
 					<Logo>
-						<img src={SqLogo} height="158px" alt={`${STRINGS.SHORTENED_HACKATHON_TITLE} graphic`} />
+						<img src={SqLogo} alt={`${STRINGS.SHORTENED_HACKATHON_TITLE} graphic`} />
 					</Logo>
 					<HorizontalLine />
 					<SpaceBetweenColumn height="calc(100% - calc(8rem + 160px))">
