@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/camelcase */
-
 import { UserInputError } from 'apollo-server-express';
+import { DocumentNode } from '@apollo/client';
 import {
 	UserType,
 	_Plugin__EventDbObject,
@@ -22,7 +21,7 @@ import { Resolvers } from '../../src/server/generated/graphql';
 import Context from '../../src/server/context';
 
 export class NFCPlugin {
-	public readonly schema: string;
+	public readonly schema: DocumentNode;
 
 	public readonly resolvers: Pick<
 		Resolvers<Context>,
@@ -63,10 +62,7 @@ export class NFCPlugin {
 					// //   return events;
 					// // }
 					if (user.userType === UserType.Organizer) {
-						return ctx.db
-							.collection<_Plugin__EventDbObject>('_Plugin__events')
-							.find()
-							.toArray();
+						return ctx.db.collection<_Plugin__EventDbObject>('_Plugin__events').find().toArray();
 					}
 					return ctx.db
 						.collection<_Plugin__EventDbObject>('_Plugin__events')

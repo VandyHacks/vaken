@@ -101,6 +101,7 @@ module.exports = {
 				],
 				'jsx-a11y/label-has-for': [0],
 				'no-console': [0],
+				'react/require-default-props': [0],
 			},
 		},
 	],
