@@ -1,4 +1,3 @@
-/* eslint-disable */
 module.exports = {
 	collectCoverage: true,
 	collectCoverageFrom: [
@@ -16,7 +15,11 @@ module.exports = {
 		{
 			// client-side testing config
 			displayName: 'Test client',
-			testMatch: ['<rootDir>/src/client/**/*.test.ts*'],
+			testMatch: [
+				'<rootDir>/src/client/**/*.test.ts*',
+				'<rootDir>/plugins/**/*.test.tsx',
+				'<rootDir>/plugins/**/*.client.tsx',
+			],
 			setupFiles: ['./__mocks__/fetch.js'],
 			testEnvironment: 'jsdom',
 			snapshotResolver: './__mocks__/snapshotResolver',
@@ -38,7 +41,11 @@ module.exports = {
 		{
 			// server-side testing config
 			displayName: 'Test server',
-			testMatch: ['<rootDir>/src/server/**/*.test.ts'],
+			testMatch: [
+				'<rootDir>/src/server/**/*.test.ts',
+				'<rootDir>/plugins/**/*.test.ts',
+				'<rootDir>/plugins/**/*.server.test.ts',
+			],
 			setupFiles: ['./__mocks__/env.js'],
 			testEnvironment: 'node',
 			snapshotResolver: './__mocks__/snapshotResolver',
