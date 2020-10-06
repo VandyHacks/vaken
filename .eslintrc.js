@@ -4,6 +4,7 @@
 module.exports = {
 	extends: [
 		'airbnb', // Airbnb style guide
+		'plugin:react/recommended',
 		'plugin:@typescript-eslint/eslint-recommended',
 		'plugin:@typescript-eslint/recommended',
 		'plugin:import/errors',
@@ -14,7 +15,7 @@ module.exports = {
 		'prettier/@typescript-eslint', // Enables eslint-plugin-prettier and displays prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
 	],
 	parser: '@typescript-eslint/parser', // Specifies the ESLint parser
-	plugins: ['@typescript-eslint', 'prettier', 'promise', 'jest'],
+	plugins: ['react', 'react-hooks', '@typescript-eslint', 'prettier', 'promise', 'jest'],
 	settings: {
 		'import/resolver': {
 			typescript: {
