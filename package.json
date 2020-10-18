@@ -82,7 +82,7 @@
 		"apollo-link": "^1.2.13",
 		"apollo-link-error": "^1.1.12",
 		"apollo-link-http": "^1.5.16",
-		"apollo-server-express": "^2.9.16",
+		"apollo-server-express": "^2.18.2",
 		"aws-sdk": "^2.610.0",
 		"babel-plugin-styled-components": "^1.10.7",
 		"case": "^1.6.2",
