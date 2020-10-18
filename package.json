@@ -152,7 +152,7 @@
 		"@types/node": "^13.7.0",
 		"@types/passport-azure-ad": "^4.0.3",
 		"@types/passport-github2": "^1.2.4",
-		"@types/passport-google-oauth20": "^2.0.3",
+		"@types/passport-google-oauth20": "^2.0.4",
 		"@types/pino": "^5.15.4",
 		"@types/react": "16.9.19",
 		"@types/react-csv": "^1.1.1",
