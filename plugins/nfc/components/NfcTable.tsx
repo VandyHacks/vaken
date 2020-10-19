@@ -154,7 +154,8 @@ const NfcTable: FC<NfcTableProps> = ({ hackersData, eventsData }: NfcTableProps)
 				...fuseOpts,
 			})
 				.search(searchValue)
-				.slice(0, 5);
+				.slice(0, 5)
+				.map(result => result.item);
 		}
 
 		// Sort data based on props and context
@@ -181,117 +182,117 @@ const NfcTable: FC<NfcTableProps> = ({ hackersData, eventsData }: NfcTableProps)
 			{STRINGS.NO_EVENTS_MESSAGE}
 		</SmallCenteredText>
 	) : (
-			<TableLayout>
-				<TableOptions>
-					<EventSelect
+		<TableLayout>
+			<TableOptions>
+				<EventSelect
+					width="100%"
+					name="colors"
+					defaultValue={[EventOptions[0]]}
+					options={EventOptions}
+					onChange={(option: { label: string; value: string }) => {
+						const event = eventsData.find(ev => {
+							return ev.id === option.value;
+						});
+						if (event) {
+							setEventSelected(event);
+						}
+					}}
+					className="basic-select"
+					classNamePrefix="select"
+				/>
+				{manualMode || eventSelected.eventType === CHECK_IN_EVENT_TYPE ? (
+					<SearchBox
 						width="100%"
-						name="colors"
-						defaultValue={[EventOptions[0]]}
-						options={EventOptions}
-						onChange={(option: { label: string; value: string }) => {
-							const event = eventsData.find(ev => {
-								return ev.id === option.value;
-							});
-							if (event) {
-								setEventSelected(event);
+						value={searchValue}
+						placeholder="Manual Search"
+						onChange={onSearchBoxEntry(table)}
+						ref={searchBoxRef}
+						onKeyPress={async e => {
+							if (manualMode && e.key === 'Enter') {
+								await handleSubmit(nfcValue, topUserMatch, eventSelected, unadmitMode);
+								table.update(draft => {
+									draft.nfcValue = '';
+									draft.searchValue = '';
+								});
+								if (searchBoxRef.current) searchBoxRef.current.focus();
 							}
 						}}
-						className="basic-select"
-						classNamePrefix="select"
+						minWidth="15rem"
+						hasIcon
+						flex
 					/>
-					{manualMode || eventSelected.eventType === CHECK_IN_EVENT_TYPE ? (
-						<SearchBox
-							width="100%"
-							value={searchValue}
-							placeholder="Manual Search"
-							onChange={onSearchBoxEntry(table)}
-							ref={searchBoxRef}
-							onKeyPress={async e => {
-								if (manualMode && e.key === 'Enter') {
-									await handleSubmit(nfcValue, topUserMatch, eventSelected, unadmitMode);
-									table.update(draft => {
-										draft.nfcValue = '';
-										draft.searchValue = '';
-									});
-									if (searchBoxRef.current) searchBoxRef.current.focus();
-								}
-							}}
-							minWidth="15rem"
-							hasIcon
-							flex
-						/>
-					) : null}
-					{!manualMode || eventSelected.eventType === CHECK_IN_EVENT_TYPE ? (
-						<SearchBox
-							width="100%"
-							value={nfcValue}
-							placeholder="Scan NFC"
-							onChange={onNfcBoxEntry(table)}
-							onKeyPress={async e => {
-								if (e.key === 'Enter') {
-									await handleSubmit(nfcValue, topUserMatch, eventSelected, unadmitMode);
-									table.update(draft => {
-										draft.nfcValue = '';
-										draft.searchValue = '';
-									});
-									if (searchBoxRef.current) searchBoxRef.current.focus();
-								}
-							}}
-							minWidth="15rem"
-							flex
-						/>
-					) : null}
-					{eventSelected.eventType !== CHECK_IN_EVENT_TYPE ? (
-						<ManualToggleWrapper>
-							<ToggleSwitch
-								label="Manual Mode: "
-								checked={manualMode}
-								onChange={() => {
-									setManualMode(!manualMode);
-								}}
-							/>
-						</ManualToggleWrapper>
-					) : null}
-					<UnadmitToggleWrapper>
+				) : null}
+				{!manualMode || eventSelected.eventType === CHECK_IN_EVENT_TYPE ? (
+					<SearchBox
+						width="100%"
+						value={nfcValue}
+						placeholder="Scan NFC"
+						onChange={onNfcBoxEntry(table)}
+						onKeyPress={async e => {
+							if (e.key === 'Enter') {
+								await handleSubmit(nfcValue, topUserMatch, eventSelected, unadmitMode);
+								table.update(draft => {
+									draft.nfcValue = '';
+									draft.searchValue = '';
+								});
+								if (searchBoxRef.current) searchBoxRef.current.focus();
+							}
+						}}
+						minWidth="15rem"
+						flex
+					/>
+				) : null}
+				{eventSelected.eventType !== CHECK_IN_EVENT_TYPE ? (
+					<ManualToggleWrapper>
 						<ToggleSwitch
-							label="Unadmit Mode: "
-							checked={unadmitMode}
+							label="Manual Mode: "
+							checked={manualMode}
 							onChange={() => {
-								setUnadmitMode(!unadmitMode);
+								setManualMode(!manualMode);
 							}}
 						/>
-					</UnadmitToggleWrapper>
-					<HeaderButton
-						onClick={() => {
-							handleSubmit(nfcValue, topUserMatch, eventSelected, unadmitMode);
-							table.update(draft => {
-								draft.nfcValue = '';
-								draft.searchValue = '';
-							});
-							if (searchBoxRef.current) searchBoxRef.current.focus();
-						}}>
-						Submit
+					</ManualToggleWrapper>
+				) : null}
+				<UnadmitToggleWrapper>
+					<ToggleSwitch
+						label="Unadmit Mode: "
+						checked={unadmitMode}
+						onChange={() => {
+							setUnadmitMode(!unadmitMode);
+						}}
+					/>
+				</UnadmitToggleWrapper>
+				<HeaderButton
+					onClick={() => {
+						handleSubmit(nfcValue, topUserMatch, eventSelected, unadmitMode);
+						table.update(draft => {
+							draft.nfcValue = '';
+							draft.searchValue = '';
+						});
+						if (searchBoxRef.current) searchBoxRef.current.focus();
+					}}>
+					Submit
 				</HeaderButton>
-				</TableOptions>
-				<TableData>
-					{manualMode || eventSelected.eventType === CHECK_IN_EVENT_TYPE ? (
-						<AutoSizer>
-							{({ height, width }) => (
-								<NfcTableRows
-									width={width}
-									height={height}
-									sortedData={sortedData}
-									onSortColumnChange={onSortColumnChange}
-									generateRowClassName={generateRowClassName(sortedData, topUserMatch)}
-									table={table}
-									rowClickFn={onRowClick(settopUserMatch)}
-								/>
-							)}
-						</AutoSizer>
-					) : null}
-				</TableData>
-			</TableLayout>
-		);
+			</TableOptions>
+			<TableData>
+				{manualMode || eventSelected.eventType === CHECK_IN_EVENT_TYPE ? (
+					<AutoSizer>
+						{({ height, width }) => (
+							<NfcTableRows
+								width={width}
+								height={height}
+								sortedData={sortedData}
+								onSortColumnChange={onSortColumnChange}
+								generateRowClassName={generateRowClassName(sortedData, topUserMatch)}
+								table={table}
+								rowClickFn={onRowClick(settopUserMatch)}
+							/>
+						)}
+					</AutoSizer>
+				) : null}
+			</TableData>
+		</TableLayout>
+	);
 };
 
 export default NfcTable;

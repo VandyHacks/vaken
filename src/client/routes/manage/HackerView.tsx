@@ -96,7 +96,7 @@ const Row: FC<{ label: string; value: string }> = props => {
 	return <DangerousRow label={label} value={text} />;
 };
 
-export const HackerView: FC<RouteComponentProps<{ id: string }, {}, {}>> = props => {
+export const HackerView: FC<RouteComponentProps<{ id: string }>> = props => {
 	const { match } = props;
 	const { data, loading, error } = useDetailedHackerQuery({ variables: { id: match.params.id } });
 	const fileReadUrlQuery = useSignedReadUrlQuery({

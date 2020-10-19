@@ -43,7 +43,7 @@ const testOrganizer = ({
 beforeAll(async () => {
 	try {
 		mongoServer = new MongoMemoryServer();
-		const mongoUri = await mongoServer.getConnectionString();
+		const mongoUri = await mongoServer.getUri();
 		dbClient = new DB(mongoUri);
 		models = await dbClient.collections;
 		await models.Hackers.insertOne(testHacker);

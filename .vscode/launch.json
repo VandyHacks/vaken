@@ -5,6 +5,14 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
+			"name": "Test via NPM",
+			"request": "launch",
+			"runtimeArgs": ["run-script", "check:test", "--", "--runInBand"],
+			"runtimeExecutable": "npm",
+			"skipFiles": ["<node_internals>/**"],
+			"type": "pwa-node"
+		},
+		{
 			"type": "chrome",
 			"request": "attach",
 			"name": "Client (Chrome Attach)",

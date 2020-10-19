@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Bar, Pie, ChartData } from 'react-chartjs-2';
 import { Link } from 'react-router-dom';
-import gql from 'graphql-tag';
+import { gql } from '@apollo/client';
 import styled from 'styled-components';
 import { ChartData as OldChartData, ChartOptions } from 'chart.js';
 
@@ -181,14 +181,14 @@ const pieShirtData = (data: { [key: string]: number }): ChartData<OldChartData> 
 
 const pieShirtOptions = {
 	legend: {
-		position: 'right' as 'right',
+		position: 'right' as const,
 	},
 	maintainAspectRatio: true,
 	responsive: true,
 	title: {
 		display: true,
 		fontSize: 24,
-		position: 'bottom' as 'bottom',
+		position: 'bottom' as const,
 		text: 'T-Shirt Sizes',
 	},
 };
@@ -210,14 +210,14 @@ const pieGenderData = (data: { [key: string]: number }): ChartData<OldChartData>
 
 const pieGenderOptions = {
 	legend: {
-		position: 'right' as 'right',
+		position: 'right' as const,
 	},
 	maintainAspectRatio: true,
 	responsive: true,
 	title: {
 		display: true,
 		fontSize: 24,
-		position: 'bottom' as 'bottom',
+		position: 'bottom' as const,
 		text: 'Gender',
 	},
 };

@@ -1,6 +1,6 @@
 import { SortDirectionType } from 'react-virtualized';
 
-import { MutationFunction } from '@apollo/react-common';
+import { MutationFunction } from '@apollo/client';
 import {
 	RegisterNfcuidWithUserMutation,
 	RegisterNfcuidWithUserMutationVariables,

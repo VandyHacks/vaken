@@ -1,10 +1,9 @@
-const merge = require('webpack-merge');
-const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
+const { merge } = require('webpack-merge');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const webpack = require('webpack');
 const common = require('./webpack.common.js');
 
-module.exports = merge.smart(common, {
+module.exports = merge(common, {
 	mode: 'development',
 	devtool: 'source-map',
 	devServer: {
@@ -41,7 +40,6 @@ module.exports = merge.smart(common, {
 	},
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(), // Auto-refresh on changes
-		new ErrorOverlayPlugin(), // Error overlay in browser
 		new FriendlyErrorsPlugin(), // Pretty console output
 	],
 });

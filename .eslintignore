@@ -4,3 +4,4 @@ webpack.*.js
 *.d.ts
 graphql.ts
 generated/
+.eslintrc.js

@@ -29,7 +29,9 @@ export function removeNulls<T>(obj: T): Partial<{ [K in keyof T]: NonNullable<T[
  * value of `myEnum` and return the value coerced to a value of the enum.
  * @param enumObject Enum object containing values to compare the input against.
  */
-export function toEnum<T extends {}>(enumObject: T): (input: string) => T[keyof T] {
+export function toEnum<T extends Record<string, unknown>>(
+	enumObject: T
+): (input: string) => T[keyof T] {
 	return (input: string): T[keyof T] => {
 		if (!Object.values(enumObject).includes(input)) {
 			throw new UserInputError(

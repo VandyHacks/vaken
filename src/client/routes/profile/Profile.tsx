@@ -11,7 +11,7 @@ import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import STRINGS from '../../assets/strings.json';
 import { useMyProfileQuery, UserInput, useUpdateMyProfileMutation } from '../../generated/graphql';
 
-export const Profile: React.FunctionComponent<{}> = (): JSX.Element => {
+export const Profile: React.FunctionComponent = (): JSX.Element => {
 	const { update: setActionButton } = useContext(ActionButtonContext);
 	const { data, loading, error } = useMyProfileQuery();
 	const [loaded, setLoaded] = useState(false);
