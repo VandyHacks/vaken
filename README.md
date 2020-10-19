@@ -77,7 +77,7 @@ All contributions are welcome. Please read [CONTRIBUTING.md](./CONTRIBUTING.md) 
 ## Customizing for your event
 - constants: [./src/common/constants.json](./src/common/constants.json)
 - application questions: [./src/client/assets/application.js](./src/client/assets/application.js)
-- strings: [./src/client/assets/strings.json](.src/client/assets/strings.json)
+- strings: [./src/client/assets/strings.json](./src/client/assets/strings.json)
 - email templates: [./src/server/mail/templates](./src/server/mail/templates)
 
 ## Git Flow
@@ -86,14 +86,14 @@ This repository follows the [gitflow workflow](https://www.atlassian.com/git/tut
 
 1. Use `git rebase <branch>` rather than pull or merge, always. This will make sure that there is a linear history which is essential when updating the core featureset of vaken while there is an event/* deployment. When exclusively using rebase instead of pull, updating the event/production branch with new features from main is as simple as running `git checkout event/<name> && git rebase main`.
 2. Always PR feature updates to `main`. The main branch should have all new features, bug fixes, and dep updates. These commits should only make their way to `event/` branches by the process mentioned in tip 1. The reason for this is that we want to make our changes available to everyone using this repository as a base for their hackathon's systems, and having important features in an event/ branch requires them to sift through countless customizations for VandyHacks's own needs. rather than being able to deploy their own event from the main branch.
-3. Our model of gitflow centers around the `main` branch being the cannonical version of "vaken". `event/` branches should be deployed to production (VandyHacks uses a Hobbyist dyno from Heroku) and should contain all of the customizations to branding and application info for a specific event. Why? It's simple: we have different needs for virtual events and physical events, and rather than duplicate all of the effort to customize vaken for different events, being able to create a draft PR and see every single change required for a "completed" deploy from main makes the process of deploying a future event trivial in comparison to doing it the first time. Let's stop trying to reinvent the wheel!
+3. Our model of gitflow centers around the `main` branch being the canonical version of "vaken". `event/` branches should be deployed to production (VandyHacks uses a Hobbyist dyno from Heroku) and should contain all of the customizations to branding and application info for a specific event. Why? It's simple: we have different needs for virtual events and physical events, and rather than duplicate all of the effort to customize vaken for different events, being able to create a draft PR and see every single change required for a "completed" deploy from main makes the process of deploying a future event trivial in comparison to doing it the first time. Let's stop trying to reinvent the wheel!
 4. Event/production branches should never be merged back to `main`. If it's something that you might want to use for a future event (or something another hackathon could use), put it in `main`.
 
 ## Deploying
 
 > If you have not read the Git Flow section, you should do so first.
 
-Vaken was designed with simplicity of deploy in mind, but implementations always differ from the original design! As a result, we have a hard dependency on at least one cloud provider and soft dependencies in a full-featured setup of as many as five plus some invididual service providers! We're always looking for PRs to help tame this beast. PRs to migrate our current hard-coded providers to separate interfaces and implementations are welcome. In the meantime, here's a step-by-step guide for how you can deploy Vaken:
+Vaken was designed with simplicity of deploy in mind, but implementations always differ from the original design! As a result, we have a hard dependency on at least one cloud provider and soft dependencies in a full-featured setup of as many as five plus some individual service providers! We're always looking for PRs to help tame this beast. PRs to migrate our current hard-coded providers to separate interfaces and implementations are welcome. In the meantime, here's a step-by-step guide for how you can deploy Vaken:
 
 ### Required setup
 1. Set at least one OAuth provider (we use both GitHub and Google in `main`).
@@ -116,7 +116,7 @@ Vaken was designed with simplicity of deploy in mind, but implementations always
 5. Set up Cloudflare CDN 
    - Cloudflare CDN keeps static assets fast and allows for easy SSL. Follow these simple [getting started instructions](https://support.cloudflare.com/hc/en-us/articles/201720164-Creating-a-Cloudflare-account-and-adding-a-website) and _definitely_ [set up SSL](https://support.cloudflare.com/hc/en-us/articles/360023792171-Getting-Started-with-Cloudflare-SSL) to keep your hackers' data secure in transit
 6. Setting up Admin access to the vaken dashboard
-   - Log in at least once to the app, then use [scripts/makeOrganizer.ts](https://github.com/VandyHacks/vaken/blob/439025cad805914bd4ae0a6d8acc952f47252a6b/scripts/makeOrganizer.ts) (usage is in the script file). You will likely want to ensure that MONGODB_BASE_URL is set in your environment or is configured in your .env file for the script to access your DB. The params after `--` specify which account gets organizer (admin) privileges\u2014first the email then google or github to specify which login provider gives admin access (this is useful as it allows you to see either the hacker or organizer perspective depending on which you use to sign in). 
+   - Log in at least once to the app, then use [scripts/makeOrganizer.ts](https://github.com/VandyHacks/vaken/blob/439025cad805914bd4ae0a6d8acc952f47252a6b/scripts/makeOrganizer.ts) (usage is in the script file). You will likely want to ensure that MONGODB_BASE_URL is set in your environment or is configured in your .env file for the script to access your DB. The params after `--` specify which account gets organizer (admin) privileges—first the email then google or github to specify which login provider gives admin access (this is useful as it allows you to see either the hacker or organizer perspective depending on which you use to sign in). 
 
 ### Final Thoughts
 
