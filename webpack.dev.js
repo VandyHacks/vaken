@@ -21,23 +21,6 @@ module.exports = merge(common, {
 			},
 		},
 	},
-	module: {
-		rules: [
-			{
-				// Include ts, tsx, js, and jsx files.
-				test: /\.(ts|js)x?$/,
-				exclude: [/server/, /node_modules/],
-				use: [
-					{
-						loader: 'thread-loader',
-						options: {
-							poolTimeout: Infinity, // set this to Infinity in watch mode - see https://github.com/webpack-contrib/thread-loader
-						},
-					},
-				],
-			},
-		],
-	},
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(), // Auto-refresh on changes
 		new FriendlyErrorsPlugin(), // Pretty console output

@@ -75,37 +75,37 @@ const Rectangle = styled.div`
 	}
 `;
 
+const MenuIconButton = styled.button`
+	background-color: rgba(247, 245, 249, 1);
+	border-radius: 4px;
+	z-index: 1;
+	cursor: pointer;
+	border: none;
+	padding: 3px 6px;
+
+	& div {
+		width: 35px;
+		height: 5px;
+		background-color: ${STRINGS.ACCENT_COLOR};
+		margin: 6px 0;
+	}
+	transform: scale(0.9);
+
+	@media screen and (min-width: 457px) {
+		display: none;
+	}
+`;
+
 const MenuIcon: FC<{ open: boolean; setOpen: React.Dispatch<SetStateAction<boolean>> }> = ({
 	open,
 	setOpen,
 }) => {
-	const Button = styled.button`
-		background-color: rgba(247, 245, 249, 1);
-		border-radius: 4px;
-		z-index: 1;
-		cursor: pointer;
-		border: none;
-		padding: 3px 6px;
-
-		& div {
-			width: 35px;
-			height: 5px;
-			background-color: ${STRINGS.ACCENT_COLOR};
-			margin: 6px 0;
-		}
-		transform: scale(0.9);
-
-		@media screen and (min-width: 457px) {
-			display: none;
-		}
-	`;
-
 	return (
-		<Button type="button" onClick={() => setOpen(!open)}>
+		<MenuIconButton type="button" onClick={() => setOpen(!open)}>
 			<div className={`bar1${open ? ' change' : ''}`} />
 			<div className={`bar2${open ? ' change' : ''}`} />
 			<div className={`bar3${open ? ' change' : ''}`} />
-		</Button>
+		</MenuIconButton>
 	);
 };
 
