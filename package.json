@@ -159,7 +159,7 @@
 		"@types/styled-components": "^5.1.4",
 		"@types/supertest": "^2.0.10",
 		"@types/yup": "^0.29.8",
-		"@typescript-eslint/eslint-plugin": "^4.4.1",
+		"@typescript-eslint/eslint-plugin": "^4.5.0",
 		"@typescript-eslint/parser": "^4.4.1",
 		"babel-jest": "^26.5.2",
 		"babel-loader": "^8.1.0",
