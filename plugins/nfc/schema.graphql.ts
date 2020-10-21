@@ -1,6 +1,5 @@
 import gql from 'graphql-tag';
 
-
 export default gql`
   type _Plugin__Event @entity {
     id: ID! @id @column

@@ -90,6 +90,7 @@
 		"chartjs-plugin-datalabels": "^0.7.0",
 		"connect-mongo": "^3.2.0",
 		"csstype": "^2.6.8",
+		"discord.js": "^12.2.0",
 		"dotenv": "^8.2.0",
 		"escape-html": "^1.0.3",
 		"express": "^4.17.1",
