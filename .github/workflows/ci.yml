@@ -25,7 +25,7 @@ jobs:
         with:
           node-version: '12'
       - run: npm ci
-      - run: npm --audit-level=high --only=prod
+      - run: npm audit --audit-level=high --only=prod
   lint:
     name: Lint
     runs-on: ubuntu-latest
