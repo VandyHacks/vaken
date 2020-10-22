@@ -7,7 +7,7 @@ on:
   pull_request:
 jobs:
   build:
-    name: Build
+    name: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -19,17 +19,8 @@ jobs:
           MONGOMS_DISABLE_POSTINSTALL: 1
       - run: npm run generate
       - run: npm run build
-  audit:
-    name: Audit
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '12'
-      - run: npm audit --audit-level=high --only=prod
   lint:
-    name: Lint
+    name: lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -42,7 +33,7 @@ jobs:
       - run: npm run generate
       - run: npm run check:lint:ci
   test:
-    name: Test
+    name: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -53,7 +44,7 @@ jobs:
       - run: npm run generate
       - run: npm run check:test:ci
   typecheck:
-    name: Typecheck
+    name: typecheck
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
