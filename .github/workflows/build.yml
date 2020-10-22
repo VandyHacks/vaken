@@ -1,5 +1,10 @@
 name: Build
-on: push
+on:
+  # Trigger the workflow on push to the main branch of pull request
+  push:
+    branches:
+      - main
+  pull_request:
 jobs:
   build:
     runs-on: ubuntu-latest
