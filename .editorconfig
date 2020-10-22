@@ -6,3 +6,7 @@ end_of_line = lf
 insert_final_newline = true
 charset = utf-8 # it's 2019
 indent_style = tab # matches prettier
+
+[yaml]
+indent_size = 2
+indent_style = space # yaml cannot use tabs
