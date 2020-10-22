@@ -15,6 +15,7 @@ jobs:
         with:
           node-version: '12'
       - run: npm ci
+      - run: npm run generate
       - run: npm run build
   audit:
     name: Audit
@@ -35,6 +36,7 @@ jobs:
         with:
           node-version: '12'
       - run: npm ci
+      - run: npm run generate
       - run: npm run check:lint:ci
   test:
     name: Test
@@ -45,6 +47,7 @@ jobs:
         with:
           node-version: '12'
       - run: npm ci
+      - run: npm run generate
       - run: npm run check:test:ci
   typecheck:
     name: Typecheck
@@ -55,5 +58,6 @@ jobs:
         with:
           node-version: '12'
       - run: npm ci
+      - run: npm run generate
       - run: npm run check:types
 
