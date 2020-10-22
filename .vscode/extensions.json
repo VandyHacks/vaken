@@ -5,6 +5,7 @@
 		"msjsdiag.debugger-for-chrome",
 		"omartawfik.github-actions-vscode",
 		"jock.svg",
+		"deepscan.vscode-deepscan",
 		"esbenp.prettier-vscode"
 	]
 }
