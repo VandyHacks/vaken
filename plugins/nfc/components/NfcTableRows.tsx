@@ -78,7 +78,7 @@ const renderHeaderAsLabel = ({
 };
 
 interface NfcTableRowsProps {
-	generateRowClassName: Function;
+	generateRowClassName: (arg: { index: number }) => string;
 	height: number;
 	onSortColumnChange: (ctx: TableCtxI) => (p: SortFnProps) => void;
 	sortedData: unknown[];
@@ -96,49 +96,49 @@ export const NfcTableRows = ({
 	table,
 	rowClickFn,
 }: NfcTableRowsProps): JSX.Element => (
-		<StyledTable
-			width={width}
-			height={height}
-			headerHeight={40}
-			rowHeight={30}
-			rowCount={sortedData.length}
-			rowClassName={generateRowClassName}
-			rowGetter={({ index }: Index) => sortedData[index]}
-			rowRenderer={Row}
-			onRowClick={rowClickFn}
-			headerClassName="ignore-select"
-			sort={onSortColumnChange(table)}
-			{...table.state}>
-			<Column
-				className="column"
-				label="First Name"
-				dataKey="firstName"
-				width={100}
-				headerRenderer={renderHeaderAsLabel}
-			/>
-			<Column
-				className="column"
-				label="Last Name"
-				dataKey="lastName"
-				width={100}
-				headerRenderer={renderHeaderAsLabel}
-			/>
-			<Column
-				className="column"
-				label="Email"
-				dataKey="email"
-				width={200}
-				headerRenderer={renderHeaderAsLabel}
-			/>
-			<Column
-				className="column"
-				label="School"
-				dataKey="school"
-				width={175}
-				headerRenderer={renderHeaderAsLabel}
-			/>
-		</StyledTable>
-	);
+	<StyledTable
+		width={width}
+		height={height}
+		headerHeight={40}
+		rowHeight={30}
+		rowCount={sortedData.length}
+		rowClassName={generateRowClassName}
+		rowGetter={({ index }: Index) => sortedData[index]}
+		rowRenderer={Row}
+		onRowClick={rowClickFn}
+		headerClassName="ignore-select"
+		sort={onSortColumnChange(table)}
+		{...table.state}>
+		<Column
+			className="column"
+			label="First Name"
+			dataKey="firstName"
+			width={100}
+			headerRenderer={renderHeaderAsLabel}
+		/>
+		<Column
+			className="column"
+			label="Last Name"
+			dataKey="lastName"
+			width={100}
+			headerRenderer={renderHeaderAsLabel}
+		/>
+		<Column
+			className="column"
+			label="Email"
+			dataKey="email"
+			width={200}
+			headerRenderer={renderHeaderAsLabel}
+		/>
+		<Column
+			className="column"
+			label="School"
+			dataKey="school"
+			width={175}
+			headerRenderer={renderHeaderAsLabel}
+		/>
+	</StyledTable>
+);
 
 export default {
 	NfcTableRows,
