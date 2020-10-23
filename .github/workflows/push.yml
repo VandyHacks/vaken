@@ -5,15 +5,6 @@ on:
     branches:
       - main
 jobs:
-  report:
-    name: report webpack stats to packtracker.io
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - uses: packtracker/report@2.2.7
-        env:
-          PT_PROJECT_TOKEN: ${{ secrets.PT_PROJECT_TOKEN }}
-          WEBPACK_CONFIG_PATH: ./webpack.prod.js
   audit:
     name: audit
     runs-on: ubuntu-latest
