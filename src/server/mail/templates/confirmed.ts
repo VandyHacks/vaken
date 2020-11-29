@@ -17,7 +17,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 				Charset: 'UTF-8',
 				Data: `<!doctype html>
 				<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
-				
+
 				<head>
 					<title> See You Soon! </title>
 					<!--[if !mso]><!-- -->
@@ -29,33 +29,33 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 						#outlook a {
 							padding: 0;
 						}
-				
+
 						.ReadMsgBody {
 							width: 100%;
 						}
-				
+
 						.ExternalClass {
 							width: 100%;
 						}
-				
+
 						.ExternalClass * {
 							line-height: 100%;
 						}
-				
+
 						body {
 							margin: 0;
 							padding: 0;
 							-webkit-text-size-adjust: 100%;
 							-ms-text-size-adjust: 100%;
 						}
-				
+
 						table,
 						td {
 							border-collapse: collapse;
 							mso-table-lspace: 0pt;
 							mso-table-rspace: 0pt;
 						}
-				
+
 						img {
 							border: 0;
 							height: auto;
@@ -64,7 +64,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 							text-decoration: none;
 							-ms-interpolation-mode: bicubic;
 						}
-				
+
 						p {
 							display: block;
 							margin: 13px 0;
@@ -114,7 +114,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 						}
 					</style>
 				</head>
-				
+
 				<body style="background-color:#E7E7E7;">
 					<div style="background-color:#E7E7E7;">
 						<!--[if mso | IE]>
@@ -131,11 +131,11 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 										<td style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;vertical-align:top;">
 											<!--[if mso | IE]>
 													<table role="presentation" border="0" cellpadding="0" cellspacing="0">
-												
+
 								<tr>
-							
+
 								</tr>
-							
+
 													</table>
 												<![endif]-->
 										</td>
@@ -147,7 +147,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 									</td>
 								</tr>
 							</table>
-							
+
 							<table
 								 align="center" border="0" cellpadding="0" cellspacing="0" class="body-section-outlook" style="width:600px;" width="600"
 							>
@@ -161,12 +161,12 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 										<td style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;vertical-align:top;">
 											<!--[if mso | IE]>
 													<table role="presentation" border="0" cellpadding="0" cellspacing="0">
-												
+
 										<tr>
 											<td
 												 class="" width="600px"
 											>
-									
+
 							<table
 								 align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600"
 							>
@@ -180,9 +180,9 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 															<td style="direction:ltr;font-size:0px;padding:20px 0;padding-left:40px;padding-right:40px;text-align:center;vertical-align:top;">
 																<!--[if mso | IE]>
 													<table role="presentation" border="0" cellpadding="0" cellspacing="0">
-												
+
 								<tr>
-							
+
 										<td
 											 class="" style="vertical-align:top;width:520px;"
 										>
@@ -195,9 +195,9 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																					<tbody>
 																						<tr>
 																							<td style="width:520px;"> <center> <a href="https://vandyhacks.org" target="_blank">
-									
+
 							<img alt="" height="auto" src="https://storage.googleapis.com/vh-fall-2020-assets/VH_Pixel_Logo.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:30%;" width="520">
-						
+
 								</a> </center></td>
 																						</tr>
 																					</tbody>
@@ -208,9 +208,9 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																</div>
 																<!--[if mso | IE]>
 										</td>
-									
+
 								</tr>
-							
+
 													</table>
 												<![endif]-->
 															</td>
@@ -222,15 +222,15 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 									</td>
 								</tr>
 							</table>
-							
+
 											</td>
 										</tr>
-									
+
 										<tr>
 											<td
 												 class="" width="600px"
 											>
-									
+
 							<table
 								 align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600"
 							>
@@ -244,9 +244,9 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 															<td style="direction:ltr;font-size:0px;padding:20px 0;padding-left:15px;padding-right:15px;text-align:center;vertical-align:top;">
 																<!--[if mso | IE]>
 													<table role="presentation" border="0" cellpadding="0" cellspacing="0">
-												
+
 								<tr>
-							
+
 										<td
 											 class="" style="vertical-align:top;width:570px;"
 										>
@@ -262,14 +262,14 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> 
-																					We're so excited that you'll be joining us for <b>VandyHacks VII: Retro Edition</b>! 
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;">
+																					We're so excited that you'll be joining us for <b>VandyHacks VII: Retro Edition</b>!
 																				</div>
 																			</td>
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> 
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;">
 																					This email is just to confirm that you've RSVPed to our event. We'll be in touch again soon with more information on our opening ceremony, but as a reminder, festivities will start at 7:00 PM CDT Friday, October 2nd, and wrap up by 4:00 PM CDT Sunday, October 4th.
 																				</div>
 																			</td>
@@ -302,30 +302,30 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																				on Saturday, October 3rd, so get your <a href="https://docs.google.com/document/d/1hhhk-tC7PL-CA3skxnJJ8b40xb0zECMYAH9AUFad2gE/edit?usp=sharing">ingredients</a> ready!
 																			</li>
 																			<li>
-																				Like our page on <a href="https://www.facebook.com/vandyhacks/">Facebook</a> and follow us on <a href="https://www.instagram.com/vandyhacks/?hl=en">Instagram</a> for some sneak peeks at the organizers in action! 
+																				Like our page on <a href="https://www.facebook.com/vandyhacks/">Facebook</a> and follow us on <a href="https://www.instagram.com/vandyhacks/?hl=en">Instagram</a> for some sneak peeks at the organizers in action!
 																			</li>
 																		</ul>
 																	</div>
 																</td>
-															</tr>					
+															</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
 																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;">
-																					<b>NOTE:</b> If you are no longer able to attend, please indicate this in the <a href="https://apply.vandyhacks.org">portal</a> ASAP so that we can get an accurate attendance count. 
+																					<b>NOTE:</b> If you are no longer able to attend, please indicate this in the <a href="https://apply.vandyhacks.org">portal</a> ASAP so that we can get an accurate attendance count.
 																				</div>
 																			</td>
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> 
-																					See you soon! 
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;">
+																					See you soon!
 																				</div>
 																			</td>
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> 
-																					The VandyHacks Team 
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;">
+																					The VandyHacks Team
 																				</div>
 																			</td>
 																		</tr>
@@ -333,9 +333,9 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																</div>
 																<!--[if mso | IE]>
 										</td>
-									
+
 								</tr>
-							
+
 													</table>
 												<![endif]-->
 															</td>
@@ -347,10 +347,10 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 									</td>
 								</tr>
 							</table>
-							
+
 											</td>
 										</tr>
-									
+
 													</table>
 												<![endif]-->
 										</td>
@@ -381,12 +381,12 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 														<td style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;vertical-align:top;">
 															<!--[if mso | IE]>
 													<table role="presentation" border="0" cellpadding="0" cellspacing="0">
-												
+
 										<tr>
 											<td
 												 class="" width="600px"
 											>
-									
+
 							<table
 								 align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600"
 							>
@@ -400,9 +400,9 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																			<td style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;vertical-align:top;">
 																				<!--[if mso | IE]>
 													<table role="presentation" border="0" cellpadding="0" cellspacing="0">
-												
+
 								<tr>
-							
+
 										<td
 											 class="" style="vertical-align:top;width:600px;"
 										>
@@ -420,7 +420,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 								 align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
 							>
 								<tr>
-							
+
 											<td>
 										<![endif]-->
 																												<table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="float:none;display:inline-table;">
@@ -438,7 +438,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																												</table>
 																												<!--[if mso | IE]>
 											</td>
-										
+
 											<td>
 										<![endif]-->
 																												<table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="float:none;display:inline-table;">
@@ -456,7 +456,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																												</table>
 																												<!--[if mso | IE]>
 											</td>
-										
+
 											<td>
 										<![endif]-->
 																												<table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="float:none;display:inline-table;">
@@ -474,7 +474,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																												</table>
 																												<!--[if mso | IE]>
 											</td>
-										
+
 									</tr>
 								</table>
 							<![endif]-->
@@ -501,9 +501,9 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																				</div>
 																				<!--[if mso | IE]>
 										</td>
-									
+
 								</tr>
-							
+
 													</table>
 												<![endif]-->
 																			</td>
@@ -515,15 +515,15 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 									</td>
 								</tr>
 							</table>
-							
+
 											</td>
 										</tr>
-									
+
 										<tr>
 											<td
 												 class="" width="600px"
 											>
-									
+
 							<table
 								 align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600"
 							>
@@ -537,9 +537,9 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																			<td style="direction:ltr;font-size:0px;padding:20px 0;padding-top:0;text-align:center;vertical-align:top;">
 																				<!--[if mso | IE]>
 													<table role="presentation" border="0" cellpadding="0" cellspacing="0">
-												
+
 								<tr>
-							
+
 										<td
 											 class="" style="width:600px;"
 										>
@@ -548,7 +548,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																					<!--[if mso | IE]>
 								<table  role="presentation" border="0" cellpadding="0" cellspacing="0">
 									<tr>
-								
+
 											<td
 												 style="vertical-align:top;width:600px;"
 											>
@@ -574,16 +574,16 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																					</div>
 																					<!--[if mso | IE]>
 											</td>
-											
+
 									</tr>
 									</table>
 								<![endif]-->
 																				</div>
 																				<!--[if mso | IE]>
 										</td>
-									
+
 								</tr>
-							
+
 													</table>
 												<![endif]-->
 																			</td>
@@ -595,10 +595,10 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 									</td>
 								</tr>
 							</table>
-							
+
 											</td>
 										</tr>
-									
+
 													</table>
 												<![endif]-->
 														</td>
@@ -617,24 +617,24 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 						</table>
 					</div>
 				</body>
-				
+
 				</html>`,
 			},
 			Text: {
 				Charset: 'UTF-8',
 				Data: `Hey ${escape(user.preferredName || user.firstName)},
-				We're so excited that you'll be joining us for VandyHacks VII: Retro Edition! 
+				We're so excited that you'll be joining us for VandyHacks VII: Retro Edition!
 
 				This email is just to confirm that you've RSVPed to our event. We'll be in touch again soon with more information on our opening ceremony, but as a reminder, festivities will start at 7:00 PM CDT Friday, October 2nd, and wrap up by 4:00 PM CDT Sunday, October 4th.
 
-				In the meantime, be sure to complete the following: 
+				In the meantime, be sure to complete the following:
 
 				Join our Discord here for communication before, during, and after the hackathon!
-				Review the full hackathon schedule here! 
+				Review the full hackathon schedule here!
 				*NOTE: We will be baking nutella hand pies at 5:00 PM CDT on Saturday, October 3rd, so get your ingredients ready!
-				Like our page on Facebook and follow us on Instagram for sneak peeks of the organizers in action! 
+				Like our page on Facebook and follow us on Instagram for sneak peeks of the organizers in action!
 
-				NOTE: If you are no longer able to attend, please indicate this in the portal ASAP so that we can get an accurate attendance count. 
+				NOTE: If you are no longer able to attend, please indicate this in the portal ASAP so that we can get an accurate attendance count.
 
 				See you soon!
 				The VandyHacks Team`,

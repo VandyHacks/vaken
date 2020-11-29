@@ -17,7 +17,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 				Charset: 'UTF-8',
 				Data: `<!doctype html>
 				<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
-				
+
 				<head>
 					<title> You've Been Accepted! </title>
 					<!--[if !mso]><!-- -->
@@ -29,33 +29,33 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 						#outlook a {
 							padding: 0;
 						}
-				
+
 						.ReadMsgBody {
 							width: 100%;
 						}
-				
+
 						.ExternalClass {
 							width: 100%;
 						}
-				
+
 						.ExternalClass * {
 							line-height: 100%;
 						}
-				
+
 						body {
 							margin: 0;
 							padding: 0;
 							-webkit-text-size-adjust: 100%;
 							-ms-text-size-adjust: 100%;
 						}
-				
+
 						table,
 						td {
 							border-collapse: collapse;
 							mso-table-lspace: 0pt;
 							mso-table-rspace: 0pt;
 						}
-				
+
 						img {
 							border: 0;
 							height: auto;
@@ -64,7 +64,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 							text-decoration: none;
 							-ms-interpolation-mode: bicubic;
 						}
-				
+
 						p {
 							display: block;
 							margin: 13px 0;
@@ -114,7 +114,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 						}
 					</style>
 				</head>
-				
+
 				<body style="background-color:#E7E7E7;">
 					<div style="background-color:#E7E7E7;">
 						<!--[if mso | IE]>
@@ -131,11 +131,11 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 										<td style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;vertical-align:top;">
 											<!--[if mso | IE]>
 													<table role="presentation" border="0" cellpadding="0" cellspacing="0">
-												
+
 								<tr>
-							
+
 								</tr>
-							
+
 													</table>
 												<![endif]-->
 										</td>
@@ -147,7 +147,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 									</td>
 								</tr>
 							</table>
-							
+
 							<table
 								 align="center" border="0" cellpadding="0" cellspacing="0" class="body-section-outlook" style="width:600px;" width="600"
 							>
@@ -161,12 +161,12 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 										<td style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;vertical-align:top;">
 											<!--[if mso | IE]>
 													<table role="presentation" border="0" cellpadding="0" cellspacing="0">
-												
+
 										<tr>
 											<td
 												 class="" width="600px"
 											>
-									
+
 							<table
 								 align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600"
 							>
@@ -180,9 +180,9 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 															<td style="direction:ltr;font-size:0px;padding:20px 0;padding-left:40px;padding-right:40px;text-align:center;vertical-align:top;">
 																<!--[if mso | IE]>
 													<table role="presentation" border="0" cellpadding="0" cellspacing="0">
-												
+
 								<tr>
-							
+
 										<td
 											 class="" style="vertical-align:top;width:520px;"
 										>
@@ -195,9 +195,9 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																					<tbody>
 																						<tr>
 																							<td style="width:520px;"> <center><a href="https://vandyhacks.org" target="_blank">
-									
+
 							<img alt="" height="auto" src="https://storage.googleapis.com/vh-fall-2020-assets/VH_Pixel_Logo.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:30%;" width="520">
-						
+
 								</a> </center></td>
 																						</tr>
 																					</tbody>
@@ -208,9 +208,9 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																</div>
 																<!--[if mso | IE]>
 										</td>
-									
+
 								</tr>
-							
+
 													</table>
 												<![endif]-->
 															</td>
@@ -222,15 +222,15 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 									</td>
 								</tr>
 							</table>
-							
+
 											</td>
 										</tr>
-									
+
 										<tr>
 											<td
 												 class="" width="600px"
 											>
-									
+
 							<table
 								 align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600"
 							>
@@ -244,9 +244,9 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 															<td style="direction:ltr;font-size:0px;padding:20px 0;padding-left:15px;padding-right:15px;text-align:center;vertical-align:top;">
 																<!--[if mso | IE]>
 													<table role="presentation" border="0" cellpadding="0" cellspacing="0">
-												
+
 								<tr>
-							
+
 										<td
 											 class="" style="vertical-align:top;width:570px;"
 										>
@@ -262,16 +262,16 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> 
-																				Congratulations! You’re invited to be a part of <b>VandyHacks VII: Retro Edition</b>! We enjoyed reading your application and would love to see your ideas come to life during our virtual event on <b>October 2nd-4th</b>! 
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;">
+																				Congratulations! You’re invited to be a part of <b>VandyHacks VII: Retro Edition</b>! We enjoyed reading your application and would love to see your ideas come to life during our virtual event on <b>October 2nd-4th</b>!
 																				</div>
 																			</td>
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> 
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;">
 																					Head over to the application portal <a href="https://apply.vandyhacks.org">here</a> and confirm your attendance by October 2nd, 12:00 PM CDT.
-																					<b>Make sure you’ve read and checked “agree” to our hackathon waiver</b> under the hacker application. 
+																					<b>Make sure you’ve read and checked “agree” to our hackathon waiver</b> under the hacker application.
 																				</div>
 																			</td>
 																		</tr>
@@ -306,31 +306,31 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																		</ul>
 																	</div>
 																</td>
-															</tr>																															
+															</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> 
-																					If you have any questions or concerns, check out our FAQ or reach out to us at <a href="mailto:info@vandyhacks.org">info@vandyhacks.org</a>. 
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;">
+																					If you have any questions or concerns, check out our FAQ or reach out to us at <a href="mailto:info@vandyhacks.org">info@vandyhacks.org</a>.
 																				</div>
 																			</td>
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> 
-																					Cheers, 
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;">
+																					Cheers,
 																				</div>
 																			</td>
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> 
-																					The VandyHacks Team 
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;">
+																					The VandyHacks Team
 																				</div>
 																			</td>
 																		</tr>
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:10px;font-weight:400;line-height:20px;text-align:left;color:#637381;"> 
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:10px;font-weight:400;line-height:20px;text-align:left;color:#637381;">
 																					P.S. And of course, make sure to stay up-to-date by following us on <a href="https://www.instagram.com/vandyhacks/?hl=en">Instagram</a> and checking out our <a href="https://www.facebook.com/events/2701703253481744/">Facebook Event</a>
 																				</div>
 																			</td>
@@ -339,9 +339,9 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																</div>
 																<!--[if mso | IE]>
 										</td>
-									
+
 								</tr>
-							
+
 													</table>
 												<![endif]-->
 															</td>
@@ -353,10 +353,10 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 									</td>
 								</tr>
 							</table>
-							
+
 											</td>
 										</tr>
-									
+
 													</table>
 												<![endif]-->
 										</td>
@@ -387,12 +387,12 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 														<td style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;vertical-align:top;">
 															<!--[if mso | IE]>
 													<table role="presentation" border="0" cellpadding="0" cellspacing="0">
-												
+
 										<tr>
 											<td
 												 class="" width="600px"
 											>
-									
+
 							<table
 								 align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600"
 							>
@@ -406,9 +406,9 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																			<td style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;vertical-align:top;">
 																				<!--[if mso | IE]>
 													<table role="presentation" border="0" cellpadding="0" cellspacing="0">
-												
+
 								<tr>
-							
+
 										<td
 											 class="" style="vertical-align:top;width:600px;"
 										>
@@ -426,7 +426,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 								 align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
 							>
 								<tr>
-							
+
 											<td>
 										<![endif]-->
 																												<table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="float:none;display:inline-table;">
@@ -444,7 +444,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																												</table>
 																												<!--[if mso | IE]>
 											</td>
-										
+
 											<td>
 										<![endif]-->
 																												<table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="float:none;display:inline-table;">
@@ -462,7 +462,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																												</table>
 																												<!--[if mso | IE]>
 											</td>
-										
+
 											<td>
 										<![endif]-->
 																												<table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="float:none;display:inline-table;">
@@ -480,7 +480,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																												</table>
 																												<!--[if mso | IE]>
 											</td>
-										
+
 									</tr>
 								</table>
 							<![endif]-->
@@ -488,8 +488,8 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																										</tr>
 																										<tr>
 																											<td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																												<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:11px;font-weight:400;line-height:16px;text-align:center;color:#445566;"> 
-																													You are receiving this application update because you applied at <a href="https://apply.vandyhacks.org" class="text-link" style="color: #5e6ebf;">apply.vandyhacks.org</a>. 
+																												<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:11px;font-weight:400;line-height:16px;text-align:center;color:#445566;">
+																													You are receiving this application update because you applied at <a href="https://apply.vandyhacks.org" class="text-link" style="color: #5e6ebf;">apply.vandyhacks.org</a>.
 																													If you would like to opt-out of
 																													any future emails pertaining to VandyHacks applications, please click <a href="https://apply.vandyhacks.org/api/unsubscribe?id=${
 																														user._id
@@ -509,9 +509,9 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																				</div>
 																				<!--[if mso | IE]>
 										</td>
-									
+
 								</tr>
-							
+
 													</table>
 												<![endif]-->
 																			</td>
@@ -523,15 +523,15 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 									</td>
 								</tr>
 							</table>
-							
+
 											</td>
 										</tr>
-									
+
 										<tr>
 											<td
 												 class="" width="600px"
 											>
-									
+
 							<table
 								 align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600"
 							>
@@ -545,9 +545,9 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																			<td style="direction:ltr;font-size:0px;padding:20px 0;padding-top:0;text-align:center;vertical-align:top;">
 																				<!--[if mso | IE]>
 													<table role="presentation" border="0" cellpadding="0" cellspacing="0">
-												
+
 								<tr>
-							
+
 										<td
 											 class="" style="width:600px;"
 										>
@@ -556,7 +556,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																					<!--[if mso | IE]>
 								<table  role="presentation" border="0" cellpadding="0" cellspacing="0">
 									<tr>
-								
+
 											<td
 												 style="vertical-align:top;width:600px;"
 											>
@@ -582,16 +582,16 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																					</div>
 																					<!--[if mso | IE]>
 											</td>
-											
+
 									</tr>
 									</table>
 								<![endif]-->
 																				</div>
 																				<!--[if mso | IE]>
 										</td>
-									
+
 								</tr>
-							
+
 													</table>
 												<![endif]-->
 																			</td>
@@ -603,10 +603,10 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 									</td>
 								</tr>
 							</table>
-							
+
 											</td>
 										</tr>
-									
+
 													</table>
 												<![endif]-->
 														</td>
@@ -625,23 +625,23 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 						</table>
 					</div>
 				</body>
-				
+
 				</html>`,
 			},
 			Text: {
 				Charset: 'UTF-8',
 				Data: `Hi ${escape(user.preferredName || user.firstName)},
-				Congratulations! You’re invited to be a part of VandyHacks VII: Retro Edition! We enjoyed reading your application and would love to see your ideas come to life during our virtual event on October 2nd-4th! 
+				Congratulations! You’re invited to be a part of VandyHacks VII: Retro Edition! We enjoyed reading your application and would love to see your ideas come to life during our virtual event on October 2nd-4th!
 
-				Head over to the application portal here and confirm your attendance by October 2nd, 12:00 PM CDT. Make sure you’ve also read and checked “agree” to our hackathon waiver under the hacker application.  
-				
+				Head over to the application portal here and confirm your attendance by October 2nd, 12:00 PM CDT. Make sure you’ve also read and checked “agree” to our hackathon waiver under the hacker application.
+
 				Finally, please make sure to do the following in preparation for the event:
 				Join our Discord here for communication before, during, and after the hackathon!
-				Review the full hackathon schedule here! 
+				Review the full hackathon schedule here!
 				*NOTE: We will be baking nutella hand pies at 5:00 PM CDT on Saturday, October 3rd, so get your ingredients ready!
-				
+
 				If you have any questions or concerns, check out our FAQ or reach out to us at info@vandyhacks.org.
-				
+
 				Cheers,
 				The VandyHacks Team
 				`,
