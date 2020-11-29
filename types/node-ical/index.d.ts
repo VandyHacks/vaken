@@ -93,12 +93,6 @@ declare module 'node-ical' {
         completion: string;
         created: DateWithTimeZone;
         lastmodified: DateWithTimeZone;
-
-        // I am not entirely sure about these, leave them as any for now..
-        organizer: any;
-        exdate: any;
-        geo: any;
-        recurrenceid: any;
     }
 
     export interface BaseComponent {
