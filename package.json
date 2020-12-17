@@ -164,7 +164,7 @@
 		"babel-jest": "^26.6.1",
 		"babel-loader": "^8.1.0",
 		"concurrently": "^5.3.0",
-		"copy-webpack-plugin": "^6.2.1",
+		"copy-webpack-plugin": "^7.0.0",
 		"css-loader": "^5.0.0",
 		"error-overlay-webpack-plugin": "^0.4.1",
 		"eslint": "^7.12.1",
