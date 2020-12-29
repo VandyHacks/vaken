@@ -38,7 +38,7 @@ const generateHacker: () => HackerDbObject = () => {
 		phoneNumber: faker.phone.phoneNumber(),
 		preferredName: fn,
 		race: [Object.values(Race)[getRandom(6)]].join('|'),
-		school: institutions['data'][getRandom(1430)],
+		school: institutions.data[getRandom(1430)],
 		secondaryIds: [],
 		shirtSize: Object.values(ShirtSize)[getRandom(6)],
 		status: Object.values(ApplicationStatus)[getRandom(7)],
