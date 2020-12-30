@@ -26,10 +26,13 @@ jobs:
     name: Style check
     runs-on: ubuntu-latest
     steps:
+      - name: Read .nvmrc
+        run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
+        id: nvm
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: "${{ steps.nvm.outputs.NVMRC }}"
       - run: npm ci
         env: 
           MONGOMS_DISABLE_POSTINSTALL: 1
@@ -39,10 +42,13 @@ jobs:
     name: Test code
     runs-on: ubuntu-latest
     steps:
+      - name: Read .nvmrc
+        run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
+        id: nvm
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: "${{ steps.nvm.outputs.NVMRC }}"
       - run: npm ci
       - run: npm run generate
       - run: npm run check:test:ci
@@ -54,10 +60,13 @@ jobs:
     name: Check types
     runs-on: ubuntu-latest
     steps:
+      - name: Read .nvmrc
+        run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
+        id: nvm
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: "${{ steps.nvm.outputs.NVMRC }}"
       - run: npm ci
         env: 
           MONGOMS_DISABLE_POSTINSTALL: 1
