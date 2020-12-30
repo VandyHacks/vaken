@@ -37,6 +37,7 @@ module.exports = {
 			},
 			preset: 'ts-jest',
 			testPathIgnorePatterns: ['__snapshots__', '.eslintrc.js'],
+			setupTestFrameworkScriptFile: "src/client/setupTests.js",
 		},
 		{
 			// server-side testing config
