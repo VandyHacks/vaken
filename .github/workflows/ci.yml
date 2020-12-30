@@ -7,7 +7,7 @@ on:
   pull_request:
 jobs:
   build:
-    name: build
+    name: Build Vaken
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -20,7 +20,7 @@ jobs:
       - run: npm run generate
       - run: npm run build
   lint:
-    name: lint
+    name: Check style of files against Eslint config
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -33,7 +33,7 @@ jobs:
       - run: npm run generate
       - run: npm run check:lint:ci
   test:
-    name: test
+    name: Run our Jest tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -44,7 +44,7 @@ jobs:
       - run: npm run generate
       - run: npm run check:test:ci
   typecheck:
-    name: typecheck
+    name: Check if our types are consistent
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
