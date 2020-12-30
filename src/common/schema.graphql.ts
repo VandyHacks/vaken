@@ -36,7 +36,11 @@ export default gql`
 		AMERICAN_INDIAN_OR_ALASKA_NATIVE
 		ASIAN
 		NATIVE_HAWAIIAN_PACIFIC_ISLANDER
-		HISPANIC_OR_LATINO
+	}
+
+	enum HispanicLatinoOrigin {
+		YES
+		NO
 	}
 
 	enum Gender {
@@ -168,6 +172,7 @@ export default gql`
 		userType: UserType!
 		phoneNumber: String
 		race: String! @column
+		ethnicity: Boolean! @column
 		modifiedAt: Float! @column
 		status: ApplicationStatus! @column
 		school: String @column
@@ -273,6 +278,7 @@ export default gql`
 		userType: UserType!
 		phoneNumber: String
 		race: String! @column
+		ethnicity: Boolean! @column
 		modifiedAt: Float! @column
 		status: ApplicationStatus! @column
 		school: String @column
