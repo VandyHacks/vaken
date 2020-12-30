@@ -193,14 +193,18 @@ const onRegexToggle = (ctx: TableCtxI, index: number): ((p: boolean) => void) =>
 		});
 };
 
-const onTableColumnSelect = (ctx: TableCtxI, index: number): ((s: ValueType<Option>) => void) => {
+const onTableColumnSelect = (
+	ctx: TableCtxI,
+	index: number
+): ((s: ValueType<Option, true>) => void) => {
 	// Dependency injection
-	return (s: ValueType<Option>) =>
+	return (s: ValueType<Option, true>) =>
 		ctx.update(draft => {
 			if (s == null) {
 				draft.searchCriteria[index].selectedColumns = [];
 			} else {
-				draft.searchCriteria[index].selectedColumns = Array.isArray(s) ? s : [s];
+				// react-select is bad: https://github.com/JedWatson/react-select/issues/4252
+				draft.searchCriteria[index].selectedColumns = (Array.isArray(s) ? s : [s]) as Option[];
 			}
 		});
 };
@@ -356,8 +360,8 @@ const HackerTable: FC<HackerTableProps> = ({
 								options={columnOptions}
 								className="basic-multi-select"
 								classNamePrefix="select"
-								onChange={(value: ValueType<Option>) =>
-									onTableColumnSelect(table, index)(value as ValueType<Option>)
+								onChange={(value: ValueType<Option, true>) =>
+									onTableColumnSelect(table, index)(value)
 								}
 							/>
 							<SearchBox
