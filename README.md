@@ -2,7 +2,7 @@
 
 ![CI](https://github.com/VandyHacks/vaken/workflows/CI/badge.svg)
 ![GitHub](https://img.shields.io/github/license/vandyhacks/vaken.svg)
-[![Depfu](https://badges.depfu.com/badges/cef18db6a35fb2d23a3a917ea9b6d852/overview.svg)](https://depfu.com/github/VandyHacks/vaken?project_id=7955)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/945dac4210d3058caa78/test_coverage)](https://codeclimate.com/github/VandyHacks/vaken/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/945dac4210d3058caa78/maintainability)](https://codeclimate.com/github/VandyHacks/vaken/maintainability)
 [![DeepScan grade](https://deepscan.io/api/teams/7388/projects/9504/branches/261722/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=7388&pid=9504&bid=261722)
 
