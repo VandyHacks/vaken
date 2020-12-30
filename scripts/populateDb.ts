@@ -28,6 +28,7 @@ const generateHacker: () => HackerDbObject = () => {
 		email: faker.internet.email(),
 		emailUnsubscribed: false,
 		eventsAttended: [],
+		eventScore: 0,
 		firstName: fn,
 		gender: Object.values(Gender)[getRandom(7)],
 		gradYear: `${getRandom(4) + 2019}`,
