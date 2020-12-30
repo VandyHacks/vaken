@@ -20,6 +20,6 @@
 		},
 		"types": ["node", "jest"]
 	},
-	"include": ["src/**/*.ts", "src/client/**/*.tsx", "plugins/**/*.ts*"],
+	"include": ["src/**/*.ts", "src/client/**/*.tsx", "plugins/**/*.ts", "scripts/**/*.ts"],
 	"exclude": ["node_modules/**", "types/**"]
 }
