@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import * as EmailValidator from 'email-validator';
 import { HeaderButton } from '../../components/Buttons/HeaderButton';
 import { SearchBox } from '../../components/Input/SearchBox';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
@@ -14,8 +15,6 @@ import {
 } from '../../generated/graphql';
 import Spinner from '../../components/Loading/Spinner';
 import STRINGS from '../../assets/strings.json';
-
-const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 const StyledSelect = styled.select`
 	margin: 0.25rem 1rem 0.25rem 0rem;
@@ -159,7 +158,8 @@ const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 
 	const onCreateSponsorEmail = async (): Promise<void> => {
 		// validate the email entered
-		if (EMAIL_REGEX.test(sponsorEmail)) {
+
+		if (EmailValidator.validate(sponsorEmail)) {
 			try {
 				console.log(sponsorEmail);
 				console.log(sponsorName);
