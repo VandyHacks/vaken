@@ -1,25 +1,47 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Test RadioSlider RadioSlider renders correctly 1`] = `
+.c0 {
+  cursor: pointer;
+  margin: auto;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  border-radius: 0.25rem;
+  background: #ccc;
+  position: relative;
+  display: block;
+  float: left;
+}
+
+.c1 {
+  cursor: pointer;
+  position: relative;
+  display: block;
+  float: left;
+  -webkit-transition: 300ms ease-out;
+  transition: 300ms ease-out;
+  padding: 0 0.75rem;
+}
+
 <div
-  className="sc-bdnylx XNwjd"
+  className="c0"
 >
   <div
-    className="sc-gtssRu goOuIj"
+    className="c1"
     id="a"
     onClick={[Function]}
   >
     a
   </div>
   <div
-    className="sc-gtssRu goOuIj"
+    className="c1"
     id="b"
     onClick={[Function]}
   >
     b
   </div>
   <div
-    className="sc-gtssRu goOuIj"
+    className="c1"
     id="c"
     onClick={[Function]}
   >

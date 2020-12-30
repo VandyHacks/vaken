@@ -1,8 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Test Status renders correctly 1`] = `
+.c0 {
+  font-family: 'Roboto Condensed';
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  background-color: mock;
+  text-align: center;
+  border-radius: 8px;
+  width: 5rem;
+  text-transform: lowercase;
+}
+
+.c0::first-letter {
+  text-transform: capitalize;
+}
+
 <div
-  className="sc-bdnylx bvMGFf"
+  className="c0"
 >
   CONFIRMED
 </div>

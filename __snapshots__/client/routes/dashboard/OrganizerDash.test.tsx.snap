@@ -1,19 +1,41 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Test SchoolTable renders properly 1`] = `
+.c2 {
+  font-size: 1.25rem;
+  font-family: 'Roboto',sans-serif;
+  font-weight: 500;
+  color: #3f3356;
+}
+
+.c3 {
+  font-size: 1.25rem;
+  font-family: 'Roboto',sans-serif;
+  font-weight: 100;
+  color: #3f3356;
+}
+
+.c0 {
+  font-size: 1rem;
+}
+
+.c1 {
+  margin-bottom: 0.5rem;
+}
+
 <ul
-  className="sc-dIvqjp dAkoix"
+  className="c0"
 >
   <li
-    className="sc-hHEjAm bPoxRn"
+    className="c1"
   >
     <span
-      className="sc-bkbjAj fOXgaG"
+      className="c2"
     >
       mockschool: 
     </span>
     <span
-      className="sc-iemXMA bPERLh"
+      className="c3"
     >
       1
     </span>

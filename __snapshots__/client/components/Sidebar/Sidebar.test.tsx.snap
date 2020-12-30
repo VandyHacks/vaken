@@ -1,14 +1,349 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Test Sidebar Sidebar renders correctly 1`] = `
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  -ms-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c5 {
+  height: calc(100% - calc(8rem + 160px));
+  width: 100%;
+  padding: 100%;
+  padding-bottom: 0;
+  padding-top: 0;
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0;
+}
+
+.c15 {
+  height: -webkit-min-content;
+  height: -moz-min-content;
+  height: min-content;
+  width: 100%;
+  padding: 100%;
+  padding-bottom: 1rem;
+  padding-top: 0;
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0;
+}
+
+.c16 {
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+
+.c6 {
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.c13 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  -ms-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  font-family: 'Roboto';
+  font-size: 1.4rem;
+  font-weight: normal;
+  color: black;
+  padding-left: unset;
+  padding-right: unset;
+}
+
+.c14 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  -ms-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  font-family: 'Roboto Condensed';
+  font-size: 1.4rem;
+  color: black;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  -ms-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-flow: row;
+  -ms-flex-flow: row;
+  flex-flow: row;
+  font-weight: 400;
+  height: 3.2rem;
+  width: 23.33rem;
+  padding: 0;
+  padding-bottom: 0;
+  padding-top: 0;
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0;
+  margin-bottom: 1.6rem;
+  margin-top: 0;
+  margin-left: 0;
+  margin-right: 0;
+  background: rgba(255,255,255,1);
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+}
+
+.c9:hover {
+  box-shadow: 0px 0px 30px 0px rgba(255,255,255,1);
+}
+
+.c9:focus {
+  outline: none;
+}
+
+.c10 {
+  background: none;
+  color: black;
+  font-weight: regular;
+  border-radius: 0;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  width: 100%;
+  padding-left: 2rem;
+  margin: 0;
+  height: 4rem;
+}
+
+.c10:hover,
+.c10:focus {
+  background: rgba(255,255,255,0.4);
+  box-shadow: none;
+}
+
+.c19 {
+  font-family: 'Roboto',sans-serif;
+  font-weight: 300;
+  font-size: 1.5rem;
+  color: white;
+  margin: 0 0;
+}
+
+.c0 {
+  grid-area: sidebar;
+}
+
+.c1 {
+  background: #202124;
+  width: 100%;
+  height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  -ms-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+}
+
+.c2 {
+  margin: 3rem 2rem;
+  width: calc(100% - 4rem);
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c2 img {
+  max-width: 100%;
+  width: 100%;
+  display: block;
+}
+
+.c3 {
+  margin: 0 2rem;
+  width: calc(100% - 4rem);
+  border: 0.03125rem solid white;
+  margin-bottom: 2rem;
+  float: left;
+}
+
+.c18 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.c12 {
+  color: white;
+  font-weight: 100;
+  font-size: 18pt;
+}
+
+.c17 {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  text-align: left;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  width: 100%;
+  outline: 0 !important;
+}
+
+.c17:focus,
+.c17:hover,
+.c17:visited,
+.c17:link,
+.c17:active {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: 0 !important;
+}
+
+.c17 button:active,
+.c17 button:focus {
+  outline: 0 !important;
+}
+
+.c17 button::-moz-focus-inner {
+  border: 0;
+}
+
+.c8 {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  text-align: left;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  width: 100%;
+  outline: 0 !important;
+}
+
+.c8:focus,
+.c8:hover,
+.c8:visited,
+.c8:link,
+.c8:active {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: 0 !important;
+}
+
+.c8 button:active,
+.c8 button:focus {
+  outline: 0 !important;
+}
+
+.c8 button::-moz-focus-inner {
+  border: 0;
+}
+
+.c7 {
+  width: 100%;
+}
+
+.c7 li:not(:first-child):before {
+  content: '';
+  opacity: 0.2;
+  background-color: white;
+  height: 1px;
+  width: calc(100% - 4rem);
+  margin: 0 2rem;
+  display: block;
+}
+
+.c7 .c11 {
+  padding: 0.33rem 0 0.33rem 1.33rem;
+}
+
+.c7 li a button {
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+}
+
+.c7 .active .c11 {
+  font-weight: 400;
+}
+
+.c7 .active button {
+  background: rgba(247,245,249,0.1);
+}
+
 <div
-  className="sc-ciSmjq golZiG sidebar"
+  className="c0 sidebar"
 >
   <div
-    className="sc-jcwofb iPnNVn"
+    className="c1"
   >
     <div
-      className="sc-carGAA cYbPuB"
+      className="c2"
     >
       <img
         alt="VH graphic"
@@ -16,27 +351,27 @@ exports[`Test Sidebar Sidebar renders correctly 1`] = `
       />
     </div>
     <hr
-      className="sc-iTVIwl fzXqQL"
+      className="c3"
     />
     <div
-      className="sc-bdnylx sc-gtssRu sc-gKAblj fZfYHk dezkIe gEXMCh"
+      className="c4 c5 c6"
       height="calc(100% - calc(8rem + 160px))"
     >
       <ul
-        className="sc-dPaNSN pdbzE"
+        className="c7"
       >
         <li>
           <a
             aria-current={null}
-            className="sc-jNnnWF hsyfMI"
+            className="c8"
             href="/dashboard"
             onClick={[Function]}
           >
             <button
-              className="sc-iqAbSa sc-bqGHjH fAhYJg hMHjap sc-efHXLn byrbTX"
+              className="c9 c10 c11 c12"
             >
               <div
-                className="sc-fujyUd sc-pNWxx hizPi jiaWaO sc-efHXLn byrbTX"
+                className="c13 c14 c11 c12"
               >
                 Dashboard
               </div>
@@ -46,15 +381,15 @@ exports[`Test Sidebar Sidebar renders correctly 1`] = `
         <li>
           <a
             aria-current={null}
-            className="sc-jNnnWF hsyfMI"
+            className="c8"
             href="/application"
             onClick={[Function]}
           >
             <button
-              className="sc-iqAbSa sc-bqGHjH fAhYJg hMHjap sc-efHXLn byrbTX"
+              className="c9 c10 c11 c12"
             >
               <div
-                className="sc-fujyUd sc-pNWxx hizPi jiaWaO sc-efHXLn byrbTX"
+                className="c13 c14 c11 c12"
               >
                 Apply
               </div>
@@ -64,15 +399,15 @@ exports[`Test Sidebar Sidebar renders correctly 1`] = `
         <li>
           <a
             aria-current={null}
-            className="sc-jNnnWF hsyfMI"
+            className="c8"
             href="/checkin"
             onClick={[Function]}
           >
             <button
-              className="sc-iqAbSa sc-bqGHjH fAhYJg hMHjap sc-efHXLn byrbTX"
+              className="c9 c10 c11 c12"
             >
               <div
-                className="sc-fujyUd sc-pNWxx hizPi jiaWaO sc-efHXLn byrbTX"
+                className="c13 c14 c11 c12"
               >
                 Event Check-in
               </div>
@@ -82,15 +417,15 @@ exports[`Test Sidebar Sidebar renders correctly 1`] = `
         <li>
           <a
             aria-current={null}
-            className="sc-jNnnWF hsyfMI"
+            className="c8"
             href="/help"
             onClick={[Function]}
           >
             <button
-              className="sc-iqAbSa sc-bqGHjH fAhYJg hMHjap sc-efHXLn byrbTX"
+              className="c9 c10 c11 c12"
             >
               <div
-                className="sc-fujyUd sc-pNWxx hizPi jiaWaO sc-efHXLn byrbTX"
+                className="c13 c14 c11 c12"
               >
                 Help
               </div>
@@ -99,31 +434,31 @@ exports[`Test Sidebar Sidebar renders correctly 1`] = `
         </li>
       </ul>
       <div
-        className="sc-bdnylx sc-gtssRu sc-jSFkmK fZfYHk bbzyKM bOPoVl"
+        className="c4 c15 c16"
         height="min-content"
       >
         <a
-          className="sc-cTJmaU jmBmUd"
+          className="c17"
           href="/api/logout"
         >
           <button
-            className="sc-iqAbSa sc-bqGHjH fAhYJg hMHjap sc-efHXLn byrbTX"
+            className="c9 c10 c11 c12"
           >
             <div
-              className="sc-fujyUd sc-pNWxx hizPi jiaWaO sc-efHXLn byrbTX"
+              className="c13 c14 c11 c12"
             >
               Logout
             </div>
           </button>
         </a>
         <hr
-          className="sc-iTVIwl sc-iBzFoy fzXqQL jkywjx"
+          className="c3 c18"
         />
         <h1
-          className="sc-ksluoS QOjk"
+          className="c19"
         >
           <a
-            className="sc-cTJmaU jmBmUd"
+            className="c17"
             href="https://vandyhacks.org"
             style={
               Object {
