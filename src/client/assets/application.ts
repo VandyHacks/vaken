@@ -9,6 +9,7 @@ import { Boolean } from '../components/Input/Boolean';
 
 export const questions = [
 	{
+		title: 'Demographic Information',
 		category: 'demographicInfo',
 		fields: [
 			{
@@ -97,21 +98,17 @@ export const questions = [
 				Component: Checkbox,
 				default: '',
 				fieldName: 'race',
-				note: 'Choose all that apply.',
+				note: 'Choose all that apply. Free free to skip this question, if you prefer.',
 				options: [
 					'American Indian or Alaskan Native',
 					'Asian',
 					'Black or African American',
-					'Hispanic',
-					'White or Caucasian',
+					'White',
 					'Native Hawaiian or Other Pacific Islander',
-					'Other',
-					'Prefer not to answer',
 				],
-				title: 'What is your race/ethnicity?',
+				title: 'What is your race?',
 			},
 		],
-		title: 'Demographic Information',
 	},
 	{
 		category: 'application',
