@@ -14,7 +14,6 @@ import DB from '../src/server/models';
 
 require('dotenv').config();
 
-const getRandom = faker.random.number;
 const NUM_HACKERS = 800;
 
 const generateHacker: () => HackerDbObject = () => {
@@ -24,25 +23,25 @@ const generateHacker: () => HackerDbObject = () => {
 		_id: new ObjectID(),
 		application: [],
 		createdAt: new Date(),
-		dietaryRestrictions: [Object.values(DietaryRestriction)[getRandom(7)]].join('|'),
+		dietaryRestrictions: [Object.values(DietaryRestriction)[faker.random.number(7)]].join('|'),
 		email: faker.internet.email(),
 		emailUnsubscribed: false,
 		eventsAttended: [],
 		eventScore: 0,
 		firstName: fn,
-		gender: Object.values(Gender)[getRandom(7)],
-		gradYear: `${getRandom(4) + 2019}`,
+		gender: Object.values(Gender)[faker.random.number(7)],
+		gradYear: `${faker.random.number(4) + 2019}`,
 		lastName: ln,
 		logins: [],
 		majors: [],
 		modifiedAt: new Date().getTime(),
 		phoneNumber: faker.phone.phoneNumber(),
 		preferredName: fn,
-		race: [Object.values(Race)[getRandom(6)]].join('|'),
-		school: institutions.data[getRandom(1430)],
+		race: [Object.values(Race)[faker.random.number(6)]].join('|'),
+		school: institutions.data[faker.random.number(1430)],
 		secondaryIds: [],
-		shirtSize: Object.values(ShirtSize)[getRandom(6)],
-		status: Object.values(ApplicationStatus)[getRandom(7)],
+		shirtSize: Object.values(ShirtSize)[faker.random.number(6)],
+		status: Object.values(ApplicationStatus)[faker.random.number(7)],
 		userType: UserType.Hacker,
 	};
 };
