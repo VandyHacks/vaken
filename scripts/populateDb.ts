@@ -14,7 +14,7 @@ import DB from '../src/server/models';
 
 require('dotenv').config();
 
-const getRandom = (max: number): number => Math.floor(Math.random() * max);
+const getRandom = faker.random.number;
 const NUM_HACKERS = 800;
 
 const generateHacker: () => HackerDbObject = () => {
