@@ -1,16 +1,235 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Login renders properly 1`] = `
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  -ms-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c2 {
+  height: 25;
+  width: 27rem;
+  padding: 100%;
+  padding-bottom: 0;
+  padding-top: 0;
+  padding-left: 0;
+  padding-right: 0;
+  margin: 1.5rem;
+}
+
+.c7 {
+  height: -webkit-min-content;
+  height: -moz-min-content;
+  height: min-content;
+  width: -webkit-min-content;
+  width: -moz-min-content;
+  width: min-content;
+  padding: 100%;
+  padding-bottom: 0;
+  padding-top: 0;
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0;
+}
+
+.c8 {
+  -webkit-flex-flow: row nowrap;
+  -ms-flex-flow: row nowrap;
+  flex-flow: row nowrap;
+}
+
+.c3 {
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+}
+
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  -ms-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  font-family: 'Roboto';
+  font-size: 1.4rem;
+  font-weight: normal;
+  color: black;
+  padding-left: unset;
+  padding-right: unset;
+}
+
+.c12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  -ms-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  font-family: 'Roboto';
+  font-size: 1.4rem;
+  font-weight: normal;
+  color: #3f3356;
+  padding-left: unset;
+  padding-right: unset;
+}
+
+.c9 {
+  padding-right: 1rem;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  -ms-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-flow: row;
+  -ms-flex-flow: row;
+  flex-flow: row;
+  font-weight: 400;
+  height: 3.2rem;
+  width: 23.33rem;
+  padding: 0;
+  padding-bottom: 0;
+  padding-top: 0;
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0;
+  margin-bottom: 1.6rem;
+  margin-top: 0;
+  margin-left: 0;
+  margin-right: 0;
+  background: rgba(255,255,255,1);
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+}
+
+.c6:hover {
+  box-shadow: 0px 0px 30px 0px rgba(255,255,255,1);
+}
+
+.c6:focus {
+  outline: none;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  -ms-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  background: url(IconMock) no-repeat;
+  background-size: cover;
+}
+
+.c11 {
+  background: white;
+  color: black;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  font-family: 'Roboto';
+  font-size: 1rem;
+  outline: 0 !important;
+}
+
+.c11:hover,
+.c11:focus,
+.c11:active {
+  box-shadow: 0px 0px 20px 0px RGBA(0,0,0,255,0.67);
+}
+
+.c4 {
+  -webkit-transition: ease-in-out all 1s;
+  transition: ease-in-out all 1s;
+  background-color: rgba( 247,245,249, 0.9 );
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 0;
+  height: 25;
+  box-sizing: border-box;
+}
+
+.c5 {
+  font-family: 'Roboto',sans-serif;
+  font-weight: 500;
+  font-size: 2.5rem;
+  color: #3f3356;
+  margin: 1.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
 <div
-  className="sc-bqGHjH hIWAZJ"
+  className="c0"
 >
   <div
-    className="sc-bdnylx sc-gtssRu sc-eCApGN sc-hBMVcZ fZfYHk cUUlKp ebaYXL gjTTvm"
+    className="c1 c2 c3 c4"
     height="25"
     width="27rem"
   >
     <h1
-      className="sc-fnVYJo gmJYBh"
+      className="c5"
       color="#3f3356"
     >
       VandyHacks VII
@@ -24,21 +243,21 @@ exports[`Login renders properly 1`] = `
       }
     >
       <button
-        className="sc-iqAbSa fAhYJg"
+        className="c6"
       >
         <div
-          className="sc-bdnylx sc-gtssRu sc-dlnjPT fZfYHk fXVdfJ gtfSVC"
+          className="c1 c7 c8"
           height="min-content"
           width="min-content"
         >
           <img
             alt="Google logo"
-            className="sc-jrsJCI jWKCot"
+            className="c9"
             src="IconMock"
           />
         </div>
         <div
-          className="sc-fujyUd hizPi"
+          className="c10"
         >
           Sign in with Google
         </div>
@@ -53,21 +272,21 @@ exports[`Login renders properly 1`] = `
       }
     >
       <button
-        className="sc-iqAbSa fAhYJg"
+        className="c6"
       >
         <div
-          className="sc-bdnylx sc-gtssRu sc-dlnjPT fZfYHk fXVdfJ gtfSVC"
+          className="c1 c7 c8"
           height="min-content"
           width="min-content"
         >
           <img
             alt="GitHub logo"
-            className="sc-jrsJCI jWKCot"
+            className="c9"
             src="IconMock"
           />
         </div>
         <div
-          className="sc-fujyUd hizPi"
+          className="c10"
         >
           Sign in with GitHub
         </div>
@@ -84,10 +303,10 @@ exports[`Login renders properly 1`] = `
       target="_blank"
     >
       <button
-        className="sc-iqAbSa sc-ksluoS fAhYJg jlUDJJ"
+        className="c6 c11"
       >
         <div
-          className="sc-fujyUd iUwFnQ"
+          className="c12"
           color="#3f3356"
         >
           Learn more

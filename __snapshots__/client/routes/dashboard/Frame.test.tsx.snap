@@ -1,18 +1,609 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Test Frame Frame renders correctly 1`] = `
+.c1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  -ms-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c2 {
+  height: 100%;
+  width: 100%;
+  padding: 100%;
+  padding-bottom: 0;
+  padding-top: 0;
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0;
+}
+
+.c12 {
+  height: calc(100% - calc(8rem + 160px));
+  width: 100%;
+  padding: 100%;
+  padding-bottom: 0;
+  padding-top: 0;
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0;
+}
+
+.c22 {
+  height: -webkit-min-content;
+  height: -moz-min-content;
+  height: min-content;
+  width: 100%;
+  padding: 100%;
+  padding-bottom: 1rem;
+  padding-top: 0;
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0;
+}
+
+.c3 {
+  -webkit-flex-flow: row nowrap;
+  -ms-flex-flow: row nowrap;
+  flex-flow: row nowrap;
+}
+
+.c4 {
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.c28 {
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+}
+
+.c23 {
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+
+.c13 {
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.c27 {
+  max-height: 100%;
+  max-width: 100%;
+  overflow: scroll;
+}
+
+.c20 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  -ms-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  font-family: 'Roboto';
+  font-size: 1.4rem;
+  font-weight: normal;
+  color: black;
+  padding-left: unset;
+  padding-right: unset;
+}
+
+.c35 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  -ms-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  font-family: 'Roboto';
+  font-size: 1.4em;
+  font-weight: normal;
+  color: white;
+  padding-left: unset;
+  padding-right: unset;
+}
+
+.c21 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  -ms-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  font-family: 'Roboto Condensed';
+  font-size: 1.4rem;
+  color: black;
+}
+
+.c16 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  -ms-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-flow: row;
+  -ms-flex-flow: row;
+  flex-flow: row;
+  font-weight: 400;
+  height: 3.2rem;
+  width: 23.33rem;
+  padding: 0;
+  padding-bottom: 0;
+  padding-top: 0;
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0;
+  margin-bottom: 1.6rem;
+  margin-top: 0;
+  margin-left: 0;
+  margin-right: 0;
+  background: rgba(255,255,255,1);
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+}
+
+.c16:hover {
+  box-shadow: 0px 0px 30px 0px rgba(255,255,255,1);
+}
+
+.c16:focus {
+  outline: none;
+}
+
+.c33 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  -ms-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-flow: row;
+  -ms-flex-flow: row;
+  flex-flow: row;
+  font-weight: 400;
+  height: 3.2rem;
+  width: 23.33rem;
+  padding: 0;
+  padding-bottom: 0;
+  padding-top: 0;
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0;
+  margin-bottom: 1.6rem;
+  margin-top: 0;
+  margin-left: 0;
+  margin-right: 0;
+  background: #3148A1;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+}
+
+.c33:hover {
+  box-shadow: 0px 0px 30px 0px rgba(0,0,255,0.67);
+}
+
+.c33:focus {
+  outline: none;
+}
+
+.c17 {
+  background: none;
+  color: black;
+  font-weight: regular;
+  border-radius: 0;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  width: 100%;
+  padding-left: 2rem;
+  margin: 0;
+  height: 4rem;
+}
+
+.c17:hover,
+.c17:focus {
+  background: rgba(255,255,255,0.4);
+  box-shadow: none;
+}
+
+.c26 {
+  font-family: 'Roboto',sans-serif;
+  font-weight: 300;
+  font-size: 1.5rem;
+  color: white;
+  margin: 0 0;
+}
+
+.c29 {
+  -webkit-transition: ease-in-out all 1s;
+  transition: ease-in-out all 1s;
+  background-color: rgba( 247,245,249, 1 );
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 0;
+  height: -webkit-min-content;
+  height: -moz-min-content;
+  height: min-content;
+  box-sizing: border-box;
+}
+
+.c34 {
+  background: #3148A1;
+  color: black;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  font-family: 'Roboto';
+  font-size: 1rem;
+  outline: 0 !important;
+}
+
+.c34:hover,
+.c34:focus,
+.c34:active {
+  box-shadow: 0px 0px 20px 0px rgba(0,0,255,0.67);
+}
+
+.c6 {
+  font-family: 'Roboto',sans-serif;
+  font-weight: 500;
+  font-size: 2.5rem;
+  color: #3148A1;
+  margin: 1.5rem 0rem 0rem;
+  margin-bottom: 1.5rem;
+}
+
+.c31 {
+  font-family: 'Roboto',sans-serif;
+  font-weight: 500;
+  font-size: 1.75rem;
+  color: black;
+  margin: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.c30 {
+  border-radius: 8px;
+  height: -webkit-min-content;
+  height: -moz-min-content;
+  height: min-content;
+  width: 36rem;
+  background: rgba(247,245,249,1);
+  padding: 1.5rem;
+}
+
+.c30 img {
+  display: block;
+  height: 200px;
+}
+
+.c8 {
+  grid-area: sidebar;
+}
+
+.c9 {
+  background: #202124;
+  width: 100%;
+  height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  -ms-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+}
+
+.c10 {
+  margin: 3rem 2rem;
+  width: calc(100% - 4rem);
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c10 img {
+  max-width: 100%;
+  width: 100%;
+  display: block;
+}
+
+.c11 {
+  margin: 0 2rem;
+  width: calc(100% - 4rem);
+  border: 0.03125rem solid white;
+  margin-bottom: 2rem;
+  float: left;
+}
+
+.c25 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.c19 {
+  color: white;
+  font-weight: 100;
+  font-size: 18pt;
+}
+
+.c24 {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  text-align: left;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  width: 100%;
+  outline: 0 !important;
+}
+
+.c24:focus,
+.c24:hover,
+.c24:visited,
+.c24:link,
+.c24:active {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: 0 !important;
+}
+
+.c24 button:active,
+.c24 button:focus {
+  outline: 0 !important;
+}
+
+.c24 button::-moz-focus-inner {
+  border: 0;
+}
+
+.c15 {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  text-align: left;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  width: 100%;
+  outline: 0 !important;
+}
+
+.c15:focus,
+.c15:hover,
+.c15:visited,
+.c15:link,
+.c15:active {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  outline: 0 !important;
+}
+
+.c15 button:active,
+.c15 button:focus {
+  outline: 0 !important;
+}
+
+.c15 button::-moz-focus-inner {
+  border: 0;
+}
+
+.c14 {
+  width: 100%;
+}
+
+.c14 li:not(:first-child):before {
+  content: '';
+  opacity: 0.2;
+  background-color: white;
+  height: 1px;
+  width: calc(100% - 4rem);
+  margin: 0 2rem;
+  display: block;
+}
+
+.c14 .c18 {
+  padding: 0.33rem 0 0.33rem 1.33rem;
+}
+
+.c14 li a button {
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+}
+
+.c14 .active .c18 {
+  font-weight: 400;
+}
+
+.c14 .active button {
+  background: rgba(247,245,249,0.1);
+}
+
+.c0 {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  grid: 'sidebar . . .' 1.5rem 'sidebar . header .' auto 'sidebar . . .' 1.5rem 'sidebar . content .' 1fr 'sidebar . . .' 1.5rem / 22rem 2rem 1fr 2rem;
+  overflow: hidden;
+}
+
+.c0 .content {
+  grid-area: content;
+  max-height: 100%;
+  border-radius: 8px;
+  overflow: auto;
+}
+
+.c0 .header {
+  grid-area: header;
+}
+
+.c0 .sidebar {
+  grid-area: sidebar;
+}
+
+.c7 {
+  height: 0.4rem;
+  width: 7.5rem;
+  background: #3148A1;
+}
+
+.c5 {
+  background-color: rgba(247,245,249,1);
+  border-radius: 4px;
+  z-index: 1;
+  cursor: pointer;
+  border: none;
+  padding: 3px 6px;
+  -webkit-transform: scale(0.9);
+  -ms-transform: scale(0.9);
+  transform: scale(0.9);
+}
+
+.c5 div {
+  width: 35px;
+  height: 5px;
+  background-color: #3148A1;
+  margin: 6px 0;
+}
+
+@media screen and (max-width:456px) {
+  .c30 {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width:400px) {
+  .c30 a,
+  .c30 .c32 {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width:456px) {
+  .c0 {
+    grid: 'sidebar . . .' 1.5rem 'sidebar . header .' auto 'sidebar . . .' 1.5rem 'sidebar . content .' 1fr 'sidebar . . .' 1.5rem / 0 2rem 1fr 2rem;
+  }
+
+  .c0 .sidebar {
+    display: none;
+  }
+}
+
+@media screen and (max-width:456px) {
+  .c7 {
+    display: none;
+  }
+}
+
+@media screen and (min-width:457px) {
+  .c5 {
+    display: none;
+  }
+}
+
 <div
-  className="sc-bBjRzc dZAjam"
+  className="c0"
   onFocus={[Function]}
 >
   <div
     className="header"
   >
     <div
-      className="sc-bdnylx sc-gtssRu sc-dlnjPT sc-hKFyIo fZfYHk fBjTih gtfSVC cIYGjq"
+      className="c1 c2 c3 c4"
     >
       <button
-        className="sc-ArjOu elzKSA"
+        className="c5"
         onClick={[Function]}
         type="button"
       >
@@ -27,24 +618,24 @@ exports[`Test Frame Frame renders correctly 1`] = `
         />
       </button>
       <h1
-        className="sc-hiKfjK ivEujF"
+        className="c6"
         color="#3148A1"
       >
         Dashboard
       </h1>
     </div>
     <div
-      className="sc-cOigif ephRvg"
+      className="c7"
     />
   </div>
   <div
-    className="sc-ciSmjq golZiG sidebar"
+    className="c8 sidebar"
   >
     <div
-      className="sc-jcwofb iPnNVn"
+      className="c9"
     >
       <div
-        className="sc-carGAA cYbPuB"
+        className="c10"
       >
         <img
           alt="VH graphic"
@@ -52,27 +643,27 @@ exports[`Test Frame Frame renders correctly 1`] = `
         />
       </div>
       <hr
-        className="sc-iTVIwl fzXqQL"
+        className="c11"
       />
       <div
-        className="sc-bdnylx sc-gtssRu sc-gKAblj fZfYHk dezkIe gEXMCh"
+        className="c1 c12 c13"
         height="calc(100% - calc(8rem + 160px))"
       >
         <ul
-          className="sc-dPaNSN pdbzE"
+          className="c14"
         >
           <li>
             <a
               aria-current={null}
-              className="sc-jNnnWF hsyfMI"
+              className="c15"
               href="/dashboard"
               onClick={[Function]}
             >
               <button
-                className="sc-iqAbSa sc-bqGHjH fAhYJg hMHjap sc-efHXLn byrbTX"
+                className="c16 c17 c18 c19"
               >
                 <div
-                  className="sc-fujyUd sc-pNWxx hizPi jiaWaO sc-efHXLn byrbTX"
+                  className="c20 c21 c18 c19"
                 >
                   Dashboard
                 </div>
@@ -82,15 +673,15 @@ exports[`Test Frame Frame renders correctly 1`] = `
           <li>
             <a
               aria-current={null}
-              className="sc-jNnnWF hsyfMI"
+              className="c15"
               href="/application"
               onClick={[Function]}
             >
               <button
-                className="sc-iqAbSa sc-bqGHjH fAhYJg hMHjap sc-efHXLn byrbTX"
+                className="c16 c17 c18 c19"
               >
                 <div
-                  className="sc-fujyUd sc-pNWxx hizPi jiaWaO sc-efHXLn byrbTX"
+                  className="c20 c21 c18 c19"
                 >
                   Apply
                 </div>
@@ -100,15 +691,15 @@ exports[`Test Frame Frame renders correctly 1`] = `
           <li>
             <a
               aria-current={null}
-              className="sc-jNnnWF hsyfMI"
+              className="c15"
               href="/checkin"
               onClick={[Function]}
             >
               <button
-                className="sc-iqAbSa sc-bqGHjH fAhYJg hMHjap sc-efHXLn byrbTX"
+                className="c16 c17 c18 c19"
               >
                 <div
-                  className="sc-fujyUd sc-pNWxx hizPi jiaWaO sc-efHXLn byrbTX"
+                  className="c20 c21 c18 c19"
                 >
                   Event Check-in
                 </div>
@@ -118,15 +709,15 @@ exports[`Test Frame Frame renders correctly 1`] = `
           <li>
             <a
               aria-current={null}
-              className="sc-jNnnWF hsyfMI"
+              className="c15"
               href="/help"
               onClick={[Function]}
             >
               <button
-                className="sc-iqAbSa sc-bqGHjH fAhYJg hMHjap sc-efHXLn byrbTX"
+                className="c16 c17 c18 c19"
               >
                 <div
-                  className="sc-fujyUd sc-pNWxx hizPi jiaWaO sc-efHXLn byrbTX"
+                  className="c20 c21 c18 c19"
                 >
                   Help
                 </div>
@@ -135,31 +726,31 @@ exports[`Test Frame Frame renders correctly 1`] = `
           </li>
         </ul>
         <div
-          className="sc-bdnylx sc-gtssRu sc-jSFkmK fZfYHk bbzyKM bOPoVl"
+          className="c1 c22 c23"
           height="min-content"
         >
           <a
-            className="sc-cTJmaU jmBmUd"
+            className="c24"
             href="/api/logout"
           >
             <button
-              className="sc-iqAbSa sc-bqGHjH fAhYJg hMHjap sc-efHXLn byrbTX"
+              className="c16 c17 c18 c19"
             >
               <div
-                className="sc-fujyUd sc-pNWxx hizPi jiaWaO sc-efHXLn byrbTX"
+                className="c20 c21 c18 c19"
               >
                 Logout
               </div>
             </button>
           </a>
           <hr
-            className="sc-iTVIwl sc-iBzFoy fzXqQL jkywjx"
+            className="c11 c25"
           />
           <h1
-            className="sc-ksluoS QOjk"
+            className="c26"
           >
             <a
-              className="sc-cTJmaU jmBmUd"
+              className="c24"
               href="https://vandyhacks.org"
               style={
                 Object {
@@ -175,29 +766,29 @@ exports[`Test Frame Frame renders correctly 1`] = `
     </div>
   </div>
   <div
-    className="sc-iCoHVE gWoYKX content"
+    className="c27 content"
   >
     <div
-      className="sc-bdnylx sc-gtssRu sc-eCApGN fZfYHk fBjTih ebaYXL"
+      className="c1 c2 c28"
     >
       <div
-        className="sc-bdnylx sc-gtssRu sc-eCApGN sc-kfYqjs sc-gXfWUo fZfYHk fBjTih ebaYXL fTpVEd byLehM"
+        className="c1 c2 c28 c29 c30"
       >
         <div
-          className="sc-bdnylx sc-gtssRu fZfYHk fBjTih"
+          className="c1 c2"
         >
           <h1
-            className="sc-hiKfjK CnsUf"
+            className="c31"
             fontSize="1.75rem"
           >
             Your application status:
           </h1>
           <button
-            className="sc-iqAbSa sc-cxNIbT bYfGIk ixZfIM"
+            className="c32 c33 c34"
             onClick={[Function]}
           >
             <div
-              className="sc-fujyUd jTXPrA"
+              className="c35"
               color="white"
               fontSize="1.4em"
             >
