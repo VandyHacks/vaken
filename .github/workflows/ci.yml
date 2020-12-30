@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: '12'
+          node-version: '14'
       - run: npm ci
         env: 
           MONGOMS_DISABLE_POSTINSTALL: 1
@@ -26,7 +26,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: '12'
+          node-version: '14'
       - run: npm ci
         env: 
           MONGOMS_DISABLE_POSTINSTALL: 1
@@ -39,7 +39,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: '12'
+          node-version: '14'
       - run: npm ci
       - run: npm run generate
       - run: npm run check:test:ci
@@ -54,7 +54,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: '12'
+          node-version: '14'
       - run: npm ci
         env: 
           MONGOMS_DISABLE_POSTINSTALL: 1
