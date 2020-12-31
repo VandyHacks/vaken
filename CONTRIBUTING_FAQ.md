@@ -21,4 +21,4 @@ ts-node -r dotenv/config ./scripts/makeOrganizer.ts -- YOUR_EMAIL_HERE [github] 
 ```
 Where you specify either github or google if you use the same email for both accounts to only update one of them.
 
-Then you may simply log in with the account as usual and you should be an organizer. 
+Then you may simply log in with the account as usual and you should be an organizer.

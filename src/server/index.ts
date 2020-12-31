@@ -15,8 +15,6 @@ import { UnsubscribeHandler } from './mail/handlers';
 import { UserDbInterface } from './generated/graphql';
 import { pullCalendar } from './events';
 
-// import vakenConfig from '../../vaken.config';
-
 import { serverPlugins, authPlugins } from './plugins';
 
 const { SESSION_SECRET, PORT, CALENDARID, NODE_ENV } = process.env;
@@ -93,19 +91,6 @@ export const schema = makeExecutableSchema({
 		});
 		// console.error(config); // sanity check for auth plugin
 	});
-
-	// vakenConfig
-	// 	.filter(({ scopes }) => scopes.includes('oauth'))
-	// 	// could use map but map making other changes is less idomatic.
-	// 	.forEach(config => {
-	// 		passport.use(config.name, config.strategy(models));
-	// 		oAuthStrategies.push({
-	// 			name: config.name,
-	// 			svgPath: config.logo,
-	// 			displayName: config.displayName,
-	// 		});
-	// 		console.error(config);
-	// 	});
 
 	registerAuthRoutes(app, oAuthStrategies);
 

@@ -3,9 +3,8 @@
 # Vaken
 
 ![CI](https://github.com/VandyHacks/vaken/workflows/CI/badge.svg)
-[![codecov](https://codecov.io/gh/VandyHacks/vaken/branch/staging/graph/badge.svg)](https://codecov.io/gh/VandyHacks/vaken)
 ![GitHub](https://img.shields.io/github/license/vandyhacks/vaken.svg)
-[![Depfu](https://badges.depfu.com/badges/cef18db6a35fb2d23a3a917ea9b6d852/overview.svg)](https://depfu.com/github/VandyHacks/vaken?project_id=7955)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/945dac4210d3058caa78/test_coverage)](https://codeclimate.com/github/VandyHacks/vaken/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/945dac4210d3058caa78/maintainability)](https://codeclimate.com/github/VandyHacks/vaken/maintainability)
 [![DeepScan grade](https://deepscan.io/api/teams/7388/projects/9504/branches/261722/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=7388&pid=9504&bid=261722)
 
@@ -102,9 +101,9 @@ Vaken was designed with simplicity of deploy in mind, but implementations always
 1. Set at least one OAuth provider (we use both GitHub and Google in `main`).
 
    a. For Google: Follow the [Create Authorization Credentials](https://developers.google.com/identity/sign-in/web/sign-in#create_authorization_credentials) section of Google's official guide (skipping the other sections) and fill in the `GOOGLE_CALLBACK_URL`, `GOOGLE_CLIENT_ID`, and `GOOGLE_CLIENT_SECRET` as environment variables with the information you input/received from Google.
-   
+
    b. For GitHub: Follow GitHub's instructions for [creating an OAuth App](https://docs.github.com/developers/apps/creating-an-oauth-app). Your app will not need any special permissions. Set the env vars `GITHUB_CALLBACK_URL`, `GITHUB_CLIENT_ID`, and `GITHUB_CLIENT_SECRET` with what you input/received from GitHub.
-   
+
    c. Alternatively, we have also written support for Sign In with Microsoft, but when it was written fall 2019 the passport integration was poor and the upstream plugin author did not accept PRs. Instructions for setting up Azure can be found on [Microsoft Azure's website](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app), and the `MSFT_CLIENT_ID`, `MSFT_CLIENT_SECRET`, `MSFT_REDIRECT_URL`, and `MSFT_TENANT_NAME` are the env vars you're looking for. Using this provider will require adding an entry in [server/index.ts](https://github.com/VandyHacks/vaken/blob/439025cad805914bd4ae0a6d8acc952f47252a6b/src/server/index.ts#L110) to add the auth provider ([server/auth/microsoft.ts](https://github.com/VandyHacks/vaken/blob/439025cad805914bd4ae0a6d8acc952f47252a6b/src/server/auth/microsoft.ts)) routes and a button in the frontend [OAuthLogin component](https://github.com/VandyHacks/vaken/blob/439025cad805914bd4ae0a6d8acc952f47252a6b/src/client/routes/login/OAuthLogin.tsx#L17). PRs to make this a plugin appreciated!
 
 2. Set up a database (MongoDB) provider. You can use any provider you want (VandyHacks uses MongoDB Atlas Free), then put in the full connection string in MONGODB_BASE_URL env variable. Instructions for MongoDB Atlas can be found on [their site](https://docs.atlas.mongodb.com/getting-started/) (if you're going to use Heroku, you'll probably want to disable IP address allowlisting, as Heroku uses ephemeral IPs). Apparently, some big shopping giant with a large cloud provider created a compatible implementation of mongodb on their cloud that would also work, if you prefer.
@@ -120,10 +119,10 @@ Vaken was designed with simplicity of deploy in mind, but implementations always
    - The [Heroku Sentry add-on](https://devcenter.heroku.com/articles/sentry) is free and works really well for monitoring whether or not our application has any issues in prod we didn't catch before deploying. The `SENTRY_DSN` environment var should be set with your app's specific endpoint.
 4. Set up a Google Calendar for event integration
    - Set `CALENDARID` env var (these [third party instructions](https://yabdab.zendesk.com/hc/en-us/articles/205945926-Find-Google-Calendar-ID) are good for finding it). There are draconian rules which translate into specific features in regards to event integration which remain undocumented. PRs welcome!
-5. Set up Cloudflare CDN 
+5. Set up Cloudflare CDN
    - Cloudflare CDN keeps static assets fast and allows for easy SSL. Follow these simple [getting started instructions](https://support.cloudflare.com/hc/en-us/articles/201720164-Creating-a-Cloudflare-account-and-adding-a-website) and _definitely_ [set up SSL](https://support.cloudflare.com/hc/en-us/articles/360023792171-Getting-Started-with-Cloudflare-SSL) to keep your hackers' data secure in transit
 6. Setting up Admin access to the vaken dashboard
-   - Log in at least once to the app, then use [scripts/makeOrganizer.ts](https://github.com/VandyHacks/vaken/blob/439025cad805914bd4ae0a6d8acc952f47252a6b/scripts/makeOrganizer.ts) (usage is in the script file). You will likely want to ensure that `MONGODB_BASE_URL` is set in your environment or is configured in your .env file for the script to access your DB. The params after `--` specify which account gets organizer (admin) privileges—first the email then google or github to specify which login provider gives admin access (this is useful as it allows you to see either the hacker or organizer perspective depending on which you use to sign in). 
+   - Log in at least once to the app, then use [scripts/makeOrganizer.ts](https://github.com/VandyHacks/vaken/blob/439025cad805914bd4ae0a6d8acc952f47252a6b/scripts/makeOrganizer.ts) (usage is in the script file). You will likely want to ensure that `MONGODB_BASE_URL` is set in your environment or is configured in your .env file for the script to access your DB. The params after `--` specify which account gets organizer (admin) privileges—first the email then google or github to specify which login provider gives admin access (this is useful as it allows you to see either the hacker or organizer perspective depending on which you use to sign in).
 
 ### Final Thoughts
 

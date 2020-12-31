@@ -34,17 +34,6 @@ const Wrapper = styled.div`
 		animation-delay: -0.16s;
 	}
 
-	@-webkit-keyframes sk-bouncedelay {
-		0%,
-		80%,
-		100% {
-			-webkit-transform: scale(0);
-		}
-		40% {
-			-webkit-transform: scale(1);
-		}
-	}
-
 	@keyframes sk-bouncedelay {
 		0%,
 		80%,

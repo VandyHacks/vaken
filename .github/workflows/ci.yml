@@ -7,11 +7,11 @@ on:
   pull_request:
 jobs:
   build:
-    name: build
+    name: Build Vaken
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: '12'
       - run: npm ci
@@ -20,11 +20,11 @@ jobs:
       - run: npm run generate
       - run: npm run build
   lint:
-    name: lint
+    name: Style check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: '12'
       - run: npm ci
@@ -33,22 +33,26 @@ jobs:
       - run: npm run generate
       - run: npm run check:lint:ci
   test:
-    name: test
+    name: Test code
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: '12'
       - run: npm ci
       - run: npm run generate
       - run: npm run check:test:ci
+      - name: Publish code coverage
+        uses: paambaati/codeclimate-action@v2.7.5
+        env:
+          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
   typecheck:
-    name: typecheck
+    name: Check types
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: '12'
       - run: npm ci
