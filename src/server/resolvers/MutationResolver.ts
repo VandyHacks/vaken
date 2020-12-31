@@ -39,6 +39,10 @@ const requiredFields = [
 	'infoSharingConsent',
 ];
 
+/**
+ * These mutations modify data
+ * Each may contain authentication checks as well
+ */
 export const Mutation: MutationResolvers<Context> = {
 	assignEventToCompany: async (root, { input }, { models, user }) => {
 		checkIsAuthorized(UserType.Organizer, user);
