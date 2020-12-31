@@ -2,12 +2,7 @@ import { UserInputError, AuthenticationError } from 'apollo-server-express';
 import { ObjectID } from 'mongodb';
 import {
 	UserType,
-	ShirtSize,
-	LoginProvider,
 	ApplicationStatus,
-	UserDbInterface,
-	UserResolvers,
-	Resolvers,
 	HackerDbObject,
 	SponsorStatus,
 	SponsorDbObject,
@@ -15,21 +10,27 @@ import {
 	CompanyDbObject,
 } from '../generated/graphql';
 import Context from '../context';
-import {
-	fetchUser,
-	query,
-	queryById,
-	toEnum,
-	updateUser,
-	checkIsAuthorized,
-	checkIsAuthorizedArray,
-} from './helpers';
+import { updateUser, checkIsAuthorized, checkIsAuthorizedArray } from './helpers';
 import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser, getUser } from '../nfc';
 // import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser, getUser } from '../nfc';
 import { addOrUpdateEvent, assignEventToCompany, removeAbsentEvents } from '../events';
-import { getSignedUploadUrl, getSignedReadUrl } from '../storage/gcp';
+import { getSignedUploadUrl } from '../storage/gcp';
 import { sendStatusEmail } from '../mail/aws';
 import logger from '../logger';
+import { Hacker } from './HackerResolver';
+import { ApplicationField } from './ApplicationFieldResolver';
+import { Event } from './EventResolver';
+import { EventCheckIn } from './EventCheckInResolver';
+import { Company } from './CompanyResolver';
+import { CustomResolvers } from './types';
+import { Volunteer } from './VolunteerResolver';
+import { Login } from './LoginResolver';
+import { Mentor } from './MentorResolver';
+import { Organizer } from './OrganizerResolver';
+import { Query } from './QueryResolvers';
+import { Sponsor } from './SponsorResolver';
+import { Tier } from './TierResolver';
+import { Team } from './TeamResolver';
 
 // added here b/c webpack JSON compilation with 'use-strict' is broken (7/10/19 at 23:59)
 const DEADLINE_TS = 1601679600000;
@@ -54,124 +55,19 @@ const requiredFields = [
 	'infoSharingConsent',
 ];
 
-/**
- * Used to define a __resolveType function on the User resolver that doesn't take in a promise. This is important as it
- */
-export type CustomResolvers<T> = Omit<Resolvers<T>, 'User'> & {
-	User: {
-		__resolveType: (
-			user: UserDbInterface
-		) => 'Hacker' | 'Mentor' | 'Organizer' | 'Sponsor' | 'Volunteer';
-	};
-};
-
-const userResolvers: Omit<UserResolvers, '__resolveType' | 'userType'> = {
-	createdAt: async field => (await field).createdAt.getTime(),
-	// TODO: Add input validation for dietaryRestrictions. toEnum(DietaryRestriction)()
-	dietaryRestrictions: async user => (await user).dietaryRestrictions,
-	email: async user => (await user).email,
-	emailUnsubscribed: async hacker => (await hacker).emailUnsubscribed || false,
-	eventsAttended: async user => (await user).eventsAttended || null,
-	firstName: async user => (await user).firstName,
-	gender: async user => (await user).gender || null,
-	id: async user => (await user)._id.toHexString(),
-	lastName: async user => (await user).lastName,
-	logins: async user => (await user).logins || null,
-	phoneNumber: async user => (await user).phoneNumber || null,
-	preferredName: async user => (await user).preferredName,
-	secondaryIds: async user => (await user).secondaryIds,
-	shirtSize: async user => {
-		const { shirtSize } = await user;
-		return shirtSize ? toEnum(ShirtSize)(shirtSize) : null;
-	},
-};
-
-const hackerResolvers: CustomResolvers<Context>['Hacker'] = {
-	...userResolvers,
-	adult: async hacker => (await hacker).adult || null,
-	application: async (hacker, args, { models }: Context) =>
-		models.ApplicationFields.find({ userId: (await hacker)._id }).toArray(),
-	gender: async hacker => (await hacker).gender || null,
-	github: async hacker => (await hacker).github || null,
-	gradYear: async hacker => (await hacker).gradYear || null,
-	majors: async hacker => (await hacker).majors || [],
-	modifiedAt: async hacker => (await hacker).modifiedAt,
-	race: async hacker => (await hacker).race || '',
-	school: async hacker => (await hacker).school || null,
-	status: async hacker => toEnum(ApplicationStatus)((await hacker).status),
-	team: async (hacker, args, { models }) => {
-		const team = await models.UserTeamIndicies.findOne({ email: (await hacker).email });
-		if (!team) return { _id: new ObjectID(), createdAt: new Date(0), memberIds: [], name: '' };
-		return query({ name: team.team }, models.Teams);
-	},
-	eventScore: async hacker => (await hacker).eventScore || 0,
-	userType: () => UserType.Hacker,
-	volunteer: async hacker => (await hacker).volunteer || null,
-};
-
 export const resolvers: CustomResolvers<Context> = {
 	/**
 	 * These resolvers are for querying fields
 	 */
-	ApplicationField: {
-		answer: async field => (await field).answer || '',
-		createdAt: async field => (await field).createdAt.getTime(),
-		id: async field => (await field).id,
-		question: async field => (await field).question,
-		userId: async (field, _, { models }) => queryById(`${(await field).userId}`, models.Hackers),
-	},
-	Event: {
-		attendees: async event => (await event).attendees || [],
-		checkins: async event => (await event).checkins || [],
-		description: async event => (await event).description || null,
-		duration: async event => (await event).duration,
-		eventType: async event => (await event).eventType,
-		id: async event => (await event)._id.toHexString(),
-		location: async event => (await event).location,
-		name: async event => (await event).name,
-		startTimestamp: async event => (await event).startTimestamp.getTime(),
-		warnRepeatedCheckins: async event => (await event).warnRepeatedCheckins,
-		gcalID: async event => (await event).gcalID || null,
-		owner: async event => (await event).owner || null,
-	},
-	EventCheckIn: {
-		id: async eventCheckIn => (await eventCheckIn)._id.toHexString(),
-		timestamp: async eventCheckIn => (await eventCheckIn).timestamp.getTime(),
-		user: async eventCheckIn => (await eventCheckIn).user,
-	},
-	Company: {
-		id: async comp => (await comp)._id.toHexString(),
-		name: async comp => (await comp).name,
-		tier: async comp => (await comp).tier,
-		eventsOwned: async comp => (await comp).eventsOwned || [],
-	},
-	Tier: {
-		id: async tier => (await tier)._id.toHexString(),
-		name: async tier => (await tier).name,
-		permissions: async tier => (await tier).permissions,
-	},
-	Hacker: hackerResolvers,
-	Volunteer: {
-		...hackerResolvers,
-		userType: () => UserType.Volunteer,
-	},
-	Login: {
-		createdAt: async login => (await login).createdAt.getTime(),
-		provider: async login => toEnum(LoginProvider)((await login).provider),
-		token: async login => (await login).token,
-		userType: async login => (await login).userType as UserType,
-	},
-	Mentor: {
-		...userResolvers,
-		createdAt: async mentor => (await mentor).createdAt.getTime(),
-		shifts: async mentor => (await mentor).shifts,
-		shirtSize: async mentor => {
-			const { shirtSize } = await mentor;
-			return shirtSize ? toEnum(ShirtSize)(shirtSize) : null;
-		},
-		skills: async mentor => (await mentor).skills,
-		userType: () => UserType.Mentor,
-	},
+	ApplicationField,
+	Event,
+	EventCheckIn,
+	Company,
+	Tier,
+	Hacker,
+	Volunteer,
+	Login,
+	Mentor,
 	/**
 	 * These mutations modify data
 	 * Each may contain authentication checks as well
@@ -545,106 +441,14 @@ export const resolvers: CustomResolvers<Context> = {
 			throw new UserInputError('Not implemented :(');
 		},
 	},
-	Organizer: {
-		...userResolvers,
-		permissions: async organizer => (await organizer).permissions,
-		userType: () => UserType.Organizer,
-	},
-	Query: {
-		event: async (root, { id }, ctx) => queryById(id, ctx.models.Events),
-		eventCheckIn: async (root, { id }, ctx) => queryById(id, ctx.models.EventCheckIns),
-		eventCheckIns: async (root, args, ctx) => {
-			checkIsAuthorizedArray([UserType.Organizer], ctx.user);
-			return ctx.models.EventCheckIns.find().toArray();
-		},
-		events: async (root, args, ctx) => {
-			const user = checkIsAuthorizedArray(
-				[UserType.Organizer, UserType.Sponsor, UserType.Hacker],
-				ctx.user
-			);
-			if (user.userType === UserType.Sponsor) {
-				const { _id } = (user as SponsorDbObject).company;
-				const events = await ctx.models.Events.find({ 'owner._id': new ObjectID(_id) }).toArray();
-				return events;
-			}
-			if (user.userType === UserType.Organizer || user.userType === UserType.Hacker) {
-				return ctx.models.Events.find().toArray();
-			}
-			return ctx.models.Events.find({ owner: null }).toArray();
-		},
-		eventsForHackers: async (root, args, ctx) => {
-			checkIsAuthorized(UserType.Hacker, ctx.user);
-			return ctx.models.Events.find().toArray();
-		},
-		company: async (root, { id }, ctx) => queryById(id, ctx.models.Companies),
-		companies: async (root, args, ctx) => {
-			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer], ctx.user);
-			return ctx.models.Companies.find().toArray();
-		},
-		hacker: async (root, { id }, ctx) => queryById(id, ctx.models.Hackers),
-		hackers: async (root, args, ctx) => {
-			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], ctx.user);
-			return ctx.models.Hackers.find().toArray();
-		},
-		me: async (root, args, ctx) => {
-			if (!ctx.user) throw new AuthenticationError(`user is not logged in`);
-			return fetchUser(ctx.user, ctx.models);
-		},
-		mentor: async (root, { id }, ctx) => queryById(id, ctx.models.Mentors),
-		mentors: async (root, args, ctx) => {
-			checkIsAuthorizedArray([UserType.Organizer], ctx.user);
-			return ctx.models.Mentors.find().toArray();
-		},
-		organizer: async (root, { id }, ctx) => queryById(id, ctx.models.Organizers),
-		organizers: async (root, args, ctx) => {
-			checkIsAuthorizedArray([UserType.Organizer], ctx.user);
-			return ctx.models.Organizers.find().toArray();
-		},
-		signedReadUrl: async (_, { input }, { user }) => {
-			if (!user) throw new AuthenticationError(`cannot get read url: user not logged in`);
-
-			// No file to get :)
-			if (!input) return '';
-
-			// Hackers may get their own files; organizers may get any file
-			if (!input.includes((user._id as unknown) as string))
-				checkIsAuthorizedArray([UserType.Organizer, UserType.Sponsor], user);
-
-			return getSignedReadUrl(input);
-		},
-		sponsor: async (root, { id }, ctx: Context) => queryById(id, ctx.models.Sponsors),
-		sponsors: async (root, args, ctx: Context) => {
-			checkIsAuthorizedArray([UserType.Organizer], ctx.user);
-			return ctx.models.Sponsors.find().toArray();
-		},
-		team: async (root, { id }, ctx) => queryById(id, ctx.models.Teams),
-		teams: async (root, args, ctx) => {
-			checkIsAuthorizedArray([UserType.Organizer], ctx.user);
-			return ctx.models.Teams.find().toArray();
-		},
-		tier: async (root, { id }, ctx) => queryById(id, ctx.models.Tiers),
-		tiers: async (root, args, ctx) => {
-			checkIsAuthorizedArray([UserType.Organizer], ctx.user);
-			return ctx.models.Tiers.find().toArray();
-		},
-	},
+	Organizer,
+	Query,
 	Shift: {
 		begin: async shift => (await shift).begin.getTime(),
 		end: async shift => (await shift).end.getTime(),
 	},
-	Sponsor: {
-		...userResolvers,
-		status: async sponsor => toEnum(SponsorStatus)((await sponsor).status),
-		userType: () => UserType.Sponsor,
-		company: async sponsor => (await sponsor).company,
-	},
-	Team: {
-		createdAt: async team => (await team).createdAt.getTime(),
-		id: async team => (await team)._id.toHexString(),
-		memberIds: async team => (await team).memberIds,
-		name: async team => (await team).name || null,
-		size: async team => (await team).memberIds.length,
-	},
+	Sponsor,
+	Team,
 	User: {
 		__resolveType: user => {
 			switch (user.userType) {
