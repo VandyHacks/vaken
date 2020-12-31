@@ -25,7 +25,8 @@
 		"src/client/**/*.tsx",
 		"plugins/**/*.ts",
 		"scripts/**/*.ts",
-		"src/client/setupTests.js"
+		"src/client/setupTests.js",
+		"dev/**/*.ts"
 	],
 	"exclude": ["node_modules/**", "types/**"]
 }
