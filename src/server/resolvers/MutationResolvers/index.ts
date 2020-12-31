@@ -5,7 +5,6 @@ import {
 	MutationResolvers,
 	UserType,
 	ApplicationStatus,
-	HackerDbObject,
 	SponsorStatus,
 	SponsorDbObject,
 	TierDbObject,
@@ -18,6 +17,7 @@ import { sendStatusEmail } from '../../mail/aws';
 import logger from '../../logger';
 import { EventMutation } from './EventMutationResolvers';
 import { updateMyApplication } from './updateApplicationResolver';
+import { SpotMutation } from './SpotMutationResolvers';
 
 /**
  * These mutations modify data
@@ -57,40 +57,7 @@ export const Mutation: MutationResolvers<Context> = {
 		await models.Sponsors.insertOne(newSponsor);
 		return newSponsor;
 	},
-	confirmMySpot: async (root, _, { models, user }) => {
-		const { _id, status } = checkIsAuthorized(UserType.Hacker, user) as HackerDbObject;
-		const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
-			{ _id: new ObjectID(_id), status: ApplicationStatus.Accepted },
-			{ $set: { status: ApplicationStatus.Confirmed } },
-			{ returnOriginal: false }
-		);
-		if (!ok || !value)
-			throw new UserInputError(
-				`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
-					'(Likely the user already declined/confirmed if no value returned)'
-			);
-
-		// `confirmMySpot` is an identity function if user is already confirmed and is a
-		// no-op if user wasn't accepted. If status changed, user is newly confirmed.
-		if (value.status !== status) sendStatusEmail(value, ApplicationStatus.Confirmed);
-
-		return value;
-	},
-	declineMySpot: async (root, _, { models, user }) => {
-		const { _id } = checkIsAuthorized(UserType.Hacker, user) as HackerDbObject;
-		const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
-			{ _id: new ObjectID(_id), status: ApplicationStatus.Accepted },
-			{ $set: { status: ApplicationStatus.Declined } },
-			{ returnOriginal: false }
-		);
-		if (!ok || !value)
-			throw new UserInputError(
-				`user ${_id} (${value}) error: ${JSON.stringify(err)}` +
-					'(Likely the user already declined/confirmed if no value returned)'
-			);
-		// no email sent if declined
-		return value;
-	},
+	...SpotMutation,
 	createTier: async (
 		root,
 		{ input: { name, permissions } },
