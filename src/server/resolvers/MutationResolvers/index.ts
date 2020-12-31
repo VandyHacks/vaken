@@ -1,6 +1,6 @@
 import { UserInputError, AuthenticationError } from 'apollo-server-express';
 import { ObjectID } from 'mongodb';
-import Context from '../context';
+import Context from '../../context';
 import {
 	MutationResolvers,
 	UserType,
@@ -10,14 +10,14 @@ import {
 	SponsorDbObject,
 	TierDbObject,
 	CompanyDbObject,
-} from '../generated/graphql';
-import { checkIsAuthorized, updateUser } from './helpers';
-import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser, getUser } from '../nfc';
-import { addOrUpdateEvent, assignEventToCompany, removeAbsentEvents } from '../events';
-import { getSignedUploadUrl } from '../storage/gcp';
-import { sendStatusEmail } from '../mail/aws';
-import logger from '../logger';
-import { DEADLINE_TIMESTAMP } from '../../common/constants';
+} from '../../generated/graphql';
+import { checkIsAuthorized, updateUser } from '../helpers';
+
+import { getSignedUploadUrl } from '../../storage/gcp';
+import { sendStatusEmail } from '../../mail/aws';
+import logger from '../../logger';
+import { DEADLINE_TIMESTAMP } from '../../../common/constants';
+import { EventMutation } from './EventMutationResolvers';
 
 // TODO: Cannot import frontend files so this is ugly workaround. Fix this.
 const requiredFields = [
@@ -44,37 +44,7 @@ const requiredFields = [
  * Each may contain authentication checks as well
  */
 export const Mutation: MutationResolvers<Context> = {
-	assignEventToCompany: async (root, { input }, { models, user }) => {
-		checkIsAuthorized(UserType.Organizer, user);
-		return assignEventToCompany(input.eventId, input.companyId, models);
-	},
-	addOrUpdateEvent: async (root, { input }, { models, user }) => {
-		checkIsAuthorized(UserType.Organizer, user);
-		return addOrUpdateEvent(input, models);
-	},
-	checkInUserToEvent: async (root, { input }, { models, user }) => {
-		checkIsAuthorized([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
-		return checkInUserToEvent(input.user, input.event, models);
-	},
-	checkInUserToEventAndUpdateEventScore: async (root, { input }, { models, user }) => {
-		const userObject = checkIsAuthorized([UserType.Hacker, UserType.Volunteer], user);
-		await checkInUserToEvent(input.user, input.event, models);
-		const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
-			{ _id: new ObjectID(userObject._id) },
-			{ $inc: { eventScore: input.eventScore } },
-			{ returnOriginal: false }
-		);
-		if (!ok || !value)
-			throw new UserInputError(`user ${userObject._id} (${value}) error: ${JSON.stringify(err)}`);
-		if (user) {
-			// eslint-disable-next-line no-param-reassign
-			user.eventScore = value.eventScore;
-			// eslint-disable-next-line no-param-reassign
-			user.eventsAttended = value.eventsAttended;
-		}
-
-		return value;
-	},
+	...EventMutation,
 	createSponsor: async (
 		root,
 		{ input: { email, name, companyId } },
@@ -182,12 +152,6 @@ export const Mutation: MutationResolvers<Context> = {
 		await models.Companies.insertOne(newCompany);
 		return newCompany;
 	},
-	checkInUserToEventByNfc: async (root, { input }, { models, user }) => {
-		checkIsAuthorized([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
-		const inputUser = await getUser(input.nfcId, models);
-		if (!inputUser) throw new UserInputError(`user with nfc id <${input.nfcId}> not found`);
-		return checkInUserToEvent(inputUser._id.toString(), input.event, models);
-	},
 	hackerStatus: async (_, { input: { id, status } }, { user, models }) => {
 		checkIsAuthorized(UserType.Organizer, user);
 		const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
@@ -275,25 +239,6 @@ export const Mutation: MutationResolvers<Context> = {
 		const ret = await models.Hackers.findOne({ email: hacker.email });
 		if (!ret) throw new AuthenticationError(`hacker not found: ${hacker.email}`);
 		return ret;
-	},
-	registerNFCUIDWithUser: async (root, { input }, { models, user }) => {
-		checkIsAuthorized(UserType.Organizer, user);
-		return registerNFCUIDWithUser(input.nfcid, input.user, models);
-	},
-	removeAbsentEvents: async (root, { input }, { models, user }) => {
-		checkIsAuthorized(UserType.Organizer, user);
-		const objectIds = input.ids.map(id => ObjectID.createFromHexString(id));
-		return removeAbsentEvents(objectIds, models);
-	},
-	removeUserFromEvent: async (root, { input }, { models, user }) => {
-		checkIsAuthorized([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
-		return removeUserFromEvent(input.user, input.event, models);
-	},
-	removeUserFromEventByNfc: async (root, { input }, { models, user }) => {
-		checkIsAuthorized([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
-		const inputUser = await getUser(input.nfcId, models);
-		if (!inputUser) throw new UserInputError(`user with nfc Id ${input.nfcId} not found`);
-		return removeUserFromEvent(inputUser._id.toString(), input.event, models);
 	},
 	signedUploadUrl: async (_, _2, { user }) => {
 		if (!user) throw new AuthenticationError(`cannot get signed upload url: user not logged in`);

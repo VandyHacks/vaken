@@ -17,7 +17,7 @@ import { Sponsor } from './SponsorResolver';
 import { Tier } from './TierResolver';
 import { Team } from './TeamResolver';
 import { Shift } from './ShiftResolver';
-import { Mutation } from './MutationResolver';
+import { Mutation } from './MutationResolvers';
 
 export const resolvers: CustomResolvers<Context> = {
 	ApplicationField,
