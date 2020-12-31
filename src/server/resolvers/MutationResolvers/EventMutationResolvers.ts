@@ -1,7 +1,14 @@
 import { UserInputError } from 'apollo-server-express';
 import { ObjectID } from 'mongodb';
+import { Models } from '../../models';
 import Context from '../../context';
-import { UserType, MutationResolvers } from '../../generated/graphql';
+import {
+	UserType,
+	MutationResolvers,
+	EventCheckInInputByNfc,
+	HackerDbObject,
+	UserDbInterface,
+} from '../../generated/graphql';
 import { checkIsAuthorized } from '../helpers';
 import { addOrUpdateEvent, assignEventToCompany, removeAbsentEvents } from '../../events';
 import {
@@ -10,6 +17,18 @@ import {
 	registerNFCUIDWithUser,
 	getUser,
 } from '../../nfc';
+
+// reuse for removing and checking in for an event
+const nfcVerification = async (
+	input: EventCheckInInputByNfc,
+	models: Models,
+	user?: UserDbInterface
+): Promise<HackerDbObject> => {
+	checkIsAuthorized([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
+	const inputUser = await getUser(input.nfcId, models);
+	if (!inputUser) throw new UserInputError(`user with nfc id <${input.nfcId}> not found`);
+	return inputUser;
+};
 
 export const EventMutation: MutationResolvers<Context> = {
 	assignEventToCompany: async (root, { input }, { models, user }) => {
@@ -44,9 +63,7 @@ export const EventMutation: MutationResolvers<Context> = {
 		return value;
 	},
 	checkInUserToEventByNfc: async (root, { input }, { models, user }) => {
-		checkIsAuthorized([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
-		const inputUser = await getUser(input.nfcId, models);
-		if (!inputUser) throw new UserInputError(`user with nfc id <${input.nfcId}> not found`);
+		const inputUser = await nfcVerification(input, models, user);
 		return checkInUserToEvent(inputUser._id.toString(), input.event, models);
 	},
 	registerNFCUIDWithUser: async (root, { input }, { models, user }) => {
@@ -63,9 +80,7 @@ export const EventMutation: MutationResolvers<Context> = {
 		return removeUserFromEvent(input.user, input.event, models);
 	},
 	removeUserFromEventByNfc: async (root, { input }, { models, user }) => {
-		checkIsAuthorized([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
-		const inputUser = await getUser(input.nfcId, models);
-		if (!inputUser) throw new UserInputError(`user with nfc Id ${input.nfcId} not found`);
+		const inputUser = await nfcVerification(input, models, user);
 		return removeUserFromEvent(inputUser._id.toString(), input.event, models);
 	},
 };
