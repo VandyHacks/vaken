@@ -1,11 +1,10 @@
 import { ObjectID } from 'mongodb';
-import { CustomResolvers } from './types';
 import Context from '../context';
 import { toEnum, query } from './helpers';
 import { User } from './UserResolver';
-import { ApplicationStatus, UserType } from '../generated/graphql';
+import { ApplicationStatus, UserType, HackerResolvers } from '../generated/graphql';
 
-export const Hacker: CustomResolvers<Context>['Hacker'] = {
+export const Hacker: HackerResolvers<Context> = {
 	...User,
 	adult: async hacker => (await hacker).adult || null,
 	application: async (hacker, args, { models }: Context) =>
