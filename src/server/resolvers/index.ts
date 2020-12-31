@@ -31,6 +31,7 @@ import { Query } from './QueryResolvers';
 import { Sponsor } from './SponsorResolver';
 import { Tier } from './TierResolver';
 import { Team } from './TeamResolver';
+import { Shift } from './ShiftResolver';
 
 // added here b/c webpack JSON compilation with 'use-strict' is broken (7/10/19 at 23:59)
 const DEADLINE_TS = 1601679600000;
@@ -443,10 +444,7 @@ export const resolvers: CustomResolvers<Context> = {
 	},
 	Organizer,
 	Query,
-	Shift: {
-		begin: async shift => (await shift).begin.getTime(),
-		end: async shift => (await shift).end.getTime(),
-	},
+	Shift,
 	Sponsor,
 	Team,
 	User: {
