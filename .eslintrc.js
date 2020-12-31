@@ -69,6 +69,12 @@ module.exports = {
 			},
 		},
 		{
+			files: ['**/scripts/**/*'],
+			rules: {
+				"no-console": 0
+			}
+		},
+		{
 			files: ['**/*.test.js'],
 			env: { 'jest/globals': true },
 		},

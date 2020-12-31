@@ -2,8 +2,6 @@ import { FilterQuery } from 'mongodb';
 import { EventDbObject, HackerDbObject } from '../src/server/generated/graphql';
 import DB, { Models } from '../src/server/models';
 
-/* eslint-disable no-console */
-
 const printUsage = (): void => {
 	void console.log(
 		'Usage: npx ts-node -r dotenv/config ./scripts/downloadResumes.ts -- [--updatedb]'
@@ -96,8 +94,8 @@ const recomputeHackerEventScores = async (
 		await recomputeHackerEventScores(models, /* writeResultsToDB */ args[0] === '--updatedb');
 		process.exit(0);
 	} catch (e) {
-		// eslint-disable-next-line no-console
 		console.error(e);
+		printUsage();
 		process.exit(1);
 	}
 })();
