@@ -1,6 +1,7 @@
 import { AuthenticationError } from 'apollo-server-express';
 import { UserType } from '../generated/graphql';
 import Context from '../context';
+
 import { Hacker } from './HackerResolver';
 import { ApplicationField } from './ApplicationFieldResolver';
 import { Event } from './EventResolver';
