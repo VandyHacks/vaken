@@ -144,8 +144,10 @@ export function checkIsAuthorized<T extends UserDbInterface>(
 	requiredTypes: UserType[] | UserType,
 	user?: T
 ): T {
+	if (!user) throw new AuthenticationError(`User is not logged in`);
+
 	const typesToCheck = Array.isArray(requiredTypes) ? requiredTypes : [requiredTypes];
-	if (!user || !typesToCheck.includes(user.userType as UserType)) {
+	if (!typesToCheck.includes(user.userType as UserType)) {
 		logger.info(
 			`INSUFFICIENT PERMISSIONS: user ${user && user.email}: ${JSON.stringify(
 				user
