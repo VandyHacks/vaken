@@ -134,40 +134,22 @@ export async function fetchUser(
 }
 
 /**
- * Funtion to check if the user has the authorization required to continue.
- * If not, the function will throw a GraphQL AuthenticationError.
- * @param requiredType The authorization level the user should have.
- * @param user The user to check against requiredType.
- * @returns The user object, coerced to a non-null type.
- */
-export function checkIsAuthorized<T extends UserDbInterface>(requiredType: UserType, user?: T): T {
-	if (!user) {
-		throw new AuthenticationError(`User is not logged in`);
-	} else if (requiredType !== user.userType) {
-		throw new AuthenticationError(
-			`user ${user && user.email}: ${JSON.stringify(user)} must be a "${requiredType}"`
-		);
-	}
-
-	return user;
-}
-
-/**
  * Funtion to check if the user has the authorization required to continue (checks an ARRAY of types))
  * If not, the function will throw a GraphQL AuthenticationError.
  * @param requiredType The authorization level the user should have.
  * @param user The user to check against requiredType.
  * @returns The user object, coerced to a non-null type.
  */
-export function checkIsAuthorizedArray<T extends UserDbInterface>(
-	requiredTypes: UserType[],
+export function checkIsAuthorized<T extends UserDbInterface>(
+	requiredTypes: UserType[] | UserType,
 	user?: T
 ): T {
-	if (!user || !requiredTypes.includes(user.userType as UserType)) {
+	const typesToCheck = Array.isArray(requiredTypes) ? requiredTypes : [requiredTypes];
+	if (!user || !typesToCheck.includes(user.userType as UserType)) {
 		logger.info(
 			`INSUFFICIENT PERMISSIONS: user ${user && user.email}: ${JSON.stringify(
 				user
-			)} must be one of "${requiredTypes}"`
+			)} must be one of "${typesToCheck}"`
 		);
 		throw new AuthenticationError('User does not have sufficient permissions to perform action');
 	}

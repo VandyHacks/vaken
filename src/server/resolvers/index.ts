@@ -10,7 +10,7 @@ import {
 	CompanyDbObject,
 } from '../generated/graphql';
 import Context from '../context';
-import { updateUser, checkIsAuthorized, checkIsAuthorizedArray } from './helpers';
+import { updateUser, checkIsAuthorized } from './helpers';
 import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser, getUser } from '../nfc';
 // import { checkInUserToEvent, removeUserFromEvent, registerNFCUIDWithUser, getUser } from '../nfc';
 import { addOrUpdateEvent, assignEventToCompany, removeAbsentEvents } from '../events';
@@ -82,11 +82,11 @@ export const resolvers: CustomResolvers<Context> = {
 			return addOrUpdateEvent(input, models);
 		},
 		checkInUserToEvent: async (root, { input }, { models, user }) => {
-			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
+			checkIsAuthorized([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
 			return checkInUserToEvent(input.user, input.event, models);
 		},
 		checkInUserToEventAndUpdateEventScore: async (root, { input }, { models, user }) => {
-			const userObject = checkIsAuthorizedArray([UserType.Hacker, UserType.Volunteer], user);
+			const userObject = checkIsAuthorized([UserType.Hacker, UserType.Volunteer], user);
 			await checkInUserToEvent(input.user, input.event, models);
 			const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
 				{ _id: new ObjectID(userObject._id) },
@@ -212,7 +212,7 @@ export const resolvers: CustomResolvers<Context> = {
 			return newCompany;
 		},
 		checkInUserToEventByNfc: async (root, { input }, { models, user }) => {
-			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
+			checkIsAuthorized([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
 			const inputUser = await getUser(input.nfcId, models);
 			if (!inputUser) throw new UserInputError(`user with nfc id <${input.nfcId}> not found`);
 			return checkInUserToEvent(inputUser._id.toString(), input.event, models);
@@ -315,11 +315,11 @@ export const resolvers: CustomResolvers<Context> = {
 			return removeAbsentEvents(objectIds, models);
 		},
 		removeUserFromEvent: async (root, { input }, { models, user }) => {
-			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
+			checkIsAuthorized([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
 			return removeUserFromEvent(input.user, input.event, models);
 		},
 		removeUserFromEventByNfc: async (root, { input }, { models, user }) => {
-			checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
+			checkIsAuthorized([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
 			const inputUser = await getUser(input.nfcId, models);
 			if (!inputUser) throw new UserInputError(`user with nfc Id ${input.nfcId} not found`);
 			return removeUserFromEvent(inputUser._id.toString(), input.event, models);
