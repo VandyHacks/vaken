@@ -30,6 +30,7 @@ module.exports = {
 		tsConfigRootDir: __dirname,
 		project: `${__dirname}/tsconfig.json`,
 	},
+	reportUnusedDisableDirectives: true,
 	rules: {
 		'no-void': 0,
 		'no-underscore-dangle': 0,

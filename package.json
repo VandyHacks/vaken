@@ -55,7 +55,7 @@
 		"check:test:snapshot": "jest --updateSnapshot",
 		"check:test:ci": "jest --ci --runInBand",
 		"check:types": "tsc -p tsconfig.json --noEmit",
-		"check:lint": "eslint --cache --report-unused-disable-directives --ext .js,.jsx,.ts,.tsx src/ plugins/ scripts/",
+		"check:lint": "npm run check:lint:ci -- --cache",
 		"check:lint:fix": "npm run check:lint -- --fix",
 		"check:lint:ci": "eslint --ext .js,.jsx,.ts,.tsx src/ plugins/ scripts/",
 		"check": "concurrently -c bgBlue.bold,bgMagenta.bold,bgGreen.bold \"npm:check:lint\"  \"npm:check:types\" \"npm:check:test\""
