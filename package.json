@@ -31,6 +31,7 @@
 		"url": "https://github.com/VandyHacks/vaken/issues"
 	},
 	"scripts": {
+		"happo": "happo",
 		"generate": "graphql-codegen --config codegen.json",
 		"generate:watch": "npm run generate -- --watch",
 		"generate:docs": "typedoc",
@@ -180,6 +181,7 @@
 		"file-loader": "^6.2.0",
 		"fork-ts-checker-webpack-plugin": "^6.0.8",
 		"friendly-errors-webpack-plugin": "^1.7.0",
+		"happo.io": "^6.3.0",
 		"html-webpack-plugin": "^4.5.0",
 		"jest": "^26.6.3",
 		"jest-styled-components": "^7.0.3",
