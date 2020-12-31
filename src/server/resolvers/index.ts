@@ -52,5 +52,3 @@ export const resolvers: CustomResolvers<Context> = {
 		},
 	},
 };
-
-export default resolvers;
