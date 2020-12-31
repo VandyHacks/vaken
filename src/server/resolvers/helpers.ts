@@ -149,7 +149,7 @@ export function checkIsAuthorized<T extends UserDbInterface>(
 	const typesToCheck = Array.isArray(requiredTypes) ? requiredTypes : [requiredTypes];
 	if (!typesToCheck.includes(user.userType as UserType)) {
 		logger.info(
-			`INSUFFICIENT PERMISSIONS: user ${user && user.email}: ${JSON.stringify(
+			`INSUFFICIENT PERMISSIONS: user ${user.email}: ${JSON.stringify(
 				user
 			)} must be one of "${typesToCheck}"`
 		);
