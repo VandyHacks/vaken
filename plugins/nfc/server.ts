@@ -6,11 +6,7 @@ import {
 	_Plugin__EventCheckInDbObject,
 } from '../../src/client/generated/graphql';
 import schema from './schema.graphql';
-import {
-	checkIsAuthorized,
-	checkIsAuthorizedArray,
-	queryById,
-} from '../../src/server/resolvers/helpers';
+import { checkIsAuthorized, queryById } from '../../src/server/resolvers/helpers';
 import {
 	checkInUserToEvent,
 	removeUserFromEvent,
@@ -55,7 +51,7 @@ export class NFCPlugin {
 					return queryById(id, ctx.db.collection<_Plugin__EventDbObject>('_Plugin__events'));
 				},
 				_Plugin__events: async (root, args, ctx) => {
-					const user = checkIsAuthorizedArray([UserType.Organizer, UserType.Sponsor], ctx.user);
+					const user = checkIsAuthorized([UserType.Organizer, UserType.Sponsor], ctx.user);
 					// // if (user.userType === UserType.Sponsor) {
 					// //   // const { _id } = (user as SponsorDbObject).company;
 					// //   const events = await ctx.models.Events.find({ 'owner._id': new ObjectID(_id) }).toArray();
@@ -72,7 +68,7 @@ export class NFCPlugin {
 				_Plugin__eventCheckIn: async (root, { id }, ctx) =>
 					queryById(id, ctx.db.collection<_Plugin__EventCheckInDbObject>('_Plugin__eventCheckIns')),
 				_Plugin__eventCheckIns: async (root, args, ctx) => {
-					checkIsAuthorizedArray([UserType.Organizer], ctx.user);
+					checkIsAuthorized([UserType.Organizer], ctx.user);
 					return ctx.db
 						.collection<_Plugin__EventCheckInDbObject>('_Plugin__eventCheckIns')
 						.find()
@@ -81,17 +77,17 @@ export class NFCPlugin {
 			},
 			Mutation: {
 				_Plugin__checkInUserToEventByNfc: async (root, { input }, { models, user }) => {
-					checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
+					checkIsAuthorized([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
 					const inputUser = await getUser(input.nfcId, models);
 					if (!inputUser) throw new UserInputError(`user with nfc id <${input.nfcId}> not found`);
 					return checkInUserToEvent(inputUser._id.toString(), input.event, models);
 				},
 				_Plugin__removeUserFromEvent: async (root, { input }, { models, user }) => {
-					checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
+					checkIsAuthorized([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
 					return removeUserFromEvent(input.user, input.event, models);
 				},
 				_Plugin__removeUserFromEventByNfc: async (root, { input }, { models, user }) => {
-					checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
+					checkIsAuthorized([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
 					const inputUser = await getUser(input.nfcId, models);
 					if (!inputUser) throw new UserInputError(`user with nfc Id ${input.nfcId} not found`);
 					return removeUserFromEvent(inputUser._id.toString(), input.event, models);
@@ -101,7 +97,7 @@ export class NFCPlugin {
 					return registerNFCUIDWithUser(input.nfcid, input.user, models);
 				},
 				_Plugin__checkInUserToEvent: async (root, { input }, { models, user }) => {
-					checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
+					checkIsAuthorized([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
 					return checkInUserToEvent(input.user, input.event, models);
 				},
 			},
