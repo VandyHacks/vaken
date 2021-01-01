@@ -18,14 +18,14 @@ export const StyledLoginBtn = styled(Button)`
 	}
 `;
 
-const TextButton: FC<ButtonProps> = ({
+const TextButton: FC<Omit<ButtonProps, 'invalid' | 'enabled'>> = ({
 	children,
 	onClick,
 	fontWeight,
 	fontSize,
 	color,
 	...props
-}: ButtonProps) => (
+}) => (
 	<StyledLoginBtn onClick={onClick} {...props}>
 		<CenterButtonText {...{ color, fontSize, fontWeight }}>{children}</CenterButtonText>
 	</StyledLoginBtn>

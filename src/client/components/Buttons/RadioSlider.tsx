@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, FC } from 'react';
 import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
 
-interface Props {
+export interface Props {
 	disable?: boolean;
 	large?: boolean;
 	onChange?: (input: string) => void;

@@ -3,7 +3,7 @@ import React, { HTMLAttributes, FC } from 'react';
 import CSS from 'csstype';
 import { Button, LeftButtonText } from './Buttons';
 
-interface StyleProps extends Pick<CSS.Properties, 'color'> {
+export interface StyleProps extends Pick<CSS.Properties, 'color'> {
 	active?: boolean;
 }
 
