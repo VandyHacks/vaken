@@ -32,6 +32,7 @@
 	},
 	"scripts": {
 		"happo": "happo",
+		"happo-ci-github-actions": "happo-ci-github-actions",
 		"generate": "graphql-codegen --config codegen.json",
 		"generate:watch": "npm run generate -- --watch",
 		"generate:docs": "typedoc",
