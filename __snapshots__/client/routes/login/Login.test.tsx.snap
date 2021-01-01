@@ -111,6 +111,7 @@ exports[`Login renders properly 1`] = `
 }
 
 .c9 {
+  min-height: 16px;
   padding-right: 1rem;
 }
 

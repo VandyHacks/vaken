@@ -2,6 +2,7 @@
 
 exports[`Test LeftImgTextInput LeftImgTextInput renders correctly 1`] = `
 .c2 {
+  min-height: 16px;
   padding-right: 1rem;
 }
 

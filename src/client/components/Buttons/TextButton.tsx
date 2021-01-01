@@ -18,7 +18,7 @@ export const StyledLoginBtn = styled(Button)`
 	}
 `;
 
-const TextButton: FC<Omit<ButtonProps, 'invalid' | 'enabled'>> = ({
+const TextButton: FC<ButtonProps> = ({
 	children,
 	onClick,
 	fontWeight,
