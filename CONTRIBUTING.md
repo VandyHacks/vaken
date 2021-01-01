@@ -4,7 +4,11 @@ Guide for contributors
 
 ### Setup
 
-You will need [npm](https://github.com/npm/cli) as a package manager and build runner.
+You will need [npm](https://github.com/npm/cli) as a package manager and build runner. You should install it and `node` via [nvm](https://github.com/nvm-sh/nvm). 
+
+If you choose not to use `nvm`, you'll have to manually make sure that your `node` version matches what's in `.nvmrc`.
+
+If you choose to use `nvm`, you can just run `nvm use`.
 
 Run `./scripts/install.sh` from the top level of the Vaken repository. Note that the variables in
 the new `.env` file will need to be changed to valid values.
