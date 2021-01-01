@@ -72,4 +72,16 @@ jobs:
           MONGOMS_DISABLE_POSTINSTALL: 1
       - run: npm run generate
       - run: npm run check:types
-
+  happo:
+    name: Happo Screenshot Diffs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+      - run: npm ci
+      - run: npm run happo-ci-github-actions
+        env:
+          HAPPO_API_KEY: ${{ secrets.HAPPO_API_KEY }}
+          HAPPO_API_SECRET: ${{ secrets.HAPPO_API_SECRET }}

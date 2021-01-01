@@ -25,7 +25,7 @@ const TextButton: FC<ButtonProps> = ({
 	fontSize,
 	color,
 	...props
-}: ButtonProps) => (
+}) => (
 	<StyledLoginBtn onClick={onClick} {...props}>
 		<CenterButtonText {...{ color, fontSize, fontWeight }}>{children}</CenterButtonText>
 	</StyledLoginBtn>
