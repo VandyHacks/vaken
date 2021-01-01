@@ -10,5 +10,7 @@ if [ ! -f $ENVFILE ]; then
     echo "Please update $ENVFILE with valid environment variables."
 fi
 
+npx check-node-version --node $(cat .nvmrc)
+
 npm install # local dependencies
 npm install -g "${GLOBAL_DEPS[@]}"

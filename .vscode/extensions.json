@@ -6,6 +6,7 @@
 		"omartawfik.github-actions-vscode",
 		"jock.svg",
 		"deepscan.vscode-deepscan",
-		"esbenp.prettier-vscode"
+		"esbenp.prettier-vscode",
+		"jpoissonnier.vscode-styled-components"
 	]
 }
