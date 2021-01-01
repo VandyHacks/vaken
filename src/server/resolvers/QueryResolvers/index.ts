@@ -1,0 +1,40 @@
+import { AuthenticationError } from 'apollo-server-express';
+import { QueryResolvers, UserType } from '../../generated/graphql';
+import Context from '../../context';
+import { checkIsAuthorized, fetchUser } from '../helpers';
+import { getSignedReadUrl } from '../../storage/gcp';
+import { EventQuery } from './EventQueryResolvers';
+import { CompanyQuery } from './CompanyQueryResolvers';
+import { HackerQuery } from './HackerQueryResolvers';
+import { MentorQuery } from './MentorQueryResolvers';
+import { OrganizerQuery } from './OrganizerQueryResolvers';
+import { SponsorQuery } from './SponsorQueryResolvers';
+import { TeamQuery } from './TeamQueryResolvers';
+import { TierQuery } from './TierQueryResolvers';
+
+export const Query: QueryResolvers<Context> = {
+	...EventQuery,
+	...CompanyQuery,
+	...HackerQuery,
+	me: async (root, args, ctx) => {
+		if (!ctx.user) throw new AuthenticationError(`user is not logged in`);
+		return fetchUser(ctx.user, ctx.models);
+	},
+	...MentorQuery,
+	...OrganizerQuery,
+	signedReadUrl: async (_, { input }, { user }) => {
+		if (!user) throw new AuthenticationError(`cannot get read url: user not logged in`);
+
+		// No file to get :)
+		if (!input) return '';
+
+		// Hackers may get their own files; organizers may get any file
+		if (!input.includes((user._id as unknown) as string))
+			checkIsAuthorized([UserType.Organizer, UserType.Sponsor], user);
+
+		return getSignedReadUrl(input);
+	},
+	...SponsorQuery,
+	...TeamQuery,
+	...TierQuery,
+};
