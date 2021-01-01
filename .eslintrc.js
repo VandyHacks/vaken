@@ -30,6 +30,7 @@ module.exports = {
 		tsConfigRootDir: __dirname,
 		project: `${__dirname}/tsconfig.json`,
 	},
+	reportUnusedDisableDirectives: true,
 	rules: {
 		'no-void': 0,
 		'no-underscore-dangle': 0,
@@ -67,6 +68,12 @@ module.exports = {
 			rules: {
 				camelcase: [0],
 			},
+		},
+		{
+			files: ['**/scripts/**/*'],
+			rules: {
+				"no-console": 0
+			}
 		},
 		{
 			files: ['**/*.test.js'],

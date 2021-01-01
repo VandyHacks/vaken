@@ -1,5 +1,6 @@
 import { ObjectID } from 'mongodb';
 import faker from 'faker';
+import { config as dotenvConfig } from 'dotenv';
 import institutions from '../src/client/assets/data/institutions.json';
 import {
 	ApplicationStatus,
@@ -12,7 +13,7 @@ import {
 } from '../src/server/generated/graphql';
 import DB from '../src/server/models';
 
-require('dotenv').config();
+dotenvConfig();
 
 const NUM_HACKERS = 800;
 
