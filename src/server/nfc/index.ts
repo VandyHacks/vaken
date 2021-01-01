@@ -98,7 +98,7 @@ export async function removeUserFromEvent(
 	const user = hackerResult.value;
 	if (!user.eventsAttended.includes(eventID))
 		throw new Error(`${user.firstName} ${user.lastName} has not attended this event`);
-	if (eventResult.ok && hackerResult.ok) {
+	if (eventResult.ok) {
 		logger.info(
 			`removed user ${userID} (${user?.firstName} ${user?.lastName}) from event ${eventID}`
 		);
