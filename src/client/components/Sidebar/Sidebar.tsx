@@ -106,6 +106,11 @@ const ColumnWithSeparators = styled.ul`
 		padding: 0.33rem 0 0.33rem 1.33rem;
 	}
 
+	li {
+		text-decoration: none;
+		list-style: none;
+	}
+
 	li a button {
 		height: max-content;
 	}
@@ -121,7 +126,15 @@ const ColumnWithSeparators = styled.ul`
 	}
 `;
 
-const Sidebar: FC<{ setMenuOpen?: React.Dispatch<React.SetStateAction<boolean>> }> =
+export interface Props {
+	/** setState action to toggle open/closed state. Used to close menu on clicking a link */
+	setMenuOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+/** Component shown as sidebar after successful login.
+ * Routes are from the src/client/assets/routes.js file and are rendered in order of declaration
+ * as links. The active route is highlighted in the sidebar. */
+const Sidebar: FC<Props> =
 	// Removed props for eslint, no-unused-vars
 	({ setMenuOpen }) => {
 		const currentUser = useContext(AuthContext);
@@ -130,7 +143,12 @@ const Sidebar: FC<{ setMenuOpen?: React.Dispatch<React.SetStateAction<boolean>> 
 			<Layout className="sidebar">
 				<Background>
 					<Logo>
-						<img src={SqLogo} alt={`${STRINGS.SHORTENED_HACKATHON_TITLE} graphic`} />
+						<img
+							src={SqLogo}
+							height="156px"
+							width="min-content"
+							alt={`${STRINGS.SHORTENED_HACKATHON_TITLE} graphic`}
+						/>
 					</Logo>
 					<HorizontalLine />
 					<SpaceBetweenColumn height="calc(100% - calc(8rem + 160px))">
