@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
 
-interface StyleProps {
+export interface StyleProps {
 	color?: string;
 }
 
