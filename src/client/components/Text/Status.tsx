@@ -13,7 +13,8 @@ interface Props {
 	width?: string;
 }
 
-interface ComponentProps extends Props {
+export interface ComponentProps extends Props {
+	/** Function which maps `ApplicationStatus`s to CSS color strings */
 	generateColor?: (value: ApplicationStatus) => string;
 	value: ApplicationStatus;
 }
