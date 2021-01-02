@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import CSS from 'csstype';
 import STRINGS from '../../assets/strings.json';
 
-interface Props extends Pick<CSS.Properties, 'color' | 'height' | 'width'> {
+export interface Props extends Pick<CSS.Properties, 'color' | 'height' | 'width'> {
 	value: boolean;
 }
 
