@@ -22,7 +22,7 @@ const LeftImgButton: FC<ImgButtonProps> = ({
 		<FlexRow height="min-content" width="min-content">
 			<RightPaddedImg src={img} alt={imgAlt} />
 		</FlexRow>
-		<CenterButtonText {...color}>{children}</CenterButtonText>
+		<CenterButtonText color={color}>{children}</CenterButtonText>
 	</Button>
 );
 
