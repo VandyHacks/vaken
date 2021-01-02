@@ -80,7 +80,7 @@ describe('Test resolver helpers', () => {
 	describe('checkIsAuthorized', () => {
 		it('throws an error if the user is not a member of the specified group', () => {
 			expect(() => void checkIsAuthorized(UserType.Organizer, hacker)).toThrow(
-				`user foo@bar.baz: ${JSON.stringify(hacker)} must be a "ORGANIZER"`
+				`User does not have sufficient permissions to perform action`
 			);
 		});
 

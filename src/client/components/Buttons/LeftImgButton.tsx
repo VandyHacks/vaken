@@ -2,8 +2,10 @@ import React, { FC } from 'react';
 import { Button, ButtonProps, RightPaddedImg, CenterButtonText } from './Buttons';
 import { FlexRow } from '../Containers/FlexContainers';
 
-interface ImgButtonProps extends ButtonProps {
+export interface ImgButtonProps extends ButtonProps {
+	/** `<img />` tag src attribute */
 	img: string;
+	/** `<img />` tag alt attribute */
 	imgAlt: string;
 }
 

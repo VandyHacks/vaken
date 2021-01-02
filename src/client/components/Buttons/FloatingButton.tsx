@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
 
+/**
+ * Sits at the bottom right of the page. Add a label with child element text and a handler with onClick.
+ */
 export const FloatingButton = styled.button`
 	background-color: ${STRINGS.ACCENT_COLOR};
 	color: #ffffff;

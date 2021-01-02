@@ -48,6 +48,7 @@ export const LeftButtonText = styled(CenterButtonText)`
 `;
 
 export const RightPaddedImg = styled.img`
+	min-height: 16px;
 	padding-right: 1rem;
 `;
 
@@ -80,7 +81,7 @@ export const Button = styled.button`
 		${({ invalid, glowColor }: ButtonProps) =>
 			invalid
 				? 'box-shadow: 0 0 20px red;'
-				: `box-shadow: 0px 0px 30px 0px ${glowColor || 'rgba(255, 255, 255, 1);'}`}
+				: `box-shadow: 0px 0px 30px 0px ${glowColor || 'rgba(255, 255, 255, 1)'};`}
 	}
 
 	&:focus {

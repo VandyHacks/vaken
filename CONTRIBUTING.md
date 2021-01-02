@@ -100,7 +100,7 @@ Models:
 In [./src/server/models.ts](./src/server/models.ts)
 
 Resolvers:
-In [./src/server/resolvers.ts](./src/server/resolvers.ts)
+In [./src/server/resolvers.ts](./src/server/resolvers/index.ts)
 
 ### Tooling
 

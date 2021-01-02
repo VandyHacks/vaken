@@ -4,7 +4,7 @@ import TextButton from './TextButton';
 import STRINGS from '../../assets/strings.json';
 import Spinner from '../Loading/Spinner';
 
-interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 	children: React.ReactNode;
 	onClick: () => void | Promise<unknown>;
 	width?: CSS.Property.Width;
