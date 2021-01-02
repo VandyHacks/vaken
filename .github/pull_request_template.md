@@ -5,4 +5,4 @@ Why are these changes made? Link to Slack etc if necessary.
 
 # Review Focus 
 
-Anything you want the reviewer to pay attention to?
+Anything you want the reviewer to pay attention to? Feel free to delete this section.
