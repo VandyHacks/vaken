@@ -14,4 +14,5 @@ export const Event: EventResolvers<Context> = {
 	warnRepeatedCheckins: async event => (await event).warnRepeatedCheckins,
 	gcalID: async event => (await event).gcalID || null,
 	owner: async event => (await event).owner || null,
+	eventScore: async event => (await event).eventScore || 0,
 };

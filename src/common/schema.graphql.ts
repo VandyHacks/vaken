@@ -96,12 +96,6 @@ export default gql`
 		DESC
 	}
 
-	type ApplicationQuestion @entity {
-		prompt: String! @column
-		instruction: String @column
-		note: String @column
-	}
-
 	type ApplicationField @entity(embedded: true) {
 		id: ID! @column
 		createdAt: Float! @column(overrideType: "Date")
@@ -150,7 +144,6 @@ export default gql`
 		id: ID! @id @column
 		user: String! @column
 		timestamp: Int! @column(overrideType: "Date")
-		eventScore: Int
 	}
 
 	type Hacker implements User @entity {
