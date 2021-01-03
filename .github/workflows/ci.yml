@@ -51,7 +51,7 @@ jobs:
           node-version: "${{ steps.nvm.outputs.NVMRC }}"
       - run: npm ci
       - run: npm run generate
-      - run: npm run check:test:ci
+      - run: node --expose-gc ./node_modules/.bin/jest --ci --runInBand --logHeapUsage
       - name: Publish code coverage
         uses: paambaati/codeclimate-action@v2.7.5
         env:
