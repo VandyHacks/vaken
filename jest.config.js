@@ -8,6 +8,9 @@ module.exports = {
 		'!./src/**/*.d.ts',
 		'!**/*.test.ts*',
 	],
+	coverageReporters: [
+		"json"
+	],
 	testPathIgnorePatterns: ['/node_modules/', '.eslintrc.js'],
 	projects: [
 		{
