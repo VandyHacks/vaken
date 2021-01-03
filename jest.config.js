@@ -9,7 +9,8 @@ module.exports = {
 		'!**/*.test.ts*',
 	],
 	coverageReporters: [
-		"json"
+		"test-summary",
+		"clover"
 	],
 	testPathIgnorePatterns: ['/node_modules/', '.eslintrc.js'],
 	projects: [
