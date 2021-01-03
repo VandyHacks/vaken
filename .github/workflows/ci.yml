@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Read .nvmrc
-        run: echo ::set-output name=NVMRC::$(cat .nvmrc) && ls
+        run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
         id: nvm
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Read .nvmrc
-        run: echo "##[set-output name=NVMRC;]$(cat ./.nvmrc)"
+        run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
         id: nvm
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -43,7 +43,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Read .nvmrc
+<<<<<<< HEAD
         run: echo "::[set-output name=NVMRC;]$(cat .nvmrc)"
+=======
+        run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
+>>>>>>> revert all changes to nvmrc thing
         id: nvm
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
