@@ -4,9 +4,9 @@ exclude_patterns:
   - '**/*.test.ts'
   - '**/*.test.tsx'
   - 'src/server/mail/templates/**/*'
-  plugins:
-    fixme:
-      enabled: true
-    eslint:
-      enabled: true
+plugins:
+  fixme:
+    enabled: true
+  eslint:
+    enabled: true
     
