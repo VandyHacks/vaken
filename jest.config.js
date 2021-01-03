@@ -10,6 +10,7 @@ module.exports = {
 	],
 	coverageReporters: [
 		"test-summary",
+		"lcov",
 		"clover"
 	],
 	testPathIgnorePatterns: ['/node_modules/', '.eslintrc.js'],
