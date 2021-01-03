@@ -1,3 +1,5 @@
+const { defaults: tsjPreset } = require('ts-jest/presets')
+
 module.exports = {
 	collectCoverage: true,
 	collectCoverageFrom: [
@@ -37,7 +39,7 @@ module.exports = {
 			},
 			preset: 'ts-jest',
 			testPathIgnorePatterns: ['__snapshots__', '.eslintrc.js'],
-			setupFilesAfterEnv: ["./src/client/setupTests.js"],
+			setupFilesAfterEnv: ['./src/client/setupTests.js'],
 		},
 		{
 			// server-side testing config
@@ -50,10 +52,8 @@ module.exports = {
 			setupFiles: ['./__mocks__/env.js'],
 			testEnvironment: 'node',
 			snapshotResolver: './__mocks__/snapshotResolver',
-			transform: {
-				'^.+\\.jsx?$': 'babel-jest',
-			},
-			preset: 'ts-jest',
+			transform: tsjPreset.transform,
+			preset: '@shelf/jest-mongodb',
 		},
 		{
 			// testing config for ./common
