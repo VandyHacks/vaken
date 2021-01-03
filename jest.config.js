@@ -52,6 +52,10 @@ module.exports = {
 			setupFiles: ['./__mocks__/env.js'],
 			testEnvironment: 'node',
 			snapshotResolver: './__mocks__/snapshotResolver',
+
+			// we can only have one preset at a time
+			// this uses the typescript preset's transformer
+			// and mongo's preset to allow both to coeexist
 			transform: tsjPreset.transform,
 			preset: '@shelf/jest-mongodb',
 		},
