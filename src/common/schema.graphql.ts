@@ -150,7 +150,6 @@ export default gql`
 		id: ID! @id @column
 		user: String! @column
 		timestamp: Int! @column(overrideType: "Date")
-		eventScore: Int
 	}
 
 	type Hacker implements User @entity {
