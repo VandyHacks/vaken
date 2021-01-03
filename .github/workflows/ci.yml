@@ -56,22 +56,6 @@ jobs:
         uses: paambaati/codeclimate-action@v2.7.5
         env:
           CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
-  typecheck:
-    name: Check types
-    runs-on: ubuntu-latest
-    steps:
-      - name: Read .nvmrc
-        run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
-        id: nvm
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: "${{ steps.nvm.outputs.NVMRC }}"
-      - run: npm ci
-        env: 
-          MONGOMS_DISABLE_POSTINSTALL: 1
-      - run: npm run generate
-      - run: npm run check:types
   happo:
     name: Happo Screenshot Diffs
     runs-on: ubuntu-latest
