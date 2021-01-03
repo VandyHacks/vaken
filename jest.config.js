@@ -8,9 +8,9 @@ module.exports = {
 		'!./src/**/*.d.ts',
 		'!**/*.test.ts*',
 	],
-	reporters: [
-		'default',
-		['jest-junit', { outputDirectory: './reports/test/jest', outputName: 'results.xml' }],
+	coverageReporters: [
+		"text",
+		"lcov",
 	],
 	testPathIgnorePatterns: ['/node_modules/', '.eslintrc.js'],
 	projects: [
@@ -70,5 +70,14 @@ module.exports = {
 			preset: 'ts-jest',
 			testPathIgnorePatterns: ['.eslintrc.js'],
 		},
+		{
+			displayName: 'Add Happo/Storybook tests to code coverage numbers',
+			testMatch: ['<rootDir>/.storyshots/index.js'],
+			transform: {
+				'^.+\\.jsx?$': 'babel-jest',
+			},
+			preset: 'ts-jest',
+
+		}
 	],
 };

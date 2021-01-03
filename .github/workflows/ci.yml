@@ -51,7 +51,10 @@ jobs:
           node-version: "${{ steps.nvm.outputs.NVMRC }}"
       - run: npm ci
       - run: npm run generate
-      - run: npm run check:test:ci
+      - name: Run Jest 
+        run: npm run check:test:ci
+        env:
+          NODE_OPTIONS: --max_old_space_size=3000  
       - name: Publish code coverage
         uses: paambaati/codeclimate-action@v2.7.5
         env:
