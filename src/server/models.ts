@@ -2,7 +2,6 @@ import { Collection, MongoClient } from 'mongodb';
 import {
 	ApplicationFieldDbObject,
 	EventDbObject,
-	ApplicationQuestionDbObject,
 	CompanyDbObject,
 	HackerDbObject,
 	SponsorDbObject,
@@ -24,7 +23,6 @@ export interface Models {
 	ApplicationFields: Collection<ApplicationFieldDbObject>;
 	EventCheckIns: Collection<EventCheckInDbObject>;
 	Events: Collection<EventDbObject>;
-	ApplicationQuestions: Collection<ApplicationQuestionDbObject>;
 	Companies: Collection<CompanyDbObject>;
 	Hackers: Collection<HackerDbObject>;
 	Logins: Collection<LoginDbObject>;
@@ -108,7 +106,6 @@ export default class DB {
 					ApplicationFields: db.collection<ApplicationFieldDbObject>('applicationFields'),
 					EventCheckIns: db.collection<EventCheckInDbObject>('EventCheckIns'),
 					Events: db.collection<EventDbObject>('Events'),
-					ApplicationQuestions: db.collection<ApplicationQuestionDbObject>('applicationQuestions'),
 					Companies: db.collection<CompanyDbObject>('companies'),
 					Hackers: db.collection<HackerDbObject>('Hackers'),
 					Logins: db.collection<LoginDbObject>('logins'),

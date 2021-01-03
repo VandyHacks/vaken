@@ -96,12 +96,6 @@ export default gql`
 		DESC
 	}
 
-	type ApplicationQuestion @entity {
-		prompt: String! @column
-		instruction: String @column
-		note: String @column
-	}
-
 	type ApplicationField @entity(embedded: true) {
 		id: ID! @column
 		createdAt: Float! @column(overrideType: "Date")
