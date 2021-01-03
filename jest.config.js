@@ -72,7 +72,12 @@ module.exports = {
 		},
 		{
 			displayName: 'Add Happo/Storybook tests to code coverage numbers',
-			testMatch: ['<rootDir>/.storyshots/index.js']
+			testMatch: ['<rootDir>/.storyshots/index.js'],
+			transform: {
+				'^.+\\.jsx?$': 'babel-jest',
+			},
+			preset: 'ts-jest',
+
 		}
 	],
 };
