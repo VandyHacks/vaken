@@ -1,5 +1,4 @@
 import { ObjectId, MongoError } from 'mongodb';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import { query } from '../resolvers/helpers';
 import { HackerDbObject, OrganizerDbObject, EventDbObject } from '../generated/graphql';
 import DB, { Models } from '../models';
@@ -30,7 +29,6 @@ const testEvent2: EventDbObject = {
 	warnRepeatedCheckins: true,
 };
 
-let mongoServer: MongoMemoryServer;
 let dbClient: DB;
 let models: Models;
 
@@ -64,9 +62,7 @@ const testEvent = ({
 
 beforeAll(async () => {
 	try {
-		mongoServer = new MongoMemoryServer();
-		const mongoUri = await mongoServer.getUri();
-		dbClient = new DB(mongoUri);
+		dbClient = new DB(process.env.MONGO_URL);
 		models = await dbClient.collections;
 		await models.Hackers.insertOne(testHacker);
 		await models.Hackers.insertOne(testHacker2);
@@ -82,7 +78,6 @@ beforeAll(async () => {
 afterAll(async () => {
 	try {
 		if (dbClient) await dbClient.disconnect();
-		if (mongoServer) await mongoServer.stop();
 	} catch (err) {
 		// eslint-disable-next-line no-console
 		console.error(err);

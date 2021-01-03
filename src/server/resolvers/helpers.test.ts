@@ -1,5 +1,4 @@
 import { ObjectId } from 'mongodb';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import { checkIsAuthorized, fetchUser, query, queryById, toEnum, updateUser } from './helpers';
 import {
 	HackerDbObject,
@@ -25,7 +24,6 @@ const hacker: UserDbInterface = {
 	userType: UserType.Hacker,
 };
 
-let mongoServer: MongoMemoryServer;
 let dbClient: DB;
 let models: Models;
 
@@ -42,9 +40,7 @@ const testOrganizer = ({
 
 beforeAll(async () => {
 	try {
-		mongoServer = new MongoMemoryServer();
-		const mongoUri = await mongoServer.getUri();
-		dbClient = new DB(mongoUri);
+		dbClient = new DB(process.env.MONGO_URL);
 		models = await dbClient.collections;
 		await models.Hackers.insertOne(testHacker);
 		await models.Organizers.insertOne(testOrganizer);
@@ -57,7 +53,6 @@ beforeAll(async () => {
 afterAll(async () => {
 	try {
 		if (dbClient) await dbClient.disconnect();
-		if (mongoServer) await mongoServer.stop();
 	} catch (err) {
 		// eslint-disable-next-line no-console
 		console.error(err);
