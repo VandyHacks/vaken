@@ -44,6 +44,7 @@ module.exports = {
 		}), // Check types asynchronously
 		new HtmlWebpackPlugin({
 			template: './src/client/index.html',
+			favicon: './src/client/assets/img/favicon.ico',
 		}), // For index.html entry point
 	],
 	resolve: {

@@ -1,8 +1,7 @@
+import * as EmailValidator from 'email-validator';
 import { ObjectId } from 'mongodb';
 import DB, { Models } from '../src/server/models';
 import { LoginDbObject, UserType } from '../src/server/generated/graphql';
-
-const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const printUsage = (): void => {
 	void console.log(
@@ -43,7 +42,7 @@ const makeOrganizer = async (models: Models, constraint: Partial<LoginDbObject>)
 
 (async (): Promise<void> => {
 	const args = process.argv.splice(process.execArgv.length);
-	if (!args.length || args.length > 2 || !EMAIL_REGEX.test(args[0])) printUsage();
+	if (!args.length || args.length > 2 || !EmailValidator.validate(args[0])) printUsage();
 	const models = await new DB().collections;
 
 	try {
@@ -56,6 +55,7 @@ const makeOrganizer = async (models: Models, constraint: Partial<LoginDbObject>)
 				return makeOrganizer(models, constraint);
 			})
 		);
+		process.exit(0);
 	} catch (e) {
 		console.error(e);
 		process.exit(1);
