@@ -8,10 +8,6 @@ module.exports = {
 		'!./src/**/*.d.ts',
 		'!**/*.test.ts*',
 	],
-	reporters: [
-		'default',
-		['jest-junit', { outputDirectory: './reports/test/jest', outputName: 'results.xml' }],
-	],
 	testPathIgnorePatterns: ['/node_modules/', '.eslintrc.js'],
 	projects: [
 		{
