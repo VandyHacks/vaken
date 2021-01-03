@@ -55,6 +55,7 @@ const makeOrganizer = async (models: Models, constraint: Partial<LoginDbObject>)
 				return makeOrganizer(models, constraint);
 			})
 		);
+		process.exit(0);
 	} catch (e) {
 		console.error(e);
 		process.exit(1);
