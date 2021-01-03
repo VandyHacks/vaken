@@ -7,7 +7,6 @@ export const Event: EventResolvers<Context> = {
 	description: async event => (await event).description || null,
 	duration: async event => (await event).duration,
 	eventType: async event => (await event).eventType,
-	eventScore: async event => (await event).eventScore || 0,
 	id: async event => (await event)._id.toHexString(),
 	location: async event => (await event).location,
 	name: async event => (await event).name,
