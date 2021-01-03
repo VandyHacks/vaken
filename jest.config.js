@@ -71,8 +71,8 @@ module.exports = {
 			testPathIgnorePatterns: ['.eslintrc.js'],
 		},
 		{
-			displayName: 'Add Happo/Storybook tests to code coverage numbres',
-			testMatch: ['<rootDir>/.storybook/index.js']
+			displayName: 'Add Happo/Storybook tests to code coverage numbers',
+			testMatch: ['<rootDir>/.storyshots/index.js']
 		}
 	],
 };
