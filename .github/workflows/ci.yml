@@ -10,10 +10,10 @@ jobs:
     name: Build Vaken
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Read .nvmrc
         run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
         id: nvm
-      - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: "${{ steps.nvm.outputs.NVMRC }}"
@@ -26,10 +26,10 @@ jobs:
     name: Style check
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Read .nvmrc
         run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
         id: nvm
-      - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: "${{ steps.nvm.outputs.NVMRC }}"
@@ -42,6 +42,7 @@ jobs:
     name: Test code
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Read .nvmrc
 <<<<<<< HEAD
         run: echo "::[set-output name=NVMRC;]$(cat .nvmrc)"
@@ -49,7 +50,6 @@ jobs:
         run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
 >>>>>>> revert all changes to nvmrc thing
         id: nvm
-      - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: "${{ steps.nvm.outputs.NVMRC }}"
