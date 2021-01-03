@@ -7,6 +7,3 @@ exclude_patterns:
 plugins:
   fixme:
     enabled: true
-  eslint:
-    enabled: true
-    
