@@ -44,11 +44,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Read .nvmrc
-<<<<<<< HEAD
-        run: echo "::[set-output name=NVMRC;]$(cat .nvmrc)"
-=======
         run: echo "##[set-output name=NVMRC;]$(cat .nvmrc)"
->>>>>>> revert all changes to nvmrc thing
         id: nvm
       - uses: actions/setup-node@v2
         with:
