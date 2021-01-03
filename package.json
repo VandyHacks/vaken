@@ -31,6 +31,7 @@
 		"url": "https://github.com/VandyHacks/vaken/issues"
 	},
 	"scripts": {
+		"happo": "happo",
 		"happo-ci-github-actions": "happo-ci-github-actions",
 		"generate": "graphql-codegen --config codegen.json",
 		"generate:watch": "npm run generate -- --watch",
@@ -132,6 +133,7 @@
 		"@storybook/addon-actions": "^6.1.11",
 		"@storybook/addon-essentials": "^6.1.11",
 		"@storybook/addon-links": "^6.1.11",
+		"@storybook/addon-storyshots": "^6.1.11",
 		"@storybook/react": "^6.1.11",
 		"@types/chart.js": "^2.9.29",
 		"@types/escape-html": "^1.0.0",
