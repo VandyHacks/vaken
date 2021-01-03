@@ -38,7 +38,7 @@
 		"generate:docs": "typedoc",
 		"predev": "npm run generate",
 		"pregenerate": "check-node-version --node $(cat .nvmrc)",
-		"preinstall": "check-node-version --node $(cat .nvmrc)",
+		"preinstall": "npx check-node-version --node $(cat .nvmrc)",
 		"prebuild": "npm run generate",
 		"precheck:types": "npm run generate",
 		"dev:server": "ts-node-dev -r dotenv/config --respawn --transpile-only ./src/server/index.ts",
