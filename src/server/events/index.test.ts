@@ -135,7 +135,6 @@ beforeAll(async () => {
 afterAll(async () => {
 	try {
 		if (dbClient) await dbClient.disconnect();
-		if (mongoServer) await mongoServer.stop();
 	} catch (err) {
 		// eslint-disable-next-line no-console
 		console.error(err);
