@@ -129,6 +129,7 @@
 		"@babel/preset-env": "^7.12.11",
 		"@babel/preset-react": "^7.12.10",
 		"@babel/preset-typescript": "^7.12.7",
+		"@shelf/jest-mongodb": "^1.2.3",
 		"@storybook/addon-actions": "^6.1.11",
 		"@storybook/addon-essentials": "^6.1.11",
 		"@storybook/addon-links": "^6.1.11",

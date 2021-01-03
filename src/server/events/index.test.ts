@@ -1,5 +1,4 @@
 import { ObjectId, MongoError } from 'mongodb';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import {
 	HackerDbObject,
 	EventDbObject,
@@ -17,7 +16,6 @@ import {
 } from '.';
 import { EventUpdate } from '../../client/routes/events/ManageEventTypes';
 
-let mongoServer: MongoMemoryServer;
 let dbClient: DB;
 let models: Models;
 
@@ -123,10 +121,13 @@ const vhCalendarID = 'vanderbilt.edu_8p58kn7032badn5et22pq1iqjs@group.calendar.g
 
 beforeAll(async () => {
 	try {
-		mongoServer = await MongoMemoryServer.create();
-		const mongoUri = await mongoServer.getUri();
-		dbClient = new DB(mongoUri);
+		dbClient = new DB(process.env.MONGO_URL);
 		models = await dbClient.collections;
+
+		models.Hackers.deleteMany({});
+		models.Events.deleteMany({});
+		models.Companies.deleteMany({});
+
 		await models.Hackers.insertOne(testHacker);
 		await models.Events.insertOne(testEvent);
 		await models.Companies.insertOne(testCompany);
@@ -139,7 +140,6 @@ beforeAll(async () => {
 afterAll(async () => {
 	try {
 		if (dbClient) await dbClient.disconnect();
-		if (mongoServer) await mongoServer.stop();
 	} catch (err) {
 		// eslint-disable-next-line no-console
 		console.error(err);
