@@ -64,6 +64,11 @@ beforeAll(async () => {
 	try {
 		dbClient = new DB(process.env.MONGO_URL);
 		models = await dbClient.collections;
+
+		models.Hackers.deleteMany({});
+		models.Organizers.deleteMany({});
+		models.Events.deleteMany({});
+
 		await models.Hackers.insertOne(testHacker);
 		await models.Hackers.insertOne(testHacker2);
 		await models.Organizers.insertOne(testOrganizer);
