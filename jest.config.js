@@ -70,9 +70,9 @@ module.exports = {
 			preset: 'ts-jest',
 			testPathIgnorePatterns: ['.eslintrc.js'],
 		},
-		// {
-		// 	displayName: 'Add Happo/Storybook tests to code coverage numbers',
-		// 	testMatch: ['<rootDir>/.storyshots/index.js']
-		// }
+		{
+			displayName: 'Add Happo/Storybook tests to code coverage numbers',
+			testMatch: ['<rootDir>/.storyshots/index.js']
+		}
 	],
 };
