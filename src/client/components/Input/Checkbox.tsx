@@ -66,7 +66,7 @@ const CheckboxRaw: FC<Props & { titleCase?: boolean }> = ({
 	setState,
 	titleCase,
 }) => {
-	const selected = value.length ? new Set(value.split(SEPARATOR)) : new Set();
+	const selected = value?.length ? new Set(value.split(SEPARATOR)) : new Set();
 	const onChange = ({ currentTarget: { id } }: React.FormEvent<HTMLInputElement>): void => {
 		if (selected.has(id)) selected.delete(id);
 		else selected.add(id);
@@ -116,7 +116,19 @@ const CheckboxRaw: FC<Props & { titleCase?: boolean }> = ({
 	);
 };
 
+/**
+ * Checkbox stores state as a `SEPARATOR`(|)-delimited join of the selected options.
+ */
 export const CheckboxSansTitleCase: FC<Props> = (props: Props) => <CheckboxRaw {...props} />;
+
+/**
+ * Checkbox stores state as a `SEPARATOR`(|)-delimited join of the selected options.
+ *
+ * Options will not be escaped to allow for HTML markup (links, presumably) in the option text.
+ *
+ * This component will display the options in title case by default. For a component which does not do this,
+ * please use `CheckboxSansTitleCase`.
+ */
 export const Checkbox: FC<Props> = props => <CheckboxRaw {...props} titleCase />;
 
 export default Checkbox;

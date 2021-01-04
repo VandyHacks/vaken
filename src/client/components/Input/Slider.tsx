@@ -9,6 +9,7 @@ let globalCounter = 0;
 export interface Props extends InputProps {
 	options?: string[];
 	titleCase?: boolean;
+	className?: string;
 }
 
 const SliderContainer = styled.div`
@@ -63,6 +64,9 @@ const SliderContainer = styled.div`
 	}
 `;
 
+/**
+ * Special case of Slider to handle renaming of shirt enums without messing with backend representation.
+ */
 export const ShirtSlider: FC<Props> = ({ value, setState, ...props }) => {
 	const { options = ['default'], className } = props;
 	const [counter, setCounter] = useState(0);
@@ -112,14 +116,6 @@ export const ShirtSlider: FC<Props> = ({ value, setState, ...props }) => {
 			</SliderContainer>
 		</fieldset>
 	);
-};
-
-// Special component to handle shirt sizes in a slider
-export const SliderShirtSizes: FC<Props> = props => {
-	const { options = ['default'] } = props;
-
-	// FIXME: Quick fix for handling womens' sizes for backend enum types
-	return <ShirtSlider {...props} options={options} />;
 };
 
 export const SliderSansTitleCase: FC<Props> = ({ value, setState, titleCase, ...props }) => {

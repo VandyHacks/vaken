@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import searchIcon from '../../assets/img/search_icon.svg';
 import STRINGS from '../../assets/strings.json';
 
-interface Props {
+export interface Props {
 	error?: boolean;
 	flex?: boolean;
 	hasIcon?: boolean;

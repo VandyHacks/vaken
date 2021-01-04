@@ -2,13 +2,17 @@ import React, { FC, FormEventHandler, InputHTMLAttributes } from 'react';
 import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
 
-export interface StyleProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface StyleProps
+	extends Pick<InputHTMLAttributes<HTMLInputElement>, 'type' | 'pattern' | 'id' | 'list'> {
+	/** Defaults to `transparent` */
 	background?: string;
 	fontSize?: string;
 }
 
 export interface InputProps extends StyleProps {
+	/** setState action which will be passed a serialized value upon any input change. */
 	setState: (value: string) => void;
+	/** serialized value representing the content of this input. */
 	value: string;
 }
 

@@ -1,4 +1,4 @@
-import React, { FC, ChangeEventHandler } from 'react';
+import React, { FC, ChangeEventHandler, TextareaHTMLAttributes } from 'react';
 import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
 import { StyleProps, InputProps } from './TextInput';
@@ -24,12 +24,11 @@ export const RawInput = styled.textarea`
 	}
 `;
 
-export const Input: FC<InputProps & { maxLength?: number }> = ({
-	setState,
-	value,
-	maxLength,
-	...rest
-}) => {
+export interface Props extends InputProps {
+	maxLength?: number;
+}
+
+export const Input: FC<Props> = ({ setState, value, maxLength, ...rest }) => {
 	const onChange: ChangeEventHandler<HTMLTextAreaElement> = ({ currentTarget }) =>
 		setState(currentTarget.value);
 
@@ -38,7 +37,7 @@ export const Input: FC<InputProps & { maxLength?: number }> = ({
 	return (
 		<RawInput
 			maxLength={maxLength || STRINGS.TEXT_AREA_MAX_LENGTH}
-			{...(rest as any)}
+			{...(rest as TextareaHTMLAttributes<HTMLTextAreaElement>)}
 			value={value}
 			onChange={onChange as any}
 		/>
