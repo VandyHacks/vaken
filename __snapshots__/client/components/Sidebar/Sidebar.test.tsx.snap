@@ -321,6 +321,12 @@ exports[`Test Sidebar Sidebar renders correctly 1`] = `
   padding: 0.33rem 0 0.33rem 1.33rem;
 }
 
+.c7 li {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  list-style: none;
+}
+
 .c7 li a button {
   height: -webkit-max-content;
   height: -moz-max-content;
@@ -346,7 +352,9 @@ exports[`Test Sidebar Sidebar renders correctly 1`] = `
     >
       <img
         alt="VH graphic"
+        height="156px"
         src="IconMock"
+        width="min-content"
       />
     </div>
     <hr
