@@ -25,7 +25,8 @@
 					"User": "UserDbInterface",
 					"Volunteer": "VolunteerDbObject"
 				},
-				"skipTypenames": false
+				"skipTypenames": false,
+				"noSchemaStitching": true
 			}
 		},
 		"src/client/generated/graphql.ts": {
@@ -40,7 +41,8 @@
 				"withComponent": false,
 				"withHooks": true,
 				"hooksImportFrom": "@apollo/react-hooks",
-				"withMutationFn": false
+				"withMutationFn": false,
+				"noSchemaStitching": true
 			}
 		}
 	}
