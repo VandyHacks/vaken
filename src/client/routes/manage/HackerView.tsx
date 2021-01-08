@@ -119,7 +119,7 @@ export const HackerView: FC<RouteComponentProps<{ id: string }>> = props => {
 		<Layout>
 			<LeftImgButton
 				background={STRINGS.ACCENT_COLOR}
-				color="#ffffff"
+				color="white"
 				img={back}
 				imgAlt="left arrow"
 				width="30em"

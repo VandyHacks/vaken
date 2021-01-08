@@ -79,32 +79,6 @@ exports[`Login renders properly 1`] = `
   font-family: 'Roboto';
   font-size: 1.4rem;
   font-weight: normal;
-  color: black;
-  padding-left: unset;
-  padding-right: unset;
-}
-
-.c12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-flow: column nowrap;
-  -ms-flex-flow: column nowrap;
-  flex-flow: column nowrap;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 100%;
-  text-align: center;
-  font-family: 'Roboto';
-  font-size: 1.4rem;
-  font-weight: normal;
   color: #3f3356;
   padding-left: unset;
   padding-right: unset;
@@ -259,6 +233,7 @@ exports[`Login renders properly 1`] = `
         </div>
         <div
           className="c10"
+          color="#3f3356"
         >
           Sign in with Google
         </div>
@@ -288,6 +263,7 @@ exports[`Login renders properly 1`] = `
         </div>
         <div
           className="c10"
+          color="#3f3356"
         >
           Sign in with GitHub
         </div>
@@ -307,7 +283,7 @@ exports[`Login renders properly 1`] = `
         className="c6 c11"
       >
         <div
-          className="c12"
+          className="c10"
           color="#3f3356"
         >
           Learn more
