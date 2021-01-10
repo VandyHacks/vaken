@@ -13,6 +13,7 @@ import {
 	addOrUpdateEvent,
 	checkIdentityForEvent,
 	assignEventToCompany,
+	SimplifiedVEvent,
 } from '.';
 import { EventUpdate } from '../../client/routes/events/ManageEventTypes';
 
@@ -50,16 +51,14 @@ const testCompany = ({
 	eventsOwned: [],
 } as unknown) as CompanyDbObject;
 
-const badEventObj: Record<string, string> = {
+const badEventObj = {
 	summary: 'summary',
-	start: '',
-	end: '',
-};
+} as SimplifiedVEvent;
 
-const testEventObj: Record<string, string> = {
+const testEventObj: SimplifiedVEvent = {
 	summary: 'testEvent',
-	start: '2019-09-06T03:41:33.714+00:00',
-	end: '2019-09-06T07:41:33.714+00:00',
+	start: { ...new Date('2019-09-06T03:41:33.714+00:00'), tz: 'UTC' },
+	end: { ...new Date('2019-09-06T07:41:33.714+00:00'), tz: 'UTC' },
 	description: 'testEventdesc Points: 40 [testType]',
 	location: 'location',
 	uid: 'testGcalID',
@@ -165,8 +164,8 @@ describe('Test events updating', () => {
 		it('returns items on real calendar (must contain at least 1 event)', async () => {
 			const res = await pullCalendar(vhCalendarID);
 			if (res) {
-				await expect(res.length).toBeGreaterThanOrEqual(1);
-				await expect(res[0].name).toBeDefined();
+				expect(res.length).toBeGreaterThanOrEqual(1);
+				expect(res[0].name).toBeDefined();
 			} else throw new MongoError('Could not get calendar');
 		});
 	});

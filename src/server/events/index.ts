@@ -1,5 +1,5 @@
 import { fromURL, CalendarResponse, CalendarComponent, VEvent } from 'node-ical';
-import { AuthenticationError, UserInputError } from 'apollo-server-express';
+import { UserInputError } from 'apollo-server-express';
 import { ObjectID } from 'mongodb';
 import { EventUpdateInput, EventDbObject, CompanyDbObject } from '../generated/graphql';
 import { Models } from '../models';
@@ -8,6 +8,12 @@ import logger from '../logger';
 
 const EVENTTYPE = 'VEVENT';
 const POINTS_REGEX = /Points:?[\s\n]+?([0-9]*)/;
+
+// Simplified VEvent type because it was overly obtuse and dramatically hindered mocks for testing
+export type SimplifiedVEvent = Pick<
+	VEvent,
+	'summary' | 'start' | 'end' | 'location' | 'description' | 'uid'
+>;
 
 const filterByCalType = (
 	objNames: (keyof CalendarResponse)[],
@@ -24,23 +30,15 @@ const filterCalByObjectNames = (
 	return objNames.map(key => cal[key]);
 };
 
-// Helper func to simplify VEvent type because it was overly obtuse and dramatically hindered mocks for testing
-const extractVEventIntoRecord = (event: VEvent): Record<string, string> => {
-	return {
-		summary: event.summary,
-		start: new Date(event.start as Date).toUTCString(),
-		end: new Date(event.end as Date).toUTCString(),
-		location: event.location,
-		description: event.description,
-		uid: event.uid,
-	};
-};
-
-export const transformCalEventToDBUpdate = (event: Record<string, string>): EventUpdate => {
-	if (!event.start || !event.end)
-		throw new AuthenticationError('Calendar event did not contain start or end timestamp');
-	const parsedStart = new Date(event.start);
-	const parsedEnd = new Date(event.end);
+export const transformCalEventToDBUpdate = (event: SimplifiedVEvent): EventUpdate => {
+	if (!event.start && !event.end) {
+		throw new TypeError('Calendar event did not contain start or end timestamp');
+	}
+	// Either start or end may be undefined, but not both due to guard above.
+	// Fall back to whatever is defined if one is missing.
+	// This may happen if the event has exactly 0 duration in Google Calendar.
+	const parsedStart = event.start ?? (event.end as Date);
+	const parsedEnd = event.end ?? (event.start as Date);
 	let parsedScore = 0;
 	if (POINTS_REGEX.test(event.description)) {
 		const result = POINTS_REGEX.exec(event.description);
@@ -55,7 +53,7 @@ export const transformCalEventToDBUpdate = (event: Record<string, string>): Even
 	const parsedType = /\[(.*?)\]/.exec(event.description); // Looks for a **single** [Event Type] tag in name
 	return {
 		name: event.summary,
-		startTimestamp: event.start,
+		startTimestamp: parsedStart.toUTCString(),
 		duration: Math.floor((parsedEnd.getTime() - parsedStart.getTime()) / (1000 * 60)),
 		description: event.description.replace(/\s*\[(.*?)\]\s*/, ''), // Removes the [Event Type] tag in name
 		location: event.location,
@@ -76,7 +74,7 @@ export async function pullCalendar(calendarID: string | undefined): Promise<Even
 		const eventsObjects = filterCalByObjectNames(eventsKeys, cal) as VEvent[];
 		if (eventsObjects.length === 0) return null;
 		const eventsTransformed = eventsObjects.map((event: VEvent) =>
-			transformCalEventToDBUpdate(extractVEventIntoRecord(event))
+			transformCalEventToDBUpdate(event)
 		);
 		return eventsTransformed;
 	}
