@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
 import TextButton, { StyledLoginBtn } from '../../components/Buttons/TextButton';
@@ -33,114 +33,81 @@ const HackerDashBG = styled(FloatingPopup)`
 		}
 	}
 `;
-export const CheckInEvent: FunctionComponent = (): JSX.Element => {
-	const {
-		loading: eventsLoading,
-		error: eventsError,
-		data: eventsData,
-	} = useEventsForHackersQuery();
-	const { loading: hackerLoading, error: hackerError, data: hackerData } = useMyEventStatusQuery();
-	const [checkInUserToEventUpdateEventScore] = useCheckInUserToEventAndUpdateEventScoreMutation();
+export const CheckInEvent: FC = () => {
+	const events = useEventsForHackersQuery();
+	const hacker = useMyEventStatusQuery();
+	const [checkIn] = useCheckInUserToEventAndUpdateEventScoreMutation();
 
-	if (eventsLoading || !eventsData || hackerLoading || !hackerData || !hackerData.me) {
+	if (events.loading || !events.data || hacker.loading || !hacker.data || !hacker.data.me) {
 		return <Spinner />;
 	}
 
-	if (eventsError || hackerError) {
-		console.log(eventsError);
+	// Satisfy type system that reference is still defined in closures below.
+	const { me } = hacker.data;
+
+	if (events.error || hacker.error) {
 		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 	}
 
-	interface Event {
-		id: string;
-		name: string;
-		eventType: string;
-		duration: number;
-		startTimestamp: number;
-		eventScore: number;
-	}
-
-	const eventRows: Event[] = eventsData.events.map(
-		(e): Event => {
-			return {
-				id: e.id,
-				name: e.name,
-				eventType: e.eventType,
-				duration: e.duration,
-				startTimestamp: e.startTimestamp,
-				eventScore: e.eventScore ? e.eventScore : 0,
-			};
-		}
-	);
-
-	const eventsCurrent = eventRows.filter((e: Event) => {
+	const eventsCurrent = events.data.events.filter(({ startTimestamp, duration }) => {
 		const TIME_BUFFER = 5; // 5 minutes
-		const delta = (Date.now() - e.startTimestamp) / (1000 * 60); // Time diff in minutes
-		return delta >= -1 * TIME_BUFFER && delta <= e.duration + TIME_BUFFER;
+		const delta = (Date.now() - startTimestamp) / (1000 * 60); // Time diff in minutes
+		return delta >= -1 * TIME_BUFFER && delta <= duration + TIME_BUFFER;
 	});
 
 	return (
-		<>
-			<FlexStartColumn>
-				<HackerDashBG>
-					<FlexColumn>
-						<Title fontSize="1.75rem">Your Score:</Title>
-						<SmallCenteredText color={`${STRINGS.DARK_TEXT_COLOR}`} fontSize="1.3rem" margin="1rem">
-							<span style={{ fontWeight: 'bold' }}>{hackerData.me.eventScore ?? '0'}</span>
-						</SmallCenteredText>
-						<Title fontSize="1.75rem">Ongoing Events:</Title>
-						{eventsCurrent.map(row => (
-							<FlexColumn key={row.id}>
-								<SmallCenteredText
-									color={`${STRINGS.DARK_TEXT_COLOR}`}
-									fontSize="1.3rem"
-									margin="1.4rem">
-									<span style={{ fontWeight: 'bold' }}>{row.name}</span>
-								</SmallCenteredText>
-								<TextButton
-									key={row.id}
-									color="white"
-									fontSize="1.4em"
-									background={STRINGS.ACCENT_COLOR}
-									glowColor="rgba(0, 0, 255, 0.67)"
-									enabled={!hackerData.me?.eventsAttended.includes(row.id)}
-									onClick={async () => {
-										toast.dismiss();
-										return checkInUserToEventUpdateEventScore({
+		<FlexStartColumn>
+			<HackerDashBG>
+				<FlexColumn>
+					<Title fontSize="1.75rem">Your Score:</Title>
+					<SmallCenteredText color={`${STRINGS.DARK_TEXT_COLOR}`} fontSize="1.3rem" margin="1rem">
+						<span style={{ fontWeight: 'bold' }}>{me.eventScore ?? '0'}</span>
+					</SmallCenteredText>
+					<Title fontSize="1.75rem">Ongoing Events:</Title>
+					{eventsCurrent.map(row => (
+						<FlexColumn key={row.id}>
+							<SmallCenteredText
+								color={`${STRINGS.DARK_TEXT_COLOR}`}
+								fontSize="1.3rem"
+								margin="1.4rem">
+								<span style={{ fontWeight: 'bold' }}>{row.name}</span>
+							</SmallCenteredText>
+							<TextButton
+								key={row.id}
+								color="white"
+								fontSize="1.4em"
+								background={STRINGS.ACCENT_COLOR}
+								glowColor="rgba(0, 0, 255, 0.67)"
+								enabled={!me.eventsAttended.includes(row.id)}
+								onClick={async () => {
+									toast.dismiss();
+									try {
+										await checkIn({
 											variables: {
 												input: {
 													event: row.id,
-													user: hackerData?.me?.id ?? '',
-													eventScore: row.eventScore,
+													user: me.id ?? '',
+													eventScore: row.eventScore ?? 0,
 												},
 											},
-										})
-											.then(() => {
-												toast.dismiss();
-												return toast.success('You have been checked in successfully!', {
-													position: 'bottom-right',
-												});
-											})
-											.catch((e: Error) => {
-												toast.dismiss();
-												if (e.message.includes('is already checked into event')) {
-													return toast.error('You are already checked in!', {
-														position: 'bottom-right',
-													});
-												}
-												return toast.error('Check-in failed!', {
-													position: 'bottom-right',
-												});
-											});
-									}}>
-									{hackerData.me?.eventsAttended.includes(row.id) ? 'Checked In!' : 'Check In'}
-								</TextButton>
-							</FlexColumn>
-						))}
-					</FlexColumn>
-				</HackerDashBG>
-			</FlexStartColumn>
-		</>
+										});
+										toast.dismiss();
+										return void toast.success('You have been checked in successfully!');
+									} catch (e) {
+										toast.dismiss();
+										if (e.message.includes('is already checked into event')) {
+											return void toast.error('You are already checked in!');
+										}
+										return void toast.error('Check-in failed!');
+									}
+								}}>
+								{me.eventsAttended.includes(row.id) ? 'Checked In!' : 'Check In'}
+							</TextButton>
+						</FlexColumn>
+					))}
+				</FlexColumn>
+			</HackerDashBG>
+		</FlexStartColumn>
 	);
 };
 

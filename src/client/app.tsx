@@ -37,7 +37,7 @@ const GlobalStyle = createGlobalStyle`
 	}
 `;
 
-toast.configure();
+toast.configure({ position: 'bottom-right' });
 
 const Vaken: React.FunctionComponent = (): JSX.Element => {
 	const [ready, setReady] = useState(false);
