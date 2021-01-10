@@ -37,8 +37,15 @@ const extractVEventIntoRecord = (event: VEvent): Record<string, string> => {
 };
 
 export const transformCalEventToDBUpdate = (event: Record<string, string>): EventUpdate => {
-	if (!event.start || !event.end)
+	if (
+		!event.start ||
+		!event.end ||
+		(event.start === 'Invalid Date' && event.end === 'Invalid Date')
+	) {
 		throw new AuthenticationError('Calendar event did not contain start or end timestamp');
+	}
+	if (event.start === 'Invalid Date') event.start = event.end;
+	if (event.end === 'Invalid Date') event.end = event.start;
 	const parsedStart = new Date(event.start);
 	const parsedEnd = new Date(event.end);
 	let parsedScore = 0;
