@@ -36,7 +36,7 @@ const SponsorSelect = styled(Select)`
 `;
 
 const ManageEvents: FunctionComponent = (): JSX.Element => {
-	const [output, setOutput] = useState('<>');
+	const [output, setOutput] = useState('No updates to report');
 	const [addOrUpdateEvent] = useAddOrUpdateEventMutation();
 	const [removeAbsentEvents] = useRemoveAbsentEventsMutation();
 	const [assignEventToCompany] = useAssignEventToCompanyMutation();
@@ -83,17 +83,12 @@ const ManageEvents: FunctionComponent = (): JSX.Element => {
 		};
 	}, [setActionButton, pullCalendarEvents]);
 
-	if (companies.loading || !companies.data || events.loading || !events.data) {
+	if (companies.loading || events.loading) {
 		return <Spinner />;
 	}
 
-	if (companies.error) {
-		console.error(companies.error);
-		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
-	}
-
-	if (events.error) {
-		console.error(events.error);
+	if (events.error || companies.error || !companies.data || !events.data) {
+		console.error(events.error ?? companies.error);
 		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 	}
 
