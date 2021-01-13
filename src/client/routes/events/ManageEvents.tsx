@@ -73,7 +73,7 @@ const ManageEvents: FunctionComponent = (): JSX.Element => {
 	useEffect((): (() => void) => {
 		if (setActionButton) {
 			setActionButton(
-				<Button async onClick={pullCalendarEvents}>
+				<Button async warning onClick={pullCalendarEvents}>
 					Pull from Calendar
 				</Button>
 			);
