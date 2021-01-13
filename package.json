@@ -42,7 +42,7 @@
 		"prebuild": "npm run generate",
 		"precheck:types": "npm run generate",
 		"dev:server": "ts-node-dev -r dotenv/config --respawn --transpile-only ./src/server/index.ts",
-		"dev:server:debug": "npm run dev:server -- --inspect",
+		"dev:server:debug": "node --inspect -r ts-node/register -r dotenv/config ./src/server/index.ts",
 		"dev:client": "webpack serve --config webpack.dev.js --color",
 		"dev": "concurrently -n client,server,codegen -c bgBlue.bold,bgMagenta.bold,bgYellow.bold \"npm:dev:client\" \"npm:dev:server:debug\" \"npm:generate:watch\"",
 		"start": "node dist/src/server",
