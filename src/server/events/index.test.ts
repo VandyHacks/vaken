@@ -1,4 +1,5 @@
 import { ObjectId, MongoError } from 'mongodb';
+import { DateWithTimeZone } from 'node-ical';
 import {
 	HackerDbObject,
 	EventDbObject,
@@ -55,10 +56,16 @@ const badEventObj = {
 	summary: 'summary',
 } as SimplifiedVEvent;
 
+const toDateWithTimeZone = (d: Date): DateWithTimeZone => {
+	const ret = new Date(d);
+	(ret as DateWithTimeZone).tz = 'UTC';
+	return ret as DateWithTimeZone;
+};
+
 const testEventObj: SimplifiedVEvent = {
 	summary: 'testEvent',
-	start: { ...new Date('2019-09-06T03:41:33.714+00:00'), tz: 'UTC' },
-	end: { ...new Date('2019-09-06T07:41:33.714+00:00'), tz: 'UTC' },
+	start: toDateWithTimeZone(new Date('2019-09-06T03:41:33.714+00:00')),
+	end: toDateWithTimeZone(new Date('2019-09-06T07:41:33.714+00:00')),
 	description: 'testEventdesc Points: 40 [testType]',
 	location: 'location',
 	uid: 'testGcalID',
@@ -66,7 +73,7 @@ const testEventObj: SimplifiedVEvent = {
 
 const testEventUpdateGcal: EventUpdate = {
 	name: 'testEvent',
-	startTimestamp: '2019-09-06T03:41:33.714+00:00',
+	startTimestamp: '2019-09-06T03:41:33.714Z',
 	duration: 240,
 	description: 'testEventdesc Points: 40',
 	location: 'location',
@@ -77,7 +84,7 @@ const testEventUpdateGcal: EventUpdate = {
 
 const testEventUpdateGcal2: EventUpdate = {
 	name: 'testEvent2',
-	startTimestamp: '2019-09-08T03:41:33.714+00:00',
+	startTimestamp: '2019-09-08T03:41:33.714Z',
 	duration: 60,
 	description: 'testEventdesc2',
 	location: 'location2',
@@ -89,7 +96,7 @@ const testEventUpdateGcal2: EventUpdate = {
 const eventID = new ObjectId();
 const testEventUpdateByID: EventUpdate = {
 	name: 'testEventbyID',
-	startTimestamp: '2019-09-06T03:41:33.714+00:00',
+	startTimestamp: '2019-09-06T03:41:33.714Z',
 	duration: 240,
 	description: 'testEventdesc',
 	location: 'location',
@@ -99,7 +106,7 @@ const testEventUpdateByID: EventUpdate = {
 
 const testEventUpdateByID2: EventUpdate = {
 	name: 'testEvent2byID',
-	startTimestamp: '2019-09-08T03:41:33.714+00:00',
+	startTimestamp: '2019-09-08T03:41:33.714Z',
 	duration: 60,
 	description: 'testEventdesc2',
 	location: 'location2',
@@ -109,7 +116,7 @@ const testEventUpdateByID2: EventUpdate = {
 
 const badTestEventUpdate: EventUpdate = {
 	name: 'badTestEventUpdate',
-	startTimestamp: '2019-09-08T03:41:33.714+00:00',
+	startTimestamp: '2019-09-08T03:41:33.714Z',
 	duration: 60,
 	description: 'testEventdesc2',
 	location: 'location2',

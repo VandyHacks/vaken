@@ -53,7 +53,7 @@ export const transformCalEventToDBUpdate = (event: SimplifiedVEvent): EventUpdat
 	const parsedType = /\[(.*?)\]/.exec(event.description); // Looks for a **single** [Event Type] tag in name
 	return {
 		name: event.summary,
-		startTimestamp: parsedStart.toUTCString(),
+		startTimestamp: parsedStart.toISOString(),
 		duration: Math.floor((parsedEnd.getTime() - parsedStart.getTime()) / (1000 * 60)),
 		description: event.description.replace(/\s*\[(.*?)\]\s*/, ''), // Removes the [Event Type] tag in name
 		location: event.location,
