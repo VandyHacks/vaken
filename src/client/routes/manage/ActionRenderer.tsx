@@ -44,7 +44,9 @@ export function convertApplicationStatus(status: ApplicationStatus): string {
 }
 
 // action column that contains the actionable buttons
-export function actionRenderer(updateStatus: HackerStatusMutationFn): FC<ActionRendererProps> {
+export function createActionRenderer(
+	updateStatus: (s: { status: ApplicationStatus; id: string }) => Promise<void>
+): FC<ActionRendererProps> {
 	return function ActionRenderer({ rowData: { id, status } }) {
 		return (
 			<Actions className="ignore-select">
@@ -56,7 +58,7 @@ export function actionRenderer(updateStatus: HackerStatusMutationFn): FC<ActionR
 						value={convertApplicationStatus(status)}
 						onChange={(input: string) => {
 							const newStatus = processSliderInput(input);
-							updateStatus({ variables: { input: { id, status: newStatus } } });
+							updateStatus({ status: newStatus, id });
 						}}
 						disable={!enableApplicationStatusSlider(status)}
 					/>

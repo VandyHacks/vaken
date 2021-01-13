@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 
 import {
 	Column,
@@ -14,7 +14,7 @@ import { Status } from '../../components/Text/Status';
 import { Checkmark } from '../../components/Symbol/Checkmark';
 
 import { Row } from './Row';
-import { actionRenderer, HackerStatusMutationFn } from './ActionRenderer';
+import { createActionRenderer, HackerStatusMutationFn } from './ActionRenderer';
 import { reimbursementHeaderRenderer } from './ReimbursementHeader';
 import { ResumeLink } from './ResumeLink';
 
@@ -118,11 +118,7 @@ const statusRenderer = ({ cellData }: TableCellProps): JSX.Element => {
 interface ActionRendererProps {
 	rowData: QueriedHacker;
 }
-function resumeRenderer(): FC<ActionRendererProps> {
-	return function ActionRenderer({ rowData: { id } }) {
-		return <ResumeLink id={id} />;
-	};
-}
+const ResumeRenderer: FC<ActionRendererProps> = ({ rowData: { id } }) => <ResumeLink id={id} />;
 
 interface HackerTableRowsProps {
 	generateRowClassName: (arg: { index: number }) => string;
@@ -146,100 +142,106 @@ export const HackerTableRows = ({
 	table,
 	isSponsor = false,
 	viewResumes = false,
-}: HackerTableRowsProps): JSX.Element => (
-	<StyledTable
-		width={width}
-		height={height}
-		headerHeight={40}
-		rowHeight={30}
-		rowCount={sortedData.length}
-		rowClassName={generateRowClassName}
-		rowGetter={({ index }: Index) => sortedData[index]}
-		rowRenderer={rowRenderer}
-		headerClassName="ignore-select"
-		sort={onSortColumnChange(table)}
-		{...table.state}>
-		<Column
-			className="column"
-			label="First Name"
-			dataKey="firstName"
-			width={100}
-			headerRenderer={renderHeaderAsLabel}
-		/>
-		<Column
-			className="column"
-			label="Last Name"
-			dataKey="lastName"
-			width={100}
-			headerRenderer={renderHeaderAsLabel}
-		/>
-		<Column
-			className="column"
-			label="Email"
-			dataKey="email"
-			width={200}
-			headerRenderer={renderHeaderAsLabel}
-		/>
-		<Column
-			className="column"
-			label="Grad Year"
-			dataKey="gradYear"
-			width={100}
-			headerRenderer={renderHeaderAsLabel}
-		/>
-		<Column
-			className="column"
-			label="School"
-			dataKey="school"
-			width={175}
-			headerRenderer={renderHeaderAsLabel}
-		/>
-		{!isSponsor && (
+}: HackerTableRowsProps): JSX.Element => {
+	const ActionRenderer = useMemo(
+		() => createActionRenderer(async input => void (await updateStatus({ variables: { input } }))),
+		[updateStatus]
+	);
+	return (
+		<StyledTable
+			width={width}
+			height={height}
+			headerHeight={40}
+			rowHeight={30}
+			rowCount={sortedData.length}
+			rowClassName={generateRowClassName}
+			rowGetter={({ index }: Index) => sortedData[index]}
+			rowRenderer={rowRenderer}
+			headerClassName="ignore-select"
+			sort={onSortColumnChange(table)}
+			{...table.state}>
 			<Column
 				className="column"
-				label="Status"
-				dataKey="status"
+				label="First Name"
+				dataKey="firstName"
 				width={100}
-				minWidth={90}
 				headerRenderer={renderHeaderAsLabel}
-				cellRenderer={statusRenderer}
 			/>
-		)}
-		{!isSponsor && (
 			<Column
 				className="column"
-				label="Requires Travel Reimbursement?"
-				dataKey="needsReimbursement"
-				width={30}
-				minWidth={20}
-				headerRenderer={reimbursementHeaderRenderer}
-				cellRenderer={checkmarkRenderer}
+				label="Last Name"
+				dataKey="lastName"
+				width={100}
+				headerRenderer={renderHeaderAsLabel}
 			/>
-		)}
-		{!isSponsor && (
 			<Column
 				className="column"
-				label="Actions"
-				dataKey="actions"
-				width={275}
-				minWidth={275}
+				label="Email"
+				dataKey="email"
+				width={200}
 				headerRenderer={renderHeaderAsLabel}
-				cellRenderer={actionRenderer(updateStatus)}
 			/>
-		)}
-		{isSponsor && viewResumes && (
 			<Column
 				className="column"
-				label="Resume"
-				dataKey="resume"
-				width={275}
-				minWidth={275}
+				label="Grad Year"
+				dataKey="gradYear"
+				width={100}
 				headerRenderer={renderHeaderAsLabel}
-				cellRenderer={resumeRenderer()}
 			/>
-		)}
-	</StyledTable>
-);
+			<Column
+				className="column"
+				label="School"
+				dataKey="school"
+				width={175}
+				headerRenderer={renderHeaderAsLabel}
+			/>
+			{!isSponsor && (
+				<Column
+					className="column"
+					label="Status"
+					dataKey="status"
+					width={100}
+					minWidth={90}
+					headerRenderer={renderHeaderAsLabel}
+					cellRenderer={statusRenderer}
+				/>
+			)}
+			{!isSponsor && (
+				<Column
+					className="column"
+					label="Requires Travel Reimbursement?"
+					dataKey="needsReimbursement"
+					width={30}
+					minWidth={20}
+					headerRenderer={reimbursementHeaderRenderer}
+					cellRenderer={checkmarkRenderer}
+				/>
+			)}
+			{!isSponsor && (
+				<Column
+					className="column"
+					label="Actions"
+					dataKey="actions"
+					width={275}
+					minWidth={275}
+					headerRenderer={renderHeaderAsLabel}
+					cellRenderer={ActionRenderer}
+				/>
+			)}
+			{isSponsor && viewResumes && (
+				<Column
+					className="column"
+					label="Resume"
+					dataKey="resume"
+					width={275}
+					minWidth={275}
+					headerRenderer={renderHeaderAsLabel}
+					cellRenderer={ResumeRenderer}
+				/>
+			)}
+		</StyledTable>
+	);
+};
 
 export default {
 	HackerTableRows,
