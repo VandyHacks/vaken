@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
 import { Button } from '../../components/Buttons/Button';
@@ -10,6 +10,7 @@ import { SmallCenteredText } from '../../components/Text/SmallCenteredText';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import {
 	useCheckInUserToEventAndUpdateEventScoreMutation,
+	CheckInUserToEventAndUpdateEventScoreMutationHookResult,
 	useEventsForHackersQuery,
 	useMyEventStatusQuery,
 } from '../../generated/graphql';
@@ -32,23 +33,50 @@ const HackerDashBG = styled(FloatingPopup)`
 		}
 	}
 `;
+
+function getOnCheckIn(
+	checkIn: CheckInUserToEventAndUpdateEventScoreMutationHookResult[0]
+): (eventId: string, userId: string) => Promise<void> {
+	return async function onCheckIn(eventId: string, userId: string) {
+		try {
+			await checkIn({
+				variables: {
+					input: {
+						event: eventId,
+						user: userId,
+					},
+				},
+			});
+			toast.dismiss();
+			return void toast.success('You have been checked in successfully!');
+		} catch (e) {
+			toast.dismiss();
+			if (e.message.includes('is already checked into event')) {
+				return void toast.error('You are already checked in!');
+			}
+			return void toast.error('Check-in failed!');
+		}
+	};
+}
+
 export const CheckInEvent: FC = () => {
 	const events = useEventsForHackersQuery();
 	const hacker = useMyEventStatusQuery();
 	const [checkIn] = useCheckInUserToEventAndUpdateEventScoreMutation();
+	const onCheckIn = useMemo(() => getOnCheckIn(checkIn), [checkIn]);
 
-	if (events.loading || !events.data || hacker.loading || !hacker.data || !hacker.data.me) {
+	if (events.loading || hacker.loading) {
 		return <Spinner />;
+	}
+
+	if (events.error || hacker.error || !events.data || !hacker.data || !hacker.data.me) {
+		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 	}
 
 	// Satisfy type system that reference is still defined in closures below.
 	const { me } = hacker.data;
 
-	if (events.error || hacker.error) {
-		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
-	}
-
-	const eventsCurrent = events.data.events.filter(({ startTimestamp, duration }) => {
+	const currentEvents = events.data.events.filter(({ startTimestamp, duration }) => {
 		const TIME_BUFFER = 5; // 5 minutes
 		const delta = (Date.now() - startTimestamp) / (1000 * 60); // Time diff in minutes
 		return delta >= -1 * TIME_BUFFER && delta <= duration + TIME_BUFFER;
@@ -63,7 +91,7 @@ export const CheckInEvent: FC = () => {
 						<span style={{ fontWeight: 'bold' }}>{me.eventScore ?? '0'}</span>
 					</SmallCenteredText>
 					<Title fontSize="1.75rem">Ongoing Events:</Title>
-					{eventsCurrent.map(row => (
+					{currentEvents.map(row => (
 						<FlexColumn key={row.id}>
 							<SmallCenteredText
 								color={`${STRINGS.DARK_TEXT_COLOR}`}
@@ -76,28 +104,7 @@ export const CheckInEvent: FC = () => {
 								large
 								async
 								disabled={me.eventsAttended.includes(row.id)}
-								onClick={async () => {
-									toast.dismiss();
-									try {
-										await checkIn({
-											variables: {
-												input: {
-													event: row.id,
-													user: me.id ?? '',
-													eventScore: row.eventScore ?? 0,
-												},
-											},
-										});
-										toast.dismiss();
-										return void toast.success('You have been checked in successfully!');
-									} catch (e) {
-										toast.dismiss();
-										if (e.message.includes('is already checked into event')) {
-											return void toast.error('You are already checked in!');
-										}
-										return void toast.error('Check-in failed!');
-									}
-								}}>
+								onClick={() => onCheckIn(row.id, me.id)}>
 								{me.eventsAttended.includes(row.id) ? 'Checked In!' : 'Check In'}
 							</Button>
 						</FlexColumn>
