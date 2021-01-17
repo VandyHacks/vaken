@@ -282,7 +282,9 @@ export const Button: FC<ButtonProps> = props => {
 	);
 	if (linkTo) {
 		return isAbsoluteUrl(linkTo) ? (
-			<a href={linkTo}>{element}</a>
+			<a rel="noopener" href={linkTo}>
+				{element}
+			</a>
 		) : (
 			<Link to={linkTo}>{element}</Link>
 		);
