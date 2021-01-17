@@ -42,7 +42,7 @@ const generateHacker: () => HackerDbObject = () => {
 		school: institutions.data[faker.random.number(1430)],
 		secondaryIds: [],
 		shirtSize: Object.values(ShirtSize)[faker.random.number(6)],
-		status: Object.values(ApplicationStatus)[faker.random.number(7)],
+		status: Object.values(ApplicationStatus)[faker.random.number(6)],
 		userType: UserType.Hacker,
 	};
 };
@@ -56,7 +56,7 @@ const addHackers = async (): Promise<void> => {
 		newHackers.push(generateHacker());
 	}
 
-	console.log(`Adding the hackes to the DB...`);
+	console.log(`Adding the hackers to the DB...`);
 	const { insertedCount } = await models.Hackers.insertMany(newHackers);
 	console.log(`Inserted ${insertedCount} new hackers`);
 	process.exit(0);
