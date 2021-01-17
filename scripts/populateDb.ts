@@ -56,7 +56,7 @@ const addHackers = async (): Promise<void> => {
 		newHackers.push(generateHacker());
 	}
 
-	console.log(`Adding the hackes to the DB...`);
+	console.log(`Adding the hackers to the DB...`);
 	const { insertedCount } = await models.Hackers.insertMany(newHackers);
 	console.log(`Inserted ${insertedCount} new hackers`);
 	process.exit(0);
