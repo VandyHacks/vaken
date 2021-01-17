@@ -265,12 +265,13 @@ const NfcTable: FC<NfcTableProps> = ({ hackersData, eventsData }: NfcTableProps)
 				<Button
 					async
 					onClick={() => {
-						handleSubmit(nfcValue, topUserMatch, eventSelected, unadmitMode);
+						const promise = handleSubmit(nfcValue, topUserMatch, eventSelected, unadmitMode);
 						table.update(draft => {
 							draft.nfcValue = '';
 							draft.searchValue = '';
 						});
 						if (searchBoxRef.current) searchBoxRef.current.focus();
+						return promise;
 					}}>
 					Submit
 				</Button>
