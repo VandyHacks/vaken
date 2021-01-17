@@ -1,4 +1,4 @@
-import React, { FC, useState, ButtonHTMLAttributes } from 'react';
+import React, { FC, useState, ButtonHTMLAttributes, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { XOR } from 'ts-xor';
@@ -240,25 +240,30 @@ const StyledButton = styled.div<Omit<ButtonProps, 'children'>>`
 	}
 `;
 
-export const Button: FC<ButtonProps> = props => {
-	const [unresolved, setUnresolved] = useState(false);
-	const { icon, iconAlt } = props;
-	let Icon: FC | undefined;
-	if (icon) {
-		if (typeof icon === 'string') {
+const getIcon: (props: Pick<ButtonBase, 'icon' | 'iconAlt'>) => JSX.Element | null = props => {
+	let Icon: JSX.Element | null = null;
+	if (props.icon) {
+		if (typeof props.icon === 'string') {
+			const { icon, iconAlt } = props;
 			const ButtonIcon: FC = () => <img src={icon} alt={iconAlt} />;
-			Icon = ButtonIcon;
+			Icon = <ButtonIcon />;
 		} else {
-			Icon = icon;
+			Icon = <props.icon />;
 		}
 	}
-	let { onClick } = props;
+	return Icon;
+};
+
+const getClickHandler = (
+	props: ButtonProps,
+	setUnresolved: React.Dispatch<React.SetStateAction<boolean>>
+): ButtonProps['onClick'] => {
 	if (props.async) {
 		// TypeScript can infer that onClick is set because of the `props.async`
 		// type guard, but cannot guarantee that it'll be set inside the closure,
 		// but capturing the reference here satisfies that guarantee.
 		const delegatedClickHandler = props.onClick;
-		onClick = () => {
+		return () => {
 			const result = delegatedClickHandler();
 			setUnresolved(true);
 			setTimeout(async () => {
@@ -270,46 +275,57 @@ export const Button: FC<ButtonProps> = props => {
 			}, 700);
 		};
 	}
-	const { async, outline, small, large, loading, long, alignStart, secondary, disabled } = props;
-	const { warning } = props;
+	return props.onClick;
+};
+
+const getClassNames = (props: ButtonProps): string => {
 	const classNames: string[] = [];
-	if (outline) classNames.push('outline');
+	if (props.outline) classNames.push('outline');
 	else classNames.push('filled');
-	if (small) classNames.push('small');
-	if (large) classNames.push('large');
-	if (loading || (async && unresolved)) classNames.push('loading');
-	if (long) classNames.push('long');
-	if (alignStart) classNames.push('align-start');
-	if (secondary) classNames.push('secondary');
-	if (disabled) classNames.push('disabled');
-	if (warning) classNames.push('warning');
-	const classes = classNames.join(' ');
-	const { children, type = 'button', linkTo } = props;
-	const element = (
+	if (props.small) classNames.push('small');
+	if (props.large) classNames.push('large');
+	if (props.loading) classNames.push('loading');
+	if (props.long) classNames.push('long');
+	if (props.alignStart) classNames.push('align-start');
+	if (props.secondary) classNames.push('secondary');
+	if (props.disabled) classNames.push('disabled');
+	if (props.warning) classNames.push('warning');
+	return classNames.join(' ');
+};
+
+export const Button: FC<ButtonProps> = props => {
+	const [unresolved, setUnresolved] = useState(false);
+	const iconElement = getIcon(props);
+	const clickHandler = useMemo(() => getClickHandler(props, setUnresolved), [props, setUnresolved]);
+	const classNames = getClassNames(props);
+	const { children, type = 'button', linkTo, secondary, async, loading } = props;
+	const buttonElement = (
 		<StyledButton
-			onClick={onClick}
-			className={classes}
+			onClick={clickHandler}
+			className={`${classNames} ${unresolved ? 'loading' : ''}`}
 			role="button"
 			type={type}
 			secondary={secondary}>
 			<div className="text">
-				{Icon !== undefined ? <Icon /> : null}
+				{iconElement}
 				{children}
 			</div>
 			{async || loading ? <Spinner /> : null}
 		</StyledButton>
 	);
+
+	// Rather than handle in onClick, native DOM elements have better a11y support.
 	if (linkTo) {
-		const { externalLink } = props;
-		return isAbsoluteUrl(linkTo) || externalLink ? (
-			<a rel="noopener" href={linkTo}>
-				{element}
-			</a>
-		) : (
-			<Link to={linkTo}>{element}</Link>
-		);
+		if (props.externalLink || isAbsoluteUrl(linkTo)) {
+			return (
+				<a rel="noopener" href={linkTo}>
+					{buttonElement}
+				</a>
+			);
+		}
+		return <Link to={linkTo}>{buttonElement}</Link>;
 	}
-	return element;
+	return buttonElement;
 };
 
 export default Button;
