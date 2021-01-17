@@ -42,7 +42,7 @@ const generateHacker: () => HackerDbObject = () => {
 		school: institutions.data[faker.random.number(1430)],
 		secondaryIds: [],
 		shirtSize: Object.values(ShirtSize)[faker.random.number(6)],
-		status: Object.values(ApplicationStatus)[faker.random.number(7)],
+		status: Object.values(ApplicationStatus)[faker.random.number(6)],
 		userType: UserType.Hacker,
 	};
 };
