@@ -40,7 +40,6 @@ const Button: Story<Props> = args => {
 						warning: WARNING_COLOR,
 					},
 				}}>
-				{/* <GlobalStyle /> */}
 				<Component {...args} />
 			</ThemeProvider>
 		</MemoryRouter>
