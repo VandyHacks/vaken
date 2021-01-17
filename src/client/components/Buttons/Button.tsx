@@ -240,15 +240,17 @@ const StyledButton = styled.div<Omit<ButtonProps, 'children'>>`
 	}
 `;
 
-const getIcon: (props: Pick<ButtonBase, 'icon' | 'iconAlt'>) => JSX.Element | null = props => {
+const getIcon = (
+	IconProp: ButtonBase['icon'],
+	iconAlt: ButtonBase['iconAlt']
+): JSX.Element | null => {
 	let Icon: JSX.Element | null = null;
-	if (props.icon) {
-		if (typeof props.icon === 'string') {
-			const { icon, iconAlt } = props;
-			const ButtonIcon: FC = () => <img src={icon} alt={iconAlt} />;
+	if (IconProp) {
+		if (typeof IconProp === 'string') {
+			const ButtonIcon: FC = () => <img src={IconProp} alt={iconAlt} />;
 			Icon = <ButtonIcon />;
 		} else {
-			Icon = <props.icon />;
+			Icon = <IconProp />;
 		}
 	}
 	return Icon;
@@ -295,14 +297,15 @@ const getClassNames = (props: ButtonProps): string => {
 
 export const Button: FC<ButtonProps> = props => {
 	const [unresolved, setUnresolved] = useState(false);
-	const iconElement = getIcon(props);
-	const clickHandler = useMemo(() => getClickHandler(props, setUnresolved), [props, setUnresolved]);
-	const classNames = getClassNames(props);
+	const { icon, iconAlt } = props;
+	const iconElement = useMemo(() => getIcon(icon, iconAlt), [icon, iconAlt]);
+	const clickHandler = useMemo(() => getClickHandler(props, setUnresolved), [props]);
+	const classNames = useMemo(() => getClassNames(props), [props]);
 	const { children, type = 'button', linkTo, secondary, async, loading } = props;
 	const buttonElement = (
 		<StyledButton
 			onClick={clickHandler}
-			className={`${classNames} ${unresolved ? 'loading' : ''}`}
+			className={`${classNames}${unresolved ? ' loading' : ''}`}
 			role="button"
 			type={type}
 			secondary={secondary}>
