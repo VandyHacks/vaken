@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle, DefaultTheme, ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
 import reset from 'styled-reset';
 import LoginPage from './routes/login/Login';
@@ -8,6 +8,7 @@ import Frame from './routes/dashboard/Frame';
 import { AuthContext } from './contexts/AuthContext';
 import { useMeQuery } from './generated/graphql';
 import 'react-toastify/dist/ReactToastify.css';
+import { ACCENT_COLOR, DARK_TEXT_COLOR, WARNING_COLOR } from './assets/strings.json';
 
 const GlobalStyle = createGlobalStyle`
 	${reset}
@@ -15,12 +16,9 @@ const GlobalStyle = createGlobalStyle`
 	html, body, #App {
 		margin: 0;
 		padding: 0;
-		width: 100vw;
-		height: 100vh;
 		font-size: 14px;
 		font-family: 'Roboto', sans-serif;
 		user-select: none;
-		overflow: hidden;
 	}
 
 	a {
@@ -36,6 +34,17 @@ const GlobalStyle = createGlobalStyle`
 		font-size: 1.1em !important;
 	}
 `;
+
+export const theme: DefaultTheme = {
+	borderRadius: '4px',
+	colors: {
+		main: ACCENT_COLOR,
+		darkTextColor: DARK_TEXT_COLOR,
+		lightTextColor: '#ffffff',
+		secondary: '#ffffff',
+		warning: WARNING_COLOR,
+	},
+};
 
 toast.configure();
 
@@ -67,8 +76,10 @@ const Vaken: React.FunctionComponent = (): JSX.Element => {
 
 	return (
 		<BrowserRouter>
-			<GlobalStyle />
-			<StateMachine />
+			<ThemeProvider theme={theme}>
+				<GlobalStyle />
+				<StateMachine />
+			</ThemeProvider>
 		</BrowserRouter>
 	);
 };

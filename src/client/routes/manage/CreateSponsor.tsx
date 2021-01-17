@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import * as EmailValidator from 'email-validator';
-import { HeaderButton } from '../../components/Buttons/HeaderButton';
+import { Button } from '../../components/Buttons/Button';
 import { SearchBox } from '../../components/Input/SearchBox';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { SmallCenteredText } from '../../components/Text/SmallCenteredText';
@@ -13,7 +13,7 @@ import {
 	useCompaniesQuery,
 	useTiersQuery,
 } from '../../generated/graphql';
-import Spinner from '../../components/Loading/Spinner';
+import { Spinner } from '../../components/Loading/Spinner';
 import STRINGS from '../../assets/strings.json';
 
 const StyledSelect = styled.select`
@@ -85,9 +85,7 @@ const CreateCompany: React.FunctionComponent = (): JSX.Element => {
 						))}
 					</StyledSelect>
 				)}
-				<HeaderButton width="7em" style={{ display: 'inline' }} onClick={onCreateCompany}>
-					<p style={{ fontSize: '1.2rem' }}>Create</p>
-				</HeaderButton>
+				<Button onClick={onCreateCompany}>Create</Button>
 			</FlexRow>
 			<SmallCenteredText color={STRINGS.DARK_TEXT_COLOR} fontSize="1rem" margin="0.8em">
 				<span style={{ fontWeight: 'lighter' }}>{createCompanyMsg}</span>
@@ -133,9 +131,7 @@ const CreateTier: React.FunctionComponent = (): JSX.Element => {
 					onChange={e => setPermissions(e.target.value.split(','))}
 					minWidth="15em"
 				/>
-				<HeaderButton width="7em" style={{ display: 'inline' }} onClick={onCreateTier}>
-					<p style={{ fontSize: '1.2rem' }}>Create</p>
-				</HeaderButton>
+				<Button onClick={onCreateTier}>Create</Button>
 			</FlexRow>
 			<SmallCenteredText color="#3F3356" fontSize="1rem" margin="0.8em">
 				<span style={{ fontWeight: 'lighter' }}>{createTierMsg}</span>
@@ -208,9 +204,7 @@ const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 						))}
 					</StyledSelect>
 				)}
-				<HeaderButton width="7em" style={{ display: 'inline' }} onClick={onCreateSponsorEmail}>
-					<p style={{ fontSize: '1.2rem' }}>Create</p>
-				</HeaderButton>
+				<Button onClick={onCreateSponsorEmail}>Create</Button>
 			</FlexRow>
 			<SmallCenteredText color="#3F3356" fontSize="1rem" margin="0.8em">
 				<span style={{ fontWeight: 'lighter' }}>{createSponsorMsg}</span>

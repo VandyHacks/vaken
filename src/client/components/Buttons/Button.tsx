@@ -40,6 +40,9 @@ type ButtonBase = {
 
 	/** Aligns the button contents to the left side of the button rather than the center. */
 	alignStart?: true;
+
+	/** Uses red color for button to signify dangerous or data-loss inducing action. */
+	warning?: true;
 };
 
 type ButtonArchetypes = {
@@ -82,6 +85,11 @@ type LinkButton = {
 	 * The link may specify an external path starting by with the protocol (or protocol relative) `//domain.com/path`
 	 */
 	linkTo: string;
+
+	/**
+	 * Force the link handling behavior to use an `<a>` tag rather than internal PWA routing.
+	 */
+	externalLink?: true;
 };
 
 type PromiseButton = {
@@ -120,6 +128,11 @@ const StyledButton = styled.div<Omit<ButtonProps, 'children'>>`
 			--text-color: ${props => props.theme.colors.darkTextColor};
 			--glow-color: ${props => props.theme.colors.lightTextColor};
 		}
+		&.warning {
+			--button-color: ${props => props.theme.colors.warning};
+			--text-color: ${props => props.theme.colors.lightTextColor};
+			--glow-color: ${props => `${props.theme.colors.warning}aa`};
+		}
 	}
 	&.outline {
 		--button-color: 'transparent';
@@ -128,6 +141,9 @@ const StyledButton = styled.div<Omit<ButtonProps, 'children'>>`
 		--border-color: var(--text-color);
 		&.secondary {
 			--text-color: ${props => props.theme.colors.darkTextColor};
+		}
+		&.warning {
+			--text-color: ${props => props.theme.colors.warning};
 		}
 	}
 	color: var(--text-color);
@@ -181,6 +197,7 @@ const StyledButton = styled.div<Omit<ButtonProps, 'children'>>`
 	&.long {
 		width: 23.33rem; /* Legacy value that @leonm1 liked in 2018 */
 	}
+	max-width: 100%;
 
 	& ${SpinnerWrapper} {
 		grid-area: content;
@@ -254,6 +271,7 @@ export const Button: FC<ButtonProps> = props => {
 		};
 	}
 	const { async, outline, small, large, loading, long, alignStart, secondary, disabled } = props;
+	const { warning } = props;
 	const classNames: string[] = [];
 	if (outline) classNames.push('outline');
 	else classNames.push('filled');
@@ -264,6 +282,7 @@ export const Button: FC<ButtonProps> = props => {
 	if (alignStart) classNames.push('align-start');
 	if (secondary) classNames.push('secondary');
 	if (disabled) classNames.push('disabled');
+	if (warning) classNames.push('warning');
 	const classes = classNames.join(' ');
 	const { children, type = 'button', linkTo } = props;
 	const element = (
@@ -281,7 +300,8 @@ export const Button: FC<ButtonProps> = props => {
 		</StyledButton>
 	);
 	if (linkTo) {
-		return isAbsoluteUrl(linkTo) ? (
+		const { externalLink } = props;
+		return isAbsoluteUrl(linkTo) || externalLink ? (
 			<a rel="noopener" href={linkTo}>
 				{element}
 			</a>

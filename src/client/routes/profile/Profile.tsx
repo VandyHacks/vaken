@@ -4,8 +4,8 @@ import FloatingPopup from '../../components/Containers/FloatingPopup';
 import config from './ProfileConfig';
 import { ActionButtonContext } from '../../contexts/ActionButtonContext';
 import { StyledQuestion, StyledQuestionPadContainer } from '../application/Application';
-import Spinner from '../../components/Loading/Spinner';
-import { HeaderButton } from '../../components/Buttons/HeaderButton';
+import { Spinner } from '../../components/Loading/Spinner';
+import { Button } from '../../components/Buttons/Button';
 import { GridColumn } from '../../components/Containers/GridContainers';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import STRINGS from '../../assets/strings.json';
@@ -16,7 +16,7 @@ export const Profile: React.FunctionComponent = (): JSX.Element => {
 	const { data, loading, error } = useMyProfileQuery();
 	const [loaded, setLoaded] = useState(false);
 	const [input, setInput] = useImmer<UserInput>({});
-	const [updateProfile] = useUpdateMyProfileMutation();
+	const [updateProfile] = useUpdateMyProfileMutation({ variables: { input } });
 
 	const createOnChangeHandler = (
 		fieldName: keyof UserInput
@@ -27,9 +27,9 @@ export const Profile: React.FunctionComponent = (): JSX.Element => {
 	useEffect((): (() => void) => {
 		if (setActionButton)
 			setActionButton(
-				<HeaderButton width="8em" onClick={async () => updateProfile({ variables: { input } })}>
-					<p>Submit</p>
-				</HeaderButton>
+				<Button async large onClick={updateProfile}>
+					Submit
+				</Button>
 			);
 
 		return () => {

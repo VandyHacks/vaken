@@ -3,9 +3,9 @@ import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no
 import { ThemeProvider } from 'styled-components';
 import { MemoryRouter } from 'react-router-dom';
 import { Button as Component, ButtonProps as Props } from './Button';
-import { ACCENT_COLOR, DARK_TEXT_COLOR, WARNING_COLOR } from '../../assets/strings.json';
 import FloatingPopup from '../Containers/FloatingPopup';
 import googleLogo from '../../assets/img/google_logo.svg';
+import { theme } from '../../app';
 
 export default {
 	title: 'Components/Button',
@@ -29,17 +29,7 @@ export default {
 const Button: Story<Props> = args => {
 	return (
 		<MemoryRouter>
-			<ThemeProvider
-				theme={{
-					borderRadius: '4px',
-					colors: {
-						main: ACCENT_COLOR,
-						darkTextColor: DARK_TEXT_COLOR,
-						lightTextColor: '#ffffff',
-						secondary: '#ffffff',
-						warning: WARNING_COLOR,
-					},
-				}}>
+			<ThemeProvider theme={theme}>
 				<Component {...args} />
 			</ThemeProvider>
 		</MemoryRouter>

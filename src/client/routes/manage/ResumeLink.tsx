@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import styled from 'styled-components';
-import Spinner from '../../components/Loading/Spinner';
+import { Spinner } from '../../components/Loading/Spinner';
 import STRINGS from '../../assets/strings.json';
 import { useDetailedHackerQuery, useSignedReadUrlQuery } from '../../generated/graphql';
 

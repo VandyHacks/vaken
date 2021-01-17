@@ -2,12 +2,12 @@ import React, { useContext, FunctionComponent, useState, useEffect, useCallback,
 import styled from 'styled-components';
 import { useImmer } from 'use-immer';
 import { toast } from 'react-toastify';
-import Spinner from '../../components/Loading/Spinner';
+import { Spinner } from '../../components/Loading/Spinner';
 import config from '../../assets/application';
 import { Collapsible } from '../../components/Containers/Collapsible';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { ActionButtonContext } from '../../contexts/ActionButtonContext';
-import { HeaderButton } from '../../components/Buttons/HeaderButton';
+import { Button } from '../../components/Buttons/Button';
 import { InputProps } from '../../components/Input/TextInput';
 import {
 	useUpdateMyApplicationMutation,
@@ -134,9 +134,9 @@ export const Application: FunctionComponent = (): JSX.Element => {
 	useEffect((): (() => void) => {
 		if (setActionButton)
 			setActionButton(
-				<HeaderButton
-					// tabIndex={1}
-					width="8em"
+				<Button
+					async
+					large
 					onClick={async () => {
 						const firstRequiredUnfilledToast = findRequiredUnfilled(input);
 						toast.dismiss();
@@ -155,8 +155,8 @@ export const Application: FunctionComponent = (): JSX.Element => {
 							});
 						return Promise.resolve();
 					}}>
-					<p>Submit</p>
-				</HeaderButton>
+					Submit
+				</Button>
 			);
 
 		return () => {

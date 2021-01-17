@@ -3,7 +3,7 @@ import STRINGS from '../../assets/strings.json';
 import bg from '../../assets/img/login_bg.jpg';
 import OAuthLogin from './OAuthLogin';
 import Background from '../../components/Containers/Background';
-import TextButton from '../../components/Buttons/TextButton';
+import { Button } from '../../components/Buttons/Button';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { Title } from '../../components/Text/Title';
 
@@ -15,13 +15,9 @@ const LoginPage: FunctionComponent = (): JSX.Element => (
 					{STRINGS.FULL_NAME}
 				</Title>
 				<OAuthLogin />
-				<a
-					href="https://vandyhacks.org"
-					rel="noopener noreferrer"
-					target="_blank"
-					style={{ textDecoration: 'none' }}>
-					<TextButton color={STRINGS.DARK_TEXT_COLOR}>Learn more</TextButton>
-				</a>
+				<Button linkTo="https://vandyhacks.org" secondary large long>
+					Learn more
+				</Button>
 			</FloatingPopup>
 		</Background>
 	</>

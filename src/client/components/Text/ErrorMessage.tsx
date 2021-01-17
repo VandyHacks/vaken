@@ -1,9 +1,8 @@
 import React, { FunctionComponent } from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import STRINGS from '../../assets/strings.json';
 import SadFace from '../../assets/img/sad_face.svg';
-import TextButton from '../Buttons/TextButton';
+import { Button } from '../Buttons/Button';
 
 const Rectangle = styled.div`
 	border: 0.1rem solid ${STRINGS.WARNING_COLOR};
@@ -50,11 +49,9 @@ export const GraphQLErrorMessage: FunctionComponent<GraphQLErrorMessage> = (
 		<ErrorMessage>
 			<>
 				<StyledP>{text}</StyledP>
-				<Link style={{ textDecoration: 'none' }} to="/dashboard">
-					<TextButton background={STRINGS.WARNING_COLOR} color="white">
-						<p>Return to Dashboard</p>
-					</TextButton>
-				</Link>
+				<Button warning long large linkTo="/dashboard">
+					Return to Dashboard
+				</Button>
 			</>
 		</ErrorMessage>
 	);

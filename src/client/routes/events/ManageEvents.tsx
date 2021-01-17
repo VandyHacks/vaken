@@ -5,8 +5,8 @@ import Select from 'react-select';
 import STRINGS from '../../assets/strings.json';
 
 import FloatingPopup from '../../components/Containers/FloatingPopup';
-import { ActionButton } from '../../components/Buttons/ActionButton';
-import Spinner from '../../components/Loading/Spinner';
+import { Button } from '../../components/Buttons/Button';
+import { Spinner } from '../../components/Loading/Spinner';
 import { Title } from '../../components/Text/Title';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import { FlexColumn, FlexRow } from '../../components/Containers/FlexContainers';
@@ -102,7 +102,9 @@ const ManageEvents: FunctionComponent = (): JSX.Element => {
 
 	return (
 		<FloatingPopup>
-			<ActionButton onClick={pullCalendarEvents}>Pull from Calendar</ActionButton>
+			<Button async onClick={pullCalendarEvents}>
+				Pull from Calendar
+			</Button>
 			<FloatingPopup>
 				<Title>Updated Events</Title>
 				<pre>{output}</pre>

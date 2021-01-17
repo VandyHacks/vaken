@@ -4,7 +4,7 @@ import NfcTable from './NfcTable';
 import STRINGS from '../../../src/client/assets/strings.json';
 import { GraphQLErrorMessage } from '../../../src/client/components/Text/ErrorMessage';
 import FloatingPopup from '../../../src/client/components/Containers/FloatingPopup';
-import Spinner from '../../../src/client/components/Loading/Spinner';
+import { Spinner } from '../../../src/client/components/Loading/Spinner';
 import { defaultTableState, TableContext } from '../../../src/client/contexts/TableContext';
 import {
 	useEventsQuery,

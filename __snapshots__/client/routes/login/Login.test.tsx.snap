@@ -1,6 +1,138 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Login renders properly 1`] = `
+.c7 {
+  color: var(--text-color);
+  background-color: var(--button-color);
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+  box-sizing: border-box;
+  outline: none;
+  text-align: center;
+  cursor: pointer;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas: 'content';
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  max-width: 100%;
+}
+
+.c7.filled {
+  --button-color: #3148A1;
+  --text-color: #ffffff;
+  --glow-color: #3148A1aa;
+  --border-color: var(--button-color);
+}
+
+.c7.filled.secondary {
+  --button-color: #ffffff;
+  --text-color: #3f3356;
+  --glow-color: #ffffff;
+}
+
+.c7.filled.warning {
+  --button-color: #FF647C;
+  --text-color: #ffffff;
+  --glow-color: #FF647Caa;
+}
+
+.c7.outline {
+  --button-color: 'transparent';
+  --text-color: #3148A1;
+  --glow-color: #ffffff;
+  --border-color: var(--text-color);
+}
+
+.c7.outline.secondary {
+  --text-color: #3f3356;
+}
+
+.c7.outline.warning {
+  --text-color: #FF647C;
+}
+
+.c7:not(.disabled):hover,
+.c7:not(.disabled):active {
+  box-shadow: 0rem 0rem 15px 0rem var(--glow-color);
+  outline: none;
+}
+
+.c7.filled .sc-bdfBwQ > div {
+  background-color: var(--text-color);
+}
+
+.c7.disabled {
+  cursor: not-allowed;
+}
+
+.c7.small {
+  padding: 0.1rem 0.2rem;
+  font-size: 0.85rem;
+}
+
+.c7.large {
+  padding: 1rem 2rem;
+  font-size: 1.4rem;
+}
+
+.c7.long {
+  width: 23.33rem;
+}
+
+.c7 .sc-bdfBwQ {
+  grid-area: content;
+  visibility: hidden;
+}
+
+.c7.loading .text {
+  visibility: hidden;
+}
+
+.c7.loading .sc-bdfBwQ {
+  visibility: visible;
+}
+
+.c7 img {
+  max-height: 2ch;
+  max-width: 2ch;
+  margin-right: 1em;
+}
+
+.c7 .text {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-area: content;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c7.align-start .text {
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+}
+
+.c6 [role='button'] {
+  margin-bottom: 1.6rem;
+}
+
 .c1 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -30,109 +162,11 @@ exports[`Login renders properly 1`] = `
   margin: 1.5rem;
 }
 
-.c7 {
-  height: -webkit-min-content;
-  height: -moz-min-content;
-  height: min-content;
-  width: -webkit-min-content;
-  width: -moz-min-content;
-  width: min-content;
-  padding: 100%;
-  padding-bottom: 0;
-  padding-top: 0;
-  padding-left: 0;
-  padding-right: 0;
-  margin: 0;
-}
-
-.c8 {
-  -webkit-flex-flow: row nowrap;
-  -ms-flex-flow: row nowrap;
-  flex-flow: row nowrap;
-}
-
 .c3 {
   -webkit-box-pack: start;
   -webkit-justify-content: flex-start;
   -ms-flex-pack: start;
   justify-content: flex-start;
-}
-
-.c10 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-flow: column nowrap;
-  -ms-flex-flow: column nowrap;
-  flex-flow: column nowrap;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 100%;
-  text-align: center;
-  font-family: 'Roboto';
-  font-size: 1.4rem;
-  font-weight: normal;
-  color: #3f3356;
-  padding-left: unset;
-  padding-right: unset;
-}
-
-.c9 {
-  min-height: 16px;
-  padding-right: 1rem;
-}
-
-.c6 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-flow: column nowrap;
-  -ms-flex-flow: column nowrap;
-  flex-flow: column nowrap;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-flex-flow: row;
-  -ms-flex-flow: row;
-  flex-flow: row;
-  font-weight: 400;
-  height: 3.2rem;
-  width: 23.33rem;
-  padding: 0;
-  padding-bottom: 0;
-  padding-top: 0;
-  padding-left: 0;
-  padding-right: 0;
-  margin: 0;
-  margin-bottom: 1.6rem;
-  margin-top: 0;
-  margin-left: 0;
-  margin-right: 0;
-  background: rgba(255,255,255,1);
-  border-radius: 4px;
-  cursor: pointer;
-  border: none;
-}
-
-.c6:hover {
-  box-shadow: 0px 0px 30px 0px rgba(255,255,255,1);
-}
-
-.c6:focus {
-  outline: none;
 }
 
 .c0 {
@@ -155,23 +189,6 @@ exports[`Login renders properly 1`] = `
   height: 100vh;
   background: url(IconMock) no-repeat;
   background-size: cover;
-}
-
-.c11 {
-  background: white;
-  color: black;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  font-family: 'Roboto';
-  font-size: 1rem;
-  outline: 0 !important;
-}
-
-.c11:hover,
-.c11:focus,
-.c11:active {
-  box-shadow: 0px 0px 20px 0px RGBA(0,0,0,255,0.67);
 }
 
 .c4 {
@@ -209,86 +226,65 @@ exports[`Login renders properly 1`] = `
     >
       VandyHacks VII
     </h1>
-    <a
-      href="/api/auth/google"
-      style={
-        Object {
-          "textDecoration": "none",
-        }
-      }
+    <div
+      className="c6"
     >
-      <button
-        className="c6"
+      <a
+        href="/api/auth/google"
+        rel="noopener"
       >
         <div
-          className="c1 c7 c8"
-          height="min-content"
-          width="min-content"
+          className="c7 filled large long secondary"
+          role="button"
+          type="button"
         >
-          <img
-            alt="Google logo"
-            className="c9"
-            src="IconMock"
-          />
+          <div
+            className="text"
+          >
+            <img
+              alt="Google logo"
+              src="IconMock"
+            />
+            Sign in with Google
+          </div>
         </div>
-        <div
-          className="c10"
-          color="#3f3356"
-        >
-          Sign in with Google
-        </div>
-      </button>
-    </a>
-    <a
-      href="/api/auth/github"
-      style={
-        Object {
-          "textDecoration": "none",
-        }
-      }
-    >
-      <button
-        className="c6"
+      </a>
+      <a
+        href="/api/auth/github"
+        rel="noopener"
       >
         <div
-          className="c1 c7 c8"
-          height="min-content"
-          width="min-content"
+          className="c7 filled large long secondary"
+          role="button"
+          type="button"
         >
-          <img
-            alt="GitHub logo"
-            className="c9"
-            src="IconMock"
-          />
+          <div
+            className="text"
+          >
+            <img
+              alt="GitHub logo"
+              src="IconMock"
+            />
+            Sign in with GitHub
+          </div>
         </div>
-        <div
-          className="c10"
-          color="#3f3356"
-        >
-          Sign in with GitHub
-        </div>
-      </button>
-    </a>
+      </a>
+    </div>
     <a
       href="https://vandyhacks.org"
-      rel="noopener noreferrer"
-      style={
-        Object {
-          "textDecoration": "none",
-        }
-      }
-      target="_blank"
+      rel="noopener"
     >
-      <button
-        className="c6 c11"
+      <div
+        className="c7 filled large long secondary"
+        role="button"
+        type="button"
       >
         <div
-          className="c10"
-          color="#3f3356"
+          className="text"
         >
           Learn more
         </div>
-      </button>
+      </div>
     </a>
   </div>
 </div>
