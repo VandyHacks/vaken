@@ -1,7 +1,7 @@
 import React, { FC, useState, ButtonHTMLAttributes } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { XOR } from 'ts-xor';
-import STRINGS from '../../assets/strings.json';
 import { Spinner, Wrapper as SpinnerWrapper } from '../Loading/Spinner';
 
 /** Utility type which makes an exclusive OR of all properties in T.  */
@@ -10,6 +10,11 @@ type FixTsUnion<T, K extends keyof T> = { [Prop in keyof T]?: Prop extends K ? T
 
 /** Exclusive OR between T, U, and V, factoring in all properties of each type. */
 type XOR3<T, U, V> = XOR<XOR<T, U>, V>;
+
+/** Returns true if the `url` param begins with "http" or "//", signifying an external url. */
+function isAbsoluteUrl(url: string): boolean {
+	return url.toLowerCase().startsWith('http') || url.startsWith('//');
+}
 
 type ButtonBase = {
 	/** Text to render inside the button */
@@ -231,8 +236,6 @@ export const Button: FC<ButtonProps> = props => {
 		}
 	}
 	let { onClick } = props;
-	// Destructuring assignment breaks the type system checks inside the type guard `if`.
-	// eslint-disable-next-line react/destructuring-assignment
 	if (props.async) {
 		// TypeScript can infer that onClick is set because of the `props.async`
 		// type guard, but cannot guarantee that it'll be set inside the closure,
@@ -262,8 +265,8 @@ export const Button: FC<ButtonProps> = props => {
 	if (secondary) classNames.push('secondary');
 	if (disabled) classNames.push('disabled');
 	const classes = classNames.join(' ');
-	const { children, type = 'button' } = props;
-	return (
+	const { children, type = 'button', linkTo } = props;
+	const element = (
 		<StyledButton
 			onClick={onClick}
 			className={classes}
@@ -277,6 +280,14 @@ export const Button: FC<ButtonProps> = props => {
 			{async || loading ? <Spinner /> : null}
 		</StyledButton>
 	);
+	if (linkTo) {
+		return isAbsoluteUrl(linkTo) ? (
+			<a href={linkTo}>{element}</a>
+		) : (
+			<Link to={linkTo}>{element}</Link>
+		);
+	}
+	return element;
 };
 
 export default Button;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
 import { ThemeProvider } from 'styled-components';
+import { MemoryRouter } from 'react-router-dom';
 import { Button as Component, ButtonProps as Props } from './Button';
 import { ACCENT_COLOR, DARK_TEXT_COLOR, WARNING_COLOR } from '../../assets/strings.json';
 import FloatingPopup from '../Containers/FloatingPopup';
@@ -27,20 +28,22 @@ export default {
 
 const Button: Story<Props> = args => {
 	return (
-		<ThemeProvider
-			theme={{
-				borderRadius: '4px',
-				colors: {
-					main: ACCENT_COLOR,
-					darkTextColor: DARK_TEXT_COLOR,
-					lightTextColor: '#ffffff',
-					secondary: '#ffffff',
-					warning: WARNING_COLOR,
-				},
-			}}>
-			{/* <GlobalStyle /> */}
-			<Component {...args} />
-		</ThemeProvider>
+		<MemoryRouter>
+			<ThemeProvider
+				theme={{
+					borderRadius: '4px',
+					colors: {
+						main: ACCENT_COLOR,
+						darkTextColor: DARK_TEXT_COLOR,
+						lightTextColor: '#ffffff',
+						secondary: '#ffffff',
+						warning: WARNING_COLOR,
+					},
+				}}>
+				{/* <GlobalStyle /> */}
+				<Component {...args} />
+			</ThemeProvider>
+		</MemoryRouter>
 	);
 };
 
@@ -98,16 +101,28 @@ AsyncButton.args = {
 	children: 'Click Me!',
 };
 
-export const LargeStartAlignedSecondaryImgButton: Story<Props> = args => (
+export const InternalLinkButton: Story<Props> = args => <Button {...args} />;
+InternalLinkButton.args = {
+	linkTo: '/manage/hackers',
+	children: 'Go to different page',
+};
+
+export const LinkButton: Story<Props> = args => <Button {...args} />;
+LinkButton.args = {
+	linkTo: 'https://vandyhacks.org',
+	children: 'Navigate away',
+};
+
+export const LargeLongSecondaryImgButton: Story<Props> = args => (
 	<FloatingPopup>
 		<Button {...args} />
 	</FloatingPopup>
 );
-LargeStartAlignedSecondaryImgButton.args = {
+LargeLongSecondaryImgButton.args = {
 	icon: googleLogo,
 	children: 'Log In with Google',
-	alignStart: true,
 	secondary: true,
 	large: true,
 	filled: true,
+	long: true,
 };
