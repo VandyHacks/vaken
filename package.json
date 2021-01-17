@@ -119,6 +119,7 @@
 		"react-virtualized": "^9.22.3",
 		"styled-components": "^5.2.1",
 		"styled-reset": "^4.3.4",
+		"ts-xor": "^1.0.8",
 		"use-immer": "^0.4.2",
 		"webpack-cli": "^4.3.0"
 	},
