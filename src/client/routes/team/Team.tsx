@@ -6,7 +6,7 @@ import { FlexColumn } from '../../components/Containers/FlexContainers';
 import { Announcement } from '../../components/Text/Announcement';
 import STRINGS from '../../assets/strings.json';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
-import Spinner from '../../components/Loading/Spinner';
+import { Spinner } from '../../components/Loading/Spinner';
 import { useTeamQuery } from '../../generated/graphql';
 
 export const Team: FC = () => {

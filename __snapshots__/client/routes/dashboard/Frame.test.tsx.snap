@@ -1,6 +1,134 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Test Frame Frame renders correctly 1`] = `
+.c32 {
+  color: var(--text-color);
+  background-color: var(--button-color);
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+  box-sizing: border-box;
+  outline: none;
+  text-align: center;
+  cursor: pointer;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas: 'content';
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  max-width: 100%;
+}
+
+.c32.filled {
+  --button-color: #3148A1;
+  --text-color: #ffffff;
+  --glow-color: #3148A1aa;
+  --border-color: var(--button-color);
+}
+
+.c32.filled.secondary {
+  --button-color: #ffffff;
+  --text-color: #3f3356;
+  --glow-color: #ffffff;
+}
+
+.c32.filled.warning {
+  --button-color: #FF647C;
+  --text-color: #ffffff;
+  --glow-color: #FF647Caa;
+}
+
+.c32.outline {
+  --button-color: 'transparent';
+  --text-color: #3148A1;
+  --glow-color: #ffffff;
+  --border-color: var(--text-color);
+}
+
+.c32.outline.secondary {
+  --text-color: #3f3356;
+}
+
+.c32.outline.warning {
+  --text-color: #FF647C;
+}
+
+.c32:not(.disabled):hover,
+.c32:not(.disabled):active {
+  box-shadow: 0rem 0rem 15px 0rem var(--glow-color);
+  outline: none;
+}
+
+.c32.filled .sc-bdfBwQ > div {
+  background-color: var(--text-color);
+}
+
+.c32.disabled {
+  cursor: not-allowed;
+}
+
+.c32.small {
+  padding: 0.1rem 0.2rem;
+  font-size: 0.85rem;
+}
+
+.c32.large {
+  padding: 1rem 2rem;
+  font-size: 1.4rem;
+}
+
+.c32.long {
+  width: 23.33rem;
+}
+
+.c32 .sc-bdfBwQ {
+  grid-area: content;
+  visibility: hidden;
+}
+
+.c32.loading .text {
+  visibility: hidden;
+}
+
+.c32.loading .sc-bdfBwQ {
+  visibility: visible;
+}
+
+.c32 img {
+  max-height: 2ch;
+  max-width: 2ch;
+  margin-right: 1em;
+}
+
+.c32 .text {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  grid-area: content;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.c32.align-start .text {
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+}
+
 .c1 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -97,6 +225,37 @@ exports[`Test Frame Frame renders correctly 1`] = `
   overflow: scroll;
 }
 
+.c29 {
+  -webkit-transition: ease-in-out all 1s;
+  transition: ease-in-out all 1s;
+  background-color: rgba( 247,245,249, 1 );
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 0;
+  height: -webkit-min-content;
+  height: -moz-min-content;
+  height: min-content;
+  box-sizing: border-box;
+}
+
+.c6 {
+  font-family: 'Roboto',sans-serif;
+  font-weight: 500;
+  font-size: 2.5rem;
+  color: #3148A1;
+  margin: 1.5rem 0rem 0rem;
+  margin-bottom: 1.5rem;
+}
+
+.c31 {
+  font-family: 'Roboto',sans-serif;
+  font-weight: 500;
+  font-size: 1.75rem;
+  color: black;
+  margin: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
 .c20 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -119,32 +278,6 @@ exports[`Test Frame Frame renders correctly 1`] = `
   font-size: 1.4rem;
   font-weight: normal;
   color: black;
-  padding-left: unset;
-  padding-right: unset;
-}
-
-.c35 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-flow: column nowrap;
-  -ms-flex-flow: column nowrap;
-  flex-flow: column nowrap;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  height: 100%;
-  text-align: center;
-  font-family: 'Roboto';
-  font-size: 1.4em;
-  font-weight: normal;
-  color: white;
   padding-left: unset;
   padding-right: unset;
 }
@@ -220,52 +353,6 @@ exports[`Test Frame Frame renders correctly 1`] = `
   outline: none;
 }
 
-.c33 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-flow: column nowrap;
-  -ms-flex-flow: column nowrap;
-  flex-flow: column nowrap;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-flex-flow: row;
-  -ms-flex-flow: row;
-  flex-flow: row;
-  font-weight: 400;
-  height: 3.2rem;
-  width: 23.33rem;
-  padding: 0;
-  padding-bottom: 0;
-  padding-top: 0;
-  padding-left: 0;
-  padding-right: 0;
-  margin: 0;
-  margin-bottom: 1.6rem;
-  margin-top: 0;
-  margin-left: 0;
-  margin-right: 0;
-  background: #3148A1;
-  border-radius: 4px;
-  cursor: pointer;
-  border: none;
-}
-
-.c33:hover {
-  box-shadow: 0px 0px 30px 0px rgba(0,0,255,0.67);
-}
-
-.c33:focus {
-  outline: none;
-}
-
 .c17 {
   background: none;
   color: black;
@@ -293,54 +380,6 @@ exports[`Test Frame Frame renders correctly 1`] = `
   font-size: 1.5rem;
   color: white;
   margin: 0 0;
-}
-
-.c29 {
-  -webkit-transition: ease-in-out all 1s;
-  transition: ease-in-out all 1s;
-  background-color: rgba( 247,245,249, 1 );
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-bottom: 0;
-  height: -webkit-min-content;
-  height: -moz-min-content;
-  height: min-content;
-  box-sizing: border-box;
-}
-
-.c34 {
-  background: #3148A1;
-  color: black;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  font-family: 'Roboto';
-  font-size: 1rem;
-  outline: 0 !important;
-}
-
-.c34:hover,
-.c34:focus,
-.c34:active {
-  box-shadow: 0px 0px 20px 0px rgba(0,0,255,0.67);
-}
-
-.c6 {
-  font-family: 'Roboto',sans-serif;
-  font-weight: 500;
-  font-size: 2.5rem;
-  color: #3148A1;
-  margin: 1.5rem 0rem 0rem;
-  margin-bottom: 1.5rem;
-}
-
-.c31 {
-  font-family: 'Roboto',sans-serif;
-  font-weight: 500;
-  font-size: 1.75rem;
-  color: black;
-  margin: 1.5rem;
-  margin-bottom: 1.5rem;
 }
 
 .c30 {
@@ -564,8 +603,7 @@ exports[`Test Frame Frame renders correctly 1`] = `
 }
 
 @media screen and (max-width:400px) {
-  .c30 a,
-  .c30 .c32 {
+  .c30 a {
     width: 100%;
   }
 }
@@ -783,18 +821,17 @@ exports[`Test Frame Frame renders correctly 1`] = `
           >
             Your application status:
           </h1>
-          <button
-            className="c32 c33 c34"
+          <div
+            className="c32 filled large long"
             onClick={[Function]}
+            role="button"
           >
             <div
-              className="c35"
-              color="white"
-              fontSize="1.4em"
+              className="text"
             >
               Complete your application
             </div>
-          </button>
+          </div>
         </div>
       </div>
     </div>

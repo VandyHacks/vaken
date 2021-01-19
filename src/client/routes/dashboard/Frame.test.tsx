@@ -2,6 +2,8 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
 import { MockedProvider } from '@apollo/client/testing';
+import { ThemeProvider } from 'styled-components';
+import { theme } from '../../app';
 import { MyStatusDocument } from '../../generated/graphql';
 import Frame from './Frame';
 
@@ -26,9 +28,11 @@ describe('Test Frame', () => {
 		const component = renderer
 			.create(
 				<MockedProvider mocks={mocks}>
-					<MemoryRouter>
-						<Frame />
-					</MemoryRouter>
+					<ThemeProvider theme={theme}>
+						<MemoryRouter>
+							<Frame />
+						</MemoryRouter>
+					</ThemeProvider>
 				</MockedProvider>
 			)
 			.toJSON();

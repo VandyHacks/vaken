@@ -2,7 +2,7 @@ import React, { FC, useState, ChangeEventHandler, useCallback } from 'react';
 import styled from 'styled-components';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import { SearchBox } from '../../components/Input/SearchBox';
-import { ActionButton } from '../../components/Buttons/ActionButton';
+import { Button } from '../../components/Buttons/Button';
 import { useJoinTeamMutation } from '../../generated/graphql';
 
 const Layout = styled.div`
@@ -38,14 +38,15 @@ export const JoinTeam: FC = () => {
 						error={errorMsg !== ''}
 						hasIcon={false}
 					/>
-					<ActionButton
+					<Button
+						async
 						onClick={() =>
 							joinTeam().catch(res => {
 								setErrorMsg(res.graphQLErrors[0].message);
 							})
 						}>
 						Join
-					</ActionButton>
+					</Button>
 				</Layout>
 			)}
 		</Wrapper>

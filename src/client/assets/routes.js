@@ -1,8 +1,6 @@
 import React from 'react';
 import { Application } from '../routes/application/Application';
 import { HackerDash } from '../routes/dashboard/HackerDash';
-// import { Team } from '../routes/team/Team';
-// import { Profile } from '../routes/profile/Profile';
 import { Help } from '../routes/help/Help';
 import { UserType } from '../generated/graphql';
 import { packages } from '../plugins';
@@ -20,12 +18,6 @@ const routes = [
 		displayText: 'Dashboard',
 		path: '/dashboard',
 	},
-	// {
-	// 	authLevel: [UserType.Hacker, UserType.Sponsor, UserType.Organizer],
-	// 	component: Profile,
-	// 	displayText: 'Profile',
-	// 	path: '/profile',
-	// },
 	{
 		authLevel: [UserType.Sponsor],
 		component: React.lazy(() => import('../routes/dashboard/SponsorDash')),
@@ -38,12 +30,6 @@ const routes = [
 		displayText: 'Apply',
 		path: '/application',
 	},
-	// {
-	// 	authLevel: [UserType.Hacker],
-	// 	component: Team,
-	// 	displayText: 'Team',
-	// 	path: '/team',
-	// },
 	{
 		authLevel: [UserType.Organizer],
 		component: React.lazy(() => import('../routes/manage/ManageHackers')),

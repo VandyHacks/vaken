@@ -6,7 +6,7 @@ import STRINGS from '../../assets/strings.json';
 import { Title } from '../../components/Text/Title';
 import { CenterButtonText } from '../../components/Buttons/Buttons';
 import { SmallCenteredText } from '../../components/Text/SmallCenteredText';
-import TextButton from '../../components/Buttons/TextButton';
+import { Button } from '../../components/Buttons/Button';
 
 interface ButtonProps {
 	background?: string;
@@ -35,14 +35,9 @@ export const ViewTeam: FC<Props> = ({ teamName }: Props): JSX.Element => {
 					{teamName}
 				</CenterButtonText>
 			</Status>
-			<TextButton
-				color="white"
-				fontSize="1.4em"
-				background={STRINGS.ACCENT_COLOR}
-				glowColor="rgba(0, 0, 255, 0.67)"
-				onClick={() => leaveTeam()}>
-				<p>Leave team</p>
-			</TextButton>
+			<Button large async onClick={leaveTeam}>
+				Leave team
+			</Button>
 			<SmallCenteredText color={STRINGS.DARK_TEXT_COLOR} fontSize="1rem" margin="0rem">
 				{STRINGS.HACKER_TEAMS_FOOTER_TEXT}
 			</SmallCenteredText>

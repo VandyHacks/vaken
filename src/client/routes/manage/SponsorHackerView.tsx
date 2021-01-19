@@ -2,7 +2,7 @@ import React, { FunctionComponent, useState, useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { useImmer } from 'use-immer';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
-import Spinner from '../../components/Loading/Spinner';
+import { Spinner } from '../../components/Loading/Spinner';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import STRINGS from '../../assets/strings.json';
 import { HackerView } from './HackerView';

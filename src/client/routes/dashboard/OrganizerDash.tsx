@@ -1,14 +1,13 @@
 import React, { FunctionComponent } from 'react';
 import { Bar, Pie, ChartData } from 'react-chartjs-2';
-import { Link } from 'react-router-dom';
 import { gql } from '@apollo/client';
 import styled from 'styled-components';
 import { ChartData as OldChartData, ChartOptions } from 'chart.js';
 
-import Spinner from '../../components/Loading/Spinner';
+import { Spinner } from '../../components/Loading/Spinner';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
-import TextButton from '../../components/Buttons/TextButton';
+import { Button } from '../../components/Buttons/Button';
 import { OverflowContainer, FlexStartColumn } from '../../components/Containers/FlexContainers';
 import 'chartjs-plugin-datalabels';
 import STRINGS from '../../assets/strings.json';
@@ -266,15 +265,9 @@ export const OrganizerDash: FunctionComponent = (): JSX.Element => {
 					<SchoolTable data={data.getTopHackerSchools} />
 				</StyledTable>
 				<LinkLayout>
-					<Link style={{ textDecoration: 'none' }} to="/managehackers">
-						<TextButton
-							color="white"
-							fontSize="1.4em"
-							background={STRINGS.ACCENT_COLOR}
-							glowColor="rgba(0, 0, 255, 0.67)">
-							<p>Manage hackers</p>
-						</TextButton>
-					</Link>
+					<Button large linkTo="/managehackers">
+						Manage hackers
+					</Button>
 				</LinkLayout>
 			</StyledFloatingPopupTop>
 			<StyledFloatingPopupBottom backgroundOpacity="1" padding="1.5rem">

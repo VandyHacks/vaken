@@ -6,7 +6,7 @@ interface StyleProps {
 	color?: string;
 }
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
 	& {
 		margin: 0 auto 0rem;
 		width: 4.375rem;
@@ -48,7 +48,7 @@ const Wrapper = styled.div`
 	}
 `;
 
-const Spinner: FC<StyleProps> = (props: StyleProps): JSX.Element => {
+export const Spinner: FC<StyleProps> = (props: StyleProps): JSX.Element => {
 	return (
 		<Wrapper {...props}>
 			<div className="bounce1" />

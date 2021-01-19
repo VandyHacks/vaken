@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState, useEffect, RefObject } from 'react';
 import styled from 'styled-components';
-import TextButton, { StyledLoginBtn } from '../../components/Buttons/TextButton';
+import { Button } from '../../components/Buttons/Button';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { FlexColumn, FlexStartColumn } from '../../components/Containers/FlexContainers';
 import { Title } from '../../components/Text/Title';
@@ -124,8 +124,7 @@ const HackerDashBG = styled(FloatingPopup)`
 	}
 
 	@media screen and (max-width: 400px) {
-		a,
-		${StyledLoginBtn} {
+		a {
 			width: 100%;
 		}
 	}
@@ -202,15 +201,9 @@ export const HackerDash: FunctionComponent = (): JSX.Element => {
 							</>
 						)}
 						{statusInfo.actions.map(e => (
-							<TextButton
-								key={e.actionText}
-								color="white"
-								fontSize="1.4em"
-								background={STRINGS.ACCENT_COLOR}
-								glowColor="rgba(0, 0, 255, 0.67)"
-								onClick={e.action}>
+							<Button key={e.actionText} large long onClick={e.action}>
 								{e.actionText}
-							</TextButton>
+							</Button>
 						))}
 					</FlexColumn>
 				</HackerDashBG>

@@ -4,7 +4,7 @@ import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import Select from 'react-select';
 import Fuse from 'fuse.js';
-import { HeaderButton } from '../../components/Buttons/HeaderButton';
+import { Button } from '../../components/Buttons/Button';
 import { generateRowClassName, createSubmitHandler, CHECK_IN_EVENT_TYPE } from './helpers';
 
 import { ToggleSwitch } from '../../components/Buttons/ToggleSwitch';
@@ -263,17 +263,19 @@ const NfcTable: FC<NfcTableProps> = ({ hackersData, eventsData }: NfcTableProps)
 						}}
 					/>
 				</UnadmitToggleWrapper>
-				<HeaderButton
+				<Button
+					async
 					onClick={() => {
-						handleSubmit(nfcValue, topUserMatch, eventSelected, unadmitMode);
+						const promise = handleSubmit(nfcValue, topUserMatch, eventSelected, unadmitMode);
 						table.update(draft => {
 							draft.nfcValue = '';
 							draft.searchValue = '';
 						});
 						if (searchBoxRef.current) searchBoxRef.current.focus();
+						return promise;
 					}}>
 					Submit
-				</HeaderButton>
+				</Button>
 			</TableOptions>
 			<TableData>
 				{manualMode || eventSelected.eventType === CHECK_IN_EVENT_TYPE ? (

@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
-import TextButton, { StyledLoginBtn } from '../../components/Buttons/TextButton';
+import { Button } from '../../components/Buttons/Button';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { FlexColumn, FlexStartColumn } from '../../components/Containers/FlexContainers';
 import { Title } from '../../components/Text/Title';
@@ -13,7 +13,7 @@ import {
 	useEventsForHackersQuery,
 	useMyEventStatusQuery,
 } from '../../generated/graphql';
-import Spinner from '../../components/Loading/Spinner';
+import { Spinner } from '../../components/Loading/Spinner';
 
 const HackerDashBG = styled(FloatingPopup)`
 	border-radius: 8px;
@@ -27,8 +27,7 @@ const HackerDashBG = styled(FloatingPopup)`
 	}
 
 	@media screen and (max-width: 400px) {
-		a,
-		${StyledLoginBtn} {
+		a {
 			width: 100%;
 		}
 	}
@@ -97,13 +96,11 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 									margin="1.4rem">
 									<span style={{ fontWeight: 'bold' }}>{row.name}</span>
 								</SmallCenteredText>
-								<TextButton
+								<Button
 									key={row.id}
-									color="white"
-									fontSize="1.4em"
-									background={STRINGS.ACCENT_COLOR}
-									glowColor="rgba(0, 0, 255, 0.67)"
-									enabled={!hackerData.me?.eventsAttended.includes(row.id)}
+									large
+									async
+									disabled={hackerData.me?.eventsAttended.includes(row.id)}
 									onClick={async () => {
 										toast.dismiss();
 										return checkInUserToEventUpdateEventScore({
@@ -134,7 +131,7 @@ export const CheckInEvent: FunctionComponent = (): JSX.Element => {
 											});
 									}}>
 									{hackerData.me?.eventsAttended.includes(row.id) ? 'Checked In!' : 'Check In'}
-								</TextButton>
+								</Button>
 							</FlexColumn>
 						))}
 					</FlexColumn>

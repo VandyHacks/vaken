@@ -1,10 +1,9 @@
 import React, { FC } from 'react';
-import { Link } from 'react-router-dom';
 import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import { MutationFunction } from '@apollo/client';
 import { RadioSlider } from '../../components/Buttons/RadioSlider';
-import { TableButton } from '../../components/Buttons/TableButton';
+import { Button } from '../../components/Buttons/Button';
 import { processSliderInput } from './SliderInput';
 import { QueriedHacker } from './HackerTableTypes';
 import {
@@ -65,9 +64,9 @@ export function actionRenderer(updateStatus: HackerStatusMutationFn): FC<ActionR
 					<></>
 				)}
 				{status && status !== ApplicationStatus.Created && (
-					<Link to={{ pathname: `${window.location.pathname}/detail/${id}` }}>
-						<TableButton>View</TableButton>
-					</Link>
+					<Button small outline linkTo={`${window.location.pathname}/detail/${id}`}>
+						View
+					</Button>
 				)}
 			</Actions>
 		);

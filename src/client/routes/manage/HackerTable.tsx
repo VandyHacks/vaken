@@ -8,7 +8,7 @@ import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
 import { CSVLink } from 'react-csv';
 
 import { ToggleSwitch } from '../../components/Buttons/ToggleSwitch';
-import { FloatingButton } from '../../components/Buttons/FloatingButton';
+import { Button } from '../../components/Buttons/Button';
 import { SearchBox } from '../../components/Input/SearchBox';
 import { FlexRow, FlexColumn } from '../../components/Containers/FlexContainers';
 import STRINGS from '../../assets/strings.json';
@@ -30,7 +30,7 @@ import { QueriedHacker, SortFnProps } from './HackerTableTypes';
 const Float = styled.div`
 	position: fixed;
 	bottom: 3.5rem;
-	right: 11.75rem;
+	right: 16rem;
 	margin-right: 1rem;
 `;
 
@@ -302,9 +302,16 @@ const HackerTable: FC<HackerTableProps> = ({
 	// handles the text or regex search and sets the sortedData state with the updated row list
 	// floating button that onClick toggles between selecting all or none of the rows
 	const SelectAllButton = (
-		<FloatingButton onClick={onToggleSelectAll(table)}>
-			{selectAll || hasSelection ? 'Deselect All' : 'Select All'}
-		</FloatingButton>
+		<div
+			style={{
+				position: 'fixed',
+				bottom: '3.25rem',
+				right: '3.75rem',
+			}}>
+			<Button large onClick={onToggleSelectAll(table)}>
+				{selectAll || hasSelection ? 'Deselect All' : 'Select All'}
+			</Button>
+		</div>
 	);
 
 	// prevents hackers with certain statuses from being selected

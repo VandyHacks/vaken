@@ -3,10 +3,10 @@ import { RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 import escape from 'escape-html';
 import { title } from 'case';
-import Spinner from '../../components/Loading/Spinner';
+import { Spinner } from '../../components/Loading/Spinner';
 import STRINGS from '../../assets/strings.json';
 import { Title } from '../../components/Text/Title';
-import LeftImgButton from '../../components/Buttons/LeftImgButton';
+import { Button } from '../../components/Buttons/Button';
 import back from '../../assets/img/back.svg';
 import { useDetailedHackerQuery, useSignedReadUrlQuery } from '../../generated/graphql';
 import appConfig from '../../assets/application';
@@ -117,17 +117,9 @@ export const HackerView: FC<RouteComponentProps<{ id: string }>> = props => {
 
 	return (
 		<Layout>
-			<LeftImgButton
-				background={STRINGS.ACCENT_COLOR}
-				color="white"
-				img={back}
-				imgAlt="left arrow"
-				width="30em"
-				onClick={() => props.history.goBack()}
-				paddingLeft="1.5rem"
-				paddingRight="1.5rem">
+			<Button large icon={back} iconAlt="left arrow" onClick={() => props.history.goBack()}>
 				Back to table
-			</LeftImgButton>
+			</Button>
 			<Title
 				margin="0.25rem"
 				fontSize="1.5rem"

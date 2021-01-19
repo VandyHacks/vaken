@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import renderer from 'react-test-renderer';
 import { ToggleSwitch } from './ToggleSwitch';
 
 let container: HTMLDivElement | null = null;
@@ -15,16 +14,6 @@ describe('ToggleSwitch', () => {
 	afterEach(() => {
 		if (container) document.body.removeChild(container);
 		container = null;
-	});
-
-	it('HeaderButton', () => {
-		let state = false;
-		const setState = (newState: boolean): void => void (state = newState);
-
-		const component = renderer
-			.create(<ToggleSwitch label="TestButton" checked={state} onChange={setState} />)
-			.toJSON();
-		expect(component).toMatchSnapshot();
 	});
 
 	it('Toggles on click', () => {
