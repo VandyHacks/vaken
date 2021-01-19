@@ -236,7 +236,6 @@ exports[`Login renders properly 1`] = `
         <div
           className="c7 filled large long secondary"
           role="button"
-          type="button"
         >
           <div
             className="text"
@@ -256,7 +255,6 @@ exports[`Login renders properly 1`] = `
         <div
           className="c7 filled large long secondary"
           role="button"
-          type="button"
         >
           <div
             className="text"
@@ -277,7 +275,6 @@ exports[`Login renders properly 1`] = `
       <div
         className="c7 filled large long secondary"
         role="button"
-        type="button"
       >
         <div
           className="text"

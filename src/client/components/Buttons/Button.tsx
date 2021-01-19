@@ -1,123 +1,16 @@
-import React, { FC, useState, ButtonHTMLAttributes, useMemo } from 'react';
+import React, { FC, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import classNames from 'classnames';
 import styled from 'styled-components';
-import { XOR } from 'ts-xor';
 import { Spinner, Wrapper as SpinnerWrapper } from '../Loading/Spinner';
-
-/** Utility type which makes an exclusive OR of all properties in T.  */
-type oneOf<T> = { [K in keyof T]: Pick<T, K> & FixTsUnion<T, K> }[keyof T];
-type FixTsUnion<T, K extends keyof T> = { [Prop in keyof T]?: Prop extends K ? T[Prop] : never };
-
-/** Exclusive OR between T, U, and V, factoring in all properties of each type. */
-type XOR3<T, U, V> = XOR<XOR<T, U>, V>;
+import { ButtonProps } from './Button.d';
 
 /** Returns true if the `url` param begins with "http" or "//", signifying an external url. */
 function isAbsoluteUrl(url: string): boolean {
 	return url.toLowerCase().startsWith('http') || url.startsWith('//');
 }
 
-type ButtonBase = {
-	/** Text to render inside the button */
-	children: string;
-
-	/** Either an SVG element or a string to be used as an img tag src attribute */
-	icon?: FC | string;
-
-	/** Alt tag for icon. */
-	iconAlt?: string;
-
-	/** Gives a button significant padding on the left and right */
-	long?: true;
-
-	/** A disabled button will not have hover effects and can't be clicked. */
-	disabled?: boolean;
-
-	/** Underlying HTML button type */
-	type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
-
-	/** Uses less eye-catching colors to signify this is not the preferred action. */
-	secondary?: true;
-
-	/** Aligns the button contents to the left side of the button rather than the center. */
-	alignStart?: true;
-
-	/** Uses red color for button to signify dangerous or data-loss inducing action. */
-	warning?: true;
-};
-
-type ButtonArchetypes = {
-	/**
-	 * Shows a pill-shaped button that is filled with the accent color. Default.
-	 * Mutually exclusive with `outline`.
-	 */
-	filled?: true;
-
-	/**
-	 * Shows a transparent button with a border around the outside edge
-	 * Mutually exclusive with `filled`.
-	 */
-	outline: true;
-};
-
-type ButtonSizes = {
-	/**
-	 * Size in between small and large, likely the correct choice in most cases. Default.
-	 * Mutually exclusive with `small` and `large`.
-	 */
-	default?: true;
-
-	/**
-	 * Smaller button which has no padding whatsoever around the text.
-	 * Mutually exclusive with `default` and `large`.
-	 */
-	small: true;
-
-	/**
-	 * Larger button which has greater vertical padding and text size.
-	 * Mutually exclusive with `default` and `small`.
-	 */
-	large: true;
-};
-
-type LinkButton = {
-	/**
-	 * Path to which clicking the button should take the user, relative to the domain root.
-	 * The link may specify an external path starting by with the protocol (or protocol relative) `//domain.com/path`
-	 */
-	linkTo: string;
-
-	/**
-	 * Force the link handling behavior to use an `<a>` tag rather than internal PWA routing.
-	 */
-	externalLink?: true;
-};
-
-type PromiseButton = {
-	/**
-	 * Handler after the user clicks on the button.
-	 * Should resolve to a promise if `async` is specified.
-	 */
-	onClick: () => Promise<unknown>;
-
-	/** Shows loading dots after click until the onClick resolves */
-	async?: true;
-
-	/** Forces the loading state for the button */
-	loading?: true;
-};
-
-type ClickButton = {
-	/**
-	 * Handler called after the user clicks on the button.
-	 */
-	onClick: () => void;
-};
-
-type ButtonActions = XOR3<LinkButton, PromiseButton, ClickButton>;
-
-export type ButtonProps = ButtonBase & oneOf<ButtonArchetypes> & oneOf<ButtonSizes> & ButtonActions;
-
-const StyledButton = styled.div<Omit<ButtonProps, 'children'>>`
+const StyledButton = styled.div`
 	&.filled {
 		--button-color: ${props => props.theme.colors.main};
 		--text-color: ${props => props.theme.colors.lightTextColor};
@@ -241,8 +134,8 @@ const StyledButton = styled.div<Omit<ButtonProps, 'children'>>`
 `;
 
 const getIcon = (
-	IconProp: ButtonBase['icon'],
-	iconAlt: ButtonBase['iconAlt']
+	IconProp: ButtonProps['icon'],
+	iconAlt: ButtonProps['iconAlt']
 ): JSX.Element | null => {
 	let Icon: JSX.Element | null = null;
 	if (IconProp) {
@@ -256,15 +149,14 @@ const getIcon = (
 	return Icon;
 };
 
-const getClickHandler = (
-	props: ButtonProps,
+/** For `async` buttons, wraps the click handler to toggle loading animation.  */
+const getHandler = (
+	onClick: ButtonProps['onClick'],
+	async: ButtonProps['async'],
 	setUnresolved: React.Dispatch<React.SetStateAction<boolean>>
 ): ButtonProps['onClick'] => {
-	if (props.async) {
-		// TypeScript can infer that onClick is set because of the `props.async`
-		// type guard, but cannot guarantee that it'll be set inside the closure,
-		// but capturing the reference here satisfies that guarantee.
-		const delegatedClickHandler = props.onClick;
+	if (async && onClick) {
+		const delegatedClickHandler = onClick;
 		return () => {
 			const result = delegatedClickHandler();
 			setUnresolved(true);
@@ -277,39 +169,41 @@ const getClickHandler = (
 			}, 700);
 		};
 	}
-	return props.onClick;
+	return onClick;
 };
 
-const getClassNames = (props: ButtonProps): string => {
-	const classNames: string[] = [];
-	if (props.outline) classNames.push('outline');
-	else classNames.push('filled');
-	
-	if (props.small) classNames.push('small');
-	if (props.large) classNames.push('large');
-	if (props.loading) classNames.push('loading');
-	if (props.long) classNames.push('long');
-	if (props.alignStart) classNames.push('align-start');
-	if (props.secondary) classNames.push('secondary');
-	if (props.disabled) classNames.push('disabled');
-	if (props.warning) classNames.push('warning');
-	return classNames.join(' ');
-};
+const getClassNames = (props: ButtonProps, unresolved: boolean): string =>
+	classNames({
+		filled: props.filled || !props.outline,
+		outline: props.outline,
+		small: props.small,
+		large: props.large,
+		loading: props.loading || unresolved,
+		long: props.long,
+		'align-start': props.alignStart,
+		secondary: props.secondary,
+		disabled: props.disabled,
+		warning: props.warning,
+	});
 
+/**
+ * Flexible Button element with support for loading animation, primary/secondary styles,
+ * filled/outline styles, disabled attribute, and link funtionality.
+ */
 export const Button: FC<ButtonProps> = props => {
 	const [unresolved, setUnresolved] = useState(false);
+
 	const { icon, iconAlt } = props;
 	const iconElement = useMemo(() => getIcon(icon, iconAlt), [icon, iconAlt]);
-	const clickHandler = useMemo(() => getClickHandler(props, setUnresolved), [props]);
-	const classNames = useMemo(() => getClassNames(props), [props]);
-	const { children, type = 'button', linkTo, secondary, async, loading } = props;
+
+	const { async, onClick } = props;
+	const handler = useMemo(() => getHandler(onClick, async, setUnresolved), [async, onClick]);
+
+	const classes = getClassNames(props, unresolved);
+
+	const { children, loading } = props;
 	const buttonElement = (
-		<StyledButton
-			onClick={clickHandler}
-			className={`${classNames}${unresolved ? ' loading' : ''}`}
-			role="button"
-			type={type}
-			secondary={secondary}>
+		<StyledButton onClick={handler} className={classes} role="button">
 			<div className="text">
 				{iconElement}
 				{children}
@@ -319,17 +213,15 @@ export const Button: FC<ButtonProps> = props => {
 	);
 
 	// Rather than handle in onClick, native DOM elements have better a11y support.
-	if (linkTo) {
-		if (props.externalLink || isAbsoluteUrl(linkTo)) {
-			return (
-				<a rel="noopener" href={linkTo}>
-					{buttonElement}
-				</a>
-			);
-		}
-		return <Link to={linkTo}>{buttonElement}</Link>;
+	// Use an `<a>` tag for external links as `<Link>` doesn't support them.
+	const { linkTo, externalLink } = props;
+	if (linkTo && (externalLink || isAbsoluteUrl(linkTo))) {
+		return (
+			<a href={linkTo} rel="noopener">
+				{buttonElement}
+			</a>
+		);
 	}
+	if (linkTo) return <Link to={linkTo}>{buttonElement}</Link>;
 	return buttonElement;
 };
-
-export default Button;

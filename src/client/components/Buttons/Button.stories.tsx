@@ -2,7 +2,8 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
 import { ThemeProvider } from 'styled-components';
 import { MemoryRouter } from 'react-router-dom';
-import { Button as Component, ButtonProps as Props } from './Button';
+import { Button as Component } from './Button';
+import type { ButtonProps as Props } from './Button.d';
 import FloatingPopup from '../Containers/FloatingPopup';
 import googleLogo from '../../assets/img/google_logo.svg';
 import { theme } from '../../app';
@@ -103,9 +104,8 @@ LinkButton.args = {
 };
 
 export const LargeLongSecondaryImgButton: Story<Props> = args => (
-	<FloatingPopup>
-		<Button {...args} />
-	</FloatingPopup>
+	// Provides `FloatingPopup` background.
+	<SecondaryFilledButton {...args} />
 );
 LargeLongSecondaryImgButton.args = {
 	icon: googleLogo,

@@ -712,24 +712,6 @@ exports[`Test Frame Frame renders correctly 1`] = `
             <a
               aria-current={null}
               className="c15"
-              href="/profile"
-              onClick={[Function]}
-            >
-              <button
-                className="c16 c17 c18 c19"
-              >
-                <div
-                  className="c20 c21 c18 c19"
-                >
-                  Profile
-                </div>
-              </button>
-            </a>
-          </li>
-          <li>
-            <a
-              aria-current={null}
-              className="c15"
               href="/application"
               onClick={[Function]}
             >
@@ -740,24 +722,6 @@ exports[`Test Frame Frame renders correctly 1`] = `
                   className="c20 c21 c18 c19"
                 >
                   Apply
-                </div>
-              </button>
-            </a>
-          </li>
-          <li>
-            <a
-              aria-current={null}
-              className="c15"
-              href="/team"
-              onClick={[Function]}
-            >
-              <button
-                className="c16 c17 c18 c19"
-              >
-                <div
-                  className="c20 c21 c18 c19"
-                >
-                  Team
                 </div>
               </button>
             </a>
@@ -861,7 +825,6 @@ exports[`Test Frame Frame renders correctly 1`] = `
             className="c32 filled large long"
             onClick={[Function]}
             role="button"
-            type="button"
           >
             <div
               className="text"
