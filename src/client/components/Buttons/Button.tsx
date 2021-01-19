@@ -284,6 +284,7 @@ const getClassNames = (props: ButtonProps): string => {
 	const classNames: string[] = [];
 	if (props.outline) classNames.push('outline');
 	else classNames.push('filled');
+	
 	if (props.small) classNames.push('small');
 	if (props.large) classNames.push('large');
 	if (props.loading) classNames.push('loading');
