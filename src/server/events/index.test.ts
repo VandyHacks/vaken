@@ -1,4 +1,5 @@
 import { ObjectId, MongoError } from 'mongodb';
+import { DateWithTimeZone } from 'node-ical';
 import {
 	HackerDbObject,
 	EventDbObject,
@@ -13,6 +14,7 @@ import {
 	addOrUpdateEvent,
 	checkIdentityForEvent,
 	assignEventToCompany,
+	SimplifiedVEvent,
 } from '.';
 import { EventUpdate } from '../../client/routes/events/ManageEventTypes';
 
@@ -50,16 +52,20 @@ const testCompany = ({
 	eventsOwned: [],
 } as unknown) as CompanyDbObject;
 
-const badEventObj: Record<string, string> = {
+const badEventObj = {
 	summary: 'summary',
-	start: '',
-	end: '',
+} as SimplifiedVEvent;
+
+const toDateWithTimeZone = (d: Date): DateWithTimeZone => {
+	const ret = new Date(d);
+	(ret as DateWithTimeZone).tz = 'UTC';
+	return ret as DateWithTimeZone;
 };
 
-const testEventObj: Record<string, string> = {
+const testEventObj: SimplifiedVEvent = {
 	summary: 'testEvent',
-	start: '2019-09-06T03:41:33.714+00:00',
-	end: '2019-09-06T07:41:33.714+00:00',
+	start: toDateWithTimeZone(new Date('2019-09-06T03:41:33.714+00:00')),
+	end: toDateWithTimeZone(new Date('2019-09-06T07:41:33.714+00:00')),
 	description: 'testEventdesc Points: 40 [testType]',
 	location: 'location',
 	uid: 'testGcalID',
@@ -67,7 +73,7 @@ const testEventObj: Record<string, string> = {
 
 const testEventUpdateGcal: EventUpdate = {
 	name: 'testEvent',
-	startTimestamp: '2019-09-06T03:41:33.714+00:00',
+	startTimestamp: '2019-09-06T03:41:33.714Z',
 	duration: 240,
 	description: 'testEventdesc Points: 40',
 	location: 'location',
@@ -78,7 +84,7 @@ const testEventUpdateGcal: EventUpdate = {
 
 const testEventUpdateGcal2: EventUpdate = {
 	name: 'testEvent2',
-	startTimestamp: '2019-09-08T03:41:33.714+00:00',
+	startTimestamp: '2019-09-08T03:41:33.714Z',
 	duration: 60,
 	description: 'testEventdesc2',
 	location: 'location2',
@@ -90,7 +96,7 @@ const testEventUpdateGcal2: EventUpdate = {
 const eventID = new ObjectId();
 const testEventUpdateByID: EventUpdate = {
 	name: 'testEventbyID',
-	startTimestamp: '2019-09-06T03:41:33.714+00:00',
+	startTimestamp: '2019-09-06T03:41:33.714Z',
 	duration: 240,
 	description: 'testEventdesc',
 	location: 'location',
@@ -100,7 +106,7 @@ const testEventUpdateByID: EventUpdate = {
 
 const testEventUpdateByID2: EventUpdate = {
 	name: 'testEvent2byID',
-	startTimestamp: '2019-09-08T03:41:33.714+00:00',
+	startTimestamp: '2019-09-08T03:41:33.714Z',
 	duration: 60,
 	description: 'testEventdesc2',
 	location: 'location2',
@@ -110,7 +116,7 @@ const testEventUpdateByID2: EventUpdate = {
 
 const badTestEventUpdate: EventUpdate = {
 	name: 'badTestEventUpdate',
-	startTimestamp: '2019-09-08T03:41:33.714+00:00',
+	startTimestamp: '2019-09-08T03:41:33.714Z',
 	duration: 60,
 	description: 'testEventdesc2',
 	location: 'location2',
@@ -165,8 +171,8 @@ describe('Test events updating', () => {
 		it('returns items on real calendar (must contain at least 1 event)', async () => {
 			const res = await pullCalendar(vhCalendarID);
 			if (res) {
-				await expect(res.length).toBeGreaterThanOrEqual(1);
-				await expect(res[0].name).toBeDefined();
+				expect(res.length).toBeGreaterThanOrEqual(1);
+				expect(res[0].name).toBeDefined();
 			} else throw new MongoError('Could not get calendar');
 		});
 	});

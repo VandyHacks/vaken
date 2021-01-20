@@ -1,15 +1,14 @@
-import React, { FunctionComponent, useState } from 'react';
-
+import React, { FunctionComponent, useState, useCallback, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import Select from 'react-select';
-import STRINGS from '../../assets/strings.json';
-
-import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { Button } from '../../components/Buttons/Button';
+import STRINGS from '../../assets/strings.json';
+import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { Spinner } from '../../components/Loading/Spinner';
-import { Title } from '../../components/Text/Title';
+import { Collapsible } from '../../components/Containers/Collapsible';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import { FlexColumn, FlexRow } from '../../components/Containers/FlexContainers';
+import { ActionButtonContext } from '../../contexts/ActionButtonContext';
 import {
 	useAssignEventToCompanyMutation,
 	useAddOrUpdateEventMutation,
@@ -20,6 +19,14 @@ import {
 import { updateEventsHandler, assignEventHandler } from './helpers';
 import { EventUpdate } from './ManageEventTypes';
 
+const timeFormatter = Intl.DateTimeFormat([], {
+	weekday: 'long',
+	month: 'short',
+	day: 'numeric',
+	hour: 'numeric',
+	minute: 'numeric',
+});
+
 const SponsorSelect = styled(Select)`
 	min-width: 15rem;
 	width: 100%;
@@ -29,111 +36,105 @@ const SponsorSelect = styled(Select)`
 `;
 
 const ManageEvents: FunctionComponent = (): JSX.Element => {
-	const [output, setOutput] = useState('<>');
-	// const [allEvents, setAllEvents] = useState('<all events>');
+	const [output, setOutput] = useState('No updates to report');
 	const [addOrUpdateEvent] = useAddOrUpdateEventMutation();
 	const [removeAbsentEvents] = useRemoveAbsentEventsMutation();
 	const [assignEventToCompany] = useAssignEventToCompanyMutation();
-	// const { loading, error, data } = useEventsQuery();
+	const { update: setActionButton } = useContext(ActionButtonContext);
+	const events = useEventsQuery();
+	const companies = useCompaniesQuery();
+	const [updatedEventsOpen, setupdatedEventsOpen] = useState(false);
+	const [eventsAndSponsorsOpen, setEventsAndSponsorsOpen] = useState(true);
 
-	const eventsQuery = useEventsQuery();
-	const eventsLoading = eventsQuery.loading;
-	const eventsError = eventsQuery.error;
-	const eventsData = eventsQuery.data;
-
-	const companiesQuery = useCompaniesQuery();
-	const companiesLoading = companiesQuery.loading;
-	const companiesError = companiesQuery.error;
-	const companiesData = companiesQuery.data;
-
-	if (companiesLoading || !companiesData || eventsLoading || !eventsData) {
-		return <Spinner />;
-	}
-
-	if (companiesError) {
-		console.log(companiesError);
-		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
-	}
-
-	if (eventsError) {
-		console.log(eventsError);
-		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
-	}
-
-	const eventRows = eventsData.events
-		.map(e => {
-			return {
-				id: e.id,
-				name: e.name,
-				eventType: e.eventType,
-				startTimestamp: new Date(e.startTimestamp),
-				owner: e.owner,
-			};
-		})
-		.sort((a, b) => a.startTimestamp.getTime() - b.startTimestamp.getTime());
-
-	const companyOptions: { label: string; value: string }[] = companiesData.companies.map(c => {
-		return {
-			label: c.name,
-			value: c.id,
-		};
-	});
-
-	async function pullCalendarEvents(): Promise<void> {
+	const pullCalendarEvents = useCallback(async (): Promise<void> => {
 		// TODO(#473): Use graphql for this fetch to take advantage of
 		// Apollo caching
-		const res = await fetch('/api/manage/events/pull');
-		const resData = await res.json();
-		const eventsList = resData as EventUpdate[];
+		const eventsList = (await fetch('/api/manage/events/pull').then(res =>
+			res.json()
+		)) as EventUpdate[];
 		const updatedEvents = await updateEventsHandler(
 			eventsList,
 			addOrUpdateEvent,
 			removeAbsentEvents
 		);
 		setOutput(JSON.stringify(updatedEvents, null, '\t'));
+		setupdatedEventsOpen(true);
 		// setAllEvents(data.events);
 		// Place holder for events table showing all events, and some UI component listing events just pulled
 		// TODO: Add events table and said UI component or just table, with columns being event attributes + time added
+	}, [addOrUpdateEvent, removeAbsentEvents]);
+
+	const assignSponsorEvent = useCallback(
+		(eventID: string, companyID: string): Promise<void> =>
+			assignEventHandler(eventID, companyID, assignEventToCompany),
+		[assignEventToCompany]
+	);
+
+	useEffect((): (() => void) => {
+		if (setActionButton) {
+			setActionButton(
+				<Button async warning onClick={pullCalendarEvents}>
+					Pull from Calendar
+				</Button>
+			);
+		}
+		return () => {
+			if (setActionButton) setActionButton(undefined);
+		};
+	}, [setActionButton, pullCalendarEvents]);
+
+	if (companies.loading || events.loading) {
+		return <Spinner />;
 	}
 
-	function assignSponsorEvent(eventID: string, companyID: string): void {
-		assignEventHandler(eventID, companyID, assignEventToCompany);
+	if (events.error || companies.error || !companies.data || !events.data) {
+		console.error(events.error ?? companies.error);
+		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 	}
+
+	const eventRows = [...events.data.events];
+	eventRows.sort((a, b) => a.startTimestamp - b.startTimestamp);
+
+	const companyOptions = companies.data.companies.map(({ name, id }) => ({
+		label: name,
+		value: id,
+	}));
 
 	return (
 		<FloatingPopup>
-			<Button async onClick={pullCalendarEvents}>
-				Pull from Calendar
-			</Button>
-			<FloatingPopup>
-				<Title>Updated Events</Title>
+			<Collapsible
+				title="Updated Events"
+				open={updatedEventsOpen}
+				onClick={() => setupdatedEventsOpen(!updatedEventsOpen)}>
 				<pre>{output}</pre>
-			</FloatingPopup>
-
-			<FloatingPopup>
-				<Title>Events and Sponsors</Title>
-				{eventRows.map(row => (
-					<FlexRow key={row.id}>
+			</Collapsible>
+			<br />
+			<Collapsible
+				title="Events and Sponsors"
+				open={eventsAndSponsorsOpen}
+				onClick={() => setEventsAndSponsorsOpen(!eventsAndSponsorsOpen)}>
+				{eventRows.map(event => (
+					<FlexRow key={event.id}>
 						<FlexColumn>
-							<p>{row.name}</p>
-							<p>{row.startTimestamp.toString()}</p>
+							<p>{event.name}</p>
+							<p>{timeFormatter.format(new Date(event.startTimestamp))}</p>
 							<br />
 						</FlexColumn>
 						<FlexColumn>
 							<SponsorSelect
 								defaultValue={companyOptions.find(c => {
-									if (!row.owner) return null;
-									return c.value === row.owner.id;
+									if (!event.owner) return null;
+									return c.value === event.owner.id;
 								})}
 								options={companyOptions}
-								onChange={(option: { label: string; value: string }) => {
-									assignSponsorEvent(row.id, option.value);
+								onChange={(sponsor: typeof companyOptions[number]) => {
+									assignSponsorEvent(event.id, sponsor.value);
 								}}
 							/>
 						</FlexColumn>
 					</FlexRow>
 				))}
-			</FloatingPopup>
+			</Collapsible>
 		</FloatingPopup>
 	);
 };
