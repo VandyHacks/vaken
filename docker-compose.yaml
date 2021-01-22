@@ -13,7 +13,13 @@ services:
     volumes:
       - ./src:/usr/app/src/
       - ./dist:/usr/app/dist
+    networks:
+      - vakennet
+    depends_on: 
+      - vaken_db
     environment:
+      - ASSET_PATH=/
+      - MONGODB_BASE_URL=mongodb://vaken:vaken123@vaken_db:27017/vaken
       - PORT
       - SESSION_SECRET
       - GOOGLE_CALLBACK_URL
@@ -31,8 +37,25 @@ services:
       - MSFT_CLIENT_SECRET
       - MSFT_REDIRECT_URL
       - CALENDARID
-      - ALGOLIA_API_KEY
 
+  vaken_db:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=rootpass
+    networks:
+      - vakennet
+    volumes:
+      - '$PWD/scripts/init-mongo-user.sh:/docker-entrypoint-initdb.d/init-user.sh'
+      - ./db/mongo-volume:/data/db
+    ports:
+      - 27017:27017
+    expose:
+      - 27017
+
+networks:
+  vakennet:
+    name: vaken_network
 
 
 
