@@ -1,12 +1,14 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
 import { MemoryRouter } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
 import {
 	ErrorMessage as Component,
 	ErrorMessageProps as Props,
 	GraphQLErrorMessage as GQLComponent,
 	GraphQLErrorMessageProps as GQLProps,
 } from './ErrorMessage';
+import { theme } from '../../app';
 
 export default {
 	title: 'Components/Text/Error Message',
@@ -17,16 +19,16 @@ export const ErrorMessage: Story<Props> = args => <Component {...args} />;
 ErrorMessage.args = { children: <p>This is an error message</p> };
 
 export const GraphQLErrorMessage: Story<GQLProps> = args => (
-	<MemoryRouter>
-		<GQLComponent {...args} />
-	</MemoryRouter>
+	<ThemeProvider theme={theme}>
+		<MemoryRouter>
+			<GQLComponent {...args} />
+		</MemoryRouter>
+	</ThemeProvider>
 );
 GraphQLErrorMessage.args = { text: 'This is an error message' };
 
 export const GraphQLErrorMessageWithLongText: Story<GQLProps> = args => (
-	<MemoryRouter>
-		<GQLComponent {...args} />
-	</MemoryRouter>
+	<GraphQLErrorMessage {...args} />
 );
 GraphQLErrorMessageWithLongText.args = {
 	text:

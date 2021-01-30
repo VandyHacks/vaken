@@ -2,6 +2,7 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { MemoryRouter } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
 import {
 	CompaniesDocument,
 	CompaniesQueryResult,
@@ -9,6 +10,7 @@ import {
 	EventsQueryResult,
 } from '../../generated/graphql';
 import Component from './ManageEvents';
+import { theme } from '../../app';
 
 export default {
 	title: 'Routes/Events/Manage Events',
@@ -54,9 +56,11 @@ const mocks: MockedResponse[] = [
 ];
 
 export const ManageEvents: Story = args => (
-	<MockedProvider mocks={mocks}>
-		<MemoryRouter>
-			<Component {...args} />
-		</MemoryRouter>
-	</MockedProvider>
+	<ThemeProvider theme={theme}>
+		<MockedProvider mocks={mocks}>
+			<MemoryRouter>
+				<Component {...args} />
+			</MemoryRouter>
+		</MockedProvider>
+	</ThemeProvider>
 );

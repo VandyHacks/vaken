@@ -224,7 +224,7 @@ const onSortColumnChange = (ctx: TableCtxI): ((p: SortFnProps) => void) => {
 	};
 };
 
-interface HackerTableProps {
+export interface HackerTableProps {
 	data: QueriedHacker[];
 	isSponsor: boolean;
 	viewResumes: boolean;
