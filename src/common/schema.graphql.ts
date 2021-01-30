@@ -335,12 +335,6 @@ export default gql`
 		event: ID!
 	}
 
-	input EventCheckInUpdateInput {
-		user: ID!
-		event: ID!
-		eventScore: Int!
-	}
-
 	input EventCheckInInputByNfc {
 		nfcId: String!
 		event: ID!
@@ -418,7 +412,7 @@ export default gql`
 		hackerStatus(input: HackerStatusInput!): Hacker!
 		hackerStatuses(input: HackerStatusesInput!): [Hacker!]!
 		checkInUserToEvent(input: EventCheckInInput!): User!
-		checkInUserToEventAndUpdateEventScore(input: EventCheckInUpdateInput!): Hacker!
+		checkInUserToEventAndUpdateEventScore(input: EventCheckInInput!): Hacker!
 		removeUserFromEvent(input: EventCheckInInput!): User!
 		registerNFCUIDWithUser(input: NFCRegisterInput!): User!
 		checkInUserToEventByNfc(input: EventCheckInInputByNfc!): User!

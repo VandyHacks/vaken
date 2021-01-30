@@ -45,21 +45,23 @@ export const EventMutation: MutationResolvers<Context> = {
 	},
 	checkInUserToEventAndUpdateEventScore: async (root, { input }, { models, user }) => {
 		const userObject = checkIsAuthorized([UserType.Hacker, UserType.Volunteer], user);
-		await checkInUserToEvent(input.user, input.event, models);
+		const checkInUserPromise = checkInUserToEvent(input.user, input.event, models);
+		const event = await models.Events.findOne({ _id: new ObjectID(input.event) });
 		const { ok, value, lastErrorObject: err } = await models.Hackers.findOneAndUpdate(
 			{ _id: new ObjectID(userObject._id) },
-			{ $inc: { eventScore: input.eventScore } },
+			{ $inc: { eventScore: event?.eventScore ?? 0 } },
 			{ returnOriginal: false }
 		);
-		if (!ok || !value)
+		await checkInUserPromise; // Optimization to run above queries in parallel.
+		if (!ok || !value) {
 			throw new UserInputError(`user ${userObject._id} (${value}) error: ${JSON.stringify(err)}`);
+		}
 		if (user) {
 			// eslint-disable-next-line no-param-reassign
 			user.eventScore = value.eventScore;
 			// eslint-disable-next-line no-param-reassign
 			user.eventsAttended = value.eventsAttended;
 		}
-
 		return value;
 	},
 	checkInUserToEventByNfc: async (root, { input }, { models, user }) => {

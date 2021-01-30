@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC, useMemo } from 'react';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
 import { Button } from '../../components/Buttons/Button';
@@ -10,6 +10,7 @@ import { SmallCenteredText } from '../../components/Text/SmallCenteredText';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import {
 	useCheckInUserToEventAndUpdateEventScoreMutation,
+	CheckInUserToEventAndUpdateEventScoreMutationHookResult,
 	useEventsForHackersQuery,
 	useMyEventStatusQuery,
 } from '../../generated/graphql';
@@ -32,112 +33,85 @@ const HackerDashBG = styled(FloatingPopup)`
 		}
 	}
 `;
-export const CheckInEvent: FunctionComponent = (): JSX.Element => {
-	const {
-		loading: eventsLoading,
-		error: eventsError,
-		data: eventsData,
-	} = useEventsForHackersQuery();
-	const { loading: hackerLoading, error: hackerError, data: hackerData } = useMyEventStatusQuery();
-	const [checkInUserToEventUpdateEventScore] = useCheckInUserToEventAndUpdateEventScoreMutation();
 
-	if (eventsLoading || !eventsData || hackerLoading || !hackerData || !hackerData.me) {
+function getOnCheckIn(
+	checkIn: CheckInUserToEventAndUpdateEventScoreMutationHookResult[0]
+): (eventId: string, userId: string) => Promise<void> {
+	return async function onCheckIn(eventId: string, userId: string) {
+		try {
+			await checkIn({
+				variables: {
+					input: {
+						event: eventId,
+						user: userId,
+					},
+				},
+			});
+			toast.dismiss();
+			return void toast.success('You have been checked in successfully!');
+		} catch (e) {
+			toast.dismiss();
+			if (e.message.includes('is already checked into event')) {
+				return void toast.error('You are already checked in!');
+			}
+			return void toast.error('Check-in failed!');
+		}
+	};
+}
+
+export const CheckInEvent: FC = () => {
+	const events = useEventsForHackersQuery();
+	const hacker = useMyEventStatusQuery();
+	const [checkIn] = useCheckInUserToEventAndUpdateEventScoreMutation();
+	const onCheckIn = useMemo(() => getOnCheckIn(checkIn), [checkIn]);
+
+	if (events.loading || hacker.loading) {
 		return <Spinner />;
 	}
 
-	if (eventsError || hackerError) {
-		console.log(eventsError);
+	if (events.error || hacker.error || !events.data || !hacker.data || !hacker.data.me) {
 		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 	}
 
-	interface Event {
-		id: string;
-		name: string;
-		eventType: string;
-		duration: number;
-		startTimestamp: number;
-		eventScore: number;
-	}
+	// Satisfy type system that reference is still defined in closures below.
+	const { me } = hacker.data;
 
-	const eventRows: Event[] = eventsData.events.map(
-		(e): Event => {
-			return {
-				id: e.id,
-				name: e.name,
-				eventType: e.eventType,
-				duration: e.duration,
-				startTimestamp: e.startTimestamp,
-				eventScore: e.eventScore ? e.eventScore : 0,
-			};
-		}
-	);
-
-	const eventsCurrent = eventRows.filter((e: Event) => {
+	const currentEvents = events.data.events.filter(({ startTimestamp, duration }) => {
 		const TIME_BUFFER = 5; // 5 minutes
-		const delta = (Date.now() - e.startTimestamp) / (1000 * 60); // Time diff in minutes
-		return delta >= -1 * TIME_BUFFER && delta <= e.duration + TIME_BUFFER;
+		const delta = (Date.now() - startTimestamp) / (1000 * 60); // Time diff in minutes
+		return delta >= -1 * TIME_BUFFER && delta <= duration + TIME_BUFFER;
 	});
 
 	return (
-		<>
-			<FlexStartColumn>
-				<HackerDashBG>
-					<FlexColumn>
-						<Title fontSize="1.75rem">Your Score:</Title>
-						<SmallCenteredText color={`${STRINGS.DARK_TEXT_COLOR}`} fontSize="1.3rem" margin="1rem">
-							<span style={{ fontWeight: 'bold' }}>{hackerData.me.eventScore ?? '0'}</span>
-						</SmallCenteredText>
-						<Title fontSize="1.75rem">Ongoing Events:</Title>
-						{eventsCurrent.map(row => (
-							<FlexColumn key={row.id}>
-								<SmallCenteredText
-									color={`${STRINGS.DARK_TEXT_COLOR}`}
-									fontSize="1.3rem"
-									margin="1.4rem">
-									<span style={{ fontWeight: 'bold' }}>{row.name}</span>
-								</SmallCenteredText>
-								<Button
-									key={row.id}
-									large
-									async
-									disabled={hackerData.me?.eventsAttended.includes(row.id)}
-									onClick={async () => {
-										toast.dismiss();
-										return checkInUserToEventUpdateEventScore({
-											variables: {
-												input: {
-													event: row.id,
-													user: hackerData?.me?.id ?? '',
-													eventScore: row.eventScore,
-												},
-											},
-										})
-											.then(() => {
-												toast.dismiss();
-												return toast.success('You have been checked in successfully!', {
-													position: 'bottom-right',
-												});
-											})
-											.catch((e: Error) => {
-												toast.dismiss();
-												if (e.message.includes('is already checked into event')) {
-													return toast.error('You are already checked in!', {
-														position: 'bottom-right',
-													});
-												}
-												return toast.error('Check-in failed!', {
-													position: 'bottom-right',
-												});
-											});
-									}}>
-									{hackerData.me?.eventsAttended.includes(row.id) ? 'Checked In!' : 'Check In'}
-								</Button>
-							</FlexColumn>
-						))}
-					</FlexColumn>
-				</HackerDashBG>
-			</FlexStartColumn>
-		</>
+		<FlexStartColumn>
+			<HackerDashBG>
+				<FlexColumn>
+					<Title fontSize="1.75rem">Your Score:</Title>
+					<SmallCenteredText color={`${STRINGS.DARK_TEXT_COLOR}`} fontSize="1.3rem" margin="1rem">
+						<span style={{ fontWeight: 'bold' }}>{me.eventScore ?? '0'}</span>
+					</SmallCenteredText>
+					<Title fontSize="1.75rem">Ongoing Events:</Title>
+					{currentEvents.map(row => (
+						<FlexColumn key={row.id}>
+							<SmallCenteredText
+								color={`${STRINGS.DARK_TEXT_COLOR}`}
+								fontSize="1.3rem"
+								margin="1.4rem">
+								<span style={{ fontWeight: 'bold' }}>{row.name}</span>
+							</SmallCenteredText>
+							<Button
+								key={row.id}
+								large
+								async
+								disabled={me.eventsAttended.includes(row.id)}
+								onClick={() => onCheckIn(row.id, me.id)}>
+								{me.eventsAttended.includes(row.id) ? 'Checked In!' : 'Check In'}
+							</Button>
+						</FlexColumn>
+					))}
+				</FlexColumn>
+			</HackerDashBG>
+		</FlexStartColumn>
 	);
 };
 
