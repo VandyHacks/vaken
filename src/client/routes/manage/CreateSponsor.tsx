@@ -12,6 +12,8 @@ import {
 	useCreateCompanyMutation,
 	useCompaniesQuery,
 	useTiersQuery,
+	CompaniesDocument,
+	TiersDocument,
 } from '../../generated/graphql';
 import { Spinner } from '../../components/Loading/Spinner';
 import STRINGS from '../../assets/strings.json';
@@ -45,6 +47,8 @@ const CreateCompany: React.FunctionComponent = (): JSX.Element => {
 
 	const [createCompany] = useCreateCompanyMutation({
 		variables: { input: { name: companyName, tierId } },
+		refetchQueries: [{ query: CompaniesDocument }],
+		awaitRefetchQueries: true,
 	});
 
 	const { loading, error, data } = useTiersQuery();
@@ -94,13 +98,15 @@ const CreateCompany: React.FunctionComponent = (): JSX.Element => {
 	);
 };
 
-const CreateTier: React.FunctionComponent = (): JSX.Element => {
+const CreateTier: React.FC = () => {
 	const [tierName, setTierName] = useState('');
 	const [permissions, setPermissions] = useState(['']);
 	const [createTierMsg, setCreateTierMsg] = useState('');
 
 	const [createTier] = useCreateTierMutation({
 		variables: { input: { name: tierName, permissions } },
+		refetchQueries: [{ query: TiersDocument }],
+		awaitRefetchQueries: true,
 	});
 
 	const onCreateTier = async (): Promise<void> => {
