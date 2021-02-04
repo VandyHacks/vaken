@@ -26,13 +26,12 @@ const Background = styled.div`
 
 const Logo = styled.div`
 	margin: 3rem 2rem;
-	width: calc(100% - 4rem);
 	align-self: center;
 
 	img {
 		max-width: 100%;
-		width: 100%;
 		display: block;
+		max-height: 158px;
 	}
 `;
 
