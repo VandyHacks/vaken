@@ -1,5 +1,6 @@
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WebpackCdnPlugin = require('webpack-cdn-plugin');
 const path = require('path');
 
 const ASSET_PATH = process.env.ASSET_PATH || '/';
@@ -46,13 +47,26 @@ module.exports = {
 			template: './src/client/index.html',
 			favicon: './src/client/assets/img/favicon.ico',
 		}), // For index.html entry point
+		new WebpackCdnPlugin({
+			modules: [
+				{
+					name: 'react',
+					var: 'React',
+					path: `umd/react.${
+						process.env.NODE_ENV === 'development' ? 'development' : 'production.min'
+					}.js`,
+				},
+				{
+					name: 'react-dom',
+					var: 'ReactDOM',
+					path: `umd/react-dom.${
+						process.env.NODE_ENV === 'development' ? 'development' : 'production.min'
+					}.js`,
+				},
+			],
+		}),
 	],
 	resolve: {
 		extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
-		alias: {
-			react: 'preact/compat',
-			'react-dom/test-utils': 'preact/test-utils',
-			'react-dom': 'preact/compat',
-		},
 	},
 };

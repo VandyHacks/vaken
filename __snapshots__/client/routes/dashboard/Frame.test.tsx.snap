@@ -424,7 +424,6 @@ exports[`Test Frame Frame renders correctly 1`] = `
 
 .c10 {
   margin: 3rem 2rem;
-  width: calc(100% - 4rem);
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
@@ -432,8 +431,8 @@ exports[`Test Frame Frame renders correctly 1`] = `
 
 .c10 img {
   max-width: 100%;
-  width: 100%;
   display: block;
+  max-height: 158px;
 }
 
 .c11 {
