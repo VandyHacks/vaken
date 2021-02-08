@@ -118,6 +118,7 @@
 		"react-selectable-fast": "^3.4.0",
 		"react-toastify": "^6.2.0",
 		"react-virtualized": "^9.22.3",
+		"semver": "^6.3.0",
 		"styled-components": "^5.2.1",
 		"styled-reset": "^4.3.4",
 		"ts-xor": "^1.0.8",
@@ -207,6 +208,9 @@
 		"webpack-cdn-plugin": "^3.3.1",
 		"webpack-dev-server": "^3.11.1",
 		"webpack-merge": "^5.7.3"
+	},
+	"engines": {
+		"node": "14.15.4"
 	},
 	"browserslist": [
 		"last 2 chrome versions",
