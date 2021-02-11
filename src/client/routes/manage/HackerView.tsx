@@ -18,7 +18,7 @@ const Layout = styled.div`
 	width: 100%;
 	max-height: 100%;
 	overflow-y: auto;
-	user-select: auto;
+	user-select: text;
 `;
 
 const StyledTable = styled('table')`
@@ -90,13 +90,15 @@ const Row: FC<{ label: string; value: string }> = props => {
 	const { label, value } = props;
 	// TODO: Make '|' a constant.
 	const text = value.includes('|')
-		? `${value.split('|').map(val => `<p key="${escape(val)}">${title(escape(val))}</p>`)}`
-		: `<p>${escape(value)}</p>`;
+		? `${value.split('|').map(val => `<span key="${escape(val)}">${title(escape(val))}</span>`)}`
+		: `<span>${escape(value)}</span>`;
 
 	return <DangerousRow label={label} value={text} />;
 };
 
-export const HackerView: FC<RouteComponentProps<{ id: string }>> = props => {
+export type HackerViewProps = RouteComponentProps<{ id: string }>;
+
+export const HackerView: FC<HackerViewProps> = props => {
 	const { match } = props;
 	const { data, loading, error } = useDetailedHackerQuery({ variables: { id: match.params.id } });
 	const fileReadUrlQuery = useSignedReadUrlQuery({
@@ -148,10 +150,9 @@ export const HackerView: FC<RouteComponentProps<{ id: string }>> = props => {
 							}
 
 							const value =
-								(hacker.application.find(el => el.question === fieldName) || { answer: '' })
-									.answer || 'Not provided';
+								hacker.application.find(el => el.question === fieldName)?.answer ?? 'Not provided';
 
-							if (['codeOfConduct', 'infoSharingConsent'].includes(fieldName)) {
+							if (['codeOfConduct', 'infoSharingConsent', 'hackathonWaiver'].includes(fieldName)) {
 								return (
 									<Row
 										key={fieldName}

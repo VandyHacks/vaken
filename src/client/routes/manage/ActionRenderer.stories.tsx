@@ -1,7 +1,9 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
 import { MemoryRouter } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
 import { createActionRenderer, ActionRendererProps } from './ActionRenderer';
+import { theme } from '../../app';
 import { ApplicationStatus } from '../../generated/graphql';
 
 const Component = createActionRenderer(async () => void 0);
@@ -12,9 +14,11 @@ export default {
 } as Meta;
 
 const Template: Story<ActionRendererProps> = args => (
-	<MemoryRouter>
-		<Component {...args} />
-	</MemoryRouter>
+	<ThemeProvider theme={theme}>
+		<MemoryRouter>
+			<Component {...args} />
+		</MemoryRouter>
+	</ThemeProvider>
 );
 
 export const Accepted: Story<ActionRendererProps> = args => <Template {...args} />;

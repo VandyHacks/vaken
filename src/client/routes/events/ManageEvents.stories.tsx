@@ -20,22 +20,6 @@ export default {
 const mocks: MockedResponse[] = [
 	{
 		request: {
-			query: CompaniesDocument,
-		},
-		result: {
-			data: {
-				companies: [
-					{
-						tier: { name: 'platinum', id: '1', permissions: ['nfc'] },
-						id: '1',
-						name: 'Our Favorite Sponsor',
-					},
-				],
-			},
-		} as CompaniesQueryResult,
-	},
-	{
-		request: {
 			query: EventsDocument,
 		},
 		result: {
@@ -52,6 +36,22 @@ const mocks: MockedResponse[] = [
 				],
 			},
 		} as EventsQueryResult,
+	},
+	{
+		request: {
+			query: CompaniesDocument,
+		},
+		result: {
+			data: {
+				companies: [
+					{
+						tier: { name: 'platinum', id: '1', permissions: ['nfc'] },
+						id: '1',
+						name: 'Our Favorite Sponsor',
+					},
+				],
+			},
+		} as CompaniesQueryResult,
 	},
 ];
 

@@ -37,7 +37,7 @@ const Float = styled.div`
 const TableLayout = styled('div')`
 	width: 100%;
 	box-sizing: border-box;
-	flex: 1 0 auto;
+	flex: 1;
 	display: flex;
 	flex-direction: column;
 `;
@@ -54,10 +54,6 @@ const AddRemBtn = styled.img`
 	display: inline-block;
 	height: 2rem;
 	margin-left: 10px;
-`;
-
-const TableData = styled('div')`
-	flex: 1 1 auto;
 `;
 
 const ColumnSelect = styled(Select)`
@@ -236,7 +232,7 @@ const HackerTable: FC<HackerTableProps> = ({
 	viewResumes = false,
 }: HackerTableProps): JSX.Element => {
 	const table = useContext(TableContext);
-	const [eventIds, setEventIds] = useState([] as string[]);
+	const [eventIds, setEventIds] = useState<string[]>([]);
 	const [sortedData, setSortedData] = useState(data);
 	const deselect = useRef<DeselectElement>(null);
 	const [updateStatus] = useHackerStatusMutation();
@@ -416,60 +412,58 @@ const HackerTable: FC<HackerTableProps> = ({
 					Export
 				</CSVLink>
 			</TableOptions>
-			<TableData>
-				<AutoSizer>
-					{({ height, width }) => (
-						<SelectableGroup
-							clickClassName="selected"
-							enableDeselect
-							deselectOnEsc
-							tolerance={0}
-							allowClickWithoutSelected={false}
-							onSelectionClear={onSelectionClear(table)}
-							onSelectionFinish={onSelectionFinish(table)}
-							ignoreList={['.ignore-select']}
-							resetOnStart>
-							<HackerTableRows
-								width={width}
-								height={height}
-								updateStatus={updateStatus}
-								sortedData={sortedData}
-								onSortColumnChange={onSortColumnChange}
-								generateRowClassName={generateRowClassName}
-								table={table}
-								isSponsor={isSponsor}
-								viewResumes={viewResumes}
-							/>
-							{selectAll || hasSelection ? (
-								<DeselectAll ref={deselect}>{SelectAllButton}</DeselectAll>
-							) : (
-								<SelectAll
-									onClick={() =>
-										table.update(draft => {
-											draft.hasSelection = true;
-											draft.selectedRowsIds = sortedData
-												.filter(row => isSelectable(row.status))
-												.map(row => row.id);
-											console.log(draft.selectedRowsIds);
-										})
-									}>
-									{SelectAllButton}
-								</SelectAll>
-							)}
-							{hasSelection && (
-								<Float className="ignore-select">
-									<SliderInput
-										updateStatuses={updateStatuses}
-										deselect={deselect}
-										selectedRowsIds={selectedRowsIds}
-										sortBy={sortBy}
-									/>
-								</Float>
-							)}
-						</SelectableGroup>
-					)}
-				</AutoSizer>
-			</TableData>
+			<AutoSizer>
+				{({ height, width }) => (
+					<SelectableGroup
+						clickClassName="selected"
+						enableDeselect
+						deselectOnEsc
+						tolerance={0}
+						allowClickWithoutSelected={false}
+						onSelectionClear={onSelectionClear(table)}
+						onSelectionFinish={onSelectionFinish(table)}
+						ignoreList={['.ignore-select']}
+						resetOnStart>
+						<HackerTableRows
+							width={width}
+							height={height}
+							updateStatus={updateStatus}
+							sortedData={sortedData}
+							onSortColumnChange={onSortColumnChange}
+							generateRowClassName={generateRowClassName}
+							table={table}
+							isSponsor={isSponsor}
+							viewResumes={viewResumes}
+						/>
+						{selectAll || hasSelection ? (
+							<DeselectAll ref={deselect}>{SelectAllButton}</DeselectAll>
+						) : (
+							<SelectAll
+								onClick={() =>
+									table.update(draft => {
+										draft.hasSelection = true;
+										draft.selectedRowsIds = sortedData
+											.filter(row => isSelectable(row.status))
+											.map(row => row.id);
+										console.log(draft.selectedRowsIds);
+									})
+								}>
+								{SelectAllButton}
+							</SelectAll>
+						)}
+						{hasSelection && (
+							<Float className="ignore-select">
+								<SliderInput
+									updateStatuses={updateStatuses}
+									deselect={deselect}
+									selectedRowsIds={selectedRowsIds}
+									sortBy={sortBy}
+								/>
+							</Float>
+						)}
+					</SelectableGroup>
+				)}
+			</AutoSizer>
 		</TableLayout>
 	);
 };

@@ -33,7 +33,7 @@ To create a production build, run `npm build`.
 
 ### Testing
 
-We use Jest for testing. Snapshot testing is mostly for frontend, while mocking is preferable for backend.
+We use Jest for testing. Happo screenshot testing is mostly for frontend, while mocking is preferable for backend.
 
 Our local jest tests use the `--only-changed` option, which runs tests only for files that are actually changed, to speed up testing. NOTE: the CI will run all the tests regardless.
 
@@ -107,7 +107,8 @@ In [./src/server/resolvers.ts](./src/server/resolvers/index.ts)
 We use:
 
 - Jest for testing
-- Circle CI
+- Happo for screenshot diff verification
+- GitHub Actions
 - Eslint (there's a different config for server and client)
 - Prettier (can be used with `npm format` but we also use the eslint integration)
 - [Ts-node-dev](https://github.com/whitecolor/ts-node-dev) for auto reloading server
@@ -125,3 +126,4 @@ We use:
 In this repo, Github Actions are used for:
 
 - delete merged PR branches
+- CI

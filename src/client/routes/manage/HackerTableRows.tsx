@@ -14,13 +14,17 @@ import { Status } from '../../components/Text/Status';
 import { Checkmark } from '../../components/Symbol/Checkmark';
 
 import { Row } from './Row';
-import { createActionRenderer, HackerStatusMutationFn } from './ActionRenderer';
+import {
+	ActionRendererProps,
+	createActionRenderer,
+	HackerStatusMutationFn,
+} from './ActionRenderer';
 import { reimbursementHeaderRenderer } from './ReimbursementHeader';
 import { ResumeLink } from './ResumeLink';
 
 import { ApplicationStatus } from '../../generated/graphql';
 import STRINGS from '../../assets/strings.json';
-import { SortFnProps, QueriedHacker } from './HackerTableTypes';
+import { QueriedHacker, SortFnProps } from './HackerTableTypes';
 import { TableCtxI } from '../../contexts/TableContext';
 
 // Removes unwanted highlighting, adds alternating row colors
@@ -115,16 +119,13 @@ const statusRenderer = ({ cellData }: TableCellProps): JSX.Element => {
 	return <Status value={cellData} generateColor={generateColor} fontColor="gray" />;
 };
 
-interface ActionRendererProps {
-	rowData: QueriedHacker;
-}
 const ResumeRenderer: FC<ActionRendererProps> = ({ rowData: { id } }) => <ResumeLink id={id} />;
 
-interface HackerTableRowsProps {
+export interface HackerTableRowsProps {
 	generateRowClassName: (arg: { index: number }) => string;
 	height: number;
 	onSortColumnChange: (ctx: TableCtxI) => (p: SortFnProps) => void;
-	sortedData: unknown[];
+	sortedData: QueriedHacker[];
 	table: TableCtxI;
 	updateStatus: HackerStatusMutationFn;
 	width: number;
@@ -243,6 +244,4 @@ export const HackerTableRows = ({
 	);
 };
 
-export default {
-	HackerTableRows,
-};
+export default HackerTableRows;

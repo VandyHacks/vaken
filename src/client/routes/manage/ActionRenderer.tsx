@@ -19,8 +19,8 @@ export type HackerStatusMutationFn = MutationFunction<
 	HackerStatusMutationVariables
 >;
 
-interface ActionRendererProps {
-	rowData: QueriedHacker;
+export interface ActionRendererProps {
+	rowData: Pick<QueriedHacker, 'id' | 'status'>;
 }
 const Actions = styled('div')`
 	display: flex;
