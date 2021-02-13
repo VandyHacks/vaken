@@ -105,7 +105,7 @@ const CheckboxRaw: FC<Props & { titleCase?: boolean }> = ({
 										<img src={UncheckedSvg} alt="unchecked" width="24px" height="24px" />
 									)}
 									{/* eslint-disable-next-line react/no-danger */}
-									<p dangerouslySetInnerHTML={{ __html: titleCase ? title(option) : option }} />
+									<span dangerouslySetInnerHTML={{ __html: titleCase ? title(option) : option }} />
 								</label>
 							</div>
 						);

@@ -1,10 +1,7 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
-import { ThemeProvider } from 'styled-components';
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
-import { MemoryRouter } from 'react-router-dom';
 import Component, { GET_STATISTICS } from './OrganizerDash';
-import { theme } from '../../app';
 
 export default {
 	title: 'Routes/Dashboard/Organizer Dash',
@@ -56,11 +53,7 @@ const mocks: MockedResponse[] = [
 ];
 
 export const OrganizerDash: Story<Record<string, unknown>> = args => (
-	<ThemeProvider theme={theme}>
-		<MockedProvider mocks={mocks}>
-			<MemoryRouter>
-				<Component {...args} />
-			</MemoryRouter>
-		</MockedProvider>
-	</ThemeProvider>
+	<MockedProvider mocks={mocks}>
+		<Component {...args} />
+	</MockedProvider>
 );

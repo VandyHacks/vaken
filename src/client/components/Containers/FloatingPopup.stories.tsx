@@ -1,7 +1,6 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
-import { MemoryRouter } from 'react-router-dom';
-import Component, { Props } from './FloatingPopup';
+import Component from './FloatingPopup';
 
 export default {
 	title: 'Components/Containers/Floating Popup',
@@ -14,8 +13,4 @@ export default {
 	},
 } as Meta;
 
-export const FloatingPopup: Story<Props> = args => (
-	<MemoryRouter>
-		<Component {...args} />
-	</MemoryRouter>
-);
+export const FloatingPopup: Story<Props> = args => <Component {...args} />;

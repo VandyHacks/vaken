@@ -1,33 +1,26 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
-import { MemoryRouter } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
 import {
-	ErrorMessage as Component,
-	ErrorMessageProps as Props,
-	GraphQLErrorMessage as GQLComponent,
-	GraphQLErrorMessageProps as GQLProps,
+	ErrorMessage,
+	ErrorMessageProps,
+	GraphQLErrorMessage,
+	GraphQLErrorMessageProps,
 } from './ErrorMessage';
-import { theme } from '../../app';
 
 export default {
 	title: 'Components/Text/Error Message',
-	component: Component,
+	component: ErrorMessage,
 } as Meta;
 
-export const ErrorMessage: Story<Props> = args => <Component {...args} />;
-ErrorMessage.args = { children: <p>This is an error message</p> };
+export const DefaultErrorMessage: Story<ErrorMessageProps> = args => <ErrorMessage {...args} />;
+DefaultErrorMessage.args = { children: <p>This is an error message</p> };
 
-export const GraphQLErrorMessage: Story<GQLProps> = args => (
-	<ThemeProvider theme={theme}>
-		<MemoryRouter>
-			<GQLComponent {...args} />
-		</MemoryRouter>
-	</ThemeProvider>
+export const DefaultGraphQLErrorMessage: Story<GraphQLErrorMessageProps> = args => (
+	<GraphQLErrorMessage {...args} />
 );
-GraphQLErrorMessage.args = { text: 'This is an error message' };
+DefaultGraphQLErrorMessage.args = { text: 'This is an error message' };
 
-export const GraphQLErrorMessageWithLongText: Story<GQLProps> = args => (
+export const GraphQLErrorMessageWithLongText: Story<GraphQLErrorMessageProps> = args => (
 	<GraphQLErrorMessage {...args} />
 );
 GraphQLErrorMessageWithLongText.args = {

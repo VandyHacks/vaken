@@ -1,10 +1,8 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
-import { MemoryRouter } from 'react-router-dom';
 import Component from './Application';
 import { MyApplicationQueryResult, MyApplicationDocument } from '../../generated/graphql';
-import { GlobalStyle } from '../../app';
 
 export default {
 	title: 'Routes/Application/Application',
@@ -41,9 +39,6 @@ const mocks = [
 
 export const Application: Story<Record<string, unknown>> = args => (
 	<MockedProvider mocks={mocks}>
-		<MemoryRouter>
-			<GlobalStyle />
-			<Component {...args} />
-		</MemoryRouter>
+		<Component {...args} />
 	</MockedProvider>
 );

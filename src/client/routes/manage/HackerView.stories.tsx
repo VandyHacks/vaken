@@ -1,8 +1,6 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
-import { MemoryRouter } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
 import {
 	ApplicationStatus,
 	DetailedHackerDocument,
@@ -12,13 +10,7 @@ import {
 	SignedReadUrlQueryResult,
 	UserType,
 } from '../../generated/graphql';
-import Component, { HackerViewProps } from './HackerView';
-import { theme } from '../../app';
-
-export default {
-	title: 'Routes/Manage/Hacker Table/Hacker View',
-	component: Component,
-} as Meta;
+import { HackerViewProps, HackerView } from './HackerView';
 
 const HACKER_ID = '12345';
 
@@ -107,15 +99,17 @@ const mocks: MockedResponse<
 	},
 ];
 
-const HackerView: Story<HackerViewProps> = args => (
-	<MemoryRouter>
-		<ThemeProvider theme={theme}>
+export default {
+	title: 'Routes/Manage/Hacker Table/Hacker View',
+	component: HackerView,
+	decorators: [
+		StoryComponent => (
 			<MockedProvider mocks={mocks as MockedResponse[]}>
-				<Component {...args} />
+				<StoryComponent />
 			</MockedProvider>
-		</ThemeProvider>
-	</MemoryRouter>
-);
+		),
+	],
+} as Meta;
 
 export const WithFakeData: Story<HackerViewProps> = args => <HackerView {...args} />;
 WithFakeData.args = {

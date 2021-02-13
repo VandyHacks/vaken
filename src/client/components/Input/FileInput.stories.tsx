@@ -4,7 +4,6 @@ import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import Component from './FileInput';
 import { InputProps as Props } from './TextInput';
 import { SignedReadUrlDocument, SignedReadUrlQueryResult } from '../../generated/graphql';
-import { GlobalStyle } from '../../app';
 
 export default {
 	title: 'Components/Input/File Input',
@@ -27,21 +26,13 @@ const mocks = [
 
 export const FileInput: Story<Props> = args => (
 	<MockedProvider>
-		<>
-			{/* Button sizing and font is from the global stylesheet. */}
-			<GlobalStyle />
-			<Component {...args} />
-		</>
+		<Component {...args} />
 	</MockedProvider>
 );
 
 export const FileInputWithExistingUpload: Story<Props> = args => (
 	<MockedProvider mocks={mocks}>
-		<>
-			{/* Button sizing, link styling, and font is from the global stylesheet. */}
-			<GlobalStyle />
-			<Component {...args} />
-		</>
+		<Component {...args} />
 	</MockedProvider>
 );
 FileInputWithExistingUpload.args = { value: 'userid123' };

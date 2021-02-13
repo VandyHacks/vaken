@@ -1,8 +1,6 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
-import { MemoryRouter } from 'react-router-dom';
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
-import { ThemeProvider } from 'styled-components';
 import Component from './CreateSponsor';
 import {
 	TiersDocument,
@@ -10,7 +8,6 @@ import {
 	TiersQueryResult,
 	CompaniesQueryResult,
 } from '../../generated/graphql';
-import { theme } from '../../app';
 
 export default {
 	title: 'Routes/Manage/Create Sponsor',
@@ -46,10 +43,6 @@ const mocks: MockedResponse[] = [
 
 export const CreateSponsor: Story<Record<string, unknown>> = args => (
 	<MockedProvider mocks={mocks}>
-		<MemoryRouter>
-			<ThemeProvider theme={theme}>
-				<Component {...args} />
-			</ThemeProvider>
-		</MemoryRouter>
+		<Component {...args} />
 	</MockedProvider>
 );

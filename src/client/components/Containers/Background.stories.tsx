@@ -1,6 +1,5 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
-import { MemoryRouter } from 'react-router-dom';
 import Component, { Props } from './Background';
 
 export default {
@@ -12,8 +11,4 @@ export default {
 	},
 } as Meta;
 
-export const Background: Story<Props> = args => (
-	<MemoryRouter>
-		<Component {...args} />
-	</MemoryRouter>
-);
+export const Background: Story<Props> = args => <Component {...args} />;

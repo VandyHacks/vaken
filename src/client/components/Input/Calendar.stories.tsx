@@ -2,7 +2,6 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
 import Component from './Calendar';
 import { InputProps as Props } from './TextInput';
-import { GlobalStyle } from '../../app';
 
 export default {
 	title: 'Components/Input/Calendar Input',
@@ -13,9 +12,4 @@ export default {
 	},
 } as Meta;
 
-export const CalendarInput: Story<Props> = args => (
-	<>
-		<GlobalStyle />
-		<Component {...args} />
-	</>
-);
+export const CalendarInput: Story<Props> = args => <Component {...args} />;

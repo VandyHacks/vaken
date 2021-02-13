@@ -5,7 +5,6 @@ import Component, {
 	ShirtSlider as ShirtComponent,
 	Props,
 } from './Slider';
-import { GlobalStyle } from '../../app';
 import { ShirtSize } from '../../generated/graphql';
 
 export default {
@@ -17,22 +16,7 @@ export default {
 	},
 } as Meta;
 
-export const Slider: Story<Props> = args => (
-	<>
-		<GlobalStyle />
-		<Component {...args} />
-	</>
-);
-export const SliderSansTitleCase: Story<Props> = args => (
-	<>
-		<GlobalStyle />
-		<ComponentSansTitleCase {...args} />
-	</>
-);
-export const ShirtSlider: Story<Props> = args => (
-	<>
-		<GlobalStyle />
-		<ShirtComponent {...args} />
-	</>
-);
+export const Slider: Story<Props> = args => <Component {...args} />;
+export const SliderSansTitleCase: Story<Props> = args => <ComponentSansTitleCase {...args} />;
+export const ShirtSlider: Story<Props> = args => <ShirtComponent {...args} />;
 ShirtSlider.args = { options: [ShirtSize.Xs, ShirtSize.WomensM], value: 'XS' };

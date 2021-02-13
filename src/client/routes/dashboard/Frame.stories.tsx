@@ -1,8 +1,6 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
-import { ThemeProvider } from 'styled-components';
-import { MemoryRouter } from 'react-router-dom';
 import { MyStatusDocument, MyStatusQueryResult } from '../../generated/graphql';
 import Component from './Frame';
 import { theme } from '../../app';
@@ -30,10 +28,6 @@ const mocks = [
 
 export const Frame: Story<Record<string, unknown>> = args => (
 	<MockedProvider mocks={mocks}>
-		<MemoryRouter>
-			<ThemeProvider theme={theme}>
-				<Component {...args} />
-			</ThemeProvider>
-		</MemoryRouter>
+		<Component {...args} />
 	</MockedProvider>
 );

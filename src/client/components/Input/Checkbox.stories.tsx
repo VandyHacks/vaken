@@ -2,7 +2,6 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
 import Component, { CheckboxSansTitleCase as ComponentSansTitleCase } from './Checkbox';
 import { InputProps as Props } from './TextInput';
-import { GlobalStyle } from '../../app';
 
 export default {
 	title: 'Components/Input/Checkbox',
@@ -27,15 +26,5 @@ export default {
 	},
 } as Meta;
 
-export const Checkbox: Story<Props> = args => (
-	<>
-		<GlobalStyle />
-		<Component {...args} />
-	</>
-);
-export const CheckboxSansTitleCase: Story<Props> = args => (
-	<>
-		<GlobalStyle />
-		<ComponentSansTitleCase {...args} />
-	</>
-);
+export const Checkbox: Story<Props> = args => <Component {...args} />;
+export const CheckboxSansTitleCase: Story<Props> = args => <ComponentSansTitleCase {...args} />;

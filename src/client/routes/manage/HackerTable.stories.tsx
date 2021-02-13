@@ -1,8 +1,6 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
-import { MemoryRouter } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
 import { useImmer } from 'use-immer';
 import { defaultTableState, TableContext } from '../../contexts/TableContext';
 import {
@@ -16,12 +14,6 @@ import {
 	UserType,
 } from '../../generated/graphql';
 import Component, { HackerTableProps } from './HackerTable';
-import { theme } from '../../app';
-
-export default {
-	title: 'Routes/Manage/Hacker Table/Hacker Table',
-	component: Component,
-} as Meta;
 
 const mocks: MockedResponse[] = [
 	{
@@ -56,18 +48,26 @@ const mocks: MockedResponse[] = [
 	},
 ];
 
+export default {
+	title: 'Routes/Manage/Hacker Table/Hacker Table',
+	component: Component,
+	decorators: [
+		StoryComponent => (
+			<MockedProvider mocks={mocks}>
+				<StoryComponent />
+			</MockedProvider>
+		),
+	],
+} as Meta;
+
+// TableContext works better inside the story than as a story decorator because
+// the latter method forcibly re-renders the entire story when changed.
 const HackerTable: Story<HackerTableProps> = args => {
 	const [tableState, setTableState] = useImmer(defaultTableState);
 	return (
-		<MockedProvider mocks={mocks}>
-			<TableContext.Provider value={{ state: tableState, update: setTableState }}>
-				<MemoryRouter>
-					<ThemeProvider theme={theme}>
-						<Component {...args} />
-					</ThemeProvider>
-				</MemoryRouter>
-			</TableContext.Provider>
-		</MockedProvider>
+		<TableContext.Provider value={{ state: tableState, update: setTableState }}>
+			<Component {...args} />
+		</TableContext.Provider>
 	);
 };
 

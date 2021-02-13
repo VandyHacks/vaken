@@ -9,7 +9,7 @@ module.exports = {
 		'!./src/**/*.d.ts',
 		'!**/*.test.ts*',
 	],
-	coverageReporters: ['text', 'lcov'],
+	coverageReporters: ['text', 'html'],
 	testPathIgnorePatterns: ['/node_modules/', '.eslintrc.js'],
 	projects: [
 		{
@@ -57,7 +57,7 @@ module.exports = {
 			// testing config for ./common
 			displayName: 'Test other',
 			testMatch: ['<rootDir>/src/common/**/*.test.ts'],
-			setupFiles: ['./__mocks__/env.js'],
+			setupFiles: ['./__mocks__/env.js'], // eslint-disable-line import/no-extraneous-dependencies
 			transform: {
 				'^.+\\.jsx?$': 'babel-jest',
 			},
@@ -67,10 +67,11 @@ module.exports = {
 		{
 			displayName: 'Add Happo/Storybook tests to code coverage numbers',
 			testMatch: ['<rootDir>/.storyshots/index.js'],
-			transform: {
-				'^.+\\.jsx?$': 'babel-jest',
+			moduleNameMapper: {
+				'\\.svg': '<rootDir>/__mocks__/svgrMock.js', // see https://github.com/smooth-code/svgr/issues/83
+				'\\.(css|less)$': 'jest-transform-css',
+				'\\.(jpg|jpeg|png|gif)$': '<rootDir>/__mocks__/svgrMock.js',
 			},
-			preset: 'ts-jest',
 		},
 	],
 };

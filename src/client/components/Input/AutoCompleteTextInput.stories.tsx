@@ -1,7 +1,6 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
 import Component, { Props } from './AutoCompleteTextInput';
-import { GlobalStyle } from '../../app';
 
 export default {
 	title: 'Components/Input/Auto Complete Text Input',
@@ -27,9 +26,4 @@ export default {
 	},
 } as Meta;
 
-export const AutoCompleteTextInput: Story<Props> = args => (
-	<>
-		<GlobalStyle />
-		<Component {...args} />
-	</>
-);
+export const AutoCompleteTextInput: Story<Props> = args => <Component {...args} />;

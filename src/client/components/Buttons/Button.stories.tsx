@@ -1,16 +1,13 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
-import { ThemeProvider } from 'styled-components';
-import { MemoryRouter } from 'react-router-dom';
-import { Button as Component } from './Button';
+import { Button } from './Button';
 import type { ButtonProps as Props } from './Button.d';
 import FloatingPopup from '../Containers/FloatingPopup';
 import googleLogo from '../../assets/img/google_logo.svg';
-import { theme } from '../../app';
 
 export default {
 	title: 'Components/Button',
-	component: Component,
+	component: Button,
 	argTypes: {
 		onClick: { action: 'onClick' },
 		filled: { control: 'boolean' },
@@ -26,16 +23,6 @@ export default {
 	},
 	args: { children: 'Save' },
 } as Meta;
-
-const Button: Story<Props> = args => {
-	return (
-		<MemoryRouter>
-			<ThemeProvider theme={theme}>
-				<Component {...args} />
-			</ThemeProvider>
-		</MemoryRouter>
-	);
-};
 
 export const DefaultButton: Story<Props> = args => <Button {...args} />;
 
