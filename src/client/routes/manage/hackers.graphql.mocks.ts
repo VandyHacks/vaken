@@ -28,6 +28,7 @@ export const DetailedHackerQueryMock: MockedResponse<
 > = {
 	request: {
 		query: DetailedHackerDocument,
+		variables: { id: MOCK_HACKER.id },
 	},
 	result: {
 		data: {

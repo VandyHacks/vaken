@@ -31,16 +31,7 @@ export const EventsForHackersQueryMock: MockedResponse<EventsForHackersQueryResu
 	},
 	result: {
 		data: {
-			events: [
-				{
-					__typename: 'Event',
-					id: MOCK_CHECK_IN_EVENT.id,
-					name: MOCK_CHECK_IN_EVENT.name,
-					eventType: MOCK_CHECK_IN_EVENT.eventType,
-					startTimestamp: MOCK_CHECK_IN_EVENT.startTimestamp,
-					duration: MOCK_CHECK_IN_EVENT.duration,
-				},
-			],
+			events: [{ ...MOCK_CHECK_IN_EVENT, __typename: 'Event' }],
 		},
 	},
 };

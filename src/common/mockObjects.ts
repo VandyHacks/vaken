@@ -59,6 +59,7 @@ export const MOCK_HACKER: Hacker = {
 		memberIds: [tabeHackerId],
 		name: 'My Team Name',
 	},
+	volunteer: 'No',
 	application: [
 		{ id: '1', createdAt, userId, question: 'firstName', answer: 'Tabriel' },
 		{ id: '2', createdAt, userId, question: 'lastName', answer: 'Ging' },
@@ -130,12 +131,13 @@ export const MOCK_CHECK_IN_EVENT: Event = {
 	duration: 3600,
 	eventType: CHECK_IN_EVENT_TYPE,
 	id: '888',
-	startTimestamp: new Date(2021, 3, 1).getTime(),
+	startTimestamp: new Date().getTime(), // Always display this event.
 	location: 'Atrium',
 	warnRepeatedCheckins: true,
 	name: 'Check In',
 	description: 'Check in event',
 	eventScore: 20,
+	owner: null,
 };
 
 export const MOCK_SPONSOR_CHECK_IN_EVENT: Event = {
