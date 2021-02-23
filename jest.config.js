@@ -9,7 +9,7 @@ module.exports = {
 		'!./src/**/*.d.ts',
 		'!**/*.test.ts*',
 	],
-	coverageReporters: ['text', 'html'],
+	coverageReporters: ['text', 'lcov'],
 	testPathIgnorePatterns: ['/node_modules/', '.eslintrc.js'],
 	projects: [
 		{

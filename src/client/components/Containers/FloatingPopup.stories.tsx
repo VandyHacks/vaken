@@ -13,4 +13,4 @@ export default {
 	},
 } as Meta;
 
-export const FloatingPopup: Story<Props> = args => <Component {...args} />;
+export const FloatingPopup: Story = args => <Component {...args} />;
