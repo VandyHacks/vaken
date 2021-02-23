@@ -62,9 +62,7 @@ export function createActionRenderer(
 						}}
 						disable={!enableApplicationStatusSlider(status)}
 					/>
-				) : (
-					<></>
-				)}
+				) : null}
 				{status && status !== ApplicationStatus.Created && (
 					<Button small outline linkTo={`${window.location.pathname}/detail/${id}`}>
 						View

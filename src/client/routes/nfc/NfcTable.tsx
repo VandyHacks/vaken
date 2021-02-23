@@ -41,10 +41,6 @@ const TableOptions = styled('div')`
 	margin-bottom: 1rem;
 `;
 
-const TableData = styled('div')`
-	flex: 1 1 auto;
-`;
-
 const EventSelect = styled(Select)`
 	min-width: 15rem;
 	width: 100%;
