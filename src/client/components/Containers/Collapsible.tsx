@@ -66,9 +66,12 @@ const CollapsibleBody = styled.div`
 `;
 
 export interface Props extends PopupProps {
+	/** Will be hidden unless `open === true`, and will be exposed with animation when toggling open state. */
 	children?: React.ReactNode;
+	/** Triggers on clicking the title bar. Use to toggle open/closed state. */
 	onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 	open?: boolean;
+	/** Displayed in the header of the collapsible. */
 	title: string;
 }
 

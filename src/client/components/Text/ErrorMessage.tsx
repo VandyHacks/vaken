@@ -21,7 +21,7 @@ const StyledP = styled.p`
 	white-space: pre-line;
 `;
 
-interface ErrorMessageProps {
+export interface ErrorMessageProps {
 	children?: JSX.Element;
 }
 
@@ -37,12 +37,12 @@ export const ErrorMessage: FunctionComponent<ErrorMessageProps> = (
 	);
 };
 
-interface GraphQLErrorMessage {
+export interface GraphQLErrorMessageProps {
 	text?: string;
 }
 
-export const GraphQLErrorMessage: FunctionComponent<GraphQLErrorMessage> = (
-	props: GraphQLErrorMessage
+export const GraphQLErrorMessage: FunctionComponent<GraphQLErrorMessageProps> = (
+	props: GraphQLErrorMessageProps
 ): JSX.Element => {
 	const { text } = props;
 	return (

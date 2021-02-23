@@ -1,17 +1,15 @@
-const { defaults: tsjPreset } = require('ts-jest/presets')
+const { defaults: tsjPreset } = require('ts-jest/presets');
 
 module.exports = {
 	collectCoverage: true,
 	collectCoverageFrom: [
 		'./src/**/*.{ts,tsx}',
+		'!./src/**/*.stories.tsx',
 		'!./src/**/*graphql.ts',
 		'!./src/**/*.d.ts',
 		'!**/*.test.ts*',
 	],
-	coverageReporters: [
-		"text",
-		"lcov",
-	],
+	coverageReporters: ['text', 'lcov'],
 	testPathIgnorePatterns: ['/node_modules/', '.eslintrc.js'],
 	projects: [
 		{
@@ -26,9 +24,6 @@ module.exports = {
 			testEnvironment: 'jsdom',
 			snapshotResolver: './__mocks__/snapshotResolver',
 			moduleNameMapper: {
-				// '../../assets/img/square_hackathon_logo.svg': '<rootDir>/__mocks__/svgrMock.js',
-				// '../../assets/img/unchecked_box.svg': '<rootDir>/__mocks__/svgrMock.js',
-				// '../../assets/img/checked_box.svg': '<rootDir>/__mocks__/svgrMock.js',
 				'\\.svg': '<rootDir>/__mocks__/svgrMock.js', // see https://github.com/smooth-code/svgr/issues/83
 				'\\.(css|less)$': 'jest-transform-css',
 				'\\.(jpg|jpeg|png|gif)$': '<rootDir>/__mocks__/svgrMock.js',
@@ -38,7 +33,6 @@ module.exports = {
 				'^.+\\.css$': 'jest-transform-css',
 			},
 			preset: 'ts-jest',
-			testPathIgnorePatterns: ['__snapshots__', '.eslintrc.js'],
 			setupFilesAfterEnv: ['./src/client/setupTests.js'],
 		},
 		{
@@ -63,7 +57,7 @@ module.exports = {
 			// testing config for ./common
 			displayName: 'Test other',
 			testMatch: ['<rootDir>/src/common/**/*.test.ts'],
-			setupFiles: ['./__mocks__/env.js'],
+			setupFiles: ['./__mocks__/env.js'], // eslint-disable-line import/no-extraneous-dependencies
 			transform: {
 				'^.+\\.jsx?$': 'babel-jest',
 			},
@@ -73,11 +67,11 @@ module.exports = {
 		{
 			displayName: 'Add Happo/Storybook tests to code coverage numbers',
 			testMatch: ['<rootDir>/.storyshots/index.js'],
-			transform: {
-				'^.+\\.jsx?$': 'babel-jest',
+			moduleNameMapper: {
+				'\\.svg': '<rootDir>/__mocks__/svgrMock.js', // see https://github.com/smooth-code/svgr/issues/83
+				'\\.(css|less)$': 'jest-transform-css',
+				'\\.(jpg|jpeg|png|gif)$': '<rootDir>/__mocks__/svgrMock.js',
 			},
-			preset: 'ts-jest',
-
-		}
+		},
 	],
 };

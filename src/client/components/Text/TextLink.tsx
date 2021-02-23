@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, LinkProps } from 'react-router-dom';
 
-interface Props {
+export interface Props extends LinkProps {
 	color?: string;
 	fontFamily?: string;
 	fontSize?: string;

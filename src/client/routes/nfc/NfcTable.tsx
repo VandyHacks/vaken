@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, FC } from 'react';
+import React, { useContext, useState, useEffect, FC, useCallback } from 'react';
 import { AutoSizer, SortDirection, RowMouseEventHandlerParams } from 'react-virtualized';
 import 'react-virtualized/styles.css';
 import styled from 'styled-components';
@@ -39,10 +39,6 @@ const TableOptions = styled('div')`
 	align-items: center;
 	justify-content: space-between;
 	margin-bottom: 1rem;
-`;
-
-const TableData = styled('div')`
-	flex: 1 1 auto;
 `;
 
 const EventSelect = styled(Select)`
@@ -96,22 +92,18 @@ const onSortColumnChange = (ctx: TableCtxI): ((p: SortFnProps) => void) => {
 	};
 };
 
-const onRowClick = (
+const generateOnRowClick = (
 	setTopUserMatch: React.Dispatch<React.SetStateAction<string>>
-): ((p: RowMouseEventHandlerParams) => void) => {
-	console.info('generating fn');
-	return ({ rowData }) => {
-		console.info('inside fun');
-		if (rowData && rowData.id) setTopUserMatch(rowData.id);
-	};
+): ((p: RowMouseEventHandlerParams) => void) => ({ rowData }) => {
+	if (rowData && rowData.id) setTopUserMatch(rowData.id);
 };
 
-interface NfcTableProps {
+export interface Props {
 	hackersData: QueriedHacker[];
 	eventsData: QueriedEvent[];
 }
 
-const NfcTable: FC<NfcTableProps> = ({ hackersData, eventsData }: NfcTableProps): JSX.Element => {
+const NfcTable: FC<Props> = ({ hackersData, eventsData }): JSX.Element => {
 	const EventOptions: { label: string; value: string }[] = eventsData.map(event => {
 		return {
 			label: event.name,
@@ -127,6 +119,7 @@ const NfcTable: FC<NfcTableProps> = ({ hackersData, eventsData }: NfcTableProps)
 	const [manualMode, setManualMode] = useState(false);
 	const [unadmitMode, setUnadmitMode] = useState(false);
 	const [eventSelected, setEventSelected] = useState(eventsData[0]);
+	const onRowClick = useCallback(() => generateOnRowClick(settopUserMatch), [settopUserMatch]);
 
 	const searchBoxRef = React.useRef<HTMLInputElement>(null);
 
@@ -277,23 +270,21 @@ const NfcTable: FC<NfcTableProps> = ({ hackersData, eventsData }: NfcTableProps)
 					Submit
 				</Button>
 			</TableOptions>
-			<TableData>
-				{manualMode || eventSelected.eventType === CHECK_IN_EVENT_TYPE ? (
-					<AutoSizer>
-						{({ height, width }) => (
-							<NfcTableRows
-								width={width}
-								height={height}
-								sortedData={sortedData}
-								onSortColumnChange={onSortColumnChange}
-								generateRowClassName={generateRowClassName(sortedData, topUserMatch)}
-								table={table}
-								rowClickFn={onRowClick(settopUserMatch)}
-							/>
-						)}
-					</AutoSizer>
-				) : null}
-			</TableData>
+			{manualMode || eventSelected.eventType === CHECK_IN_EVENT_TYPE ? (
+				<AutoSizer>
+					{({ height, width }) => (
+						<NfcTableRows
+							width={width}
+							height={height}
+							sortedData={sortedData}
+							onSortColumnChange={onSortColumnChange}
+							generateRowClassName={generateRowClassName(sortedData, topUserMatch)}
+							table={table}
+							rowClickFn={onRowClick}
+						/>
+					)}
+				</AutoSizer>
+			) : null}
 		</TableLayout>
 	);
 };

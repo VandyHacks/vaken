@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { displayFlex } from './FlexContainers';
 
-interface Props {
+export interface Props {
+	/** Image url to be displayed covering the background of the page */
 	img: string;
 }
 

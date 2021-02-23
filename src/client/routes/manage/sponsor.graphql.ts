@@ -17,12 +17,6 @@ export default gql`
 			}
 		}
 	}
-	query sponsor {
-		me {
-			id
-			email
-		}
-	}
 
 	query tiers {
 		tiers {

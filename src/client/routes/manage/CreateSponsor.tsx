@@ -151,8 +151,7 @@ const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 	const [sponsorName, setSponsorName] = useState('');
 	const [companyId, setCompanyId] = useState('');
 	const [createSponsorMsg, setCreateSponsorMsg] = useState('');
-	const { loading, error, data } = useCompaniesQuery();
-	console.log(loading, error, data);
+	const { loading, data } = useCompaniesQuery();
 
 	const [createSponsor] = useCreateSponsorMutation({
 		variables: { input: { companyId, email: sponsorEmail, name: sponsorName } },

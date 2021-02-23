@@ -11,6 +11,12 @@ import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import STRINGS from '../../assets/strings.json';
 import { useMyProfileQuery, UserInput, useUpdateMyProfileMutation } from '../../generated/graphql';
 
+/**
+ * The Profile component updates information directly in the User's DB model, as opposed to the
+ * Application which returns information coded in `ApplicationFields`. The latter requires a
+ * workaround in the resolver to extract the relevant User fields into the DB model for easier
+ * querying.
+ */
 export const Profile: React.FunctionComponent = (): JSX.Element => {
 	const { update: setActionButton } = useContext(ActionButtonContext);
 	const { data, loading, error } = useMyProfileQuery();

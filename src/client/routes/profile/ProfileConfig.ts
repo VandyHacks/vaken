@@ -1,7 +1,7 @@
 // import AutoComplete from '../../components/Input/AutoCompleteTextInput';
 import { Gender, ShirtSize } from '../../generated/graphql';
 import { Input as TextInput } from '../../components/Input/TextInput';
-import { Slider, SliderShirtSizes } from '../../components/Input/Slider';
+import { Slider, ShirtSlider } from '../../components/Input/Slider';
 // import { Boolean } from '../../components/Input/Boolean';
 // import Calendar from '../../components/Input/Calendar';
 
@@ -39,7 +39,7 @@ export const profile = [
 		validation: '^(\\(?\\+?[0-9]*\\)?)?[0-9_\\- \\(\\)]*$',
 	},
 	{
-		Component: SliderShirtSizes,
+		Component: ShirtSlider,
 		fieldName: 'shirtSize',
 		optional: true,
 		options: [

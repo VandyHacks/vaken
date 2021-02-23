@@ -3,10 +3,12 @@ import { RightPaddedImg, ButtonOutline } from '../Buttons/Buttons';
 import TextInput, { InputProps } from './TextInput';
 import { regexWrapper } from './helperFunctions';
 
-interface Props extends InputProps {
+export interface Props extends InputProps {
 	img: string;
 	imgAlt: string;
 	invalid?: boolean;
+	/** Regex pattern for validation */
+	pattern?: string;
 }
 
 const LeftImgTextInput = (props: Props): JSX.Element => {

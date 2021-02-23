@@ -24,7 +24,7 @@ const Layout = styled.div`
 	grid-template-areas: 'image text';
 `;
 
-interface Props {
+export interface Props {
 	value: string;
 }
 

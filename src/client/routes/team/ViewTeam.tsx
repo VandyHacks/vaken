@@ -18,7 +18,7 @@ const Status = styled.div`
 	margin-bottom: 1rem;
 `;
 
-interface Props {
+export interface Props {
 	teamName: string;
 }
 

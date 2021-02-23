@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-interface Props {
+export interface Props {
 	color?: string;
 	fontFamily?: string;
 	fontSize?: string;
@@ -8,6 +8,8 @@ interface Props {
 	margin?: string;
 	marginBottom?: string;
 	textAlign?: string;
+	/** Text to style */
+	children: React.ReactChild;
 }
 
 /**

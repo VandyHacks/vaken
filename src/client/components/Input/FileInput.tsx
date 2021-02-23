@@ -6,6 +6,10 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { useSignedUploadUrlMutation, useSignedReadUrlQuery } from '../../generated/graphql';
 import STRINGS from '../../assets/strings.json';
 
+/**
+ * Counter to allow for multiple FileInput elements to coexist on the same page.
+ * The htmlFor prop requires a unique target.
+ */
 let globalCounter = 0;
 
 const FileInputEl = styled.input`
@@ -52,6 +56,18 @@ const Container = styled.div`
 	}
 `;
 
+/**
+ * Component which allows user to upload a file.
+ * This component calls the `setState` prop with the userID of the user uploading the file,
+ * which corresponds to the name in the GCP storage bucket.
+ *
+ * Upon uploading a file, the backend is queried for a signed upload url for our GCP bucket,
+ * and the file is uploaded directly to GCP.
+ *
+ * A non-empty `value` prop is treated as a filename which should be fetched from the GCP bucket.
+ * Upon receiving a non-empty `value`, the backend is queried for a signed read url which is used
+ * to show a link on the "View Uploaded Resume" button.
+ */
 export const FileInput: FC<InputProps> = props => {
 	const [file, setFile] = useState<File>();
 	const [getSignedUploadUrl] = useSignedUploadUrlMutation();

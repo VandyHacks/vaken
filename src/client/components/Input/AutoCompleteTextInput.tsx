@@ -1,7 +1,11 @@
 import React, { FC, useState, useEffect } from 'react';
 import { Input, InputProps } from './TextInput';
 
-interface Props extends InputProps {
+export interface Props extends InputProps {
+	/**
+	 * An array or promise to an array of strings to be autocompleted on typing.
+	 * This component allows custom inputs in addition to the provided options.
+	 */
 	options?: Promise<{ data: string[] }> | string[];
 }
 

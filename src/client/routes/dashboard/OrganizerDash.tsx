@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { Bar, Pie, ChartData } from 'react-chartjs-2';
-import { gql } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import { ChartData as OldChartData, ChartOptions } from 'chart.js';
 
@@ -244,10 +244,10 @@ export const OrganizerDash: FunctionComponent = (): JSX.Element => {
 	// TODO(leonm1/tangck): Fix queries to show real data. Should also clean up imports when done.
 	// Currently the { loading: true } will stop this component from causing errors in prod.
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const { loading, error, data } = { data: {} as any, error: 'Not Implemented', loading: true };
-	// const { loading, error, data } = useQuery(GET_STATISTICS, {
-	// 	variables: { number: 5.0 },
-	// });
+	// const { loading, error, data } = { data: {} as any, error: 'Not Implemented', loading: true };
+	const { loading, error, data } = useQuery(GET_STATISTICS, {
+		variables: { number: 5.0 },
+	});
 
 	if (loading) return <Spinner />;
 	if (error) {

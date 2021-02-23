@@ -194,9 +194,11 @@ export const HackerDash: FunctionComponent = (): JSX.Element => {
 									color={`${STRINGS.DARK_TEXT_COLOR}`}
 									fontSize="1rem"
 									margin="1.4rem">
-									<p style={{ fontWeight: 'bold' }}>{statusInfo.boldText}</p>
-									<br />
-									{statusInfo.text}
+									<>
+										<p style={{ fontWeight: 'bold' }}>{statusInfo.boldText}</p>
+										<br />
+										{statusInfo.text}
+									</>
 								</SmallCenteredText>
 							</>
 						)}

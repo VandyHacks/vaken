@@ -10,7 +10,7 @@ import { useMeQuery } from './generated/graphql';
 import 'react-toastify/dist/ReactToastify.css';
 import { ACCENT_COLOR, DARK_TEXT_COLOR, WARNING_COLOR } from './assets/strings.json';
 
-const GlobalStyle = createGlobalStyle`
+export const GlobalStyle = createGlobalStyle`
 	${reset}
 
 	html, body, #App {

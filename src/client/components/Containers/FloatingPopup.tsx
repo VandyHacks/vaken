@@ -9,6 +9,7 @@ export const hexToRGB = (hex: string): string => {
 };
 
 export interface Props extends ContainerProps {
+	/** May only be specified as a hex value to enable opacity.  */
 	backgroundColor?: string;
 	backgroundOpacity?: string;
 	borderRadius?: string;
