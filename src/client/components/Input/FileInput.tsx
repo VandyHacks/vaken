@@ -26,7 +26,7 @@ const FileLabelEl = styled.label`
 	cursor: pointer;
 	font-size: 1.2rem;
 	padding: 0.6rem 2rem;
-	background: ${STRINGS.ACCENT_COLOR};
+	background: ${STRINGS.ACCENT_COLOR_DARK};
 	width: fit-content;
 	color: white;
 	border-radius: 4px;

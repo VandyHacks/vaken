@@ -8,7 +8,7 @@ import Frame from './routes/dashboard/Frame';
 import { AuthContext } from './contexts/AuthContext';
 import { useMeQuery } from './generated/graphql';
 import 'react-toastify/dist/ReactToastify.css';
-import { ACCENT_COLOR, DARK_TEXT_COLOR, WARNING_COLOR } from './assets/strings.json';
+import { ACCENT_COLOR, ACCENT_COLOR_DARK, DARK_TEXT_COLOR, WARNING_COLOR } from './assets/strings.json';
 
 export const GlobalStyle = createGlobalStyle`
 	${reset}
@@ -38,7 +38,7 @@ export const GlobalStyle = createGlobalStyle`
 export const theme: DefaultTheme = {
 	borderRadius: '4px',
 	colors: {
-		main: ACCENT_COLOR,
+		main: ACCENT_COLOR_DARK,
 		darkTextColor: DARK_TEXT_COLOR,
 		lightTextColor: '#ffffff',
 		secondary: '#ffffff',

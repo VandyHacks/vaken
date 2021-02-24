@@ -15,8 +15,8 @@ export const useMeasure = (): any => {
 
 const CollapsibleHeader = styled.button`
 	border-radius: 8px;
-	background-color: #ecebed;
-	color: ${STRINGS.ACCENT_COLOR};
+	background-color: ${STRINGS.BACKGROUND_DARK};
+	color: ${STRINGS.ACCENT_COLOR_DARK};
 	cursor: pointer;
 	padding: 14px 1.4rem;
 	width: 100%;

@@ -113,10 +113,10 @@ const statusRenderer = ({ cellData }: TableCellProps): JSX.Element => {
 			case ApplicationStatus.Rejected:
 				return STRINGS.COLOR_PALETTE[6];
 			default:
-				return STRINGS.ACCENT_COLOR;
+				return STRINGS.ACCENT_COLOR_DARK;
 		}
 	};
-	return <Status value={cellData} generateColor={generateColor} fontColor="gray" />;
+	return <Status value={cellData} generateColor={generateColor} fontColor="black" />;
 };
 
 const ResumeRenderer: FC<ActionRendererProps> = ({ rowData: { id } }) => <ResumeLink id={id} />;

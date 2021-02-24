@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
 	& > div {
 		width: 1rem;
 		height: 1rem;
-		background-color: ${({ color }: StyleProps) => color || STRINGS.ACCENT_COLOR};
+		background-color: ${({ color }: StyleProps) => color || STRINGS.ACCENT_COLOR_DARK};
 
 		border-radius: 100%;
 		display: inline-block;

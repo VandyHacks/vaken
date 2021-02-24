@@ -116,7 +116,7 @@ const HackerDashBG = styled(FloatingPopup)`
 	border-radius: 8px;
 	height: min-content;
 	width: 36rem;
-	background: rgba(247, 245, 249, 1);
+	background: rgba(251, 228, 232, 1);
 	padding: 1.5rem;
 
 	@media screen and (max-width: 456px) {
