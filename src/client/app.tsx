@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { FC } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { createGlobalStyle, DefaultTheme, ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
@@ -48,37 +48,25 @@ export const theme: DefaultTheme = {
 
 toast.configure({ position: 'bottom-right' });
 
-const Vaken: React.FunctionComponent = (): JSX.Element => {
-	const [ready, setReady] = useState(false);
+const Vaken: FC = () => {
 	const { data, error, loading } = useMeQuery();
+	const ready = (data?.me || error) && !loading;
+	const loggedInUser = data?.me;
 
-	const StateMachine: React.FunctionComponent = (): JSX.Element | null => {
-		if (!ready) return null;
-		return data && data.me ? (
-			<AuthContext.Provider value={data.me}>
-				<Frame />
-				<ToastContainer toastClassName="french-toast" autoClose={5000} />
-			</AuthContext.Provider>
-		) : (
-			<LoginPage />
-		);
-	};
-
-	useEffect(() => {
-		if (loading && ready) {
-			setReady(false);
-		} else if (error && !ready) {
-			setReady(true);
-		} else if (data && data.me && !ready) {
-			setReady(true);
-		}
-	}, [loading, ready, error, data]);
+	if (!ready) return null;
 
 	return (
 		<BrowserRouter>
 			<ThemeProvider theme={theme}>
 				<GlobalStyle />
-				<StateMachine />
+				{loggedInUser ? (
+					<AuthContext.Provider value={loggedInUser}>
+						<Frame />
+						<ToastContainer toastClassName="french-toast" autoClose={5000} />
+					</AuthContext.Provider>
+				) : (
+					<LoginPage />
+				)}
 			</ThemeProvider>
 		</BrowserRouter>
 	);
