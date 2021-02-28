@@ -1,0 +1,58 @@
+version: '3.7'
+
+services:
+  vaken:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - 8080:8080
+      - 8081:8081
+    stdin_open: true
+    restart: on-failure
+    volumes:
+      - ./src:/usr/app/src/
+      - ./dist:/usr/app/dist
+    networks:
+      - vakennet
+    depends_on: 
+      - vaken_db
+    environment:
+      - ASSET_PATH=/
+      - MONGODB_BASE_URL=mongodb://vaken:vaken123@vaken_db:27017/vaken
+      - PORT
+      - SESSION_SECRET
+      - GOOGLE_CALLBACK_URL
+      - GOOGLE_CLIENT_ID
+      - GOOGLE_CLIENT_SECRET
+      - GITHUB_CALLBACK_URL
+      - GITHUB_CLIENT_ID
+      - GITHUB_CLIENT_SECRET
+      - BUCKET_NAME
+      - GCP_STORAGE_SERVICE_ACCOUNT
+      - AWS_REGION
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - MSFT_CLIENT_ID
+      - MSFT_CLIENT_SECRET
+      - MSFT_REDIRECT_URL
+      - CALENDARID
+
+  vaken_db:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=rootpass
+    networks:
+      - vakennet
+    volumes:
+      - '$PWD/scripts/init-mongo-user.sh:/docker-entrypoint-initdb.d/init-user.sh'
+      - ./db/mongo-volume:/data/db
+    ports:
+      - 27017:27017
+    expose:
+      - 27017
+
+networks:
+  vakennet:
+    name: vaken_network

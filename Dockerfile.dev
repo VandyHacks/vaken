@@ -1,0 +1,13 @@
+# Dev environment
+FROM node:14.15.3-alpine
+
+RUN mkdir /usr/app/
+WORKDIR /usr/app/
+
+# We can use cached `npm ci` if package.json and package-lock.json don't change 
+COPY package.json package-lock.json /usr/app/
+RUN npm ci
+
+COPY . /usr/app/
+
+CMD ["npm", "run", "dev"]
