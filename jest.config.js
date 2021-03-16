@@ -71,6 +71,10 @@ module.exports = {
 				'\\.svg': '<rootDir>/__mocks__/svgrMock.js', // see https://github.com/smooth-code/svgr/issues/83
 				'\\.(css|less)$': 'jest-transform-css',
 				'\\.(jpg|jpeg|png|gif)$': '<rootDir>/__mocks__/svgrMock.js',
+				transform: {
+					'^.+\\.jsx?$': 'babel-jest',
+				},
+				preset: 'ts-jest',
 			},
 		},
 	],
