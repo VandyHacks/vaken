@@ -131,7 +131,10 @@ export const MOCK_CHECK_IN_EVENT: Event = {
 	duration: 3600,
 	eventType: CHECK_IN_EVENT_TYPE,
 	id: '888',
-	startTimestamp: new Date().getTime(), // Always display this event.
+
+	// providing in ms since epoch form to ensure consistency for Storybook snapshots
+	// because JS Date constructor is evaluated in local time
+	startTimestamp: 1593820800000,
 	location: 'Atrium',
 	warnRepeatedCheckins: true,
 	name: 'Check In',
