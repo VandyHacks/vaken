@@ -1,6 +1,6 @@
 node_modules/
 dist/
-webpack.*.js
+webpack/
 *.d.ts
 graphql.ts
 generated/
