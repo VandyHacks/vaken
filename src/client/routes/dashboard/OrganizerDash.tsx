@@ -1,14 +1,14 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import { Bar, Pie, ChartData } from 'react-chartjs-2';
 import { gql, useQuery } from '@apollo/client';
 import styled from 'styled-components';
-import { ChartData as OldChartData, ChartOptions } from 'chart.js';
+import { ChartData as ChartJSData, ChartOptions } from 'chart.js';
 
 import { Spinner } from '../../components/Loading/Spinner';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { Button } from '../../components/Buttons/Button';
-import { OverflowContainer, FlexStartColumn } from '../../components/Containers/FlexContainers';
+import { OverflowContainer } from '../../components/Containers/FlexContainers';
 import 'chartjs-plugin-datalabels';
 import STRINGS from '../../assets/strings.json';
 
@@ -19,11 +19,8 @@ const Label = styled('span')`
 	color: ${STRINGS.DARK_TEXT_COLOR};
 `;
 
-const Value = styled('span')`
-	font-size: 1.25rem;
-	font-family: 'Roboto', sans-serif;
+const Value = styled(Label)`
 	font-weight: 100;
-	color: ${STRINGS.DARK_TEXT_COLOR};
 `;
 
 const StyledUL = styled.ul`
@@ -34,39 +31,22 @@ const StyledLI = styled.li`
 	margin-bottom: 0.5rem;
 `;
 
-const StyledTable = styled.div`
-	grid-area: table;
+const UpperChartLayout = styled.div`
+	display: flex;
+	gap: 2rem;
 `;
 
-const BarLayout = styled.div`
-	grid-area: chart;
-`;
-const LinkLayout = styled(FlexStartColumn)`
-	grid-area: link;
-`;
-
-const PieLayoutLeft = styled.div`
-	grid-area: pie1;
-`;
-
-const PieLayoutRight = styled.div`
-	grid-area: pie2;
+const BarChartLayout = styled.div`
+	flex: 1 1 70%;
 `;
 
 const StyledFloatingPopupTop = styled(FloatingPopup)`
-	display: grid;
-	grid-template-columns: 70% 2rem auto;
-	grid-template-rows: auto auto;
-	grid-template-areas:
-		'chart . table'
-		'link link link';
+	display: flex;
+	flex-direction: column;
 `;
 
 const StyledFloatingPopupBottom = styled(FloatingPopup)`
-	display: grid;
-	grid-template-columns: 50% 50%;
-	grid-template-rows: auto;
-	grid-template-areas: 'pie1 pie2';
+	display: flex;
 `;
 
 export const GET_STATISTICS = gql`
@@ -107,24 +87,13 @@ export const GET_STATISTICS = gql`
 
 const colorPalette = STRINGS.COLOR_PALETTE.slice(1);
 
-const generateColor = (n: number): string[] =>
-	[...Array(n).keys()].map((i: number) => colorPalette[i % colorPalette.length]);
-
-const barStatusData = (data: { [key: string]: number }): ChartData<OldChartData> => {
-	const statusData = Object.values(data).slice(0, -1);
-	const statusLabels = Object.keys(data).slice(0, -1);
-	return {
-		datasets: [
-			{
-				backgroundColor: generateColor(statusData.length),
-				data: statusData,
-			},
-		],
-		labels: statusLabels,
-	};
+const generateColor = (n: number): string[] => {
+	const ret = new Array(n);
+	for (let i = 0; i < n; i += 1) ret[i] = colorPalette[i % colorPalette.length];
+	return ret;
 };
 
-const barStatusOptions: ChartOptions = {
+const STATUS_DEFAULT_CHART_OPTIONS: ChartOptions = {
 	legend: {
 		display: false,
 	},
@@ -163,84 +132,65 @@ const barStatusOptions: ChartOptions = {
 	},
 };
 
-const pieShirtData = (data: { [key: string]: number }): ChartData<OldChartData> => {
-	const shirtLabels = Object.keys(data).slice(0, -1);
-	const shirtData = Object.values(data).slice(0, -1);
+const KVData = (data: { [key: string]: number }): ChartData<ChartJSData> => {
+	const keys = Object.keys(data).slice(0, -1);
+	const values = Object.values(data).slice(0, -1);
 
 	return {
 		datasets: [
 			{
-				backgroundColor: generateColor(shirtData.length),
-				data: shirtData,
+				backgroundColor: generateColor(values.length),
+				data: values,
 			},
 		],
-		labels: shirtLabels,
+		labels: keys,
 	};
 };
 
-const pieShirtOptions = {
+const pieChartOptions = (title: string): ChartOptions => ({
 	legend: {
-		position: 'right' as const,
+		position: 'right',
 	},
 	maintainAspectRatio: true,
 	responsive: true,
 	title: {
 		display: true,
 		fontSize: 24,
-		position: 'bottom' as const,
-		text: 'T-Shirt Sizes',
+		position: 'bottom',
+		text: title,
 	},
-};
+});
 
-const pieGenderData = (data: { [key: string]: number }): ChartData<OldChartData> => {
-	const genderLabels = Object.keys(data).slice(0, -1);
-	const genderData = Object.values(data).slice(0, -1);
-
-	return {
-		datasets: [
-			{
-				backgroundColor: generateColor(genderData.length),
-				data: genderData,
-			},
-		],
-		labels: genderLabels,
-	};
-};
-
-const pieGenderOptions = {
-	legend: {
-		position: 'right' as const,
-	},
-	maintainAspectRatio: true,
-	responsive: true,
-	title: {
-		display: true,
-		fontSize: 24,
-		position: 'bottom' as const,
-		text: 'Gender',
-	},
-};
-
-interface Props {
+interface SchoolTableProps {
 	data: [{ counts: number; school: string }];
 }
 
-export const SchoolTable: FunctionComponent<Props> = (props: Props): JSX.Element => {
-	const { data } = props;
+export const SchoolTable: FC<SchoolTableProps> = ({ data }): JSX.Element => (
+	<StyledUL>
+		{data.map(d => (
+			<StyledLI key={d.school}>
+				<Label>{`${d.school}: `}</Label>
+				<Value>{d.counts}</Value>
+			</StyledLI>
+		))}
+	</StyledUL>
+);
 
-	return (
-		<StyledUL>
-			{data.map(d => (
-				<StyledLI key={d.school}>
-					<Label>{`${d.school}: `}</Label>
-					<Value>{d.counts}</Value>
-				</StyledLI>
-			))}
-		</StyledUL>
-	);
+const REDUCED_MOTION_CHART_OPTIONS: ChartOptions = {
+	animation: {
+		duration: 0, // general animation time
+	},
+	hover: {
+		animationDuration: 0, // duration of animations when hovering an item
+	},
+	responsiveAnimationDuration: 0, // animation duration after a resize
 };
 
-export const OrganizerDash: FunctionComponent = (): JSX.Element => {
+interface Props {
+	disableAnimations?: boolean;
+}
+
+export const OrganizerDash: FC<Props> = ({ disableAnimations }): JSX.Element => {
 	// TODO(leonm1/tangck): Fix queries to show real data. Should also clean up imports when done.
 	// Currently the { loading: true } will stop this component from causing errors in prod.
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -255,28 +205,30 @@ export const OrganizerDash: FunctionComponent = (): JSX.Element => {
 		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 	}
 
+	let statusOptions = STATUS_DEFAULT_CHART_OPTIONS;
+	let shirtOptions = pieChartOptions('T-Shirt Sizes');
+	let genderOptions = pieChartOptions('Gender');
+	if (disableAnimations) {
+		statusOptions = { ...statusOptions, ...REDUCED_MOTION_CHART_OPTIONS };
+		shirtOptions = { ...shirtOptions, ...REDUCED_MOTION_CHART_OPTIONS };
+		genderOptions = { ...genderOptions, ...REDUCED_MOTION_CHART_OPTIONS };
+	}
 	return (
 		<OverflowContainer>
 			<StyledFloatingPopupTop marginBottom="1rem" backgroundOpacity="1" padding="1.5rem">
-				<BarLayout>
-					<Bar data={barStatusData(data.getAllHackerStatuses)} options={barStatusOptions} />
-				</BarLayout>
-				<StyledTable>
+				<UpperChartLayout>
+					<BarChartLayout>
+						<Bar data={KVData(data.getAllHackerStatuses)} options={statusOptions} />
+					</BarChartLayout>
 					<SchoolTable data={data.getTopHackerSchools} />
-				</StyledTable>
-				<LinkLayout>
-					<Button large linkTo="/managehackers">
-						Manage hackers
-					</Button>
-				</LinkLayout>
+				</UpperChartLayout>
+				<Button large linkTo="/managehackers">
+					Manage hackers
+				</Button>
 			</StyledFloatingPopupTop>
 			<StyledFloatingPopupBottom backgroundOpacity="1" padding="1.5rem">
-				<PieLayoutLeft>
-					<Pie data={pieShirtData(data.getAllHackerSizes)} options={pieShirtOptions} />
-				</PieLayoutLeft>
-				<PieLayoutRight>
-					<Pie data={pieGenderData(data.getAllHackerGenders)} options={pieGenderOptions} />
-				</PieLayoutRight>
+				<Pie data={KVData(data.getAllHackerSizes)} options={shirtOptions} />
+				<Pie data={KVData(data.getAllHackerGenders)} options={genderOptions} />
 			</StyledFloatingPopupBottom>
 		</OverflowContainer>
 	);
