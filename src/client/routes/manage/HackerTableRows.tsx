@@ -51,7 +51,7 @@ const StyledTable = styled(Table)`
 		border-bottom: 0.0625rem solid #e0e0e0;
 	}
 	.oddRow {
-		background-color: #fafafa;
+		background-color: ${STRINGS.BACKGROUND_DARK};
 	}
 
 	.ReactVirtualized__Table__headerColumn {

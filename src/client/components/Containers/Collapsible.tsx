@@ -39,11 +39,7 @@ const CollapsibleHeader = styled.button`
 `;
 
 const BGDiv = styled.div`
-	background-color: rgba(
-		${({ backgroundColor }: PopupProps): string =>
-			backgroundColor ? hexToRGB(backgroundColor) : '247, 245, 249'},
-		${({ backgroundOpacity = '1' }: PopupProps): string => backgroundOpacity}
-	);
+	background-color: ${STRINGS.BACKGROUND_DARK_SECONDARY};
 	border-radius: 8px;
 	width: 100%;
 `;
