@@ -6,7 +6,7 @@ import * as Sentry from '@sentry/browser';
 import Vaken from './app';
 import STRINGS from './assets/strings.json';
 
-Sentry.init({ dsn: STRINGS.SENTRY_URL, tracesSampleRate: 1.0 });
+Sentry.init({ dsn: process.env.SENTRY_URL, tracesSampleRate: 1.0 });
 
 const client = new ApolloClient({
 	cache: new InMemoryCache(),
