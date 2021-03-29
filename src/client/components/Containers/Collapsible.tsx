@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React, { FC } from 'react';
-import { hexToRGB, Props as PopupProps } from './FloatingPopup';
+import { Props as PopupProps } from './FloatingPopup';
 import UpArrow from '../../assets/img/up_arrow.svg';
 import STRINGS from '../../assets/strings.json';
 

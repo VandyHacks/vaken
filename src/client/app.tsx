@@ -9,7 +9,6 @@ import { AuthContext } from './contexts/AuthContext';
 import { useMeQuery } from './generated/graphql';
 import 'react-toastify/dist/ReactToastify.css';
 import {
-	ACCENT_COLOR,
 	ACCENT_COLOR_DARK,
 	DARK_TEXT_COLOR,
 	LIGHT_TEXT_COLOR,
