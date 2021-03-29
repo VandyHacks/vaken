@@ -177,7 +177,9 @@ export const HackerDash: FunctionComponent = (): JSX.Element => {
 				) : null}
 				<HackerDashBG>
 					<FlexColumn>
-						<Title fontSize="1.75rem" color={STRINGS.DARK_TEXT_COLOR}>{STRINGS.HACKER_DASHBOARD_HEADER_TEXT}</Title>
+						<Title fontSize="1.75rem" color={STRINGS.DARK_TEXT_COLOR}>
+							{STRINGS.HACKER_DASHBOARD_HEADER_TEXT}
+						</Title>
 						{loading ? null : (
 							<>
 								<ButtonOutline

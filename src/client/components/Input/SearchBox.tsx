@@ -27,7 +27,8 @@ export const SearchBox = styled('input')`
 	:focus,
 	:active {
 		outline: none;
-		border: 0.0625rem solid ${(props: Props) => (props.error ? '#FF647C' : STRINGS.ACCENT_COLOR_DARK)};
+		border: 0.0625rem solid
+			${(props: Props) => (props.error ? '#FF647C' : STRINGS.ACCENT_COLOR_DARK)};
 	}
 `;
 

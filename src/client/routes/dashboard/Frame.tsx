@@ -132,7 +132,7 @@ const Frame: FunctionComponent = (): JSX.Element => {
 				<div className="header">
 					<SpaceBetweenRow>
 						<MenuIcon open={menuOpen} setOpen={setMenuOpen} />
-						<Title style={{ color: '#FF647C'}} margin="1.5rem 0rem 0rem">
+						<Title style={{ color: '#FF647C' }} margin="1.5rem 0rem 0rem">
 							<Switch>
 								{routes.map(route => {
 									return route.authLevel.includes(currentUser.userType) ? (
