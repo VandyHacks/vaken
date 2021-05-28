@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
-import Component, { GET_STATISTICS } from './OrganizerDash';
+import Component, { GET_STATISTICS, Props } from './OrganizerDash';
 
 export default {
 	title: 'Routes/Dashboard/Organizer Dash',
@@ -52,8 +52,11 @@ const mocks: MockedResponse[] = [
 	},
 ];
 
-export const OrganizerDash: Story<Record<string, unknown>> = args => (
+export const OrganizerDash: Story<Props> = args => (
 	<MockedProvider mocks={mocks}>
 		<Component {...args} />
 	</MockedProvider>
 );
+OrganizerDash.args = {
+	disableAnimations: true,
+};
