@@ -129,14 +129,11 @@ export const MOCK_CHECK_IN_EVENT: Event = {
 	__typename: 'Event',
 	attendees: [tabeHackerId],
 	checkins: [{ user: tabeHackerId, id: '999', timestamp: new Date(2021, 3, 1).getTime() }],
-	duration: 3600,
+	// this lets us test out functionality that only work on current events
+	duration: Number.POSITIVE_INFINITY,
 	eventType: CHECK_IN_EVENT_TYPE,
 	id: '888',
-	// set to July 4, 2030 at 00:00:00 UTC
-	// this lets us test out function that only work on current/future events
-	// while ensuring the time never changes ensuring test consistency
-	// hello from 2021 if Vaken is still in use in 2030 and you're wondering why this broke!
-	startTimestamp: parseISO('2030-07-04T00:00:00+0000').getTime(), // hard code for testing purposes
+	startTimestamp: parseISO('2021-04-04T00:00:00+0000').getTime(), // hard code for testing purposes
 	location: 'Atrium',
 	warnRepeatedCheckins: true,
 	name: 'Check In',
