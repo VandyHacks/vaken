@@ -186,7 +186,7 @@ const REDUCED_MOTION_CHART_OPTIONS: ChartOptions = {
 	responsiveAnimationDuration: 0, // animation duration after a resize
 };
 
-interface Props {
+export interface Props {
 	disableAnimations?: boolean;
 }
 
