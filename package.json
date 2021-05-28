@@ -20,12 +20,7 @@
 		"registration"
 	],
 	"contributors": [
-		"Matt Leon <matthew.leon@vanderbilt.edu> (https://mattleon.com)",
-		"Irfaan Khalid <irfaan.khalid@vanderbilt.edu> (https://irfaan.me)",
-		"Felix Tiet <felix.tiet@vanderbilt.edu> (http://ftiet.com)",
-		"Alan Wilms <alan.wilms@vanderbilt.edu>",
-		"Benjamin Cooper <bencooper222@gmail.com> (https://benc.io)",
-		"Kwuang Tang <chuang.k.tang@vanderbilt.edu> (https://github.com/cktang88)"
+		"VandyHacks <info@vandyhacks.org> (https://vandyhacks.org)"
 	],
 	"bugs": {
 		"url": "https://github.com/VandyHacks/vaken/issues"

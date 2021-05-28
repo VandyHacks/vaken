@@ -1,6 +1,8 @@
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const webpack = require('webpack');
+require('dotenv').config();
 
 const ASSET_PATH = process.env.ASSET_PATH || '/';
 module.exports = {
@@ -45,6 +47,9 @@ module.exports = {
 			template: './src/client/index.html',
 			favicon: './src/client/assets/img/favicon.ico',
 		}), // For index.html entry point
+		new webpack.DefinePlugin({
+			SENTRY_URL: JSON.stringify(process.env.SENTRY_URL),
+		}), // For user-specific Sentry logging
 	],
 	resolve: {
 		extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
