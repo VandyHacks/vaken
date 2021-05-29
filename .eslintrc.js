@@ -34,12 +34,10 @@ module.exports = {
 	rules: {
 		'no-void': 0,
 		'no-underscore-dangle': 0,
-		'no-return-assign': [2, 'except-parens'],
 		'@typescript-eslint/explicit-function-return-type': [
 			2,
 			{ allowExpressions: true, allowTypedFunctionExpressions: true },
 		],
-		'prettier/prettier': 'error',
 		'no-param-reassign': [2, { props: true, ignorePropertyModificationsFor: ['draft'] }],
 		'import/no-extraneous-dependencies': [
 			2,
@@ -72,8 +70,8 @@ module.exports = {
 		{
 			files: ['**/scripts/**/*'],
 			rules: {
-				"no-console": 0
-			}
+				'no-console': 0,
+			},
 		},
 		{
 			files: ['**/*.test.js'],

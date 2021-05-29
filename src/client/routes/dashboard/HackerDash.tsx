@@ -21,7 +21,9 @@ const statusConfig = {
 	[ApplicationStatus.Created]: {
 		actions: [
 			{
-				action: () => void (window.location.href = '/application'),
+				action: () => {
+					window.location.href = '/application';
+				},
 				actionText: 'Complete your application',
 			},
 		],
@@ -35,7 +37,9 @@ const statusConfig = {
 	[ApplicationStatus.Started]: {
 		actions: [
 			{
-				action: () => void (window.location.href = '/application'),
+				action: () => {
+					window.location.href = '/application';
+				},
 				actionText: 'Complete your application',
 			},
 		],
@@ -49,7 +53,9 @@ const statusConfig = {
 	[ApplicationStatus.Submitted]: {
 		actions: [
 			{
-				action: () => void (window.location.href = '/application'),
+				action: () => {
+					window.location.href = '/application';
+				},
 				actionText: 'Update your application',
 			},
 		],

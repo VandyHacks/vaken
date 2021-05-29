@@ -27,7 +27,7 @@ export const Profile: React.FunctionComponent = (): JSX.Element => {
 	const createOnChangeHandler = (
 		fieldName: keyof UserInput
 	): ((value: string) => void) => value => {
-		void setInput(draft => void (draft[fieldName] = value));
+		void setInput(draft => {draft[fieldName] = value});
 	};
 
 	useEffect((): (() => void) => {
