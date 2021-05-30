@@ -1,5 +1,5 @@
 import React from 'react';
-import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
+import { Meta, Story } from '@storybook/react';
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { MOCK_HACKER } from '../common/mockObjects';
 import Component from './app';

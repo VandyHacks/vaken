@@ -1,5 +1,5 @@
 import React from 'react';
-import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
+import { Meta, Story } from '@storybook/react';
 import { useImmer } from 'use-immer';
 import { defaultTableState, TableContext } from '../../contexts/TableContext';
 import Component, { Props } from './NfcTable';

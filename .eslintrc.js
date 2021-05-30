@@ -59,7 +59,7 @@ module.exports = {
 		'no-param-reassign': [2, { props: true, ignorePropertyModificationsFor: ['draft'] }],
 		'import/no-extraneous-dependencies': [
 			2,
-			{ devDependencies: ['**/*.test.tsx', '**/*.test.ts'] },
+			{ devDependencies: ['**/*.test.tsx', '**/*.test.ts', '**/*.stories.tsx', 'scripts/*'] },
 		],
 		'import/prefer-default-export': [0],
 		'import/extensions': [
