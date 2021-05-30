@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import CSS from 'csstype';
+import type CSS from 'csstype';
 
 export type FlexDivProps = Pick<CSS.Properties, 'alignItems' | 'justifyContent'>;
 export type ContainerProps = FlexDivProps &

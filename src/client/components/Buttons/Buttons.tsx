@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import CSS from 'csstype';
+import type CSS from 'csstype';
 import { ButtonHTMLAttributes } from 'react';
 import { displayFlex } from '../Containers/FlexContainers';
 

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import CSS from 'csstype';
+import type CSS from 'csstype';
 import STRINGS from '../../assets/strings.json';
 
 export interface Props extends Pick<CSS.Properties, 'color' | 'height' | 'width'> {
