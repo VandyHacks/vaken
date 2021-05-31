@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
-import STRINGS from '../../assets/strings.json';
+import * as STRINGS from '../../assets/strings';
 import { SmallCenteredText } from '../../components/Text/SmallCenteredText';
 
 const Message = styled(SmallCenteredText)`

@@ -4,7 +4,7 @@ import { ApolloProvider, ApolloClient, InMemoryCache, ApolloLink, HttpLink } fro
 import { onError } from '@apollo/client/link/error';
 import * as Sentry from '@sentry/browser';
 import Vaken from './app';
-import STRINGS from './assets/strings.json';
+import { WEBSITE_HTML_TITLE } from './assets/strings';
 
 Sentry.init({ dsn: SENTRY_URL, tracesSampleRate: 1.0 });
 
@@ -27,7 +27,7 @@ const client = new ApolloClient({
 	]),
 });
 
-window.document.title = STRINGS.WEBSITE_HTML_TITLE;
+window.document.title = WEBSITE_HTML_TITLE;
 
 const app = document.getElementById('App');
 ReactDOM.render(

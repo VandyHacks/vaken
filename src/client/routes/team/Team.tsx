@@ -4,7 +4,7 @@ import { JoinTeam } from './JoinTeam';
 import { ViewTeam } from './ViewTeam';
 import { FlexColumn } from '../../components/Containers/FlexContainers';
 import { Announcement } from '../../components/Text/Announcement';
-import STRINGS from '../../assets/strings.json';
+import * as STRINGS from '../../assets/strings';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import { Spinner } from '../../components/Loading/Spinner';
 import { useTeamQuery } from '../../generated/graphql';

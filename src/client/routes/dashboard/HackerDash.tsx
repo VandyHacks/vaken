@@ -4,7 +4,7 @@ import { Button } from '../../components/Buttons/Button';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { FlexColumn, FlexStartColumn } from '../../components/Containers/FlexContainers';
 import { Title } from '../../components/Text/Title';
-import STRINGS from '../../assets/strings.json';
+import * as STRINGS from '../../assets/strings';
 import { ButtonOutline, CenterButtonText } from '../../components/Buttons/Buttons';
 import applicationStatusSVG from '../../assets/img/application_status.svg';
 import { SmallCenteredText } from '../../components/Text/SmallCenteredText';

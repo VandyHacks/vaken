@@ -4,7 +4,7 @@ import { useImmer } from 'use-immer';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { Spinner } from '../../components/Loading/Spinner';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
-import STRINGS from '../../assets/strings.json';
+import * as STRINGS from '../../assets/strings';
 import { HackerView } from './HackerView';
 import HackerTable from './HackerTable';
 import { defaultTableState, TableContext } from '../../contexts/TableContext';
