@@ -75,7 +75,6 @@ module.exports = {
 		],
 		'no-use-before-define': [0],
 		'@typescript-eslint/no-use-before-define': ['error'],
-		'@typescript-eslint/explicit-module-boundary-types': [0],
 	},
 	root: true,
 	overrides: [
