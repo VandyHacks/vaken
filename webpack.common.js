@@ -3,8 +3,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 const ASSET_PATH = process.env.ASSET_PATH || '/';
+
 module.exports = {
-	context: path.resolve(__dirname, '..'), // to automagically find tsconfig.json
+	context: __dirname, // to automagically find tsconfig.json
 	entry: ['./src/client/index'],
 	stats: 'minimal',
 	module: {
