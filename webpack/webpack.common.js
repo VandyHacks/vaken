@@ -34,7 +34,10 @@ module.exports = {
 	},
 	output: {
 		filename: '[name].[contenthash].bundle.js',
-		path: path.resolve(__dirname.split(path.sep).slice(0, -1).join(path.sep), 'dist/src/server/app'),
+		path: path.resolve(
+			__dirname.split(path.sep).slice(0, -1).join(path.sep),
+			'dist/src/server/app'
+		),
 		publicPath: ASSET_PATH,
 		crossOriginLoading: 'anonymous',
 	},
