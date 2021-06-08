@@ -1,5 +1,6 @@
 import { ApolloError, AuthenticationError, UserInputError } from 'apollo-server-express';
 import { Collection, FilterQuery, ObjectID, ObjectId, MatchKeysAndValues } from 'mongodb';
+import { Storage } from '@google-cloud/storage';
 import { UserDbInterface, UserInput, UserType } from '../generated/graphql';
 import { Models } from '../models';
 import logger from '../logger';
@@ -158,3 +159,39 @@ export function checkIsAuthorized<T extends UserDbInterface>(
 
 	return user;
 }
+
+// TODO: add check for what level sponsor
+// export async function downloadResumes(models: Models, storage: Storage): Promise<void[]> {
+// 		const { BUCKET_NAME } = process.env;
+
+// 		const cwd = process.cwd();
+// 		const arr = await models.Hackers.find({
+// 			status: { $in: ['ACCEPTED', 'SUBMITTED', 'CONFIRMED'] },
+// 		})
+// 			.map(async hacker => {
+// 				const filename = hacker._id.toHexString();
+// 				console.log(
+// 					`Downloading "${hacker.lastName}, ${hacker.firstName} (${hacker.school}).pdf" for user with id ${hacker._id}`
+// 				);
+
+// 				try {
+// 					const resume = await storage.bucket(BUCKET_NAME as string).file(filename);
+// 					if (await resume.exists())
+// 						await resume.download({
+// 							destination: `${cwd}/resumes/${hacker.lastName}, ${hacker.firstName} (${hacker.school}).pdf`,
+// 							decompress: true,
+// 						});
+// 				} catch (e) {
+// 					console.group('Error:');
+// 					console.error(e);
+// 					console.info(hacker);
+// 					console.groupEnd();
+// 				}
+// 			})
+// 			.toArray();
+
+// 		console.info(`Processing ${arr.length} entries.`);
+
+// 		return Promise.all(arr);
+// 	};
+// }
