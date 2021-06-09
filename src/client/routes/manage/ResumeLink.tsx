@@ -37,7 +37,7 @@ const Value = styled('td')`
 	font-size: 1.1em;
 	font-family: 'Roboto', sans-serif;
 	font-weight: 100;
-	color: ${STRINGS.DARK_TEXT_COLOR};
+	color: ${DARK_TEXT_COLOR};
 	flex: 3 1 0px;
 
 	@media screen and (min-width: 457px) {
