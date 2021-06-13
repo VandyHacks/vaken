@@ -398,7 +398,7 @@ const HackerTable: FC<HackerTableProps> = ({
 						</FlexRow>
 					))}
 				</FlexColumn>
-				<Count style={{ margin: '20px'}}>
+				<Count style={{margin: '20px'}}>
 					<h3>Num Shown:</h3>
 					<p>{sortedData.length}</p>
 					{selectedRowsIds.length > 0 ? (
