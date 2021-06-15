@@ -92,7 +92,7 @@
 		"gaxios": "^4.1.0",
 		"googleapis": "^65.0.0",
 		"graphql": "^15.4.0",
-		"helmet": "^4.6.0",
+		"helmet": "^4.3.1",
 		"immer": "^8.0.1",
 		"jsdom": "^16.4.0",
 		"mongodb": "^3.6.3",
