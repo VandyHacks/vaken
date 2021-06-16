@@ -398,7 +398,7 @@ const HackerTable: FC<HackerTableProps> = ({
 						</FlexRow>
 					))}
 				</FlexColumn>
-				<Count>
+				<Count style={{margin: '20px'}}>
 					<h3>Num Shown:</h3>
 					<p>{sortedData.length}</p>
 					{selectedRowsIds.length > 0 ? (
@@ -408,7 +408,12 @@ const HackerTable: FC<HackerTableProps> = ({
 						</>
 					) : null}
 				</Count>
-				<CSVLink style={{ margin: '20px' }} data={sortedData} filename="exportedData.csv">
+				{viewResumes && (
+					<Button onClick={onToggleSelectAll(table)}>
+						Download Resumes
+					</Button>
+				)}
+				<CSVLink style={{ margin: '20px'}} data={sortedData} filename="exportedData.csv">
 					Export
 				</CSVLink>
 			</TableOptions>
