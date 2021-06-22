@@ -10,7 +10,7 @@ import { HackerView } from './HackerView';
 import HackerTable from './HackerTable';
 import { defaultTableState, TableContext } from '../../contexts/TableContext';
 import { useHackersQuery, useMeSponsorQuery } from '../../generated/graphql';
-		
+
 export const SponsorHackerView: FC = () => {
 	const { loading, error, data } = useHackersQuery();
 	const [tableState, updateTableState] = useImmer(defaultTableState);
@@ -19,11 +19,12 @@ export const SponsorHackerView: FC = () => {
 	const viewResumes =
 		sponsor.data?.me?.__typename === 'Sponsor' &&
 		((sponsor.data?.me?.company?.tier?.permissions?.includes(STRINGS.PERMISSIONS_RESUME_BEFORE) &&
-		now < HACKATHON_START) || 
-		(sponsor.data?.me?.company?.tier?.permissions?.includes(STRINGS.PERMISSIONS_RESUME_DURING) &&
-		now > HACKATHON_START && now < HACKATHON_END) ||
-		(sponsor.data?.me?.company?.tier?.permissions?.includes(STRINGS.PERMISSIONS_RESUME_AFTER) &&
-		now > HACKATHON_END));
+			now < HACKATHON_START) ||
+			(sponsor.data?.me?.company?.tier?.permissions?.includes(STRINGS.PERMISSIONS_RESUME_DURING) &&
+				now > HACKATHON_START &&
+				now < HACKATHON_END) ||
+			(sponsor.data?.me?.company?.tier?.permissions?.includes(STRINGS.PERMISSIONS_RESUME_AFTER) &&
+				now > HACKATHON_END));
 
 	if (sponsor.error) {
 		console.error(sponsor.error);
