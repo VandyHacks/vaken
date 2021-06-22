@@ -6,7 +6,9 @@ import Select from 'react-select';
 import { ValueType } from 'react-select/src/types';
 import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
 import { CSVLink } from 'react-csv';
+import { useHistory } from 'react-router-dom';
 
+import { use } from 'passport';
 import { ToggleSwitch } from '../../components/Buttons/ToggleSwitch';
 import { Button } from '../../components/Buttons/Button';
 import { SearchBox } from '../../components/Input/SearchBox';
@@ -19,6 +21,7 @@ import {
 	useEventsQuery,
 	ApplicationStatus,
 	useHackerStatusesMutation,
+	useResumeDumpUrlQuery,
 } from '../../generated/graphql';
 import RemoveButton from '../../assets/img/remove_button.svg';
 import AddButton from '../../assets/img/add_button.svg';
@@ -237,6 +240,8 @@ const HackerTable: FC<HackerTableProps> = ({
 	const deselect = useRef<DeselectElement>(null);
 	const [updateStatus] = useHackerStatusMutation();
 	const [updateStatuses] = useHackerStatusesMutation();
+	const resumeDumpUrlQuery = useResumeDumpUrlQuery();
+	const { data: { resumeDumpUrl = '' } = {} } = resumeDumpUrlQuery || {};
 
 	const {
 		selectAll,
@@ -398,7 +403,7 @@ const HackerTable: FC<HackerTableProps> = ({
 						</FlexRow>
 					))}
 				</FlexColumn>
-				<Count style={{margin: '20px'}}>
+				<Count style={{ margin: '20px' }}>
 					<h3>Num Shown:</h3>
 					<p>{sortedData.length}</p>
 					{selectedRowsIds.length > 0 ? (
@@ -409,11 +414,15 @@ const HackerTable: FC<HackerTableProps> = ({
 					) : null}
 				</Count>
 				{viewResumes && (
-					<Button onClick={onToggleSelectAll(table)}>
+					<Button
+						onClick={() => {
+							console.log('url:', resumeDumpUrl);
+							window.open(resumeDumpUrl);
+						}}>
 						Download Resumes
 					</Button>
 				)}
-				<CSVLink style={{ margin: '20px'}} data={sortedData} filename="exportedData.csv">
+				<CSVLink style={{ margin: '20px' }} data={sortedData} filename="exportedData.csv">
 					Export
 				</CSVLink>
 			</TableOptions>

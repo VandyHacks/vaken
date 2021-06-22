@@ -2,7 +2,7 @@ import { AuthenticationError } from 'apollo-server-express';
 import { QueryResolvers, UserType } from '../../generated/graphql';
 import Context from '../../context';
 import { checkIsAuthorized, fetchUser } from '../helpers';
-import { getSignedReadUrl } from '../../storage/gcp';
+import { getResumeDumpUrl, getSignedReadUrl } from '../../storage/gcp';
 import { EventQuery } from './EventQueryResolvers';
 import { CompanyQuery } from './CompanyQueryResolvers';
 import { HackerQuery } from './HackerQueryResolvers';
@@ -33,6 +33,15 @@ export const Query: QueryResolvers<Context> = {
 			checkIsAuthorized([UserType.Organizer, UserType.Sponsor], user);
 
 		return getSignedReadUrl(input);
+	},
+	resumeDumpUrl: async (_, __, { user }) => {
+		if (!user) throw new AuthenticationError(`cannot get resumes: user not logged in`);
+
+		// Only organizers and sponsors can get
+		// TODO: @samlee514 tier checking is only done on front end, should be backend as well
+		checkIsAuthorized([UserType.Organizer, UserType.Sponsor], user);
+
+		return getResumeDumpUrl();
 	},
 	...SponsorQuery,
 	...TeamQuery,
