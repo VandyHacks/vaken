@@ -41,5 +41,6 @@
 	"PERMISSIONS_RESUME_BEFORE": "resumebefore",
 	"PERMISSIONS_RESUME_DURING": "resumeduring",
 	"PERMISSIONS_RESUME_AFTER": "resumeafter",
-	"PERMISSIONS_NFC": "nfc"
+	"PERMISSIONS_NFC": "nfc",
+	"RESUME_DUMP_NAME": "vandyhacks_8_hacker_resumes.zip"
 }

@@ -25,6 +25,7 @@ import {
 } from '../../generated/graphql';
 import RemoveButton from '../../assets/img/remove_button.svg';
 import AddButton from '../../assets/img/add_button.svg';
+import { Spinner } from '../../components/Loading/Spinner';
 
 import { HackerTableRows } from './HackerTableRows';
 import { DeselectElement, SliderInput } from './SliderInput';
@@ -300,6 +301,11 @@ const HackerTable: FC<HackerTableProps> = ({
 		setSortedData(filteredData);
 	}, [data, sortBy, sortDirection, searchCriteria, eventIds]);
 
+	const [isResumeDumpReady, setIsResumeDumpReady] = useState(false);
+	useEffect(() => {
+		setIsResumeDumpReady(resumeDumpUrl !== '');
+	}, [resumeDumpUrl]);
+
 	// handles the text or regex search and sets the sortedData state with the updated row list
 	// floating button that onClick toggles between selecting all or none of the rows
 	const SelectAllButton = (
@@ -413,15 +419,12 @@ const HackerTable: FC<HackerTableProps> = ({
 						</>
 					) : null}
 				</Count>
-				{viewResumes && (
-					<Button
-						onClick={() => {
-							console.log('url:', resumeDumpUrl);
-							window.open(resumeDumpUrl);
-						}}>
-						Download Resumes
-					</Button>
-				)}
+				{viewResumes &&
+					(isResumeDumpReady ? (
+						<Button linkTo={resumeDumpUrl}>Download Resumes</Button>
+					) : (
+						<Spinner />
+					))}
 				<CSVLink style={{ margin: '20px' }} data={sortedData} filename="exportedData.csv">
 					Export
 				</CSVLink>
