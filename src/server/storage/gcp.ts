@@ -1,5 +1,7 @@
 import { Storage, GetSignedUrlConfig } from '@google-cloud/storage';
 import JSZip from 'jszip';
+import DB from '../models';
+import { RESUME_DUMP_NAME } from '../../client/assets/strings.json';
 
 const { BUCKET_NAME, GCP_STORAGE_SERVICE_ACCOUNT } = process.env;
 
@@ -15,6 +17,9 @@ export const getSignedUploadUrl = async (filename: string): Promise<string> => {
 	const credentials = JSON.parse(GCP_STORAGE_SERVICE_ACCOUNT);
 	const storage = new Storage({ credentials });
 
+	// Check for resume dump. Remove if exists.
+	await storage.bucket(BUCKET_NAME).file(RESUME_DUMP_NAME).delete({ ignoreNotFound: true });
+
 	const options: GetSignedUrlConfig = {
 		action: 'write' as const,
 		contentType: 'application/pdf',
@@ -25,7 +30,7 @@ export const getSignedUploadUrl = async (filename: string): Promise<string> => {
 	const [url] = await storage.bucket(BUCKET_NAME).file(filename).getSignedUrl(options);
 
 	return url;
-}; // TODO: @samlee514 add the thing where existing archives get deleted if a new upload happens
+};
 
 export const getSignedReadUrl = async (filename: string): Promise<string> => {
 	const credentials = JSON.parse(GCP_STORAGE_SERVICE_ACCOUNT);
@@ -43,19 +48,28 @@ export const getSignedReadUrl = async (filename: string): Promise<string> => {
 };
 
 export const getResumeDumpUrl = async (): Promise<string> => {
-	// TODO: @samlee514 add the thing where this checks for an existing archive first
-	// TODO: @samlee514 add logic that adds hacker names to files
-	const RESUME_DUMP_NAME = 'vandyhacks_8_hacker_resumes.zip'; // TODO: @samlee514 add this to strings
 	const credentials = JSON.parse(GCP_STORAGE_SERVICE_ACCOUNT);
-	const storage = new Storage({ credentials });
+	const bucket = new Storage({ credentials }).bucket(BUCKET_NAME);
+	const models = await new DB().collections;
+	if (!(await bucket.file(RESUME_DUMP_NAME).exists())[0]) {
+		const zip = JSZip();
 
-	const zip = JSZip();
-	const [resumes] = await storage.bucket(BUCKET_NAME).getFiles();
-	await Promise.all(
-		resumes.map(async resume => zip.file(resume.name, (await resume.download())[0]))
-	);
-	const dump = await zip.generateAsync({ type: 'nodebuffer' });
-	await storage.bucket(BUCKET_NAME).file(RESUME_DUMP_NAME).save(dump, { resumable: false });
+		await Promise.all(
+			await models.Hackers.find({
+				status: { $in: ['ACCEPTED', 'SUBMITTED', 'CONFIRMED'] },
+			})
+				.map(async hacker => {
+					const storedFilename = hacker._id.toHexString();
+					const fileContents = (await bucket.file(storedFilename).download())[0];
+					const readableFilename = `${hacker.lastName}, ${hacker.firstName} (${hacker.school}).pdf`;
+					zip.file(readableFilename, fileContents);
+				})
+				.toArray()
+		);
+
+		const dump = await zip.generateAsync({ type: 'nodebuffer' });
+		await bucket.file(RESUME_DUMP_NAME).save(dump, { resumable: false });
+	}
 
 	return getSignedReadUrl(RESUME_DUMP_NAME);
 };
