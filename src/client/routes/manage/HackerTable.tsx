@@ -6,7 +6,9 @@ import Select from 'react-select';
 import { ValueType } from 'react-select/src/types';
 import { SelectableGroup, SelectAll, DeselectAll } from 'react-selectable-fast';
 import { CSVLink } from 'react-csv';
+import { useHistory } from 'react-router-dom';
 
+import { use } from 'passport';
 import { ToggleSwitch } from '../../components/Buttons/ToggleSwitch';
 import { Button } from '../../components/Buttons/Button';
 import { SearchBox } from '../../components/Input/SearchBox';
@@ -19,9 +21,11 @@ import {
 	useEventsQuery,
 	ApplicationStatus,
 	useHackerStatusesMutation,
+	useResumeDumpUrlQuery,
 } from '../../generated/graphql';
 import RemoveButton from '../../assets/img/remove_button.svg';
 import AddButton from '../../assets/img/add_button.svg';
+import { Spinner } from '../../components/Loading/Spinner';
 
 import { HackerTableRows } from './HackerTableRows';
 import { DeselectElement, SliderInput } from './SliderInput';
@@ -237,6 +241,8 @@ const HackerTable: FC<HackerTableProps> = ({
 	const deselect = useRef<DeselectElement>(null);
 	const [updateStatus] = useHackerStatusMutation();
 	const [updateStatuses] = useHackerStatusesMutation();
+	const resumeDumpUrlQuery = useResumeDumpUrlQuery();
+	const { data: { resumeDumpUrl = '' } = {} } = resumeDumpUrlQuery || {};
 
 	const {
 		selectAll,
@@ -294,6 +300,11 @@ const HackerTable: FC<HackerTableProps> = ({
 
 		setSortedData(filteredData);
 	}, [data, sortBy, sortDirection, searchCriteria, eventIds]);
+
+	const [isResumeDumpReady, setIsResumeDumpReady] = useState(false);
+	useEffect(() => {
+		setIsResumeDumpReady(resumeDumpUrl !== '');
+	}, [resumeDumpUrl]);
 
 	// handles the text or regex search and sets the sortedData state with the updated row list
 	// floating button that onClick toggles between selecting all or none of the rows
@@ -398,7 +409,7 @@ const HackerTable: FC<HackerTableProps> = ({
 						</FlexRow>
 					))}
 				</FlexColumn>
-				<Count>
+				<Count style={{ margin: '20px' }}>
 					<h3>Num Shown:</h3>
 					<p>{sortedData.length}</p>
 					{selectedRowsIds.length > 0 ? (
@@ -408,6 +419,12 @@ const HackerTable: FC<HackerTableProps> = ({
 						</>
 					) : null}
 				</Count>
+				{viewResumes &&
+					(isResumeDumpReady ? (
+						<Button linkTo={resumeDumpUrl}>Download Resumes</Button>
+					) : (
+						<Spinner />
+					))}
 				<CSVLink style={{ margin: '20px' }} data={sortedData} filename="exportedData.csv">
 					Export
 				</CSVLink>

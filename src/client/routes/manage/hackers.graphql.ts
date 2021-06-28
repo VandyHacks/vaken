@@ -47,6 +47,10 @@ export default gql`
 		}
 	}
 
+	query resumeDumpUrl {
+		resumeDumpUrl
+	}
+
 	mutation hackerStatus($input: HackerStatusInput!) {
 		hackerStatus(input: $input) {
 			id
