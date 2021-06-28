@@ -38,7 +38,6 @@ export const Query: QueryResolvers<Context> = {
 		if (!user) throw new AuthenticationError(`cannot get resumes: user not logged in`);
 
 		// Only organizers and sponsors can get
-		// TODO: @samlee514 tier checking is only done on front end, should be backend as well
 		checkIsAuthorized([UserType.Organizer, UserType.Sponsor], user);
 
 		return getResumeDumpUrl();
