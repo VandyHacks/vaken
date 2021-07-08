@@ -10,7 +10,7 @@ export const RawInput = styled.textarea`
 	border: none;
 	font-family: 'Roboto', sans-serif;
 	font-size: ${({ fontSize = '1em' }: StyleProps): string => fontSize};
-	color: ${STRINGS.DARK_TEXT_COLOR};
+	color: ${STRINGS.LIGHT_TEXT_COLOR};
 	::placeholder {
 		color: ${STRINGS.LIGHT_TEXT_COLOR};
 	}

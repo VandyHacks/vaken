@@ -116,8 +116,9 @@ const HackerDashBG = styled(FloatingPopup)`
 	border-radius: 8px;
 	height: min-content;
 	width: 36rem;
-	background: rgba(247, 245, 249, 1);
+	background: ${STRINGS.BACKGROUND_DARK_SECONDARY};
 	padding: 1.5rem;
+	text-align: center;
 
 	@media screen and (max-width: 456px) {
 		width: 100%;
@@ -176,7 +177,9 @@ export const HackerDash: FunctionComponent = (): JSX.Element => {
 				) : null}
 				<HackerDashBG>
 					<FlexColumn>
-						<Title fontSize="1.75rem">{STRINGS.HACKER_DASHBOARD_HEADER_TEXT}</Title>
+						<Title fontSize="1.75rem" color={STRINGS.DARK_TEXT_COLOR}>
+							{STRINGS.HACKER_DASHBOARD_HEADER_TEXT}
+						</Title>
 						{loading ? null : (
 							<>
 								<ButtonOutline

@@ -27,6 +27,7 @@ const Layout = styled.div`
 	height: 100vh;
 	width: 100vw;
 	display: grid;
+	background-color: #212529;
 	grid:
 		'sidebar . . .' 1.5rem
 		'sidebar . header .' auto
@@ -68,7 +69,7 @@ const Layout = styled.div`
 const Rectangle = styled.div`
 	height: 0.4rem;
 	width: 7.5rem;
-	background: ${STRINGS.ACCENT_COLOR};
+	background: ${STRINGS.ACCENT_COLOR_DARK};
 
 	@media screen and (max-width: 456px) {
 		display: none;
@@ -86,7 +87,7 @@ const MenuIconButton = styled.button`
 	& div {
 		width: 35px;
 		height: 5px;
-		background-color: ${STRINGS.ACCENT_COLOR};
+		background-color: ${STRINGS.ACCENT_COLOR_DARK};
 		margin: 6px 0;
 	}
 	transform: scale(0.9);
@@ -131,7 +132,7 @@ const Frame: FunctionComponent = (): JSX.Element => {
 				<div className="header">
 					<SpaceBetweenRow>
 						<MenuIcon open={menuOpen} setOpen={setMenuOpen} />
-						<Title color={STRINGS.ACCENT_COLOR} margin="1.5rem 0rem 0rem">
+						<Title style={{ color: '#FF647C' }} margin="1.5rem 0rem 0rem">
 							<Switch>
 								{routes.map(route => {
 									return route.authLevel.includes(currentUser.userType) ? (

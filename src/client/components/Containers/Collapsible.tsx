@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React, { FC } from 'react';
-import { hexToRGB, Props as PopupProps } from './FloatingPopup';
+import { Props as PopupProps } from './FloatingPopup';
 import UpArrow from '../../assets/img/up_arrow.svg';
 import STRINGS from '../../assets/strings.json';
 
@@ -15,8 +15,8 @@ export const useMeasure = (): any => {
 
 const CollapsibleHeader = styled.button`
 	border-radius: 8px;
-	background-color: #ecebed;
-	color: ${STRINGS.ACCENT_COLOR};
+	background-color: ${STRINGS.BACKGROUND_DARK};
+	color: ${STRINGS.ACCENT_COLOR_DARK};
 	cursor: pointer;
 	padding: 14px 1.4rem;
 	width: 100%;
@@ -39,11 +39,7 @@ const CollapsibleHeader = styled.button`
 `;
 
 const BGDiv = styled.div`
-	background-color: rgba(
-		${({ backgroundColor }: PopupProps): string =>
-			backgroundColor ? hexToRGB(backgroundColor) : '247, 245, 249'},
-		${({ backgroundOpacity = '1' }: PopupProps): string => backgroundOpacity}
-	);
+	background-color: ${STRINGS.BACKGROUND_DARK_SECONDARY};
 	border-radius: 8px;
 	width: 100%;
 `;

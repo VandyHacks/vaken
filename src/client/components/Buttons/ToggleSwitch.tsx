@@ -23,7 +23,7 @@ interface SliderProps {
 const Slider = styled('div')`
 	${({ checked }: SliderProps): string =>
 		checked
-			? `background-color: ${STRINGS.ACCENT_COLOR}; &:before { transform: translateX(1.5rem); }`
+			? `background-color: ${STRINGS.ACCENT_COLOR_DARK}; &:before { transform: translateX(1.5rem); }`
 			: 'background-color: #ccc;'}
 	position: absolute;
 	cursor: pointer;
