@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { InputProps } from './TextInput';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useSignedUploadUrlMutation, useSignedReadUrlQuery } from '../../generated/graphql';
-import STRINGS from '../../assets/strings.json';
+import { ACCENT_COLOR } from '../../assets/strings';
 
 /**
  * Counter to allow for multiple FileInput elements to coexist on the same page.
@@ -26,7 +26,7 @@ const FileLabelEl = styled.label`
 	cursor: pointer;
 	font-size: 1.2rem;
 	padding: 0.6rem 2rem;
-	background: ${STRINGS.ACCENT_COLOR};
+	background: ${ACCENT_COLOR};
 	width: fit-content;
 	color: white;
 	border-radius: 4px;

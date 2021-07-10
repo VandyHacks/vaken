@@ -22,7 +22,7 @@ import { NfcTableRows } from './NfcTableRows';
 
 import { QueriedEvent, QueriedHacker, SortFnProps } from './NfcTableTypes';
 
-import STRINGS from '../../assets/strings.json';
+import { NO_EVENTS_MESSAGE, DARK_TEXT_COLOR } from '../../assets/strings';
 import { SmallCenteredText } from '../../components/Text/SmallCenteredText';
 
 const TableLayout = styled('div')`
@@ -172,8 +172,8 @@ const NfcTable: FC<Props> = ({ hackersData, eventsData }): JSX.Element => {
 	}, [hackersData, sortBy, sortDirection, searchValue]);
 
 	return eventsData.length === 0 ? (
-		<SmallCenteredText color={STRINGS.DARK_TEXT_COLOR} fontSize="1rem" margin="0rem">
-			{STRINGS.NO_EVENTS_MESSAGE}
+		<SmallCenteredText color={DARK_TEXT_COLOR} fontSize="1rem" margin="0rem">
+			{NO_EVENTS_MESSAGE}
 		</SmallCenteredText>
 	) : (
 		<TableLayout>

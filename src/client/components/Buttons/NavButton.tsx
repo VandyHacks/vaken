@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React, { HTMLAttributes, FC } from 'react';
-import CSS from 'csstype';
+import type CSS from 'csstype';
 import { Button, LeftButtonText } from './Buttons';
 
 export interface StyleProps extends Pick<CSS.Properties, 'color'> {

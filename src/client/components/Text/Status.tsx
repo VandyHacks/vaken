@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import { ApplicationStatus } from '../../generated/graphql';
-import STRINGS from '../../assets/strings.json';
+import { ACCENT_COLOR } from '../../assets/strings';
 
 interface Props {
 	borderRadius?: string;
@@ -28,7 +28,7 @@ const StyledDiv = styled('div')`
 	font-size: ${(props: StyledProps) => props.fontSize || '1rem'};
 	font-weight: ${(props: StyledProps) => props.fontWeight || 500};
 	color: ${(props: StyledProps) => props.fontColor || 'white'};
-	background-color: ${(props: StyledProps) => props.backgroundColor || STRINGS.ACCENT_COLOR};
+	background-color: ${(props: StyledProps) => props.backgroundColor || ACCENT_COLOR};
 	text-align: ${(props: StyledProps) => props.textAlign || 'center'};
 	border-radius: ${(props: StyledProps) => props.borderRadius || '8px'};
 	width: ${(props: StyledProps) => props.width || '5rem'};

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
+import { Meta, Story } from '@storybook/react';
 import { MemoryRouter } from 'react-router-dom';
 import { SponsorHackerView as Component } from './SponsorHackerView';
 import { MOCK_HACKER } from '../../../common/mockObjects';

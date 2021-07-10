@@ -13,7 +13,7 @@ import styled from 'styled-components';
 import { Row } from './Row';
 import { SortFnProps } from './NfcTableTypes';
 
-import STRINGS from '../../assets/strings.json';
+import { DARK_TEXT_COLOR, DARKEST_TEXT_COLOR } from '../../assets/strings';
 import { TableCtxI } from '../../contexts/TableContext';
 
 // Removes unwanted highlighting, adds alternating row colors
@@ -34,7 +34,7 @@ const StyledTable = styled(Table)`
 	.headerRow {
 		font-size: 1rem;
 		text-transform: capitalize;
-		color: ${STRINGS.DARK_TEXT_COLOR};
+		color: ${DARK_TEXT_COLOR};
 	}
 
 	.headerRow,
@@ -55,7 +55,7 @@ const StyledTable = styled(Table)`
 
 	font-size: 0.8rem;
 	margin-bottom: 5rem;
-	color: ${STRINGS.DARKEST_TEXT_COLOR};
+	color: ${DARKEST_TEXT_COLOR};
 
 	.selected {
 		background-color: #e5e7fa;

@@ -2,7 +2,7 @@ import React, { FunctionComponent, useState, useCallback, useContext, useEffect 
 import styled from 'styled-components';
 import Select from 'react-select';
 import { Button } from '../../components/Buttons/Button';
-import STRINGS from '../../assets/strings.json';
+import { GRAPHQL_ORGANIZER_ERROR_MESSAGE } from '../../assets/strings';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { Spinner } from '../../components/Loading/Spinner';
 import { Collapsible } from '../../components/Containers/Collapsible';
@@ -89,7 +89,7 @@ const ManageEvents: FunctionComponent = (): JSX.Element => {
 
 	if (events.error || companies.error || !companies.data || !events.data) {
 		console.error(events.error ?? companies.error);
-		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
+		return <GraphQLErrorMessage text={GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 	}
 
 	const eventRows = [...events.data.events];

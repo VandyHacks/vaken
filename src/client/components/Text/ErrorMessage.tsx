@@ -1,15 +1,15 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
-import STRINGS from '../../assets/strings.json';
+import {WARNING_COLOR} from '../../assets/strings';
 import SadFace from '../../assets/img/sad_face.svg';
 import { Button } from '../Buttons/Button';
 
 const Rectangle = styled.div`
-	border: 0.1rem solid ${STRINGS.WARNING_COLOR};
+	border: 0.1rem solid ${WARNING_COLOR};
 	border-radius: 8px;
 	display: inline-block;
 	text-align: center;
-	color: ${STRINGS.WARNING_COLOR};
+	color: ${WARNING_COLOR};
 	font-family: 'Roboto', sans-serif;
 	font-weight: 500;
 	font-size: 1.5rem;

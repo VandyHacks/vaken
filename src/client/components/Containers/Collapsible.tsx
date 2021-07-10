@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import React, { FC } from 'react';
 import { hexToRGB, Props as PopupProps } from './FloatingPopup';
 import UpArrow from '../../assets/img/up_arrow.svg';
-import STRINGS from '../../assets/strings.json';
+import { ACCENT_COLOR } from '../../assets/strings';
 
 /*
 export const useMeasure = (): any => {
@@ -16,7 +16,7 @@ export const useMeasure = (): any => {
 const CollapsibleHeader = styled.button`
 	border-radius: 8px;
 	background-color: #ecebed;
-	color: ${STRINGS.ACCENT_COLOR};
+	color: ${ACCENT_COLOR};
 	cursor: pointer;
 	padding: 14px 1.4rem;
 	width: 100%;

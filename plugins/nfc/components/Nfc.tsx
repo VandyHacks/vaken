@@ -1,7 +1,10 @@
 import React, { FunctionComponent } from 'react';
 import { useImmer } from 'use-immer';
 import NfcTable from './NfcTable';
-import STRINGS from '../../../src/client/assets/strings.json';
+import {
+	PERMISSIONS_NFC,
+	GRAPHQL_ORGANIZER_ERROR_MESSAGE,
+} from '../../../src/client/assets/strings';
 import { GraphQLErrorMessage } from '../../../src/client/components/Text/ErrorMessage';
 import FloatingPopup from '../../../src/client/components/Containers/FloatingPopup';
 import { Spinner } from '../../../src/client/components/Loading/Spinner';
@@ -41,7 +44,7 @@ export const Nfc: FunctionComponent = (): JSX.Element => {
 			sponsorData.company.tier.permissions
 		) {
 			isSponsor = true;
-			viewNfc = sponsorData.company.tier.permissions.includes(STRINGS.PERMISSIONS_NFC);
+			viewNfc = sponsorData.company.tier.permissions.includes(PERMISSIONS_NFC);
 		}
 	}
 
@@ -52,11 +55,11 @@ export const Nfc: FunctionComponent = (): JSX.Element => {
 	}
 	if (hackersError) {
 		console.log(hackersError);
-		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
+		return <GraphQLErrorMessage text={GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 	}
 	if (eventsError) {
 		console.log(eventsError);
-		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
+		return <GraphQLErrorMessage text={GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 	}
 
 	const now = Date.now();
@@ -68,7 +71,7 @@ export const Nfc: FunctionComponent = (): JSX.Element => {
 
 	if (isSponsor && sponsorError) {
 		console.log(sponsorError);
-		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
+		return <GraphQLErrorMessage text={GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 	}
 
 	if (isSponsor && !viewNfc) {

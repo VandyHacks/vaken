@@ -23,7 +23,7 @@ import { reimbursementHeaderRenderer } from './ReimbursementHeader';
 import { ResumeLink } from './ResumeLink';
 
 import { ApplicationStatus } from '../../generated/graphql';
-import STRINGS from '../../assets/strings.json';
+import * as STRINGS from '../../assets/strings';
 import { QueriedHacker, SortFnProps } from './HackerTableTypes';
 import { TableCtxI } from '../../contexts/TableContext';
 

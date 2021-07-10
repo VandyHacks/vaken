@@ -5,7 +5,7 @@ import { Button } from '../../components/Buttons/Button';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { FlexColumn, FlexStartColumn } from '../../components/Containers/FlexContainers';
 import { Title } from '../../components/Text/Title';
-import STRINGS from '../../assets/strings.json';
+import * as STRINGS from '../../assets/strings';
 import { SmallCenteredText } from '../../components/Text/SmallCenteredText';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import {

@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
-import STRINGS from '../../assets/strings.json';
+import { ACCENT_COLOR } from '../../assets/strings';
 
 const Label = styled('label')`
 	display: inline-flex;
@@ -23,7 +23,7 @@ interface SliderProps {
 const Slider = styled('div')`
 	${({ checked }: SliderProps): string =>
 		checked
-			? `background-color: ${STRINGS.ACCENT_COLOR}; &:before { transform: translateX(1.5rem); }`
+			? `background-color: ${ACCENT_COLOR}; &:before { transform: translateX(1.5rem); }`
 			: 'background-color: #ccc;'}
 	position: absolute;
 	cursor: pointer;

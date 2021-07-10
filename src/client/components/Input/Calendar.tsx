@@ -1,6 +1,6 @@
 import React, { FC, FormEventHandler } from 'react';
 import styled from 'styled-components';
-import STRINGS from '../../assets/strings.json';
+import { DARK_TEXT_COLOR, LIGHT_TEXT_COLOR } from '../../assets/strings';
 import { InputProps } from './TextInput';
 
 export const StyledCalInput = styled.input`
@@ -10,9 +10,9 @@ export const StyledCalInput = styled.input`
 	font-size: 1em;
 	font-family: 'Roboto', sans-serif;
 	border-bottom: 2px solid transparent;
-	color: ${STRINGS.DARK_TEXT_COLOR};
+	color: ${DARK_TEXT_COLOR};
 	::placeholder {
-		color: ${STRINGS.LIGHT_TEXT_COLOR};
+		color: ${LIGHT_TEXT_COLOR};
 	}
 
 	:invalid {

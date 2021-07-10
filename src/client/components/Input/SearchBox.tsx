@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import searchIcon from '../../assets/img/search_icon.svg';
-import STRINGS from '../../assets/strings.json';
+import { ACCENT_COLOR } from '../../assets/strings';
 
 export interface Props {
 	error?: boolean;
@@ -27,7 +27,7 @@ export const SearchBox = styled('input')`
 	:focus,
 	:active {
 		outline: none;
-		border: 0.0625rem solid ${(props: Props) => (props.error ? '#FF647C' : STRINGS.ACCENT_COLOR)};
+		border: 0.0625rem solid ${(props: Props) => (props.error ? '#FF647C' : ACCENT_COLOR)};
 	}
 `;
 

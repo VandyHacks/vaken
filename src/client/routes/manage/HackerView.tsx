@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import escape from 'escape-html';
 import { title } from 'case';
 import { Spinner } from '../../components/Loading/Spinner';
-import STRINGS from '../../assets/strings.json';
+import * as STRINGS from '../../assets/strings';
 import { Title } from '../../components/Text/Title';
 import { Button } from '../../components/Buttons/Button';
 import back from '../../assets/img/back.svg';

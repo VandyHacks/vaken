@@ -8,7 +8,7 @@ import { Spinner } from '../../components/Loading/Spinner';
 import { Button } from '../../components/Buttons/Button';
 import { GridColumn } from '../../components/Containers/GridContainers';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
-import STRINGS from '../../assets/strings.json';
+import { GRAPHQL_ORGANIZER_ERROR_MESSAGE } from '../../assets/strings';
 import { useMyProfileQuery, UserInput, useUpdateMyProfileMutation } from '../../generated/graphql';
 
 /**
@@ -27,7 +27,7 @@ export const Profile: React.FunctionComponent = (): JSX.Element => {
 	const createOnChangeHandler = (
 		fieldName: keyof UserInput
 	): ((value: string) => void) => value => {
-		void setInput(draft => void (draft[fieldName] = value));
+		void setInput(draft => {draft[fieldName] = value});
 	};
 
 	useEffect((): (() => void) => {
@@ -58,7 +58,7 @@ export const Profile: React.FunctionComponent = (): JSX.Element => {
 	// if error getting profile
 	if (error) {
 		console.log(error);
-		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
+		return <GraphQLErrorMessage text={GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 	}
 	// if successfully got profile
 	return (

@@ -4,7 +4,7 @@ import { useImmer } from 'use-immer';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { Spinner } from '../../components/Loading/Spinner';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
-import STRINGS from '../../assets/strings.json';
+import { GRAPHQL_ORGANIZER_ERROR_MESSAGE } from '../../assets/strings';
 import { HackerView } from './HackerView';
 import HackerTable from './HackerTable';
 import { defaultTableState, TableContext } from '../../contexts/TableContext';
@@ -30,7 +30,7 @@ export const ManageHackers: FunctionComponent = (): JSX.Element => {
 							if (loading || !data) return <Spinner />;
 							if (error) {
 								console.log(error);
-								return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
+								return <GraphQLErrorMessage text={GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 							}
 							return <HackerTable data={data.hackers} isSponsor={false} viewResumes />;
 						}}

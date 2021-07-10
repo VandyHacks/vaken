@@ -18,7 +18,9 @@ describe('ToggleSwitch', () => {
 
 	it('Toggles on click', () => {
 		let state = false;
-		const setState = (newState: boolean): void => void (state = newState);
+		const setState = (newState: boolean): void => {
+			state = newState;
+		};
 
 		if (!container) throw new Error('Container not properly set up in beforeEach');
 

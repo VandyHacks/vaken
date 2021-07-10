@@ -1,5 +1,5 @@
 import React from 'react';
-import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
+import { Meta, Story } from '@storybook/react';
 import { SmallCenteredText as Component, Props } from './SmallCenteredText';
 
 export default {

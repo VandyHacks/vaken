@@ -11,7 +11,7 @@ import { ToggleSwitch } from '../../components/Buttons/ToggleSwitch';
 import { Button } from '../../components/Buttons/Button';
 import { SearchBox } from '../../components/Input/SearchBox';
 import { FlexRow, FlexColumn } from '../../components/Containers/FlexContainers';
-import STRINGS from '../../assets/strings.json';
+import { ACCENT_COLOR } from '../../assets/strings';
 import { TableCtxI, TableContext, Option, SearchCriteria } from '../../contexts/TableContext';
 import {
 	Hacker,
@@ -73,18 +73,18 @@ const ColumnSelect = styled(Select)`
 		outline: none;
 		:focus,
 		:active {
-			border: 0.0625rem solid ${STRINGS.ACCENT_COLOR};
+			border: 0.0625rem solid ${ACCENT_COLOR};
 		}
 		:hover:not(.select__control--is-focused) {
 			border: 0.0625rem solid #ecebed;
 		}
 		:hover.select__control--is-focused {
-			border: 0.0625rem solid ${STRINGS.ACCENT_COLOR};
+			border: 0.0625rem solid ${ACCENT_COLOR};
 		}
 	}
 	.select__control--is-focused,
 	.select__control--is-selected {
-		border: 0.0625rem solid ${STRINGS.ACCENT_COLOR};
+		border: 0.0625rem solid ${ACCENT_COLOR};
 	}
 	.select__multi-value__label {
 		font-size: 1rem;

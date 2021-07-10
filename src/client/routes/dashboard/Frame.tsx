@@ -10,7 +10,7 @@ import React, {
 import styled from 'styled-components';
 import { Switch, Redirect, Route } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar/Sidebar';
-import STRINGS from '../../assets/strings.json';
+import { ACCENT_COLOR } from '../../assets/strings';
 import { Title } from '../../components/Text/Title';
 import routes from '../../assets/routes';
 import { AuthContext } from '../../contexts/AuthContext';
@@ -68,7 +68,7 @@ const Layout = styled.div`
 const Rectangle = styled.div`
 	height: 0.4rem;
 	width: 7.5rem;
-	background: ${STRINGS.ACCENT_COLOR};
+	background: ${ACCENT_COLOR};
 
 	@media screen and (max-width: 456px) {
 		display: none;
@@ -86,7 +86,7 @@ const MenuIconButton = styled.button`
 	& div {
 		width: 35px;
 		height: 5px;
-		background-color: ${STRINGS.ACCENT_COLOR};
+		background-color: ${ACCENT_COLOR};
 		margin: 6px 0;
 	}
 	transform: scale(0.9);
@@ -131,7 +131,7 @@ const Frame: FunctionComponent = (): JSX.Element => {
 				<div className="header">
 					<SpaceBetweenRow>
 						<MenuIcon open={menuOpen} setOpen={setMenuOpen} />
-						<Title color={STRINGS.ACCENT_COLOR} margin="1.5rem 0rem 0rem">
+						<Title color={ACCENT_COLOR} margin="1.5rem 0rem 0rem">
 							<Switch>
 								{routes.map(route => {
 									return route.authLevel.includes(currentUser.userType) ? (

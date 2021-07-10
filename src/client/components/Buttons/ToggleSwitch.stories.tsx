@@ -1,5 +1,5 @@
 import React from 'react';
-import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
+import { Meta, Story } from '@storybook/react';
 import { ToggleSwitch as Component, Props } from './ToggleSwitch';
 
 export default {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
+import { Meta, Story } from '@storybook/react';
 import { Button } from './Button';
 import type { ButtonProps as Props } from './Button.d';
 import FloatingPopup from '../Containers/FloatingPopup';

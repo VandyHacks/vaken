@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */ // TODO: Rework to not test private interface
 import Express from 'express';
 import { registerAuthRoutes } from './index';
 
@@ -5,6 +6,7 @@ import { authPlugins } from '../plugins';
 
 const app = Express();
 registerAuthRoutes(app, authPlugins);
+
 
 describe('Test auth/index.ts', () => {
 	describe('registerAuthRoutes', () => {

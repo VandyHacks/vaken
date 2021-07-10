@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import STRINGS from '../../assets/strings.json';
+import { ACCENT_COLOR } from '../../assets/strings';
 
 export interface StyleProps {
 	color?: string;
@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
 	& > div {
 		width: 1rem;
 		height: 1rem;
-		background-color: ${({ color }: StyleProps) => color || STRINGS.ACCENT_COLOR};
+		background-color: ${({ color }: StyleProps) => color || ACCENT_COLOR};
 
 		border-radius: 100%;
 		display: inline-block;

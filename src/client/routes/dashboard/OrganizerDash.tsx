@@ -10,7 +10,7 @@ import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { Button } from '../../components/Buttons/Button';
 import { OverflowContainer } from '../../components/Containers/FlexContainers';
 import 'chartjs-plugin-datalabels';
-import STRINGS from '../../assets/strings.json';
+import * as STRINGS from '../../assets/strings';
 
 const Label = styled('span')`
 	font-size: 1.25rem;

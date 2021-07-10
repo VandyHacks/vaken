@@ -1,5 +1,5 @@
 import { AuthenticationError } from 'apollo-server-express';
-import { UserType } from '../generated/graphql';
+import { UserDbInterface, UserType } from '../generated/graphql';
 import Context from '../context';
 
 import { Hacker } from './HackerResolver';
@@ -37,7 +37,7 @@ export const resolvers: CustomResolvers<Context> = {
 	Team,
 	// figures out what type of User is logged in
 	User: {
-		__resolveType: user => {
+		__resolveType: (user: UserDbInterface): 'Hacker' | 'Organizer' | 'Sponsor' | 'Volunteer' => {
 			switch (user.userType) {
 				case UserType.Hacker:
 					return 'Hacker';
