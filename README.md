@@ -71,7 +71,7 @@ A next-gen hackathon registration system.
 
 ## Contributing
 
-All contributions are welcome. Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for setup and development instructions.
+All contributions are welcome. Please read [CONTRIBUTING.md](.github/CONTRIBUTING.md) for setup and development instructions.
 
 ## Customizing for your event
 - constants: [./src/common/constants.json](./src/common/constants.json)

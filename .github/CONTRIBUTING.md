@@ -10,7 +10,7 @@ If you choose not to use `nvm`, you'll have to manually make sure that your `nod
 
 If you choose to use `nvm`, you can just run `nvm use`.
 
-Run `./scripts/install.sh` from the top level of the Vaken repository. Note that the variables in
+Run `./scripts/devEnv.sh` from the top level of the Vaken repository. Note that the variables in
 the new `.env` file will need to be changed to valid values.
 
 **Installing MongoDB:**

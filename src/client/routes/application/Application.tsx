@@ -239,6 +239,7 @@ export const Application: FunctionComponent = (): JSX.Element => {
 								{field.title ? (
 									<StyledQuestionPadContainer>
 										{field.title}
+										{!field.optional ? `*` : null}
 										{field.note ? <FieldNote>{` - ${field.note}`}</FieldNote> : null}
 									</StyledQuestionPadContainer>
 								) : null}
