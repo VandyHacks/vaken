@@ -6,7 +6,7 @@ import Notification from '../../assets/img/notification.svg';
 
 const Msg = styled.p`
 	font-size: 1rem;
-	color: #ffffff;
+	color: ${STRINGS.DARK_TEXT_COLOR};
 	white-space: pre-line;
 	grid-area: text;
 	padding-left: 1.5rem;

@@ -44,14 +44,18 @@ const StyledTable = styled(Table)`
 		color: ${STRINGS.DARK_TEXT_COLOR};
 	}
 
-	.headerRow,
-	.evenRow,
+	.headerRow {
+		background-color: #cdcdcd;
+	}
+	.evenRow {
+		background-color: #a7a7a7;
+	}
 	.oddRow {
 		box-sizing: border-box;
 		border-bottom: 0.0625rem solid #e0e0e0;
 	}
 	.oddRow {
-		background-color: ${STRINGS.BACKGROUND_DARK};
+		background-color: #cdcdcd;
 	}
 
 	.ReactVirtualized__Table__headerColumn {
