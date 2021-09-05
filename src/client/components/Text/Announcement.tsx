@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import FloatingPopup from '../Containers/FloatingPopup';
-import STRINGS from '../../assets/strings.json';
+import { ACCENT_COLOR } from '../../assets/strings';
 import Notification from '../../assets/img/notification.svg';
 
 const Msg = styled.p`
@@ -36,7 +36,7 @@ export const Announcement: FunctionComponent<Props> = (props: Props): JSX.Elemen
 			borderRadius="1rem"
 			width="35rem"
 			backgroundOpacity="1"
-			backgroundColor={STRINGS.ACCENT_COLOR}
+			backgroundColor={ACCENT_COLOR}
 			marginBottom="1rem"
 			padding="1.5rem">
 			<Layout>

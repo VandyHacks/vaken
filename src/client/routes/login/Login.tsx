@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import STRINGS from '../../assets/strings.json';
+import { DARK_TEXT_COLOR, FULL_NAME } from '../../assets/strings';
 import bg from '../../assets/img/login_bg.jpg';
 import OAuthLogin from './OAuthLogin';
 import Background from '../../components/Containers/Background';
@@ -11,8 +11,8 @@ const LoginPage: FunctionComponent = (): JSX.Element => (
 	<>
 		<Background img={bg}>
 			<FloatingPopup margin="1.5rem" height="25" width="27rem" backgroundOpacity="0.9">
-				<Title color={STRINGS.DARK_TEXT_COLOR} textAlign="center">
-					{STRINGS.FULL_NAME}
+				<Title color={DARK_TEXT_COLOR} textAlign="center">
+					{FULL_NAME}
 				</Title>
 				<OAuthLogin />
 				<Button linkTo="https://vandyhacks.org" secondary large long>

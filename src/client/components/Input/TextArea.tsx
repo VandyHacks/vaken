@@ -1,6 +1,6 @@
 import React, { FC, ChangeEventHandler, TextareaHTMLAttributes } from 'react';
 import styled from 'styled-components';
-import STRINGS from '../../assets/strings.json';
+import * as STRINGS from '../../assets/strings';
 import { StyleProps, InputProps } from './TextInput';
 
 export const RawInput = styled.textarea`

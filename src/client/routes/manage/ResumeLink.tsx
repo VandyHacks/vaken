@@ -1,14 +1,14 @@
 import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import { Spinner } from '../../components/Loading/Spinner';
-import STRINGS from '../../assets/strings.json';
+import { DARK_TEXT_COLOR } from '../../assets/strings';
 import { useDetailedHackerQuery, useSignedReadUrlQuery } from '../../generated/graphql';
 
 const Label = styled('td')`
 	font-weight: 500;
 	font-size: 1.1em;
 	font-family: 'Roboto', sans-serif;
-	color: ${STRINGS.DARK_TEXT_COLOR};
+	color: ${DARK_TEXT_COLOR};
 	text-align: right;
 	white-space: wrap;
 	flex: 1 1 0px;
@@ -37,7 +37,7 @@ const Value = styled('td')`
 	font-size: 1.1em;
 	font-family: 'Roboto', sans-serif;
 	font-weight: 100;
-	color: ${STRINGS.DARK_TEXT_COLOR};
+	color: ${DARK_TEXT_COLOR};
 	flex: 3 1 0px;
 
 	@media screen and (min-width: 457px) {

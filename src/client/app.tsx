@@ -8,7 +8,7 @@ import Frame from './routes/dashboard/Frame';
 import { AuthContext } from './contexts/AuthContext';
 import { useMeQuery } from './generated/graphql';
 import 'react-toastify/dist/ReactToastify.css';
-import { ACCENT_COLOR, DARK_TEXT_COLOR, WARNING_COLOR } from './assets/strings.json';
+import { ACCENT_COLOR, DARK_TEXT_COLOR, WARNING_COLOR } from './assets/strings';
 
 export const GlobalStyle = createGlobalStyle`
 	${reset}

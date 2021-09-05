@@ -1,5 +1,5 @@
 import React from 'react';
-import { Meta, Story } from '@storybook/react'; // eslint-disable-line import/no-extraneous-dependencies
+import { Meta, Story } from '@storybook/react';
 import Component, { CheckboxSansTitleCase as ComponentSansTitleCase } from './Checkbox';
 import { InputProps as Props } from './TextInput';
 

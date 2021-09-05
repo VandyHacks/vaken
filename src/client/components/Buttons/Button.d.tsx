@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import type { XOR3, oneOf } from '../../../common/util';
+import type { XOR3, oneOf } from '../../../common/util.d';
 
 /**
  * Using disjoint types as used in this file enables superior editor completion support.

@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { useImmer } from 'use-immer';
 import NfcTable from './NfcTable';
-import STRINGS from '../../assets/strings.json';
+import { PERMISSIONS_NFC, GRAPHQL_ORGANIZER_ERROR_MESSAGE } from '../../assets/strings';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { Spinner } from '../../components/Loading/Spinner';
@@ -18,15 +18,15 @@ export const Nfc: FunctionComponent = (): JSX.Element => {
 	const isSponsor = loggedInUser.data?.me?.__typename === 'Sponsor';
 	const viewNfc =
 		loggedInUser.data?.me?.__typename === 'Sponsor' &&
-		loggedInUser.data?.me?.company?.tier?.permissions?.includes(STRINGS.PERMISSIONS_NFC);
+		loggedInUser.data?.me?.company?.tier?.permissions?.includes(PERMISSIONS_NFC);
 
 	if (hackers.error || (!hackers.loading && !hackers.data)) {
 		console.error(hackers.error ?? 'No error was reported, but no data received either.');
-		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
+		return <GraphQLErrorMessage text={GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 	}
 	if (events.error || (!events.loading && !events.data)) {
 		console.error(events.error ?? 'No error was reported, but no data received either.');
-		return <GraphQLErrorMessage text={STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
+		return <GraphQLErrorMessage text={GRAPHQL_ORGANIZER_ERROR_MESSAGE} />;
 	}
 
 	const now = Date.now();

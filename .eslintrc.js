@@ -33,17 +33,33 @@ module.exports = {
 	reportUnusedDisableDirectives: true,
 	rules: {
 		'no-void': 0,
-		'no-underscore-dangle': 0,
-		'no-return-assign': [2, 'except-parens'],
+		'no-underscore-dangle': [
+			'error',
+			{
+				allow: [
+					'_id', // mongodb stores id field as _id
+					'__typename', // GraphQL reserved name
+					'_json', // Required to use Microsoft passport library
+					'client_', // TODO(leonm1): Remove nonconformant client_ in models.ts
+					'collections_', // TODO(leonm1): Remove nonconformant collections_ in models.ts
+					'updateUser_', // TODO(leonm1): Remove nonconformant updateUser_ in helpers.ts
+					// TODO(leonm1): Remove plugins
+					'_Plugin__registerNFCUIDWithUser',
+					'_Plugin__removeUserFromEvent',
+					'_Plugin__checkInUserToEvent',
+					'_Plugin__removeUserFromEventByNfc',
+					'_Plugin__checkInUserToEventByNfc',
+				],
+			},
+		],
 		'@typescript-eslint/explicit-function-return-type': [
 			2,
 			{ allowExpressions: true, allowTypedFunctionExpressions: true },
 		],
-		'prettier/prettier': 'error',
 		'no-param-reassign': [2, { props: true, ignorePropertyModificationsFor: ['draft'] }],
 		'import/no-extraneous-dependencies': [
 			2,
-			{ devDependencies: ['**/*.test.tsx', '**/*.test.ts'] },
+			{ devDependencies: ['**/*.test.tsx', '**/*.test.ts', '**/*.stories.tsx', 'scripts/*'] },
 		],
 		'import/prefer-default-export': [0],
 		'import/extensions': [
@@ -59,7 +75,6 @@ module.exports = {
 		],
 		'no-use-before-define': [0],
 		'@typescript-eslint/no-use-before-define': ['error'],
-		'@typescript-eslint/explicit-module-boundary-types': [0],
 	},
 	root: true,
 	overrides: [
@@ -72,8 +87,8 @@ module.exports = {
 		{
 			files: ['**/scripts/**/*'],
 			rules: {
-				"no-console": 0
-			}
+				'no-console': 0,
+			},
 		},
 		{
 			files: ['**/*.test.js'],

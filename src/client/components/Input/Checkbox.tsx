@@ -4,7 +4,7 @@ import { title } from 'case';
 import UncheckedSvg from '../../assets/img/unchecked_box.svg';
 import CheckedSvg from '../../assets/img/checked_box.svg';
 import { InputProps } from './TextInput';
-import STRINGS from '../../assets/strings.json';
+import { ACCENT_COLOR } from '../../assets/strings';
 
 const SEPARATOR = '|';
 
@@ -27,7 +27,7 @@ const CheckboxContainer = styled.div`
 
 		&:focus + label img {
 			/* Color for keyboard users */
-			box-shadow: 0 0 2px 2px ${STRINGS.ACCENT_COLOR};
+			box-shadow: 0 0 2px 2px ${ACCENT_COLOR};
 		}
 	}
 

@@ -16,7 +16,7 @@ import {
 	TiersDocument,
 } from '../../generated/graphql';
 import { Spinner } from '../../components/Loading/Spinner';
-import STRINGS from '../../assets/strings.json';
+import * as STRINGS from '../../assets/strings';
 
 const StyledSelect = styled.select`
 	margin: 0.25rem 1rem 0.25rem 0rem;

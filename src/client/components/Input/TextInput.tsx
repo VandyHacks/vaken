@@ -1,6 +1,6 @@
 import React, { FC, FormEventHandler, InputHTMLAttributes } from 'react';
 import styled from 'styled-components';
-import STRINGS from '../../assets/strings.json';
+import * as STRINGS from '../../assets/strings';
 
 export interface StyleProps
 	extends Pick<InputHTMLAttributes<HTMLInputElement>, 'type' | 'pattern' | 'id' | 'list'> {

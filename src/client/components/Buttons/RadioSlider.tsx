@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, FC } from 'react';
 import styled from 'styled-components';
-import STRINGS from '../../assets/strings.json';
+import { ACCENT_COLOR } from '../../assets/strings';
 
 export interface Props {
 	disable?: boolean;
@@ -64,7 +64,7 @@ export const RadioSlider: FC<Props> = (props: Props) => {
 	const [selected, setSelected] = useState(option2);
 	const [width, setWidth] = useState(0);
 	const [left, setLeft] = useState(0);
-	const [color, setColor] = useState(!disable ? STRINGS.ACCENT_COLOR : disabledColor);
+	const [color, setColor] = useState(!disable ? ACCENT_COLOR : disabledColor);
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [option1Width, setOption1Width] = useState(0);
 	const [option2Width, setOption2Width] = useState(0);
@@ -100,7 +100,7 @@ export const RadioSlider: FC<Props> = (props: Props) => {
 				case option2:
 					setWidth(option2Width);
 					setLeft(option1Width);
-					setColor(!disable ? STRINGS.ACCENT_COLOR : disabledColor);
+					setColor(!disable ? ACCENT_COLOR : disabledColor);
 					break;
 				case option3:
 					setWidth(option3Width);
