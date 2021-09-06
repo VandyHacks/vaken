@@ -44,14 +44,18 @@ const StyledTable = styled(Table)`
 		color: ${STRINGS.DARK_TEXT_COLOR};
 	}
 
-	.headerRow,
-	.evenRow,
+	.headerRow {
+		background-color: #cdcdcd;
+	}
+	.evenRow {
+		background-color: #a7a7a7;
+	}
 	.oddRow {
 		box-sizing: border-box;
 		border-bottom: 0.0625rem solid #e0e0e0;
 	}
 	.oddRow {
-		background-color: #fafafa;
+		background-color: #cdcdcd;
 	}
 
 	.ReactVirtualized__Table__headerColumn {
@@ -113,10 +117,10 @@ const statusRenderer = ({ cellData }: TableCellProps): JSX.Element => {
 			case ApplicationStatus.Rejected:
 				return STRINGS.COLOR_PALETTE[6];
 			default:
-				return STRINGS.ACCENT_COLOR;
+				return STRINGS.ACCENT_COLOR_DARK;
 		}
 	};
-	return <Status value={cellData} generateColor={generateColor} fontColor="gray" />;
+	return <Status value={cellData} generateColor={generateColor} fontColor="black" />;
 };
 
 const ResumeRenderer: FC<ActionRendererProps> = ({ rowData: { id } }) => <ResumeLink id={id} />;

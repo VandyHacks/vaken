@@ -27,7 +27,7 @@ const CheckboxContainer = styled.div`
 
 		&:focus + label img {
 			/* Color for keyboard users */
-			box-shadow: 0 0 2px 2px ${STRINGS.ACCENT_COLOR};
+			box-shadow: 0 0 2px 2px ${STRINGS.ACCENT_COLOR_DARK};
 		}
 	}
 

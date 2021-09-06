@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { FlexStartColumn, ContainerProps } from './FlexContainers';
+import STRINGS from '../../assets/strings.json';
 
 export const hexToRGB = (hex: string): string => {
 	const r = parseInt(hex.slice(1, 3), 16);
@@ -17,11 +18,7 @@ export interface Props extends ContainerProps {
 
 const FloatingPopup = styled(FlexStartColumn)`
 	transition: ease-in-out all 1s;
-	background-color: rgba(
-		${({ backgroundColor }: Props): string =>
-			backgroundColor ? hexToRGB(backgroundColor) : '247, 245, 249'},
-		${({ backgroundOpacity = '1' }: Props): string => backgroundOpacity}
-	);
+	background-color: ${STRINGS.BACKGROUND_DARK_SECONDARY};
 	border-radius: ${({ borderRadius = '8px' }: Props) => borderRadius};
 	padding: ${({ padding = '1.5rem' }: Props) => padding};
 	margin-bottom: ${({ marginBottom = '0' }: Props) => marginBottom};

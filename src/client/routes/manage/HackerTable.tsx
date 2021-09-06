@@ -73,18 +73,18 @@ const ColumnSelect = styled(Select)`
 		outline: none;
 		:focus,
 		:active {
-			border: 0.0625rem solid ${STRINGS.ACCENT_COLOR};
+			border: 0.0625rem solid ${STRINGS.ACCENT_COLOR_DARK};
 		}
 		:hover:not(.select__control--is-focused) {
 			border: 0.0625rem solid #ecebed;
 		}
 		:hover.select__control--is-focused {
-			border: 0.0625rem solid ${STRINGS.ACCENT_COLOR};
+			border: 0.0625rem solid ${STRINGS.ACCENT_COLOR_DARK};
 		}
 	}
 	.select__control--is-focused,
 	.select__control--is-selected {
-		border: 0.0625rem solid ${STRINGS.ACCENT_COLOR};
+		border: 0.0625rem solid ${STRINGS.ACCENT_COLOR_DARK};
 	}
 	.select__multi-value__label {
 		font-size: 1rem;

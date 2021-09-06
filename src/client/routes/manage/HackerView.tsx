@@ -30,7 +30,7 @@ const StyledTable = styled('table')`
 
 const HorizontalLine = styled.hr`
 	margin: 0 2rem;
-	border: 0.0625rem solid ${STRINGS.ACCENT_COLOR};
+	border: 0.0625rem solid ${STRINGS.ACCENT_COLOR_DARK};
 	margin-bottom: 0.25rem;
 `;
 
