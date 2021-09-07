@@ -12,6 +12,7 @@ import * as MeMocks from '../src/client/me.graphql.mocks';
 import * as ManageSponsorsMocks from '../src/client/routes/manage/sponsor.graphql.mocks';
 import * as ProfileMocks from '../src/client/routes/profile/user.graphql.mocks';
 import * as TeamMocks from '../src/client/routes/team/teams.graphql.mocks';
+import '@storybook/addon-console';
 
 export const parameters = {
 	actions: { argTypesRegex: '^on[A-Z].*' },

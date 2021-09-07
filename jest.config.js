@@ -72,6 +72,10 @@ module.exports = {
 				'\\.(css|less)$': 'jest-transform-css',
 				'\\.(jpg|jpeg|png|gif)$': '<rootDir>/__mocks__/svgrMock.js',
 			},
+			transform: {
+				'^.+\\.jsx?$': 'babel-jest',
+			},
+			preset: 'ts-jest',
 		},
 	],
 };

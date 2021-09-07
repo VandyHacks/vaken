@@ -1,3 +1,4 @@
+import { parseISO } from 'date-fns';
 import { CHECK_IN_EVENT_TYPE } from '../client/routes/nfc/helpers';
 import {
 	ApplicationStatus,
@@ -128,10 +129,11 @@ export const MOCK_CHECK_IN_EVENT: Event = {
 	__typename: 'Event',
 	attendees: [tabeHackerId],
 	checkins: [{ user: tabeHackerId, id: '999', timestamp: new Date(2021, 3, 1).getTime() }],
-	duration: 3600,
+	// this lets us test out functionality that only work on current events
+	duration: Number.POSITIVE_INFINITY,
 	eventType: CHECK_IN_EVENT_TYPE,
 	id: '888',
-	startTimestamp: new Date().getTime(), // Always display this event.
+	startTimestamp: parseISO('2021-04-04T00:00:00+0000').getTime(), // hard code for testing purposes
 	location: 'Atrium',
 	warnRepeatedCheckins: true,
 	name: 'Check In',
