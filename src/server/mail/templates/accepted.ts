@@ -263,7 +263,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
 																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;">
-																				Congratulations! You’re invited to be a part of <b>VandyHacks VII: Retro Edition</b>! We enjoyed reading your application and would love to see your ideas come to life during our virtual event on <b>October 2nd-4th</b>!
+																				Congratulations! You’re invited to be a part of <b>VandyHacks VIII: Space Edition</b>! We enjoyed reading your application and would love to see your ideas come to life during our virtual event on <b>October 8th-10th</b>!
 																				</div>
 																			</td>
 																		</tr>
@@ -631,7 +631,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 			Text: {
 				Charset: 'UTF-8',
 				Data: `Hi ${escape(user.preferredName || user.firstName)},
-				Congratulations! You’re invited to be a part of VandyHacks VII: Retro Edition! We enjoyed reading your application and would love to see your ideas come to life during our virtual event on October 2nd-4th!
+				Congratulations! You’re invited to be a part of VandyHacks VIII: Space Edition! We enjoyed reading your application and would love to see your ideas come to life during our virtual event on October 2nd-4th!
 
 				Head over to the application portal here and confirm your attendance by October 2nd, 12:00 PM CDT. Make sure you’ve also read and checked “agree” to our hackathon waiver under the hacker application.
 
