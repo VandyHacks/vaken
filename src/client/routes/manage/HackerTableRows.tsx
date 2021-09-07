@@ -45,17 +45,15 @@ const StyledTable = styled(Table)`
 	}
 
 	.headerRow {
-		background-color: #cdcdcd;
+		background-color: #ffffff;
 	}
 	.evenRow {
-		background-color: #a7a7a7;
+		background-color: #ffffff;
 	}
 	.oddRow {
 		box-sizing: border-box;
 		border-bottom: 0.0625rem solid #e0e0e0;
-	}
-	.oddRow {
-		background-color: #cdcdcd;
+		background-color: #fafafa;
 	}
 
 	.ReactVirtualized__Table__headerColumn {
