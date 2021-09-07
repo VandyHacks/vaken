@@ -86,9 +86,9 @@ export const questions = [
 			},
 			{
 				Component: Slider,
-				default: '2019',
+				default: '2025',
 				fieldName: 'gradYear',
-				options: ['2021', '2022', '2023', '2024', 'Other'],
+				options: ['2022', '2023', '2024', '2025', 'Other'],
 				other: true,
 				title: 'Graduation Year',
 				type: 'number',
