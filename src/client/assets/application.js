@@ -4,7 +4,7 @@ import { FileInput } from '../components/Input/FileInput';
 import { Checkbox, CheckboxSansTitleCase } from '../components/Input/Checkbox';
 import { ShirtSlider, Slider } from '../components/Input/Slider';
 import Calendar from '../components/Input/Calendar';
-import { Gender, ShirtSize } from '../generated/graphql';
+import { Gender, ShirtSize, DietaryRestriction } from '../generated/graphql';
 import { Boolean } from '../components/Input/Boolean';
 
 export const questions = [
@@ -39,22 +39,22 @@ export const questions = [
 				sortOrder: 5,
 				title: 'Gender',
 			},
-			// {
-			// 	Component: Checkbox,
-			// 	fieldName: 'dietaryRestrictions',
-			// 	optional: true,
-			// 	options: [
-			// 		DietaryRestriction.GlutenFree,
-			// 		DietaryRestriction.Vegetarian,
-			// 		DietaryRestriction.Vegan,
-			// 		DietaryRestriction.LactoseAllergy,
-			// 		DietaryRestriction.NutAllergy,
-			// 		DietaryRestriction.Halal,
-			// 		DietaryRestriction.Kosher,
-			// 	],
-			// 	sortOrder: 6,
-			// 	title: 'Dietary Restrictions',
-			// },
+			{
+				Component: Checkbox,
+				fieldName: 'dietaryRestrictions',
+				optional: true,
+				options: [
+					DietaryRestriction.GlutenFree,
+					DietaryRestriction.Vegetarian,
+					DietaryRestriction.Vegan,
+					DietaryRestriction.LactoseAllergy,
+					DietaryRestriction.NutAllergy,
+					DietaryRestriction.Halal,
+					DietaryRestriction.Kosher,
+				],
+				sortOrder: 6,
+				title: 'Dietary Restrictions',
+			},
 			{
 				Component: TextInput,
 				fieldName: 'phoneNumber',

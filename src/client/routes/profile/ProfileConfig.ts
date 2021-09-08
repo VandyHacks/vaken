@@ -1,5 +1,6 @@
 // import AutoComplete from '../../components/Input/AutoCompleteTextInput';
-import { Gender, ShirtSize } from '../../generated/graphql';
+import { Checkbox } from '../../components/Input/Checkbox';
+import { DietaryRestriction, Gender, ShirtSize } from '../../generated/graphql';
 import { Input as TextInput } from '../../components/Input/TextInput';
 import { Slider, ShirtSlider } from '../../components/Input/Slider';
 // import { Boolean } from '../../components/Input/Boolean';
@@ -69,22 +70,22 @@ export const profile = [
 		sortOrder: 5,
 		title: 'Gender',
 	},
-	// {
-	// 	Component: Checkbox,
-	// 	fieldName: 'dietaryRestrictions',
-	// 	optional: true,
-	// 	options: [
-	// 		DietaryRestriction.GlutenFree,
-	// 		DietaryRestriction.Vegetarian,
-	// 		DietaryRestriction.Vegan,
-	// 		DietaryRestriction.LactoseAllergy,
-	// 		DietaryRestriction.NutAllergy,
-	// 		DietaryRestriction.Halal,
-	// 		DietaryRestriction.Kosher,
-	// 	],
-	// 	sortOrder: 6,
-	// 	title: 'Dietary Restrictions',
-	// },
+	{
+		Component: Checkbox,
+		fieldName: 'dietaryRestrictions',
+		optional: true,
+		options: [
+			DietaryRestriction.GlutenFree,
+			DietaryRestriction.Vegetarian,
+			DietaryRestriction.Vegan,
+			DietaryRestriction.LactoseAllergy,
+			DietaryRestriction.NutAllergy,
+			DietaryRestriction.Halal,
+			DietaryRestriction.Kosher,
+		],
+		sortOrder: 6,
+		title: 'Dietary Restrictions',
+	},
 ];
 
 export default profile;

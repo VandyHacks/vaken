@@ -74,7 +74,7 @@ export const updateMyApplication: MutationResolvers['updateMyApplication'] = asy
 		'lastName',
 		'shirtSize',
 		'gender',
-		// 'dietaryRestrictions',
+		'dietaryRestrictions',
 		'phoneNumber',
 		'race',
 		'school',
