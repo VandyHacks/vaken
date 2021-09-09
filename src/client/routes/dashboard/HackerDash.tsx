@@ -58,7 +58,7 @@ const statusConfig = {
 		status: 'Submitted',
 		statusBG: STRINGS.APPLICATION_COMPLETE_STATUSBG,
 		statusColor: STRINGS.APPLICATION_COMPLETE_STATUSCOLOR,
-		text: "You may update your responses at any time by re-visiting the application.",
+		text: 'You may update your responses at any time by re-visiting the application.',
 	},
 	[ApplicationStatus.Confirmed]: {
 		actions: [
