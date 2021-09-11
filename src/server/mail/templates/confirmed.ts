@@ -196,7 +196,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																						<tr>
 																							<td style="width:520px;"> <center> <a href="https://vandyhacks.org" target="_blank">
 
-							<img alt="" height="auto" src="https://storage.googleapis.com/vh-fall-2020-assets/VH_Pixel_Logo.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:30%;" width="520">
+							<img alt="" height="auto" src="https://storage.googleapis.com/vhviii_assets/logo-black.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:30%;" width="520">
 
 								</a> </center></td>
 																						</tr>

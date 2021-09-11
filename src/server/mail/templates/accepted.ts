@@ -196,7 +196,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																						<tr>
 																							<td style="width:520px;"> <center><a href="https://vandyhacks.org" target="_blank">
 
-							<img alt="" height="auto" src="https://storage.googleapis.com/vh-fall-2020-assets/VH_Pixel_Logo.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:30%;" width="520">
+							<img alt="" height="auto" src="https://storage.googleapis.com/vhviii_assets/logo-black.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:30%;" width="520">
 
 								</a> </center></td>
 																						</tr>
@@ -271,7 +271,6 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
 																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;">
 																					Head over to the application portal <a href="https://apply.vandyhacks.org">here</a> and confirm your attendance by October 2nd, 12:00 PM CDT.
-																					<b>Make sure you’ve read and checked “agree” to our hackathon waiver</b> under the hacker application.
 																				</div>
 																			</td>
 																		</tr>
@@ -633,7 +632,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 				Data: `Hi ${escape(user.preferredName || user.firstName)},
 				Congratulations! You’re invited to be a part of VandyHacks VIII: Space Edition! We enjoyed reading your application and would love to see your ideas come to life during our virtual event on October 2nd-4th!
 
-				Head over to the application portal here and confirm your attendance by October 2nd, 12:00 PM CDT. Make sure you’ve also read and checked “agree” to our hackathon waiver under the hacker application.
+				Head over to the application portal here and confirm your attendance by October 2nd, 12:00 PM CDT.
 
 				Finally, please make sure to do the following in preparation for the event:
 				Join our Discord here for communication before, during, and after the hackathon!
