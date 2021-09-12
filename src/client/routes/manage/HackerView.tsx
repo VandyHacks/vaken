@@ -152,7 +152,11 @@ export const HackerView: FC<HackerViewProps> = props => {
 							const value =
 								hacker.application.find(el => el.question === fieldName)?.answer ?? 'Not provided';
 
-							if (['codeOfConduct', 'infoSharingConsent', 'hackathonWaiver'].includes(fieldName)) {
+							if (
+								['codeOfConduct', 'infoSharingConsent' /* , 'hackathonWaiver' */].includes(
+									fieldName
+								)
+							) {
 								return (
 									<Row
 										key={fieldName}

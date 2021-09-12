@@ -88,14 +88,14 @@ export const MOCK_HACKER: Hacker = {
 			answer:
 				'I have read and agree to the <a target="_blank" rel="noopener noreferrer" href="https://static.mlh.io/docs/mlh-code-of-conduct.pdf">MLH Code of Conduct</a>',
 		},
-		{
-			id: '20',
-			createdAt,
-			userId,
-			question: 'hackathonWaiver',
-			answer:
-				'I have read and agree to the <a target="_blank" rel="noopener noreferrer" href="https://storage.googleapis.com/vh-fall-2020-assets/VHWAIVER.pdf"> VandyHacks VII Waiver</a>',
-		},
+		// {
+		// 	id: '20',
+		// 	createdAt,
+		// 	userId,
+		// 	question: 'hackathonWaiver',
+		// 	answer:
+		// 		'I have read and agree to the <a target="_blank" rel="noopener noreferrer" href="https://storage.googleapis.com/vh-fall-2020-assets/VHWAIVER.pdf"> VandyHacks VII Waiver</a>',
+		// },
 		{
 			id: '21',
 			createdAt,

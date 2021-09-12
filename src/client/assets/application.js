@@ -169,14 +169,14 @@ export const questions = [
 				],
 				title: 'Code of Conduct',
 			},
-			{
-				Component: CheckboxSansTitleCase,
-				fieldName: 'hackathonWaiver',
-				options: [
-					'I have read and agree to the <a target="_blank" rel="noopener noreferrer" href="https://storage.googleapis.com/vh-fall-2020-assets/VHWAIVER.pdf"> VandyHacks VIII Waiver</a>',
-				],
-				title: 'Hackathon Waiver',
-			},
+			// {
+			// 	Component: CheckboxSansTitleCase,
+			// 	fieldName: 'hackathonWaiver',
+			// 	options: [
+			// 		'I have read and agree to the <a target="_blank" rel="noopener noreferrer" href="https://storage.googleapis.com/vh-fall-2020-assets/VHWAIVER.pdf"> VandyHacks VIII Waiver</a>',
+			// 	],
+			// 	title: 'Hackathon Waiver',
+			// },
 			{
 				Component: CheckboxSansTitleCase,
 				fieldName: 'infoSharingConsent',
@@ -290,7 +290,7 @@ export const requiredFields = [
 	// 'essay1',
 	// 'volunteer',
 	'consent',
-	'hackathonWaiver',
+	// 'hackathonWaiver',
 	'address1',
 	'city',
 	'state',
