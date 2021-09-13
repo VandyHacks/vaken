@@ -1,4 +1,5 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, useContext } from 'react';
+import { VandyStudentContext } from '../../routes/application/VandyStudentContext';
 import { Input, InputProps } from './TextInput';
 
 export interface Props extends InputProps {
@@ -36,6 +37,18 @@ const AutoComplete: FC<Props> = props => {
 			</datalist>
 		</>
 	);
+};
+
+export const SchoolAutocomplete: FC<Props> = props => {
+	const { setState, ...rest } = props;
+	const { setVandyStatus } = useContext(VandyStudentContext);
+	const setStateWithContext = (value: string): void => {
+		setState(value);
+		if (setVandyStatus) {
+			setVandyStatus(value === 'Vanderbilt University');
+		}
+	};
+	return <AutoComplete setState={setStateWithContext} {...rest} />;
 };
 
 export default AutoComplete;

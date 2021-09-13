@@ -1,11 +1,11 @@
-import AutoComplete from '../components/Input/AutoCompleteTextInput';
+import AutoComplete, { SchoolAutocomplete } from '../components/Input/AutoCompleteTextInput';
 import TextInput from '../components/Input/TextInput';
 import { FileInput } from '../components/Input/FileInput';
 import { Checkbox, CheckboxSansTitleCase } from '../components/Input/Checkbox';
 import { ShirtSlider, Slider } from '../components/Input/Slider';
 import Calendar from '../components/Input/Calendar';
 import { Gender, ShirtSize, DietaryRestriction } from '../generated/graphql';
-import { Boolean } from '../components/Input/Boolean';
+import { Boolean, VandyOnlyBoolean } from '../components/Input/Boolean';
 
 export const questions = [
 	{
@@ -71,7 +71,7 @@ export const questions = [
 				title: 'Date of Birth',
 			},
 			{
-				Component: AutoComplete,
+				Component: SchoolAutocomplete,
 				fieldName: 'school',
 				note: 'If not found, please type the name.',
 				options: import('./data/institutions.json'),
@@ -144,11 +144,12 @@ export const questions = [
 			// 		'Please write between 50 and 200 words. Your response will help us find creative, diverse attendees!',
 			// 	title: 'What do you find beautiful?',
 			// },
-			// {
-			// 	Component: Boolean,
-			// 	fieldName: 'volunteer',
-			// 	title: 'Would you like to be contacted about volunteering at the event?',
-			// },
+			{
+				Component: VandyOnlyBoolean,
+				fieldName: 'volunteer',
+				title: 'Would you like to be contacted about volunteering at the event?',
+				nonVandyDefault: 'No',
+			},
 			{
 				Component: Boolean,
 				fieldName: 'lightningTalk',
@@ -288,7 +289,7 @@ export const requiredFields = [
 	'graduationYear',
 	'race',
 	// 'essay1',
-	// 'volunteer',
+	'volunteer',
 	'consent',
 	// 'hackathonWaiver',
 	'address1',
