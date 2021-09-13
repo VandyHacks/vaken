@@ -1,4 +1,12 @@
-import React, { useContext, FunctionComponent, useState, useEffect, useCallback, FC } from 'react';
+import React, {
+	useContext,
+	FunctionComponent,
+	useState,
+	useEffect,
+	useCallback,
+	FC,
+	useReducer,
+} from 'react';
 import styled from 'styled-components';
 import { useImmer } from 'use-immer';
 import { toast } from 'react-toastify';
@@ -16,6 +24,7 @@ import {
 	ApplicationStatus,
 } from '../../generated/graphql';
 import { GraphQLErrorMessage } from '../../components/Text/ErrorMessage';
+import { VandyStudentContext } from './VandyStudentContext';
 
 export interface ConfigSection {
 	category: string;
@@ -29,6 +38,8 @@ export interface ConfigField {
 	fieldName: string;
 	note?: string;
 	optional?: boolean;
+	// Presence of nonVandyDefault implies question should only be shown for Vandy applicants
+	nonVandyDefault?: string;
 	options?: Promise<{ data: string[] }> | string[];
 	other?: boolean;
 	placeholder?: string;
@@ -114,6 +125,17 @@ export const Application: FunctionComponent = (): JSX.Element => {
 	const [updateApplication] = useUpdateMyApplicationMutation();
 	const { data, error, loading } = useMyApplicationQuery();
 
+	const vandyStudentReducer = (state: number, action: boolean): number => {
+		// state = 1: just flipped it on
+		// state = 2: already flipped on. Idempotency case.
+		// state = 0: flipped off.
+		if (action) {
+			return state === 0 ? 1 : 2;
+		}
+		return 0;
+	};
+	const [vandyStatus, setVandyStatus] = useReducer(vandyStudentReducer, 0);
+
 	// Only update changed QuestionIDs
 	const createOnChangeHandler = (fieldName: string): ((value: string) => void) => value => {
 		void setInput(draft => {
@@ -126,10 +148,17 @@ export const Application: FunctionComponent = (): JSX.Element => {
 		});
 	};
 
-	const valueHandler = (fieldName: string): string => {
-		const element = input.find(el => el.question === fieldName);
-		return element ? element.answer : '';
-	};
+	const valueHandler = useCallback(
+		(fieldName: string): string => {
+			const element = input.find(el => el.question === fieldName);
+			return element ? element.answer : '';
+		},
+		[input]
+	);
+
+	useEffect(() => {
+		setVandyStatus(valueHandler('school') === 'Vanderbilt University');
+	}, [valueHandler]);
 
 	useEffect((): (() => void) => {
 		if (setActionButton)
@@ -232,28 +261,39 @@ export const Application: FunctionComponent = (): JSX.Element => {
 			alignItems="flex-start"
 			padding="1.5rem">
 			<StyledForm onKeyPress={disableEnter}>
-				{config.map(({ fields, title = '' }: ConfigSection) => (
-					<Collapsible onClick={toggleOpen} open={openSection === title} title={title} key={title}>
-						{fields.map(field => (
-							<StyledQuestion key={field.fieldName} htmlFor={field.fieldName}>
-								{field.title ? (
-									<StyledQuestionPadContainer>
-										{field.title}
-										{!field.optional ? `*` : null}
-										{field.note ? <FieldNote>{` - ${field.note}`}</FieldNote> : null}
-									</StyledQuestionPadContainer>
-								) : null}
-								{field.prompt ? <FieldPrompt>{field.prompt}</FieldPrompt> : null}
-								<field.Component
-									setState={createOnChangeHandler(field.fieldName)}
-									value={valueHandler(field.fieldName)}
-									{...field}
-									id={field.fieldName}
-								/>
-							</StyledQuestion>
-						))}
-					</Collapsible>
-				))}
+				<VandyStudentContext.Provider value={{ vandyStatus, setVandyStatus }}>
+					{config.map(({ fields, title = '' }: ConfigSection) => (
+						<Collapsible
+							onClick={toggleOpen}
+							open={openSection === title}
+							title={title}
+							key={title}>
+							{fields.map(field => {
+								const hideForNonVandy = field.nonVandyDefault && vandyStatus === 0;
+								return (
+									<StyledQuestion key={field.fieldName} htmlFor={field.fieldName}>
+										{field.title && !hideForNonVandy ? (
+											<StyledQuestionPadContainer>
+												{field.title}
+												{!field.optional ? `*` : null}
+												{field.note ? <FieldNote>{` - ${field.note}`}</FieldNote> : null}
+											</StyledQuestionPadContainer>
+										) : null}
+										{field.prompt && !hideForNonVandy ? (
+											<FieldPrompt>{field.prompt}</FieldPrompt>
+										) : null}
+										<field.Component
+											setState={createOnChangeHandler(field.fieldName)}
+											value={valueHandler(field.fieldName)}
+											{...field}
+											id={field.fieldName}
+										/>
+									</StyledQuestion>
+								);
+							})}
+						</Collapsible>
+					))}
+				</VandyStudentContext.Provider>
 			</StyledForm>
 		</FloatingPopup>
 	);
