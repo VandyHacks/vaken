@@ -215,10 +215,12 @@ export const questions = [
 				placeholder: 'Nashville',
 			},
 			{
-				Component: TextInput,
+				Component: AutoComplete,
 				fieldName: 'state',
-				placeholder: 'Tennessee',
-				optional: true,
+				placeholder: 'TN',
+				note: 'If not found, please type the abbreviation.',
+				optinal: true,
+				options: import('./data/states.json'),
 				title: 'State',
 			},
 			{
