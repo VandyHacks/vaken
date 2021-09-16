@@ -282,7 +282,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
 																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;">
-																					Until then, stay hyped about VandyHacks! Like our page on <a href="https://www.facebook.com/vandyhacks/">Facebook</a> and follow us on <a href="https://www.instagram.com/vandyhacks/?hl=en">Instagram</a>.
+																					Until then, stay hyped about VandyHacks! Like our page on <a href="https://www.facebook.com/vandyhacks/">Facebook</a>, follow us on <a href="https://www.instagram.com/vandyhacks/?hl=en">Instagram</a>, and check out our <a href="https://www.youtube.com/channel/UC-sXkznjkmHLjpA5nlfdswg">YouTube channel</a>.
 																				</div>
 																			</td>
 																		</tr>
