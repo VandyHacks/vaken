@@ -112,7 +112,8 @@ const findRequiredUnfilled = (input: ApplicationInput[]): string => {
 	const requiredQuestion = config
 		.flatMap(section => section.fields as ConfigField[])
 		.find(
-			field => !field.optional && !input.find(el => el.question === field.fieldName && el.answer)
+			field =>
+				!field.optional && !input.find(el => el.question === field.fieldName && el.answer.trim())
 		);
 	return requiredQuestion ? `[${requiredQuestion.title}] is required` : '';
 };
