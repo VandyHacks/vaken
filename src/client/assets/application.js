@@ -219,7 +219,7 @@ export const questions = [
 				fieldName: 'state',
 				placeholder: 'Tennessee',
 				note: 'If not found, please type the abbreviation.',
-				optinal: true,
+				optional: true,
 				options: import('./data/states.json'),
 				title: 'State',
 			},
