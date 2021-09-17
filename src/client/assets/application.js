@@ -217,7 +217,7 @@ export const questions = [
 			{
 				Component: AutoComplete,
 				fieldName: 'state',
-				placeholder: 'TN',
+				placeholder: 'Tennessee',
 				note: 'If not found, please type the abbreviation.',
 				optinal: true,
 				options: import('./data/states.json'),
