@@ -53,14 +53,14 @@ const SliderContainer = styled.div`
 		}
 	}
 
-	input:not(:checked):focus + label {
+	input:not(:checked):focus-within + label {
 		/* Color for keyboard users */
-		box-shadow: inset 0 0 2px 2px ${STRINGS.ACCENT_COLOR_DARK};
+		box-shadow: 0 0 2px 2px ${STRINGS.ACCENT_COLOR_DARK};
 	}
 
-	input:checked:focus + label {
+	input:checked:focus-within + label {
 		/* Color for keyboard users */
-		box-shadow: inset 0 0 2px 2px #ffffff;
+		box-shadow: 0 0 2px 2px #ffffff;
 	}
 `;
 
