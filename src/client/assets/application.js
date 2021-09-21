@@ -4,7 +4,7 @@ import { FileInput } from '../components/Input/FileInput';
 import { Checkbox, CheckboxSansTitleCase } from '../components/Input/Checkbox';
 import { ShirtSlider, Slider } from '../components/Input/Slider';
 import Calendar from '../components/Input/Calendar';
-import { Gender, ShirtSize } from '../generated/graphql';
+import { Gender, ShirtSize, Location } from '../generated/graphql';
 import { Boolean } from '../components/Input/Boolean';
 
 export const questions = [
@@ -160,6 +160,13 @@ export const questions = [
 				fieldName: 'resume',
 				note: 'Your resume will be shared with sponsors',
 				title: 'Resume',
+			},
+			{
+				Component: Slider,
+				fieldName: 'location',
+				options: [Location.Virtual, Location.InPerson],
+				note: 'Note that only Vanderbilt students are allowed to be in-person on campus.',
+				title: 'Will you be attending the hackathon virtually or in-person?',
 			},
 			{
 				Component: CheckboxSansTitleCase,

@@ -1,5 +1,5 @@
 // import AutoComplete from '../../components/Input/AutoCompleteTextInput';
-import { Gender, ShirtSize } from '../../generated/graphql';
+import { Gender, ShirtSize, Location } from '../../generated/graphql';
 import { Input as TextInput } from '../../components/Input/TextInput';
 import { Slider, ShirtSlider } from '../../components/Input/Slider';
 // import { Boolean } from '../../components/Input/Boolean';
@@ -68,6 +68,14 @@ export const profile = [
 		other: true,
 		sortOrder: 5,
 		title: 'Gender',
+	},
+	{
+		Component: Slider,
+		fieldName: 'location',
+		options: [Location.Virtual, Location.InPerson],
+		other: true,
+		sortOrder: 6,
+		title: 'Location',
 	},
 	// {
 	// 	Component: Checkbox,
