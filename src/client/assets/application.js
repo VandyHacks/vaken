@@ -168,6 +168,7 @@ export const questions = [
 				options: [Location.Virtual, Location.InPerson],
 				note: 'Note that only Vanderbilt students are allowed to be in-person on campus.',
 				title: 'Will you be attending the hackathon virtually or in-person?',
+				nonVandyDefault: 'No',
 			},
 			{
 				Component: CheckboxSansTitleCase,
