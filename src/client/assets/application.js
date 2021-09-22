@@ -163,6 +163,13 @@ export const questions = [
 				title: 'Resume',
 			},
 			{
+				Component: Slider,
+				fieldName: 'location',
+				options: [Location.Virtual, Location.InPerson],
+				note: 'Note that only Vanderbilt students are allowed to be in-person on campus.',
+				title: 'Will you be attending the hackathon virtually or in-person?',
+			},
+			{
 				Component: CheckboxSansTitleCase,
 				fieldName: 'codeOfConduct',
 				options: [

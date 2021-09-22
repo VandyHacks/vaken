@@ -12,6 +12,7 @@ export default gql`
 			gender
 			dietaryRestrictions
 			phoneNumber
+			location
 		}
 	}
 
@@ -26,6 +27,7 @@ export default gql`
 			gender
 			dietaryRestrictions
 			phoneNumber
+			location
 		}
 	}
 `;
