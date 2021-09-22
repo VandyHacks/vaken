@@ -4,7 +4,7 @@ import { FileInput } from '../components/Input/FileInput';
 import { Checkbox, CheckboxSansTitleCase } from '../components/Input/Checkbox';
 import { ShirtSlider, Slider } from '../components/Input/Slider';
 import Calendar from '../components/Input/Calendar';
-import { Gender, ShirtSize, DietaryRestriction, Location } from '../generated/graphql';
+import { Gender, ShirtSize, DietaryRestriction } from '../generated/graphql';
 import { Boolean, VandyOnlyBoolean } from '../components/Input/Boolean';
 
 export const questions = [
@@ -163,11 +163,9 @@ export const questions = [
 				title: 'Resume',
 			},
 			{
-				Component: Slider,
+				Component: VandyOnlyBoolean,
 				fieldName: 'location',
-				options: [Location.Virtual, Location.InPerson],
-				note: 'Note that only Vanderbilt students are allowed to be in-person on campus.',
-				title: 'Will you be attending the hackathon virtually or in-person?',
+				title: 'Will you be attending the hackathon in-person?',
 				nonVandyDefault: 'No',
 			},
 			{

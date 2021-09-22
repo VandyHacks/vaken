@@ -1,9 +1,9 @@
 // import AutoComplete from '../../components/Input/AutoCompleteTextInput';
 import { Checkbox } from '../../components/Input/Checkbox';
-import { DietaryRestriction, Gender, ShirtSize, Location } from '../../generated/graphql';
+import { DietaryRestriction, Gender, ShirtSize } from '../../generated/graphql';
 import { Input as TextInput } from '../../components/Input/TextInput';
 import { Slider, ShirtSlider } from '../../components/Input/Slider';
-// import { Boolean } from '../../components/Input/Boolean';
+import { VandyOnlyBoolean } from '../../components/Input/Boolean';
 // import Calendar from '../../components/Input/Calendar';
 
 export const profile = [
@@ -71,12 +71,10 @@ export const profile = [
 		title: 'Gender',
 	},
 	{
-		Component: Slider,
+		Component: VandyOnlyBoolean,
 		fieldName: 'location',
-		options: [Location.Virtual, Location.InPerson],
-		other: true,
-		sortOrder: 6,
-		title: 'Location',
+		title: 'Will you be attending the hackathon in-person?',
+		nonVandyDefault: 'No',
 	},
 	{
 		Component: Checkbox,

@@ -62,11 +62,6 @@ export default gql`
 		WOMENS_XXL
 	}
 
-	enum Location {
-		VIRTUAL
-		IN_PERSON
-	}
-
 	enum ApplicationStatus {
 		CREATED
 		DECLINED
@@ -180,7 +175,7 @@ export default gql`
 		eventScore: Int! @column
 		application: [ApplicationField!]! @embedded
 		emailUnsubscribed: Boolean! @column
-		location: String
+		location: String @column
 	}
 
 	type Shift @entity(embedded: true) {
@@ -207,7 +202,7 @@ export default gql`
 		skills: [String!]! @column
 		eventsAttended: [ID!]! @column
 		eventScore: Int @column
-		location: String
+		location: String @column
 	}
 
 	type Team @entity(embedded: true) {
@@ -237,7 +232,7 @@ export default gql`
 		company: Company! @embedded
 		eventsAttended: [ID!]! @column
 		eventScore: Int @column
-		location: String
+		location: String @column
 	}
 
 	type Organizer implements User @entity {
@@ -258,7 +253,7 @@ export default gql`
 		permissions: [String]! @column
 		eventsAttended: [ID!]! @column
 		eventScore: Int @column
-		location: String
+		location: String @column
 	}
 
 	type Volunteer implements User @entity {
@@ -289,7 +284,7 @@ export default gql`
 		eventScore: Int! @column
 		application: [ApplicationField!]! @embedded
 		emailUnsubscribed: Boolean! @column
-		location: String
+		location: String @column
 	}
 
 	type Query {
