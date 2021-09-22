@@ -4,7 +4,7 @@ import { FileInput } from '../components/Input/FileInput';
 import { Checkbox, CheckboxSansTitleCase } from '../components/Input/Checkbox';
 import { ShirtSlider, Slider } from '../components/Input/Slider';
 import Calendar from '../components/Input/Calendar';
-import { Gender, ShirtSize, DietaryRestriction } from '../generated/graphql';
+import { Gender, ShirtSize, DietaryRestriction, Location } from '../generated/graphql';
 import { Boolean, VandyOnlyBoolean } from '../components/Input/Boolean';
 
 export const questions = [
