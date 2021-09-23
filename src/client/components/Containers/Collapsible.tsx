@@ -31,6 +31,7 @@ const CollapsibleHeader = styled.button`
 	align-items: center;
 
 	img {
+		transform: rotate(180deg);
 		transition: 0.5s all;
 	}
 	img.open {
