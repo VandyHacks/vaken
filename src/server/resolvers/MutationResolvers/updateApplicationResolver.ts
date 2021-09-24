@@ -20,6 +20,7 @@ const requiredFields = [
 	// 'essay1',
 	// 'volunteer',
 	'resume',
+	'attendingInPerson',
 	'codeOfConduct',
 	'infoSharingConsent',
 ];
@@ -80,6 +81,7 @@ export const updateMyApplication: MutationResolvers['updateMyApplication'] = asy
 		'school',
 		'gradYear',
 		'volunteer',
+		'attendingInPerson',
 	].reduce((acc: Partial<HackerDbObject>, reqField) => {
 		// TODO: Add input validation for these fields.
 		const missingField = input.fields.find(field => field.question === reqField);

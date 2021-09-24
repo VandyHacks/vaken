@@ -3,7 +3,7 @@ import { Checkbox } from '../../components/Input/Checkbox';
 import { DietaryRestriction, Gender, ShirtSize } from '../../generated/graphql';
 import { Input as TextInput } from '../../components/Input/TextInput';
 import { Slider, ShirtSlider } from '../../components/Input/Slider';
-// import { Boolean } from '../../components/Input/Boolean';
+import { VandyOnlyBoolean } from '../../components/Input/Boolean';
 // import Calendar from '../../components/Input/Calendar';
 
 export const profile = [
@@ -69,6 +69,12 @@ export const profile = [
 		other: true,
 		sortOrder: 5,
 		title: 'Gender',
+	},
+	{
+		Component: VandyOnlyBoolean,
+		fieldName: 'attendingInPerson',
+		title: 'Will you be attending the hackathon in-person?',
+		nonVandyDefault: 'No',
 	},
 	{
 		Component: Checkbox,

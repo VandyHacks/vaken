@@ -25,4 +25,5 @@ export const Hacker: HackerResolvers<Context> = {
 	eventScore: async hacker => (await hacker).eventScore || 0,
 	userType: () => UserType.Hacker,
 	volunteer: async hacker => (await hacker).volunteer || null,
+	attendingInPerson: async hacker => (await hacker).attendingInPerson || null,
 };

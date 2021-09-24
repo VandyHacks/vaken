@@ -20,5 +20,6 @@ export const User: Omit<UserResolvers, '__resolveType' | 'userType'> = {
 		const { shirtSize } = await user;
 		return shirtSize ? toEnum(ShirtSize)(shirtSize) : null;
 	},
+	attendingInPerson: async user => (await user).attendingInPerson || null,
 	eventScore: async user => (await user).eventScore || 0,
 };
