@@ -31,10 +31,12 @@ const CollapsibleHeader = styled.button`
 	align-items: center;
 
 	img {
+		// since img is up arrow but we want down arrow
+		transform: rotate(180deg);
 		transition: 0.5s all;
 	}
 	img.open {
-		transform: rotate(-180deg);
+		transform: rotate(360deg);
 	}
 `;
 
