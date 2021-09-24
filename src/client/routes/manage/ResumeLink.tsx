@@ -76,8 +76,8 @@ export const ResumeLink: FC<ResumeLinkProps> = (props: { id: string }) => {
 	const getLink = (): void => {
 		setLinkLoc(
 			signedReadUrl.length > 0
-				? `<a href="${signedReadUrl}"  target="_blank" rel="noopener noreferrer">Resume Link</a>`
-				: 'Resume not available'
+				? `<a href="${signedReadUrl}"  target="_blank" rel="noopener noreferrer">Résumé Link</a>`
+				: 'Résumé not available'
 		);
 	};
 
@@ -87,5 +87,5 @@ export const ResumeLink: FC<ResumeLinkProps> = (props: { id: string }) => {
 
 	// If an ID was provided, no error was thrown, and it's not loading, then we have a weird problem.
 	if (!data) throw new Error('No error was thrown, but no data was found either :(');
-	return <DangerousRow onMouseEnter={getLink} key="resume" label="view resume" value={linkLoc} />;
+	return <DangerousRow onMouseEnter={getLink} key="resume" label="view résumé" value={linkLoc} />;
 };

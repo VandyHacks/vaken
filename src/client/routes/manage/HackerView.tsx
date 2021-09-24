@@ -142,7 +142,7 @@ export const HackerView: FC<HackerViewProps> = props => {
 										label={`${fieldTitle}:`}
 										value={
 											signedReadUrl.length > 0
-												? `<a href="${signedReadUrl}"  target="_blank" rel="noopener noreferrer">Resume Link</a>`
+												? `<a href="${signedReadUrl}"  target="_blank" rel="noopener noreferrer">Résumé Link</a>`
 												: 'Not provided'
 										}
 									/>
