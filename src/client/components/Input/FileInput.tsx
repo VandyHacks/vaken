@@ -126,11 +126,11 @@ export const FileInput: FC<InputProps> = props => {
 			/>
 			<FileLabelEl className="label" htmlFor={`file-${counter}`}>
 				{/* eslint-disable-next-line react/jsx-one-expression-per-line */}
-				Upload {signedReadUrl ? 'new' : 'a'} resume
+				Upload {signedReadUrl ? 'new' : 'a'} résumé
 			</FileLabelEl>
 			{signedReadUrl ? (
 				<a href={signedReadUrl} target="_blank" rel="noopener noreferrer">
-					<FileLabelEl>View uploaded resume</FileLabelEl>
+					<FileLabelEl>View uploaded résumé</FileLabelEl>
 				</a>
 			) : null}
 		</Container>

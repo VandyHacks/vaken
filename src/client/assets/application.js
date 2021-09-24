@@ -158,8 +158,8 @@ export const questions = [
 			{
 				Component: FileInput,
 				fieldName: 'resume',
-				note: 'Your resume will be shared with sponsors',
-				title: 'Resume',
+				note: 'Your résumé will be shared with sponsors',
+				title: 'Résumé',
 			},
 			{
 				Component: CheckboxSansTitleCase,
