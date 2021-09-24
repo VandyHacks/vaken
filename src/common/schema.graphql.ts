@@ -18,7 +18,7 @@ export default gql`
 		phoneNumber: String @column
 		eventsAttended: [ID!]! @column
 		eventScore: Int @column
-		location: String @column
+		attendingInPerson: String @column
 	}
 
 	enum DietaryRestriction {
@@ -175,7 +175,7 @@ export default gql`
 		eventScore: Int! @column
 		application: [ApplicationField!]! @embedded
 		emailUnsubscribed: Boolean! @column
-		location: String @column
+		attendingInPerson: String @column
 	}
 
 	type Shift @entity(embedded: true) {
@@ -202,7 +202,7 @@ export default gql`
 		skills: [String!]! @column
 		eventsAttended: [ID!]! @column
 		eventScore: Int @column
-		location: String @column
+		attendingInPerson: String @column
 	}
 
 	type Team @entity(embedded: true) {
@@ -232,7 +232,7 @@ export default gql`
 		company: Company! @embedded
 		eventsAttended: [ID!]! @column
 		eventScore: Int @column
-		location: String @column
+		attendingInPerson: String @column
 	}
 
 	type Organizer implements User @entity {
@@ -253,7 +253,7 @@ export default gql`
 		permissions: [String]! @column
 		eventsAttended: [ID!]! @column
 		eventScore: Int @column
-		location: String @column
+		attendingInPerson: String @column
 	}
 
 	type Volunteer implements User @entity {
@@ -284,7 +284,7 @@ export default gql`
 		eventScore: Int! @column
 		application: [ApplicationField!]! @embedded
 		emailUnsubscribed: Boolean! @column
-		location: String @column
+		attendingInPerson: String @column
 	}
 
 	type Query {
@@ -320,7 +320,7 @@ export default gql`
 		gender: String
 		dietaryRestrictions: String
 		phoneNumber: String
-		location: String
+		attendingInPerson: String
 	}
 
 	input TeamInput {

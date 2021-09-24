@@ -146,6 +146,12 @@ export const questions = [
 			// },
 			{
 				Component: VandyOnlyBoolean,
+				fieldName: 'attendingInPerson',
+				title: 'Will you be attending the hackathon in-person?',
+				nonVandyDefault: 'No',
+			},
+			{
+				Component: VandyOnlyBoolean,
 				fieldName: 'volunteer',
 				title: 'Would you like to be contacted about volunteering at the event?',
 				nonVandyDefault: 'No',
@@ -161,12 +167,6 @@ export const questions = [
 				fieldName: 'resume',
 				note: 'Your resume will be shared with sponsors',
 				title: 'Resume',
-			},
-			{
-				Component: VandyOnlyBoolean,
-				fieldName: 'location',
-				title: 'Will you be attending the hackathon in-person?',
-				nonVandyDefault: 'No',
 			},
 			{
 				Component: CheckboxSansTitleCase,

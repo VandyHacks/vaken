@@ -31,7 +31,7 @@ export default gql`
 				question
 				answer
 			}
-			location
+			attendingInPerson
 		}
 	}
 
@@ -45,7 +45,7 @@ export default gql`
 			school
 			status
 			eventsAttended
-			location
+			attendingInPerson
 		}
 	}
 

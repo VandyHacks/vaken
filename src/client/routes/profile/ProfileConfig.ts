@@ -72,7 +72,7 @@ export const profile = [
 	},
 	{
 		Component: VandyOnlyBoolean,
-		fieldName: 'location',
+		fieldName: 'attendingInPerson',
 		title: 'Will you be attending the hackathon in-person?',
 		nonVandyDefault: 'No',
 	},

@@ -12,7 +12,7 @@ export default gql`
 			gender
 			dietaryRestrictions
 			phoneNumber
-			location
+			attendingInPerson
 		}
 	}
 
@@ -27,7 +27,7 @@ export default gql`
 			gender
 			dietaryRestrictions
 			phoneNumber
-			location
+			attendingInPerson
 		}
 	}
 `;

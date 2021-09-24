@@ -12,6 +12,6 @@ export const Mentor: MentorResolvers<Context> = {
 		return shirtSize ? toEnum(ShirtSize)(shirtSize) : null;
 	},
 	skills: async mentor => (await mentor).skills,
-	location: async mentor => (await mentor).location || null,
+	attendingInPerson: async mentor => (await mentor).attendingInPerson || null,
 	userType: () => UserType.Mentor,
 };
