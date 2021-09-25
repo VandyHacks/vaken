@@ -38,8 +38,9 @@ const FileLabelEl = styled.label`
 	&:hover,
 	&:focus,
 	&:active,
+	// pink glow
 	input:focus + & {
-		box-shadow: 0px 0px 20px 0px rgba(0, 0, 255, 0.67);
+		box-shadow: 0px 0px 20px 0px rgba(255, 45, 85, 0.67);
 	}
 `;
 
