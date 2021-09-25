@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { Bar, Pie, ChartData } from 'react-chartjs-2';
-import { gql, useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import { ChartData as ChartJSData, ChartOptions } from 'chart.js';
 
