@@ -32,7 +32,6 @@ const SliderContainer = styled.div`
 		box-sizing: border-box;
 		display: inline-block;
 		background: #ffffff;
-		border-radius: 4px;
 		background-color: #fff;
 		line-height: 140%;
 		text-align: center;
@@ -60,7 +59,7 @@ const SliderContainer = styled.div`
 
 	input:checked:focus-within + label {
 		/* Color for keyboard users */
-		box-shadow: 0 0 2px 2px #ffffff;
+		box-shadow: 0 0 1px 1px ${STRINGS.ACCENT_COLOR_DARK};
 	}
 `;
 
