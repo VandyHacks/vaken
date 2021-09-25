@@ -44,6 +44,9 @@ export default gql`
 			school
 			status
 			eventsAttended
+			attendingInPerson
+			gender
+			shirtSize
 		}
 	}
 

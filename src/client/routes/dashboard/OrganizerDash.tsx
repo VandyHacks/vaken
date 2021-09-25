@@ -11,6 +11,7 @@ import { Button } from '../../components/Buttons/Button';
 import { OverflowContainer } from '../../components/Containers/FlexContainers';
 import 'chartjs-plugin-datalabels';
 import STRINGS from '../../assets/strings.json';
+import { useHackersQuery, Gender, ApplicationStatus, ShirtSize } from '../../generated/graphql';
 
 const Label = styled('span')`
 	font-size: 1.25rem;
@@ -49,42 +50,6 @@ const StyledFloatingPopupBottom = styled(FloatingPopup)`
 	display: flex;
 `;
 
-export const GET_STATISTICS = gql`
-	query Statistics($number: Float!) {
-		getAllHackerGenders {
-			Male
-			Female
-			Other
-			PreferNotToSay
-		}
-		getAllHackerSizes {
-			UXS
-			US
-			UM
-			UL
-			UXL
-			UXXL
-			WS
-			WM
-			WL
-			WXL
-			WXXL
-		}
-		getAllHackerStatuses {
-			Created
-			Started
-			Submitted
-			Accepted
-			Confirmed
-			Rejected
-		}
-		getTopHackerSchools(number: $number) {
-			school
-			counts
-		}
-	}
-`;
-
 const colorPalette = STRINGS.COLOR_PALETTE.slice(1);
 
 const generateColor = (n: number): string[] => {
@@ -106,7 +71,7 @@ const STATUS_DEFAULT_CHART_OPTIONS: ChartOptions = {
 			color: 'black',
 			display: 'auto',
 			font: {
-				size: 20,
+				size: 10,
 				weight: 'bold',
 			},
 		},
@@ -116,7 +81,7 @@ const STATUS_DEFAULT_CHART_OPTIONS: ChartOptions = {
 		xAxes: [
 			{
 				ticks: {
-					fontSize: 20,
+					fontSize: 10,
 				},
 			},
 		],
@@ -124,7 +89,7 @@ const STATUS_DEFAULT_CHART_OPTIONS: ChartOptions = {
 	showLines: true,
 	title: {
 		display: true,
-		fontSize: 24,
+		fontSize: 20,
 		text: 'Number of Applicants',
 	},
 	tooltips: {
@@ -132,9 +97,24 @@ const STATUS_DEFAULT_CHART_OPTIONS: ChartOptions = {
 	},
 };
 
-const KVData = (data: { [key: string]: number }): ChartData<ChartJSData> => {
-	const keys = Object.keys(data).slice(0, -1);
-	const values = Object.values(data).slice(0, -1);
+const KVData = (hackerData: string[], types: string): ChartData<ChartJSData> => {
+	let keys: string[] = [];
+	if (types === 'gender') {
+		keys = Object.values(Gender);
+	} else if (types === 'status') {
+		keys = Object.values(ApplicationStatus);
+	} else if (types === 'shirtSize') {
+		keys = Object.values(ShirtSize);
+	}
+
+	const values: number[] = new Array(keys.length).fill(0);
+	for (let type = 0; type < keys.length; type += 1) {
+		for (let i = 0; i < hackerData.length; i += 1) {
+			if (hackerData[i] === keys[type]) {
+				values[type] += 1;
+			}
+		}
+	}
 
 	return {
 		datasets: [
@@ -155,8 +135,8 @@ const pieChartOptions = (title: string): ChartOptions => ({
 	responsive: true,
 	title: {
 		display: true,
-		fontSize: 24,
-		position: 'bottom',
+		fontSize: 20,
+		position: 'left',
 		text: title,
 	},
 });
@@ -195,9 +175,8 @@ export const OrganizerDash: FC<Props> = ({ disableAnimations }): JSX.Element => 
 	// Currently the { loading: true } will stop this component from causing errors in prod.
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	// const { loading, error, data } = { data: {} as any, error: 'Not Implemented', loading: true };
-	const { loading, error, data } = useQuery(GET_STATISTICS, {
-		variables: { number: 5.0 },
-	});
+
+	const { loading, error, data } = useHackersQuery();
 
 	if (loading) return <Spinner />;
 	if (error) {
@@ -218,17 +197,35 @@ export const OrganizerDash: FC<Props> = ({ disableAnimations }): JSX.Element => 
 			<StyledFloatingPopupTop marginBottom="1rem" backgroundOpacity="1" padding="1.5rem">
 				<UpperChartLayout>
 					<BarChartLayout>
-						<Bar data={KVData(data.getAllHackerStatuses)} options={statusOptions} />
+						<Bar
+							data={KVData(
+								data?.hackers.map(hacker => hacker.status),
+								'status'
+							)}
+							options={statusOptions}
+						/>
 					</BarChartLayout>
-					<SchoolTable data={data.getTopHackerSchools} />
+					{/* <SchoolTable data={data.getTopHackerSchools} /> */}
 				</UpperChartLayout>
-				<Button large linkTo="/managehackers">
+				<Button large linkTo="/manage/hackers">
 					Manage hackers
 				</Button>
 			</StyledFloatingPopupTop>
 			<StyledFloatingPopupBottom backgroundOpacity="1" padding="1.5rem">
-				<Pie data={KVData(data.getAllHackerSizes)} options={shirtOptions} />
-				<Pie data={KVData(data.getAllHackerGenders)} options={genderOptions} />
+				<Pie
+					data={KVData(
+						data?.hackers.map(hacker => hacker.shirtSize),
+						'shirtSize'
+					)}
+					options={shirtOptions}
+				/>
+				<Pie
+					data={KVData(
+						data?.hackers.map(hacker => hacker.gender),
+						'gender'
+					)}
+					options={genderOptions}
+				/>
 			</StyledFloatingPopupBottom>
 		</OverflowContainer>
 	);
