@@ -138,7 +138,7 @@ export const FileInput: FC<InputProps> = props => {
 			<FileLabelEl className="label" htmlFor={`file-${counter}`}>
 				{/* eslint-disable-next-line react/jsx-one-expression-per-line */}
 				Upload {signedReadUrl ? 'new' : 'a'} résumé
-				{loading && <Spinner color="white"/>}
+				{loading && <Spinner color="white" />}
 			</FileLabelEl>
 			{signedReadUrl ? (
 				<a href={signedReadUrl} target="_blank" rel="noopener noreferrer">

@@ -61,6 +61,7 @@ module.exports = {
 		'@typescript-eslint/no-use-before-define': ['error'],
 		'@typescript-eslint/explicit-module-boundary-types': [0],
 		'promise/catch-or-return': [
+			2,
 			{ allowFinally: true }
 		]
 	},
