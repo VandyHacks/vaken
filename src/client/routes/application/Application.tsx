@@ -148,7 +148,7 @@ export const Application: FunctionComponent = (): JSX.Element => {
 					onClick={async () => {
 						const firstRequiredUnfilledToast = findRequiredUnfilled(input);
 						toast.dismiss();
-						if (firstRequiredUnfilledToast)
+						if (firstRequiredUnfilledToast !== <></>)
 							toast.error(firstRequiredUnfilledToast, {
 								position: 'bottom-right',
 							});
