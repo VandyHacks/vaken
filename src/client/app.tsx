@@ -38,6 +38,10 @@ export const GlobalStyle = createGlobalStyle`
 		font-family: 'Roboto', sans-serif !important;
 		font-size: 1.1em !important;
 	}
+
+	.toast-emphasize {
+		font-weight: bold !important;
+	}
 `;
 
 export const theme: DefaultTheme = {
