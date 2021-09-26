@@ -143,8 +143,7 @@ export const Application: FunctionComponent = (): JSX.Element => {
 						toast.dismiss();
 						if (firstRequiredUnfilledToast)
 							toast.error(firstRequiredUnfilledToast, {
-								position: 'bottom-right',
-								autoClose: 500000
+								position: 'bottom-right'
 							});
 						else
 							return updateApplication({
