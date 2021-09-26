@@ -104,7 +104,14 @@ const findRequiredUnfilled = (input: ApplicationInput[]): JSX.Element => {
 			field =>
 				!field.optional && !input.find(el => el.question === field.fieldName && el.answer.trim())
 		);
-	return requiredQuestion ? (<p><em className="toast-emphasize">{ requiredQuestion.title }</em> is required</p>) : (<></>);
+	return requiredQuestion ? (
+		<p>
+			<em className="toast-emphasize">{requiredQuestion.title}</em>
+			is required
+		</p>
+	) : (
+		<></>
+	);
 };
 
 export const Application: FunctionComponent = (): JSX.Element => {
@@ -143,7 +150,7 @@ export const Application: FunctionComponent = (): JSX.Element => {
 						toast.dismiss();
 						if (firstRequiredUnfilledToast)
 							toast.error(firstRequiredUnfilledToast, {
-								position: 'bottom-right'
+								position: 'bottom-right',
 							});
 						else
 							return updateApplication({
