@@ -107,7 +107,7 @@ const findRequiredUnfilled = (input: ApplicationInput[]): JSX.Element => {
 	return requiredQuestion ? (
 		<p>
 			<em className="toast-emphasize">{requiredQuestion.title}</em>
-			is required
+			&nbsp;is required
 		</p>
 	) : (
 		<></>
