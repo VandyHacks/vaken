@@ -159,7 +159,7 @@ const Frame: FunctionComponent = (): JSX.Element => {
 								{() => {
 									switch (currentUser.userType) {
 										case UserType.Organizer:
-											return <OrganizerDash />;
+											return <HackerDash />;
 										case UserType.Sponsor:
 											return <SponsorDash />;
 										case UserType.Hacker:
