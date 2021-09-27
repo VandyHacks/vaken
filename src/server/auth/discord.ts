@@ -28,10 +28,7 @@ function verify(req: express.Request): boolean {
 	// to go without confirmation)
 	if (session.userType === UserType.Hacker) {
 		const hackerSession = session as HackerDbObject;
-
-		if (hackerSession.status !== ApplicationStatus.Confirmed) {
-			return false;
-		}
+		return hackerSession.status === ApplicationStatus.Confirmed;
 	}
 
 	return true;
