@@ -20,8 +20,6 @@ import { UserType } from '../../generated/graphql';
 import { HackerDash } from './HackerDash';
 import { SponsorDash } from './SponsorDash';
 
-export const OrganizerDash = React.lazy(() => import('./OrganizerDash'));
-
 const Layout = styled.div`
 	position: fixed;
 	height: 100vh;
