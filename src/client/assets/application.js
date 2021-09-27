@@ -181,7 +181,7 @@ export const questions = [
 				Component: CheckboxSansTitleCase,
 				fieldName: 'infoSharingConsent',
 				options: [
-					'I authorize you to share my application/registration information for event administration, ranking, MLH administration, pre- and post-event informational emails, and occasional emails about hackathons in-line with the MLH Privacy Policy. I further agree to the terms of both the <a target="_blank" rel="noopener noreferrer" href="https://github.com/MLH/mlh-policies/tree/master/prize-terms-and-conditions">MLH Contest Terms and Conditions</a> and the <a target="_blank" rel="noopener noreferrer" href="https://mlh.io/privacy">MLH Privacy Policy</a>.',
+					'I authorize you to share my application/registration information for event administration, ranking, MLH administration, pre- and post-event informational emails, and occasional emails about hackathons in line with the MLH Privacy Policy. I further agree to the terms of both the <a target="_blank" rel="noopener noreferrer" href="https://github.com/MLH/mlh-policies/tree/master/prize-terms-and-conditions">MLH Contest Terms and Conditions</a> and the <a target="_blank" rel="noopener noreferrer" href="https://mlh.io/privacy">MLH Privacy Policy</a>.',
 				],
 				title: 'Information sharing consent',
 			},
