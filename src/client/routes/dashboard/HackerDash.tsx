@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useState, useEffect, RefObject } from 'react';
 import styled from 'styled-components';
+import { toast } from 'react-toastify';
 import { Button } from '../../components/Buttons/Button';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { FlexColumn, FlexStartColumn } from '../../components/Containers/FlexContainers';
@@ -63,7 +64,7 @@ const statusConfig = {
 	[ApplicationStatus.Confirmed]: {
 		actions: [
 			{
-				action: () => void window.open('https://discord.gg/MbbfBWW', '_blank'),
+				action: () => void (window.location.href = '/api/auth/discord'),
 				actionText: 'Join our Discord',
 			},
 		],
@@ -164,6 +165,15 @@ export const HackerDash: FunctionComponent = (): JSX.Element => {
 			return undefined;
 		};
 	}, [confirmMySpot, declineMySpot]);
+
+	useEffect((): void => {
+		const msg = new URLSearchParams(window.location.search).get('msg');
+		if (msg) {
+			toast.success(msg, {
+				position: 'bottom-right',
+			});
+		}
+	}, []);
 
 	return (
 		<>
