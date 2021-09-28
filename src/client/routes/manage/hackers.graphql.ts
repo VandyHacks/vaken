@@ -48,13 +48,6 @@ export default gql`
 			attendingInPerson
 			gender
 			shirtSize
-			attendingInPerson
-			gender
-			shirtSize
-			attendingInPerson
-			gender
-			shirtSize
-			attendingInPerson
 		}
 	}
 
