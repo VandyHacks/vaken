@@ -4,11 +4,12 @@ import { HackerDash } from '../routes/dashboard/HackerDash';
 import { Help } from '../routes/help/Help';
 import { UserType } from '../generated/graphql';
 import { packages } from '../plugins';
+import OrganizerDash from '../routes/dashboard/OrganizerDash';
 
 const routes = [
 	{
 		authLevel: [UserType.Organizer],
-		component: HackerDash,
+		component: OrganizerDash,
 		displayText: 'Dashboard',
 		path: '/dashboard',
 	},
