@@ -67,7 +67,7 @@ const statusConfig = {
 				actionText: 'Join our Discord',
 			},
 		],
-		boldText: `Whoo hoo! We'll see you ${STRINGS.START_DAY}! Don't forget to join the Discord!`,
+		boldText: `Woohoo! We'll see you ${STRINGS.START_DAY}! Don't forget to join the Discord!`,
 		img: applicationStatusSVG,
 		status: 'Confirmed',
 		statusBG: STRINGS.APPLICATION_COMPLETE_STATUSBG,
