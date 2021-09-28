@@ -14,6 +14,7 @@ const {
 	DISCORD_CLIENT_SECRET,
 	DISCORD_BOT_TOKEN,
 	DISCORD_SERVER_ID,
+	DISCORD_ROLE_ID,
 } = process.env;
 
 function verify(req: express.Request): boolean {
@@ -86,5 +87,23 @@ export async function discordCallback(req: express.Request, res: express.Respons
 			'Content-Type': 'application/json',
 		},
 	});
+
+	const session = req.user as HackerDbObject;
+	if (session.school === 'Vanderbilt University') {
+		await fetch(
+			`https://discord.com/api/guilds/${DISCORD_SERVER_ID}/members/${user.id}/roles/${DISCORD_ROLE_ID}`,
+			{
+				method: 'PUT',
+				body: JSON.stringify({
+					access_token: tokens.access_token,
+				}),
+				headers: {
+					Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
+					'Content-Type': 'application/json',
+				},
+			}
+		);
+	}
+
 	res.redirect(`/?msg=${encodeURIComponent("Check your Discord -- you've been added!")}`);
 }
