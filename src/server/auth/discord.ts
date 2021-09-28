@@ -54,9 +54,10 @@ export async function discordCallback(req: express.Request, res: express.Respons
 		return;
 	}
 
-	const failureRedirect = `/?msg=${encodeURIComponent(
-		'Something broke on our end -- try again later.'
-	)}`;
+	const failureHandler = (e: any) => {
+		console.error(e);
+		res.redirect(`/?msg=${encodeURIComponent('Something broke on our end -- try again later.')}`);
+	};
 
 	// Create params for OAuth and send request to get token
 	const params = new URLSearchParams();
@@ -70,10 +71,7 @@ export async function discordCallback(req: express.Request, res: express.Respons
 		body: params,
 	})
 		.then(r => r.json())
-		.catch(e => {
-			console.error(e);
-			res.redirect(failureRedirect);
-		});
+		.catch(failureHandler);
 
 	// Get user information (for ID)
 	const user = await fetch('https://discord.com/api/users/@me', {
@@ -81,10 +79,7 @@ export async function discordCallback(req: express.Request, res: express.Respons
 		headers: { Authorization: `Bearer ${tokens.access_token}` },
 	})
 		.then(r => r.json())
-		.catch(e => {
-			console.error(e);
-			res.redirect(failureRedirect);
-		});
+		.catch(failureHandler);
 
 	// Add user to Discord server
 	await fetch(`https://discord.com/api/guilds/${DISCORD_SERVER_ID}/members/${user.id}`, {
@@ -96,10 +91,7 @@ export async function discordCallback(req: express.Request, res: express.Respons
 			Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
 			'Content-Type': 'application/json',
 		},
-	}).catch(e => {
-		console.error(e);
-		res.redirect(failureRedirect);
-	});
+	}).catch(failureHandler);
 
 	const session = req.user as HackerDbObject;
 	if (session.school === 'Vanderbilt University') {
@@ -115,10 +107,7 @@ export async function discordCallback(req: express.Request, res: express.Respons
 					'Content-Type': 'application/json',
 				},
 			}
-		).catch(e => {
-			console.error(e);
-			res.redirect(failureRedirect);
-		});
+		).catch(failureHandler);
 	}
 
 	res.redirect(`/?msg=${encodeURIComponent("Check your Discord -- you've been added!")}`);
