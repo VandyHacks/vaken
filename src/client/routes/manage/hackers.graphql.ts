@@ -46,6 +46,8 @@ export default gql`
 			status
 			eventsAttended
 			attendingInPerson
+			gender
+			shirtSize
 		}
 	}
 
