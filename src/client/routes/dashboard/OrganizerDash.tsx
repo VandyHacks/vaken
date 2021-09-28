@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { Bar, Pie, ChartData } from 'react-chartjs-2';
+import { gql, useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import { ChartData as ChartJSData, ChartOptions } from 'chart.js';
 
@@ -10,7 +11,13 @@ import { Button } from '../../components/Buttons/Button';
 import { OverflowContainer } from '../../components/Containers/FlexContainers';
 import 'chartjs-plugin-datalabels';
 import STRINGS from '../../assets/strings.json';
-import { useHackersQuery, Gender, ApplicationStatus, ShirtSize } from '../../generated/graphql';
+import {
+	useHackersQuery,
+	Gender,
+	ApplicationStatus,
+	ShirtSize,
+	HackersQuery,
+} from '../../generated/graphql';
 
 const Label = styled('span')`
 	font-size: 1.25rem;
@@ -47,6 +54,44 @@ const StyledFloatingPopupTop = styled(FloatingPopup)`
 
 const StyledFloatingPopupBottom = styled(FloatingPopup)`
 	display: flex;
+`;
+
+// Note: the following query is OUTDATED but supports the organizer dash stories as it stands.
+// Need to update OrganizerDash to not use the mocked query.
+export const GET_STATISTICS = gql`
+	query Statistics($number: Float!) {
+		getAllHackerGenders {
+			Male
+			Female
+			Other
+			PreferNotToSay
+		}
+		getAllHackerSizes {
+			UXS
+			US
+			UM
+			UL
+			UXL
+			UXXL
+			WS
+			WM
+			WL
+			WXL
+			WXXL
+		}
+		getAllHackerStatuses {
+			Created
+			Started
+			Submitted
+			Accepted
+			Confirmed
+			Rejected
+		}
+		getTopHackerSchools(number: $number) {
+			school
+			counts
+		}
+	}
 `;
 
 const colorPalette = STRINGS.COLOR_PALETTE.slice(1);
@@ -96,14 +141,15 @@ const STATUS_DEFAULT_CHART_OPTIONS: ChartOptions = {
 	},
 };
 
+const NOT_FOUND = 'NOT FOUND';
 const KVData = (hackerData: string[], types: string): ChartData<ChartJSData> => {
 	let keys: string[] = [];
 	if (types === 'gender') {
-		keys = Object.values(Gender);
+		keys = [...Object.values(Gender), 'NOT FOUND'];
 	} else if (types === 'status') {
-		keys = Object.values(ApplicationStatus);
+		keys = [...Object.values(ApplicationStatus), 'NOT FOUND'];
 	} else if (types === 'shirtSize') {
-		keys = Object.values(ShirtSize);
+		keys = [...Object.values(ShirtSize), 'NOT FOUND'];
 	}
 
 	const values: number[] = new Array(keys.length).fill(0);
@@ -169,6 +215,19 @@ export interface Props {
 	disableAnimations?: boolean;
 }
 
+function getGuaranteedHackerInfo(
+	data: HackersQuery | undefined,
+	property: 'status' | 'shirtSize' | 'gender'
+): string[] {
+	return data
+		? data.hackers.map(hacker => {
+				// need to assign hacker[property] to a variable for type checks
+				const hackerProperty = hacker[property];
+				return typeof hackerProperty === 'string' ? hackerProperty : NOT_FOUND;
+		  })
+		: [NOT_FOUND];
+}
+
 export const OrganizerDash: FC<Props> = ({ disableAnimations }): JSX.Element => {
 	// TODO(leonm1/tangck): Fix queries to show real data. Should also clean up imports when done.
 	// Currently the { loading: true } will stop this component from causing errors in prod.
@@ -197,10 +256,7 @@ export const OrganizerDash: FC<Props> = ({ disableAnimations }): JSX.Element => 
 				<UpperChartLayout>
 					<BarChartLayout>
 						<Bar
-							data={KVData(
-								data?.hackers.map(hacker => hacker.status),
-								'status'
-							)}
+							data={KVData(getGuaranteedHackerInfo(data, 'status'), 'status')}
 							options={statusOptions}
 						/>
 					</BarChartLayout>
@@ -212,17 +268,11 @@ export const OrganizerDash: FC<Props> = ({ disableAnimations }): JSX.Element => 
 			</StyledFloatingPopupTop>
 			<StyledFloatingPopupBottom backgroundOpacity="1" padding="1.5rem">
 				<Pie
-					data={KVData(
-						data?.hackers.map(hacker => hacker.shirtSize),
-						'shirtSize'
-					)}
+					data={KVData(getGuaranteedHackerInfo(data, 'shirtSize'), 'shirtSize')}
 					options={shirtOptions}
 				/>
 				<Pie
-					data={KVData(
-						data?.hackers.map(hacker => hacker.gender),
-						'gender'
-					)}
+					data={KVData(getGuaranteedHackerInfo(data, 'gender'), 'gender')}
 					options={genderOptions}
 				/>
 			</StyledFloatingPopupBottom>
