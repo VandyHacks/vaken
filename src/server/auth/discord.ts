@@ -54,7 +54,7 @@ export async function discordCallback(req: express.Request, res: express.Respons
 		return;
 	}
 
-	const failureHandler = (e: any) => {
+ => {
 		console.error(e);
 		res.redirect(`/?msg=${encodeURIComponent('Something broke on our end -- try again later.')}`);
 	};
