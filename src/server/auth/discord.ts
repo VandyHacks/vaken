@@ -44,7 +44,7 @@ export function sendToDiscord(req: express.Request, res: express.Response): void
 	res.redirect(
 		`https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(
 			`${req.protocol}://${req.get('host')}${DISCORD_CALLBACK_URL}`
-		)}&response_type=code&scope=guilds.join`
+		)}&response_type=code&scope=guilds.join%20identify`
 	);
 }
 
