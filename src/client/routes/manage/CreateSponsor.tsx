@@ -59,7 +59,7 @@ const CreateTier: React.FC = () => {
 	const onCreateTier = async (): Promise<void> => {
 		try {
 			createTier()
-				.then(() => showToast(`Tier ${tierName} created successfully!`))
+				.then(() => showToast(`${tierName} created successfully!`))
 				.catch(res => showToast(`Sorry. ${res.graphQLErrors[0].message} Please try again :)`, true))
 				.finally(() => {
 					setTierName("");
