@@ -44,6 +44,8 @@ export default gql`
 			school
 			status
 			eventsAttended
+			gender
+			shirtSize
 		}
 	}
 
