@@ -14,7 +14,10 @@ const {
 	DISCORD_CLIENT_SECRET,
 	DISCORD_BOT_TOKEN,
 	DISCORD_SERVER_ID,
-	DISCORD_ROLE_ID,
+	DISCORD_VANDERBILT_ROLE,
+	DISCORD_HACKER_ROLE,
+	DISCORD_MENTOR_ROLE,
+	DISCORD_SPONSOR_ROLE,
 } = process.env;
 
 function verify(req: express.Request): boolean {
@@ -56,7 +59,7 @@ export async function discordCallback(req: express.Request, res: express.Respons
 
 	const failureHandler = (e: any): void => {
 		console.error(e);
-		res.redirect(`/?msg=${encodeURIComponent('Something broke on our end -- try again later.')}`);
+		res.redirect(`/?msg=${encodeURIComponent('Something broke on our end — try again later.')}`);
 	};
 
 	// Create params for OAuth and send request to get token
@@ -81,11 +84,24 @@ export async function discordCallback(req: express.Request, res: express.Respons
 		.then(r => r.json())
 		.catch(failureHandler);
 
+	const roles: { [K in string]: string } = {
+		SPONSOR: DISCORD_SPONSOR_ROLE as string,
+		MENTOR: DISCORD_MENTOR_ROLE as string,
+		HACKER: DISCORD_HACKER_ROLE as string,
+	};
+
+	const session = req.user as HackerDbObject;
+	const userObj = req.user as UserDbInterface;
+
 	// Add user to Discord server
 	await fetch(`https://discord.com/api/guilds/${DISCORD_SERVER_ID}/members/${user.id}`, {
 		method: 'PUT',
 		body: JSON.stringify({
 			access_token: tokens.access_token,
+			roles: [
+				...(session.school === 'Vanderbilt University' ? [DISCORD_VANDERBILT_ROLE] : []),
+				roles[userObj.userType],
+			],
 		}),
 		headers: {
 			Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
@@ -93,22 +109,5 @@ export async function discordCallback(req: express.Request, res: express.Respons
 		},
 	}).catch(failureHandler);
 
-	const session = req.user as HackerDbObject;
-	if (session.school === 'Vanderbilt University') {
-		await fetch(
-			`https://discord.com/api/guilds/${DISCORD_SERVER_ID}/members/${user.id}/roles/${DISCORD_ROLE_ID}`,
-			{
-				method: 'PUT',
-				body: JSON.stringify({
-					access_token: tokens.access_token,
-				}),
-				headers: {
-					Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
-					'Content-Type': 'application/json',
-				},
-			}
-		).catch(failureHandler);
-	}
-
-	res.redirect(`/?msg=${encodeURIComponent("Check your Discord -- you've been added!")}`);
+	res.redirect(`/?msg=${encodeURIComponent("Check your Discord — you've been added!")}`);
 }
