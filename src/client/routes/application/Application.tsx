@@ -97,7 +97,7 @@ let autosaveTimeout: NodeJS.Timeout;
  * It should only be run on form submit because it is quite heavy.
  * @param input List of application inputs
  */
-const findRequiredUnfilled = (input: ApplicationInput[]): JSX.Element => {
+const findRequiredUnfilled = (input: ApplicationInput[]): JSX.Element | false => {
 	const requiredQuestion = config
 		.flatMap(section => section.fields as ConfigField[])
 		.find(
@@ -110,7 +110,7 @@ const findRequiredUnfilled = (input: ApplicationInput[]): JSX.Element => {
 			&nbsp;is required
 		</p>
 	) : (
-		<></>
+		false
 	);
 };
 
@@ -148,7 +148,7 @@ export const Application: FunctionComponent = (): JSX.Element => {
 					onClick={async () => {
 						const firstRequiredUnfilledToast = findRequiredUnfilled(input);
 						toast.dismiss();
-						if (firstRequiredUnfilledToast !== <></>)
+						if (firstRequiredUnfilledToast)
 							toast.error(firstRequiredUnfilledToast, {
 								position: 'bottom-right',
 							});
