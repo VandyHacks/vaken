@@ -162,15 +162,23 @@ export const HackerDash: FunctionComponent = (): JSX.Element => {
 
 	useEffect((): void => {
 		statusConfig[ApplicationStatus.Accepted].actions[0].action = () => {
-			confirmMySpot()
-				.then(() => setShowConfetti(true))
-				.catch(err => console.error(err));
+			// eslint-disable-next-line no-alert
+			const confirmed = window.confirm('Are you sure you want to confirm your spot?');
+			if (confirmed) {
+				confirmMySpot()
+					.then(() => setShowConfetti(true))
+					.catch(err => console.error(err));
+			}
 			return undefined;
 		};
 		statusConfig[ApplicationStatus.Accepted].actions[1].action = () => {
-			declineMySpot()
-				// no confetti :(
-				.catch(err => console.error(err));
+			// eslint-disable-next-line no-alert
+			const confirmed = window.confirm('Are you sure you want to decline your spot?');
+			if (confirmed) {
+				declineMySpot()
+					// no confetti :(
+					.catch(err => console.error(err));
+			}
 			return undefined;
 		};
 	}, [confirmMySpot, declineMySpot]);
