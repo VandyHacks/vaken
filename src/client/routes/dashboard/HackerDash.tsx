@@ -135,6 +135,15 @@ const HackerDashBG = styled(FloatingPopup)`
 		display: block;
 		height: 200px;
 	}
+
+	#actions {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: inherit;
+		gap: 0.8rem;
+	}
 `;
 
 export const HackerDash: FunctionComponent = (): JSX.Element => {
@@ -215,11 +224,13 @@ export const HackerDash: FunctionComponent = (): JSX.Element => {
 								</SmallCenteredText>
 							</>
 						)}
-						{statusInfo.actions.map(e => (
-							<Button key={e.actionText} large long onClick={e.action}>
-								{e.actionText}
-							</Button>
-						))}
+						<div id="actions">
+							{statusInfo.actions.map(e => (
+								<Button key={e.actionText} large long onClick={e.action}>
+									{e.actionText}
+								</Button>
+							))}
+						</div>
 					</FlexColumn>
 				</HackerDashBG>
 			</FlexStartColumn>
