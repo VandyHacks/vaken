@@ -139,6 +139,9 @@ const HackerDashBG = styled(FloatingPopup)`
 	#actions {
 		display: flex;
 		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: inherit;
 		gap: 1rem;
 	}
 `;
