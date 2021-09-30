@@ -142,7 +142,7 @@ const HackerDashBG = styled(FloatingPopup)`
 		justify-content: center;
 		align-items: center;
 		width: inherit;
-		gap: 1rem;
+		gap: 0.8rem;
 	}
 `;
 
