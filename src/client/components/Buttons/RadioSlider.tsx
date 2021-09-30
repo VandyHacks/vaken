@@ -10,6 +10,7 @@ export interface Props {
 	option2: string;
 	option3: string;
 	value: string;
+	confirmMessageFunc?: (input: string) => string;
 }
 
 interface SelectorProps {
@@ -60,7 +61,7 @@ const Selector = styled('div')`
 const disabledColor = '#696969';
 
 export const RadioSlider: FC<Props> = (props: Props) => {
-	const { option1, option2, option3, disable = false } = props;
+	const { option1, option2, option3, disable = false, confirmMessageFunc } = props;
 	const [selected, setSelected] = useState(option2);
 	const [width, setWidth] = useState(0);
 	const [left, setLeft] = useState(0);
@@ -134,6 +135,13 @@ export const RadioSlider: FC<Props> = (props: Props) => {
 	const onClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
 		const target = event.target as HTMLDivElement;
 		if (!disable) {
+			if (confirmMessageFunc) {
+				// eslint-disable-next-line no-alert
+				const confirmed = window.confirm(confirmMessageFunc(target.id));
+				if (!confirmed) {
+					return;
+				}
+			}
 			toggle(target.id);
 			if (typeof onChange === 'function') {
 				onChange(target.id);
