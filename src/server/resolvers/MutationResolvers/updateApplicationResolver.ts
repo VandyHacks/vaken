@@ -9,7 +9,7 @@ const requiredFields = [
 	'firstName',
 	'lastName',
 	// 'shirtSize',
-	'gender',
+	// 'gender',
 	'phoneNumber',
 	'dateOfBirth',
 	'school',
