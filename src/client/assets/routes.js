@@ -42,11 +42,17 @@ const routes = [
 		displayText: 'Manage Events',
 		path: '/manage/events',
 	},
+	// {
+	// 	authLevel: [UserType.Hacker],
+	// 	component: React.lazy(() => import('../routes/events/CheckInEvents')),
+	// 	displayText: 'Event Check-in',
+	// 	path: '/checkin',
+	// },
 	{
 		authLevel: [UserType.Hacker],
-		component: React.lazy(() => import('../routes/events/CheckInEvents')),
-		displayText: 'Event Check-in',
-		path: '/checkin',
+		component: React.lazy(() => import('../routes/events/AutoCheckIn')),
+		displayText: 'Event Check-ins',
+		path: '/checkin/:id',
 	},
 	{
 		authLevel: [UserType.Sponsor],
