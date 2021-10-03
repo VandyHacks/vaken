@@ -279,7 +279,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																		<ul>
 																			<li>
 																				<b
-																					>Confirm your attendance by October 3rd, 11:59PM CDT in our
+																					>Confirm your attendance by October 7th, 11:59PM CDT in our
 																					<a href="http://apply.vandyhacks.org/">application portal</a>.</b
 																				>
 																			<ul>
@@ -290,6 +290,9 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																			</li>
 																			<li>
 																				Bookmark <a href="https://vandyhacks.org">vandyhacks.org</a> to later see the full VandyHacks schedule!
+																			</li>
+																			<li>
+																				<strong>First-time hacker?</strong> Join our "How to Hack" workshop on Wed, Oct 6th at 4-5pm in FGH134! A recording will be posted on our <a href="https://www.youtube.com/channel/UC-sXkznjkmHLjpA5nlfdswg">YouTube channel</a> for virtual participants.
 																			</li>
 																		</ul>
 																	</div>
@@ -619,12 +622,13 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 			Text: {
 				Charset: 'UTF-8',
 				Data: `Hi ${escape(user.preferredName || user.firstName)},
-				Congratulations! You’re invited to be a part of VandyHacks VIII: Space Edition! We enjoyed reading your application and would love to see your ideas come to life during our virtual event on October 2nd-4th!
+				Congratulations! You’re invited to be a part of VandyHacks VIII: Space Edition! We enjoyed reading your application and would love to see your ideas come to life during our virtual event on October 8th-10th!
 
 				Finally, please make sure to do the following in preparation for the event:
-				Confirm your attendance by October 3rd, 11:59 PM CDT in our application portal.
+				Confirm your attendance by October 7th, 11:59 PM CDT in our application portal.
 				Authorize with Discord to automatically join our server. Make sure to introduce yourself. :)
 				Bookmark vandyhacks.org to later see the full hackathon schedule!
+				First-time hacker? Join our "How to Hack" workshop on Wed, Oct 6th at 4-5pm in FGH134! A recording will be posted on our YouTube channel for virtual participants.
 
 				If you have any questions or concerns, check out our FAQ or reach out to us at info@vandyhacks.org.
 
