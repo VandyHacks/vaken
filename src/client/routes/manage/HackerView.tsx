@@ -30,7 +30,7 @@ const StyledTable = styled('table')`
 
 const HorizontalLine = styled.hr`
 	margin: 0 2rem;
-	border: 0.0625rem solid ${STRINGS.ACCENT_COLOR};
+	border: 0.0625rem solid ${STRINGS.ACCENT_COLOR_DARK};
 	margin-bottom: 0.25rem;
 `;
 
@@ -142,7 +142,7 @@ export const HackerView: FC<HackerViewProps> = props => {
 										label={`${fieldTitle}:`}
 										value={
 											signedReadUrl.length > 0
-												? `<a href="${signedReadUrl}"  target="_blank" rel="noopener noreferrer">Resume Link</a>`
+												? `<a href="${signedReadUrl}"  target="_blank" rel="noopener noreferrer">Résumé Link</a>`
 												: 'Not provided'
 										}
 									/>

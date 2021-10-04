@@ -12,35 +12,35 @@ export default {
 
 export const Accepted: Story<ActionRendererProps> = args => <ActionRenderer {...args} />;
 Accepted.args = {
-	rowData: { id: '1', status: ApplicationStatus.Accepted },
+	rowData: { id: '1', firstName: 'John', lastName: 'Doe', status: ApplicationStatus.Accepted },
 };
 
 export const Rejected: Story<ActionRendererProps> = args => <ActionRenderer {...args} />;
 Rejected.args = {
-	rowData: { id: '1', status: ApplicationStatus.Rejected },
+	rowData: { id: '1', firstName: 'John', lastName: 'Doe', status: ApplicationStatus.Rejected },
 };
 
 export const Submitted: Story<ActionRendererProps> = args => <ActionRenderer {...args} />;
 Submitted.args = {
-	rowData: { id: '1', status: ApplicationStatus.Submitted },
+	rowData: { id: '1', firstName: 'John', lastName: 'Doe', status: ApplicationStatus.Submitted },
 };
 
 export const Created: Story<ActionRendererProps> = args => <ActionRenderer {...args} />;
 Created.args = {
-	rowData: { id: '1', status: ApplicationStatus.Created },
+	rowData: { id: '1', firstName: 'John', lastName: 'Doe', status: ApplicationStatus.Created },
 };
 
 export const Confirmed: Story<ActionRendererProps> = args => <ActionRenderer {...args} />;
 Confirmed.args = {
-	rowData: { id: '1', status: ApplicationStatus.Confirmed },
+	rowData: { id: '1', firstName: 'John', lastName: 'Doe', status: ApplicationStatus.Confirmed },
 };
 
 export const Declined: Story<ActionRendererProps> = args => <ActionRenderer {...args} />;
 Declined.args = {
-	rowData: { id: '1', status: ApplicationStatus.Declined },
+	rowData: { id: '1', firstName: 'John', lastName: 'Doe', status: ApplicationStatus.Declined },
 };
 
 export const Started: Story<ActionRendererProps> = args => <ActionRenderer {...args} />;
 Started.args = {
-	rowData: { id: '1', status: ApplicationStatus.Started },
+	rowData: { id: '1', firstName: 'John', lastName: 'Doe', status: ApplicationStatus.Started },
 };

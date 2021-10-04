@@ -44,13 +44,15 @@ const StyledTable = styled(Table)`
 		color: ${STRINGS.DARK_TEXT_COLOR};
 	}
 
-	.headerRow,
-	.evenRow,
+	.headerRow {
+		background-color: #ffffff;
+	}
+	.evenRow {
+		background-color: #ffffff;
+	}
 	.oddRow {
 		box-sizing: border-box;
 		border-bottom: 0.0625rem solid #e0e0e0;
-	}
-	.oddRow {
 		background-color: #fafafa;
 	}
 
@@ -113,10 +115,10 @@ const statusRenderer = ({ cellData }: TableCellProps): JSX.Element => {
 			case ApplicationStatus.Rejected:
 				return STRINGS.COLOR_PALETTE[6];
 			default:
-				return STRINGS.ACCENT_COLOR;
+				return STRINGS.ACCENT_COLOR_DARK;
 		}
 	};
-	return <Status value={cellData} generateColor={generateColor} fontColor="gray" />;
+	return <Status value={cellData} generateColor={generateColor} fontColor="black" />;
 };
 
 const ResumeRenderer: FC<ActionRendererProps> = ({ rowData: { id } }) => <ResumeLink id={id} />;

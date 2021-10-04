@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useState, useEffect, RefObject } from 'react';
 import styled from 'styled-components';
+import { toast } from 'react-toastify';
 import { Button } from '../../components/Buttons/Button';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
 import { FlexColumn, FlexStartColumn } from '../../components/Containers/FlexContainers';
@@ -58,16 +59,16 @@ const statusConfig = {
 		status: 'Submitted',
 		statusBG: STRINGS.APPLICATION_COMPLETE_STATUSBG,
 		statusColor: STRINGS.APPLICATION_COMPLETE_STATUSCOLOR,
-		text: "You may update your responses at any time by re-visiting the application.'",
+		text: 'You may update your responses at any time by re-visiting the application.',
 	},
 	[ApplicationStatus.Confirmed]: {
 		actions: [
 			{
-				action: () => void window.open('https://discord.gg/MbbfBWW', '_blank'),
+				action: () => void (window.location.href = '/api/auth/discord'),
 				actionText: 'Join our Discord',
 			},
 		],
-		boldText: `Whoo hoo! We'll see you ${STRINGS.START_DAY}! Don't forget to join the Discord!`,
+		boldText: `Woohoo! We'll see you ${STRINGS.START_DAY}! Don't forget to join the Discord!`,
 		img: applicationStatusSVG,
 		status: 'Confirmed',
 		statusBG: STRINGS.APPLICATION_COMPLETE_STATUSBG,
@@ -116,8 +117,9 @@ const HackerDashBG = styled(FloatingPopup)`
 	border-radius: 8px;
 	height: min-content;
 	width: 36rem;
-	background: rgba(247, 245, 249, 1);
+	background: ${STRINGS.BACKGROUND_DARK_SECONDARY};
 	padding: 1.5rem;
+	text-align: center;
 
 	@media screen and (max-width: 456px) {
 		width: 100%;
@@ -132,6 +134,15 @@ const HackerDashBG = styled(FloatingPopup)`
 	img {
 		display: block;
 		height: 200px;
+	}
+
+	#actions {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: inherit;
+		gap: 0.8rem;
 	}
 `;
 
@@ -151,18 +162,35 @@ export const HackerDash: FunctionComponent = (): JSX.Element => {
 
 	useEffect((): void => {
 		statusConfig[ApplicationStatus.Accepted].actions[0].action = () => {
-			confirmMySpot()
-				.then(() => setShowConfetti(true))
-				.catch(err => console.error(err));
+			// eslint-disable-next-line no-alert
+			const confirmed = window.confirm('Are you sure you want to confirm your spot?');
+			if (confirmed) {
+				confirmMySpot()
+					.then(() => setShowConfetti(true))
+					.catch(err => console.error(err));
+			}
 			return undefined;
 		};
 		statusConfig[ApplicationStatus.Accepted].actions[1].action = () => {
-			declineMySpot()
-				// no confetti :(
-				.catch(err => console.error(err));
+			// eslint-disable-next-line no-alert
+			const confirmed = window.confirm('Are you sure you want to decline your spot?');
+			if (confirmed) {
+				declineMySpot()
+					// no confetti :(
+					.catch(err => console.error(err));
+			}
 			return undefined;
 		};
 	}, [confirmMySpot, declineMySpot]);
+
+	useEffect((): void => {
+		const msg = new URLSearchParams(window.location.search).get('msg');
+		if (msg) {
+			toast.success(msg, {
+				position: 'bottom-right',
+			});
+		}
+	}, []);
 
 	return (
 		<>
@@ -176,7 +204,9 @@ export const HackerDash: FunctionComponent = (): JSX.Element => {
 				) : null}
 				<HackerDashBG>
 					<FlexColumn>
-						<Title fontSize="1.75rem">{STRINGS.HACKER_DASHBOARD_HEADER_TEXT}</Title>
+						<Title fontSize="1.75rem" color={STRINGS.DARK_TEXT_COLOR}>
+							{STRINGS.HACKER_DASHBOARD_HEADER_TEXT}
+						</Title>
 						{loading ? null : (
 							<>
 								<ButtonOutline
@@ -202,11 +232,13 @@ export const HackerDash: FunctionComponent = (): JSX.Element => {
 								</SmallCenteredText>
 							</>
 						)}
-						{statusInfo.actions.map(e => (
-							<Button key={e.actionText} large long onClick={e.action}>
-								{e.actionText}
-							</Button>
-						))}
+						<div id="actions">
+							{statusInfo.actions.map(e => (
+								<Button key={e.actionText} large long onClick={e.action}>
+									{e.actionText}
+								</Button>
+							))}
+						</div>
 					</FlexColumn>
 				</HackerDashBG>
 			</FlexStartColumn>

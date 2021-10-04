@@ -6,7 +6,7 @@ import Notification from '../../assets/img/notification.svg';
 
 const Msg = styled.p`
 	font-size: 1rem;
-	color: #ffffff;
+	color: ${STRINGS.DARK_TEXT_COLOR};
 	white-space: pre-line;
 	grid-area: text;
 	padding-left: 1.5rem;
@@ -36,7 +36,7 @@ export const Announcement: FunctionComponent<Props> = (props: Props): JSX.Elemen
 			borderRadius="1rem"
 			width="35rem"
 			backgroundOpacity="1"
-			backgroundColor={STRINGS.ACCENT_COLOR}
+			backgroundColor={STRINGS.ACCENT_COLOR_DARK}
 			marginBottom="1rem"
 			padding="1.5rem">
 			<Layout>

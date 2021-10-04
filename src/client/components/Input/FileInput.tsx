@@ -5,6 +5,7 @@ import { InputProps } from './TextInput';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useSignedUploadUrlMutation, useSignedReadUrlQuery } from '../../generated/graphql';
 import STRINGS from '../../assets/strings.json';
+import Spinner from '../Loading/Spinner';
 
 /**
  * Counter to allow for multiple FileInput elements to coexist on the same page.
@@ -26,7 +27,7 @@ const FileLabelEl = styled.label`
 	cursor: pointer;
 	font-size: 1.2rem;
 	padding: 0.6rem 2rem;
-	background: ${STRINGS.ACCENT_COLOR};
+	background: ${STRINGS.ACCENT_COLOR_DARK};
 	width: fit-content;
 	color: white;
 	border-radius: 4px;
@@ -38,8 +39,9 @@ const FileLabelEl = styled.label`
 	&:hover,
 	&:focus,
 	&:active,
+	// pink glow
 	input:focus + & {
-		box-shadow: 0px 0px 20px 0px rgba(0, 0, 255, 0.67);
+		box-shadow: 0px 0px 20px 0px rgba(255, 45, 85, 0.67);
 	}
 `;
 
@@ -72,6 +74,7 @@ export const FileInput: FC<InputProps> = props => {
 	const [file, setFile] = useState<File>();
 	const [getSignedUploadUrl] = useSignedUploadUrlMutation();
 	const [uploaded, setUploaded] = useState(false);
+	const [loading, toggleLoading] = useState(false);
 	const { value, setState } = props;
 	const [counter, setCounter] = useState(0);
 	const fileReadUrlQuery = useSignedReadUrlQuery({ variables: { input: value } });
@@ -82,6 +85,7 @@ export const FileInput: FC<InputProps> = props => {
 		if (!e.target.files) throw new Error('Files was null');
 		setFile(e.target.files[0]);
 		setUploaded(false);
+		toggleLoading(true);
 	};
 
 	useEffect(() => {
@@ -96,6 +100,7 @@ export const FileInput: FC<InputProps> = props => {
 					body: file,
 					headers: {
 						'Content-Type': file.type,
+						'x-goog-content-length-range': '0,5242880',
 					},
 					method: 'PUT',
 				});
@@ -105,8 +110,14 @@ export const FileInput: FC<InputProps> = props => {
 				throw new Error(`Failed in upload to cloud storage: ${await res.text()}`);
 			})
 			.catch(err => {
-				toast.error('File upload failed', { position: 'bottom-right' });
+				const message = err.toString().includes('EntityTooLarge')
+					? 'File larger than 5mb'
+					: 'File upload failed';
+				toast.error(message, { position: 'bottom-right' });
 				throw new Error(err);
+			})
+			.finally(() => {
+				toggleLoading(false);
 			});
 	}, [file, getSignedUploadUrl, setState, user, uploaded]);
 
@@ -126,11 +137,12 @@ export const FileInput: FC<InputProps> = props => {
 			/>
 			<FileLabelEl className="label" htmlFor={`file-${counter}`}>
 				{/* eslint-disable-next-line react/jsx-one-expression-per-line */}
-				Upload {signedReadUrl ? 'new' : 'a'} resume
+				Upload {signedReadUrl ? 'new' : 'a'} résumé
+				{loading && <Spinner color="white" />}
 			</FileLabelEl>
 			{signedReadUrl ? (
 				<a href={signedReadUrl} target="_blank" rel="noopener noreferrer">
-					<FileLabelEl>View uploaded resume</FileLabelEl>
+					<FileLabelEl>View uploaded résumé</FileLabelEl>
 				</a>
 			) : null}
 		</Container>

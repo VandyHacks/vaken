@@ -94,7 +94,7 @@ export const MOCK_HACKER: Hacker = {
 			userId,
 			question: 'hackathonWaiver',
 			answer:
-				'I have read and agree to the <a target="_blank" rel="noopener noreferrer" href="https://storage.googleapis.com/vh-fall-2020-assets/VHWAIVER.pdf"> VandyHacks VII Waiver</a>',
+				'I have read and agree to the <a target="_blank" rel="noopener noreferrer" href="https://storage.googleapis.com/vh-fall-2020-assets/VHWAIVER.pdf"> VandyHacks VIII Waiver</a>',
 		},
 		{
 			id: '21',

@@ -14,10 +14,12 @@ import { StrategyNames, registerAuthRoutes } from './auth';
 import { UnsubscribeHandler } from './mail/handlers';
 import { UserDbInterface } from './generated/graphql';
 import { pullCalendar } from './events';
+import { sendToDiscord, discordCallback } from './auth/discord';
 
 import { serverPlugins, authPlugins } from './plugins';
 
-const { SESSION_SECRET, PORT, CALENDARID, NODE_ENV } = process.env;
+const { SESSION_SECRET, PORT, CALENDARID, NODE_ENV, DISCORD_CALLBACK_URL } = process.env;
+
 if (!SESSION_SECRET) throw new Error(`SESSION_SECRET not set`);
 if (!PORT) throw new Error(`PORT not set`);
 if (!CALENDARID) logger.info('CALENDARID not set; skipping ical integration');
@@ -45,8 +47,14 @@ export const schema = makeExecutableSchema({
 (async () => {
 	const dbClient = new DB();
 	const models = await dbClient.collections;
-
-	app.use(helmet()); // sets good security defaults, see https://helmetjs.github.io/
+	app.use(
+		helmet.contentSecurityPolicy({
+			useDefaults: true,
+			directives: {
+				'connect-src': ["'self'", 'https://*'],
+			},
+		})
+	); // sets good security defaults, see https://helmetjs.github.io/
 
 	// Register auth functions
 	app.use(
@@ -117,6 +125,12 @@ export const schema = makeExecutableSchema({
 		const calendar = await pullCalendar(CALENDARID);
 		res.send(calendar);
 	});
+
+	// Send user to Discord auth location
+	app.use('/api/auth/discord', sendToDiscord);
+
+	// Callback for Discord Auth
+	app.use(<string>DISCORD_CALLBACK_URL, discordCallback);
 
 	const db = (await dbClient.client).db('vaken');
 

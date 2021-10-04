@@ -25,6 +25,9 @@ export const getSignedUploadUrl = async (filename: string): Promise<string> => {
 		contentType: 'application/pdf',
 		expires: Date.now() + 15 * 60 * 1000, // 15 minutes
 		version: 'v4' as const,
+		extensionHeaders: {
+			'x-goog-content-length-range': '0,5242880',
+		},
 	};
 
 	const [url] = await storage.bucket(BUCKET_NAME).file(filename).getSignedUrl(options);

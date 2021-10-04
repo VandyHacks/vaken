@@ -43,24 +43,24 @@ const SliderContainer = styled.div`
 	}
 
 	input:checked + label {
-		background-color: ${STRINGS.ACCENT_COLOR};
+		background-color: ${STRINGS.ACCENT_COLOR_DARK};
 		color: #ffffff;
 		/* border-color: #6979f8; */
 		z-index: 1;
 
 		svg path {
-			fill: ${STRINGS.ACCENT_COLOR};
+			fill: ${STRINGS.ACCENT_COLOR_DARK};
 		}
 	}
 
-	input:not(:checked):focus + label {
+	input:not(:checked):focus-within + label {
 		/* Color for keyboard users */
-		box-shadow: inset 0 0 2px 2px ${STRINGS.ACCENT_COLOR};
+		box-shadow: 0 0 2px 2px ${STRINGS.ACCENT_COLOR_DARK};
 	}
 
-	input:checked:focus + label {
+	input:checked:focus-within + label {
 		/* Color for keyboard users */
-		box-shadow: inset 0 0 2px 2px #ffffff;
+		box-shadow: 0 0 2px 2px #ffffff;
 	}
 `;
 

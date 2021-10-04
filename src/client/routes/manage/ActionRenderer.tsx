@@ -20,7 +20,7 @@ export type HackerStatusMutationFn = MutationFunction<
 >;
 
 export interface ActionRendererProps {
-	rowData: Pick<QueriedHacker, 'id' | 'status'>;
+	rowData: Pick<QueriedHacker, 'id' | 'firstName' | 'lastName' | 'status'>;
 }
 const Actions = styled('div')`
 	display: flex;
@@ -47,7 +47,7 @@ export function convertApplicationStatus(status: ApplicationStatus): string {
 export function createActionRenderer(
 	updateStatus: (s: { status: ApplicationStatus; id: string }) => Promise<void>
 ): FC<ActionRendererProps> {
-	return function ActionRenderer({ rowData: { id, status } }) {
+	return function ActionRenderer({ rowData: { id, firstName, lastName, status } }) {
 		return (
 			<Actions className="ignore-select">
 				{status && status !== ApplicationStatus.Created && status !== ApplicationStatus.Started ? (
@@ -55,6 +55,9 @@ export function createActionRenderer(
 						option1="Accept"
 						option2="Undecided"
 						option3="Reject"
+						confirmMessageFunc={newState =>
+							`Are you sure you want to set ${firstName} ${lastName} to '${newState}'?`
+						}
 						value={convertApplicationStatus(status)}
 						onChange={(input: string) => {
 							const newStatus = processSliderInput(input);

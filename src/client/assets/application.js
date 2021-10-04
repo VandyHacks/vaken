@@ -86,9 +86,9 @@ export const questions = [
 			},
 			{
 				Component: Slider,
-				default: '2019',
+				default: '2025',
 				fieldName: 'gradYear',
-				options: ['2021', '2022', '2023', '2024', 'Other'],
+				options: ['2022', '2023', '2024', '2025', 'Other'],
 				other: true,
 				title: 'Graduation Year',
 				type: 'number',
@@ -159,7 +159,7 @@ export const questions = [
 				Component: FileInput,
 				fieldName: 'resume',
 				note: '(pdf only) Your resume will be shared with sponsors',
-				title: 'Resume',
+				title: 'Résumé',
 			},
 			{
 				Component: CheckboxSansTitleCase,
@@ -173,7 +173,7 @@ export const questions = [
 				Component: CheckboxSansTitleCase,
 				fieldName: 'hackathonWaiver',
 				options: [
-					'I have read and agree to the <a target="_blank" rel="noopener noreferrer" href="https://storage.googleapis.com/vh-fall-2020-assets/VHWAIVER.pdf"> VandyHacks VII Waiver</a>',
+					'I have read and agree to the <a target="_blank" rel="noopener noreferrer" href="https://storage.googleapis.com/vh-fall-2020-assets/VHWAIVER.pdf"> VandyHacks VIII Waiver</a>',
 				],
 				title: 'Hackathon Waiver',
 			},
@@ -181,7 +181,7 @@ export const questions = [
 				Component: CheckboxSansTitleCase,
 				fieldName: 'infoSharingConsent',
 				options: [
-					'I authorize you to share my application/registration information for event administration, ranking, MLH administration, pre- and post-event informational emails, and occasional emails about hackathons in-line with the MLH Privacy Policy. I further agree to the terms of both the <a target="_blank" rel="noopener noreferrer" href="https://github.com/MLH/mlh-policies/tree/master/prize-terms-and-conditions">MLH Contest Terms and Conditions</a> and the <a target="_blank" rel="noopener noreferrer" href="https://mlh.io/privacy">MLH Privacy Policy</a>.',
+					'I authorize you to share my application/registration information for event administration, ranking, MLH administration, pre- and post-event informational emails, and occasional emails about hackathons in line with the MLH Privacy Policy. I further agree to the terms of both the <a target="_blank" rel="noopener noreferrer" href="https://github.com/MLH/mlh-policies/tree/master/prize-terms-and-conditions">MLH Contest Terms and Conditions</a> and the <a target="_blank" rel="noopener noreferrer" href="https://mlh.io/privacy">MLH Privacy Policy</a>.',
 				],
 				title: 'Information sharing consent',
 			},
@@ -215,10 +215,12 @@ export const questions = [
 				placeholder: 'Nashville',
 			},
 			{
-				Component: TextInput,
+				Component: AutoComplete,
 				fieldName: 'state',
 				placeholder: 'Tennessee',
+				note: 'If not found, please type the abbreviation.',
 				optional: true,
+				options: import('./data/states.json'),
 				title: 'State',
 			},
 			{
