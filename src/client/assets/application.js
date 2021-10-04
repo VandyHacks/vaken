@@ -158,7 +158,7 @@ export const questions = [
 			{
 				Component: FileInput,
 				fieldName: 'resume',
-				note: 'Your resume will be shared with sponsors',
+				note: '(pdf only) Your resume will be shared with sponsors',
 				title: 'Resume',
 			},
 			{
