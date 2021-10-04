@@ -41,11 +41,11 @@ const AutoComplete: FC<Props> = props => {
 
 export const SchoolAutocomplete: FC<Props> = props => {
 	const { setState, ...rest } = props;
-	const { setVandyStatus } = useContext(VandyStudentContext);
+	const { vandyStatusDispatch } = useContext(VandyStudentContext);
 	const setStateWithContext = (value: string): void => {
 		setState(value);
-		if (setVandyStatus) {
-			setVandyStatus(value === 'Vanderbilt University');
+		if (vandyStatusDispatch) {
+			vandyStatusDispatch(value === 'Vanderbilt University');
 		}
 	};
 	return <AutoComplete setState={setStateWithContext} {...rest} />;

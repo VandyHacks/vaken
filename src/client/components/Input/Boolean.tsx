@@ -13,7 +13,7 @@ export const Boolean: FC<InputProps> = ({ ...rest }: InputProps) => (
 );
 
 export const VandyOnlyBoolean: FC<InputProps> = (props: InputProps) => {
-	const { vandyStatus, setVandyStatus } = useContext(VandyStudentContext);
+	const { vandyStatus, vandyStatusDispatch } = useContext(VandyStudentContext);
 	const { setState } = props;
 	useEffect(() => {
 		switch (vandyStatus) {
@@ -23,7 +23,7 @@ export const VandyOnlyBoolean: FC<InputProps> = (props: InputProps) => {
 			}
 			case 1: {
 				setState('');
-				if (setVandyStatus) setVandyStatus(true);
+				if (vandyStatusDispatch) vandyStatusDispatch(true);
 				break;
 			}
 			default: {
@@ -31,7 +31,7 @@ export const VandyOnlyBoolean: FC<InputProps> = (props: InputProps) => {
 				break;
 			}
 		}
-	}, [setState, vandyStatus, setVandyStatus]);
+	}, [setState, vandyStatus, vandyStatusDispatch]);
 
 	return vandyStatus ? <Boolean {...props} /> : null;
 };

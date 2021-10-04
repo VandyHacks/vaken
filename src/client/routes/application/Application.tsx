@@ -10,6 +10,7 @@ import React, {
 import styled from 'styled-components';
 import { useImmer } from 'use-immer';
 import { toast } from 'react-toastify';
+import { IN_PERSON_DEADLINE_TIMESTAMP } from '../../../common/constants';
 import { Spinner } from '../../components/Loading/Spinner';
 import config from '../../assets/application';
 import { Collapsible } from '../../components/Containers/Collapsible';
@@ -135,12 +136,12 @@ export const Application: FunctionComponent = (): JSX.Element => {
 		// state = 1: just flipped it on
 		// state = 2: already flipped on. Idempotency case.
 		// state = 0: flipped off.
-		if (action) {
+		if (Date.now() < IN_PERSON_DEADLINE_TIMESTAMP && action) {
 			return state === 0 ? 1 : 2;
 		}
 		return 0;
 	};
-	const [vandyStatus, setVandyStatus] = useReducer(vandyStudentReducer, 0);
+	const [vandyStatus, vandyStatusDispatch] = useReducer(vandyStudentReducer, 0);
 
 	// Only update changed QuestionIDs
 	const createOnChangeHandler = (fieldName: string): ((value: string) => void) => value => {
@@ -163,7 +164,7 @@ export const Application: FunctionComponent = (): JSX.Element => {
 	);
 
 	useEffect(() => {
-		setVandyStatus(valueHandler('school') === 'Vanderbilt University');
+		vandyStatusDispatch(valueHandler('school') === 'Vanderbilt University');
 	}, [valueHandler]);
 
 	useEffect((): (() => void) => {
@@ -267,7 +268,7 @@ export const Application: FunctionComponent = (): JSX.Element => {
 			alignItems="flex-start"
 			padding="1.5rem">
 			<StyledForm onKeyPress={disableEnter}>
-				<VandyStudentContext.Provider value={{ vandyStatus, setVandyStatus }}>
+				<VandyStudentContext.Provider value={{ vandyStatus, vandyStatusDispatch }}>
 					{config.map(({ fields, title = '' }: ConfigSection) => (
 						<Collapsible
 							onClick={toggleOpen}
@@ -275,17 +276,17 @@ export const Application: FunctionComponent = (): JSX.Element => {
 							title={title}
 							key={title}>
 							{fields.map(field => {
-								const hideForNonVandy = field.nonVandyDefault && vandyStatus === 0;
+								const hideForVirtualOnly = field.nonVandyDefault && vandyStatus === 0;
 								return (
 									<StyledQuestion key={field.fieldName} htmlFor={field.fieldName}>
-										{field.title && !hideForNonVandy ? (
+										{field.title && !hideForVirtualOnly ? (
 											<StyledQuestionPadContainer>
 												{field.title}
 												{!field.optional ? `*` : null}
 												{field.note ? <FieldNote>{` - ${field.note}`}</FieldNote> : null}
 											</StyledQuestionPadContainer>
 										) : null}
-										{field.prompt && !hideForNonVandy ? (
+										{field.prompt && !hideForVirtualOnly ? (
 											<FieldPrompt>{field.prompt}</FieldPrompt>
 										) : null}
 										<field.Component
