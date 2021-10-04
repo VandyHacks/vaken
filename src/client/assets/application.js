@@ -165,8 +165,8 @@ export const questions = [
 			{
 				Component: FileInput,
 				fieldName: 'resume',
-				note: 'Your résumé will be shared with sponsors',
-				title: 'Résumé',
+				note: '(pdf only) Your resume will be shared with sponsors',
+				title: 'Resume',
 			},
 			{
 				Component: CheckboxSansTitleCase,
