@@ -15,6 +15,7 @@ import {
 	useConfirmMySpotMutation,
 	useDeclineMySpotMutation,
 } from '../../generated/graphql';
+import { IN_PERSON_DEADLINE_TIMESTAMP } from '../../../common/constants';
 
 const Confetti = React.lazy(() => import('react-confetti'));
 
@@ -31,7 +32,10 @@ const statusConfig = {
 		status: 'Not Started',
 		statusBG: STRINGS.APPLICATION_INCOMPLETE_STATUSBG,
 		statusColor: STRINGS.APPLICATION_INCOMPLETE_STATUSCOLOR,
-		text: `The deadline is ${STRINGS.DEADLINE}`,
+		text:
+			Date.now() < IN_PERSON_DEADLINE_TIMESTAMP
+				? `The deadline is ${STRINGS.DEADLINE}`
+				: 'Virtual-only applications now open!',
 	},
 	[ApplicationStatus.Started]: {
 		actions: [
@@ -45,7 +49,10 @@ const statusConfig = {
 		status: 'Incomplete',
 		statusBG: STRINGS.APPLICATION_INCOMPLETE_STATUSBG,
 		statusColor: STRINGS.APPLICATION_INCOMPLETE_STATUSCOLOR,
-		text: `The deadline is ${STRINGS.DEADLINE}`,
+		text:
+			Date.now() < IN_PERSON_DEADLINE_TIMESTAMP
+				? `The deadline is ${STRINGS.DEADLINE}`
+				: 'Virtual-only applications now open!',
 	},
 	[ApplicationStatus.Submitted]: {
 		actions: [
