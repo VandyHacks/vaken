@@ -267,14 +267,6 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																				</div>
 																			</td>
 																		</tr>
-																		<tr>
-																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;">
-																					Head over to the application portal <a href="https://apply.vandyhacks.org">here</a> and confirm your attendance by October 2nd, 12:00 PM CDT.
-																				</div>
-																			</td>
-																		</tr>
-																		<tr>
 																<td
 																	align="left"
 																	style="font-size:0px;padding:10px 25px;word-break:break-word;"
@@ -282,25 +274,25 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																	<div
 																		style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;"
 																	>
-																		Finally, please make sure to do the following in preparation for
+																		Please make sure to do the following in preparation for
 																		the event:
 																		<ul>
 																			<li>
 																				<b
-																					>Join our Discord
-																					<a href="https://discord.gg/MbbfBWW">here</a></b
+																					>Confirm your attendance by October 7th, 11:59PM CDT in our
+																					<a href="http://apply.vandyhacks.org/">application portal</a>.</b
 																				>
-																				for communication before, during, and after the hackathon!
+																			<ul>
+																				<li>
+																					Authorize with Discord to automatically join our server. Make sure to introduce yourself. :)
+																				</li>
+																			</ul>
 																			</li>
 																			<li>
-																				<b
-																					>Review the full hackathon schedule
-																					<a href="https://vandyhacks.org/">here!</a></b
-																				>
+																				Bookmark <a href="https://vandyhacks.org">vandyhacks.org</a> to later see the full VandyHacks schedule!
 																			</li>
-																			<li style="list-style: none;">
-																				*NOTE: We will be baking nutella hand pies at 5:00 PM CDT
-																				on Saturday, October 3rd, so get your <a href="https://docs.google.com/document/d/1hhhk-tC7PL-CA3skxnJJ8b40xb0zECMYAH9AUFad2gE/edit?usp=sharing">ingredients</a> ready!
+																			<li>
+																				<strong>First-time hacker?</strong> Join our "How to Hack" workshop on Wed, Oct 6th at 4-5pm in FGH134! A recording will be posted on our <a href="https://www.youtube.com/channel/UC-sXkznjkmHLjpA5nlfdswg">YouTube channel</a> for virtual participants.
 																			</li>
 																		</ul>
 																	</div>
@@ -330,7 +322,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
 																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:10px;font-weight:400;line-height:20px;text-align:left;color:#637381;">
-																					P.S. And of course, make sure to stay up-to-date by following us on <a href="https://www.instagram.com/vandyhacks/?hl=en">Instagram</a> and checking out our <a href="https://www.facebook.com/events/2701703253481744/">Facebook Event</a>
+																					P.S. And of course, make sure to stay up-to-date by following us on <a href="https://www.instagram.com/vandyhacks/?hl=en">Instagram</a> and sharing our <a href="https://www.linkedin.com/events/vandyhacksviii-spaceedition6846461650267123712/">LinkedIn event</a>.
 																				</div>
 																			</td>
 																		</tr>
@@ -630,14 +622,13 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 			Text: {
 				Charset: 'UTF-8',
 				Data: `Hi ${escape(user.preferredName || user.firstName)},
-				Congratulations! You’re invited to be a part of VandyHacks VIII: Space Edition! We enjoyed reading your application and would love to see your ideas come to life during our virtual event on October 2nd-4th!
-
-				Head over to the application portal here and confirm your attendance by October 2nd, 12:00 PM CDT.
+				Congratulations! You’re invited to be a part of VandyHacks VIII: Space Edition! We enjoyed reading your application and would love to see your ideas come to life during our virtual event on October 8th-10th!
 
 				Finally, please make sure to do the following in preparation for the event:
-				Join our Discord here for communication before, during, and after the hackathon!
-				Review the full hackathon schedule here!
-				*NOTE: We will be baking nutella hand pies at 5:00 PM CDT on Saturday, October 3rd, so get your ingredients ready!
+				Confirm your attendance by October 7th, 11:59 PM CDT in our application portal.
+				Authorize with Discord to automatically join our server. Make sure to introduce yourself. :)
+				Bookmark vandyhacks.org to later see the full hackathon schedule!
+				First-time hacker? Join our "How to Hack" workshop on Wed, Oct 6th at 4-5pm in FGH134! A recording will be posted on our YouTube channel for virtual participants.
 
 				If you have any questions or concerns, check out our FAQ or reach out to us at info@vandyhacks.org.
 
