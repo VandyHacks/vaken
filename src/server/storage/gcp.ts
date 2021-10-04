@@ -63,9 +63,16 @@ export const getResumeDumpUrl = async (): Promise<string> => {
 			})
 				.map(async hacker => {
 					const storedFilename = hacker._id.toHexString();
-					const fileContents = (await bucket.file(storedFilename).download())[0];
-					const readableFilename = `${hacker.lastName}, ${hacker.firstName} (${hacker.school}).pdf`;
-					zip.file(readableFilename, fileContents);
+					try {
+						const fileContents = (await bucket.file(storedFilename).download())[0];
+						const readableFilename = `${hacker.lastName}, ${hacker.firstName} (${hacker.school}).pdf`;
+						zip.file(readableFilename, fileContents);
+					} catch (e) {
+						// eslint-disable-next-line no-console
+						console.error(
+							`Error occured while creating getting resume for hacker ${hacker.email}, skipping. Error: ${e}`
+						);
+					}
 				})
 				.toArray()
 		);
