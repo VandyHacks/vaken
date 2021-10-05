@@ -45,7 +45,7 @@
 		"build:server": "env NODE_ENV=production tsc",
 		"build:client": "env NODE_ENV=production webpack --config webpack/webpack.prod.js --color",
 		"build": "env NODE_ENV=production concurrently -n client,server -c bgBlue.bold,bgMagenta.bold \"npm:build:client\" \"npm:build:server\"",
-		"prod": "env NODE_ENV=production npm run build && node -r dotenv/config ./dist/src/server/index.js",
+		"prod": "env NODE_ENV=production npm run build && node ./dist/src/server/index.js",
 		"format": "prettier --config .prettierrc.json --write \"./**/*.ts*(x)\"",
 		"check:test": "jest --runInBand",
 		"check:test:snapshot": "npm run check:test -- --updateSnapshot",
