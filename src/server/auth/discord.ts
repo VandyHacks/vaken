@@ -7,7 +7,7 @@ import {
 	UserDbInterface,
 	HackerDbObject,
 } from '../../client/generated/graphql';
-import { queryById } from '../../server/resolvers/helpers';
+import { queryById } from '../resolvers/helpers';
 
 const {
 	DISCORD_CALLBACK_URL,
