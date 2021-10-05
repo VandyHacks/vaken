@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { ReactText, useRef, useState } from 'react';
 import styled from 'styled-components';
 import * as EmailValidator from 'email-validator';
 import { toast } from 'react-toastify';
@@ -39,12 +39,17 @@ const StyledOption = styled.option`
 	min-width: 10rem;
 `;
 
-const showToast = (message: string, isError: boolean = false) => {
+const showToast = (message: string, isError = false): ReactText => {
 	toast.dismiss();
-	(isError ? toast.error : toast.success)(<p><em className="toast-emphasize">{message}</em></p>, {
-		position: 'bottom-right',
-	})
-}
+	(isError ? toast.error : toast.success)(
+		<p>
+			<em className="toast-emphasize">{message}</em>
+		</p>,
+		{
+			position: 'bottom-right',
+		}
+	);
+};
 
 const CreateTier: React.FC = () => {
 	const [tierName, setTierName] = useState('');
@@ -62,8 +67,8 @@ const CreateTier: React.FC = () => {
 				.then(() => showToast(`Tier ${tierName} created successfully!`))
 				.catch(res => showToast(`Sorry. ${res.graphQLErrors[0].message} Please try again :)`, true))
 				.finally(() => {
-					setTierName("");
-					setPermissions([""]);
+					setTierName('');
+					setPermissions(['']);
 				});
 		} catch (err) {
 			console.error(err);
@@ -113,11 +118,11 @@ const CreateCompany: React.FunctionComponent = (): JSX.Element => {
 				.then(() => showToast(`Company ${companyName} created successfully!`))
 				.catch(res => showToast(`Sorry. ${res.graphQLErrors[0].message} Please try again :)`, true))
 				.finally(() => {
-					setCompanyName("");
+					setCompanyName('');
 					if (selectTierRef && selectTierRef.current) {
-						selectTierRef.current.value = "";
+						selectTierRef.current.value = '';
 					}
-				})
+				});
 		} catch (err) {
 			console.error(err);
 		}
@@ -168,15 +173,19 @@ const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 		if (EmailValidator.validate(sponsorEmail)) {
 			try {
 				createSponsor()
-					.then(() => showToast(`Email ${sponsorEmail} for sponsor ${sponsorName} created successfully!`))
-					.catch(res => showToast(`Sorry. ${res.graphQLErrors[0].message} Please try again :)`, true))
+					.then(() =>
+						showToast(`Email ${sponsorEmail} for sponsor ${sponsorName} created successfully!`)
+					)
+					.catch(res =>
+						showToast(`Sorry. ${res.graphQLErrors[0].message} Please try again :)`, true)
+					)
 					.finally(() => {
-						setSponsorEmail("");
-						setSponsorName("");
+						setSponsorEmail('');
+						setSponsorName('');
 						if (selectCompanyRef && selectCompanyRef.current) {
-							selectCompanyRef.current.value = "";
+							selectCompanyRef.current.value = '';
 						}
-					})
+					});
 			} catch (err) {
 				console.error(err);
 			}
