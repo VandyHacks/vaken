@@ -1,4 +1,4 @@
-import React, { ReactText, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import * as EmailValidator from 'email-validator';
 import { toast } from 'react-toastify';
@@ -39,7 +39,7 @@ const StyledOption = styled.option`
 	min-width: 10rem;
 `;
 
-const showToast = (message: string, isError = false): ReactText => {
+const showToast = (message: string, isError = false): void => {
 	toast.dismiss();
 	(isError ? toast.error : toast.success)(
 		<p>
