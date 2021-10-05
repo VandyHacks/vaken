@@ -7,6 +7,7 @@ import {
 	UserDbInterface,
 	HackerDbObject,
 } from '../../client/generated/graphql';
+import { queryById } from '../../server/resolvers/helpers';
 
 const {
 	DISCORD_CALLBACK_URL,
@@ -20,26 +21,30 @@ const {
 	DISCORD_SPONSOR_ROLE,
 } = process.env;
 
-function verify(req: express.Request): boolean {
+async function verify(req: Express.Request): Promise<boolean> {
+	const data: UserDbInterface = await queryById(
+		(req.user as any)._id,
+		await (req as any).sessionStore.db.collection('Hackers')
+	);
+
 	// If we're not signed in, reject
-	const session = req.user as UserDbInterface;
-	if (!session) {
+	if (!data) {
 		return false;
 	}
 
 	// If the user is a hacker, we need to make sure
 	// they're confirmed (any other user type is good
 	// to go without confirmation)
-	if (session.userType === UserType.Hacker) {
-		const hackerSession = session as HackerDbObject;
-		return hackerSession.status === ApplicationStatus.Confirmed;
+	if (data.userType === UserType.Hacker) {
+		const hackerData = data as HackerDbObject;
+		return hackerData.status === ApplicationStatus.Confirmed;
 	}
 
 	return true;
 }
 
-export function sendToDiscord(req: express.Request, res: express.Response): void {
-	if (!verify(req)) {
+export async function sendToDiscord(req: express.Request, res: express.Response): Promise<void> {
+	if (!(await verify(req))) {
 		res.redirect('/');
 		return;
 	}
@@ -52,7 +57,7 @@ export function sendToDiscord(req: express.Request, res: express.Response): void
 }
 
 export async function discordCallback(req: express.Request, res: express.Response): Promise<void> {
-	if (!verify(req)) {
+	if (!(await verify(req))) {
 		res.send(401);
 		return;
 	}
@@ -93,15 +98,21 @@ export async function discordCallback(req: express.Request, res: express.Respons
 	const session = req.user as HackerDbObject;
 	const userObj = req.user as UserDbInterface;
 
+	const roleSend = [];
+	if (session.school === 'Vanderbilt University') {
+		roleSend.push(DISCORD_VANDERBILT_ROLE);
+	}
+
+	if (Object.keys(roles).includes(userObj.userType)) {
+		roleSend.push(roles[userObj.userType]);
+	}
+
 	// Add user to Discord server
 	await fetch(`https://discord.com/api/guilds/${DISCORD_SERVER_ID}/members/${user.id}`, {
 		method: 'PUT',
 		body: JSON.stringify({
 			access_token: tokens.access_token,
-			roles: [
-				...(session.school === 'Vanderbilt University' ? [DISCORD_VANDERBILT_ROLE] : []),
-				roles[userObj.userType],
-			],
+			roles: roleSend,
 		}),
 		headers: {
 			Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
