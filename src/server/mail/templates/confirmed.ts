@@ -270,7 +270,14 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
 																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;">
-																					This email is just to confirm that you've RSVPed to our event. We'll be in touch again soon with more information on our opening ceremony, but as a reminder, festivities will start at 7:00 PM CDT Friday, October 2nd, and wrap up by 4:00 PM CDT Sunday, October 4th.
+																					This email is just to confirm that you've RSVPed to our event. We'll be in touch again soon with more information on our opening ceremony, but as a reminder, festivities will start at 7:00 PM CDT Friday, October 8th, and wrap up by 4:00 PM CDT Sunday, October 10th.
+																				</div>
+																			</td>
+																		</tr>
+																		<tr>
+																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;">
+																					In-person attendees from Vanderbilt will start checking in to The Wond'ry at 5:30 PM CDT.
 																				</div>
 																			</td>
 																		</tr>
@@ -284,26 +291,13 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																	>
 																		In the meantime, be sure to complete the following:
 																		<ul>
-																			<li>
-																				<b
-																					>Join our Discord
-																					<a href="https://discord.gg/MbbfBWW">here</a></b
-																				>
-																				for communication before, during, and after the hackathon!
+																			<li>Join our Discord in the <a href="https://apply.vandyhacks.org/">application portal</a> for communication before, during, and after the hackathon!</li>
+																			<li>Review the full hackathon schedule <a href="https://vhl.ink/calendar">here!</a>
 																			</li>
-																			<li>
-																				<b
-																					>Review the full hackathon schedule
-																					<a href="https://vandyhacks.org/">here!</a></b
-																				>
-																			</li>
-																			<li style="list-style: none;">
-																				*NOTE: We will be baking nutella hand pies at 5:00 PM CDT
-																				on Saturday, October 3rd, so get your <a href="https://docs.google.com/document/d/1hhhk-tC7PL-CA3skxnJJ8b40xb0zECMYAH9AUFad2gE/edit?usp=sharing">ingredients</a> ready!
-																			</li>
-																			<li>
-																				Like our page on <a href="https://www.facebook.com/vandyhacks/">Facebook</a> and follow us on <a href="https://www.instagram.com/vandyhacks/?hl=en">Instagram</a> for some sneak peeks at the organizers in action!
-																			</li>
+																			<ul>
+																				<li>Follow us on <a href="https://www.instagram.com/vandyhacks/?hl=en">Instagram</a> for sneak peeks of the organizers in action!</li>
+																			</ul>
+																			<li><strong>First-time hacker?</strong> Join our "How to Hack" workshop on <strong>Wed, Oct 6th at 4-5 PM</strong> in <strong>FGH134</strong>! A recording wil be posted on our <a href="https://www.youtube.com/channel/UC-sXkznjkmHLjpA5nlfdswg">YouTube channel</a> for virtual participants.</li>
 																		</ul>
 																	</div>
 																</td>
@@ -311,7 +305,7 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 																		<tr>
 																			<td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
 																				<div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:16px;font-weight:400;line-height:24px;text-align:left;color:#637381;">
-																					<b>NOTE:</b> If you are no longer able to attend, please indicate this in the <a href="https://apply.vandyhacks.org">portal</a> ASAP so that we can get an accurate attendance count.
+																					<b>NOTE:</b> If you are no longer able to attend, please email <a href="mailto:info@vandyhacks.org">info@vandyhacks.org</a> ASAP so that we can get an accurate attendance count.
 																				</div>
 																			</td>
 																		</tr>
@@ -625,16 +619,17 @@ export default (user: UserDbInterface): AWS.SES.SendEmailRequest => ({
 				Data: `Hey ${escape(user.preferredName || user.firstName)},
 				We're so excited that you'll be joining us for VandyHacks VIII: Space Edition!
 
-				This email is just to confirm that you've RSVPed to our event. We'll be in touch again soon with more information on our opening ceremony, but as a reminder, festivities will start at 7:00 PM CDT Friday, October 2nd, and wrap up by 4:00 PM CDT Sunday, October 4th.
+				This email is just to confirm that you've RSVPed to our event. We'll be in touch again soon with more information on our opening ceremony, but as a reminder, festivities will start at 7:00 PM CDT Friday, October 8th, and wrap up by 4:00 PM CDT Sunday, October 10th.
+
+				In-person attendees from Vanderbilt will start checking in to The Wond'ry at 5:30 PM CDT.
 
 				In the meantime, be sure to complete the following:
-
-				Join our Discord here for communication before, during, and after the hackathon!
+				Join our Discord in the application portal for communication before, during, and after the hackathon!
 				Review the full hackathon schedule here!
-				*NOTE: We will be baking nutella hand pies at 5:00 PM CDT on Saturday, October 3rd, so get your ingredients ready!
-				Like our page on Facebook and follow us on Instagram for sneak peeks of the organizers in action!
+				Follow us on Instagram for sneak peeks of the organizers in action!
+				First-time hacker? Join our "How to Hack" workshop on Wed, Oct 6th at 4-5 PM in FGH134! A recording wil be posted on our YouTube channel for virtual participants.
 
-				NOTE: If you are no longer able to attend, please indicate this in the portal ASAP so that we can get an accurate attendance count.
+				NOTE: If you are no longer able to attend, please email info@vandyhacks.org ASAP so that we can get an accurate attendance count.
 
 				See you soon!
 				The VandyHacks Team`,
