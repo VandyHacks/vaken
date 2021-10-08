@@ -130,7 +130,7 @@ export const schema = makeExecutableSchema({
 	app.use('/api/auth/discord', sendToDiscord);
 
 	// Callback for Discord Auth
-	app.use(<string>DISCORD_CALLBACK_URL, discordCallback);
+	// app.use(<string>DISCORD_CALLBACK_URL, discordCallback);
 
 	const db = (await dbClient.client).db('vaken');
 
