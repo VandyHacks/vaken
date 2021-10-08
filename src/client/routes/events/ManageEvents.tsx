@@ -117,7 +117,7 @@ const ManageEvents: FunctionComponent = (): JSX.Element => {
 					<FlexRow key={event.id}>
 						<FlexColumn>
 							<p>
-								<a href={`https://apply.vandyhacks.org/checkin/${event.id}`}>Check-In URL</a>
+								<a href={`${window.location.protocol}{window.location.hostname}/checkin/${event.id}`}>Check-In URL</a>
 							</p>
 						</FlexColumn>
 						<FlexColumn>
