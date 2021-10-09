@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useEffect } from 'react';
+import React, { FC, useMemo, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
@@ -65,13 +65,19 @@ export const CheckInEvent: FC = () => {
 	const hacker = useMyEventStatusQuery();
 	const [checkIn] = useCheckInUserToEventAndUpdateEventScoreMutation();
 	const onCheckIn = useMemo(() => getOnCheckIn(checkIn), [checkIn]);
+	const [justAdded, setJustAdded] = useState(true);
 
 	useEffect(() => {
 		if (!hacker.error && hacker.data && hacker.data.me && id && id !== ':id') {
 			const { me } = hacker.data;
-			if (!me.eventsAttended.includes(id)) {
+			if (justAdded) {
 				const tempFunc = async (): Promise<void> => onCheckIn(id, me.id);
-				tempFunc().catch(console.log);
+				try {
+					tempFunc();
+					setJustAdded(false);
+				} catch (e) {
+					console.log(e);
+				}
 			}
 		}
 	}, [hacker, id]);
