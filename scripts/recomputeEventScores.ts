@@ -83,8 +83,9 @@ const recomputeHackerEventScores = async (
 
 		console.group('\n\nHacker eventScore stats:');
 		console.log('# Hackers checking into events: ', hackersToRecompute.length);
+		console.log('# Winning hackers: ', bestHacker.length);
 		console.group('Winning hackers:');
-		bestHacker.forEach(hacker => printHackerScoreStats(hacker, events, showOnlyDiffs));
+		bestHacker.forEach(hacker => printHackerScoreStats(hacker, events, false));
 		console.groupEnd();
 		console.groupEnd();
 	} catch (e) {
