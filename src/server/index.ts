@@ -122,6 +122,8 @@ export const schema = makeExecutableSchema({
 
 	// Pull events callback
 	app.use('/api/manage/events/pull', async (req, res) => {
+		res.set('Access-Control-Allow-Origin', 'https://vandyhacks.org');
+		res.set('Access-Control-Allow-Methods', 'GET');
 		const calendar = await pullCalendar(CALENDARID);
 		res.send(calendar);
 	});
