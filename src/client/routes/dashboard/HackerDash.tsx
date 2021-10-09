@@ -135,6 +135,15 @@ const HackerDashBG = styled(FloatingPopup)`
 		display: block;
 		height: 200px;
 	}
+
+	#actions {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: inherit;
+		gap: 0.8rem;
+	}
 `;
 
 export const HackerDash: FunctionComponent = (): JSX.Element => {
@@ -153,15 +162,23 @@ export const HackerDash: FunctionComponent = (): JSX.Element => {
 
 	useEffect((): void => {
 		statusConfig[ApplicationStatus.Accepted].actions[0].action = () => {
-			confirmMySpot()
-				.then(() => setShowConfetti(true))
-				.catch(err => console.error(err));
+			// eslint-disable-next-line no-alert
+			const confirmed = window.confirm('Are you sure you want to confirm your spot?');
+			if (confirmed) {
+				confirmMySpot()
+					.then(() => setShowConfetti(true))
+					.catch(err => console.error(err));
+			}
 			return undefined;
 		};
 		statusConfig[ApplicationStatus.Accepted].actions[1].action = () => {
-			declineMySpot()
-				// no confetti :(
-				.catch(err => console.error(err));
+			// eslint-disable-next-line no-alert
+			const confirmed = window.confirm('Are you sure you want to decline your spot?');
+			if (confirmed) {
+				declineMySpot()
+					// no confetti :(
+					.catch(err => console.error(err));
+			}
 			return undefined;
 		};
 	}, [confirmMySpot, declineMySpot]);
@@ -215,11 +232,13 @@ export const HackerDash: FunctionComponent = (): JSX.Element => {
 								</SmallCenteredText>
 							</>
 						)}
-						{statusInfo.actions.map(e => (
-							<Button key={e.actionText} large long onClick={e.action}>
-								{e.actionText}
-							</Button>
-						))}
+						<div id="actions">
+							{statusInfo.actions.map(e => (
+								<Button key={e.actionText} large long onClick={e.action}>
+									{e.actionText}
+								</Button>
+							))}
+						</div>
 					</FlexColumn>
 				</HackerDashBG>
 			</FlexStartColumn>

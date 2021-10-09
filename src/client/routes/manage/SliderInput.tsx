@@ -57,6 +57,7 @@ export const SliderInput: FC<SliderInputProps> = ({
 			option3="Reject"
 			large
 			value="Undecided"
+			confirmMessageFunc={newState => `Are you sure you want to set all hackers to '${newState}'?`}
 			onChange={(input: string) => {
 				const newStatus = processSliderInput(input);
 				updateStatuses({

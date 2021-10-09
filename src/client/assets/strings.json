@@ -38,6 +38,9 @@
 	"INPUT_MAX_LENGTH": 100,
 	"NO_EVENTS_MESSAGE": "There are no current events.",
 	"PERMISSIONS_HACKER_TABLE": "hackertable",
-	"PERMISSIONS_RESUME": "resume",
-	"PERMISSIONS_NFC": "nfc"
+	"PERMISSIONS_RESUME_BEFORE": "resumebefore",
+	"PERMISSIONS_RESUME_DURING": "resumeduring",
+	"PERMISSIONS_RESUME_AFTER": "resumeafter",
+	"PERMISSIONS_NFC": "nfc",
+	"RESUME_DUMP_NAME": "vandyhacks_8_hacker_resumes.zip"
 }

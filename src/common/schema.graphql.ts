@@ -299,6 +299,7 @@ export default gql`
 		mentor(id: ID!): Mentor!
 		mentors(sortDirection: SortDirection): [Mentor!]!
 		signedReadUrl(input: ID!): String!
+		resumeDumpUrl: String!
 		team(id: ID!): Team!
 		teams(sortDirection: SortDirection): [Team!]!
 		tier(id: ID!): Tier!
