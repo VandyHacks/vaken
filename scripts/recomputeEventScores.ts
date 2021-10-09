@@ -4,7 +4,7 @@ import DB, { Models } from '../src/server/models';
 
 const printUsage = (): void => {
 	void console.log(
-		'Usage: npx ts-node -r dotenv/config ./scripts/downloadResumes.ts -- [--updatedb]'
+		'Usage: npx ts-node -r dotenv/config ./scripts/recomputeEventScores.ts -- [--updatedb] [--showonlydiffs]'
 	);
 };
 
@@ -15,17 +15,25 @@ const getComputedHackerEventScore = (hacker: HackerDbObject, events: EventDbObje
 		0
 	);
 
-const printHackerScoreStats = (hacker: HackerDbObject, events: EventDbObject[]): void => {
-	console.group(`Hacker ${hacker.firstName} ${hacker.lastName} (${hacker.email})`);
-	console.log('# Events Attended: ', hacker.eventsAttended.length);
-	console.log('Hacker score: ', hacker.eventScore);
-	console.log('Computed hacker score: ', getComputedHackerEventScore(hacker, events));
-	console.groupEnd();
+const printHackerScoreStats = (
+	hacker: HackerDbObject,
+	events: EventDbObject[],
+	showOnlyDiffs: boolean
+): void => {
+	const computedHackerScore = getComputedHackerEventScore(hacker, events);
+	if (hacker.eventScore !== computedHackerScore || !showOnlyDiffs) {
+		console.group(`Hacker ${hacker.firstName} ${hacker.lastName} (${hacker.email})`);
+		console.log('# Events Attended: ', hacker.eventsAttended.length);
+		console.log('Hacker score: ', hacker.eventScore);
+		console.log('Computed hacker score: ', getComputedHackerEventScore(hacker, events));
+		console.groupEnd();
+	}
 };
 
 const recomputeHackerEventScores = async (
 	models: Models,
-	writeResultsToDB = false
+	writeResultsToDB = false,
+	showOnlyDiffs = false
 ): Promise<void> => {
 	let bestScore = 0;
 	let bestHacker: HackerDbObject[] = [];
@@ -36,8 +44,9 @@ const recomputeHackerEventScores = async (
 				eventsAttended: { $not: { $size: 0 } },
 			} as unknown) as FilterQuery<HackerDbObject>).toArray(),
 		]);
+		console.log('Only showing Hacker score diffs');
 		hackersToRecompute.forEach(hacker => {
-			printHackerScoreStats(hacker, events);
+			printHackerScoreStats(hacker, events, showOnlyDiffs);
 			const hackerScore = getComputedHackerEventScore(hacker, events);
 			if (hackerScore > bestScore) {
 				bestScore = hackerScore;
@@ -75,7 +84,7 @@ const recomputeHackerEventScores = async (
 		console.group('\n\nHacker eventScore stats:');
 		console.log('# Hackers checking into events: ', hackersToRecompute.length);
 		console.group('Winning hackers:');
-		bestHacker.forEach(hacker => printHackerScoreStats(hacker, events));
+		bestHacker.forEach(hacker => printHackerScoreStats(hacker, events, showOnlyDiffs));
 		console.groupEnd();
 		console.groupEnd();
 	} catch (e) {
@@ -91,7 +100,12 @@ const recomputeHackerEventScores = async (
 	const args = process.argv.splice(process.execArgv.length);
 
 	try {
-		await recomputeHackerEventScores(models, /* writeResultsToDB */ args[0] === '--updatedb');
+		await recomputeHackerEventScores(
+			models,
+			/* writeResultsToDB */ args[0] === '--updatedb',
+			/* onlyShowHackersWithDifferentScores */ args[0] === '--showonlydiffs' ||
+				args[1] === '--showonlydiffs'
+		);
 		process.exit(0);
 	} catch (e) {
 		console.error(e);
