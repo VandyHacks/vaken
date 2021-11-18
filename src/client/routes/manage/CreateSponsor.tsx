@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import * as EmailValidator from 'email-validator';
+import { toast } from 'react-toastify';
 import { Button } from '../../components/Buttons/Button';
 import { SearchBox } from '../../components/Input/SearchBox';
 import FloatingPopup from '../../components/Containers/FloatingPopup';
-import { SmallCenteredText } from '../../components/Text/SmallCenteredText';
 import { FlexRow } from '../../components/Containers/FlexContainers';
 import {
 	useCreateSponsorMutation,
@@ -16,7 +16,6 @@ import {
 	TiersDocument,
 } from '../../generated/graphql';
 import { Spinner } from '../../components/Loading/Spinner';
-import STRINGS from '../../assets/strings.json';
 
 const StyledSelect = styled.select`
 	margin: 0.25rem 1rem 0.25rem 0rem;
@@ -40,68 +39,21 @@ const StyledOption = styled.option`
 	min-width: 10rem;
 `;
 
-const CreateCompany: React.FunctionComponent = (): JSX.Element => {
-	const [companyName, setCompanyName] = useState('');
-	const [tierId, setTierId] = useState('');
-	const [createCompanyMsg, setCreateCompanyMsg] = useState('');
-
-	const [createCompany] = useCreateCompanyMutation({
-		variables: { input: { name: companyName, tierId } },
-		refetchQueries: [{ query: CompaniesDocument }],
-		awaitRefetchQueries: true,
-	});
-
-	const { loading, error, data } = useTiersQuery();
-	if (error) console.error(error);
-
-	const onCreateCompany = async (): Promise<void> => {
-		try {
-			createCompany().catch(res => {
-				setCreateCompanyMsg(`Sorry. ${res.graphQLErrors[0].message} Please try again :-)`);
-			});
-		} catch (err) {
-			console.error(err);
-			setCreateCompanyMsg(STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE);
+const showToast = (message: string, isError = false): void => {
+	toast.dismiss();
+	(isError ? toast.error : toast.success)(
+		<p>
+			<em className="toast-emphasize">{message}</em>
+		</p>,
+		{
+			position: 'bottom-right',
 		}
-	};
-
-	return (
-		<>
-			<FlexRow justifyContent="flex-start">
-				<SearchBox
-					width="100%"
-					value={companyName}
-					placeholder="Company Name"
-					onChange={e => setCompanyName(e.target.value)}
-					minWidth="15em"
-				/>
-				{loading || !data ? (
-					<Spinner />
-				) : (
-					<StyledSelect onChange={e => setTierId(e.target.value)}>
-						<StyledOption value="" disabled selected>
-							Select Tier
-						</StyledOption>
-						{data.tiers.map(t => (
-							<StyledOption key={t.id} value={t.id.toString()}>
-								{t.name}
-							</StyledOption>
-						))}
-					</StyledSelect>
-				)}
-				<Button onClick={onCreateCompany}>Create</Button>
-			</FlexRow>
-			<SmallCenteredText color={STRINGS.DARK_TEXT_COLOR} fontSize="1rem" margin="0.8em">
-				<span style={{ fontWeight: 'lighter' }}>{createCompanyMsg}</span>
-			</SmallCenteredText>
-		</>
 	);
 };
 
 const CreateTier: React.FC = () => {
 	const [tierName, setTierName] = useState('');
 	const [permissions, setPermissions] = useState(['']);
-	const [createTierMsg, setCreateTierMsg] = useState('');
 
 	const [createTier] = useCreateTierMutation({
 		variables: { input: { name: tierName, permissions } },
@@ -111,12 +63,15 @@ const CreateTier: React.FC = () => {
 
 	const onCreateTier = async (): Promise<void> => {
 		try {
-			createTier().catch(res => {
-				setCreateTierMsg(`Sorry. ${res.graphQLErrors[0].message} Please try again :-)`);
-			});
+			createTier()
+				.then(() => showToast(`Tier ${tierName} created successfully!`))
+				.catch(res => showToast(`Sorry. ${res.graphQLErrors[0].message} Please try again :)`, true))
+				.finally(() => {
+					setTierName('');
+					setPermissions(['']);
+				});
 		} catch (err) {
 			console.error(err);
-			setCreateTierMsg(STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE);
 		}
 	};
 
@@ -137,11 +92,68 @@ const CreateTier: React.FC = () => {
 					onChange={e => setPermissions(e.target.value.split(','))}
 					minWidth="15em"
 				/>
-				<Button onClick={onCreateTier}>Create</Button>
+				<Button onClick={onCreateTier}>Create Tier</Button>
 			</FlexRow>
-			<SmallCenteredText color="#3F3356" fontSize="1rem" margin="0.8em">
-				<span style={{ fontWeight: 'lighter' }}>{createTierMsg}</span>
-			</SmallCenteredText>
+		</>
+	);
+};
+
+const CreateCompany: React.FunctionComponent = (): JSX.Element => {
+	const [companyName, setCompanyName] = useState('');
+	const [tierId, setTierId] = useState('');
+	const selectTierRef = useRef<HTMLSelectElement>(null);
+
+	const [createCompany] = useCreateCompanyMutation({
+		variables: { input: { name: companyName, tierId } },
+		refetchQueries: [{ query: CompaniesDocument }],
+		awaitRefetchQueries: true,
+	});
+
+	const { loading, error, data } = useTiersQuery();
+	if (error) console.error(error);
+
+	const onCreateCompany = async (): Promise<void> => {
+		try {
+			createCompany()
+				.then(() => showToast(`Company ${companyName} created successfully!`))
+				.catch(res => showToast(`Sorry. ${res.graphQLErrors[0].message} Please try again :)`, true))
+				.finally(() => {
+					setCompanyName('');
+					if (selectTierRef && selectTierRef.current) {
+						selectTierRef.current.value = '';
+					}
+				});
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
+	return (
+		<>
+			<FlexRow justifyContent="flex-start">
+				<SearchBox
+					width="100%"
+					value={companyName}
+					placeholder="Company Name"
+					onChange={e => setCompanyName(e.target.value)}
+					minWidth="15em"
+				/>
+				{loading || !data ? (
+					<Spinner />
+				) : (
+					<StyledSelect onChange={e => setTierId(e.target.value)} ref={selectTierRef}>
+						<StyledOption value="" disabled selected>
+							Select Tier
+						</StyledOption>
+						{data.tiers.map(t => (
+							<StyledOption key={t.id} value={t.id.toString()}>
+								{t.name}
+							</StyledOption>
+						))}
+					</StyledSelect>
+				)}
+				<Button onClick={onCreateCompany}>Create Company</Button>
+			</FlexRow>
 		</>
 	);
 };
@@ -150,31 +162,35 @@ const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 	const [sponsorEmail, setSponsorEmail] = useState('');
 	const [sponsorName, setSponsorName] = useState('');
 	const [companyId, setCompanyId] = useState('');
-	const [createSponsorMsg, setCreateSponsorMsg] = useState('');
 	const { loading, data } = useCompaniesQuery();
+	const selectCompanyRef = useRef<HTMLSelectElement>(null);
 
 	const [createSponsor] = useCreateSponsorMutation({
 		variables: { input: { companyId, email: sponsorEmail, name: sponsorName } },
 	});
 
 	const onCreateSponsorEmail = async (): Promise<void> => {
-		// validate the email entered
-
 		if (EmailValidator.validate(sponsorEmail)) {
 			try {
-				console.log(sponsorEmail);
-				console.log(sponsorName);
-				createSponsor().catch(res => {
-					setCreateSponsorMsg(`Sorry. ${res.graphQLErrors[0].message} Please try again :-)`);
-				});
-				// create sponsor in the database
-				// already created or not
+				createSponsor()
+					.then(() =>
+						showToast(`Email ${sponsorEmail} for sponsor ${sponsorName} created successfully!`)
+					)
+					.catch(res =>
+						showToast(`Sorry. ${res.graphQLErrors[0].message} Please try again :)`, true)
+					)
+					.finally(() => {
+						setSponsorEmail('');
+						setSponsorName('');
+						if (selectCompanyRef && selectCompanyRef.current) {
+							selectCompanyRef.current.value = '';
+						}
+					});
 			} catch (err) {
 				console.error(err);
-				setCreateSponsorMsg(STRINGS.GRAPHQL_ORGANIZER_ERROR_MESSAGE);
 			}
 		} else {
-			setCreateSponsorMsg(`Email '${sponsorEmail}' is not valid when creating sponsor`);
+			showToast(`Email ${sponsorEmail} is not valid for creating a sponsor`, true);
 		}
 	};
 
@@ -198,7 +214,7 @@ const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 				{loading || !data ? (
 					<Spinner />
 				) : (
-					<StyledSelect onChange={e => setCompanyId(e.target.value)}>
+					<StyledSelect onChange={e => setCompanyId(e.target.value)} ref={selectCompanyRef}>
 						<StyledOption value="" disabled selected>
 							Select Company
 						</StyledOption>
@@ -209,11 +225,8 @@ const CreateSponsor: React.FunctionComponent = (): JSX.Element => {
 						))}
 					</StyledSelect>
 				)}
-				<Button onClick={onCreateSponsorEmail}>Create</Button>
+				<Button onClick={onCreateSponsorEmail}>Create Sponsor Email</Button>
 			</FlexRow>
-			<SmallCenteredText color="#3F3356" fontSize="1rem" margin="0.8em">
-				<span style={{ fontWeight: 'lighter' }}>{createSponsorMsg}</span>
-			</SmallCenteredText>
 		</>
 	);
 };
