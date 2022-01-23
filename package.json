@@ -98,7 +98,7 @@
 		"jszip": "^3.6.0",
 		"mongodb": "^3.6.3",
 		"mongodb-memory-server": "^6.9.2",
-		"node-fetch": "^2.6.5",
+		"node-fetch": "^3.1.1",
 		"node-ical": "^0.12.5",
 		"passport": "^0.4.1",
 		"passport-azure-ad": "^4.3.0",
