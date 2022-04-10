@@ -10,11 +10,11 @@ const readFileAsync = promisify(readFile);
 // we'd potentially have to do the same thing with a base docker image
 // if we ever used docker
 describe('Node version', () => {
-	it(".nvmrc matches package.json's engines.node", async () => {
+	it(".nvmrc matches package.json's targets.server.engines.node", async () => {
 		const nvmrc = await readFileAsync('./.nvmrc', { encoding: 'utf8' });
 		const packageJsonEngineNode = JSON.parse(
 			await readFileAsync('./package.json', { encoding: 'utf8' })
-		).engines.node;
+		).targets.server.engines.node;
 
 		expect(semverEqual(nvmrc, packageJsonEngineNode)).toBeTruthy();
 	});

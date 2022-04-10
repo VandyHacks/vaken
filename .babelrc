@@ -1,9 +1,0 @@
-{
-	"presets": ["@babel/env", "@babel/preset-typescript", "@babel/preset-react"],
-	"plugins": [
-		"@babel/proposal-class-properties",
-		"@babel/proposal-throw-expressions",
-		"@babel/syntax-dynamic-import",
-		"babel-plugin-styled-components"
-	]
-}

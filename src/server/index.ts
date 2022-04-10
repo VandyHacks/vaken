@@ -130,7 +130,11 @@ export const schema = makeExecutableSchema({
 	app.use('/api/auth/discord', sendToDiscord);
 
 	// Callback for Discord Auth
-	app.use(<string>DISCORD_CALLBACK_URL, discordCallback);
+	if (DISCORD_CALLBACK_URL) {
+		app.use(DISCORD_CALLBACK_URL, discordCallback);
+	} else {
+		logger.error('Skipping discord auth, `DISCORD_CALLBACK_URL` not supplied');
+	}
 
 	const db = (await dbClient.client).db('vaken');
 
@@ -155,10 +159,10 @@ export const schema = makeExecutableSchema({
 	if (NODE_ENV !== 'development') {
 		logger.info('Setting routing to prod assets.');
 		// Serve front-end asset files in prod.
-		app.use(express.static('dist/src/server/app'));
+		app.use(express.static('dist/client'));
 		// MUST BE LAST AS THIS WILL REROUTE ALL REMAINING TRAFFIC TO THE FRONTEND!
 		app.use((req, res) => {
-			res.sendFile('index.html', { root: 'dist/src/server/app' });
+			res.sendFile('index.html', { root: 'dist/client' });
 		});
 	}
 

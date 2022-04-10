@@ -1,6 +1,6 @@
+import { GoogleOAuth } from '@vandyhacks/google-oauth';
+import { GitHubOAuth } from '@vandyhacks/github-oauth';
 import { NFCPlugin } from '../../plugins/nfc/server';
-import { GoogleOAuth } from '../../plugins/google-oauth';
-import { GitHubOAuth } from '../../plugins/github-oauth';
 import processOAuthCallback from './auth/processOAuthCallback';
 
 // import Google OAuth requirements
