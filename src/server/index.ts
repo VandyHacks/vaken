@@ -100,7 +100,7 @@ export const schema = makeExecutableSchema({
 		// console.error(config); // sanity check for auth plugin
 	});
 
-	registerAuthRoutes(app, oAuthStrategies);
+	registerAuthRoutes(app, oAuthStrategies, models);
 
 	app.use((req, res, next) =>
 		passport.authenticate(

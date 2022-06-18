@@ -1,5 +1,8 @@
 import { Express } from 'express';
 import passport from 'passport';
+import { User, UserType } from '../generated/graphql';
+import { Models } from '../models';
+import { fetchUser } from '../resolvers/helpers';
 
 export interface StrategyNames {
 	displayName: string;
@@ -7,9 +10,19 @@ export interface StrategyNames {
 	scopes: string[];
 }
 
-export const registerAuthRoutes = (app: Express, strategies: StrategyNames[]): void => {
-	passport.serializeUser((user, done) => void done(null, user));
-	passport.deserializeUser((user, done) => void done(null, user));
+export const registerAuthRoutes = (
+	app: Express,
+	strategies: StrategyNames[],
+	models: Models
+): void => {
+	passport.serializeUser(({ email, userType }: User, done) => {
+		void done(null, { email, userType });
+	});
+	passport.deserializeUser(
+		async ({ email, userType }: { email: string; userType: UserType }, done) => {
+			done(null, await fetchUser({ email, userType }, models));
+		}
+	);
 
 	strategies.forEach(({ name: authName, scopes }) => {
 		app.get(`/api/auth/${authName}`, passport.authenticate(authName, { scope: scopes }));
