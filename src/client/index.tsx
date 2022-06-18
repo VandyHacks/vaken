@@ -6,7 +6,10 @@ import * as Sentry from '@sentry/browser';
 import Vaken from './app';
 import STRINGS from './assets/strings.json';
 
-Sentry.init({ dsn: SENTRY_URL, tracesSampleRate: 1.0 });
+// Parcel substitutes these for constants of the environment variables at build-time
+if (process.env.NODE_ENV !== 'development' && process.env.SENTRY_URL) {
+	Sentry.init({ dsn: process.env.SENTRY_URL, tracesSampleRate: 1.0 });
+}
 
 const client = new ApolloClient({
 	cache: new InMemoryCache(),

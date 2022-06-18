@@ -1,4 +1,3 @@
-import registerRequireContextHook from 'babel-plugin-require-context-hook/register';
 import initStoryshots, { renderWithOptions } from '@storybook/addon-storyshots';
 
 import 'jest-styled-components';
@@ -12,7 +11,6 @@ jest.mock('@storybook/core/server', () => ({
 }));
 
 addSerializer(styleSheetSerializer);
-registerRequireContextHook();
 
 initStoryshots({
 	test: renderWithOptions({

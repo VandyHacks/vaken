@@ -1,5 +1,3 @@
-const { defaults: tsjPreset } = require('ts-jest/presets');
-
 module.exports = {
 	collectCoverage: true,
 	collectCoverageFrom: [
@@ -29,10 +27,9 @@ module.exports = {
 				'\\.(jpg|jpeg|png|gif)$': '<rootDir>/__mocks__/svgrMock.js',
 			},
 			transform: {
-				'^.+\\.jsx?$': 'babel-jest',
+				'^.+\\.(t|j)sx?$': '@swc/jest',
 				'^.+\\.css$': 'jest-transform-css',
 			},
-			preset: 'ts-jest',
 			setupFilesAfterEnv: ['./src/client/setupTests.js'],
 		},
 		{
@@ -50,7 +47,9 @@ module.exports = {
 			// we can only have one preset at a time
 			// this uses the typescript preset's transformer
 			// and mongo's preset to allow both to coeexist
-			transform: tsjPreset.transform,
+			transform: {
+				'^.+\\.(t|j)sx?$': '@swc/jest',
+			},
 			preset: '@shelf/jest-mongodb',
 		},
 		{
@@ -59,9 +58,8 @@ module.exports = {
 			testMatch: ['<rootDir>/src/common/**/*.test.ts'],
 			setupFiles: ['./__mocks__/env.js'], // eslint-disable-line import/no-extraneous-dependencies
 			transform: {
-				'^.+\\.jsx?$': 'babel-jest',
+				'^.+\\.(t|j)sx?$': '@swc/jest',
 			},
-			preset: 'ts-jest',
 			testPathIgnorePatterns: ['.eslintrc.js'],
 		},
 		{
@@ -73,9 +71,8 @@ module.exports = {
 				'\\.(jpg|jpeg|png|gif)$': '<rootDir>/__mocks__/svgrMock.js',
 			},
 			transform: {
-				'^.+\\.jsx?$': 'babel-jest',
+				'^.+\\.(t|j)sx?$': '@swc/jest',
 			},
-			preset: 'ts-jest',
 		},
 	],
 };

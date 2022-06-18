@@ -1,0 +1,10 @@
+{
+	"/graphql": {
+		"target": "https://vaken-staging.herokuapp.com/",
+		"changeOrigin": true
+	},
+	"/api": {
+		"target": "https://vaken-staging.herokuapp.com/",
+		"changeOrigin": true
+	}
+}
