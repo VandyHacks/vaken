@@ -107,7 +107,7 @@
 		"graphql": "^15.4.0",
 		"helmet": "^4.6.0",
 		"immer": "^9.0.6",
-		"jsdom": "^16.4.0",
+		"jsdom": "^16.5.0",
 		"jszip": "^3.6.0",
 		"mongodb": "^3.6.3",
 		"mongodb-memory-server": "^6.9.2",
