@@ -26,6 +26,9 @@
 	},
 	"deepscan.enable": true,
 	"[typescript]": {
+		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
+	},
+	"[graphql]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	}
 }

@@ -10,11 +10,11 @@ import { resolvers } from './resolvers';
 import DB from './models';
 import Context from './context';
 import logger from './logger';
-import { StrategyNames, registerAuthRoutes } from './auth';
+import { StrategyNames, registerAuthRoutes } from '../../services/gateway/auth';
 import { UnsubscribeHandler } from './mail/handlers';
 import { UserDbInterface } from './generated/graphql';
 import { pullCalendar } from './events';
-import { sendToDiscord, discordCallback } from './auth/discord';
+import { sendToDiscord, discordCallback } from '../../services/gateway/auth/discord';
 
 import { serverPlugins, authPlugins } from './plugins';
 
