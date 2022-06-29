@@ -21,11 +21,13 @@
 		"types": ["node", "jest"]
 	},
 	"include": [
+		"common/**/*.ts",
+		"services/**/*.ts",
 		"src/**/*.ts",
 		"src/client/**/*.tsx",
 		"plugins/**/*.ts",
 		"scripts/**/*.ts",
 		"src/client/setupTests.js"
 	],
-	"exclude": ["node_modules/**", "types/**"]
+	"exclude": ["node_modules/**"]
 }

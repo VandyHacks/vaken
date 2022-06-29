@@ -261,3 +261,4 @@ globalConfig.json
 
 .parcel-cache/
 storybook-static/
+generated.graphql

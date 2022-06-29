@@ -1,0 +1,190 @@
+"""
+Represents a user checking into an event at a specific time
+"""
+type EventCheckIn @entity(embedded: true) {
+	"The user who checked in to the event"
+	user: User! @link
+	"Time the user checked in, in unix milliseconds"
+	time: Int! @column(overrideType: "Date")
+}
+
+enum Visibility {
+	"Only visible to the Group that owns the event"
+	INTERNAL
+	"Visible to all users"
+	PUBLIC
+}
+
+"""
+Represents an event taking place during the hackathon
+"""
+type Event @key(fields: "id") @entity(additionalFields: [{ path: "gcalId", type: "string" }]) {
+	"unique ID of the event"
+	id: ID! @id @column
+
+	"Name of the event, suitable for public display"
+	name: String @column
+
+	"Start time of the event, in milliseconds since the unix epoch"
+	startTimestamp: Int @column(overrideType: "Date")
+
+	"Duration of the event, in milliseconds"
+	duration: Int @column
+
+	"Set of IDs of users who attended the event"
+	attendees: [User!] @column
+
+	"List of user check-ins, in order of checking in"
+	checkins: [EventCheckIn!] @embedded
+
+	"Whether this event should give a warning when a user attempts to check in more than once"
+	warnRepeatedCheckins: Boolean @column
+
+	"Description of the event"
+	description: String @column
+
+	"Human-readable location of where the event takes place"
+	location: String @column
+
+	"Type of the event"
+	eventType: String @column
+
+	"Group that owns the event, if owned by a specific group"
+	owner: Group @link
+
+	"How much the event is worth in the event scoring system"
+	eventScore: Int @column
+
+	"Who is able to see the event"
+	visibility: Visibility @column
+}
+
+enum Role {
+	"User can manage events, including their score, title, etc."
+	MANAGE_EVENTS
+	"User can attend events and is given a score for doing so"
+	ATTEND_EVENTS
+	"User can check in any user to any event"
+	CHECKIN_USERS_ALL_EVENTS
+	"User A can check in any user to an event owned by any group User A is a part of"
+	CHECKIN_USERS_OWNED_EVENTS
+	"User can view list of hackers that have checked into any event"
+	VIEW_CHECKED_IN_HACKERS_ALL_EVENTS
+	"User A can view users that have checked into an event owned by any group User A is a part of"
+	VIEW_CHECKED_IN_HACKERS_OWNED_EVENTS
+}
+
+extend type User @key(fields: "id") {
+	id: ID! @id @column
+
+	"Secondary IDs for a user, such as NFC tag IDs"
+	secondaryIds: [ID!] @column
+
+	"Events the user has attended"
+	attendedEvents: [Event!]
+
+	"Event score for all of the events the user has attended"
+	eventScore: Int
+}
+
+extend type Group @key(fields: "id") {
+	"Events this group owns, if any"
+	ownedEvents: [Event!]
+}
+
+enum EventsFilter {
+	"Returns all events that the user has permission to see"
+	ALL
+	"Returns only events owned by the user's group"
+	OWNED
+}
+
+"""
+Enum to disambiguate which identifier is supplied.
+"""
+enum IdType @shareable {
+	"Primary ID, such as the User's `id` field"
+	PRIMARY
+	"Secondary ID, such as an NFC tag id contained in the User's `secondaryIds` field"
+	SECONDARY
+}
+
+extend type Query {
+	"Returns an individual event based by ID"
+	event("ID of the event to retrieve" id: ID!): Event
+
+	"Returns list of events."
+	events(
+		"How many events to retrieve. High default to return all events if possible"
+		first: Int = 1000
+		"Begin paginating results after the supplied ID"
+		after: ID = 0
+		"Filters events to return. Defaults to showing all events the user has permissions to see"
+		filter: EventsFilter = ALL
+	): [Event!]!
+}
+
+extend type Mutation {
+	"Deletes events with the corresponding IDs. Returns the number of events deleted."
+	deleteEvents("List of IDs of events to delete." id: [ID!]!): Int!
+
+	"""
+	Synchronizes events with the configured source of truth, for example, Google Calendar.
+
+	This mutation creates DB entries for missing events as well as removes entries for events
+	that have been removed from the calendar. It returns the number of events updated.
+	"""
+	syncEvents: Int!
+
+	"Sets an event's owner to the specified group. Returns the updated event."
+	setEventOwner(
+		"ID of an event to update"
+		eventId: ID!
+		"ID of the group to set as owner of the event"
+		groupId: ID!
+	): Event!
+
+	"""
+	Checks a user into an event.
+
+	The event is added to the user's `attendedEvents` list and their `eventScore`, if applicable.
+
+	The user is added to the event's `attendees` list, as is a corresponding EventCheckIn to the
+	event's checkins list.
+	"""
+	checkInUserToEvent(
+		"ID of an event to update"
+		eventId: ID!
+		"Primary or secondary ID of user to check into the event"
+		userId: ID!
+		"Whether the userId supplied is a primary ID or a secondary ID. Defaults to primary."
+		userIdType: IdType = PRIMARY
+	): Event!
+
+	"""
+	Removes a user from an event if they've already checked in.
+
+	The event is removed from the user's `attendedEvents` list and their `eventScore`, if applicable.
+
+	The user is removed from the event's `attendees` list, as is the corresponding EventCheckIn in
+	the event's	checkins list.
+	"""
+	removeUserFromEvent(
+		"ID of an event to update"
+		eventId: ID!
+		"Primary or secondary ID of user to check into the event"
+		userId: ID!
+		"Whether the userId supplied is a primary ID or a secondary ID. Defaults to primary."
+		userIdType: IdType = PRIMARY
+	): Event!
+
+	"""
+	Adds a secondary ID to a `User`. For example, used to associate a unique NFC tag ID with a user.
+	"""
+	addSecondaryIdForUser(
+		"Primary ID of the user to update"
+		userId: ID!
+		"Secondary ID to add for the user"
+		secondaryId: ID!
+	): User!
+}

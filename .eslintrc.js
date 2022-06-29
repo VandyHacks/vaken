@@ -60,10 +60,7 @@ module.exports = {
 		'no-use-before-define': [0],
 		'@typescript-eslint/no-use-before-define': ['error'],
 		'@typescript-eslint/explicit-module-boundary-types': [0],
-		'promise/catch-or-return': [
-			2,
-			{ allowFinally: true }
-		]
+		'promise/catch-or-return': [2, { allowFinally: true }],
 	},
 	root: true,
 	overrides: [
@@ -74,10 +71,10 @@ module.exports = {
 			},
 		},
 		{
-			files: ['**/scripts/**/*'],
+			files: ['**/scripts/**/*', 'services/**/*'],
 			rules: {
-				"no-console": 0
-			}
+				'no-console': 0,
+			},
 		},
 		{
 			files: ['**/*.test.js'],

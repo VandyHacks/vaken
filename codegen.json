@@ -1,34 +1,49 @@
 {
-	"schema": ["./src/common/schema.graphql.ts", "./plugins/**/schema.graphql.ts"],
-	"documents": ["./src/client/**/*.graphql.ts", "./plugins/**/*.graphql.ts"],
 	"overwrite": true,
 	"watch": false,
 	"generates": {
-		"src/server/generated/graphql.ts": {
+		"services/users/lib/generated.graphql.ts": {
+			"schema": ["./services/users/users.graphql.ts"],
 			"plugins": ["typescript", "typescript-resolvers", "typescript-mongodb"],
 			"config": {
-				"mappers": {
-					"ApplicationField": "ApplicationFieldDbObject",
-					"_Plugin__Event": "_Plugin__EventDbObject",
-					"_Plugin__EventCheckIn": "_Plugin__EventCheckInDbObject",
-					"Event": "EventDbObject",
-					"EventCheckIn": "EventCheckInDbObject",
-					"Company": "CompanyDbObject",
-					"Hacker": "HackerDbObject",
-					"Login": "LoginDbObject",
-					"Mentor": "MentorDbObject",
-					"Organizer": "OrganizerDbObject",
-					"Shift": "ShiftDbObject",
-					"Sponsor": "SponsorDbObject",
-					"Team": "TeamDbObject",
-					"Tier": "TierDbObject",
-					"User": "UserDbInterface",
-					"Volunteer": "VolunteerDbObject"
-				},
-				"skipTypenames": false
+				"federation": true
 			}
 		},
+		"services/resumes/lib/generated.graphql.ts": {
+			"schema": ["./services/resumes/resumes.graphql.ts"],
+			"plugins": ["typescript", "typescript-resolvers", "typescript-mongodb"],
+			"config": {
+				"federation": true
+			}
+		},
+		"services/groups/lib/generated.graphql.ts": {
+			"schema": ["./services/groups/groups.graphql.ts"],
+			"plugins": ["typescript", "typescript-resolvers", "typescript-mongodb"],
+			"config": {
+				"federation": true
+			}
+		},
+		"common/types/generated.ts": {
+			"schema": ["./services/**/*.graphql*"],
+			"plugins": ["typescript"]
+		},
+		"services/gateway/auth/generated.graphql.ts": {
+			"schema": ["./services/**/*.graphql.ts"],
+			"documents": ["./services/gateway/**/login.graphql.ts"],
+			"plugins": ["typescript", "typescript-operations", "typed-document-node"]
+		},
+		"services/groups/lib/query/generated.graphql.ts": {
+			"schema": ["./services/**/*.graphql.ts"],
+			"documents": ["./services/groups/lib/query/*query.graphql.ts"],
+			"plugins": ["typescript", "typescript-operations", "typed-document-node"]
+		},
+		"services/resumes/lib/query/generated.graphql.ts": {
+			"schema": ["./services/**/*.graphql.ts"],
+			"documents": ["./services/resumes/lib/query/*query.graphql.ts"],
+			"plugins": ["typescript", "typescript-operations", "typed-document-node"]
+		},
 		"src/client/generated/graphql.ts": {
+			"schema": ["./services/**/*.graphql*"],
 			"plugins": [
 				"typescript",
 				"typescript-operations",

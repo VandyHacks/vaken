@@ -6,3 +6,4 @@ graphql.ts
 generated/
 .eslintrc.js
 jest.config.js
+generated.graphql.ts
