@@ -2,14 +2,6 @@ import { UserQuery, UserDocument, UserQueryVariables } from './generated.graphql
 import { NON_CACHING_CLIENT } from '../../../common';
 import { gql } from '@apollo/client';
 
-const { GATEWAY_BEARER_TOKEN } = process.env;
-if (!GATEWAY_BEARER_TOKEN) {
-	console.warn(
-		'GATEWAY_BEARER_TOKEN not set. Bearer token auth will be disabled. This ' +
-			'will adversely affect the applications service.'
-	);
-}
-
 /** GraphQL query string for the generated client */
 export default gql`
 	query User($id: ID!, $idType: IdType = PRIMARY) {

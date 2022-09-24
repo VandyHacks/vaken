@@ -7,11 +7,11 @@ import {
 import { ApolloServer } from 'apollo-server-express';
 import { ApolloServerPluginLandingPageLocalDefault as graphQLSandboxPlugin } from 'apollo-server-core';
 import { serializeQueryPlan } from '@apollo/query-planner';
-
-const { GATEWAY_BEARER_TOKEN } = process.env;
+import { GATEWAY_BEARER_TOKEN } from '../common/env';
+import { SharedApolloConfig } from '../common';
 
 export class GatewayService extends ApolloServer {
-	constructor(subgraphs: ServiceEndpointDefinition[]) {
+	constructor(subgraphs: ServiceEndpointDefinition[], config: SharedApolloConfig) {
 		const gateway = new ApolloGateway({
 			experimental_didResolveQueryPlan(options) {
 				if (options.requestContext.operationName !== 'IntrospectionQuery') {
@@ -35,8 +35,8 @@ export class GatewayService extends ApolloServer {
 						if (context.user) {
 							request.http?.headers.set('user', JSON.stringify(context.user));
 						}
-						if (context.authorizationHeader) {
-							request.http?.headers.set('Authorization', context.authorizationHeader);
+						if (context.bearerToken) {
+							request.http?.headers.set('Authorization', `Bearer: ${context.bearerToken}`);
 						}
 					},
 				});
@@ -45,16 +45,8 @@ export class GatewayService extends ApolloServer {
 
 		super({
 			gateway,
-			cache: 'bounded',
-			csrfPrevention: true,
-			introspection: true,
-			// This context magic populates the user in the apollo context, so it can be
-			// passed through the gateway to downstream subgraphs.
-			context: ({ req }) => ({
-				user: req.user,
-				authorizationHeader: req.headers.authorization,
-			}),
 			plugins: [graphQLSandboxPlugin({ embed: true })],
+			...config,
 		});
 	}
 }

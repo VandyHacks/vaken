@@ -1,36 +1,27 @@
-import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
-import fetch from 'cross-fetch';
+import { NON_CACHING_CLIENT } from '../../common';
 import {
 	LogInUserDocument,
 	LogInUserMutation,
 	UserSessionDocument,
 	UserSessionQuery,
 } from './generated.graphql';
+import { gql } from '@apollo/client';
 
-const { GATEWAY_BEARER_TOKEN } = process.env;
-if (!GATEWAY_BEARER_TOKEN) {
-	console.warn(
-		'GATEWAY_BEARER_TOKEN not set. Bearer token auth will be disabled. This ' +
-			'will adversely affect the logInUser mutation.'
-	);
-}
+export default gql`
+	mutation logInUser($email: String!, $provider: String!, $token: String!) {
+		logInUser(email: $email, provider: $provider, token: $token) {
+			id
+		}
+	}
 
-const link = createHttpLink({
-	uri: `http://localhost:${process.env.PORT}/graphql`,
-	credentials: 'same-origin',
-	fetch,
-	headers: {
-		Authorization: GATEWAY_BEARER_TOKEN ? `Bearer: ${GATEWAY_BEARER_TOKEN}` : '',
-	},
-});
-const nonCachingClient = new ApolloClient({
-	link,
-	cache: new InMemoryCache({ resultCacheMaxSize: 0 }),
-});
-const cachingClient = new ApolloClient({
-	link,
-	cache: new InMemoryCache(),
-});
+	query userSession($id: ID!) {
+		user(id: $id) {
+			id
+			email
+			roles
+		}
+	}
+`;
 
 export type LogInUserResult = LogInUserMutation['logInUser'] | null;
 export async function logInUser(args: {
@@ -39,7 +30,10 @@ export async function logInUser(args: {
 	token: string;
 }): Promise<LogInUserResult> {
 	try {
-		const result = await nonCachingClient.mutate({ mutation: LogInUserDocument, variables: args });
+		const result = await NON_CACHING_CLIENT.mutate({
+			mutation: LogInUserDocument,
+			variables: args,
+		});
 		return result.data?.logInUser ?? null;
 	} catch (e: unknown) {
 		console.error(JSON.stringify(e));
@@ -50,7 +44,7 @@ export async function logInUser(args: {
 export type UserSessionResult = UserSessionQuery['user'] | null;
 export async function getUser(userId: string): Promise<UserSessionResult> {
 	try {
-		const result = await cachingClient.query({
+		const result = await NON_CACHING_CLIENT.query({
 			query: UserSessionDocument,
 			variables: { id: userId },
 		});

@@ -1,20 +1,13 @@
-import { deny, IRules, rule, shield, or } from 'graphql-shield';
+import { IRules, rule, shield, or } from 'graphql-shield';
 import { Mutation, Application } from './lib/generated.graphql';
 import { Role } from '../../common/types/generated';
 import type { ApplicationsContext } from './index';
+import { GATEWAY_BEARER_TOKEN } from '../common/env';
 
 type PermissionsSchema = IRules & {
 	Mutation?: Partial<Record<keyof Mutation | '*', IRules>>;
 	Application?: Partial<Record<keyof Application | '*', IRules>>;
 };
-
-const { GATEWAY_BEARER_TOKEN } = process.env;
-if (!GATEWAY_BEARER_TOKEN) {
-	console.warn(
-		'GATEWAY_BEARER_TOKEN not set. Bearer token auth will be disabled. This ' +
-			'will adversely affect the logInUser mutation.'
-	);
-}
 
 const hasBearerToken = rule('hasBearerToken', { cache: 'contextual' })(
 	(_, __, { bearerToken }: ApplicationsContext) =>

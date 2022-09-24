@@ -2,13 +2,12 @@ import { IRules, rule, shield, or } from 'graphql-shield';
 import { Mutation, Application } from './lib/generated.graphql';
 import type { ResumesContext } from './index';
 import { Role } from '../../common/types/generated';
+import { GATEWAY_BEARER_TOKEN } from '../common/env';
 
 type PermissionsSchema = IRules & {
 	Mutation?: Partial<Record<keyof Mutation | '*', IRules>>;
 	Application?: Partial<Record<keyof Application | '*', IRules>>;
 };
-
-const { GATEWAY_BEARER_TOKEN } = process.env;
 
 const hasBearerToken = rule('hasBearerToken', { cache: 'contextual' })(
 	(_, __, { bearerToken }: ResumesContext) =>

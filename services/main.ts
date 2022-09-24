@@ -9,13 +9,8 @@ import { GroupsService } from './groups';
 import { MongoClient } from 'mongodb';
 import { ApolloServer } from 'apollo-server-express';
 import { DEFAULT_APOLLO_CONFIG } from './common';
+import { MONGODB_URL, PORT } from './common/env';
 
-/** Port to expose the backend and all locally-running dependent services. */
-let PORT = process.env.PORT;
-if (!PORT) {
-	console.warn('PORT not specified. Defaulting to port 4000');
-	PORT = '4000';
-}
 /**
  * Set to 1 if server is running behind a trusted proxy. When behind a trusted proxy, the server
  * will set values in the request object based on the X-Forwarded-* headers, including things like
@@ -54,9 +49,7 @@ const REQUIRED_SERVICES = [
  * @return the names and urls of downstream graph services
  */
 async function initializeServices(app: Application): Promise<{ name: string; url: string }[]> {
-	const mongo = await MongoClient.connect(
-		process.env.MONGODB_BASE_URL ?? 'mongodb://localhost:27017'
-	);
+	const mongo = await MongoClient.connect(MONGODB_URL);
 
 	// Start the locally-running services and extract out the URL of remote services to simplify
 	// handling in the gateway.
@@ -65,7 +58,11 @@ async function initializeServices(app: Application): Promise<{ name: string; url
 	for (const service of REQUIRED_SERVICES) {
 		const serviceUrl = process.env[`${service.name.toUpperCase()}_SERVICE_URL`];
 		if (serviceUrl) {
-			console.log(`Using ${service.name} service at ${serviceUrl}`);
+			console.log(
+				`Using ${
+					service.name
+				} service at \`${serviceUrl}\` because ${service.name.toUpperCase()}_SERVICE_URL is set`
+			);
 			remoteServices.push({ name: service.name, url: serviceUrl });
 			continue;
 		}
@@ -110,7 +107,7 @@ export async function main(): Promise<void> {
 
 	// The gateway must be started after all the locally-running services have been exposed so it can
 	// query their schema and create the federated supergraph.
-	const gateway = new GatewayService(services);
+	const gateway = new GatewayService(services, DEFAULT_APOLLO_CONFIG);
 	await gateway.start();
 	gateway.applyMiddleware({ app, path: '/graphql' });
 

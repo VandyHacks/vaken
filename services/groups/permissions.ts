@@ -2,6 +2,7 @@ import { IRules, rule, shield, or, race, and } from 'graphql-shield';
 import { Query, Mutation, Role, User, Group } from './lib/generated.graphql';
 import type { GroupsContext } from './index';
 import { getGroup } from './lib/query/groups';
+import { GATEWAY_BEARER_TOKEN } from '../common/env';
 
 type PermissionsSchema = IRules & {
 	Query?: Partial<Record<keyof Query | '*', IRules>>;
@@ -9,11 +10,6 @@ type PermissionsSchema = IRules & {
 	User?: Partial<Record<keyof User | '*', IRules>>;
 	Group?: Partial<Record<keyof Group | '*', IRules>>;
 };
-
-const { GATEWAY_BEARER_TOKEN } = process.env;
-if (!GATEWAY_BEARER_TOKEN) {
-	console.warn('GATEWAY_BEARER_TOKEN not set. Bearer token auth will be disabled.');
-}
 
 const hasBearerToken = rule('hasBearerToken', { cache: 'contextual' })(
 	(_, __, { bearerToken }: GroupsContext) =>

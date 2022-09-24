@@ -36,7 +36,7 @@
 		},
 		"services/gateway/auth/generated.graphql.ts": {
 			"schema": ["./services/**/*.graphql.ts"],
-			"documents": ["./services/gateway/**/login.graphql.ts"],
+			"documents": ["./services/gateway/**/.ts"],
 			"plugins": ["typescript", "typescript-operations", "typed-document-node"]
 		},
 		"services/applications/lib/query/generated.graphql.ts": {

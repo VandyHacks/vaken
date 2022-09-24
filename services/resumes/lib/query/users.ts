@@ -2,14 +2,6 @@ import { gql } from '@apollo/client';
 import { NON_CACHING_CLIENT } from '../../../common';
 import { HackersQuery, HackersDocument } from './generated.graphql';
 
-const { GATEWAY_BEARER_TOKEN } = process.env;
-if (!GATEWAY_BEARER_TOKEN) {
-	console.warn(
-		'GATEWAY_BEARER_TOKEN not set. Bearer token auth will be disabled. This ' +
-			'will adversely affect the resume dump url service.'
-	);
-}
-
 export default gql`
 	query Hackers {
 		users(first: 10000, filter: APPLICATION_SUBMITTED) {

@@ -1,19 +1,15 @@
 import session from 'express-session';
-import { ObjectId } from 'mongodb';
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
 import { RequestHandler } from 'express';
 import { getUser, LogInUserResult } from './auth/login';
+import { randomBytes } from 'crypto';
+import { MONGODB_URL } from '../common/env';
 
 let secret = process.env.SESSION_SECRET;
 if (!secret) {
 	console.warn('SESSION_SECRET not set. Sessions will not be preserved between restarts.');
-	secret = new ObjectId().toHexString();
-}
-let mongoUrl = process.env.MONGODB_BASE_URL;
-if (!mongoUrl) {
-	console.warn('MONGODB_BASE_URL not set. Defaulting to `mongodb://localhost:27017`.');
-	mongoUrl = 'mongodb://localhost:27017';
+	secret = randomBytes(64).toString('base64');
 }
 const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
 
@@ -40,7 +36,7 @@ passport.deserializeUser(({ id }: { id: string }, done) => {
 
 const initializedSessionMiddleware = session({
 	secret,
-	store: MongoStore.create({ mongoUrl, dbName: 'vaken', crypto: { secret } }),
+	store: MongoStore.create({ mongoUrl: MONGODB_URL, dbName: 'vaken', crypto: { secret } }),
 	saveUninitialized: false,
 	resave: false,
 	cookie: {
