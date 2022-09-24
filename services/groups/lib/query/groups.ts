@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import { NON_CACHING_CLIENT } from '../../../common';
+import { NON_CACHING_CLIENT } from '../../../common/client';
 import { GroupDocument, GroupQuery, GroupQueryVariables } from './generated.graphql';
 
 export default gql`

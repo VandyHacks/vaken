@@ -8,7 +8,7 @@ import { UsersService } from './users';
 import { GroupsService } from './groups';
 import { MongoClient } from 'mongodb';
 import { ApolloServer } from 'apollo-server-express';
-import { DEFAULT_APOLLO_CONFIG } from './common';
+import { DEFAULT_APOLLO_CONFIG } from './common/client';
 import { MONGODB_URL, PORT } from './common/env';
 
 /**

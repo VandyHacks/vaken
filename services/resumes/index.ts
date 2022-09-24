@@ -6,7 +6,7 @@ import { Resolvers } from './lib/generated.graphql';
 import { typeDefs } from './resumes.graphql';
 import * as GCS from './lib/google_cloud_storage';
 import { MongoClient } from 'mongodb';
-import { SharedApolloConfig, CommonContext } from '../common';
+import { SharedApolloConfig, CommonContext } from '../common/client';
 import { permissions } from './permissions';
 
 export type ResumesContext = CommonContext;

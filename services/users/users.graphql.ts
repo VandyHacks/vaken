@@ -77,7 +77,7 @@ export const typeDefs = gql`
 		"Returns an individual user based by ID"
 		user(
 			"Id of the user, either primary ID, secondary ID, or an email"
-			id: ID!
+			userId: ID!
 			"Whether the id is the user's primary ID, secondary ID, or an email"
 			idType: IdType = PRIMARY
 		): User

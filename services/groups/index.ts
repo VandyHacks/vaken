@@ -8,7 +8,7 @@ import { typeDefs } from './groups.graphql';
 import { Groups } from './lib/groups';
 import { notEmpty } from '../../common/util/predicates';
 import { permissions } from './permissions';
-import { SharedApolloConfig, CommonContext } from '../common';
+import { SharedApolloConfig, CommonContext } from '../common/client';
 
 export type GroupsContext = CommonContext & {
 	dataSources: {

@@ -1,4 +1,4 @@
-import { NON_CACHING_CLIENT } from '../../common';
+import { NON_CACHING_CLIENT } from '../../common/client';
 import {
 	LogInUserDocument,
 	LogInUserMutation,

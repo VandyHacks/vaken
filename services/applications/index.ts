@@ -8,7 +8,7 @@ import { typeDefs } from './applications.graphql';
 import { Applications } from './lib/applications';
 import { getUser } from './lib/query/user';
 import { permissions } from './permissions';
-import { CommonContext, SharedApolloConfig } from '../common';
+import { CommonContext, SharedApolloConfig } from '../common/client';
 
 export type ApplicationsContext = CommonContext & {
 	dataSources: {

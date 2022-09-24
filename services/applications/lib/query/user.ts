@@ -1,5 +1,5 @@
 import { UserQuery, UserDocument, UserQueryVariables } from './generated.graphql';
-import { NON_CACHING_CLIENT } from '../../../common';
+import { NON_CACHING_CLIENT } from '../../../common/client';
 import { gql } from '@apollo/client';
 
 /** GraphQL query string for the generated client */

@@ -1,7 +1,12 @@
-import { allow, IRules, rule, shield, or } from 'graphql-shield';
-import { Query, Mutation, Role, User } from './lib/generated.graphql';
-import type { UsersContext } from './index';
-import { GATEWAY_BEARER_TOKEN } from '../common/env';
+import { allow, IRules, shield, or } from 'graphql-shield';
+import { Query, Mutation, User } from './lib/generated.graphql';
+import {
+	hasBearerToken,
+	isOrganizer,
+	isQueryingSelf,
+	isSponsor,
+	isVolunteer,
+} from '../common/permissions';
 
 type PermissionsSchema = IRules & {
 	Query?: Partial<Record<keyof Query | '*', IRules>>;
@@ -9,19 +14,7 @@ type PermissionsSchema = IRules & {
 	User?: Partial<Record<keyof User | '*', IRules>>;
 };
 
-const hasBearerToken = rule('hasBearerToken', { cache: 'contextual' })(
-	(_, __, { bearerToken }: UsersContext) =>
-		!!(GATEWAY_BEARER_TOKEN && bearerToken === GATEWAY_BEARER_TOKEN)
-);
-const canViewAllHackers = rule('canViewAllHackers', { cache: 'contextual' })(
-	(_, __, { user }: UsersContext) =>
-		!!user?.roles.includes(Role.Organizer) ||
-		!!user?.roles.includes(Role.Sponsor) ||
-		!!user?.roles.includes(Role.Volunteer)
-);
-const isQueryingSelf = rule('isQueryingSelf', { cache: 'contextual' })(
-	(_, args: { id?: string }, { user }: UsersContext) => args.id === user?.id
-);
+const canViewAllHackers = or(isOrganizer, isSponsor, isVolunteer);
 
 const permissions_: PermissionsSchema = {
 	Query: {

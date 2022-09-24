@@ -7,7 +7,7 @@ import { Resolvers } from './lib/generated.graphql';
 import { typeDefs } from './users.graphql';
 import { Users } from './lib/users';
 import { permissions } from './permissions';
-import { CommonContext, SharedApolloConfig } from '../common';
+import { CommonContext, SharedApolloConfig } from '../common/client';
 
 export type UsersContext = CommonContext & {
 	dataSources: {
@@ -18,7 +18,7 @@ export type UsersContext = CommonContext & {
 const resolvers: Resolvers<UsersContext> = {
 	Query: {
 		user(_, args, { dataSources }) {
-			return dataSources.users.getUser(args.id);
+			return dataSources.users.getUser(args.userId);
 		},
 		users(_, args, { dataSources }) {
 			return dataSources.users.getUsers(args);
