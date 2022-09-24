@@ -2,7 +2,7 @@ import { MongoDataSource } from 'apollo-datasource-mongodb';
 import { ObjectId, Filter } from 'mongodb';
 import { GroupDbObject, Group, Role, IdType } from './generated.graphql';
 import { notEmpty, valueOf } from '../../../common/util/predicates';
-import { getUser } from './query/groups_query';
+import { getUser } from './query/users';
 
 export function groupDbOjectToDomainConverter(dbObject?: GroupDbObject | null): Group | null {
 	return dbObject

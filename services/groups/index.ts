@@ -1,20 +1,19 @@
-import { ApolloServer } from 'apollo-server';
+import { ApolloServer } from 'apollo-server-express';
 import { buildSubgraphSchema } from '@apollo/subgraph';
-import { MongoClient, Collection } from 'mongodb';
+import { MongoClient } from 'mongodb';
 import { DIRECTIVES } from '@graphql-codegen/typescript-mongodb';
 import { applyMiddleware } from 'graphql-middleware';
-import { GroupDbObject, Resolvers, Role } from './lib/generated.graphql';
+import { Resolvers } from './lib/generated.graphql';
 import { typeDefs } from './groups.graphql';
 import { Groups } from './lib/groups';
 import { notEmpty } from '../../common/util/predicates';
 import { permissions } from './permissions';
+import { SharedApolloConfig, CommonContext } from '../common';
 
-export type GroupsContext = {
+export type GroupsContext = CommonContext & {
 	dataSources: {
 		groups: Groups;
 	};
-	user?: { id: string; roles: Role[] } | null;
-	bearerToken?: string;
 };
 
 const resolvers: Resolvers<GroupsContext> = {
@@ -61,42 +60,23 @@ const resolvers: Resolvers<GroupsContext> = {
 	},
 };
 
-async function main(): Promise<void> {
-	const groupsCollection: Collection<GroupDbObject> = (
-		await MongoClient.connect(process.env.MONGODB_BASE_URL ?? 'mongodb://localhost:27017')
-	)
-		.db('vaken')
-		.collection('groups');
-
-	const server = new ApolloServer({
-		schema: applyMiddleware(
-			buildSubgraphSchema([
-				DIRECTIVES,
-				{
-					typeDefs,
-					resolvers,
-				},
-			]),
-			permissions
-		),
-		dataSources: () => ({
-			groups: new Groups(groupsCollection),
-		}),
-		cache: 'bounded',
-		csrfPrevention: true,
-		context: ({ req }) => {
-			const user = typeof req.headers.user === 'string' ? JSON.parse(req.headers.user) : null;
-			const bearerToken = req.headers.authorization?.match(/Bearer: (.*)$/)?.[1];
-			return { user, bearerToken };
-		},
-	});
-
-	server
-		.listen({ port: 4002 })
-		// eslint-disable-next-line promise/always-return
-		.then(({ url }) => {
-			console.log(`Groups service ready at ${url}`);
-		})
-		.catch(console.error);
+export class GroupsService extends ApolloServer {
+	constructor(client: MongoClient, config: SharedApolloConfig) {
+		super({
+			schema: applyMiddleware(
+				buildSubgraphSchema([
+					DIRECTIVES,
+					{
+						typeDefs,
+						resolvers,
+					},
+				]),
+				permissions
+			),
+			dataSources: () => ({
+				groups: new Groups(client.db('vaken').collection('groups')),
+			}),
+			...config,
+		});
+	}
 }
-main();

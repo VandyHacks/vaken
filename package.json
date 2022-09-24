@@ -3,6 +3,9 @@
 	"description": "Next-gen hacker registration system",
 	"version": "0.2.0",
 	"license": "MIT",
+	"engines": {
+		"node": "14.15.4"
+	},
 	"targets": {
 		"client": {
 			"source": "src/client/index.html",
@@ -70,10 +73,7 @@
 		"storybook": "start-storybook -p 6006",
 		"build-storybook": "build-storybook",
 		"postinstall": "lerna bootstrap",
-		"server": "concurrently -k npm:service:*",
-		"service:gateway": "nodemon --exec 'wait-on tcp:4001 tcp:4002 && node --inspect -r ts-node/register -r dotenv/config ./services/gateway/index.ts'",
-		"service:users": "nodemon -r dotenv/config ./services/users/index.ts",
-		"service:groups": "nodemon -r dotenv/config ./services/groups/index.ts"
+		"server": "nodemon --exec node --inspect -r ts-node/register -r dotenv/config ./services/main.ts"
 	},
 	"dependencies": {
 		"@apollo/client": "^3.6.8",
@@ -123,6 +123,7 @@
 		"graphql-shield": "^7.5.0",
 		"helmet": "^4.6.0",
 		"immer": "^9.0.6",
+		"joi": "^17.6.0",
 		"jsdom": "^16.4.0",
 		"jsonwebtoken": "^8.5.1",
 		"jszip": "^3.6.0",
@@ -204,8 +205,9 @@
 		"css-loader": "^5.0.1",
 		"dotenv-webpack": "^7.0.3",
 		"error-overlay-webpack-plugin": "^0.4.2",
-		"eslint": "^7.16.0",
+		"eslint": "^7.32.0",
 		"eslint-config-airbnb": "^18.2.1",
+		"eslint-config-google": "^0.14.0",
 		"eslint-config-prettier": "^6.15.0",
 		"eslint-import-resolver-typescript": "^2.3.0",
 		"eslint-import-resolver-webpack": "^0.13.0",

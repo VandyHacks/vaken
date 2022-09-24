@@ -1,7 +1,7 @@
 import { Storage, GetSignedUrlConfig, Bucket } from '@google-cloud/storage';
 import JSZip from 'jszip';
-import mime from 'mime-types';
-import { getHackers, getUser } from './query/users_query';
+import { extension } from 'mime-types';
+import { getHackers } from './query/users';
 
 const { GCS_BUCKET_NAME, GCS_SERVICE_ACCOUNT, GCS_RESUME_DUMP_FILENAME } = process.env;
 
@@ -25,24 +25,41 @@ if (!GCS_BUCKET_NAME || !GCS_SERVICE_ACCOUNT) {
 	bucket = new Storage({ credentials }).bucket(GCS_BUCKET_NAME);
 }
 
+export const getFilename = async (userId: string): Promise<string | null> => {
+	// The files are stored by `userId` at upload time. The
+	// response-content-disposition parameter sent during upload will ensure it's
+	// named correctly when the user downloads it.
+	const [files] = await bucket.getFiles({ prefix: userId });
+	if (!files.length || !files[0]) {
+		return null;
+	}
+	const file = files[0];
+
+	const [fileMetadata] = await file.getMetadata();
+	return fileMetadata['metadata']?.['filename'] ?? null;
+};
+
 // These options will allow temporary read access to the file
-export const getSignedUploadUrl = async (userId: string, contentType: string): Promise<string> => {
+export const getSignedUploadUrl = async (
+	userId: string,
+	userFilename: string,
+	userContentType: string
+): Promise<{ url: string; headers: { key: string; value: string }[] }> => {
 	if (!bucket) {
 		throw new Error('GCS integration disabled');
 	}
 	if (GCS_RESUME_DUMP_FILENAME) {
-		// Check for resume dump. Remove if exists.
+		// Check for resume dump. Remove if exists, as its contents will be
+		// invalidated after a new resume is uploaded.
 		bucket.file(GCS_RESUME_DUMP_FILENAME).delete({ ignoreNotFound: true });
 	}
-	const fileExt = mime.extension(contentType);
 
-	// The files are stored by userId.extension at upload time. We only have the
-	// `userId` portion, so we use a prefix match to find any existing uploads by
-	// that user and remove them
-	const [files] = await bucket.getFiles({ prefix: userId });
-	if (files.length) {
-		files.forEach(file => bucket.file(file.name).delete({ ignoreNotFound: true }));
-	}
+	const filename =
+		userFilename.length > 110
+			? `${userFilename.slice(0, 90)}[...]${userFilename.slice(-10)}`
+			: userFilename;
+	// Validate the contentType by attempting to look it up
+	const contentType = extension(userContentType) ? userContentType : 'application/octet-stream';
 
 	const options: GetSignedUrlConfig = {
 		action: 'write',
@@ -52,11 +69,21 @@ export const getSignedUploadUrl = async (userId: string, contentType: string): P
 		extensionHeaders: {
 			// Maximum size of 10MiB to prevent abuse
 			'x-goog-content-length-range': '0,10485760',
+			'x-goog-meta-filename': filename,
 		},
+		// The Content-Disposition header sent during upload will ensure it's
+		// named correctly when the user downloads it.
+		responseDisposition: `inline; filename="${filename}"`,
 	};
-	const [url] = await bucket.file(`${userId}.${fileExt}`).getSignedUrl(options);
+	const headers = [
+		{ key: 'X-Goog-Content-Length-Range', value: '0,10485760' },
+		{ key: 'X-Goog-Meta-Filename', value: filename },
+		{ key: 'Content-Type', value: contentType },
+		{ key: 'Content-Disposition', value: `inline; filename="${filename}"` },
+	];
+	const [url] = await bucket.file(userId).getSignedUrl(options);
 
-	return url;
+	return { url, headers };
 };
 
 export const getSignedReadUrl = async (userId: string): Promise<string | null> => {
@@ -64,32 +91,19 @@ export const getSignedReadUrl = async (userId: string): Promise<string | null> =
 		throw new Error('GCS integration disabled');
 	}
 
-	// Start fetching the user now, so the async operation is complete by the time
-	// we figure out which file to use.
-	const userPromise = getUser({ id: userId });
-
-	// The files are stored by userId.extension at upload time. We only have the
-	// `userId` portion, so we use a prefix match to find the right file and use
-	// `responseDisposition` to rename it at download time.
+	// The files are stored by `userId` at upload time. The
+	// response-content-disposition parameter sent during upload will ensure it's
+	// named correctly when the user downloads it.
 	const [files] = await bucket.getFiles({ prefix: userId });
 	if (!files.length || !files[0]) {
 		return null;
 	}
 	const file = files[0];
-	const extension = file.name.substring(file.name.lastIndexOf('.')) || '';
-	const contentType = mime.contentType(extension) || 'application/octet-stream';
-	const user = await userPromise;
 
 	const options: GetSignedUrlConfig = {
 		action: 'read',
-		contentType,
-		expires: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30 days
+		expires: Date.now() + 5 * 24 * 60 * 60 * 1000, // 5 days
 		version: 'v4',
-		// responseDisposition will save the file according to `filename`. Rename the
-		// file to the user's name, if it exists:
-		responseDisposition: `inline; filename="${
-			user ? `${user.email}-${user.id}${extension}` : `${userId}${extension}`
-		}"`,
 	};
 	const [url] = await bucket.file(file.name).getSignedUrl(options);
 
@@ -106,17 +120,24 @@ export const getResumeDumpUrl = async (): Promise<string | null> => {
 	}
 
 	// Download and zip resumes for hackers that submitted an application and have a resume.
-	const zip = JSZip();
-	const [[files], hackers] = await Promise.all([bucket.getFiles(), getHackers()]);
+	const zip = new JSZip();
+	const [[fileArr], hackers] = await Promise.all([bucket.getFiles(), getHackers()]);
+	const files = new Map<string, typeof fileArr[number]>();
+	for (const file of fileArr) {
+		files.set(file.name, file);
+	}
+	console.error(files.keys());
+	console.error(hackers);
 	await Promise.all(
 		hackers?.map(async hacker => {
-			const storedFilename = files.find(file => file.name.startsWith(hacker.id))?.name;
-			if (!storedFilename) {
+			const storedFile = files.get(hacker.id);
+			if (!storedFile) {
 				return null;
 			}
-			const extension = storedFilename.substring(storedFilename.lastIndexOf('.')) || '';
-			const [fileContents] = await bucket.file(storedFilename).download();
-			const readableFilename = `${hacker.email}-${hacker.id}.${extension}`;
+			const [fileMetadata] = await storedFile.getMetadata();
+			const fileExtension = extension(fileMetadata['contentType']);
+			const [fileContents] = await storedFile.download();
+			const readableFilename = `${hacker.email}-${hacker.id}.${fileExtension}`;
 			zip.file(readableFilename, fileContents);
 			return undefined;
 		}) ?? []

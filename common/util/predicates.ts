@@ -5,7 +5,8 @@
  * @param enumObject Enum object containing values to compare the input against.
  */
 export function valueOf<T extends Record<string, string>>(enumObject: T) {
-	return (input: string): input is T[keyof T] => Object.values(enumObject).includes(input);
+	return (input?: string | null): input is T[keyof T] =>
+		!!input && Object.values(enumObject).includes(input);
 }
 
 /**

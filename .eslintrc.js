@@ -3,7 +3,7 @@
 // go to the configs in their respective directories
 module.exports = {
 	extends: [
-		'airbnb', // Airbnb style guide
+		'google',
 		'plugin:react/recommended',
 		'plugin:@typescript-eslint/eslint-recommended',
 		'plugin:@typescript-eslint/recommended',
@@ -32,20 +32,24 @@ module.exports = {
 	},
 	reportUnusedDisableDirectives: true,
 	rules: {
-		'no-void': 0,
-		'no-underscore-dangle': 0,
-		'no-return-assign': [2, 'except-parens'],
-		'@typescript-eslint/explicit-function-return-type': [
-			2,
-			{ allowExpressions: true, allowTypedFunctionExpressions: true },
-		],
+		'require-jsdoc': [0],
+		// 'no-restricted-syntax': [0],
+		// 'no-void': 0,
+		// 'no-continue': 0,
+		// 'no-underscore-dangle': 0,
+		// 'no-return-assign': [2, 'except-parens'],
+		// '@typescript-eslint/explicit-function-return-type': [
+		// 	2,
+		// 	{ allowExpressions: true, allowTypedFunctionExpressions: true },
+		// ],
+		'valid-jsdoc': [0],
 		'prettier/prettier': 'error',
 		'no-param-reassign': [2, { props: true, ignorePropertyModificationsFor: ['draft'] }],
 		'import/no-extraneous-dependencies': [
 			2,
 			{ devDependencies: ['**/*.test.tsx', '**/*.test.ts'] },
 		],
-		'import/prefer-default-export': [0],
+		// 'import/prefer-default-export': [0],
 		'import/extensions': [
 			'error',
 			'ignorePackages',

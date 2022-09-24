@@ -49,8 +49,8 @@ const initializedSessionMiddleware = session({
 		// Using secure cookies requires an HTTPS connection. When running on heroku,
 		// the last hop between Heroku's servers and our dyno is behind a proxy, so
 		// specifying `trust proxy` in express is required.
-		// secure: true,
-		// sameSite: 'strict',
+		secure: true,
+		sameSite: 'strict',
 	},
 });
 

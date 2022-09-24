@@ -1,4 +1,4 @@
-import { allow, deny, IRules, rule, shield, or } from 'graphql-shield';
+import { allow, IRules, rule, shield, or } from 'graphql-shield';
 import { Query, Mutation, Role, User } from './lib/generated.graphql';
 import type { UsersContext } from './index';
 
@@ -37,7 +37,7 @@ const permissions_: PermissionsSchema = {
 		// Allow users with the VIEW_ALL_HACKERS role to query arbitrary users and any user to query themself.
 		user: or(isQueryingSelf, canViewAllHackers, hasBearerToken),
 		// Only allow users with the VIEW_ALL_HACKERS role to query `users`
-		users: canViewAllHackers,
+		users: or(canViewAllHackers, hasBearerToken),
 	},
 	Mutation: {
 		// Primarily issued from the backend to log in a new user
@@ -45,6 +45,4 @@ const permissions_: PermissionsSchema = {
 	},
 };
 
-export const permissions = shield(permissions_, {
-	fallbackRule: process.env.NODE_ENV === 'production' ? deny : allow,
-});
+export const permissions = shield(permissions_, { fallbackRule: hasBearerToken });

@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { allow, deny, IRules, rule, shield, or, race, and } from 'graphql-shield';
+import { IRules, rule, shield, or, race, and } from 'graphql-shield';
 import { Query, Mutation, Role, User, Group } from './lib/generated.graphql';
 import type { GroupsContext } from './index';
-import { getGroup } from './lib/query/groups_query';
+import { getGroup } from './lib/query/groups';
 
 type PermissionsSchema = IRules & {
 	Query?: Partial<Record<keyof Query | '*', IRules>>;
@@ -49,6 +48,4 @@ const permissions_: PermissionsSchema = {
 	},
 };
 
-export const permissions = shield(permissions_, {
-	fallbackRule: process.env.NODE_ENV === 'production' ? deny : allow,
-});
+export const permissions = shield(permissions_, { fallbackRule: hasBearerToken });

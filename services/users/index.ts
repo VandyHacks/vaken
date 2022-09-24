@@ -1,19 +1,18 @@
-import { ApolloServer } from 'apollo-server';
+import { ApolloServer } from 'apollo-server-express';
 import { buildSubgraphSchema } from '@apollo/subgraph';
 import { MongoClient } from 'mongodb';
 import { DIRECTIVES } from '@graphql-codegen/typescript-mongodb';
 import { applyMiddleware } from 'graphql-middleware';
-import { Resolvers, Role } from './lib/generated.graphql';
+import { Resolvers } from './lib/generated.graphql';
 import { typeDefs } from './users.graphql';
 import { Users } from './lib/users';
 import { permissions } from './permissions';
+import { CommonContext, SharedApolloConfig } from '../common';
 
-export type UsersContext = {
+export type UsersContext = CommonContext & {
 	dataSources: {
 		users: Users;
 	};
-	user?: { id: string; roles: Role[] } | null;
-	bearerToken?: string;
 };
 
 const resolvers: Resolvers<UsersContext> = {
@@ -41,40 +40,23 @@ const resolvers: Resolvers<UsersContext> = {
 	},
 };
 
-async function main(): Promise<void> {
-	const vakenDb = (
-		await MongoClient.connect(process.env.MONGODB_BASE_URL ?? 'mongodb://localhost:27017')
-	).db('vaken');
-
-	const server = new ApolloServer({
-		schema: applyMiddleware(
-			buildSubgraphSchema([
-				DIRECTIVES,
-				{
-					typeDefs,
-					resolvers,
-				},
-			]),
-			permissions
-		),
-		dataSources: () => ({
-			users: new Users(vakenDb.collection('users')),
-		}),
-		cache: 'bounded',
-		csrfPrevention: true,
-		context: ({ req }) => {
-			const user = typeof req.headers.user === 'string' ? JSON.parse(req.headers.user) : null;
-			const bearerToken = req.headers.authorization?.match(/Bearer: (.*)$/)?.[1];
-			return { user, bearerToken };
-		},
-	});
-
-	server
-		.listen({ port: 4001 })
-		// eslint-disable-next-line promise/always-return
-		.then(({ url }) => {
-			console.log(`User service ready at ${url}`);
-		})
-		.catch(console.error);
+export class UsersService extends ApolloServer {
+	constructor(client: MongoClient, config: SharedApolloConfig) {
+		super({
+			schema: applyMiddleware(
+				buildSubgraphSchema([
+					DIRECTIVES,
+					{
+						typeDefs,
+						resolvers,
+					},
+				]),
+				permissions
+			),
+			dataSources: () => ({
+				users: new Users(client.db('vaken').collection('users')),
+			}),
+			...config,
+		});
+	}
 }
-main();
