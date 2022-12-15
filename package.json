@@ -98,7 +98,7 @@
 		"dotenv": "^8.2.0",
 		"email-validator": "^2.0.4",
 		"escape-html": "^1.0.3",
-		"express": "^4.17.1",
+		"express": "^4.17.3",
 		"express-session": "^1.17.1",
 		"faker": "^5.1.0",
 		"fuse.js": "^6.4.3",
